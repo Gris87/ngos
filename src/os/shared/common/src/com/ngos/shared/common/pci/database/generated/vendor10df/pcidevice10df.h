@@ -218,11 +218,11 @@ inline const char8* enumToHumanString(PciDevice10DF device10DF) // TEST: NO
         case PciDevice10DF::DEVICE_F180: return "LPSe12002 EmulexSecure Fibre Channel Adapter";
         case PciDevice10DF::DEVICE_F400: return "LPe35000/LPe36000 Series 32Gb/64Gb Fibre Channel Adapter";
         case PciDevice10DF::DEVICE_F700: return "LP7000 Fibre Channel Host Adapter";
-        case PciDevice10DF::DEVICE_F701: return "LP7000 Fibre Channel Host Adapter Alternate ID (JX1:2-3, JX2:1-2)";
+        case PciDevice10DF::DEVICE_F701: return "LP7000 Fibre Channel Host Adapter Alternate ID (JX1: 2-3, JX2: 1-2)";
         case PciDevice10DF::DEVICE_F800: return "LP8000 Fibre Channel Host Adapter";
-        case PciDevice10DF::DEVICE_F801: return "LP8000 Fibre Channel Host Adapter Alternate ID (JX1:2-3, JX2:1-2)";
+        case PciDevice10DF::DEVICE_F801: return "LP8000 Fibre Channel Host Adapter Alternate ID (JX1: 2-3, JX2: 1-2)";
         case PciDevice10DF::DEVICE_F900: return "LP9000 Fibre Channel Host Adapter";
-        case PciDevice10DF::DEVICE_F901: return "LP9000 Fibre Channel Host Adapter Alternate ID (JX1:2-3, JX2:1-2)";
+        case PciDevice10DF::DEVICE_F901: return "LP9000 Fibre Channel Host Adapter Alternate ID (JX1: 2-3, JX2: 1-2)";
         case PciDevice10DF::DEVICE_F980: return "LP9802 Fibre Channel Host Adapter";
         case PciDevice10DF::DEVICE_F981: return "LP9802 Fibre Channel Host Adapter Alternate ID";
         case PciDevice10DF::DEVICE_F982: return "LP9802 Fibre Channel Host Adapter Alternate ID";

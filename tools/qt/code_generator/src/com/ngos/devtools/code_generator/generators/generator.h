@@ -13,7 +13,7 @@ class Generator
 public:
     Generator(); // TEST: NO
 
-    static qint64 getNumberOfGeneratedFiles();
+    static qint64 getNumberOfGeneratedFiles(); // TEST: NO
 
 protected:
     void addOneBlankLine(QStringList &lines); // TEST: NO

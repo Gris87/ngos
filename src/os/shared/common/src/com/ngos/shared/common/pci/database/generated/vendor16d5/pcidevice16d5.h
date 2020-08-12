@@ -339,10 +339,10 @@ inline const char8* enumToHumanString(PciDevice16D5 device16D5) // TEST: NO
         case PciDevice16D5::DEVICE_7042: return "AP482 Counter Timer Module with TTL Level Input/Output";
         case PciDevice16D5::DEVICE_7043: return "AP483 Counter Timer Module with TTL Level and RS422 Input/Output";
         case PciDevice16D5::DEVICE_7044: return "AP484 Counter Timer Module with RS422 Input/Output";
-        case PciDevice16D5::DEVICE_7051: return "APA7-501 Reconfigurable Artix-7 52,160 Cell FPGA module 48 TTL channels";
-        case PciDevice16D5::DEVICE_7052: return "APA7-502 Reconfigurable Artix-7 52,160 Cell FPGA module 24 RS485 channels";
-        case PciDevice16D5::DEVICE_7053: return "APA7-503 Reconfigurable Artix-7 52,160 Cell FPGA module 24 TTL & 12 RS485 channels";
-        case PciDevice16D5::DEVICE_7054: return "APA7-504 Reconfigurable Artix-7 52,160 Cell FPGA module 24 LVDS channels";
+        case PciDevice16D5::DEVICE_7051: return "APA7-501 Reconfigurable Artix-7 52, 160 Cell FPGA module 48 TTL channels";
+        case PciDevice16D5::DEVICE_7052: return "APA7-502 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 RS485 channels";
+        case PciDevice16D5::DEVICE_7053: return "APA7-503 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 TTL & 12 RS485 channels";
+        case PciDevice16D5::DEVICE_7054: return "APA7-504 Reconfigurable Artix-7 52, 160 Cell FPGA module 24 LVDS channels";
 
         default: return "Unknown device";
     }

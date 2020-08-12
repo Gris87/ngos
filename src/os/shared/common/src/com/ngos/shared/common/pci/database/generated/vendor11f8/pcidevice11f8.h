@@ -102,7 +102,7 @@ inline const char8* enumToHumanString(PciDevice11F8 device11F8) // TEST: NO
         case PciDevice11F8::DEVICE_7364: return "PM7364 [FREEDM - 32 Frame Engine & Datalink Mgr]";
         case PciDevice11F8::DEVICE_7375: return "PM7375 [LASAR-155 ATM SAR]";
         case PciDevice11F8::DEVICE_7384: return "PM7384 [FREEDM - 84P672 Frm Engine & Datalink Mgr]";
-        case PciDevice11F8::DEVICE_8000: return "PM8000  [SPC - SAS Protocol Controller]";
+        case PciDevice11F8::DEVICE_8000: return "PM8000 [SPC - SAS Protocol Controller]";
         case PciDevice11F8::DEVICE_8009: return "PM8009 SPCve 8x6G";
         case PciDevice11F8::DEVICE_8018: return "PM8018 Adaptec SAS Adaptor ASA-70165H PCIe Gen3 x8 6 Gbps 16-lane 4x SFF-8644";
         case PciDevice11F8::DEVICE_8032: return "PM8032 Tachyon QE8";

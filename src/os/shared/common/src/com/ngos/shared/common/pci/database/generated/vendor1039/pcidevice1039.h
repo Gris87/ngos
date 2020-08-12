@@ -277,7 +277,7 @@ inline const char8* enumToHumanString(PciDevice1039 device1039) // TEST: NO
         case PciDevice1039::DEVICE_0016: return "SiS961/2/3 SMBus controller";
         case PciDevice1039::DEVICE_0018: return "SiS85C503/5513 (LPC Bridge)";
         case PciDevice1039::DEVICE_0163: return "163 802.11b/g Wireless LAN Adapter";
-        case PciDevice1039::DEVICE_0180: return "RAID bus controller 180 SATA/PATA  [SiS]";
+        case PciDevice1039::DEVICE_0180: return "RAID bus controller 180 SATA/PATA [SiS]";
         case PciDevice1039::DEVICE_0181: return "SATA";
         case PciDevice1039::DEVICE_0182: return "182 SATA/RAID Controller";
         case PciDevice1039::DEVICE_0186: return "AHCI Controller (0106)";

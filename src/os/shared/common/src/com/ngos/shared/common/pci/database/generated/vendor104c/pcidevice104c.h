@@ -279,7 +279,7 @@ inline const char8* enumToHumanString(PciDevice104C device104C) // TEST: NO
         case PciDevice104C::DEVICE_8026: return "TSB43AB21 IEEE-1394a-2000 Controller (PHY/Link)";
         case PciDevice104C::DEVICE_8027: return "PCI4451 IEEE-1394 Controller";
         case PciDevice104C::DEVICE_8029: return "PCI4510 IEEE-1394 Controller";
-        case PciDevice104C::DEVICE_802B: return "PCI7410,7510,7610 OHCI-Lynx Controller";
+        case PciDevice104C::DEVICE_802B: return "PCI7410, 7510, 7610 OHCI-Lynx Controller";
         case PciDevice104C::DEVICE_802E: return "PCI7x20 1394a-2000 OHCI Two-Port PHY/Link-Layer Controller";
         case PciDevice104C::DEVICE_8031: return "PCIxx21/PCIxx11/PCIx515 PC Card Controller";
         case PciDevice104C::DEVICE_8032: return "OHCI Compliant IEEE 1394 Host Controller";

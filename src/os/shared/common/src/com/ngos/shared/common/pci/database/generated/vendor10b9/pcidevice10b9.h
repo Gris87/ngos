@@ -253,10 +253,10 @@ inline const char8* enumToHumanString(PciDevice10B9 device10B9) // TEST: NO
         case PciDevice10B9::DEVICE_1644: return "M1644/M1644T Northbridge+Trident";
         case PciDevice10B9::DEVICE_1646: return "M1646 Northbridge+Trident";
         case PciDevice10B9::DEVICE_1647: return "M1647 Northbridge [MAGiK 1 / MobileMAGiK 1]";
-        case PciDevice10B9::DEVICE_1651: return "M1651/M1651T Northbridge [Aladdin-Pro 5/5M,Aladdin-Pro 5T/5TM]";
-        case PciDevice10B9::DEVICE_1671: return "M1671 Super P4 Northbridge [AGP4X,PCI and SDR/DDR]";
+        case PciDevice10B9::DEVICE_1651: return "M1651/M1651T Northbridge [Aladdin-Pro 5/5M, Aladdin-Pro 5T/5TM]";
+        case PciDevice10B9::DEVICE_1671: return "M1671 Super P4 Northbridge [AGP4X, PCI and SDR/DDR]";
         case PciDevice10B9::DEVICE_1672: return "M1672 Northbridge [CyberALADDiN-P4]";
-        case PciDevice10B9::DEVICE_1681: return "M1681 P4 Northbridge [AGP8X,HyperTransport and SDR/DDR]";
+        case PciDevice10B9::DEVICE_1681: return "M1681 P4 Northbridge [AGP8X, HyperTransport and SDR/DDR]";
         case PciDevice10B9::DEVICE_1687: return "M1687 K8 Northbridge [AGP8X and HyperTransport]";
         case PciDevice10B9::DEVICE_1689: return "M1689 K8 Northbridge [Super K8 Single Chip]";
         case PciDevice10B9::DEVICE_1695: return "M1695 Host Bridge";
@@ -291,7 +291,7 @@ inline const char8* enumToHumanString(PciDevice10B9 device10B9) // TEST: NO
         case PciDevice10B9::DEVICE_5251: return "M5251 P1394 OHCI 1.0 Controller";
         case PciDevice10B9::DEVICE_5253: return "M5253 P1394 OHCI 1.1 Controller";
         case PciDevice10B9::DEVICE_5261: return "M5261 Ethernet Controller";
-        case PciDevice10B9::DEVICE_5263: return "ULi 1689,1573 integrated ethernet.";
+        case PciDevice10B9::DEVICE_5263: return "ULi 1689, 1573 integrated ethernet.";
         case PciDevice10B9::DEVICE_5281: return "ALi M5281 Serial ATA / RAID Host Controller";
         case PciDevice10B9::DEVICE_5287: return "ULi 5287 SATA";
         case PciDevice10B9::DEVICE_5288: return "ULi M5288 SATA";

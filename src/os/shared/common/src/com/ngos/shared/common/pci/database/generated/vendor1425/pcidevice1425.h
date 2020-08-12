@@ -1416,7 +1416,7 @@ inline const char8* enumToHumanString(PciDevice1425 device1425) // TEST: NO
         case PciDevice1425::DEVICE_400F: return "T440 [Amsterdam] Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4080: return "T480-4080 T480 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4081: return "T440F-4081 T440-FCoE Unified Wire Ethernet Controller";
-        case PciDevice1425::DEVICE_4082: return "T420-4082  Unified Wire Ethernet Controller";
+        case PciDevice1425::DEVICE_4082: return "T420-4082 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4083: return "T420X-4083 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4084: return "T440-4084 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4085: return "T420-4085 SFP+ Unified Wire Ethernet Controller";
@@ -1440,7 +1440,7 @@ inline const char8* enumToHumanString(PciDevice1425 device1425) // TEST: NO
         case PciDevice1425::DEVICE_440F: return "T440 [Amsterdam] Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4480: return "T480-4080 T480 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4481: return "T440F-4081 T440-FCoE Unified Wire Ethernet Controller";
-        case PciDevice1425::DEVICE_4482: return "T420-4082  Unified Wire Ethernet Controller";
+        case PciDevice1425::DEVICE_4482: return "T420-4082 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4483: return "T420X-4083 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4484: return "T440-4084 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4485: return "T420-4085 SFP+ Unified Wire Ethernet Controller";
@@ -1464,7 +1464,7 @@ inline const char8* enumToHumanString(PciDevice1425 device1425) // TEST: NO
         case PciDevice1425::DEVICE_450F: return "T440 [Amsterdam] Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4580: return "T480-4080 T480 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4581: return "T440F-4081 T440-FCoE Unified Wire Storage Controller";
-        case PciDevice1425::DEVICE_4582: return "T420-4082  Unified Wire Storage Controller";
+        case PciDevice1425::DEVICE_4582: return "T420-4082 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4583: return "T420X-4083 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4584: return "T440-4084 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4585: return "T420-4085 SFP+ Unified Wire Storage Controller";
@@ -1488,7 +1488,7 @@ inline const char8* enumToHumanString(PciDevice1425 device1425) // TEST: NO
         case PciDevice1425::DEVICE_460F: return "T440 [Amsterdam] Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4680: return "T480-4080 T480 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4681: return "T440F-4081 T440-FCoE Unified Wire Storage Controller";
-        case PciDevice1425::DEVICE_4682: return "T420-4082  Unified Wire Storage Controller";
+        case PciDevice1425::DEVICE_4682: return "T420-4082 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4683: return "T420X-4083 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4684: return "T440-4084 Unified Wire Storage Controller";
         case PciDevice1425::DEVICE_4685: return "T420-4085 SFP+ Unified Wire Storage Controller";
@@ -1512,7 +1512,7 @@ inline const char8* enumToHumanString(PciDevice1425 device1425) // TEST: NO
         case PciDevice1425::DEVICE_470F: return "T440 [Amsterdam] Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4780: return "T480-4080 T480 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4781: return "T440F-4081 T440-FCoE Unified Wire Ethernet Controller";
-        case PciDevice1425::DEVICE_4782: return "T420-4082  Unified Wire Ethernet Controller";
+        case PciDevice1425::DEVICE_4782: return "T420-4082 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4783: return "T420X-4083 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4784: return "T440-4084 Unified Wire Ethernet Controller";
         case PciDevice1425::DEVICE_4785: return "T420-4085 SFP+ Unified Wire Ethernet Controller";

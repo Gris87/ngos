@@ -68,7 +68,7 @@ inline const char8* enumToHumanString(PciDevice114A device114A) // TEST: NO
 
     switch (device114A)
     {
-        case PciDevice114A::DEVICE_5565: return "GE-IP PCI5565,PMC5565 Reflective Memory Node";
+        case PciDevice114A::DEVICE_5565: return "GE-IP PCI5565, PMC5565 Reflective Memory Node";
         case PciDevice114A::DEVICE_5579: return "VMIPCI-5579 (Reflective Memory Card)";
         case PciDevice114A::DEVICE_5587: return "VMIPCI-5587 (Reflective Memory Card)";
         case PciDevice114A::DEVICE_6504: return "VMIC PCI 7755 FPGA";

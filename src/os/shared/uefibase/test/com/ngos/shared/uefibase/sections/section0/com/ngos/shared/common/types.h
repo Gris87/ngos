@@ -258,6 +258,827 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0106.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0107.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0108.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass01/pcisubclass01.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass02/pcisubclass02.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass03/pciinterface0300.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass03/pcisubclass03.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass04/pcisubclass04.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass05/pcisubclass05.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0604.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0608.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass06/pciinterface0609.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass06/pcisubclass06.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0700.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0701.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0703.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass07/pcisubclass07.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0800.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0801.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0802.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0803.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pcisubclass08.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass09/pciinterface0904.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass09/pcisubclass09.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0a/pcisubclass0a.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0b/pcisubclass0b.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c00.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c03.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0c/pciinterface0c07.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0c/pcisubclass0c.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0d/pcisubclass0d.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0e/pcisubclass0e.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass0f/pcisubclass0f.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass10/pcisubclass10.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass11/pcisubclass11.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass12/pcisubclass12.h>
+#include <com/ngos/shared/common/pci/database/generated/pcibaseclass.h>
+#include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0010/pcidevice0010.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0014/pcidevice0014.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor001c/pcidevice001c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0070/pcidevice0070.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0095/pcidevice0095.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor018a/pcidevice018a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor021b/pcidevice021b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor02ac/pcidevice02ac.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0357/pcidevice0357.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0432/pcidevice0432.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0675/pcidevice0675.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0731/pcidevice0731.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0795/pcidevice0795.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0b0b/pcidevice0b0b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0e11/pcidevice0e11.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor0eac/pcidevice0eac.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1000/pcidevice1000.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1001/pcidevice1001.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1002/pcidevice1002.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1003/pcidevice1003.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1004/pcidevice1004.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1005/pcidevice1005.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor100b/pcidevice100b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor100c/pcidevice100c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor100e/pcidevice100e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1011/pcidevice1011.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1013/pcidevice1013.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1014/pcidevice1014.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1017/pcidevice1017.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101a/pcidevice101a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101b/pcidevice101b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101c/pcidevice101c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101e/pcidevice101e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcidevice1022.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1023/pcidevice1023.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1025/pcidevice1025.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1028/pcidevice1028.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102a/pcidevice102a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102b/pcidevice102b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102c/pcidevice102c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102d/pcidevice102d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102f/pcidevice102f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1031/pcidevice1031.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1033/pcidevice1033.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1036/pcidevice1036.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1039/pcidevice1039.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor103c/pcidevice103c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1042/pcidevice1042.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1043/pcidevice1043.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1044/pcidevice1044.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1045/pcidevice1045.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1048/pcidevice1048.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor104a/pcidevice104a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor104b/pcidevice104b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor104c/pcidevice104c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor104d/pcidevice104d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor104e/pcidevice104e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1050/pcidevice1050.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1054/pcidevice1054.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1055/pcidevice1055.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1057/pcidevice1057.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor105a/pcidevice105a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor105d/pcidevice105d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1060/pcidevice1060.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1061/pcidevice1061.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1064/pcidevice1064.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1066/pcidevice1066.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1067/pcidevice1067.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1069/pcidevice1069.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor106b/pcidevice106b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor106c/pcidevice106c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1071/pcidevice1071.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1073/pcidevice1073.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1074/pcidevice1074.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1077/pcidevice1077.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1078/pcidevice1078.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor107d/pcidevice107d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor107e/pcidevice107e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor107f/pcidevice107f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1080/pcidevice1080.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1081/pcidevice1081.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1083/pcidevice1083.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108a/pcidevice108a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108d/pcidevice108d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcidevice108e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1090/pcidevice1090.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1091/pcidevice1091.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1092/pcidevice1092.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1093/pcidevice1093.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1095/pcidevice1095.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1098/pcidevice1098.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor109e/pcidevice109e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10a5/pcidevice10a5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10a8/pcidevice10a8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10a9/pcidevice10a9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10aa/pcidevice10aa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ad/pcidevice10ad.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b3/pcidevice10b3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b4/pcidevice10b4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b5/pcidevice10b5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b6/pcidevice10b6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b7/pcidevice10b7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b8/pcidevice10b8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10b9/pcidevice10b9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ba/pcidevice10ba.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10bd/pcidevice10bd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10c8/pcidevice10c8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10cc/pcidevice10cc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10cd/pcidevice10cd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10cf/pcidevice10cf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10d9/pcidevice10d9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10da/pcidevice10da.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10dc/pcidevice10dc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10dd/pcidevice10dd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10de/pcidevice10de.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10df/pcidevice10df.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10e0/pcidevice10e0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10e1/pcidevice10e1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10e3/pcidevice10e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10e4/pcidevice10e4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10e8/pcidevice10e8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ea/pcidevice10ea.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10eb/pcidevice10eb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ec/pcidevice10ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ed/pcidevice10ed.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ee/pcidevice10ee.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ef/pcidevice10ef.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10f1/pcidevice10f1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10f5/pcidevice10f5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10fa/pcidevice10fa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10fb/pcidevice10fb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10fc/pcidevice10fc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1101/pcidevice1101.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1102/pcidevice1102.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1103/pcidevice1103.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1105/pcidevice1105.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1106/pcidevice1106.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1107/pcidevice1107.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1108/pcidevice1108.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1109/pcidevice1109.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor110a/pcidevice110a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor110b/pcidevice110b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1110/pcidevice1110.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1112/pcidevice1112.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1113/pcidevice1113.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1114/pcidevice1114.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1116/pcidevice1116.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1117/pcidevice1117.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1119/pcidevice1119.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor111a/pcidevice111a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor111c/pcidevice111c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor111d/pcidevice111d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor111f/pcidevice111f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1120/pcidevice1120.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1124/pcidevice1124.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1127/pcidevice1127.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor112f/pcidevice112f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1131/pcidevice1131.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1133/pcidevice1133.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1134/pcidevice1134.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1135/pcidevice1135.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1136/pcidevice1136.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1137/pcidevice1137.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1138/pcidevice1138.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1139/pcidevice1139.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor113c/pcidevice113c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor113f/pcidevice113f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1142/pcidevice1142.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1144/pcidevice1144.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1145/pcidevice1145.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1148/pcidevice1148.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor114a/pcidevice114a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor114f/pcidevice114f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1158/pcidevice1158.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1159/pcidevice1159.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor115d/pcidevice115d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1163/pcidevice1163.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1165/pcidevice1165.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1166/pcidevice1166.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor116a/pcidevice116a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1172/pcidevice1172.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1178/pcidevice1178.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1179/pcidevice1179.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor117c/pcidevice117c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1180/pcidevice1180.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1186/pcidevice1186.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor118c/pcidevice118c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor118d/pcidevice118d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1190/pcidevice1190.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1191/pcidevice1191.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1193/pcidevice1193.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1197/pcidevice1197.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1199/pcidevice1199.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor119b/pcidevice119b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor119e/pcidevice119e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor119f/pcidevice119f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11a9/pcidevice11a9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcidevice11ab.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ad/pcidevice11ad.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11af/pcidevice11af.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11b0/pcidevice11b0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11b8/pcidevice11b8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11b9/pcidevice11b9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11bc/pcidevice11bc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11bd/pcidevice11bd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11c1/pcidevice11c1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11c8/pcidevice11c8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11c9/pcidevice11c9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11cb/pcidevice11cb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11d1/pcidevice11d1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11d4/pcidevice11d4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11d5/pcidevice11d5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11de/pcidevice11de.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11e3/pcidevice11e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ec/pcidevice11ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f0/pcidevice11f0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f3/pcidevice11f3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f4/pcidevice11f4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f6/pcidevice11f6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11f8/pcidevice11f8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11fe/pcidevice11fe.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ff/pcidevice11ff.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1202/pcidevice1202.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1204/pcidevice1204.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1208/pcidevice1208.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor120e/pcidevice120e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor120f/pcidevice120f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1217/pcidevice1217.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor121a/pcidevice121a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor121e/pcidevice121e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1220/pcidevice1220.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1221/pcidevice1221.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1223/pcidevice1223.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1227/pcidevice1227.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor122d/pcidevice122d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor122e/pcidevice122e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1231/pcidevice1231.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1236/pcidevice1236.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor123d/pcidevice123d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor123f/pcidevice123f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1242/pcidevice1242.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1244/pcidevice1244.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor124b/pcidevice124b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor124d/pcidevice124d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor124f/pcidevice124f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1254/pcidevice1254.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1255/pcidevice1255.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1256/pcidevice1256.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1259/pcidevice1259.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor125b/pcidevice125b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor125c/pcidevice125c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor125d/pcidevice125d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor125f/pcidevice125f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcidevice1260.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1266/pcidevice1266.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1267/pcidevice1267.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor126c/pcidevice126c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor126f/pcidevice126f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1273/pcidevice1273.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1274/pcidevice1274.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1278/pcidevice1278.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1279/pcidevice1279.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor127a/pcidevice127a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor127e/pcidevice127e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1282/pcidevice1282.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1283/pcidevice1283.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1285/pcidevice1285.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1287/pcidevice1287.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor128d/pcidevice128d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor128e/pcidevice128e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1292/pcidevice1292.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1295/pcidevice1295.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor129a/pcidevice129a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12a3/pcidevice12a3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12ab/pcidevice12ab.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12ae/pcidevice12ae.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12b9/pcidevice12b9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12be/pcidevice12be.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12c3/pcidevice12c3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12c4/pcidevice12c4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12c5/pcidevice12c5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12c7/pcidevice12c7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12cb/pcidevice12cb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d2/pcidevice12d2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d4/pcidevice12d4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d5/pcidevice12d5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d8/pcidevice12d8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d9/pcidevice12d9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12de/pcidevice12de.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12e0/pcidevice12e0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12eb/pcidevice12eb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12f8/pcidevice12f8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12fb/pcidevice12fb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1303/pcidevice1303.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1307/pcidevice1307.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1308/pcidevice1308.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1317/pcidevice1317.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1318/pcidevice1318.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1319/pcidevice1319.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor131f/pcidevice131f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1331/pcidevice1331.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1332/pcidevice1332.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1344/pcidevice1344.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor134a/pcidevice134a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor134d/pcidevice134d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1353/pcidevice1353.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor135a/pcidevice135a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor135c/pcidevice135c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor135e/pcidevice135e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1360/pcidevice1360.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor136a/pcidevice136a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor136b/pcidevice136b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1371/pcidevice1371.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1374/pcidevice1374.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor137a/pcidevice137a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1382/pcidevice1382.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1385/pcidevice1385.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1389/pcidevice1389.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor138a/pcidevice138a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1393/pcidevice1393.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1394/pcidevice1394.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1397/pcidevice1397.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor139a/pcidevice139a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13a3/pcidevice13a3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13a8/pcidevice13a8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13c0/pcidevice13c0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13c1/pcidevice13c1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13c2/pcidevice13c2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13c6/pcidevice13c6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13c7/pcidevice13c7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13d0/pcidevice13d0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13d1/pcidevice13d1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13df/pcidevice13df.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13ec/pcidevice13ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13f0/pcidevice13f0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13f4/pcidevice13f4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13f6/pcidevice13f6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor13fe/pcidevice13fe.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1400/pcidevice1400.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1402/pcidevice1402.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1407/pcidevice1407.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1409/pcidevice1409.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1412/pcidevice1412.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1414/pcidevice1414.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1415/pcidevice1415.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1420/pcidevice1420.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1425/pcidevice1425.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor142e/pcidevice142e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1432/pcidevice1432.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1435/pcidevice1435.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor144a/pcidevice144a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor144d/pcidevice144d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor145f/pcidevice145f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1461/pcidevice1461.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1462/pcidevice1462.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor146a/pcidevice146a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor146c/pcidevice146c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor147b/pcidevice147b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1482/pcidevice1482.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor148d/pcidevice148d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1497/pcidevice1497.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1498/pcidevice1498.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor149d/pcidevice149d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14a4/pcidevice14a4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14af/pcidevice14af.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14b3/pcidevice14b3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14b5/pcidevice14b5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14b7/pcidevice14b7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14b9/pcidevice14b9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14ba/pcidevice14ba.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14bc/pcidevice14bc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14c0/pcidevice14c0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14c1/pcidevice14c1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14c3/pcidevice14c3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14cd/pcidevice14cd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14d2/pcidevice14d2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14d3/pcidevice14d3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14d6/pcidevice14d6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14d9/pcidevice14d9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14db/pcidevice14db.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14dc/pcidevice14dc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcidevice14e4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14ea/pcidevice14ea.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14ec/pcidevice14ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14f1/pcidevice14f1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14f2/pcidevice14f2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14f3/pcidevice14f3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14f8/pcidevice14f8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14fc/pcidevice14fc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1500/pcidevice1500.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1507/pcidevice1507.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1516/pcidevice1516.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor151a/pcidevice151a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor151c/pcidevice151c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor151f/pcidevice151f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1522/pcidevice1522.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1524/pcidevice1524.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1532/pcidevice1532.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1538/pcidevice1538.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor153b/pcidevice153b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor153f/pcidevice153f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1542/pcidevice1542.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1543/pcidevice1543.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1556/pcidevice1556.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1571/pcidevice1571.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1578/pcidevice1578.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor157c/pcidevice157c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1589/pcidevice1589.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1590/pcidevice1590.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1592/pcidevice1592.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor159b/pcidevice159b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15a2/pcidevice15a2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15ac/pcidevice15ac.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15ad/pcidevice15ad.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15b3/pcidevice15b3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15b6/pcidevice15b6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15b7/pcidevice15b7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15b8/pcidevice15b8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15bc/pcidevice15bc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15c5/pcidevice15c5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15c7/pcidevice15c7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15cf/pcidevice15cf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15dc/pcidevice15dc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15e2/pcidevice15e2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15e8/pcidevice15e8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15e9/pcidevice15e9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor15ec/pcidevice15ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1618/pcidevice1618.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1619/pcidevice1619.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1621/pcidevice1621.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1626/pcidevice1626.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1629/pcidevice1629.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1638/pcidevice1638.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor163c/pcidevice163c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1657/pcidevice1657.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor165a/pcidevice165a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor165c/pcidevice165c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor165f/pcidevice165f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1668/pcidevice1668.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor166d/pcidevice166d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1677/pcidevice1677.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1678/pcidevice1678.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1679/pcidevice1679.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor167b/pcidevice167b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor167d/pcidevice167d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1682/pcidevice1682.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1688/pcidevice1688.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor168a/pcidevice168a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor168c/pcidevice168c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor169c/pcidevice169c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ab/pcidevice16ab.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ae/pcidevice16ae.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16c3/pcidevice16c3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16c6/pcidevice16c6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ca/pcidevice16ca.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16cd/pcidevice16cd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16d5/pcidevice16d5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16da/pcidevice16da.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16e3/pcidevice16e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16e5/pcidevice16e5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ec/pcidevice16ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ed/pcidevice16ed.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16f2/pcidevice16f2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16f4/pcidevice16f4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor170b/pcidevice170b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1719/pcidevice1719.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1725/pcidevice1725.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor172a/pcidevice172a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1737/pcidevice1737.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor173b/pcidevice173b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1743/pcidevice1743.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1745/pcidevice1745.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1760/pcidevice1760.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor177d/pcidevice177d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1796/pcidevice1796.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1797/pcidevice1797.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1799/pcidevice1799.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor179a/pcidevice179a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor179c/pcidevice179c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17a0/pcidevice17a0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17aa/pcidevice17aa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17b3/pcidevice17b3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17b4/pcidevice17b4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17cb/pcidevice17cb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17cc/pcidevice17cc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17d3/pcidevice17d3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17d5/pcidevice17d5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17db/pcidevice17db.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17df/pcidevice17df.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17e4/pcidevice17e4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17e6/pcidevice17e6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17f3/pcidevice17f3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17fe/pcidevice17fe.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1800/pcidevice1800.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1804/pcidevice1804.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1813/pcidevice1813.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1814/pcidevice1814.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1822/pcidevice1822.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor182d/pcidevice182d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor182e/pcidevice182e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor182f/pcidevice182f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1830/pcidevice1830.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor183b/pcidevice183b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor184a/pcidevice184a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1850/pcidevice1850.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor185b/pcidevice185b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1864/pcidevice1864.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1867/pcidevice1867.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor186c/pcidevice186c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1876/pcidevice1876.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor187e/pcidevice187e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1888/pcidevice1888.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1896/pcidevice1896.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18a2/pcidevice18a2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18ac/pcidevice18ac.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18b8/pcidevice18b8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18c3/pcidevice18c3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18ca/pcidevice18ca.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18d2/pcidevice18d2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18dd/pcidevice18dd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18e6/pcidevice18e6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18ec/pcidevice18ec.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18f4/pcidevice18f4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18f6/pcidevice18f6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor18f7/pcidevice18f7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1904/pcidevice1904.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1912/pcidevice1912.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1923/pcidevice1923.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1924/pcidevice1924.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor192a/pcidevice192a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1931/pcidevice1931.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor193f/pcidevice193f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1942/pcidevice1942.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1947/pcidevice1947.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor194a/pcidevice194a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1957/pcidevice1957.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1959/pcidevice1959.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1966/pcidevice1966.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1969/pcidevice1969.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor196a/pcidevice196a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1971/pcidevice1971.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1974/pcidevice1974.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor197b/pcidevice197b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1982/pcidevice1982.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1987/pcidevice1987.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1989/pcidevice1989.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1999/pcidevice1999.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor199d/pcidevice199d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor199f/pcidevice199f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19a2/pcidevice19a2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19ac/pcidevice19ac.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19ae/pcidevice19ae.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19ba/pcidevice19ba.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19e3/pcidevice19e3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcidevice19e5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19e7/pcidevice19e7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a03/pcidevice1a03.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a07/pcidevice1a07.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a08/pcidevice1a08.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a0e/pcidevice1a0e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a17/pcidevice1a17.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a1d/pcidevice1a1d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a29/pcidevice1a29.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a2b/pcidevice1a2b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a30/pcidevice1a30.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a3b/pcidevice1a3b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a41/pcidevice1a41.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a4a/pcidevice1a4a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a55/pcidevice1a55.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a73/pcidevice1a73.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a78/pcidevice1a78.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a84/pcidevice1a84.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a88/pcidevice1a88.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a8c/pcidevice1a8c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1a8e/pcidevice1a8e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1aa8/pcidevice1aa8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ab6/pcidevice1ab6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ab8/pcidevice1ab8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ac1/pcidevice1ac1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ad7/pcidevice1ad7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ade/pcidevice1ade.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ae0/pcidevice1ae0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ae7/pcidevice1ae7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ae8/pcidevice1ae8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ae9/pcidevice1ae9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1aea/pcidevice1aea.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1aed/pcidevice1aed.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1af4/pcidevice1af4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b03/pcidevice1b03.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b1a/pcidevice1b1a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcidevice1b21.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b26/pcidevice1b26.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b36/pcidevice1b36.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b37/pcidevice1b37.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b39/pcidevice1b39.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b3a/pcidevice1b3a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b3e/pcidevice1b3e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b47/pcidevice1b47.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b4b/pcidevice1b4b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b55/pcidevice1b55.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b66/pcidevice1b66.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b6f/pcidevice1b6f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b73/pcidevice1b73.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b74/pcidevice1b74.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b85/pcidevice1b85.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b94/pcidevice1b94.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bad/pcidevice1bad.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bb0/pcidevice1bb0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bb1/pcidevice1bb1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bb3/pcidevice1bb3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bbf/pcidevice1bbf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bcf/pcidevice1bcf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bd0/pcidevice1bd0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bd4/pcidevice1bd4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bee/pcidevice1bee.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bef/pcidevice1bef.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1bf4/pcidevice1bf4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c09/pcidevice1c09.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c1c/pcidevice1c1c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c1f/pcidevice1c1f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c28/pcidevice1c28.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c2c/pcidevice1c2c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c36/pcidevice1c36.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c3b/pcidevice1c3b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c44/pcidevice1c44.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c58/pcidevice1c58.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c5c/pcidevice1c5c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c5f/pcidevice1c5f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c63/pcidevice1c63.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c7e/pcidevice1c7e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c7f/pcidevice1c7f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c8a/pcidevice1c8a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cb0/pcidevice1cb0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cb5/pcidevice1cb5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cc1/pcidevice1cc1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cc4/pcidevice1cc4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cc5/pcidevice1cc5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cc7/pcidevice1cc7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ccf/pcidevice1ccf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cd2/pcidevice1cd2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cd7/pcidevice1cd7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ce4/pcidevice1ce4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d0f/pcidevice1d0f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d17/pcidevice1d17.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d18/pcidevice1d18.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d1d/pcidevice1d1d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d22/pcidevice1d22.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d26/pcidevice1d26.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d37/pcidevice1d37.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d44/pcidevice1d44.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d65/pcidevice1d65.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d6a/pcidevice1d6a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d6c/pcidevice1d6c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d78/pcidevice1d78.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d82/pcidevice1d82.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d87/pcidevice1d87.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d94/pcidevice1d94.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d95/pcidevice1d95.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d9b/pcidevice1d9b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1da3/pcidevice1da3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dbf/pcidevice1dbf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dd8/pcidevice1dd8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1de0/pcidevice1de0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1de1/pcidevice1de1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1de5/pcidevice1de5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1def/pcidevice1def.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1df3/pcidevice1df3.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1df7/pcidevice1df7.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1dfc/pcidevice1dfc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e0f/pcidevice1e0f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e24/pcidevice1e24.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e36/pcidevice1e36.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e4b/pcidevice1e4b.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e4c/pcidevice1e4c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e89/pcidevice1e89.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fc0/pcidevice1fc0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fc1/pcidevice1fc1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fc9/pcidevice1fc9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fcc/pcidevice1fcc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fce/pcidevice1fce.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1fd4/pcidevice1fd4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor2000/pcidevice2000.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor2003/pcidevice2003.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor22b8/pcidevice22b8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor2348/pcidevice2348.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor2955/pcidevice2955.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor31ab/pcidevice31ab.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor3388/pcidevice3388.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor3442/pcidevice3442.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor37d9/pcidevice37d9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor3d3d/pcidevice3d3d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4005/pcidevice4005.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4033/pcidevice4033.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4040/pcidevice4040.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4144/pcidevice4144.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4150/pcidevice4150.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor416c/pcidevice416c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4348/pcidevice4348.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4444/pcidevice4444.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4624/pcidevice4624.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4916/pcidevice4916.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor494f/pcidevice494f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4a14/pcidevice4a14.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4c53/pcidevice4c53.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4d51/pcidevice4d51.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4d56/pcidevice4d56.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4ddc/pcidevice4ddc.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5045/pcidevice5045.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5046/pcidevice5046.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5053/pcidevice5053.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5145/pcidevice5145.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5168/pcidevice5168.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5301/pcidevice5301.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5333/pcidevice5333.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor544c/pcidevice544c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor544d/pcidevice544d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5452/pcidevice5452.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5455/pcidevice5455.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5544/pcidevice5544.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5555/pcidevice5555.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5851/pcidevice5851.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor5853/pcidevice5853.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor631c/pcidevice631c.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor6374/pcidevice6374.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor6549/pcidevice6549.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor6666/pcidevice6666.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor6688/pcidevice6688.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor7063/pcidevice7063.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor7357/pcidevice7357.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor7401/pcidevice7401.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8008/pcidevice8008.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8086/pcidevice8086.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8088/pcidevice8088.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor80ee/pcidevice80ee.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8686/pcidevice8686.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8800/pcidevice8800.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8c4a/pcidevice8c4a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8e2e/pcidevice8e2e.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9004/pcidevice9004.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9005/pcidevice9005.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor907f/pcidevice907f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9412/pcidevice9412.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9413/pcidevice9413.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9618/pcidevice9618.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9699/pcidevice9699.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9710/pcidevice9710.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9902/pcidevice9902.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9d32/pcidevice9d32.h>
+#include <com/ngos/shared/common/pci/database/generated/vendora727/pcidevicea727.h>
+#include <com/ngos/shared/common/pci/database/generated/vendoraaaa/pcideviceaaaa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendoraecb/pcideviceaecb.h>
+#include <com/ngos/shared/common/pci/database/generated/vendoraffe/pcideviceaffe.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorbdbd/pcidevicebdbd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorc0a9/pcidevicec0a9.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorcace/pcidevicecace.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorcafe/pcidevicecafe.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorcddd/pcidevicecddd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendord161/pcideviced161.h>
+#include <com/ngos/shared/common/pci/database/generated/vendord209/pcideviced209.h>
+#include <com/ngos/shared/common/pci/database/generated/vendord4d4/pcideviced4d4.h>
+#include <com/ngos/shared/common/pci/database/generated/vendordada/pcidevicedada.h>
+#include <com/ngos/shared/common/pci/database/generated/vendordcba/pcidevicedcba.h>
+#include <com/ngos/shared/common/pci/database/generated/vendordd01/pcidevicedd01.h>
+#include <com/ngos/shared/common/pci/database/generated/vendordeaf/pcidevicedeaf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendordeda/pcidevicededa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendore000/pcidevicee000.h>
+#include <com/ngos/shared/common/pci/database/generated/vendore159/pcidevicee159.h>
+#include <com/ngos/shared/common/pci/database/generated/vendore4bf/pcidevicee4bf.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorea01/pcideviceea01.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorea60/pcideviceea60.h>
+#include <com/ngos/shared/common/pci/database/generated/vendoreace/pcideviceeace.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorec80/pcideviceec80.h>
+#include <com/ngos/shared/common/pci/database/generated/vendoredd8/pcideviceedd8.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorf1d0/pcidevicef1d0.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorfa57/pcidevicefa57.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorfeda/pcidevicefeda.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h>
+#include <com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
 #include <com/ngos/shared/common/pci/pciheadertype.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
@@ -651,10 +1472,831 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                      8);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0010),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0014),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice001C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0070),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0095),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice018A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice021B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice02AC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0357),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0432),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0675),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0731),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0795),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0B0B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0E11),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice0EAC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1000),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1001),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1002),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1003),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1004),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1005),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice100B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice100C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice100E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1011),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1013),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1014),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1017),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice101A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice101B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice101C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice101E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1022),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1023),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1025),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1028),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice102A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice102B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice102C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice102D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice102F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1031),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1033),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1036),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1039),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice103C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1042),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1043),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1044),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1045),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1048),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice104A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice104B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice104C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice104D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice104E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1050),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1054),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1055),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1057),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice105A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice105D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1060),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1061),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1064),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1066),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1067),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1069),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice106B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice106C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1071),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1073),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1074),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1077),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1078),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice107D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice107E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice107F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1080),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1081),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1083),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice108A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice108D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice108E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1090),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1091),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1092),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1093),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1095),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1098),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice109E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10A5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10A8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10A9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10AA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10AD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10B9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10BA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10BD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10C8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10CC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10CD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10CF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10D9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10DA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10DC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10DD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10DE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10DF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10E0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10E1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10E3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10E4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10E8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10EA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10EB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10ED),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10EE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10EF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10F1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10F5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10FA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10FB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice10FC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1101),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1102),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1103),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1105),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1106),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1107),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1108),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1109),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice110A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice110B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1110),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1112),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1113),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1114),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1116),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1117),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1119),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice111A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice111C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice111D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice111F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1120),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1124),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1127),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice112F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1131),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1133),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1134),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1135),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1136),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1137),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1138),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1139),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice113C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice113F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1142),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1144),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1145),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1148),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice114A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice114F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1158),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1159),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice115D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1163),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1165),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1166),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice116A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1172),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1178),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1179),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice117C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1180),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1186),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice118C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice118D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1190),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1191),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1193),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1197),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1199),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice119B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice119E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice119F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11A9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11AB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11AD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11AF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11B0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11B8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11B9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11BC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11BD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11C1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11C8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11C9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11CB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11D1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11D4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11D5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11DE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11E3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11F0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11F3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11F4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11F6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11F8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11FE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice11FF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1202),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1204),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1208),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice120E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice120F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1217),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice121A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice121E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1220),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1221),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1223),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1227),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice122D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice122E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1231),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1236),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice123D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice123F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1242),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1244),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice124B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice124D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice124F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1254),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1255),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1256),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1259),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice125B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice125C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice125D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice125F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1260),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1266),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1267),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice126C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice126F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1273),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1274),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1278),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1279),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice127A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice127E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1282),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1283),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1285),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1287),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice128D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice128E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1292),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1295),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice129A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12A3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12AB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12AE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12B9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12BE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12C3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12C4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12C5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12C7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12CB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12D2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12D4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12D5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12D8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12D9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12DE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12E0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12EB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12F8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice12FB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1303),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1307),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1308),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1317),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1318),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1319),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice131F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1331),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1332),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1344),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice134A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice134D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1353),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice135A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice135C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice135E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1360),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice136A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice136B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1371),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1374),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice137A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1382),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1385),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1389),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice138A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1393),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1394),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1397),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice139A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13A3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13A8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13C0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13C1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13C2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13C6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13C7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13D0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13D1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13DF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13F0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13F4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13F6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice13FE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1400),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1402),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1407),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1409),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1412),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1414),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1415),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1420),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1425),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice142E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1432),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1435),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice144A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice144D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice145F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1461),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1462),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice146A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice146C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice147B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1482),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice148D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1497),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1498),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice149D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14A4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14AF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14B3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14B5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14B7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14B9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14BA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14BC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14C0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14C1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14C3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14CD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14D2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14D3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14D6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14D9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14DB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14DC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14E4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14EA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14F1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14F2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14F3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14F8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice14FC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1500),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1507),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1516),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice151A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice151C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice151F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1522),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1524),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1532),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1538),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice153B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice153F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1542),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1543),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1556),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1571),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1578),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice157C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1589),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1590),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1592),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice159B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15A2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15AC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15AD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15B3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15B6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15B7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15B8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15BC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15C5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15C7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15CF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15DC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15E2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15E8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15E9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice15EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1618),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1619),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1621),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1626),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1629),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1638),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice163C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1657),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice165A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice165C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice165F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1668),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice166D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1677),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1678),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1679),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice167B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice167D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1682),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1688),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice168A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice168C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice169C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16AB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16AE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16C3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16C6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16CA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16CD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16D5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16DA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16E3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16E5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16ED),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16F2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice16F4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice170B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1719),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1725),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice172A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1737),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice173B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1743),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1745),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1760),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice177D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1796),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1797),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1799),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice179A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice179C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17A0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17AA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17B3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17B4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17CB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17CC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17D3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17D5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17DB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17DF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17E4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17E6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17F3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice17FE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1800),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1804),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1813),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1814),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1822),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice182D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice182E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice182F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1830),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice183B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice184A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1850),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice185B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1864),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1867),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice186C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1876),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice187E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1888),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1896),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18A2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18AC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18B8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18C3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18CA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18D2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18DD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18E6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18EC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18F4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18F6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice18F7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1904),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1912),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1923),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1924),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice192A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1931),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice193F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1942),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1947),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice194A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1957),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1959),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1966),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1969),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice196A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1971),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1974),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice197B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1982),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1987),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1989),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1999),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice199D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice199F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19A2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19AC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19AE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19BA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19E3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19E5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice19E7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A03),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A07),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A08),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A0E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A17),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A1D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A29),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A2B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A30),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A3B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A41),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A4A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A55),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A73),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A78),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A84),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A88),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A8C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1A8E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AA8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AB6),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AB8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AC1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AD7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1ADE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AE0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AE7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AE8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AE9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AEA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AED),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1AF4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B03),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B1A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B21),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B26),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B36),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B37),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B39),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B3A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B3E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B47),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B4B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B55),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B66),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B6F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B73),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B74),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B85),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1B94),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BAD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BB0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BB1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BB3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BBF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BCF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BD0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BD4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BEE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BEF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1BF4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C09),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C1C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C1F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C28),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C2C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C36),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C3B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C44),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C58),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C5C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C5F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C63),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C7E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C7F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1C8A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CB0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CB5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CC1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CC4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CC5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CC7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CCF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CD2),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CD7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1CE4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D0F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D17),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D18),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D1D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D22),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D26),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D37),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D44),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D65),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D6A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D6C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D78),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D82),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D87),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D94),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D95),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1D9B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DA3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DBF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DD8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DE0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DE1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DE5),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DEF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DF3),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DF7),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1DFC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E0F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E24),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E36),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E4B),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E4C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E57),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E89),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FC0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FC1),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FC9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FCC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FCE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1FD4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice2000),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice2003),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice22B8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice2348),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice2955),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice31AB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice3388),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice3442),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice37D9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice3D3D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4005),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4033),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4040),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4144),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4150),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice416C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4348),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4444),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4624),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4916),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice494F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4A14),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4C53),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4D51),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4D56),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice4DDC),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5045),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5046),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5053),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5145),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5168),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5301),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5333),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice544C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice544D),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5452),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5455),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5544),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5555),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5851),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice5853),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice631C),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice6374),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice6549),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice6666),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice6688),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice7063),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice7357),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice7401),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8008),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8086),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8088),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice80EE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8686),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8800),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8C4A),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice8E2E),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9004),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9005),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice907F),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9412),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9413),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9618),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9699),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9710),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9902),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice9D32),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceA727),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceAAAA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceAECB),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceAFFE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceBDBD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceC0A9),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceCACE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceCAFE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceCDDD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceD161),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceD209),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceD4D4),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceDADA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceDCBA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceDD01),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceDEAF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceDEDA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceE000),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceE159),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceE4BF),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceEA01),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceEA60),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceEACE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceEC80),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceEDD8),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceF1D0),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceFA57),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceFEDA),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceFEDE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFD),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFE),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                      16);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0101),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0105),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0106),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0107),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0108),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0300),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0604),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0608),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0609),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0700),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0701),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0703),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0800),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0801),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0802),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0803),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0904),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0C00),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0C03),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciInterface0C07),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass00),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass01),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass02),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass03),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass04),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass05),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass06),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass07),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass08),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass09),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0A),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0B),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0C),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0D),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0E),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass0F),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass10),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass11),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciSubClass12),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciVendor),                                       2);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                             8);
         TEST_ASSERT_EQUALS(sizeof(PMD),                                             8);
         TEST_ASSERT_EQUALS(sizeof(Png),                                             1);

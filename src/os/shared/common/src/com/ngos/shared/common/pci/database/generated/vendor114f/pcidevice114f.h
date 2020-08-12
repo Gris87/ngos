@@ -166,7 +166,7 @@ inline const char8* enumToHumanString(PciDevice114F device114F) // TEST: NO
         case PciDevice114F::DEVICE_0003: return "RightSwitch SE-6";
         case PciDevice114F::DEVICE_0004: return "AccelePort Xem";
         case PciDevice114F::DEVICE_0005: return "AccelePort Xr";
-        case PciDevice114F::DEVICE_0006: return "AccelePort Xr,C/X";
+        case PciDevice114F::DEVICE_0006: return "AccelePort Xr, C/X";
         case PciDevice114F::DEVICE_0009: return "AccelePort Xr/J";
         case PciDevice114F::DEVICE_000A: return "AccelePort EPC/J";
         case PciDevice114F::DEVICE_000C: return "DataFirePRIme T1 (1-port)";

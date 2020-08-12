@@ -5529,7 +5529,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_10DE: return "NVIDIA Corporation";
         case PciVendor::VENDOR_10DF: return "Emulex Corporation";
         case PciVendor::VENDOR_10E0: return "Integrated Micro Solutions Inc.";
-        case PciVendor::VENDOR_10E1: return "Tekram Technology Co.,Ltd.";
+        case PciVendor::VENDOR_10E1: return "Tekram Technology Co., Ltd.";
         case PciVendor::VENDOR_10E2: return "Aptix Corporation";
         case PciVendor::VENDOR_10E3: return "Tundra Semiconductor Corp.";
         case PciVendor::VENDOR_10E4: return "Tandem Computers";
@@ -6505,7 +6505,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_14CA: return "PE Logic Corp.";
         case PciVendor::VENDOR_14CB: return "Billionton Systems Inc";
         case PciVendor::VENDOR_14CC: return "NAKAYO Telecommunications Inc";
-        case PciVendor::VENDOR_14CD: return "Universal Global Scientific Industrial Co.,Ltd";
+        case PciVendor::VENDOR_14CD: return "Universal Global Scientific Industrial Co., Ltd";
         case PciVendor::VENDOR_14CE: return "Whistle Communications";
         case PciVendor::VENDOR_14CF: return "TEK Microsystems Inc.";
         case PciVendor::VENDOR_14D0: return "Ericsson Axe R & D";
@@ -6851,7 +6851,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1695: return "EPoX Computer Co., Ltd.";
         case PciVendor::VENDOR_169C: return "Netcell Corporation";
         case PciVendor::VENDOR_169D: return "Club-3D VB (Wrong ID)";
-        case PciVendor::VENDOR_16A5: return "Tekram Technology Co.,Ltd.";
+        case PciVendor::VENDOR_16A5: return "Tekram Technology Co., Ltd.";
         case PciVendor::VENDOR_16AB: return "Global Sun Technology Inc";
         case PciVendor::VENDOR_16AE: return "SafeNet Inc";
         case PciVendor::VENDOR_16AF: return "SparkLAN Communications, Inc.";
@@ -7226,7 +7226,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1DCD: return "Liqid Inc.";
         case PciVendor::VENDOR_1DD8: return "Pensando Systems Inc";
         case PciVendor::VENDOR_1DE0: return "Groq";
-        case PciVendor::VENDOR_1DE1: return "Tekram Technology Co.,Ltd.";
+        case PciVendor::VENDOR_1DE1: return "Tekram Technology Co., Ltd.";
         case PciVendor::VENDOR_1DE5: return "Eideticom, Inc";
         case PciVendor::VENDOR_1DEE: return "Biwin Storage Technology Co., Ltd.";
         case PciVendor::VENDOR_1DEF: return "Ampere Computing, LLC";
@@ -7240,7 +7240,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1E36: return "Shanghai Enflame Technology Co. Ltd";
         case PciVendor::VENDOR_1E38: return "Blaize, Inc";
         case PciVendor::VENDOR_1E3D: return "Burlywood, Inc";
-        case PciVendor::VENDOR_1E49: return "Yangtze Memory Technologies Co.,Ltd";
+        case PciVendor::VENDOR_1E49: return "Yangtze Memory Technologies Co., Ltd";
         case PciVendor::VENDOR_1E4B: return "MAXIO Technology (Hangzhou) Ltd.";
         case PciVendor::VENDOR_1E4C: return "GSI Technology";
         case PciVendor::VENDOR_1E57: return "Beijing Panyi Technology Co., Ltd";

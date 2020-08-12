@@ -38,7 +38,7 @@ void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                 unicode != '\t'
                )
             {
-                worker->addError(path, i, QString("Non-ascii character found: %1").arg(ch));
+                worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)").arg(ch).arg(unicode, 4, 16, QChar('0')));
             }
         }
     }

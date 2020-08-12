@@ -64,7 +64,7 @@ inline const char8* enumToHumanString(PciDevice104B device104B) // TEST: NO
 
     switch (device104B)
     {
-        case PciDevice104B::DEVICE_0140: return "BT-946C (old) [multimaster  01]";
+        case PciDevice104B::DEVICE_0140: return "BT-946C (old) [multimaster 01]";
         case PciDevice104B::DEVICE_1040: return "BT-946C (BA80C30) [MultiMaster 10]";
         case PciDevice104B::DEVICE_8130: return "Flashpoint LT";
 

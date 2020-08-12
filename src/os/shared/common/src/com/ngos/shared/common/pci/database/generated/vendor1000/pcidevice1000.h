@@ -361,7 +361,7 @@ inline const char8* enumToHumanString(PciDevice1000 device1000) // TEST: NO
         case PciDevice1000::DEVICE_001B: return "MegaRAID Tri-Mode SAS3504";
         case PciDevice1000::DEVICE_001C: return "MegaRAID Tri-Mode SAS3404";
         case PciDevice1000::DEVICE_0020: return "53c1010 Ultra3 SCSI Adapter";
-        case PciDevice1000::DEVICE_0021: return "53c1010 66MHz  Ultra3 SCSI Adapter";
+        case PciDevice1000::DEVICE_0021: return "53c1010 66MHz Ultra3 SCSI Adapter";
         case PciDevice1000::DEVICE_002F: return "MegaRAID SAS 2208 IOV [Thunderbolt]";
         case PciDevice1000::DEVICE_0030: return "53c1030 PCI-X Fusion-MPT Dual Ultra320 SCSI";
         case PciDevice1000::DEVICE_0031: return "53c1030ZC PCI-X Fusion-MPT Dual Ultra320 SCSI";

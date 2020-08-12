@@ -193,7 +193,11 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
             line.remove(0, 6);
+            line.replace(QChar(0x2010), QChar('-')); // Replace some strange '-' character
             line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier
+            line.replace(",", ", "); // Ignore CppSingleCharVerifier
+            line.replace(":", ": "); // Ignore CppSingleCharVerifier
+            line = line.simplified();
 
 
 
@@ -311,7 +315,11 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
             line.remove(0, 4);
+            line.replace(QChar(0x2010), QChar('-')); // Replace some strange '-' character
             line.replace("\"", "\\\""); // Ignore CppSingleCharVerifier
+            line.replace(",", ", "); // Ignore CppSingleCharVerifier
+            line.replace(":", ": "); // Ignore CppSingleCharVerifier
+            line = line.simplified();
 
 
 

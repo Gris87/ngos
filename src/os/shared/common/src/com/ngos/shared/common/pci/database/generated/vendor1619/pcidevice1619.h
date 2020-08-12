@@ -91,8 +91,8 @@ inline const char8* enumToHumanString(PciDevice1619 device1619) // TEST: NO
         case PciDevice1619::DEVICE_0610: return "FarSync T1U (1 port X.21/V.35/V.24)";
         case PciDevice1619::DEVICE_0620: return "FarSync T2U (2 port X.21/V.35/V.24)";
         case PciDevice1619::DEVICE_0640: return "FarSync T4U (4 port X.21/V.35/V.24)";
-        case PciDevice1619::DEVICE_1610: return "FarSync TE1 (T1,E1)";
-        case PciDevice1619::DEVICE_1612: return "FarSync TE1 PCI Express (T1,E1)";
+        case PciDevice1619::DEVICE_1610: return "FarSync TE1 (T1, E1)";
+        case PciDevice1619::DEVICE_1612: return "FarSync TE1 PCI Express (T1, E1)";
         case PciDevice1619::DEVICE_2610: return "FarSync DSL-S1 (SHDSL)";
         case PciDevice1619::DEVICE_3640: return "FarSync T4E (4-port X.21/V.35/V.24)";
         case PciDevice1619::DEVICE_4620: return "FarSync T2Ue PCI Express (2-port X.21/V.35/V.24)";

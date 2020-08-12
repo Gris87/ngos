@@ -99,7 +99,7 @@ inline const char8* enumToHumanString(PciDevice9710 device9710) // TEST: NO
         case PciDevice9710::DEVICE_9904: return "4-Port PCIe Serial Adapter";
         case PciDevice9710::DEVICE_9912: return "PCIe 9912 Multi-I/O Controller";
         case PciDevice9710::DEVICE_9922: return "MCS9922 PCIe Multi-I/O Controller";
-        case PciDevice9710::DEVICE_9990: return "MCS9990 PCIe to 4‐Port USB 2.0 Host Controller";
+        case PciDevice9710::DEVICE_9990: return "MCS9990 PCIe to 4-Port USB 2.0 Host Controller";
 
         default: return "Unknown device";
     }

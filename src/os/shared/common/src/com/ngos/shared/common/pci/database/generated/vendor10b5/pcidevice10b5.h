@@ -291,12 +291,12 @@ inline const char8* enumToHumanString(PciDevice10B5 device10B5) // TEST: NO
         case PciDevice10B5::DEVICE_8508: return "PEX 8508 8-lane, 5-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8509: return "PEX 8509 8-lane, 8-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8512: return "PEX 8512 12-lane, 5-port PCI Express Switch";
-        case PciDevice10B5::DEVICE_8516: return "PEX 8516  Versatile PCI Express Switch";
+        case PciDevice10B5::DEVICE_8516: return "PEX 8516 Versatile PCI Express Switch";
         case PciDevice10B5::DEVICE_8517: return "PEX 8517 16-lane, 5-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8518: return "PEX 8518 16-lane, 5-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8524: return "PEX 8524 24-lane, 6-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8525: return "PEX 8525 24-lane, 5-port PCI Express Switch";
-        case PciDevice10B5::DEVICE_8532: return "PEX 8532  Versatile PCI Express Switch";
+        case PciDevice10B5::DEVICE_8532: return "PEX 8532 Versatile PCI Express Switch";
         case PciDevice10B5::DEVICE_8533: return "PEX 8533 32-lane, 6-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8547: return "PEX 8547 48-lane, 3-port PCI Express Switch";
         case PciDevice10B5::DEVICE_8548: return "PEX 8548 48-lane, 9-port PCI Express Switch";

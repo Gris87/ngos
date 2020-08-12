@@ -324,7 +324,7 @@ inline const char8* enumToHumanString(PciDevice0E11 device0E11) // TEST: NO
         case PciDevice0E11::DEVICE_B1A4: return "NC7131 Gigabit Server Adapter";
         case PciDevice0E11::DEVICE_B200: return "Memory Hot-Plug Controller";
         case PciDevice0E11::DEVICE_B203: return "Integrated Lights Out Controller";
-        case PciDevice0E11::DEVICE_B204: return "Integrated Lights Out  Processor";
+        case PciDevice0E11::DEVICE_B204: return "Integrated Lights Out Processor";
         case PciDevice0E11::DEVICE_C000: return "Remote Insight Lights-Out Edition";
         case PciDevice0E11::DEVICE_F130: return "NetFlex-3/P ThunderLAN 1.0";
         case PciDevice0E11::DEVICE_F150: return "NetFlex-3/P ThunderLAN 2.3";
