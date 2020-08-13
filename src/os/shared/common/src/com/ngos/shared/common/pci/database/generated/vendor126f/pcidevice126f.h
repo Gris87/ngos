@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -26,7 +24,8 @@ enum class PciDevice126F: u16 // Ignore CppEnumVerifier
     DEVICE_0810 = 0x0810,
     DEVICE_0811 = 0x0811,
     DEVICE_0820 = 0x0820,
-    DEVICE_0910 = 0x0910
+    DEVICE_0910 = 0x0910,
+    DEVICE_2262 = 0x2262
 };
 
 
@@ -52,6 +51,7 @@ inline const char8* enumToString(PciDevice126F device126F) // TEST: NO
         case PciDevice126F::DEVICE_0811: return "DEVICE_0811";
         case PciDevice126F::DEVICE_0820: return "DEVICE_0820";
         case PciDevice126F::DEVICE_0910: return "DEVICE_0910";
+        case PciDevice126F::DEVICE_2262: return "DEVICE_2262";
 
         default: return "UNKNOWN";
     }
@@ -94,6 +94,7 @@ inline const char8* enumToHumanString(PciDevice126F device126F) // TEST: NO
         case PciDevice126F::DEVICE_0811: return "SM811 LynxE";
         case PciDevice126F::DEVICE_0820: return "SM820 Lynx3D";
         case PciDevice126F::DEVICE_0910: return "SM910";
+        case PciDevice126F::DEVICE_2262: return "SM2262/SM2262EN SSD Controller";
 
         default: return "Unknown device";
     }

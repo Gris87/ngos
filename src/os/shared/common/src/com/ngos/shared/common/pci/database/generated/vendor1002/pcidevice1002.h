@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -886,6 +884,7 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_9612 = 0x9612,
     DEVICE_9613 = 0x9613,
     DEVICE_9614 = 0x9614,
+    DEVICE_9615 = 0x9615,
     DEVICE_9616 = 0x9616,
     DEVICE_9640 = 0x9640,
     DEVICE_9641 = 0x9641,
@@ -1932,6 +1931,7 @@ inline const char8* enumToString(PciDevice1002 device1002) // TEST: NO
         case PciDevice1002::DEVICE_9612: return "DEVICE_9612";
         case PciDevice1002::DEVICE_9613: return "DEVICE_9613";
         case PciDevice1002::DEVICE_9614: return "DEVICE_9614";
+        case PciDevice1002::DEVICE_9615: return "DEVICE_9615";
         case PciDevice1002::DEVICE_9616: return "DEVICE_9616";
         case PciDevice1002::DEVICE_9640: return "DEVICE_9640";
         case PciDevice1002::DEVICE_9641: return "DEVICE_9641";
@@ -2151,7 +2151,7 @@ inline const char8* enumToHumanString(PciDevice1002 device1002) // TEST: NO
         case PciDevice1002::DEVICE_13E9: return "Ariel";
         case PciDevice1002::DEVICE_1478: return "Navi 10 XL Upstream Port of PCI Express Switch";
         case PciDevice1002::DEVICE_1479: return "Navi 10 XL Downstream Port of PCI Express Switch";
-        case PciDevice1002::DEVICE_154C: return "Kryptos";
+        case PciDevice1002::DEVICE_154C: return "Kryptos [Radeon RX 350]";
         case PciDevice1002::DEVICE_154E: return "Garfield";
         case PciDevice1002::DEVICE_1551: return "Arlene";
         case PciDevice1002::DEVICE_1552: return "Pooky";
@@ -2426,14 +2426,14 @@ inline const char8* enumToHumanString(PciDevice1002 device1002) // TEST: NO
         case PciDevice1002::DEVICE_5549: return "R423 [Radeon X800 GTO]";
         case PciDevice1002::DEVICE_554A: return "R423 [Radeon X800 XT Platinum Edition]";
         case PciDevice1002::DEVICE_554B: return "R423 [Radeon X800 GT/SE]";
-        case PciDevice1002::DEVICE_554D: return "R430 [Radeon X800 XL]";
+        case PciDevice1002::DEVICE_554D: return "R480 [Radeon X800 GTO2/XL]";
         case PciDevice1002::DEVICE_554E: return "R430 [All-In-Wonder X800 GT]";
         case PciDevice1002::DEVICE_554F: return "R430 [Radeon X800]";
         case PciDevice1002::DEVICE_5550: return "R423 GL [FireGL V7100]";
         case PciDevice1002::DEVICE_5551: return "R423 GL [FireGL V5100]";
         case PciDevice1002::DEVICE_5569: return "R423 [Radeon X800 PRO] (Secondary)";
         case PciDevice1002::DEVICE_556B: return "R423 [Radeon X800 GT] (Secondary)";
-        case PciDevice1002::DEVICE_556D: return "R430 [Radeon X800 XL] (Secondary)";
+        case PciDevice1002::DEVICE_556D: return "R480 [Radeon X800 GTO2/XL] (Secondary)";
         case PciDevice1002::DEVICE_556F: return "R430 [Radeon X800] (Secondary)";
         case PciDevice1002::DEVICE_5571: return "R423 GL [FireGL V5100] (Secondary)";
         case PciDevice1002::DEVICE_564B: return "RV410/M26 GL [Mobility FireGL V5000]";
@@ -2995,6 +2995,7 @@ inline const char8* enumToHumanString(PciDevice1002 device1002) // TEST: NO
         case PciDevice1002::DEVICE_9612: return "RS780M [Mobility Radeon HD 3200]";
         case PciDevice1002::DEVICE_9613: return "RS780MC [Mobility Radeon HD 3100]";
         case PciDevice1002::DEVICE_9614: return "RS780D [Radeon HD 3300]";
+        case PciDevice1002::DEVICE_9615: return "RS780E [Radeon HD 3200]";
         case PciDevice1002::DEVICE_9616: return "RS780L [Radeon 3000]";
         case PciDevice1002::DEVICE_9640: return "Sumo [Radeon HD 6550D]";
         case PciDevice1002::DEVICE_9641: return "Sumo [Radeon HD 6620G]";
@@ -3078,7 +3079,7 @@ inline const char8* enumToHumanString(PciDevice1002 device1002) // TEST: NO
         case PciDevice1002::DEVICE_9917: return "Trinity [Radeon HD 7620G]";
         case PciDevice1002::DEVICE_9918: return "Trinity [Radeon HD 7600G]";
         case PciDevice1002::DEVICE_9919: return "Trinity [Radeon HD 7500G]";
-        case PciDevice1002::DEVICE_991E: return "Bishop";
+        case PciDevice1002::DEVICE_991E: return "Bishop [Xbox One S APU]";
         case PciDevice1002::DEVICE_9920: return "Liverpool [Playstation 4 APU]";
         case PciDevice1002::DEVICE_9921: return "Liverpool HDMI/DP Audio Controller";
         case PciDevice1002::DEVICE_9922: return "Starshp";

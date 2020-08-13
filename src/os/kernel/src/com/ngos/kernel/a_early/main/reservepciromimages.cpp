@@ -8,6 +8,7 @@
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
 
 
 
@@ -30,8 +31,8 @@ NgosStatus reservePciRomImages()
         EARLY_LVV(("ROM Image with info 0x%p mapped to 0x%p", currentPci, currentPciMapped));
 
         EARLY_LVVV(("currentPciMapped->next           = 0x%p",        currentPciMapped->next));
-        EARLY_LVVV(("currentPciMapped->vendorId       = 0x%04X (%s)", currentPciMapped->vendorId, enumToHumanString(currentPciMapped->vendorId)));
-        EARLY_LVVV(("currentPciMapped->deviceId       = 0x%04X (%s)", currentPciMapped->deviceId, enumToHumanString(currentPciMapped->vendorId, currentPciMapped->deviceId)));
+        EARLY_LVVV(("currentPciMapped->vendorId       = 0x%04X (%s)", currentPciMapped->vendorId, enumToHumanString((PciVendor)currentPciMapped->vendorId)));
+        EARLY_LVVV(("currentPciMapped->deviceId       = 0x%04X (%s)", currentPciMapped->deviceId, enumToHumanString((PciVendor)currentPciMapped->vendorId, currentPciMapped->deviceId)));
         EARLY_LVVV(("currentPciMapped->segmentNumber  = %u",          currentPciMapped->segmentNumber));
         EARLY_LVVV(("currentPciMapped->busNumber      = %u",          currentPciMapped->busNumber));
         EARLY_LVVV(("currentPciMapped->deviceNumber   = %u",          currentPciMapped->deviceNumber));

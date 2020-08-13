@@ -443,8 +443,6 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
     // Headers
     {
-        lines.append("#include <com/ngos/shared/common/log/assert.h>");
-        lines.append("#include <com/ngos/shared/common/log/log.h>");
         lines.append("#include <com/ngos/shared/common/ngos/types.h>");
 
         QMapIterator<quint8, PciBaseClass> it(baseClasses);
@@ -663,8 +661,6 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
 
     // Headers
     {
-        lines.append("#include <com/ngos/shared/common/log/assert.h>");
-        lines.append("#include <com/ngos/shared/common/log/log.h>");
         lines.append("#include <com/ngos/shared/common/ngos/types.h>");
 
         QMapIterator<quint8, PciSubClass> it(baseClass.subClasses);
@@ -891,8 +887,6 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
 
     // Headers
     {
-        lines.append("#include <com/ngos/shared/common/log/assert.h>");
-        lines.append("#include <com/ngos/shared/common/log/log.h>");
         lines.append("#include <com/ngos/shared/common/ngos/types.h>");
         lines.append("#include <com/ngos/shared/common/printf/printf.h>");
     }
@@ -1056,8 +1050,6 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
     // Headers
     {
-        lines.append("#include <com/ngos/shared/common/log/assert.h>");
-        lines.append("#include <com/ngos/shared/common/log/log.h>");
         lines.append("#include <com/ngos/shared/common/ngos/types.h>");
 
         QMapIterator<quint16, PciVendor> it(vendors);
@@ -1285,8 +1277,6 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
     // Headers
     {
-        lines.append("#include <com/ngos/shared/common/log/assert.h>");
-        lines.append("#include <com/ngos/shared/common/log/log.h>");
         lines.append("#include <com/ngos/shared/common/ngos/types.h>");
         lines.append("#include <com/ngos/shared/common/printf/printf.h>");
     }

@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -136,6 +134,8 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_1466 = 0x1466,
     DEVICE_1467 = 0x1467,
     DEVICE_1468 = 0x1468,
+    DEVICE_1470 = 0x1470,
+    DEVICE_1471 = 0x1471,
     DEVICE_1480 = 0x1480,
     DEVICE_1481 = 0x1481,
     DEVICE_1482 = 0x1482,
@@ -602,6 +602,8 @@ inline const char8* enumToString(PciDevice1022 device1022) // TEST: NO
         case PciDevice1022::DEVICE_1466: return "DEVICE_1466";
         case PciDevice1022::DEVICE_1467: return "DEVICE_1467";
         case PciDevice1022::DEVICE_1468: return "DEVICE_1468";
+        case PciDevice1022::DEVICE_1470: return "DEVICE_1470";
+        case PciDevice1022::DEVICE_1471: return "DEVICE_1471";
         case PciDevice1022::DEVICE_1480: return "DEVICE_1480";
         case PciDevice1022::DEVICE_1481: return "DEVICE_1481";
         case PciDevice1022::DEVICE_1482: return "DEVICE_1482";
@@ -1085,6 +1087,8 @@ inline const char8* enumToHumanString(PciDevice1022 device1022) // TEST: NO
         case PciDevice1022::DEVICE_1466: return "Family 17h (Models 00h-0fh) Data Fabric: Device 18h; Function 6";
         case PciDevice1022::DEVICE_1467: return "Family 17h (Models 00h-0fh) Data Fabric: Device 18h; Function 7";
         case PciDevice1022::DEVICE_1468: return "Zeppelin Cryptographic Coprocessor NTBCCP";
+        case PciDevice1022::DEVICE_1470: return "Vega 10 PCIe Bridge";
+        case PciDevice1022::DEVICE_1471: return "Vega 10 PCIe Bridge";
         case PciDevice1022::DEVICE_1480: return "Starship/Matisse Root Complex";
         case PciDevice1022::DEVICE_1481: return "Starship/Matisse IOMMU";
         case PciDevice1022::DEVICE_1482: return "Starship/Matisse PCIe Dummy Host Bridge";

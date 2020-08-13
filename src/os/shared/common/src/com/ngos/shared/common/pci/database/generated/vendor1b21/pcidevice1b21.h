@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -23,7 +21,8 @@ enum class PciDevice1B21: u16 // Ignore CppEnumVerifier
     DEVICE_1184 = 0x1184,
     DEVICE_1242 = 0x1242,
     DEVICE_1343 = 0x1343,
-    DEVICE_2142 = 0x2142
+    DEVICE_2142 = 0x2142,
+    DEVICE_3242 = 0x3242
 };
 
 
@@ -46,6 +45,7 @@ inline const char8* enumToString(PciDevice1B21 device1B21) // TEST: NO
         case PciDevice1B21::DEVICE_1242: return "DEVICE_1242";
         case PciDevice1B21::DEVICE_1343: return "DEVICE_1343";
         case PciDevice1B21::DEVICE_2142: return "DEVICE_2142";
+        case PciDevice1B21::DEVICE_3242: return "DEVICE_3242";
 
         default: return "UNKNOWN";
     }
@@ -85,6 +85,7 @@ inline const char8* enumToHumanString(PciDevice1B21 device1B21) // TEST: NO
         case PciDevice1B21::DEVICE_1242: return "ASM1142 USB 3.1 Host Controller";
         case PciDevice1B21::DEVICE_1343: return "ASM1143 USB 3.1 Host Controller";
         case PciDevice1B21::DEVICE_2142: return "ASM2142 USB 3.1 Host Controller";
+        case PciDevice1B21::DEVICE_3242: return "ASM3242 USB 3.2 Host Controller";
 
         default: return "Unknown device";
     }

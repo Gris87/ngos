@@ -507,7 +507,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
         }
         else
         {
-            lines.append("DEFINES             = -D" + defines.at(0));
+            lines.append("DEFINES             = -D" + defines.first());
         }
 
         tail += " $(DEFINES)";

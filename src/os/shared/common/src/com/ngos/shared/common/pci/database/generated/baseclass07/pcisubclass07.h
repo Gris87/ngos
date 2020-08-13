@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0700.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass07/pciinterface0701.h>

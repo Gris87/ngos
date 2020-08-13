@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -2267,6 +2265,7 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_2FFC = 0x2FFC,
     DEVICE_2FFD = 0x2FFD,
     DEVICE_2FFE = 0x2FFE,
+    DEVICE_3140 = 0x3140,
     DEVICE_3165 = 0x3165,
     DEVICE_3166 = 0x3166,
     DEVICE_3184 = 0x3184,
@@ -6095,6 +6094,7 @@ inline const char8* enumToString(PciDevice8086 device8086) // TEST: NO
         case PciDevice8086::DEVICE_2FFC: return "DEVICE_2FFC";
         case PciDevice8086::DEVICE_2FFD: return "DEVICE_2FFD";
         case PciDevice8086::DEVICE_2FFE: return "DEVICE_2FFE";
+        case PciDevice8086::DEVICE_3140: return "DEVICE_3140";
         case PciDevice8086::DEVICE_3165: return "DEVICE_3165";
         case PciDevice8086::DEVICE_3166: return "DEVICE_3166";
         case PciDevice8086::DEVICE_3184: return "DEVICE_3184";
@@ -7841,7 +7841,7 @@ inline const char8* enumToHumanString(PciDevice8086 device8086) // TEST: NO
         case PciDevice8086::DEVICE_06EB: return "Comet Lake PCH Serial IO I2C Controller #3";
         case PciDevice8086::DEVICE_06ED: return "Comet Lake USB 3.1 xHCI Host Controller";
         case PciDevice8086::DEVICE_06EF: return "Comet Lake PCH Shared SRAM";
-        case PciDevice8086::DEVICE_06F0: return "Wi-Fi 6 AX201";
+        case PciDevice8086::DEVICE_06F0: return "Wireless-AC 9462/9560";
         case PciDevice8086::DEVICE_06F9: return "Comet Lake PCH Thermal Controller";
         case PciDevice8086::DEVICE_06FB: return "Comet Lake PCH Serial IO SPI Controller #2";
         case PciDevice8086::DEVICE_0700: return "CE Media Processor A/V Bridge";
@@ -9940,6 +9940,7 @@ inline const char8* enumToHumanString(PciDevice8086 device8086) // TEST: NO
         case PciDevice8086::DEVICE_2FFC: return "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers";
         case PciDevice8086::DEVICE_2FFD: return "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers";
         case PciDevice8086::DEVICE_2FFE: return "Xeon E7 v3/Xeon E5 v3/Core i7 System Address Decoder & Broadcast Registers";
+        case PciDevice8086::DEVICE_3140: return "Easel/Monette Hill Image Processor [Pixel Visual Core]";
         case PciDevice8086::DEVICE_3165: return "Wireless 3165";
         case PciDevice8086::DEVICE_3166: return "Dual Band Wireless-AC 3165 Plus Bluetooth";
         case PciDevice8086::DEVICE_3184: return "UHD Graphics 605";
@@ -10353,7 +10354,7 @@ inline const char8* enumToHumanString(PciDevice8086 device8086) // TEST: NO
         case PciDevice8086::DEVICE_3E10: return "8th Gen Core 4-core Processor Host Bridge/DRAM Registers [Coffee Lake H]";
         case PciDevice8086::DEVICE_3E18: return "8th Gen Core 4-core Workstation Processor Host Bridge/DRAM Registers [Coffee Lake S]";
         case PciDevice8086::DEVICE_3E1F: return "8th Gen Core 4-core Desktop Processor Host Bridge/DRAM Registers [Coffee Lake S]";
-        case PciDevice8086::DEVICE_3E30: return "8th Gen Core 8-core Desktop Processor Host Bridge/DRAM Registers [Coffee Lake S]";
+        case PciDevice8086::DEVICE_3E30: return "8th/9th Gen Core 8-core Desktop Processor Host Bridge/DRAM Registers [Coffee Lake S]";
         case PciDevice8086::DEVICE_3E33: return "8th/9th Gen Core Processor Host Bridge/DRAM Registers [Coffee Lake]";
         case PciDevice8086::DEVICE_3E34: return "Coffee Lake HOST and DRAM Controller";
         case PciDevice8086::DEVICE_3E81: return "8th Gen Core Processor PCIe Controller (x16)";

@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -31,7 +29,8 @@ enum class PciDevice118D: u16 // Ignore CppEnumVerifier
     DEVICE_0312 = 0x0312,
     DEVICE_0314 = 0x0314,
     DEVICE_0324 = 0x0324,
-    DEVICE_0344 = 0x0344
+    DEVICE_0344 = 0x0344,
+    DEVICE_B04E = 0xB04E
 };
 
 
@@ -62,6 +61,7 @@ inline const char8* enumToString(PciDevice118D device118D) // TEST: NO
         case PciDevice118D::DEVICE_0314: return "DEVICE_0314";
         case PciDevice118D::DEVICE_0324: return "DEVICE_0324";
         case PciDevice118D::DEVICE_0344: return "DEVICE_0344";
+        case PciDevice118D::DEVICE_B04E: return "DEVICE_B04E";
 
         default: return "UNKNOWN";
     }
@@ -109,6 +109,7 @@ inline const char8* enumToHumanString(PciDevice118D device118D) // TEST: NO
         case PciDevice118D::DEVICE_0314: return "Model 14 Road Runner Frame Grabber";
         case PciDevice118D::DEVICE_0324: return "Model 24 Road Runner Frame Grabber";
         case PciDevice118D::DEVICE_0344: return "Model 44 Road Runner Frame Grabber";
+        case PciDevice118D::DEVICE_B04E: return "Claxon CXP4 CoaXPress frame grabber";
 
         default: return "Unknown device";
     }

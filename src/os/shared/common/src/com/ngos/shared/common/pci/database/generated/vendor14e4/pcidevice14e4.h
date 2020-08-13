@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -170,6 +168,7 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_16E7 = 0x16E7,
     DEVICE_16E8 = 0x16E8,
     DEVICE_16E9 = 0x16E9,
+    DEVICE_16EB = 0x16EB,
     DEVICE_16EC = 0x16EC,
     DEVICE_16ED = 0x16ED,
     DEVICE_16EE = 0x16EE,
@@ -496,6 +495,7 @@ inline const char8* enumToString(PciDevice14E4 device14E4) // TEST: NO
         case PciDevice14E4::DEVICE_16E7: return "DEVICE_16E7";
         case PciDevice14E4::DEVICE_16E8: return "DEVICE_16E8";
         case PciDevice14E4::DEVICE_16E9: return "DEVICE_16E9";
+        case PciDevice14E4::DEVICE_16EB: return "DEVICE_16EB";
         case PciDevice14E4::DEVICE_16EC: return "DEVICE_16EC";
         case PciDevice14E4::DEVICE_16ED: return "DEVICE_16ED";
         case PciDevice14E4::DEVICE_16EE: return "DEVICE_16EE";
@@ -839,6 +839,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device14E4) // TEST: NO
         case PciDevice14E4::DEVICE_16E7: return "BCM57404 NetXtreme-E Ethernet Partition";
         case PciDevice14E4::DEVICE_16E8: return "BCM57406 NetXtreme-E Ethernet Partition";
         case PciDevice14E4::DEVICE_16E9: return "BCM57407 NetXtreme-E 25Gb Ethernet Controller";
+        case PciDevice14E4::DEVICE_16EB: return "BCM57412 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_16EC: return "BCM57414 NetXtreme-E Ethernet Partition";
         case PciDevice14E4::DEVICE_16ED: return "BCM57414 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_16EE: return "BCM57416 NetXtreme-E Ethernet Partition";

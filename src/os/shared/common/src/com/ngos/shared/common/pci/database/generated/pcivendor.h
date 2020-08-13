@@ -5,8 +5,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor0010/pcidevice0010.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor0014/pcidevice0014.h>
@@ -6253,7 +6251,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_13C9: return "Eaton Corporation";
         case PciVendor::VENDOR_13CA: return "Iomega Corporation";
         case PciVendor::VENDOR_13CB: return "Yano Electric Co Ltd";
-        case PciVendor::VENDOR_13CC: return "Metheus Corporation";
+        case PciVendor::VENDOR_13CC: return "BARCO";
         case PciVendor::VENDOR_13CD: return "Compatible Systems Corporation";
         case PciVendor::VENDOR_13CE: return "Cocom A/S";
         case PciVendor::VENDOR_13CF: return "Studio Audio & Video Ltd";
@@ -7224,7 +7222,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1DBF: return "Guizhou Huaxintong Semiconductor Technology Co., Ltd";
         case PciVendor::VENDOR_1DC5: return "FADU Inc.";
         case PciVendor::VENDOR_1DCD: return "Liqid Inc.";
-        case PciVendor::VENDOR_1DD8: return "Pensando Systems Inc";
+        case PciVendor::VENDOR_1DD8: return "Pensando Systems";
         case PciVendor::VENDOR_1DE0: return "Groq";
         case PciVendor::VENDOR_1DE1: return "Tekram Technology Co., Ltd.";
         case PciVendor::VENDOR_1DE5: return "Eideticom, Inc";
