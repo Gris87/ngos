@@ -499,8 +499,8 @@ NgosStatus UEFI::initSystemTable()
 
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",       MemoryManager::sMemoryBlock.reserved.count));
-        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",        MemoryManager::sMemoryBlock.reserved.count));
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",        MemoryManager::sMemoryBlock.reserved.max));
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016llX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
@@ -553,38 +553,38 @@ NgosStatus UEFI::initSystemTable()
 
 
         COMMON_LVVV(("sSystemTable.header.signature            = 0x%016llX", sSystemTable.header.signature));
-        COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",   sSystemTable.header.revision));
-        COMMON_LVVV(("sSystemTable.header.headerSize           = %u",       sSystemTable.header.headerSize));
-        COMMON_LVVV(("sSystemTable.header.crc32                = 0x%08X",   sSystemTable.header.crc32));
-        COMMON_LVVV(("sSystemTable.firmwareVendor              = 0x%p",     sSystemTable.firmwareVendor));
-        COMMON_LVVV(("sSystemTable.firmwareRevision            = 0x%08X",   sSystemTable.firmwareRevision));
-        COMMON_LVVV(("sSystemTable.stdinHandle                 = 0x%p",     sSystemTable.stdinHandle));
-        COMMON_LVVV(("sSystemTable.stdin                       = 0x%p",     sSystemTable.stdin));
-        COMMON_LVVV(("sSystemTable.stdoutHandle                = 0x%p",     sSystemTable.stdoutHandle));
-        COMMON_LVVV(("sSystemTable.stdout                      = 0x%p",     sSystemTable.stdout));
-        COMMON_LVVV(("sSystemTable.stderrHandle                = 0x%p",     sSystemTable.stderrHandle));
-        COMMON_LVVV(("sSystemTable.stderr                      = 0x%p",     sSystemTable.stderr));
-        COMMON_LVVV(("sSystemTable.runtimeServices             = 0x%p",     sSystemTable.runtimeServices));
-        COMMON_LVVV(("sSystemTable.bootServices                = 0x%p",     sSystemTable.bootServices));
-        COMMON_LVVV(("sSystemTable.numberOfConfigurationTables = %u",       sSystemTable.numberOfConfigurationTables));
-        COMMON_LVVV(("sSystemTable.configurationTables         = 0x%p",     sSystemTable.configurationTables));
-        COMMON_LVVV(("sAcpi20Config                            = 0x%p",     sAcpi20Config));
-        COMMON_LVVV(("sAcpiConfig                              = 0x%p",     sAcpiConfig));
-        COMMON_LVVV(("sDebugInfoConfig                         = 0x%p",     sDebugInfoConfig));
-        COMMON_LVVV(("sDxeServicesConfig                       = 0x%p",     sDxeServicesConfig));
-        COMMON_LVVV(("sHcdpConfig                              = 0x%p",     sHcdpConfig));
-        COMMON_LVVV(("sHobListConfig                           = 0x%p",     sHobListConfig));
-        COMMON_LVVV(("sLzmaDecompressConfig                    = 0x%p",     sLzmaDecompressConfig));
-        COMMON_LVVV(("sMemoryAttributesConfig                  = 0x%p",     sMemoryAttributesConfig));
-        COMMON_LVVV(("sMemoryStatusCodeRecordConfig            = 0x%p",     sMemoryStatusCodeRecordConfig));
-        COMMON_LVVV(("sMemoryTypeInformationConfig             = 0x%p",     sMemoryTypeInformationConfig));
-        COMMON_LVVV(("sMpsConfig                               = 0x%p",     sMpsConfig));
-        COMMON_LVVV(("sPropertiesConfig                        = 0x%p",     sPropertiesConfig));
-        COMMON_LVVV(("sSalSystemConfig                         = 0x%p",     sSalSystemConfig));
-        COMMON_LVVV(("sSmbios3Config                           = 0x%p",     sSmbios3Config));
-        COMMON_LVVV(("sSmbiosConfig                            = 0x%p",     sSmbiosConfig));
-        COMMON_LVVV(("sSystemResourceConfig                    = 0x%p",     sSystemResourceConfig));
-        COMMON_LVVV(("sUgaIoConfig                             = 0x%p",     sUgaIoConfig));
+        COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",    sSystemTable.header.revision));
+        COMMON_LVVV(("sSystemTable.header.headerSize           = %u",        sSystemTable.header.headerSize));
+        COMMON_LVVV(("sSystemTable.header.crc32                = 0x%08X",    sSystemTable.header.crc32));
+        COMMON_LVVV(("sSystemTable.firmwareVendor              = 0x%p",      sSystemTable.firmwareVendor));
+        COMMON_LVVV(("sSystemTable.firmwareRevision            = 0x%08X",    sSystemTable.firmwareRevision));
+        COMMON_LVVV(("sSystemTable.stdinHandle                 = 0x%p",      sSystemTable.stdinHandle));
+        COMMON_LVVV(("sSystemTable.stdin                       = 0x%p",      sSystemTable.stdin));
+        COMMON_LVVV(("sSystemTable.stdoutHandle                = 0x%p",      sSystemTable.stdoutHandle));
+        COMMON_LVVV(("sSystemTable.stdout                      = 0x%p",      sSystemTable.stdout));
+        COMMON_LVVV(("sSystemTable.stderrHandle                = 0x%p",      sSystemTable.stderrHandle));
+        COMMON_LVVV(("sSystemTable.stderr                      = 0x%p",      sSystemTable.stderr));
+        COMMON_LVVV(("sSystemTable.runtimeServices             = 0x%p",      sSystemTable.runtimeServices));
+        COMMON_LVVV(("sSystemTable.bootServices                = 0x%p",      sSystemTable.bootServices));
+        COMMON_LVVV(("sSystemTable.numberOfConfigurationTables = %u",        sSystemTable.numberOfConfigurationTables));
+        COMMON_LVVV(("sSystemTable.configurationTables         = 0x%p",      sSystemTable.configurationTables));
+        COMMON_LVVV(("sAcpi20Config                            = 0x%p",      sAcpi20Config));
+        COMMON_LVVV(("sAcpiConfig                              = 0x%p",      sAcpiConfig));
+        COMMON_LVVV(("sDebugInfoConfig                         = 0x%p",      sDebugInfoConfig));
+        COMMON_LVVV(("sDxeServicesConfig                       = 0x%p",      sDxeServicesConfig));
+        COMMON_LVVV(("sHcdpConfig                              = 0x%p",      sHcdpConfig));
+        COMMON_LVVV(("sHobListConfig                           = 0x%p",      sHobListConfig));
+        COMMON_LVVV(("sLzmaDecompressConfig                    = 0x%p",      sLzmaDecompressConfig));
+        COMMON_LVVV(("sMemoryAttributesConfig                  = 0x%p",      sMemoryAttributesConfig));
+        COMMON_LVVV(("sMemoryStatusCodeRecordConfig            = 0x%p",      sMemoryStatusCodeRecordConfig));
+        COMMON_LVVV(("sMemoryTypeInformationConfig             = 0x%p",      sMemoryTypeInformationConfig));
+        COMMON_LVVV(("sMpsConfig                               = 0x%p",      sMpsConfig));
+        COMMON_LVVV(("sPropertiesConfig                        = 0x%p",      sPropertiesConfig));
+        COMMON_LVVV(("sSalSystemConfig                         = 0x%p",      sSalSystemConfig));
+        COMMON_LVVV(("sSmbios3Config                           = 0x%p",      sSmbios3Config));
+        COMMON_LVVV(("sSmbiosConfig                            = 0x%p",      sSmbiosConfig));
+        COMMON_LVVV(("sSystemResourceConfig                    = 0x%p",      sSystemResourceConfig));
+        COMMON_LVVV(("sUgaIoConfig                             = 0x%p",      sUgaIoConfig));
 
 
 

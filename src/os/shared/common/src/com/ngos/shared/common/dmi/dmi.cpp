@@ -4001,13 +4001,13 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
     {
         // Output variables
         {
-            COMMON_LVVV(("entry->errorType               = %s",       enumToFullString(entry->errorType)));
-            COMMON_LVVV(("entry->errorGranularity        = %s",       enumToFullString(entry->errorGranularity)));
-            COMMON_LVVV(("entry->errorOperation          = %s",       enumToFullString(entry->errorOperation)));
-            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X",   entry->vendorSyndrome));
+            COMMON_LVVV(("entry->errorType               = %s",        enumToFullString(entry->errorType)));
+            COMMON_LVVV(("entry->errorGranularity        = %s",        enumToFullString(entry->errorGranularity)));
+            COMMON_LVVV(("entry->errorOperation          = %s",        enumToFullString(entry->errorOperation)));
+            COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X",    entry->vendorSyndrome));
             COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));
             COMMON_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));
-            COMMON_LVVV(("entry->errorResolution         = 0x%08X",   entry->errorResolution));
+            COMMON_LVVV(("entry->errorResolution         = 0x%08X",    entry->errorResolution));
         }
 
 

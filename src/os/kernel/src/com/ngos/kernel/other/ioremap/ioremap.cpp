@@ -114,7 +114,7 @@ NgosStatus IORemap::addPmdForFixmap()
 
 NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 {
-    COMMON_LT((" | address = 0x%016llX, size = %u, res = 0x%016llX", address, size, res));
+    COMMON_LT((" | address = 0x%016llX, size = %u, res = 0x%p", address, size, res));
 
     COMMON_ASSERT(address,                                   "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,                                  "size is zero",    NgosStatus::ASSERTION);
@@ -146,12 +146,12 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
     u64 end           = ROUND_UP(address + size, PAGE_SIZE);
     u8  numberOfPages = (end - start) / PAGE_SIZE;
 
-    COMMON_LVVV(("sLastUsedSlot   = %u",       sLastUsedSlot));
-    COMMON_LVVV(("sSlotsAvailable = %u",       sSlotsAvailable));
-    COMMON_LVVV(("slot            = %u",       slot));
+    COMMON_LVVV(("sLastUsedSlot   = %u",        sLastUsedSlot));
+    COMMON_LVVV(("sSlotsAvailable = %u",        sSlotsAvailable));
+    COMMON_LVVV(("slot            = %u",        slot));
     COMMON_LVVV(("start           = 0x%016llX", start));
     COMMON_LVVV(("end             = 0x%016llX", end));
-    COMMON_LVVV(("numberOfPages   = %u",       numberOfPages));
+    COMMON_LVVV(("numberOfPages   = %u",        numberOfPages));
 
     COMMON_TEST_ASSERT(sLastUsedSlot < FIX_BITMAP_SLOTS,                            NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sSlotsAvailable < FIX_BITMAP_SLOTS,                          NgosStatus::ASSERTION);
@@ -235,12 +235,12 @@ NgosStatus IORemap::removeFixedMapping(u64 address, u64 size)
     u64 end           = ROUND_UP(address + size, PAGE_SIZE);
     u8  numberOfPages = (end - start) / PAGE_SIZE;
 
-    COMMON_LVVV(("sLastReleasedSlot = %u",       sLastReleasedSlot));
-    COMMON_LVVV(("sSlotsAvailable   = %u",       sSlotsAvailable));
-    COMMON_LVVV(("slot              = %u",       slot));
+    COMMON_LVVV(("sLastReleasedSlot = %u",        sLastReleasedSlot));
+    COMMON_LVVV(("sSlotsAvailable   = %u",        sSlotsAvailable));
+    COMMON_LVVV(("slot              = %u",        slot));
     COMMON_LVVV(("start             = 0x%016llX", start));
     COMMON_LVVV(("end               = 0x%016llX", end));
-    COMMON_LVVV(("numberOfPages     = %u",       numberOfPages));
+    COMMON_LVVV(("numberOfPages     = %u",        numberOfPages));
 
     COMMON_TEST_ASSERT(sLastReleasedSlot < FIX_BITMAP_SLOTS,                        NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sSlotsAvailable > 0 && sSlotsAvailable <= FIX_BITMAP_SLOTS,  NgosStatus::ASSERTION);

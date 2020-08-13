@@ -31,8 +31,8 @@ NgosStatus setupBootParams(BootParams *params)
     {
         EARLY_LVVV(("bootParams.header.signature           == 0x%016llX", bootParams.header.signature));
         EARLY_LVVV(("bootParams.header.kernelLocation      == 0x%016llX", bootParams.header.kernelLocation));
-        EARLY_LVVV(("bootParams.header.kernelSize          == %u",       bootParams.header.kernelSize));
-        EARLY_LVVV(("bootParams.header.allocatedKernelSize == %u",       bootParams.header.allocatedKernelSize));
+        EARLY_LVVV(("bootParams.header.kernelSize          == %u",        bootParams.header.kernelSize));
+        EARLY_LVVV(("bootParams.header.allocatedKernelSize == %u",        bootParams.header.allocatedKernelSize));
 
 
 

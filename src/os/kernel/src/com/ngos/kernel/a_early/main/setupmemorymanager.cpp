@@ -28,8 +28,8 @@ NgosStatus setupMemoryManager()
     // Validation
     {
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",       MemoryManager::sMemoryBlock.reserved.count));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
+        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",        MemoryManager::sMemoryBlock.reserved.count));
+        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",        MemoryManager::sMemoryBlock.reserved.max));
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016llX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));

@@ -85,10 +85,10 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-        UEFI_LVVV(("type          = %s",       enumToFullString(memoryDescriptor->type)));
-        UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
-        UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
-        UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
+        UEFI_LVVV(("type          = %s",        enumToFullString(memoryDescriptor->type)));
+        UEFI_LVVV(("physicalStart = 0x%p",      memoryDescriptor->physicalStart));
+        UEFI_LVVV(("virtualStart  = 0x%p",      memoryDescriptor->virtualStart));
+        UEFI_LVVV(("numberOfPages = %u",        memoryDescriptor->numberOfPages));
         UEFI_LVVV(("attribute     = 0x%016llX", memoryDescriptor->attribute));
 
 

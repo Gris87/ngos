@@ -20,24 +20,24 @@ u64 getElfMemorySize(ElfHeader *header)
 
     // Validation
     {
-        EARLY_LVVV(("header->identification.signature     = 0x%08X",   header->identification.signature));
-        EARLY_LVVV(("header->identification.fileClass     = %s",       enumToFullString(header->identification.fileClass)));
-        EARLY_LVVV(("header->identification.fileData      = %s",       enumToFullString(header->identification.fileData)));
-        EARLY_LVVV(("header->identification.version       = %s",       enumToFullString(header->identification.version)));
-        EARLY_LVVV(("header->identification.osAbi         = %s",       enumToFullString(header->identification.osAbi)));
-        EARLY_LVVV(("header->type                         = %s",       enumToFullString(header->type)));
-        EARLY_LVVV(("header->machine                      = %s",       enumToFullString(header->machine)));
-        EARLY_LVVV(("header->version                      = %s",       enumToFullString(header->version)));
+        EARLY_LVVV(("header->identification.signature     = 0x%08X",    header->identification.signature));
+        EARLY_LVVV(("header->identification.fileClass     = %s",        enumToFullString(header->identification.fileClass)));
+        EARLY_LVVV(("header->identification.fileData      = %s",        enumToFullString(header->identification.fileData)));
+        EARLY_LVVV(("header->identification.version       = %s",        enumToFullString(header->identification.version)));
+        EARLY_LVVV(("header->identification.osAbi         = %s",        enumToFullString(header->identification.osAbi)));
+        EARLY_LVVV(("header->type                         = %s",        enumToFullString(header->type)));
+        EARLY_LVVV(("header->machine                      = %s",        enumToFullString(header->machine)));
+        EARLY_LVVV(("header->version                      = %s",        enumToFullString(header->version)));
         EARLY_LVVV(("header->entryPoint                   = 0x%016llX", header->entryPoint));
-        EARLY_LVVV(("header->programHeaderTableOffset     = %u",       header->programHeaderTableOffset));
-        EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",       header->sectionHeaderTableOffset));
-        EARLY_LVVV(("header->flags                        = %u",       header->flags));
-        EARLY_LVVV(("header->headerSize                   = %u",       header->headerSize));
-        EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",       header->programHeaderTableEntrySize));
-        EARLY_LVVV(("header->programHeaderTableEntryCount = %u",       header->programHeaderTableEntryCount));
-        EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",       header->sectionHeaderTableEntrySize));
-        EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",       header->sectionHeaderTableEntryCount));
-        EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",       header->sectionHeaderTableNamesIndex));
+        EARLY_LVVV(("header->programHeaderTableOffset     = %u",        header->programHeaderTableOffset));
+        EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",        header->sectionHeaderTableOffset));
+        EARLY_LVVV(("header->flags                        = %u",        header->flags));
+        EARLY_LVVV(("header->headerSize                   = %u",        header->headerSize));
+        EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",        header->programHeaderTableEntrySize));
+        EARLY_LVVV(("header->programHeaderTableEntryCount = %u",        header->programHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableEntrySize  = %u",        header->sectionHeaderTableEntrySize));
+        EARLY_LVVV(("header->sectionHeaderTableEntryCount = %u",        header->sectionHeaderTableEntryCount));
+        EARLY_LVVV(("header->sectionHeaderTableNamesIndex = %u",        header->sectionHeaderTableNamesIndex));
 
 
 
@@ -70,14 +70,14 @@ u64 getElfMemorySize(ElfHeader *header)
     {
         ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
-        EARLY_LVVV(("programHeader[%d]->type            = %s",       i, enumToFullString(programHeader->type)));
-        EARLY_LVVV(("programHeader[%d]->flags           = %s",       i, flagsToFullString(programHeader->flags)));
+        EARLY_LVVV(("programHeader[%d]->type            = %s",        i, enumToFullString(programHeader->type)));
+        EARLY_LVVV(("programHeader[%d]->flags           = %s",        i, flagsToFullString(programHeader->flags)));
         EARLY_LVVV(("programHeader[%d]->offset          = 0x%016llX", i, programHeader->offset));
         EARLY_LVVV(("programHeader[%d]->virtualAddress  = 0x%016llX", i, programHeader->virtualAddress));
         EARLY_LVVV(("programHeader[%d]->physicalAddress = 0x%016llX", i, programHeader->physicalAddress));
-        EARLY_LVVV(("programHeader[%d]->fileSize        = %u",       i, programHeader->fileSize));
-        EARLY_LVVV(("programHeader[%d]->memorySize      = %u",       i, programHeader->memorySize));
-        EARLY_LVVV(("programHeader[%d]->align           = %u",       i, programHeader->align));
+        EARLY_LVVV(("programHeader[%d]->fileSize        = %u",        i, programHeader->fileSize));
+        EARLY_LVVV(("programHeader[%d]->memorySize      = %u",        i, programHeader->memorySize));
+        EARLY_LVVV(("programHeader[%d]->align           = %u",        i, programHeader->align));
 
         res += programHeader->memorySize;
     }
@@ -142,16 +142,16 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
     {
         ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((u64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
 
-        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",   i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",  i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",    i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",   i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016llX", i, sectionHeader->flags));                                               // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016llX", i, sectionHeader->virtualAddress));                                      // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016llX", i, sectionHeader->offset));                                              // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",       i, sectionHeader->size));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",       i, sectionHeader->link));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",       i, sectionHeader->info));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",       i, sectionHeader->align));                                               // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",       i, sectionHeader->entrySize));                                           // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",        i, sectionHeader->size));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",        i, sectionHeader->link));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",        i, sectionHeader->info));                                                // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",        i, sectionHeader->align));                                               // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",        i, sectionHeader->entrySize));                                           // Commented to avoid too frequent logs
 
 
 
@@ -169,7 +169,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                 // EARLY_LVVV(("relas[%d].offset = 0x%016llX", j, rela.offset));                               // Commented to avoid too frequent logs
                 // EARLY_LVVV(("relas[%d].info   = 0x%016llX", j, rela.info));                                 // Commented to avoid too frequent logs
                 // EARLY_LVVV(("relas[%d].addend = 0x%016llX", j, rela.addend));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].type   = %u (%s)",  j, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].type   = %u (%s)",   j, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
 
                 if (rela.offset >= 0xFFFFFFFF80000000)
                 {

@@ -70,12 +70,12 @@ NgosStatus FPU::initForBootStrapProcessor()
             COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016llX", i, sState.fxsave.xmm[i][1]));
         }
 
-        COMMON_LVVV(("sState.xsave.header.xFeatures   = %s",       flagsToFullString(sState.xsave.header.xFeatures)));
+        COMMON_LVVV(("sState.xsave.header.xFeatures   = %s",        flagsToFullString(sState.xsave.header.xFeatures)));
         COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016llX", sState.xsave.header.xComponents));
-        COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
-        COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
-        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));
-        COMMON_LVVV(("sXFeatures                      = %s",       flagsToFullString(sXFeatures)));
+        COMMON_LVVV(("sStateKernelSize                = %u",        sStateKernelSize));
+        COMMON_LVVV(("sStateUserSize                  = %u",        sStateUserSize));
+        COMMON_LVVV(("sMxcsrMask                      = 0x%08X",    sMxcsrMask));
+        COMMON_LVVV(("sXFeatures                      = %s",        flagsToFullString(sXFeatures)));
 
         for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {

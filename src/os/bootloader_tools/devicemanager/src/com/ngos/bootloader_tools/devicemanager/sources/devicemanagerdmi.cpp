@@ -4283,7 +4283,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
             UEFI_ASSERT_EXECUTION(bytesToString(start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
 
-            range  = mprintf("%s - %s", startBuffer, endBuffer);
+            range  = mprintf("%s - %s",               startBuffer, endBuffer);
             range2 = mprintf("0x%016llX - 0x%016llX", start, end);
         }
     }
@@ -4431,7 +4431,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
             UEFI_ASSERT_EXECUTION(bytesToString(start, startBuffer, sizeof(startBuffer)), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
 
-            range  = mprintf("%s - %s", startBuffer, endBuffer);
+            range  = mprintf("%s - %s",               startBuffer, endBuffer);
             range2 = mprintf("0x%016llX - 0x%016llX", start, end);
         }
 
@@ -6083,13 +6083,13 @@ NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64M
     {
         // Output variables
         {
-            UEFI_LVVV(("entry->errorType               = %s",       enumToFullString(entry->errorType)));
-            UEFI_LVVV(("entry->errorGranularity        = %s",       enumToFullString(entry->errorGranularity)));
-            UEFI_LVVV(("entry->errorOperation          = %s",       enumToFullString(entry->errorOperation)));
-            UEFI_LVVV(("entry->vendorSyndrome          = 0x%08X",   entry->vendorSyndrome));
+            UEFI_LVVV(("entry->errorType               = %s",        enumToFullString(entry->errorType)));
+            UEFI_LVVV(("entry->errorGranularity        = %s",        enumToFullString(entry->errorGranularity)));
+            UEFI_LVVV(("entry->errorOperation          = %s",        enumToFullString(entry->errorOperation)));
+            UEFI_LVVV(("entry->vendorSyndrome          = 0x%08X",    entry->vendorSyndrome));
             UEFI_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));
             UEFI_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));
-            UEFI_LVVV(("entry->errorResolution         = 0x%08X",   entry->errorResolution));
+            UEFI_LVVV(("entry->errorResolution         = 0x%08X",    entry->errorResolution));
         }
 
 

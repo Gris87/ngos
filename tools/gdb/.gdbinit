@@ -63,11 +63,11 @@ class AddSymbolFileAll(gdb.Command):
 
         (text_address, sections) = relocate_sections(filename, offset)
 
-        cmd = "add-symbol-file %s 0x%016llX" % (filename, (int(text_address, 16) + offset) % 2**64)
+        cmd = "add-symbol-file %s 0x%016lx" % (filename, (int(text_address, 16) + offset) % 2**64)
 
         for section in sections:
             if "A" in section["flags"]:
-                cmd += " -s %s 0x%016llX" % (section["name"], (int(section["address"], 16) + offset) % 2**64)
+                cmd += " -s %s 0x%016lx" % (section["name"], (int(section["address"], 16) + offset) % 2**64)
 
         gdb.execute(cmd)
 
@@ -91,7 +91,7 @@ class RemoveSymbolFileAll(gdb.Command):
 
         (text_address, _) = relocate_sections(filename, offset)
 
-        cmd = "remove-symbol-file -a 0x%016llX" % ((int(text_address, 16) + offset) % 2**64)
+        cmd = "remove-symbol-file -a 0x%016lx" % ((int(text_address, 16) + offset) % 2**64)
         gdb.execute(cmd)
 
 

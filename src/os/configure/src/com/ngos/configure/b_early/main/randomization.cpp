@@ -372,8 +372,8 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    EARLY_LVVV(("randomRange    = %u",       randomRange));
-    EARLY_LVVV(("randomPosition = %u",       randomPosition));
+    EARLY_LVVV(("randomRange    = %u",        randomRange));
+    EARLY_LVVV(("randomPosition = %u",        randomPosition));
     EARLY_LVVV(("randomAddress  = 0x%016llX", randomAddress));
 
 
@@ -570,8 +570,8 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
 
 
 
-    EARLY_LVVV(("randomRange    = %u",       randomRange));
-    EARLY_LVVV(("randomPosition = %u",       randomPosition));
+    EARLY_LVVV(("randomRange    = %u",        randomRange));
+    EARLY_LVVV(("randomPosition = %u",        randomPosition));
     EARLY_LVVV(("randomAddress  = 0x%016llX", randomAddress));
 
 

@@ -32,7 +32,7 @@ NgosStatus setupDynamicRelocation(u64 kernelLocation)
         // UEFI_LVVV(("relas[%d].offset = 0x%016llX", i, rela.offset));                               // Commented to avoid too frequent logs
         // UEFI_LVVV(("relas[%d].info   = 0x%016llX", i, rela.info));                                 // Commented to avoid too frequent logs
         // UEFI_LVVV(("relas[%d].addend = 0x%016llX", i, rela.addend));                               // Commented to avoid too frequent logs
-        // UEFI_LVVV(("relas[%d].type   = %u (%s)",  i, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
+        // UEFI_LVVV(("relas[%d].type   = %u (%s)",   i, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
 
         UEFI_TEST_ASSERT(rela.type == ElfRelaType::RELATIVE, NgosStatus::ASSERTION);
 
