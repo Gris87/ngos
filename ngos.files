@@ -10,7 +10,8 @@ docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 19.04/README
 docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 18.10/README.md
 docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 18.04/README.md
 docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 16.04/README.md
-docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 7.6/README.md
+docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 8.2/README.md
+docs/0. Intro/2. Getting started/8. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 02.png
 docs/0. Intro/2. Getting started/Configuring Qt Creator 03.png
@@ -93,6 +94,7 @@ scripts/deploy.sh
 scripts/extract_secure_boot_private_key.sh
 scripts/generate_secure_boot_keys.sh
 scripts/prerequisites/centos_7_6.sh
+scripts/prerequisites/centos_8_2.sh
 scripts/prerequisites/install.sh
 scripts/prerequisites/ubuntu_16_04.sh
 scripts/prerequisites/ubuntu_18_04.sh
@@ -2002,9 +2004,14 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfed
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcidevseltiming.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcistatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciconfigurationspace.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
-src/os/shared/common/src/com/ngos/shared/common/pci/pciheadertype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciregister.h
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.cpp
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.h
