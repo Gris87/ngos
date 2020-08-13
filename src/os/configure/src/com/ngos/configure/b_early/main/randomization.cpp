@@ -35,7 +35,7 @@ NgosStatus printPte(PTE *pte)
     {
         if (ptePresent(pte[i]))
         {
-            EARLY_LVV(("        pte[%d] = 0x%016lX", i, pteValue(pte[i])));
+            EARLY_LVV(("        pte[%d] = 0x%016llX", i, pteValue(pte[i])));
         }
     }
 
@@ -56,7 +56,7 @@ NgosStatus printPmd(PMD *pmd)
     {
         if (pmdPresent(pmd[i]))
         {
-            EARLY_LVV(("      pmd[%d] = 0x%016lX", i, pmdValue(pmd[i])));
+            EARLY_LVV(("      pmd[%d] = 0x%016llX", i, pmdValue(pmd[i])));
 
             if (!pmdExtended(pmd[i]))
             {
@@ -82,7 +82,7 @@ NgosStatus printPud(PUD *pud)
     {
         if (pudPresent(pud[i]))
         {
-            EARLY_LVV(("    pud[%d] = 0x%016lX", i, pudValue(pud[i])));
+            EARLY_LVV(("    pud[%d] = 0x%016llX", i, pudValue(pud[i])));
 
             if (!pudExtended(pud[i]))
             {
@@ -109,7 +109,7 @@ NgosStatus printP4d(P4D *p4d)
     {
         if (p4dPresent(p4d[i]))
         {
-            EARLY_LVV(("  p4d[%d] = 0x%016lX", i, p4dValue(p4d[i])));
+            EARLY_LVV(("  p4d[%d] = 0x%016llX", i, p4dValue(p4d[i])));
 
             if (!p4dExtended(p4d[i]))
             {
@@ -136,7 +136,7 @@ NgosStatus printPgd(PGD *pgd)
     {
         if (pgdPresent(pgd[i]))
         {
-            EARLY_LVV(("pgd[%d] = 0x%016lX", i, pgdValue(pgd[i])));
+            EARLY_LVV(("pgd[%d] = 0x%016llX", i, pgdValue(pgd[i])));
 
             if (!pgdExtended(pgd[i]))
             {
@@ -157,7 +157,7 @@ NgosStatus printPgd(PGD *pgd)
 
 inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryArea areaId, u64 address, u64 size, bool addToIdentityMap)
 {
-    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016lX, size = 0x%016lX, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
+    EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016llX, size = 0x%016llX, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
 
     EARLY_ASSERT(areas,                                             "areas is null",     NgosStatus::ASSERTION);
     EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);
@@ -374,7 +374,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
     EARLY_LVVV(("randomRange    = %u",       randomRange));
     EARLY_LVVV(("randomPosition = %u",       randomPosition));
-    EARLY_LVVV(("randomAddress  = 0x%016lX", randomAddress));
+    EARLY_LVVV(("randomAddress  = 0x%016llX", randomAddress));
 
 
 
@@ -572,7 +572,7 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
 
     EARLY_LVVV(("randomRange    = %u",       randomRange));
     EARLY_LVVV(("randomPosition = %u",       randomPosition));
-    EARLY_LVVV(("randomAddress  = 0x%016lX", randomAddress));
+    EARLY_LVVV(("randomAddress  = 0x%016llX", randomAddress));
 
 
 
@@ -614,7 +614,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
     *physicalAddress = 0x10000000;
 #endif
 
-    EARLY_LVV(("Random physical address: 0x%016lX", *physicalAddress));
+    EARLY_LVV(("Random physical address: 0x%016llX", *physicalAddress));
 
 
 
@@ -629,7 +629,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
     *virtualAddress = 0xFFFFFFFF80000000;
 #endif
 
-    EARLY_LVV(("Random virtual address: 0x%016lX", *virtualAddress));
+    EARLY_LVV(("Random virtual address: 0x%016llX", *virtualAddress));
 
 
 

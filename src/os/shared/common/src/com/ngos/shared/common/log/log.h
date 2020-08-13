@@ -3,9 +3,9 @@
 
 
 
-#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                   // Defined in pro file
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
-#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in pro file
 #include <com/ngos/shared/common/early/earlylog.h>
 #else
 #include <buildconfig.h>
@@ -15,10 +15,10 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-#if defined(UEFI_APPLICATION)                                                // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                // Defined in pro file
 #define __COMMON_PRINT_LOG(level, message) __UEFI_PRINT_LOG(level, message)  // TEST: NO
 #define __COMMON_PRINT_LT(message)         __UEFI_PRINT_LT(message)          // TEST: NO
-#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#elif defined(BUILD_TARGET_KERNEL)                                           // Defined in pro file
 #define __COMMON_PRINT_LOG(level, message) __EARLY_PRINT_LOG(level, message) // TEST: NO
 #define __COMMON_PRINT_LT(message)         __EARLY_PRINT_LT(message)         // TEST: NO
 #else

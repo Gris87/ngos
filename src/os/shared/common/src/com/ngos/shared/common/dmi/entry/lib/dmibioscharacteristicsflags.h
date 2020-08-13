@@ -110,7 +110,7 @@ inline const char8* flagToFullString(DmiBiosCharacteristicsFlag flag) // TEST: N
 
     static char8 res[56];
 
-    sprintf(res, "0x%016lX (%s)", (dmi_bios_characteristics_flags)flag, flagToString(flag));
+    sprintf(res, "0x%016llX (%s)", (dmi_bios_characteristics_flags)flag, flagToString(flag));
 
     return res;
 }
@@ -140,7 +140,7 @@ inline const char8* flagsToFullString(const DmiBiosCharacteristicsFlags &flags) 
 
     static char8 res[734];
 
-    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBiosCharacteristicsFlag, "0x%016lX");
+    FLAGS_TO_FULL_STRING(res, flags.flags, DmiBiosCharacteristicsFlag, "0x%016llX");
 
     return res;
 }

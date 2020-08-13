@@ -112,7 +112,7 @@ inline const char8* md5HashToStringAsConstructor(const Md5Hash &hash) // TEST: N
 
     static char8 res[48];
 
-    i64 length = sprintf(res, "Md5Hash(0x%016lX, 0x%016lX)", hash.quads[0], hash.quads[1]);
+    i64 length = sprintf(res, "Md5Hash(0x%016llX, 0x%016llX)", hash.quads[0], hash.quads[1]);
 
     AVOID_UNUSED(length);
 

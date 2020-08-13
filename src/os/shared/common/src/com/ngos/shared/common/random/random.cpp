@@ -36,10 +36,10 @@ u64 simpleRandom(u64 seed)
         {
             raw = raw1 * raw2 * raw3;
 
-            COMMON_LVVV(("raw1 = 0x%016lX", raw1));
-            COMMON_LVVV(("raw2 = 0x%016lX", raw2));
-            COMMON_LVVV(("raw3 = 0x%016lX", raw3));
-            COMMON_LVVV(("raw  = 0x%016lX", raw));
+            COMMON_LVVV(("raw1 = 0x%016llX", raw1));
+            COMMON_LVVV(("raw2 = 0x%016llX", raw2));
+            COMMON_LVVV(("raw3 = 0x%016llX", raw3));
+            COMMON_LVVV(("raw  = 0x%016llX", raw));
 
             random ^= raw;
         }
@@ -56,10 +56,10 @@ u64 simpleRandom(u64 seed)
     raw3 = rdtsc();
     raw  = raw1 * raw2 * raw3;
 
-    COMMON_LVVV(("raw1 = 0x%016lX", raw1));
-    COMMON_LVVV(("raw2 = 0x%016lX", raw2));
-    COMMON_LVVV(("raw3 = 0x%016lX", raw3));
-    COMMON_LVVV(("raw  = 0x%016lX", raw));
+    COMMON_LVVV(("raw1 = 0x%016llX", raw1));
+    COMMON_LVVV(("raw2 = 0x%016llX", raw2));
+    COMMON_LVVV(("raw3 = 0x%016llX", raw3));
+    COMMON_LVVV(("raw  = 0x%016llX", raw));
 
     random ^= raw;
 

@@ -6,11 +6,8 @@
 #include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
 #include <com/ngos/shared/common/string/string.h>
-#endif
 
 
 
@@ -70,10 +67,6 @@ inline const char8* flagToString(ElfSectionFlag flag) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
 {
     // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
@@ -82,7 +75,7 @@ inline const char8* flagToFullString(ElfSectionFlag flag) // TEST: NO
 
     static char8 res[38];
 
-    sprintf(res, "0x%016lX (%s)", (elf_section_flags)flag, flagToString(flag));
+    sprintf(res, "0x%016llX (%s)", (elf_section_flags)flag, flagToString(flag));
 
     return res;
 }
@@ -112,14 +105,10 @@ inline const char8* flagsToFullString(const ElfSectionFlags &flags) // TEST: NO
 
     static char8 res[158];
 
-    FLAGS_TO_FULL_STRING(res, flags.flags, ElfSectionFlag, "0x%016lX");
+    FLAGS_TO_FULL_STRING(res, flags.flags, ElfSectionFlag, "0x%016llX");
 
     return res;
 }
-
-
-
-#endif
 
 
 

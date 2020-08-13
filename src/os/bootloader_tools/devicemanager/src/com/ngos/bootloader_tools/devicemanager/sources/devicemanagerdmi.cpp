@@ -408,7 +408,7 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->biosCharacteristics, "0x%016lX", DmiBiosCharacteristicsFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Characteristics", entry->biosCharacteristics, "0x%016llX", DmiBiosCharacteristicsFlag, DeviceManagerMode::EXPERT);
 
 
 
@@ -3194,7 +3194,7 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
 
             if (entryV27)
             {
-                UEFI_LVVV(("entryV27->extendedMaximumCapacity = 0x%016lX", entryV27->extendedMaximumCapacity));
+                UEFI_LVVV(("entryV27->extendedMaximumCapacity = 0x%016llX", entryV27->extendedMaximumCapacity));
             }
         }
 
@@ -3235,7 +3235,7 @@ NgosStatus DeviceManagerDMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryAr
     {
         if (entryV27)
         {
-            extendedMaximumCapacity = mprintf("0x%016lX", entryV27->extendedMaximumCapacity);
+            extendedMaximumCapacity = mprintf("0x%016llX", entryV27->extendedMaximumCapacity);
         }
     }
 
@@ -4199,8 +4199,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
 
             if (entryV27)
             {
-                UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
-                UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
+                UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
+                UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
             }
         }
 
@@ -4241,8 +4241,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
     {
         if (entryV27)
         {
-            extendedStartingAddress = mprintf("0x%016lX", entryV27->extendedStartingAddress);
-            extendedEndingAddress   = mprintf("0x%016lX", entryV27->extendedEndingAddress);
+            extendedStartingAddress = mprintf("0x%016llX", entryV27->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016llX", entryV27->extendedEndingAddress);
         }
     }
 
@@ -4284,7 +4284,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArray
             UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
 
             range  = mprintf("%s - %s", startBuffer, endBuffer);
-            range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+            range2 = mprintf("0x%016llX - 0x%016llX", start, end);
         }
     }
 
@@ -4341,8 +4341,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
 
             if (entryV27)
             {
-                UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
-                UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
+                UEFI_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
+                UEFI_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
             }
         }
 
@@ -4386,8 +4386,8 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
     {
         if (entryV27)
         {
-            extendedStartingAddress = mprintf("0x%016lX", entryV27->extendedStartingAddress);
-            extendedEndingAddress   = mprintf("0x%016lX", entryV27->extendedEndingAddress);
+            extendedStartingAddress = mprintf("0x%016llX", entryV27->extendedStartingAddress);
+            extendedEndingAddress   = mprintf("0x%016llX", entryV27->extendedEndingAddress);
         }
     }
 
@@ -4432,7 +4432,7 @@ NgosStatus DeviceManagerDMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDevi
             UEFI_ASSERT_EXECUTION(bytesToString(end,   endBuffer,   sizeof(endBuffer)),   NgosStatus::ASSERTION);
 
             range  = mprintf("%s - %s", startBuffer, endBuffer);
-            range2 = mprintf("0x%016lX - 0x%016lX", start, end);
+            range2 = mprintf("0x%016llX - 0x%016llX", start, end);
         }
 
 
@@ -6087,8 +6087,8 @@ NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64M
             UEFI_LVVV(("entry->errorGranularity        = %s",       enumToFullString(entry->errorGranularity)));
             UEFI_LVVV(("entry->errorOperation          = %s",       enumToFullString(entry->errorOperation)));
             UEFI_LVVV(("entry->vendorSyndrome          = 0x%08X",   entry->vendorSyndrome));
-            UEFI_LVVV(("entry->memoryArrayErrorAddress = 0x%016lX", entry->memoryArrayErrorAddress));
-            UEFI_LVVV(("entry->deviceErrorAddress      = 0x%016lX", entry->deviceErrorAddress));
+            UEFI_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));
+            UEFI_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));
             UEFI_LVVV(("entry->errorResolution         = 0x%08X",   entry->errorResolution));
         }
 
@@ -6144,7 +6144,7 @@ NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64M
             }
             else
             {
-                memoryArrayErrorAddress = mprintf("0x%016lX", entry->memoryArrayErrorAddress);
+                memoryArrayErrorAddress = mprintf("0x%016llX", entry->memoryArrayErrorAddress);
             }
         }
 
@@ -6158,7 +6158,7 @@ NgosStatus DeviceManagerDMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64M
             }
             else
             {
-                deviceErrorAddress = mprintf("0x%016lX", entry->deviceErrorAddress);
+                deviceErrorAddress = mprintf("0x%016llX", entry->deviceErrorAddress);
             }
         }
 

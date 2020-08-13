@@ -37,7 +37,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
-        UEFI_LVVV(("attribute     = 0x%016lX", memoryDescriptor->attribute));
+        UEFI_LVVV(("attribute     = 0x%016llX", memoryDescriptor->attribute));
 
 
 
@@ -163,7 +163,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
                 UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
                 UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-                UEFI_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016lX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
+                UEFI_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016llX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
             }
 
             UEFI_LVVV(("-------------------------------------"));

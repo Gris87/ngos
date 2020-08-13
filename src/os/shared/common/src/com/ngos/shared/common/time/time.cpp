@@ -3,7 +3,7 @@
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 
-#if defined(UEFI_APPLICATION)                       // Defined in Makefile
+#ifdef UEFI_APPLICATION                         // Defined in pro file
 #include <com/ngos/shared/uefibase/uefi/uefi.h>
 #endif
 
@@ -74,7 +74,7 @@ i64 Time::currentTimestampInMilliseconds()
 
 
 
-#if defined(UEFI_APPLICATION) // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     UefiTime             time;
     UefiTimeCapabilities capabilities;
 

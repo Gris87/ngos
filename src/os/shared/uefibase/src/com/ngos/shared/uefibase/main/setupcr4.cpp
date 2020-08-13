@@ -16,7 +16,7 @@ NgosStatus setupCr4()
 
     u64 cr4 = readCr4();
 
-    // UEFI_LVVV(("cr4 = 0x%016lX", cr4)); // Commented to avoid bad looking logs
+    // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
 
 
 
@@ -38,7 +38,7 @@ NgosStatus setupCr4()
         cr4 |= X86_CR4_OSXSAVE;
     }
 
-    // UEFI_LVVV(("cr4 = 0x%016lX", cr4)); // Commented to avoid bad looking logs
+    // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
 
 
 

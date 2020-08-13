@@ -37,7 +37,7 @@ NgosStatus printPte(PTE *pte)
     {
         if (ptePresent(pte[i]))
         {
-            EARLY_LVV(("        pte[%d] = 0x%016lX", i, pteValue(pte[i])));
+            EARLY_LVV(("        pte[%d] = 0x%016llX", i, pteValue(pte[i])));
         }
     }
 
@@ -58,7 +58,7 @@ NgosStatus printPmd(PMD *pmd)
     {
         if (pmdPresent(pmd[i]))
         {
-            EARLY_LVV(("      pmd[%d] = 0x%016lX", i, pmdValue(pmd[i])));
+            EARLY_LVV(("      pmd[%d] = 0x%016llX", i, pmdValue(pmd[i])));
 
             if (!pmdExtended(pmd[i]))
             {
@@ -84,7 +84,7 @@ NgosStatus printPud(PUD *pud)
     {
         if (pudPresent(pud[i]))
         {
-            EARLY_LVV(("    pud[%d] = 0x%016lX", i, pudValue(pud[i])));
+            EARLY_LVV(("    pud[%d] = 0x%016llX", i, pudValue(pud[i])));
 
             if (!pudExtended(pud[i]))
             {
@@ -111,7 +111,7 @@ NgosStatus printP4d(P4D *p4d)
     {
         if (p4dPresent(p4d[i]))
         {
-            EARLY_LVV(("  p4d[%d] = 0x%016lX", i, p4dValue(p4d[i])));
+            EARLY_LVV(("  p4d[%d] = 0x%016llX", i, p4dValue(p4d[i])));
 
             if (!p4dExtended(p4d[i]))
             {
@@ -138,7 +138,7 @@ NgosStatus printPgd(PGD *pgd)
     {
         if (pgdPresent(pgd[i]))
         {
-            EARLY_LVV(("pgd[%d] = 0x%016lX", i, pgdValue(pgd[i])));
+            EARLY_LVV(("pgd[%d] = 0x%016llX", i, pgdValue(pgd[i])));
 
             if (!pgdExtended(pgd[i]))
             {
@@ -364,7 +364,7 @@ NgosStatus adaptPredefinedPageTable(u64 imageLocation, PGD *pgd)
     // We are substracting (u64)&_start since the predefined values already has values with the base address as chosen random virtual address
     u64 delta = imageLocation - (u64)&_start;
 
-    EARLY_LVVV(("delta = 0x%016lX", delta));
+    EARLY_LVVV(("delta = 0x%016llX", delta));
 
     EARLY_TEST_ASSERT(delta != 0, NgosStatus::ASSERTION);
 
@@ -425,7 +425,7 @@ NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
     // (u64)&_start give us chosen random virtual address
     u64 delta = imageLocation - ((u64)&_start - 0xFFFFFFFF80000000);
 
-    EARLY_LVVV(("delta = 0x%016lX", delta));
+    EARLY_LVVV(("delta = 0x%016llX", delta));
 
     // If relocation not needed
     if (delta == 0)

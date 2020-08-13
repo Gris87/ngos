@@ -74,7 +74,7 @@ inline const char8* flagToFullString(XFeatureTypeFlag flag) // TEST: NO
 
     static char8 res[59];
 
-    sprintf(res, "0x%016lX (%s)", (x_feature_type_flags)flag, flagToString(flag));
+    sprintf(res, "0x%016llX (%s)", (x_feature_type_flags)flag, flagToString(flag));
 
     return res;
 }
@@ -104,7 +104,7 @@ inline const char8* flagsToFullString(const XFeatureTypeFlags &flags) // TEST: N
 
     static char8 res[195];
 
-    FLAGS_TO_FULL_STRING(res, flags.flags, XFeatureTypeFlag, "0x%016lX");
+    FLAGS_TO_FULL_STRING(res, flags.flags, XFeatureTypeFlag, "0x%016llX");
 
     return res;
 }

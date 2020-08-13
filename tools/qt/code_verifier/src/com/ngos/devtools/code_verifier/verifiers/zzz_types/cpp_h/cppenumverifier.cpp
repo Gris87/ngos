@@ -207,7 +207,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
-                        QString enumTypeFormat       = "0x%016lX";
+                        QString enumTypeFormat       = "0x%016llX";
                         quint8  enumTypeFormatLength = 18;
 
                         if (enumLocation >= 2)
@@ -241,15 +241,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                     else
                                     if (enumStandardType == "u64" || enumStandardType == "quint64")
                                     {
-                                        if (path.contains("tools/qt/"))
-                                        {
-                                            enumTypeFormat = "0x%016llX";
-                                        }
-                                        else
-                                        {
-                                            enumTypeFormat = "0x%016lX";
-                                        }
-
+                                        enumTypeFormat       = "0x%016llX";
                                         enumTypeFormatLength = 18;
                                     }
                                     else
@@ -396,7 +388,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     }
                     else
                     {
-                        QString enumTypeFormat       = "0x%016lX";
+                        QString enumTypeFormat       = "0x%016llX";
                         quint8  enumTypeFormatLength = 18;
 
                         if (enumType == "u8" || enumType == "quint8")
@@ -419,15 +411,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         else
                         if (enumType == "u64" || enumType == "quint64")
                         {
-                            if (path.contains("tools/qt/"))
-                            {
-                                enumTypeFormat = "0x%016llX";
-                            }
-                            else
-                            {
-                                enumTypeFormat = "0x%016lX";
-                            }
-
+                            enumTypeFormat       = "0x%016llX";
                             enumTypeFormatLength = 18;
                         }
                         else

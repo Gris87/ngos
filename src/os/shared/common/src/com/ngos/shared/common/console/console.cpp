@@ -255,7 +255,7 @@ NgosStatus Console::noMorePrint()
 
 
 
-#ifndef BUILD_TARGET_KERNEL
+#ifndef BUILD_TARGET_KERNEL // Defined in pro file
     if (UEFI::freePool(sDoubleBuffer) == UefiStatus::SUCCESS)
     {
         COMMON_LVV(("Released pool(0x%p) for screen double buffering", sDoubleBuffer));

@@ -192,7 +192,7 @@ NgosStatus E820::init()
 
 NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
-    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
+    COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
     COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
@@ -205,7 +205,7 @@ NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, Me
 
 NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
-    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", start, size, oldType, newType));
+    COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
     COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);
     COMMON_ASSERT(start + size > start, "size is invalid",    NgosStatus::ASSERTION);
@@ -218,7 +218,7 @@ NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldTyp
 
 NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 size, MemoryMapEntryType type)
 {
-    COMMON_LT((" | table = 0x%p, index = %u, start = 0x%016lX, size = 0x%016lX, type = %u", table, index, start, size, type));
+    COMMON_LT((" | table = 0x%p, index = %u, start = 0x%016llX, size = 0x%016llX, type = %u", table, index, start, size, type));
 
     COMMON_ASSERT(table,                          "table is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(table->count < E820_TABLE_SIZE, "table is full",    NgosStatus::ASSERTION);
@@ -266,7 +266,7 @@ NgosStatus E820::removeRangeInTable(E820Table *table, u64 index)
 
 NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
-    COMMON_LT((" | table = 0x%p, start = 0x%016lX, size = 0x%016lX, oldType = %u, newType = %u", table, start, size, oldType, newType));
+    COMMON_LT((" | table = 0x%p, start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", table, start, size, oldType, newType));
 
     COMMON_ASSERT(table,                "table is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,             "size is zero",       NgosStatus::ASSERTION);

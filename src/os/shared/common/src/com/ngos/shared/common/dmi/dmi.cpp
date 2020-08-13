@@ -7,7 +7,7 @@
 #include <com/ngos/shared/common/string/utils.h>
 #include <com/ngos/shared/common/uuid/utils.h>
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
 #include <com/ngos/shared/uefibase/uefi/uefi.h>
 #else
 #include <com/ngos/kernel/other/brk/brk.h>
@@ -43,7 +43,7 @@ NgosStatus DMI::init()
 
     if (smbios3)
     {
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
         COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3), NgosStatus::ASSERTION);
 #else
         UefiSmbios3ConfigurationTable *smbios3Mapped;
@@ -59,7 +59,7 @@ NgosStatus DMI::init()
 
         if (smbios)
         {
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
             COMMON_ASSERT_EXECUTION(initFromSmbios(smbios), NgosStatus::ASSERTION);
 #else
             UefiSmbiosConfigurationTable *smbiosMapped;
@@ -79,7 +79,7 @@ NgosStatus DMI::init()
 
 
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                         NgosStatus::ASSERTION);
 #else
@@ -2572,7 +2572,7 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
             if (entryV27)
             {
-                COMMON_LVVV(("entryV27->extendedMaximumCapacity = 0x%016lX", entryV27->extendedMaximumCapacity));
+                COMMON_LVVV(("entryV27->extendedMaximumCapacity = 0x%016llX", entryV27->extendedMaximumCapacity));
             }
         }
 
@@ -3030,8 +3030,8 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
             if (entryV27)
             {
-                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
-                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
+                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
+                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
             }
         }
 
@@ -3096,8 +3096,8 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
             if (entryV27)
             {
-                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016lX", entryV27->extendedStartingAddress));
-                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016lX", entryV27->extendedEndingAddress));
+                COMMON_LVVV(("entryV27->extendedStartingAddress = 0x%016llX", entryV27->extendedStartingAddress));
+                COMMON_LVVV(("entryV27->extendedEndingAddress   = 0x%016llX", entryV27->extendedEndingAddress));
             }
         }
 
@@ -4005,8 +4005,8 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
             COMMON_LVVV(("entry->errorGranularity        = %s",       enumToFullString(entry->errorGranularity)));
             COMMON_LVVV(("entry->errorOperation          = %s",       enumToFullString(entry->errorOperation)));
             COMMON_LVVV(("entry->vendorSyndrome          = 0x%08X",   entry->vendorSyndrome));
-            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%016lX", entry->memoryArrayErrorAddress));
-            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%016lX", entry->deviceErrorAddress));
+            COMMON_LVVV(("entry->memoryArrayErrorAddress = 0x%016llX", entry->memoryArrayErrorAddress));
+            COMMON_LVVV(("entry->deviceErrorAddress      = 0x%016llX", entry->deviceErrorAddress));
             COMMON_LVVV(("entry->errorResolution         = 0x%08X",   entry->errorResolution));
         }
 
@@ -5070,7 +5070,7 @@ NgosStatus DMI::storeUuid(DmiStoredUuid id, Uuid *uuid)
 
 
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     sUuids[(u64)id] = uuid;
 #else
     u8 *brkAddress;
@@ -5097,7 +5097,7 @@ NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destin
 
 
 
-#ifdef UEFI_APPLICATION // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     *destination = address;
 
     AVOID_UNUSED(size);

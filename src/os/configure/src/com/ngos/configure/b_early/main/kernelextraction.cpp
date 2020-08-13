@@ -81,8 +81,8 @@ u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *de
 
 
     EARLY_LI(("Booting to kernel..."));
-    EARLY_LV(("Random physical address: 0x%016lX", physicalAddress));
-    EARLY_LV(("Random virtual address:  0x%016lX", virtualAddress));
+    EARLY_LV(("Random physical address: 0x%016llX", physicalAddress));
+    EARLY_LV(("Random virtual address:  0x%016llX", virtualAddress));
 
 
 

@@ -19,7 +19,7 @@ NgosStatus setupCr4Shadow()
 
     // Validation
     {
-        EARLY_LVVV(("PERCPU::cr4 = 0x%016lX", PERCPU::cr4));
+        EARLY_LVVV(("PERCPU::cr4 = 0x%016llX", PERCPU::cr4));
 
 
 

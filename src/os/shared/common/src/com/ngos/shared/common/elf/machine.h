@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -64,10 +61,6 @@ inline const char8* enumToString(ElfMachine machine) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 {
     // COMMON_LT((" | machine = %u", machine)); // Commented to avoid bad looking logs
@@ -80,10 +73,6 @@ inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 
     return res;
 }
-
-
-
-#endif
 
 
 

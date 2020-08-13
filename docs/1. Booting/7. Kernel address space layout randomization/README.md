@@ -96,7 +96,7 @@ We are ready to search for random address space now.
     *physicalAddress = 0x10000000;
 #endif
 
-    EARLY_LVV(("Random physical address: 0x%016lX", *physicalAddress));
+    EARLY_LVV(("Random physical address: 0x%016llX", *physicalAddress));
 ```
 
 [findRandomPhysicalAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L461) function trying to search aligned address space for kernel binary image that didn't intersect with any of unavailable memory ranges.
@@ -113,7 +113,7 @@ We are ready to search for random address space now.
     *virtualAddress = 0xFFFFFFFF80000000;
 #endif
 
-    EARLY_LVV(("Random virtual address: 0x%016lX", *virtualAddress));
+    EARLY_LVV(("Random virtual address: 0x%016llX", *virtualAddress));
 ```
 
 We are also searching for virtual address of kernel image in range 0xFFFFFFFF80000000 - 0xFFFFFFFFC0000000 with [findRandomVirtualAddress()](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/bits64/b_early/main/randomization.cpp#L540) function.

@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -82,10 +79,6 @@ inline const char8* enumToString(UefiInputKeyScanCode code) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 {
     // COMMON_LT((" | code = %u", code)); // Commented to avoid bad looking logs
@@ -98,10 +91,6 @@ inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 
     return res;
 }
-
-
-
-#endif
 
 
 

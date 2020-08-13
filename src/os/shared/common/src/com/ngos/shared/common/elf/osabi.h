@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -68,10 +65,6 @@ inline const char8* enumToString(ElfOsAbi abi) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 {
     // COMMON_LT((" | abi = %u", abi)); // Commented to avoid bad looking logs
@@ -84,10 +77,6 @@ inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 
     return res;
 }
-
-
-
-#endif
 
 
 

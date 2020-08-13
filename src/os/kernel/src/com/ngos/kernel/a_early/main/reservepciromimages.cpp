@@ -89,7 +89,7 @@ NgosStatus reservePciRomImages()
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
-                EARLY_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
+                EARLY_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016llX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -137,7 +137,7 @@ NgosStatus reservePciRomImages()
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",       MemoryManager::sMemoryBlock.reserved.count));
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
-        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016lX", MemoryManager::sMemoryBlock.reserved.totalSize));
+        EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016llX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         EARLY_LVVV(("-------------------------------------"));

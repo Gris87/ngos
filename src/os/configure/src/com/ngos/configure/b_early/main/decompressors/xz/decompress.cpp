@@ -296,7 +296,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-                EARLY_LVVV(("blockCrc64 = 0x%016lX", blockCrc64));
+                EARLY_LVVV(("blockCrc64 = 0x%016llX", blockCrc64));
 
                 EARLY_TEST_ASSERT(blockCrc64 == Crc::crc64(decompressedAddress, uncompressedSize), NgosStatus::ASSERTION);
 

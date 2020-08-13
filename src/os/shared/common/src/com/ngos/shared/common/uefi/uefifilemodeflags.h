@@ -52,7 +52,7 @@ inline const char8* flagToFullString(UefiFileModeFlag flag) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%016lX (%s)", (uefi_file_mode_flags)flag, flagToString(flag));
+    sprintf(res, "0x%016llX (%s)", (uefi_file_mode_flags)flag, flagToString(flag));
 
     return res;
 }
@@ -82,7 +82,7 @@ inline const char8* flagsToFullString(const UefiFileModeFlags &flags) // TEST: N
 
     static char8 res[58];
 
-    FLAGS_TO_FULL_STRING(res, flags.flags, UefiFileModeFlag, "0x%016lX");
+    FLAGS_TO_FULL_STRING(res, flags.flags, UefiFileModeFlag, "0x%016llX");
 
     return res;
 }

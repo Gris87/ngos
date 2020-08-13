@@ -3,9 +3,9 @@
 
 
 
-#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                                   // Defined in pro file
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
-#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in pro file
 #include <com/ngos/shared/common/early/earlyassert.h>
 #else
 #include <buildconfig.h>
@@ -18,9 +18,9 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_RELEASE == OPTION_NO // Ignore CppReleaseUsageVerifier
-#if defined(UEFI_APPLICATION)                                                   // Defined in Makefile
+#if defined(UEFI_APPLICATION)                                           // Defined in pro file
 #define __COMMON_PRINT_ASSERT(message) __UEFI_PRINT_ASSERT(message)     // TEST: NO
-#elif defined(BUILD_TARGET_KERNEL)                                              // Defined in Makefile
+#elif defined(BUILD_TARGET_KERNEL)                                      // Defined in pro file
 #define __COMMON_PRINT_ASSERT(message) __EARLY_PRINT_ASSERT(message)    // TEST: NO
 #else
 #define __COMMON_PRINT_ASSERT(message) \

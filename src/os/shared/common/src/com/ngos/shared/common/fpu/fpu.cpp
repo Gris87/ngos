@@ -61,17 +61,17 @@ NgosStatus FPU::initForBootStrapProcessor()
 
         for (i64 i = 0; i < 16; ++i)
         {
-            COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016lX", i, sState.fxsave.stack[i]));
+            COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016llX", i, sState.fxsave.stack[i]));
         }
 
         for (i64 i = 0; i < 16; ++i)
         {
-            COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016lX", i, sState.fxsave.xmm[i][0]));
-            COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016lX", i, sState.fxsave.xmm[i][1]));
+            COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016llX", i, sState.fxsave.xmm[i][0]));
+            COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016llX", i, sState.fxsave.xmm[i][1]));
         }
 
         COMMON_LVVV(("sState.xsave.header.xFeatures   = %s",       flagsToFullString(sState.xsave.header.xFeatures)));
-        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016lX", sState.xsave.header.xComponents));
+        COMMON_LVVV(("sState.xsave.header.xComponents = 0x%016llX", sState.xsave.header.xComponents));
         COMMON_LVVV(("sStateKernelSize                = %u",       sStateKernelSize));
         COMMON_LVVV(("sStateUserSize                  = %u",       sStateUserSize));
         COMMON_LVVV(("sMxcsrMask                      = 0x%08X",   sMxcsrMask));

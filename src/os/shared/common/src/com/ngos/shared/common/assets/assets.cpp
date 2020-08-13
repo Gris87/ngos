@@ -68,7 +68,7 @@ NgosStatus Assets::init()
 
     COMMON_TEST_ASSERT(currentAddress == end, NgosStatus::ASSERTION);
 
-#ifdef BUILD_TARGET_DEVICEMANAGER // Defined in Makefile
+#ifdef BUILD_TARGET_DEVICEMANAGER // Defined in pro file
     COMMON_TEST_ASSERT(sEntriesCount == ASSET_ENTRIES_COUNT, NgosStatus::ASSERTION);
 #endif
 

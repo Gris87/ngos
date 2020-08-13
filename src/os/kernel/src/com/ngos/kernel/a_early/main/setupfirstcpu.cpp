@@ -22,10 +22,10 @@ NgosStatus setupFirstCpu()
     // Validation
     {
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
-        EARLY_LVVV(("CpuMask::sOnlineCpus.mBits[0]   = 0x%016lX", CpuMask::sOnlineCpus.mBits[0]));
-        EARLY_LVVV(("CpuMask::sActiveCpus.mBits[0]   = 0x%016lX", CpuMask::sActiveCpus.mBits[0]));
-        EARLY_LVVV(("CpuMask::sPresentCpus.mBits[0]  = 0x%016lX", CpuMask::sPresentCpus.mBits[0]));
-        EARLY_LVVV(("CpuMask::sPossibleCpus.mBits[0] = 0x%016lX", CpuMask::sPossibleCpus.mBits[0]));
+        EARLY_LVVV(("CpuMask::sOnlineCpus.mBits[0]   = 0x%016llX", CpuMask::sOnlineCpus.mBits[0]));
+        EARLY_LVVV(("CpuMask::sActiveCpus.mBits[0]   = 0x%016llX", CpuMask::sActiveCpus.mBits[0]));
+        EARLY_LVVV(("CpuMask::sPresentCpus.mBits[0]  = 0x%016llX", CpuMask::sPresentCpus.mBits[0]));
+        EARLY_LVVV(("CpuMask::sPossibleCpus.mBits[0] = 0x%016llX", CpuMask::sPossibleCpus.mBits[0]));
 #endif
 
 

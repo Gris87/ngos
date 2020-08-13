@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -42,10 +39,6 @@ inline const char8* enumToString(UefiTpl tpl) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 {
     // COMMON_LT((" | tpl = %u", tpl)); // Commented to avoid bad looking logs
@@ -54,14 +47,10 @@ inline const char8* enumToFullString(UefiTpl tpl) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%016lX (%s)", (u64)tpl, enumToString(tpl));
+    sprintf(res, "0x%016llX (%s)", (u64)tpl, enumToString(tpl));
 
     return res;
 }
-
-
-
-#endif
 
 
 

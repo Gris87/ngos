@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -45,10 +42,6 @@ inline const char8* enumToString(ElfSymbolBind bind) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 {
     // COMMON_LT((" | bind = %u", bind)); // Commented to avoid bad looking logs
@@ -61,10 +54,6 @@ inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 
     return res;
 }
-
-
-
-#endif
 
 
 

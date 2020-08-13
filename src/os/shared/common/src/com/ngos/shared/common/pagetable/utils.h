@@ -14,7 +14,7 @@
 
 inline u64 pgdIndex(u64 address)
 {
-    COMMON_LT((" | address = 0x%016lX", address));
+    COMMON_LT((" | address = 0x%016llX", address));
 
 
 
@@ -24,7 +24,7 @@ inline u64 pgdIndex(u64 address)
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
 inline u64 p4dIndex(u64 address)
 {
-    COMMON_LT((" | address = 0x%016lX", address));
+    COMMON_LT((" | address = 0x%016llX", address));
 
 
 
@@ -34,7 +34,7 @@ inline u64 p4dIndex(u64 address)
 
 inline u64 pudIndex(u64 address)
 {
-    COMMON_LT((" | address = 0x%016lX", address));
+    COMMON_LT((" | address = 0x%016llX", address));
 
 
 
@@ -43,7 +43,7 @@ inline u64 pudIndex(u64 address)
 
 inline u64 pmdIndex(u64 address)
 {
-    COMMON_LT((" | address = 0x%016lX", address));
+    COMMON_LT((" | address = 0x%016llX", address));
 
 
 
@@ -52,7 +52,7 @@ inline u64 pmdIndex(u64 address)
 
 inline u64 pteIndex(u64 address)
 {
-    COMMON_LT((" | address = 0x%016lX", address));
+    COMMON_LT((" | address = 0x%016llX", address));
 
 
 
@@ -67,7 +67,7 @@ inline u64 pteIndex(u64 address)
 
 inline void setPgd(PGD *pgd, pgd_value value)
 {
-    COMMON_LT((" | pgd = 0x%p, value = 0x%016lX", pgd, value));
+    COMMON_LT((" | pgd = 0x%p, value = 0x%016llX", pgd, value));
 
 
 
@@ -77,7 +77,7 @@ inline void setPgd(PGD *pgd, pgd_value value)
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
 inline void setP4d(P4D *p4d, p4d_value value)
 {
-    COMMON_LT((" | p4d = 0x%p, value = 0x%016lX", p4d, value));
+    COMMON_LT((" | p4d = 0x%p, value = 0x%016llX", p4d, value));
 
 
 
@@ -87,7 +87,7 @@ inline void setP4d(P4D *p4d, p4d_value value)
 
 inline void setPud(PUD *pud, pud_value value)
 {
-    COMMON_LT((" | pud = 0x%p, value = 0x%016lX", pud, value));
+    COMMON_LT((" | pud = 0x%p, value = 0x%016llX", pud, value));
 
 
 
@@ -96,7 +96,7 @@ inline void setPud(PUD *pud, pud_value value)
 
 inline void setPmd(PMD *pmd, pmd_value value)
 {
-    COMMON_LT((" | pmd = 0x%p, value = 0x%016lX", pmd, value));
+    COMMON_LT((" | pmd = 0x%p, value = 0x%016llX", pmd, value));
 
 
 
@@ -105,7 +105,7 @@ inline void setPmd(PMD *pmd, pmd_value value)
 
 inline void setPte(PTE *pte, pte_value value)
 {
-    COMMON_LT((" | pte = 0x%p, value = 0x%016lX", pte, value));
+    COMMON_LT((" | pte = 0x%p, value = 0x%016llX", pte, value));
 
 
 
@@ -530,7 +530,7 @@ inline u64 ptePageVirtualAddress(const PTE &pte)
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
 inline P4D* p4dOffset(PGD *pgd, u64 address)
 {
-    COMMON_LT((" | pgd = 0x%p, address = 0x%016lX", pgd, address));
+    COMMON_LT((" | pgd = 0x%p, address = 0x%016llX", pgd, address));
 
 
 
@@ -539,7 +539,7 @@ inline P4D* p4dOffset(PGD *pgd, u64 address)
 
 inline PUD* pudOffset(P4D *p4d, u64 address)
 {
-    COMMON_LT((" | p4d = 0x%p, address = 0x%016lX", p4d, address));
+    COMMON_LT((" | p4d = 0x%p, address = 0x%016llX", p4d, address));
 
 
 
@@ -548,7 +548,7 @@ inline PUD* pudOffset(P4D *p4d, u64 address)
 #else
 inline PUD* pudOffset(PGD *pgd, u64 address)
 {
-    COMMON_LT((" | pgd = 0x%p, address = 0x%016lX", pgd, address));
+    COMMON_LT((" | pgd = 0x%p, address = 0x%016llX", pgd, address));
 
 
 
@@ -558,7 +558,7 @@ inline PUD* pudOffset(PGD *pgd, u64 address)
 
 inline PMD* pmdOffset(PUD *pud, u64 address)
 {
-    COMMON_LT((" | pud = 0x%p, address = 0x%016lX", pud, address));
+    COMMON_LT((" | pud = 0x%p, address = 0x%016llX", pud, address));
 
 
 
@@ -567,7 +567,7 @@ inline PMD* pmdOffset(PUD *pud, u64 address)
 
 inline PTE* pteOffset(PMD *pmd, u64 address)
 {
-    COMMON_LT((" | pmd = 0x%p, address = 0x%016lX", pmd, address));
+    COMMON_LT((" | pmd = 0x%p, address = 0x%016llX", pmd, address));
 
 
 

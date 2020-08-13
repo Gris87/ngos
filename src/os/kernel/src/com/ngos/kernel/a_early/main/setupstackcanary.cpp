@@ -23,9 +23,9 @@ NgosStatus setupStackCanary()
 
     // Validation
     {
-        EARLY_LVVV(("canary               = 0x%016lX", canary));
-        EARLY_LVVV(("irqStack.stackCanary = 0x%016lX", irqStack.stackCanary));
-        EARLY_LVVV(("initTask.stackCanary = 0x%016lX", initTask.stackCanary));
+        EARLY_LVVV(("canary               = 0x%016llX", canary));
+        EARLY_LVVV(("irqStack.stackCanary = 0x%016llX", irqStack.stackCanary));
+        EARLY_LVVV(("initTask.stackCanary = 0x%016llX", initTask.stackCanary));
 
 
 

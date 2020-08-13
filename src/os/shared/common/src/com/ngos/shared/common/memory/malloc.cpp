@@ -5,7 +5,7 @@
 #include <com/ngos/shared/common/memory/memory.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 
-#if defined(UEFI_APPLICATION)                       // Defined in Makefile
+#ifdef UEFI_APPLICATION                         // Defined in pro file
 #include <com/ngos/shared/uefibase/uefi/uefi.h>
 #endif
 
@@ -21,7 +21,7 @@ void* malloc(u64 size)
 
     void *res = nullptr;
 
-#if defined(UEFI_APPLICATION) // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, &res) != UefiStatus::SUCCESS)
     {
         COMMON_LF(("Failed to allocate pool(%u)", size));
@@ -47,7 +47,7 @@ NgosStatus free(void *address)
 
 
 
-#if defined(UEFI_APPLICATION) // Defined in Makefile
+#ifdef UEFI_APPLICATION // Defined in pro file
     if (UEFI::freePool(address) == UefiStatus::SUCCESS)
     {
         COMMON_LVV(("Released pool(0x%p)", address));

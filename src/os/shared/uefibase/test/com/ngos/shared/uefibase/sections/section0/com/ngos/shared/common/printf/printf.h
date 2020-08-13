@@ -521,10 +521,10 @@ TEST_CASES(section0, com_ngos_shared_common_printf_printf);
         TEST_ASSERT_EQUALS(sprintf(buffer, "ffy %hu", 423949673010), 9);
         TEST_ASSERT_EQUALS(strcmp(buffer, "ffy 41522"), 0);
 
-        TEST_ASSERT_EQUALS(sprintf(buffer, "ffy 0x%016lX", 0xBD39C17DC3AC79A7), 22);
+        TEST_ASSERT_EQUALS(sprintf(buffer, "ffy 0x%016llX", 0xBD39C17DC3AC79A7), 22);
         TEST_ASSERT_EQUALS(strcmp(buffer, "ffy 0xBD39C17DC3AC79A7"), 0);
 
-        TEST_ASSERT_EQUALS(sprintf(buffer, "ffy 0x%016lX", 0xEE34C2E29C26AE40), 22);
+        TEST_ASSERT_EQUALS(sprintf(buffer, "ffy 0x%016llX", 0xEE34C2E29C26AE40), 22);
         TEST_ASSERT_EQUALS(strcmp(buffer, "ffy 0xEE34C2E29C26AE40"), 0);
     }
     TEST_CASE_END();

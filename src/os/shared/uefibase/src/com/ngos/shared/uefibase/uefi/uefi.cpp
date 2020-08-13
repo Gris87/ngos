@@ -1018,7 +1018,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
         UEFI_LVVV(("physicalStart = 0x%p",     memoryDescriptor->physicalStart));
         UEFI_LVVV(("virtualStart  = 0x%p",     memoryDescriptor->virtualStart));
         UEFI_LVVV(("numberOfPages = %u",       memoryDescriptor->numberOfPages));
-        UEFI_LVVV(("attribute     = 0x%016lX", memoryDescriptor->attribute));
+        UEFI_LVVV(("attribute     = 0x%016llX", memoryDescriptor->attribute));
 
 
 
@@ -1139,7 +1139,7 @@ UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 *
 
 UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData)
 {
-    UEFI_LT((" | resetType = %u, resetStatus = 0x%016lX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));
+    UEFI_LT((" | resetType = %u, resetStatus = 0x%016llX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));
 
 
 

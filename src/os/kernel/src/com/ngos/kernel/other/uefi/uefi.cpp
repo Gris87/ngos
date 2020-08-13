@@ -83,7 +83,7 @@ NgosStatus UEFI::initMemoryMap()
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
-                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
+                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016llX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -149,7 +149,7 @@ NgosStatus UEFI::initMemoryMap()
                 UefiMemoryDescriptor *memoryDescriptor = UEFI_MEMORY_MAP_DESCRIPTOR(i);
                 COMMON_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);
 
-                COMMON_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016lX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
+                COMMON_LVVV(("#%-3d: type = %-27s | 0x%p-0x%p | 0x%016llX", i, enumToFullString(memoryDescriptor->type), memoryDescriptor->physicalStart, memoryDescriptor->physicalStart + memoryDescriptor->numberOfPages * PAGE_SIZE, memoryDescriptor->attribute));
             }
 
             COMMON_LVVV(("-------------------------------------"));
@@ -453,7 +453,7 @@ NgosStatus UEFI::initSystemTable()
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
-                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016lX", i, pteValue(IORemap::sFixmapPage[i])));
+                COMMON_LVVV(("pteValue(IORemap::sFixmapPage[%d]) = 0x%016llX", i, pteValue(IORemap::sFixmapPage[i])));
             }
         }
 #endif
@@ -501,7 +501,7 @@ NgosStatus UEFI::initSystemTable()
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.count     = %u",       MemoryManager::sMemoryBlock.reserved.count));
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.max       = %u",       MemoryManager::sMemoryBlock.reserved.max));
-        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016lX", MemoryManager::sMemoryBlock.reserved.totalSize));
+        COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.totalSize = 0x%016llX", MemoryManager::sMemoryBlock.reserved.totalSize));
 
         COMMON_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         COMMON_LVVV(("-------------------------------------"));
@@ -552,7 +552,7 @@ NgosStatus UEFI::initSystemTable()
 
 
 
-        COMMON_LVVV(("sSystemTable.header.signature            = 0x%016lX", sSystemTable.header.signature));
+        COMMON_LVVV(("sSystemTable.header.signature            = 0x%016llX", sSystemTable.header.signature));
         COMMON_LVVV(("sSystemTable.header.revision             = 0x%08X",   sSystemTable.header.revision));
         COMMON_LVVV(("sSystemTable.header.headerSize           = %u",       sSystemTable.header.headerSize));
         COMMON_LVVV(("sSystemTable.header.crc32                = 0x%08X",   sSystemTable.header.crc32));

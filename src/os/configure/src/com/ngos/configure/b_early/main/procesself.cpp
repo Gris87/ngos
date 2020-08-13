@@ -28,7 +28,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_LVVV(("header->type                         = %s",       enumToFullString(header->type)));
         EARLY_LVVV(("header->machine                      = %s",       enumToFullString(header->machine)));
         EARLY_LVVV(("header->version                      = %s",       enumToFullString(header->version)));
-        EARLY_LVVV(("header->entryPoint                   = 0x%016lX", header->entryPoint));
+        EARLY_LVVV(("header->entryPoint                   = 0x%016llX", header->entryPoint));
         EARLY_LVVV(("header->programHeaderTableOffset     = %u",       header->programHeaderTableOffset));
         EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",       header->sectionHeaderTableOffset));
         EARLY_LVVV(("header->flags                        = %u",       header->flags));
@@ -72,9 +72,9 @@ u64 getElfMemorySize(ElfHeader *header)
 
         EARLY_LVVV(("programHeader[%d]->type            = %s",       i, enumToFullString(programHeader->type)));
         EARLY_LVVV(("programHeader[%d]->flags           = %s",       i, flagsToFullString(programHeader->flags)));
-        EARLY_LVVV(("programHeader[%d]->offset          = 0x%016lX", i, programHeader->offset));
-        EARLY_LVVV(("programHeader[%d]->virtualAddress  = 0x%016lX", i, programHeader->virtualAddress));
-        EARLY_LVVV(("programHeader[%d]->physicalAddress = 0x%016lX", i, programHeader->physicalAddress));
+        EARLY_LVVV(("programHeader[%d]->offset          = 0x%016llX", i, programHeader->offset));
+        EARLY_LVVV(("programHeader[%d]->virtualAddress  = 0x%016llX", i, programHeader->virtualAddress));
+        EARLY_LVVV(("programHeader[%d]->physicalAddress = 0x%016llX", i, programHeader->physicalAddress));
         EARLY_LVVV(("programHeader[%d]->fileSize        = %u",       i, programHeader->fileSize));
         EARLY_LVVV(("programHeader[%d]->memorySize      = %u",       i, programHeader->memorySize));
         EARLY_LVVV(("programHeader[%d]->align           = %u",       i, programHeader->align));
@@ -128,7 +128,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
     // We should iterate all RELA entries in order to make them valid for the chosen virtual address
     u64 delta = virtualAddress - 0xFFFFFFFF80000000;
 
-    EARLY_LVVV(("delta = 0x%016lX", delta));
+    EARLY_LVVV(("delta = 0x%016llX", delta));
 
     // If relocation not needed
     if (delta == 0)
@@ -144,9 +144,9 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
         // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",   i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",  i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016lX", i, sectionHeader->flags));                                               // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016lX", i, sectionHeader->virtualAddress));                                      // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016lX", i, sectionHeader->offset));                                              // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016llX", i, sectionHeader->flags));                                               // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016llX", i, sectionHeader->virtualAddress));                                      // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016llX", i, sectionHeader->offset));                                              // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->size           = %u",       i, sectionHeader->size));                                                // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->link           = %u",       i, sectionHeader->link));                                                // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->info           = %u",       i, sectionHeader->info));                                                // Commented to avoid too frequent logs
@@ -166,9 +166,9 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
             {
                 ElfRela &rela = relas[j];
 
-                // EARLY_LVVV(("relas[%d].offset = 0x%016lX", j, rela.offset));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].info   = 0x%016lX", j, rela.info));                                 // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].addend = 0x%016lX", j, rela.addend));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].offset = 0x%016llX", j, rela.offset));                               // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].info   = 0x%016llX", j, rela.info));                                 // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].addend = 0x%016llX", j, rela.addend));                               // Commented to avoid too frequent logs
                 // EARLY_LVVV(("relas[%d].type   = %u (%s)",  j, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
 
                 if (rela.offset >= 0xFFFFFFFF80000000)
@@ -199,7 +199,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016lX => 0x%016lX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
 
                             *(u64 *)relaAddress += delta;
                         }

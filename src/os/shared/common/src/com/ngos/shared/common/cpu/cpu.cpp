@@ -726,7 +726,7 @@ bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
 
 bool CPU::hasEFlag(u64 mask)
 {
-    COMMON_LT((" | mask = 0x%016lX", mask));
+    COMMON_LT((" | mask = 0x%016llX", mask));
 
     COMMON_ASSERT(mask > 0, "mask is zero", false);
 
@@ -761,9 +761,9 @@ bool CPU::hasEFlag(u64 mask)
 
     // Validation
     {
-        COMMON_LVVV(("f0   = 0x%016lX", f0));
-        COMMON_LVVV(("f1   = 0x%016lX", f1));
-        COMMON_LVVV(("mask = 0x%016lX", mask));
+        COMMON_LVVV(("f0   = 0x%016llX", f0));
+        COMMON_LVVV(("f1   = 0x%016llX", f1));
+        COMMON_LVVV(("mask = 0x%016llX", mask));
 
 
 
@@ -1668,7 +1668,7 @@ NgosStatus CPU::initCpuBugs()
 
         ia32Capabilities = MSR::read(MSR_IA32_ARCH_CAPABILITIES);
 
-        COMMON_LVVV(("ia32Capabilities = 0x%016lX", ia32Capabilities));
+        COMMON_LVVV(("ia32Capabilities = 0x%016llX", ia32Capabilities));
     }
 
 

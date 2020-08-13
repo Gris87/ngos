@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -96,10 +93,6 @@ inline const char8* enumToString(UefiStatus status) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(UefiStatus status) // TEST: NO
 {
     // COMMON_LT((" | status = %u", status)); // Commented to avoid bad looking logs
@@ -108,14 +101,10 @@ inline const char8* enumToFullString(UefiStatus status) // TEST: NO
 
     static char8 res[42];
 
-    sprintf(res, "0x%016lX (%s)", (u64)status, enumToString(status));
+    sprintf(res, "0x%016llX (%s)", (u64)status, enumToString(status));
 
     return res;
 }
-
-
-
-#endif
 
 
 

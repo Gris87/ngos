@@ -37,7 +37,7 @@ public:
 
     static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location)
     {
-        COMMON_LT((" | location = 0x%016lX", location));
+        COMMON_LT((" | location = 0x%016llX", location));
 
         COMMON_ASSERT(location, "location is null", NgosStatus::ASSERTION);
 

@@ -142,7 +142,7 @@ inline u64 rdtsc()
 
 inline NgosStatus writeCr3(u64 value) // TEST: NO
 {
-    COMMON_LT((" | value = 0x%016lX", value));
+    COMMON_LT((" | value = 0x%016llX", value));
 
 
 
@@ -183,7 +183,7 @@ inline u64 readCr4() // TEST: NO
 
 inline NgosStatus writeCr4(u64 value) // TEST: NO
 {
-    COMMON_LT((" | value = 0x%016lX", value));
+    COMMON_LT((" | value = 0x%016llX", value));
 
 
 
@@ -203,7 +203,7 @@ inline NgosStatus writeCr4(u64 value) // TEST: NO
 
 inline bool bt(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -230,7 +230,7 @@ inline bool bt(u8 *address, u64 bit)
 
 inline bool bts(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -259,7 +259,7 @@ inline bool bts(u8 *address, u64 bit)
 
 inline bool btsSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -288,7 +288,7 @@ inline bool btsSafe(u8 *address, u64 bit)
 
 inline NgosStatus btsPure(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -313,7 +313,7 @@ inline NgosStatus btsPure(u8 *address, u64 bit)
 
 inline NgosStatus btsPureSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -338,7 +338,7 @@ inline NgosStatus btsPureSafe(u8 *address, u64 bit)
 
 inline bool btr(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -367,7 +367,7 @@ inline bool btr(u8 *address, u64 bit)
 
 inline bool btrSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -396,7 +396,7 @@ inline bool btrSafe(u8 *address, u64 bit)
 
 inline NgosStatus btrPure(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -421,7 +421,7 @@ inline NgosStatus btrPure(u8 *address, u64 bit)
 
 inline NgosStatus btrPureSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -446,7 +446,7 @@ inline NgosStatus btrPureSafe(u8 *address, u64 bit)
 
 inline bool btc(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -475,7 +475,7 @@ inline bool btc(u8 *address, u64 bit)
 
 inline bool btcSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", false);
 
@@ -504,7 +504,7 @@ inline bool btcSafe(u8 *address, u64 bit)
 
 inline NgosStatus btcPure(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -529,7 +529,7 @@ inline NgosStatus btcPure(u8 *address, u64 bit)
 
 inline NgosStatus btcPureSafe(u8 *address, u64 bit)
 {
-    COMMON_LT((" | address = 0x%p, bit = 0x%016lX", address, bit));
+    COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
@@ -579,7 +579,7 @@ inline u64 rdmsr(u32 msr) // TEST: NO
 
 inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
 {
-    COMMON_LT((" | msr = 0x%08X, value = 0x%016lX", msr, value));
+    COMMON_LT((" | msr = 0x%08X, value = 0x%016llX", msr, value));
 
 
 
@@ -643,7 +643,7 @@ inline NgosStatus fninit() // TEST: NO
 
 inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
 {
-    COMMON_LT((" | index = 0x%08X, value = 0x%016lX", index, value));
+    COMMON_LT((" | index = 0x%08X, value = 0x%016llX", index, value));
 
 
 
@@ -689,7 +689,7 @@ inline NgosStatus fxsave(u8 *address) // TEST: NO
 
 inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
-    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+    COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
@@ -717,7 +717,7 @@ inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: N
 
 inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
-    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+    COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
@@ -745,7 +745,7 @@ inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
 
 inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
-    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+    COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);
@@ -773,7 +773,7 @@ inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
 
 inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
-    COMMON_LT((" | address = 0x%p, mask = 0x%016lX", address, mask));
+    COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
     COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(mask    != 0,       "mask is zero",    NgosStatus::ASSERTION);

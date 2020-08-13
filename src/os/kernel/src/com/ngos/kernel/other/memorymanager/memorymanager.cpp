@@ -51,7 +51,7 @@ NgosStatus MemoryManager::init()
 
 NgosStatus MemoryManager::add(u64 start, u64 size)
 {
-    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX", start, size));
+    COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 
     COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
 
@@ -62,7 +62,7 @@ NgosStatus MemoryManager::add(u64 start, u64 size)
 
 NgosStatus MemoryManager::reserve(u64 start, u64 size)
 {
-    COMMON_LT((" | start = 0x%016lX, size = 0x%016lX", start, size));
+    COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 
     COMMON_ASSERT(size > 0, "size is zero", NgosStatus::ASSERTION);
 
@@ -73,7 +73,7 @@ NgosStatus MemoryManager::reserve(u64 start, u64 size)
 
 NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
-    COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016lX, size = 0x%016lX, flags = ..., nodeId = 0x%04X", type, index, start, size, nodeId));
+    COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016llX, size = 0x%016llX, flags = ..., nodeId = 0x%04X", type, index, start, size, nodeId));
 
     COMMON_ASSERT(type,                    "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(type->count < type->max, "type is full",      NgosStatus::ASSERTION);
@@ -203,7 +203,7 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
 
 NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
-    COMMON_LT((" | type = 0x%p, start = 0x%016lX, size = 0x%016lX, flags = ..., nodeId = 0x%04X", type, start, size, nodeId));
+    COMMON_LT((" | type = 0x%p, start = 0x%016llX, size = 0x%016llX, flags = ..., nodeId = 0x%04X", type, start, size, nodeId));
 
     COMMON_ASSERT(type,                   "type is null",      NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,               "size is zero",      NgosStatus::ASSERTION);

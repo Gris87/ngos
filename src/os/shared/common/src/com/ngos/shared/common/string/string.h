@@ -7,6 +7,9 @@
 
 
 
+#ifdef DEVTOOLS_APPLICATION // Defined in pro file
+char8* strapp(char8 *str1, const char8 *str2);
+#else
 char8 toLower(char8 ch);
 char16 toLower(char16 ch);
 char8 toUpper(char8 ch);
@@ -47,6 +50,7 @@ bool strend(const char8 *str1, const char8 *str2);
 bool strend(const char16 *str1, const char16 *str2);
 bool strendi(const char8 *str1, const char8 *str2);
 bool strendi(const char16 *str1, const char16 *str2);
+#endif
 
 
 

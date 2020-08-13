@@ -6,11 +6,8 @@
 #include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
 #include <com/ngos/shared/common/string/string.h>
-#endif
 
 
 
@@ -46,10 +43,6 @@ inline const char8* flagToString(UefiSimpleNetworkInterruptFlag flag) // TEST: N
         default: return "UNKNOWN";
     }
 }
-
-
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 
 
 
@@ -95,10 +88,6 @@ inline const char8* flagsToFullString(const UefiSimpleNetworkInterruptFlags &fla
 
     return res;
 }
-
-
-
-#endif
 
 
 

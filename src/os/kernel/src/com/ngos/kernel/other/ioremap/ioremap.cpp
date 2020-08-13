@@ -94,7 +94,7 @@ NgosStatus IORemap::addPmdForFixmap()
         {
             if (pmdValue(fixmap_pagetable_level2[i]))
             {
-                COMMON_LVVV(("pmdValue(fixmap_pagetable_level2[%d]) = 0x%016lX", i, pmdValue(fixmap_pagetable_level2[i])));
+                COMMON_LVVV(("pmdValue(fixmap_pagetable_level2[%d]) = 0x%016llX", i, pmdValue(fixmap_pagetable_level2[i])));
             }
         }
 #endif
@@ -114,7 +114,7 @@ NgosStatus IORemap::addPmdForFixmap()
 
 NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 {
-    COMMON_LT((" | address = 0x%016lX, size = %u, res = 0x%016lX", address, size, res));
+    COMMON_LT((" | address = 0x%016llX, size = %u, res = 0x%016llX", address, size, res));
 
     COMMON_ASSERT(address,                                   "address is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(size > 0,                                  "size is zero",    NgosStatus::ASSERTION);
@@ -149,8 +149,8 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
     COMMON_LVVV(("sLastUsedSlot   = %u",       sLastUsedSlot));
     COMMON_LVVV(("sSlotsAvailable = %u",       sSlotsAvailable));
     COMMON_LVVV(("slot            = %u",       slot));
-    COMMON_LVVV(("start           = 0x%016lX", start));
-    COMMON_LVVV(("end             = 0x%016lX", end));
+    COMMON_LVVV(("start           = 0x%016llX", start));
+    COMMON_LVVV(("end             = 0x%016llX", end));
     COMMON_LVVV(("numberOfPages   = %u",       numberOfPages));
 
     COMMON_TEST_ASSERT(sLastUsedSlot < FIX_BITMAP_SLOTS,                            NgosStatus::ASSERTION);
@@ -193,7 +193,7 @@ NgosStatus IORemap::addFixedMapping(u64 address, u64 size, void **res)
 
 NgosStatus IORemap::removeFixedMapping(u64 address, u64 size)
 {
-    COMMON_LT((" | address = 0x%016lX, size = %u", address, size));
+    COMMON_LT((" | address = 0x%016llX, size = %u", address, size));
 
     COMMON_ASSERT(address,                                                                "address is null",    NgosStatus::ASSERTION);
     COMMON_ASSERT(address >= FIX_ADDRESS_BOTTOM && address < FIX_ADDRESS_TOP + PAGE_SIZE, "address is invalid", NgosStatus::ASSERTION);
@@ -238,8 +238,8 @@ NgosStatus IORemap::removeFixedMapping(u64 address, u64 size)
     COMMON_LVVV(("sLastReleasedSlot = %u",       sLastReleasedSlot));
     COMMON_LVVV(("sSlotsAvailable   = %u",       sSlotsAvailable));
     COMMON_LVVV(("slot              = %u",       slot));
-    COMMON_LVVV(("start             = 0x%016lX", start));
-    COMMON_LVVV(("end               = 0x%016lX", end));
+    COMMON_LVVV(("start             = 0x%016llX", start));
+    COMMON_LVVV(("end               = 0x%016llX", end));
     COMMON_LVVV(("numberOfPages     = %u",       numberOfPages));
 
     COMMON_TEST_ASSERT(sLastReleasedSlot < FIX_BITMAP_SLOTS,                        NgosStatus::ASSERTION);

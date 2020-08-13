@@ -4,10 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
 #include <com/ngos/shared/common/printf/printf.h>
-#endif
 
 
 
@@ -46,10 +43,6 @@ inline const char8* enumToString(ElfSymbolVisibility visibility) // TEST: NO
 
 
 
-#if defined(UEFI_APPLICATION) || defined(BUILD_TARGET_KERNEL) // Defined in Makefile
-
-
-
 inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 {
     // COMMON_LT((" | visibility = %u", visibility)); // Commented to avoid bad looking logs
@@ -62,10 +55,6 @@ inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 
     return res;
 }
-
-
-
-#endif
 
 
 
