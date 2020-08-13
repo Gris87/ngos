@@ -5,9 +5,6 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/printf/printf.h>
-
-
-
 #include <com/ngos/shared/common/uefi/uefidevicepathtype.h>
 
 
