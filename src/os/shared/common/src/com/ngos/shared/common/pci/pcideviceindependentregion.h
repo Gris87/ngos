@@ -4,20 +4,21 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
 #include <com/ngos/shared/common/pci/pciheadertype.h>
 
 
 
 struct PciDeviceIndependentRegion
 {
-    u16 vendorId;
-    u16 deviceId;
-    u16 command;
-    u16 status;
-    u8  revisionId;
-    u8  classCode[3];
-    u8  cacheLineSize;
-    u8  latencyTimer;
+    PciVendor vendorId;
+    u16       deviceId;
+    u16       command; // TODO: Should be flags
+    u16       status; // TODO: Should be flags
+    u8        revisionId;
+    u8        classCode[3];
+    u8        cacheLineSize;
+    u8        latencyTimer;
 
     union
     {
@@ -30,7 +31,7 @@ struct PciDeviceIndependentRegion
         u8 headerTypeAndIsMultiFunction;
     };
 
-    u8  builtInSelfTest;
+    u8  builtInSelfTest; // TODO: Should be union
 } __attribute__((packed));
 
 

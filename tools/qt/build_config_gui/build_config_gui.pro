@@ -10,11 +10,16 @@ RESOURCES += Resources.qrc
 
 
 
+DEFINES += \
+    DEVTOOLS_APPLICATION
+
+
+
 # Warnings as errors - BEGIN
 win32-msvc* {
     QMAKE_CXXFLAGS += /WX
 } else {
-    QMAKE_CXXFLAGS += -Werror
+    QMAKE_CXXFLAGS += -Werror -Wno-address-of-packed-member -Wno-trigraphs
 }
 # Warnings as errors - END
 

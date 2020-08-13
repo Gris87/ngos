@@ -29,14 +29,14 @@ NgosStatus reservePciRomImages()
 
         EARLY_LVV(("ROM Image with info 0x%p mapped to 0x%p", currentPci, currentPciMapped));
 
-        EARLY_LVVV(("currentPciMapped->next           = 0x%p",   currentPciMapped->next));
-        EARLY_LVVV(("currentPciMapped->vendorId       = 0x%04X", currentPciMapped->vendorId));
-        EARLY_LVVV(("currentPciMapped->deviceId       = 0x%04X", currentPciMapped->deviceId));
-        EARLY_LVVV(("currentPciMapped->segmentNumber  = %u",     currentPciMapped->segmentNumber));
-        EARLY_LVVV(("currentPciMapped->busNumber      = %u",     currentPciMapped->busNumber));
-        EARLY_LVVV(("currentPciMapped->deviceNumber   = %u",     currentPciMapped->deviceNumber));
-        EARLY_LVVV(("currentPciMapped->functionNumber = %u",     currentPciMapped->functionNumber));
-        EARLY_LVVV(("currentPciMapped->romSize        = %u",     currentPciMapped->romSize));
+        EARLY_LVVV(("currentPciMapped->next           = 0x%p",        currentPciMapped->next));
+        EARLY_LVVV(("currentPciMapped->vendorId       = 0x%04X (%s)", currentPciMapped->vendorId, enumToHumanString(currentPciMapped->vendorId)));
+        EARLY_LVVV(("currentPciMapped->deviceId       = 0x%04X (%s)", currentPciMapped->deviceId, enumToHumanString(currentPciMapped->vendorId, currentPciMapped->deviceId)));
+        EARLY_LVVV(("currentPciMapped->segmentNumber  = %u",          currentPciMapped->segmentNumber));
+        EARLY_LVVV(("currentPciMapped->busNumber      = %u",          currentPciMapped->busNumber));
+        EARLY_LVVV(("currentPciMapped->deviceNumber   = %u",          currentPciMapped->deviceNumber));
+        EARLY_LVVV(("currentPciMapped->functionNumber = %u",          currentPciMapped->functionNumber));
+        EARLY_LVVV(("currentPciMapped->romSize        = %u",          currentPciMapped->romSize));
 
 
 

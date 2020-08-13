@@ -283,12 +283,12 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
         {
             for (i64 k = 0; k <= PCI_MAXIMUM_FUNCTION; ++k)
             {
-                u16 vendorId;
-                u64 address = UEFI_PCI_ADDRESS(i, j, k, (u64)PciRegister::VENDOR_ID);
+                PciVendor vendorId;
+                u64       address = UEFI_PCI_ADDRESS(i, j, k, (u64)PciRegister::VENDOR_ID);
 
                 if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT16, address, 1, &vendorId) == UefiStatus::SUCCESS)
                 {
-                    if (vendorId != 0xFFFF)
+                    if (vendorId != PciVendor::VENDOR_FFFF)
                     {
                         UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for PCI(%d/%d/%d)", vendorId, pci, i, j, k));
 
@@ -296,12 +296,12 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
                         PciDeviceIndependentRegion pciHeader;
 
-                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(pciHeader) / sizeof(u32), &pciHeader) == UefiStatus::SUCCESS)
+                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT64, address, sizeof(pciHeader) / sizeof(u64), &pciHeader) == UefiStatus::SUCCESS)
                         {
                             UEFI_LVV(("Successfully read PCI header from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
 
-                            UEFI_LVVV(("pciHeader.vendorId                     = 0x%04X",                 pciHeader.vendorId));
-                            UEFI_LVVV(("pciHeader.deviceId                     = 0x%04X",                 pciHeader.deviceId));
+                            UEFI_LVVV(("pciHeader.vendorId                     = 0x%04X (%s)",            pciHeader.vendorId, enumToHumanString(pciHeader.vendorId)));
+                            UEFI_LVVV(("pciHeader.deviceId                     = 0x%04X (%s)",            pciHeader.deviceId, enumToHumanString(pciHeader.vendorId, pciHeader.deviceId)));
                             UEFI_LVVV(("pciHeader.command                      = 0x%04X",                 pciHeader.command));
                             UEFI_LVVV(("pciHeader.status                       = 0x%04X",                 pciHeader.status));
                             UEFI_LVVV(("pciHeader.revisionId                   = %u",                     pciHeader.revisionId));
@@ -413,8 +413,8 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",         baseClass,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",           subClass,                                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",          interface,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",             enumToHumanString((PciVendor)pciHeader.vendorId),                                                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",        enumToHumanString((PciVendor)pciHeader.vendorId, pciHeader.deviceId),                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",             enumToHumanString(pciHeader.vendorId),                                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",        enumToHumanString(pciHeader.vendorId, pciHeader.deviceId),                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",            mprintf("%u",                     pci->segmentNumber),                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",                mprintf("%u",                     i),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",             mprintf("%u",                     j),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);

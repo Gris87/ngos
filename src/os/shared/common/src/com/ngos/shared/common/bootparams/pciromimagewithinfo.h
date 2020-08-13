@@ -5,22 +5,24 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 
+#include <com/ngos/shared/common/pci/database/generated/pcivendor.h>
+
 
 
 struct PciRomImageWithInfo
 {
     PciRomImageWithInfo *next;
 
-    u16 vendorId;
-    u16 deviceId;
+    PciVendor vendorId;
+    u16       deviceId;
 
-    u64 segmentNumber;
-    u64 busNumber;
-    u64 deviceNumber;
-    u64 functionNumber;
+    u64       segmentNumber;
+    u64       busNumber;
+    u64       deviceNumber;
+    u64       functionNumber;
 
-    u64 romSize;
-    u8  romImage[0];
+    u64       romSize;
+    u8        romImage[0];
 };
 
 
