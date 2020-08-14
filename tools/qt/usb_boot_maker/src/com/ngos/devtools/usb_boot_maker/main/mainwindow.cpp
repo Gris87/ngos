@@ -966,7 +966,7 @@ void MainWindow::handleGetFileListState()
             if (versions->length() > max)
             {
                 max          = versions->length();
-                generalGroup = (QList<const VersionInfo *> *)versions;
+                generalGroup = versions;
             }
         }
     }
