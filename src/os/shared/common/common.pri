@@ -1220,9 +1220,15 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertype.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcistatus.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \
-    $$PWD/src/com/ngos/shared/common/pci/pciheadertype.h \
     $$PWD/src/com/ngos/shared/common/pci/pciregister.h \
     $$PWD/src/com/ngos/shared/common/printf/printf.h \
     $$PWD/src/com/ngos/shared/common/random/random.h \

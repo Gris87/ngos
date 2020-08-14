@@ -1079,8 +1079,14 @@
 #include <com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h>
 #include <com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h>
 #include <com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h>
+#include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
+#include <com/ngos/shared/common/pci/lib/pcicommandflags.h>
+#include <com/ngos/shared/common/pci/lib/pcideviceselecttiming.h>
+#include <com/ngos/shared/common/pci/lib/pciheadertype.h>
+#include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
+#include <com/ngos/shared/common/pci/lib/pcistatus.h>
+#include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
-#include <com/ngos/shared/common/pci/pciheadertype.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
 #include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/time/time.h>
@@ -1473,6 +1479,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciBuiltInSelfTest),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                  2);
+        TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                           16);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0010),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0014),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice001C),                                   2);
@@ -2254,7 +2263,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFD),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFE),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                      16);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                           1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciHeaderTypeUnion),                              1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0101),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0105),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0106),                                1);
@@ -2277,6 +2288,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0C07),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
+        TEST_ASSERT_EQUALS(sizeof(PciStatus),                                       2);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass00),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass01),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass02),                                   1);
@@ -3867,35 +3879,197 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-    TEST_CASE("PciDeviceIndependentRegion");
+    TEST_CASE("PciBuiltInSelfTest");
     {
-        PciDeviceIndependentRegion temp;
+        PciBuiltInSelfTest temp;
 
 
 
-        //  PciDeviceIndependentRegion - headerTypeAndIsMultiFunction:
+        //  PciBuiltInSelfTest - value8:
+        // ===========================================================================
+        // |  capable : 1  |  startBist : 1  |  reserved : 2  |  completionCode : 4  |
+        // ===========================================================================
+
+
+
+        temp.value8 = 0x9D;         // ||  1  |  0  |  01  |  1101  ||
+
+        TEST_ASSERT_EQUALS(temp.completionCode, 13);
+        TEST_ASSERT_EQUALS(temp.reserved,       1);
+        TEST_ASSERT_EQUALS(temp.startBist,      0);
+        TEST_ASSERT_EQUALS(temp.capable,        1);
+
+
+
+        temp.completionCode = 10;   // ||  1  |  0  |  01  |  1010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x9A);
+
+
+
+        temp.reserved = 3;          // ||  1  |  0  |  11  |  1010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xBA);
+
+
+
+        temp.startBist = 1;         // ||  1  |  1  |  11  |  1010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xFA);
+
+
+
+        temp.capable = 0;           // ||  0  |  1  |  11  |  1010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x7A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHeaderTypeUnion");
+    {
+        PciHeaderTypeUnion temp;
+
+
+
+        //  PciHeaderTypeUnion - value8:
         // ============================================
         // |  isMultiFunction : 1  |  headerType : 7  |
         // ============================================
 
 
 
-        temp.headerTypeAndIsMultiFunction = 0x85;   // ||  1  |  0000101  ||
+        temp.value8 = 0x85;         // ||  1  |  0000101  ||
 
-        TEST_ASSERT_EQUALS(temp.headerType,      5);
+        TEST_ASSERT_EQUALS(temp.type,            5);
         TEST_ASSERT_EQUALS(temp.isMultiFunction, 1);
 
 
 
-        temp.headerType = 10;                       // ||  1  |  0001010  ||
+        temp.type = 10;             // ||  1  |  0001010  ||
 
-        TEST_ASSERT_EQUALS(temp.headerTypeAndIsMultiFunction, 0x8A);
+        TEST_ASSERT_EQUALS(temp.value8, 0x8A);
 
 
 
-        temp.isMultiFunction = 0;                   // ||  0  |  0001010  ||
+        temp.isMultiFunction = 0;   // ||  0  |  0001010  ||
 
-        TEST_ASSERT_EQUALS(temp.headerTypeAndIsMultiFunction, 0x0A);
+        TEST_ASSERT_EQUALS(temp.value8, 0x0A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciStatus");
+    {
+        PciStatus temp;
+
+
+
+        //  PciStatus - value16:
+        // =====================================================================================================================
+        // |     interruptStatus : 1     |                                    reserved : 3                                     |
+        // |  fastBackToBackCapable : 1  |       reserved1 : 1       |     support64MHz : 1      |    capabilitiesList : 1     |
+        // |   signaledTargetAbort : 1   |                 deviceSelectTiming : 2                |  masterDataParityError : 1  |
+        // |   detectedParityError : 1   |  signaledSystemError : 1  |  receivedMasterAbort : 1  |   receivedTargetAbort : 1   |
+        // =====================================================================================================================
+
+
+
+        temp.value16 = 0xAAAB;                  // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  1  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.reserved,              3);
+        TEST_ASSERT_EQUALS(temp.interruptStatus,       1);
+        TEST_ASSERT_EQUALS(temp.capabilitiesList,      0);
+        TEST_ASSERT_EQUALS(temp.support64MHz,          1);
+        TEST_ASSERT_EQUALS(temp.reserved1,             0);
+        TEST_ASSERT_EQUALS(temp.fastBackToBackCapable, 1);
+        TEST_ASSERT_EQUALS(temp.masterDataParityError, 0);
+        TEST_ASSERT_EQUALS(temp.deviceSelectTiming,    1);
+        TEST_ASSERT_EQUALS(temp.signaledTargetAbort,   1);
+        TEST_ASSERT_EQUALS(temp.receivedTargetAbort,   0);
+        TEST_ASSERT_EQUALS(temp.receivedMasterAbort,   1);
+        TEST_ASSERT_EQUALS(temp.signaledSystemError,   0);
+        TEST_ASSERT_EQUALS(temp.detectedParityError,   1);
+
+
+
+        temp.reserved = 1;                      // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  1  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAA9);
+
+
+
+        temp.interruptStatus = 0;               // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAA1);
+
+
+
+        temp.capabilitiesList = 1;              // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAB1);
+
+
+
+        temp.support64MHz = 0;                  // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAA91);
+
+
+
+        temp.reserved1 = 1;                     // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAD1);
+
+
+
+        temp.fastBackToBackCapable = 0;         // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAA51);
+
+
+
+        temp.masterDataParityError = 1;         // ||  1  |  0  |  1  |  0  |  1  |  01  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAB51);
+
+
+
+        temp.deviceSelectTiming = 3;            // ||  1  |  0  |  1  |  0  |  1  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAF51);
+
+
+
+        temp.signaledTargetAbort = 0;           // ||  1  |  0  |  1  |  0  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA751);
+
+
+
+        temp.receivedTargetAbort = 1;           // ||  1  |  0  |  1  |  1  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xB751);
+
+
+
+        temp.receivedMasterAbort = 0;           // ||  1  |  0  |  0  |  1  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9751);
+
+
+
+        temp.signaledSystemError = 1;           // ||  1  |  1  |  0  |  1  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD751);
+
+
+
+        temp.detectedParityError = 0;           // ||  0  |  1  |  0  |  1  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5751);
     }
     TEST_CASE_END();
 

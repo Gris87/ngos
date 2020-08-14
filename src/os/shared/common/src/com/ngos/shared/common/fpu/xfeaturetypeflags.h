@@ -3,8 +3,6 @@
 
 
 
-#include <com/ngos/shared/common/early/earlyassert.h>
-#include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/fpu/xfeature.h>
 #include <com/ngos/shared/common/ngos/flags.h>
 #include <com/ngos/shared/common/ngos/linkage.h>

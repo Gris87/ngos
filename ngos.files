@@ -2006,8 +2006,9 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfff
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
-src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcidevseltiming.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcistatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciconfigurationspace.h

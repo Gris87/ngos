@@ -11,6 +11,23 @@
 
 
 
+#define ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, name, flagsVar, format, flagType, mode) \
+    { \
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
+        \
+        for (i64 i = 0; i < (i64)(sizeof(flagsVar) * 8); ++i) \
+        { \
+            u64 flag = (1ULL << i); \
+            \
+            if (flagsVar.flags & flag) \
+            { \
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", mode), NgosStatus::ASSERTION); \
+            } \
+        } \
+    }
+
+
+
 ArrayList<DeviceManagerEntry *> DeviceManagerPci::sEntries;
 
 
@@ -410,26 +427,47 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                                 DeviceManagerEntry *deviceManagerEntry = new DeviceManagerEntry(DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
 
                                 // Ignore CppAlignmentVerifier [BEGIN]
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",         baseClass,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",           subClass,                                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",          interface,                                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",             enumToHumanString(pciHeader.vendorId),                                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name",        enumToHumanString(pciHeader.vendorId, pciHeader.deviceId),                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",            mprintf("%u",                     pci->segmentNumber),                                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",                mprintf("%u",                     i),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",             mprintf("%u",                     j),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function",           mprintf("%u",                     k),                                                                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor ID",          mprintf("0x%04X",                 pciHeader.vendorId),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device ID",          mprintf("0x%04X",                 pciHeader.deviceId),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Command",            mprintf("0x%04X",                 pciHeader.command),                                                      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",             mprintf("0x%04X",                 pciHeader.status),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision ID",        mprintf("%u",                     pciHeader.revisionId),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Class codes",        mprintf("0x%02X, 0x%02X, 0x%02X", pciHeader.classCode[2], pciHeader.classCode[1], pciHeader.classCode[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache line size",    mprintf("%u",                     pciHeader.cacheLineSize),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency timer",      mprintf("%u",                     pciHeader.latencyTimer),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header type",        strdup(enumToFullString((PciHeaderType)pciHeader.headerType)),                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-In self test", mprintf("%u",                     pciHeader.builtInSelfTest),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",  baseClass,                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",    subClass,                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",   interface,                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",      enumToHumanString(pciHeader.vendorId),                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name", enumToHumanString(pciHeader.vendorId, pciHeader.deviceId), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",     mprintf("%u",                     pci->segmentNumber),     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",         mprintf("%u",                     i),                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",      mprintf("%u",                     j),                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function",    mprintf("%u",                     k),                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor ID",   mprintf("0x%04X",                 pciHeader.vendorId),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device ID",   mprintf("0x%04X",                 pciHeader.deviceId),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+                                ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Command", pciHeader.command, "0x%04X", PciCommandFlag, DeviceManagerMode::EXPERT);
+
+
+
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                     mprintf("0x%04X",                 pciHeader.status.value16),                                               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt status",           pciHeader.status.interruptStatus       ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities list",          pciHeader.status.capabilitiesList      ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("66 MHz capable",             pciHeader.status.support64MHz          ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Fast back-to-back capable",  pciHeader.status.fastBackToBackCapable ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Master data parity error",   pciHeader.status.masterDataParityError ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device select timing",       strdup(enumToFullString((PciDeviceSelectTiming)pciHeader.status.deviceSelectTiming)),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Signaled target abort",      pciHeader.status.signaledTargetAbort   ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Received target abort",      pciHeader.status.receivedTargetAbort   ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Received master abort",      pciHeader.status.receivedMasterAbort   ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Signaled system error",      pciHeader.status.signaledSystemError   ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Detected parity error",      pciHeader.status.detectedParityError   ? "Yes" : "No",                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision ID",                mprintf("%u",                     pciHeader.revisionId),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Class codes",                mprintf("0x%02X, 0x%02X, 0x%02X", pciHeader.classCode[2], pciHeader.classCode[1], pciHeader.classCode[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache line size",            mprintf("%u",                     pciHeader.cacheLineSize),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency timer",              mprintf("%u",                     pciHeader.latencyTimer),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header type",                strdup(enumToFullString((PciHeaderType)pciHeader.headerType.type)),                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test",         mprintf("0x%02X",                 pciHeader.builtInSelfTest.value8),                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test capable", pciHeader.builtInSelfTest.capable ? "Yes" : "No",                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test result",  mprintf("%u",                     pciHeader.builtInSelfTest.completionCode),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
                                 // Ignore CppAlignmentVerifier [END]
+
+
 
                                 UEFI_ASSERT_EXECUTION(sEntries.append(deviceManagerEntry), NgosStatus::ASSERTION);
                             }
@@ -440,7 +478,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                             if (
                                 k == 0
                                 &&
-                                !pciHeader.isMultiFunction
+                                !pciHeader.headerType.isMultiFunction
                                )
                             {
                                 break;
