@@ -12,7 +12,7 @@
 
 struct PciConfigurationSpace
 {
-    PciDeviceIndependentRegion common;
+    PciDeviceIndependentRegion header;
 
     union
     {

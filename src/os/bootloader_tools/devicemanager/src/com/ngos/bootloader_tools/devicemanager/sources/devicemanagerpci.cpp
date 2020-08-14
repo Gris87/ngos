@@ -530,7 +530,7 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
 
 
 
-    switch ((PciHeaderType)configurationSpace.common.headerType.type)
+    switch ((PciHeaderType)configurationSpace.header.headerType.type)
     {
         case PciHeaderType::DEVICE:            UEFI_ASSERT_EXECUTION(initPciWithDeviceConfigurationSpace(configurationSpace),  NgosStatus::ASSERTION); break;
         case PciHeaderType::PCI_TO_PCI_BRIDGE: UEFI_ASSERT_EXECUTION(initPciWithBridgeConfigurationSpace(configurationSpace),  NgosStatus::ASSERTION); break;
@@ -538,7 +538,7 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
 
         default:
         {
-            UEFI_LF(("Unexpected PCI header type %s", enumToFullString((PciHeaderType)configurationSpace.common.headerType.type)));
+            UEFI_LF(("Unexpected PCI header type %s", enumToFullString((PciHeaderType)configurationSpace.header.headerType.type)));
         }
         break;
     }
