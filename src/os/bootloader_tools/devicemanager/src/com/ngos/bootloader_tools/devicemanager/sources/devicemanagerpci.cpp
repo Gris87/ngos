@@ -313,7 +313,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
                         PciDeviceIndependentRegion pciHeader;
 
-                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT64, address, sizeof(pciHeader) / sizeof(u64), &pciHeader) == UefiStatus::SUCCESS)
+                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(pciHeader) / sizeof(u32), &pciHeader) == UefiStatus::SUCCESS)
                         {
                             UEFI_LVV(("Successfully read PCI header from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
 
@@ -476,7 +476,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
                             PciConfigurationSpace configurationSpace;
 
-                            if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT64, address, sizeof(configurationSpace) / sizeof(u64), &configurationSpace) == UefiStatus::SUCCESS)
+                            if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
                             {
                                 UEFI_ASSERT_EXECUTION(initPciWithConfigurationSpace(configurationSpace), NgosStatus::ASSERTION);
                             }
