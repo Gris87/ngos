@@ -933,15 +933,15 @@ void MainWindow::handleGetFileListState()
 
 
 
-            const QList<const VersionInfo *> &versions = it.value();
+            const QList<const VersionInfo *> *versions = &it.value();
 
 
 
-            const VersionInfo *firstVersionInfo = versions.constFirst();
+            const VersionInfo *firstVersionInfo = versions->constFirst();
 
-            for (qint64 j = 1; j < versions.length(); ++j)
+            for (qint64 j = 1; j < versions->length(); ++j)
             {
-                const VersionInfo *versionInfo = versions.at(j);
+                const VersionInfo *versionInfo = versions->at(j);
 
                 if (
                     versionInfo->id != firstVersionInfo->id
@@ -963,10 +963,10 @@ void MainWindow::handleGetFileListState()
 
 
 
-            if (versions.length() > max)
+            if (versions->length() > max)
             {
-                max          = versions.length();
-                generalGroup = (QList<const VersionInfo *> *)&versions;
+                max          = versions->length();
+                generalGroup = (QList<const VersionInfo *> *)versions;
             }
         }
     }
