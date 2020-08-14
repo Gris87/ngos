@@ -474,6 +474,19 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
 
 
+                            PciConfigurationSpace configurationSpace;
+
+                            if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT64, address, sizeof(configurationSpace) / sizeof(u64), &configurationSpace) == UefiStatus::SUCCESS)
+                            {
+                                UEFI_ASSERT_EXECUTION(initPciWithConfigurationSpace(configurationSpace), NgosStatus::ASSERTION);
+                            }
+                            else
+                            {
+                                UEFI_LE(("Failed to read PCI configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
+                            }
+
+
+
                             // If device is not multi-function then there is no need to check for remaining functions
                             if (
                                 k == 0
@@ -505,6 +518,69 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
             }
         }
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace)
+{
+    UEFI_LT((" | configurationSpace = ..."));
+
+
+
+    switch ((PciHeaderType)configurationSpace.common.headerType.type)
+    {
+        case PciHeaderType::DEVICE:            UEFI_ASSERT_EXECUTION(initPciWithDeviceConfigurationSpace(configurationSpace),  NgosStatus::ASSERTION); break;
+        case PciHeaderType::PCI_TO_PCI_BRIDGE: UEFI_ASSERT_EXECUTION(initPciWithBridgeConfigurationSpace(configurationSpace),  NgosStatus::ASSERTION); break;
+        case PciHeaderType::CARDBUS_BRIDGE:    UEFI_ASSERT_EXECUTION(initPciWithCardBusConfigurationSpace(configurationSpace), NgosStatus::ASSERTION); break;
+
+        default:
+        {
+            UEFI_LF(("Unexpected PCI header type %s", enumToFullString((PciHeaderType)configurationSpace.common.headerType.type)));
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace)
+{
+    UEFI_LT((" | configurationSpace = ..."));
+
+
+
+    AVOID_UNUSED(configurationSpace);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace)
+{
+    UEFI_LT((" | configurationSpace = ..."));
+
+
+
+    AVOID_UNUSED(configurationSpace);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace)
+{
+    UEFI_LT((" | configurationSpace = ..."));
+
+
+
+    AVOID_UNUSED(configurationSpace);
 
 
 

@@ -1227,7 +1227,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcistatus.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \
     $$PWD/src/com/ngos/shared/common/pci/pciregister.h \
     $$PWD/src/com/ngos/shared/common/printf/printf.h \

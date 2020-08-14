@@ -1085,7 +1085,10 @@
 #include <com/ngos/shared/common/pci/lib/pciheadertype.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
+#include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
+#include <com/ngos/shared/common/pci/pcicardbuscontrolregister.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
+#include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
 #include <com/ngos/shared/common/serial/serial.h>
@@ -1479,9 +1482,11 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciBridgeControlRegister),                        48);
         TEST_ASSERT_EQUALS(sizeof(PciBuiltInSelfTest),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PciCardBusControlRegister),                       48);
         TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                  2);
-        TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                           16);
+        TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                           256);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0010),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0014),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice001C),                                   2);
@@ -2262,6 +2267,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceFEDE),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFD),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceFFFE),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDeviceHeaderTypeRegion),                       48);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                      16);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                           1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                   1);

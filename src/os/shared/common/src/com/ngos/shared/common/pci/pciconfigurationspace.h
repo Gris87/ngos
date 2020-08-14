@@ -3,6 +3,9 @@
 
 
 
+#include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
+#include <com/ngos/shared/common/pci/pcicardbuscontrolregister.h>
+#include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
 
 
@@ -10,6 +13,15 @@
 struct PciConfigurationSpace
 {
     PciDeviceIndependentRegion common;
+
+    union
+    {
+        PciDeviceHeaderTypeRegion device;
+        PciBridgeControlRegister  bridge;
+        PciCardBusControlRegister cardBus;
+    };
+
+    u8 __pad[190];
 };
 
 

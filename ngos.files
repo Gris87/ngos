@@ -2011,7 +2011,10 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcistatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciconfigurationspace.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciregister.h
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.cpp

@@ -24,7 +24,7 @@ struct PciDeviceIndependentRegion
     u8                 latencyTimer;
     PciHeaderTypeUnion headerType;
     PciBuiltInSelfTest builtInSelfTest;
-} __attribute__((packed));
+};
 
 
 

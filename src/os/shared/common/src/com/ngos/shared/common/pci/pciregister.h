@@ -30,7 +30,7 @@ enum class PciRegister: u8
     CAPABILITY_POINTER         = 0x34,
     INTERRUPT_LINE             = 0x3C,
     INTERRUPT_PIN              = 0x3D,
-    MAX_GRANT                  = 0x3E,
+    MIN_GRANT                  = 0x3E,
     MAX_LATENCY                = 0x3F
 };
 
@@ -62,7 +62,7 @@ inline const char8* enumToString(PciRegister reg) // TEST: NO
         case PciRegister::CAPABILITY_POINTER:         return "CAPABILITY_POINTER";
         case PciRegister::INTERRUPT_LINE:             return "INTERRUPT_LINE";
         case PciRegister::INTERRUPT_PIN:              return "INTERRUPT_PIN";
-        case PciRegister::MAX_GRANT:                  return "MAX_GRANT";
+        case PciRegister::MIN_GRANT:                  return "MIN_GRANT";
         case PciRegister::MAX_LATENCY:                return "MAX_LATENCY";
 
         default: return "UNKNOWN";

@@ -917,7 +917,7 @@ void MainWindow::handleGetFileListState()
 
 
 
-    QList<const VersionInfo *> *generalGroup = nullptr;
+    const QList<const VersionInfo *> *generalGroup = nullptr;
 
     // Find version that more spread among servers
     {
