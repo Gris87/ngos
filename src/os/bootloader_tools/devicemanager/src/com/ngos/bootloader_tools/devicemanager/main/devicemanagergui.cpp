@@ -537,7 +537,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForMemoryMap(Image *toolButtonNormal
 
 // TODO: Get output of 'devices' command
 // TODO: Get output of 'drivers' command
-// TODO: Get list of HDD drivers
+// TODO: Get list of HDD devices
 
 NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry)
 {

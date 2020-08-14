@@ -67,7 +67,6 @@ QString SearchDependenciesThread::takeSource()
             --sNumberOfBlockedThreads;
 
             QString res = *sSources.constBegin();
-
             sSources.erase(sSources.constBegin());
 
             return res;
@@ -84,6 +83,8 @@ void SearchDependenciesThread::addDependencies(const QString &source, const QSet
     QMutexLocker lock(&sSourcesMutex);
 
     sDependencies.insert(source, dependencies);
+
+
 
     QSetIterator<QString> it(dependencies);
 
