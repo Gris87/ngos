@@ -6,13 +6,13 @@
 
 
 
-QStringList                 SearchDependenciesThread::sIncludes;
-QStringList                 SearchDependenciesThread::sSources;
-qint64                      SearchDependenciesThread::sNumberOfThreads;
-qint64                      SearchDependenciesThread::sNumberOfBlockedThreads;
-QHash<QString, QStringList> SearchDependenciesThread::sDependencies;
-QMutex                      SearchDependenciesThread::sSourcesMutex;
-QSemaphore                  SearchDependenciesThread::sSourcesSemaphore;
+QStringList                   SearchDependenciesThread::sIncludes;
+QSet<QString>                 SearchDependenciesThread::sSources;
+qint64                        SearchDependenciesThread::sNumberOfThreads;
+qint64                        SearchDependenciesThread::sNumberOfBlockedThreads;
+QHash<QString, QSet<QString>> SearchDependenciesThread::sDependencies;
+QMutex                        SearchDependenciesThread::sSourcesMutex;
+QSemaphore                    SearchDependenciesThread::sSourcesSemaphore;
 
 
 
@@ -26,11 +26,11 @@ SearchDependenciesThread::SearchDependenciesThread(const QString &workingDirecto
 void SearchDependenciesThread::init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads)
 {
     sIncludes               = includes;
-    sSources                = sources;
+    sSources                = QSet<QString>(sources.begin(), sources.end());
     sNumberOfThreads        = numberOfThreads;
     sNumberOfBlockedThreads = 0;
 
-    sSourcesSemaphore.release(sSources.length());
+    sSourcesSemaphore.release(sSources.size());
 }
 
 QString SearchDependenciesThread::takeSource()
@@ -45,7 +45,7 @@ QString SearchDependenciesThread::takeSource()
         if (
             sNumberOfBlockedThreads >= sNumberOfThreads
             &&
-            sSources.length() <= 0
+            sSources.size() <= 0
            )
         {
             skipSemaphore = true;
@@ -62,11 +62,15 @@ QString SearchDependenciesThread::takeSource()
     {
         QMutexLocker lock(&sSourcesMutex);
 
-        if (sSources.length() > 0)
+        if (sSources.size() > 0)
         {
             --sNumberOfBlockedThreads;
 
-            return sSources.takeFirst();
+            QString res = *sSources.constBegin();
+
+            sSources.erase(sSources.constBegin());
+
+            return res;
         }
 
         sSourcesSemaphore.release();
@@ -75,15 +79,17 @@ QString SearchDependenciesThread::takeSource()
     }
 }
 
-void SearchDependenciesThread::addDependencies(const QString &source, const QStringList &dependencies)
+void SearchDependenciesThread::addDependencies(const QString &source, const QSet<QString> &dependencies)
 {
     QMutexLocker lock(&sSourcesMutex);
 
     sDependencies.insert(source, dependencies);
 
-    for (qint64 i = 0; i < dependencies.length(); ++i)
+    QSetIterator<QString> it(dependencies);
+
+    while (it.hasNext())
     {
-        const QString &dependency = dependencies.at(i);
+        const QString &dependency = it.next();
 
         if (
             !sSources.contains(dependency)
@@ -91,25 +97,29 @@ void SearchDependenciesThread::addDependencies(const QString &source, const QStr
             !sDependencies.contains(dependency)
            )
         {
-            sSources.append(dependency);
+            sSources.insert(dependency);
             sSourcesSemaphore.release();
         }
     }
 }
 
-QHash<QString, QStringList> SearchDependenciesThread::buildDependenciesMap()
+QHash<QString, QSet<QString>> SearchDependenciesThread::buildDependenciesMap()
 {
-    QHash<QString, QStringList> res;
+    QHash<QString, QSet<QString>> res;
 
-    for (QHash<QString, QStringList>::Iterator i = sDependencies.begin(); i != sDependencies.end(); ++i)
+    QHashIterator<QString, QSet<QString>> it(sDependencies);
+
+    while (it.hasNext())
     {
-        buildDependenciesForSource(i.key(), res);
+        it.next();
+
+        buildDependenciesForSource(it.key(), res);
     }
 
     return res;
 }
 
-QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &source, QHash<QString, QStringList> &dependenciesMap)
+QSet<QString> SearchDependenciesThread::buildDependenciesForSource(const QString &source, QHash<QString, QSet<QString>> &dependenciesMap)
 {
     if (dependenciesMap.contains(source))
     {
@@ -118,30 +128,26 @@ QStringList SearchDependenciesThread::buildDependenciesForSource(const QString &
 
 
 
-    QStringList res = sDependencies.value(source);
+    QSet<QString> res = sDependencies.value(source);
 
     dependenciesMap.insert(source, res); // Insert here to avoid infinite loops
 
-    for (qint64 i = 0; i < res.length(); ++i)
+
+
+    QSet<QString> newDependencies;
+
+
+
+    QSetIterator<QString> it(res);
+
+    while (it.hasNext())
     {
-        QStringList nextDependencies = buildDependenciesForSource(res.at(i), dependenciesMap);
-
-
-
-        for (qint64 j = 0; j < nextDependencies.length(); ++j)
-        {
-            QString nextDependency = nextDependencies.at(j);
-
-            if (!res.contains(nextDependency))
-            {
-                res.append(nextDependency);
-            }
-        }
+        newDependencies.unite(buildDependenciesForSource(it.next(), dependenciesMap));
     }
 
 
 
-    res.sort();
+    res.unite(newDependencies);
     dependenciesMap.insert(source, res);
 
 
@@ -179,7 +185,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
 
 
 
-    QStringList dependencies;
+    QSet<QString> dependencies;
 
 
 
@@ -219,13 +225,13 @@ bool SearchDependenciesThread::handleSource(const QString &source)
 
                 if (QFile::exists(parentFolder + includedFile))
                 {
-                    dependencies.append(QFileInfo(parentFolder + includedFile).absoluteFilePath());
+                    dependencies.insert(QFileInfo(parentFolder + includedFile).absoluteFilePath());
                 }
                 else
                 {
                     if (QFile::exists(mWorkingDirectory + '/' + includedFile))
                     {
-                        dependencies.append(QFileInfo(mWorkingDirectory + '/' + includedFile).absoluteFilePath());
+                        dependencies.insert(QFileInfo(mWorkingDirectory + '/' + includedFile).absoluteFilePath());
                     }
                     else
                     {
@@ -239,7 +245,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                             {
                                 found = true;
 
-                                dependencies.append(QFileInfo(path).absoluteFilePath());
+                                dependencies.insert(QFileInfo(path).absoluteFilePath());
 
                                 break;
                             }
@@ -285,7 +291,7 @@ void SearchDependenciesThread::run()
 
         if (!handleSource(source))
         {
-            addDependencies(source, QStringList());
+            addDependencies(source, QSet<QString>());
         }
     } while(true);
 }

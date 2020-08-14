@@ -535,6 +535,10 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForMemoryMap(Image *toolButtonNormal
     return NgosStatus::OK;
 }
 
+// TODO: Get output of 'devices' command
+// TODO: Get output of 'drivers' command
+// TODO: Get list of HDD drivers
+
 NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry)
 {
     UEFI_LT((" | entry = 0x%p", entry));

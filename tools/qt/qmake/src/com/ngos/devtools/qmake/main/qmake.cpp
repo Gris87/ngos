@@ -800,7 +800,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
 
 
-    QHash<QString, QStringList> dependenciesMap = SearchDependenciesThread::buildDependenciesMap();
+    QHash<QString, QSet<QString>> dependenciesMap = SearchDependenciesThread::buildDependenciesMap();
 
     QMapIterator<QString, QString> it(mSourceToObjectMap);
 
@@ -820,7 +820,12 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
             return 1;
         }
 
-        QStringList dependencies = dependenciesMap.value(source);
+
+
+        QSet<QString> dependenciesSet = dependenciesMap.value(source);
+        QStringList   dependencies    = QStringList(dependenciesSet.begin(), dependenciesSet.end());
+
+        dependencies.sort();
 
 
 

@@ -97,7 +97,17 @@ NgosStatus DeviceManagerMemoryMap::init()
 
         summary[(u64)memoryDescriptor->type] += size;
 
-        totalMemory += size;
+
+
+        // Some memory types are not related to physical memory
+        if (
+            memoryDescriptor->type != UefiMemoryType::MEMORY_MAPPED_IO
+            &&
+            memoryDescriptor->type != UefiMemoryType::MEMORY_MAPPED_IO_PORT_SPACE
+           )
+        {
+            totalMemory += size;
+        }
 
 
 
