@@ -9,9 +9,6 @@ CppForVerifier::CppForVerifier()
     , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .+$")
     , mConditionRegexp("^(?:(\\w) [<>]=? .+|\\*(\\w+))$")
     , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")
-    , mInitQHashRegexp("^QHash<.+>::Iterator (\\w) = .+\\.begin\\(\\)$")
-    , mConditionQHashRegexp("^(\\w) != .+\\.end\\(\\)$")
-    , mStepQHashRegexp("^\\+\\+(\\w)$")
 {
     // Nothing
 }
@@ -52,18 +49,9 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
             if (fields.length() == 3)
             {
-                QRegularExpressionMatch initMatch      = mInitQHashRegexp.match(fields.at(0).trimmed());
-                QRegularExpressionMatch conditionMatch = mConditionQHashRegexp.match(fields.at(1).trimmed());
-                QRegularExpressionMatch stepMatch      = mStepQHashRegexp.match(fields.at(2).trimmed());
-
-
-
-                if (!initMatch.hasMatch())
-                {
-                    initMatch      = mInitRegexp.match(fields.at(0).trimmed());
-                    conditionMatch = mConditionRegexp.match(fields.at(1).trimmed());
-                    stepMatch      = mStepRegexp.match(fields.at(2).trimmed());
-                }
+                QRegularExpressionMatch initMatch      = mInitRegexp.match(fields.at(0).trimmed());
+                QRegularExpressionMatch conditionMatch = mConditionRegexp.match(fields.at(1).trimmed());
+                QRegularExpressionMatch stepMatch      = mStepRegexp.match(fields.at(2).trimmed());
 
 
 

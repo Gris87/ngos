@@ -21,9 +21,6 @@ private:
     QRegularExpression mInitRegexp;
     QRegularExpression mConditionRegexp;
     QRegularExpression mStepRegexp;
-    QRegularExpression mInitQHashRegexp;
-    QRegularExpression mConditionQHashRegexp;
-    QRegularExpression mStepQHashRegexp;
 };
 
 

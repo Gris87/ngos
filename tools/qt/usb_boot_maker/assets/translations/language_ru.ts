@@ -281,12 +281,12 @@ All data on the device will be destroyed!</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="936"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="956"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1028"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1049"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Создание загрузочного USB флеш диска на устройстве &quot;%1&quot;</translation>
     </message>
@@ -301,7 +301,7 @@ All data on the device will be destroyed!</source>
         <translation>Получение информации о последней версии %1 от серверов</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1042"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1063"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>

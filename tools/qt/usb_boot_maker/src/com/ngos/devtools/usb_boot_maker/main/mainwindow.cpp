@@ -899,54 +899,75 @@ void MainWindow::handleGetFileListState()
 
     QHash<quint64, QList<const VersionInfo *>> versionGroups;
 
-    for (QHash<QString, VersionInfo>::Iterator i = mLatestVersions.begin(); i != mLatestVersions.end(); ++i)
+    // Fill versionGroups
     {
-        const VersionInfo *versionInfo = &i.value();
+        QHashIterator<QString, VersionInfo> it(mLatestVersions);
 
-        versionGroups[versionInfo->version].append(versionInfo);
+        while (it.hasNext())
+        {
+            it.next();
+
+
+
+            const VersionInfo *versionInfo = &it.value();
+
+            versionGroups[versionInfo->version].append(versionInfo);
+        }
     }
 
 
 
-    qint64                      max          = 0;
-    QList<const VersionInfo *> *generalGroup = 0;
+    QList<const VersionInfo *> *generalGroup = nullptr;
 
-    for (QHash<quint64, QList<const VersionInfo *>>::Iterator i = versionGroups.begin(); i != versionGroups.end(); ++i)
+    // Find version that more spread among servers
     {
-        QList<const VersionInfo *> *versions = &i.value();
+        qint64 max = 0;
 
 
 
-        const VersionInfo *firstVersionInfo = versions->constFirst();
+        QHashIterator<quint64, QList<const VersionInfo *>> it(versionGroups);
 
-        for (qint64 j = 1; j < versions->length(); ++j)
+        while (it.hasNext())
         {
-            const VersionInfo *versionInfo = versions->at(j);
+            it.next();
 
-            if (
-                versionInfo->id != firstVersionInfo->id
-                ||
-                versionInfo->version != firstVersionInfo->version
-                ||
-                versionInfo->hash != firstVersionInfo->hash
-               )
+
+
+            const QList<const VersionInfo *> &versions = it.value();
+
+
+
+            const VersionInfo *firstVersionInfo = versions.constFirst();
+
+            for (qint64 j = 1; j < versions.length(); ++j)
             {
-                switchToInitialState();
+                const VersionInfo *versionInfo = versions.at(j);
 
-                addLog(tr("Database is broken"));
+                if (
+                    versionInfo->id != firstVersionInfo->id
+                    ||
+                    versionInfo->version != firstVersionInfo->version
+                    ||
+                    versionInfo->hash != firstVersionInfo->hash
+                   )
+                {
+                    switchToInitialState();
+
+                    addLog(tr("Database is broken"));
 
 
 
-                return;
+                    return;
+                }
             }
-        }
 
 
 
-        if (versions->length() > max)
-        {
-            max          = versions->length();
-            generalGroup = versions;
+            if (versions.length() > max)
+            {
+                max          = versions.length();
+                generalGroup = (QList<const VersionInfo *> *)&versions;
+            }
         }
     }
 
@@ -1084,9 +1105,15 @@ void MainWindow::resetToInitialState()
 
 void MainWindow::abortReplies()
 {
-    for (QHash<QString, QNetworkReply *>::Iterator i = mReplies.begin(); i != mReplies.end(); ++i)
+    QHashIterator<QString, QNetworkReply *> it(mReplies);
+
+    while (it.hasNext())
     {
-        QNetworkReply *reply = i.value();
+        it.next();
+
+
+
+        QNetworkReply *reply = it.value();
 
         reply->blockSignals(true);
         reply->abort();
