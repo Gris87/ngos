@@ -4599,8 +4599,8 @@ inline const char8* enumToHumanString(PciDevice10DE device10DE) // TEST: NO
         case PciDevice10DE::DEVICE_1E02: return "TU102 [TITAN RTX]";
         case PciDevice10DE::DEVICE_1E04: return "TU102 [GeForce RTX 2080 Ti]";
         case PciDevice10DE::DEVICE_1E07: return "TU102 [GeForce RTX 2080 Ti Rev. A]";
-        case PciDevice10DE::DEVICE_1E2D: return "TU102B";
-        case PciDevice10DE::DEVICE_1E2E: return "TU102B";
+        case PciDevice10DE::DEVICE_1E2D: return "TU102 [GeForce RTX 2080 Ti Engineering Sample]";
+        case PciDevice10DE::DEVICE_1E2E: return "TU102 [GeForce RTX 2080 Ti 12GB Engineering Sample]";
         case PciDevice10DE::DEVICE_1E30: return "TU102GL [Quadro RTX 6000/8000]";
         case PciDevice10DE::DEVICE_1E36: return "TU102GL [Quadro RTX 6000]";
         case PciDevice10DE::DEVICE_1E37: return "TU102GL [GRID RTX T10-4/T10-8/T10-16]";

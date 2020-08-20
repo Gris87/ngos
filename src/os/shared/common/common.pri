@@ -1112,6 +1112,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e0f/pcidevice1e0f.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e24/pcidevice1e24.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e36/pcidevice1e36.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e38/pcidevice1e38.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e4b/pcidevice1e4b.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e4c/pcidevice1e4c.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h \
@@ -1221,6 +1222,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcicapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertype.h \
@@ -1228,6 +1230,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcistatus.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
     $$PWD/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcicapabilityheader.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h \

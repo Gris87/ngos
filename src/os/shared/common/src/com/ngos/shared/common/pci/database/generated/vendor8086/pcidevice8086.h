@@ -8640,7 +8640,7 @@ inline const char8* enumToHumanString(PciDevice8086 device8086) // TEST: NO
         case PciDevice8086::DEVICE_18A0: return "C4xxx Series QAT";
         case PciDevice8086::DEVICE_18A1: return "C4XXX Series QAT Virtual Function";
         case PciDevice8086::DEVICE_1900: return "Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers";
-        case PciDevice8086::DEVICE_1901: return "Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x16)";
+        case PciDevice8086::DEVICE_1901: return "6th-9th Gen Core Processor PCIe Controller (x16)";
         case PciDevice8086::DEVICE_1902: return "HD Graphics 510";
         case PciDevice8086::DEVICE_1903: return "Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Thermal Subsystem";
         case PciDevice8086::DEVICE_1904: return "Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers";

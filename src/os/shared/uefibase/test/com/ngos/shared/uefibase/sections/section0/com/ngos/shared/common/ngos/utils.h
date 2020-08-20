@@ -123,6 +123,35 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
 
 
 
+    TEST_CASE("OFFSET_OF()");
+    {
+        struct TestStruct
+        {
+            u8  a;
+            u16 b;
+            u32 c;
+            u64 d;
+            u16 e;
+            u8  f;
+            u64 g;
+            u32 h;
+        };
+
+
+
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, a), 0);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, b), 2);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, c), 4);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, d), 8);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, e), 16);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, f), 18);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, g), 24);
+        TEST_ASSERT_EQUALS(OFFSET_OF(TestStruct, h), 32);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("IS_ALIGNED()");
     {
         TEST_ASSERT_EQUALS(IS_ALIGNED(1, 1), true);

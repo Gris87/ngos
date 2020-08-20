@@ -971,6 +971,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1e0f/pcidevice1e0f.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e24/pcidevice1e24.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e36/pcidevice1e36.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1e38/pcidevice1e38.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e4b/pcidevice1e4b.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e4c/pcidevice1e4c.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h>
@@ -1080,12 +1081,14 @@
 #include <com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h>
 #include <com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h>
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
+#include <com/ngos/shared/common/pci/lib/pcicapability.h>
 #include <com/ngos/shared/common/pci/lib/pcicommandflags.h>
 #include <com/ngos/shared/common/pci/lib/pcideviceselecttiming.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertype.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
 #include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
+#include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pcicardbuscontrolregister.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
@@ -1484,6 +1487,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                    1);
         TEST_ASSERT_EQUALS(sizeof(PciBridgeControlRegister),                        48);
         TEST_ASSERT_EQUALS(sizeof(PciBuiltInSelfTest),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PciCapability),                                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciCapabilityHeader),                             2);
         TEST_ASSERT_EQUALS(sizeof(PciCardBusControlRegister),                       48);
         TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                  2);
         TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                           256);
@@ -2159,6 +2164,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E0F),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E24),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E36),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1E38),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E4B),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E4C),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E57),                                   2);

@@ -5,6 +5,7 @@
 
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
 
@@ -27,10 +28,12 @@ private:
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProtocol *pci, UefiAcpiAddressSpaceDescriptor *resources); // TEST: NO
     static NgosStatus initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, i64 minimumBus, i64 maximumBus); // TEST: NO
-    static NgosStatus initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace); // TEST: NO
-    static NgosStatus initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace); // TEST: NO
-    static NgosStatus initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace); // TEST: NO
-    static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace); // TEST: NO
+    static NgosStatus initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

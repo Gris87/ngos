@@ -23,7 +23,11 @@
 
 
 
-#define IS_ALIGNED(a, b) (!((u64)(a) & ((u64)(b) - 1)))
+#define OFFSET_OF(type, field) ((u64)&(((type *)nullptr)->field))
+
+
+
+#define IS_ALIGNED(a, b) (((u64)(a) & ((u64)(b) - 1)) == 0)
 #define IS_POWER_OF_2(a) IS_ALIGNED(a, a)
 
 
