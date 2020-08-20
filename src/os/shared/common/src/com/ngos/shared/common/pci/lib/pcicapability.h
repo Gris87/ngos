@@ -52,7 +52,7 @@ inline const char8* enumToString(PciCapability capability) // TEST: NO
         case PciCapability::CENTRAL_RESOURCE_CONTROL:      return "CENTRAL_RESOURCE_CONTROL";
         case PciCapability::HOT_PLUG:                      return "HOT_PLUG";
         case PciCapability::ACCELERATED_GRAPHICS_PORT_8X:  return "ACCELERATED_GRAPHICS_PORT_8X";
-        case PciCapability::PCIEXP:                        return "PCIEXP";
+        case PciCapability::PCI_EXPRESS:                   return "PCI_EXPRESS";
         case PciCapability::MESSAGE_SIGNALED_INTERRUPTS_X: return "MESSAGE_SIGNALED_INTERRUPTS_X";
 
         default: return "UNKNOWN";

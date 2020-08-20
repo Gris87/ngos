@@ -1896,6 +1896,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1df
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e0f/pcidevice1e0f.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e24/pcidevice1e24.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e36/pcidevice1e36.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e38/pcidevice1e38.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e4b/pcidevice1e4b.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e4c/pcidevice1e4c.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h
