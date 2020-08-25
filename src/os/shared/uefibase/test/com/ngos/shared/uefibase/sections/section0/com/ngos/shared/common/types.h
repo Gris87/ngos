@@ -258,6 +258,8 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h>
@@ -1080,15 +1082,24 @@
 #include <com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h>
 #include <com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h>
 #include <com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h>
+#include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h>
+#include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportrateflags.h>
+#include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h>
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
-#include <com/ngos/shared/common/pci/lib/pcicapability.h>
 #include <com/ngos/shared/common/pci/lib/pcicommandflags.h>
 #include <com/ngos/shared/common/pci/lib/pcideviceselecttiming.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertype.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementauxcurrent.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementbridgesupportextensions.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementcapabilities.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementcontrolstatus.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
 #include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
+#include <com/ngos/shared/common/pci/pcicapabilitytype.h>
 #include <com/ngos/shared/common/pci/pcicardbuscontrolregister.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
@@ -1484,11 +1495,15 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                      8);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                       40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                     104);
+        TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortCapability),            12);
+        TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortCommand),               4);
+        TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortRateFlag),              1);
+        TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortStatus),                4);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                    1);
         TEST_ASSERT_EQUALS(sizeof(PciBridgeControlRegister),                        48);
         TEST_ASSERT_EQUALS(sizeof(PciBuiltInSelfTest),                              1);
-        TEST_ASSERT_EQUALS(sizeof(PciCapability),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciCapabilityHeader),                             2);
+        TEST_ASSERT_EQUALS(sizeof(PciCapabilityType),                               1);
         TEST_ASSERT_EQUALS(sizeof(PciCardBusControlRegister),                       48);
         TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                  2);
         TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                           256);
@@ -2298,6 +2313,13 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0C00),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0C03),                                1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0C07),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementAuxCurrent),                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementBridgeSupportExtensions),       1);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementCapabilities),                  2);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementControlStatus),                 2);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementInterfaceCapability),           8);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementPowerState),                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciPowerManagementSupportPmeFlag),                1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
         TEST_ASSERT_EQUALS(sizeof(PciStatus),                                       2);
@@ -3891,6 +3913,129 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciAcceleratedGraphicsPortCommand");
+    {
+        PciAcceleratedGraphicsPortCommand temp;
+
+
+
+        //  PciAcceleratedGraphicsPortCommand - value32:
+        // =====================================================================================================
+        // |                                 maximumNumberOfCommandRequests : 8                                |
+        // |                                     __reserved2 ... : 8 (14)                                      |
+        // |  ... __reserved2 : 6 (14)  |  enableSideBandAddressing : 1  |  enableAcceleratedGraphicsPort : 1  |
+        // |  __reserved : 5  |                                    rate : 3                                    |
+        // =====================================================================================================
+
+
+
+        temp.value32 = 0x4D4D9563;                  // ||  01001101  ||  01001101  ...  100101  |  0  |  1  ||  01100  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.rate,                           3);
+        TEST_ASSERT_EQUALS(temp.__reserved,                     12);
+        TEST_ASSERT_EQUALS(temp.enableAcceleratedGraphicsPort,  1);
+        TEST_ASSERT_EQUALS(temp.enableSideBandAddressing,       0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                    4965);
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, 77);
+
+
+
+        temp.rate = 4;                              // ||  01001101  ||  01001101  ...  100101  |  0  |  1  ||  01100  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D9564);
+
+
+
+        temp.__reserved = 5;                        // ||  01001101  ||  01001101  ...  100101  |  0  |  1  ||  00101  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D952C);
+
+
+
+        temp.enableAcceleratedGraphicsPort = 0;     // ||  01001101  ||  01001101  ...  100101  |  0  |  0  ||  00101  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D942C);
+
+
+
+        temp.enableSideBandAddressing = 1;          // ||  01001101  ||  01001101  ...  100101  |  1  |  0  ||  00101  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D962C);
+
+
+
+        temp.__reserved2 = 9876;                    // ||  01001101  ||  10011010  ...  010100  |  1  |  0  ||  00101  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D9A522C);
+
+
+
+        temp.maximumNumberOfCommandRequests = 7;    // ||  00000111  ||  10011010  ...  010100  |  1  |  0  ||  00101  |  100  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x079A522C);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciAcceleratedGraphicsPortStatus");
+    {
+        PciAcceleratedGraphicsPortStatus temp;
+
+
+
+        //  PciAcceleratedGraphicsPortStatus - value32:
+        // ===========================================================================================
+        // |                            maximumNumberOfCommandRequests : 8                           |
+        // |                                __reserved2 : 8 (14) ...                                 |
+        // |  ... __reserved2 : 6 (14)  |  supportSideBandAddressing : 1  |  __reserved : 1 (7) ...  |
+        // |   ... __reserved : 6 (7)   |                          rate : 2                          |
+        // ===========================================================================================
+
+
+
+        temp.value32 = 0x4D4D9563;                  // ||  01001101  ||  01001101  ...  100101  |  0  |  1  ...  011000  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.rate,                           3);
+        TEST_ASSERT_EQUALS(temp.__reserved,                     88);
+        TEST_ASSERT_EQUALS(temp.supportSideBandAddressing,      0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                    4965);
+        TEST_ASSERT_EQUALS(temp.maximumNumberOfCommandRequests, 77);
+
+
+
+        temp.rate = 1;                              // ||  01001101  ||  01001101  ...  100101  |  0  |  1  ...  011000  |  01  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D9561);
+
+
+
+        temp.__reserved = 5;                        // ||  01001101  ||  01001101  ...  100101  |  0  |  0  ...  000101  |  01  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D9415);
+
+
+
+        temp.supportSideBandAddressing = 1;         // ||  01001101  ||  01001101  ...  100101  |  1  |  0  ...  000101  |  01  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D4D9615);
+
+
+
+        temp.__reserved2 = 9876;                    // ||  01001101  ||  10011010  ...  010100  |  1  |  0  ...  000101  |  01  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x4D9A5215);
+
+
+
+        temp.maximumNumberOfCommandRequests = 7;    // ||  00000111  ||  10011010  ...  010100  |  1  |  0  ...  000101  |  01  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x079A5215);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciBuiltInSelfTest");
     {
         PciBuiltInSelfTest temp;
@@ -3968,6 +4113,201 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.isMultiFunction = 0;   // ||  0  |  0001010  ||
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciPowerManagementBridgeSupportExtensions");
+    {
+        PciPowerManagementBridgeSupportExtensions temp;
+
+
+
+        //  PciPowerManagementBridgeSupportExtensions - value8:
+        // ======================================================================
+        // |  busPowerClockControl : 1  |  b2B3ForD3Hot : 1  |  __reserved : 6  |
+        // ======================================================================
+
+
+
+        temp.value8 = 0x9D;             // ||  1  |  0  |  011101  ||
+
+        TEST_ASSERT_EQUALS(temp.__reserved,           29);
+        TEST_ASSERT_EQUALS(temp.b2B3ForD3Hot,         0);
+        TEST_ASSERT_EQUALS(temp.busPowerClockControl, 1);
+
+
+
+        temp.__reserved = 10;           // ||  1  |  0  |  001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x8A);
+
+
+
+        temp.b2B3ForD3Hot = 1;          // ||  1  |  1  |  001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xCA);
+
+
+
+        temp.busPowerClockControl = 0;  // ||  0  |  1  |  001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x4A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciPowerManagementCapabilities");
+    {
+        PciPowerManagementCapabilities temp;
+
+
+
+        //  PciPowerManagementCapabilities - value16:
+        // ====================================================================================================================================================================
+        // |                                           supportPme : 5                                          |  supportD2 : 1  |  supportD1 : 1  |  auxCurrent : 1 (3) ...  |
+        // |  ... auxCurrent : 2 (3)  |  deviceSpecificInitialization : 1  |  __reserved : 1  |  pmeClock : 1  |                          version : 3                         |
+        // ====================================================================================================================================================================
+
+
+
+        temp.value16 = 0x9AD5;                      // ||  10011  |  0  |  1  |  0  ... 11  |  0  |  1  |  0  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.version,                      5);
+        TEST_ASSERT_EQUALS(temp.pmeClock,                     0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                   1);
+        TEST_ASSERT_EQUALS(temp.deviceSpecificInitialization, 0);
+        TEST_ASSERT_EQUALS(temp.auxCurrent,                   3);
+        TEST_ASSERT_EQUALS(temp.supportD1,                    1);
+        TEST_ASSERT_EQUALS(temp.supportD2,                    0);
+        TEST_ASSERT_EQUALS(temp.supportPme,                   19);
+
+
+
+        temp.version = 2;                           // ||  10011  |  0  |  1  |  0  ... 11  |  0  |  1  |  0  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9AD2);
+
+
+
+        temp.pmeClock = 1;                          // ||  10011  |  0  |  1  |  0  ... 11  |  0  |  1  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9ADA);
+
+
+
+        temp.__reserved = 0;                        // ||  10011  |  0  |  1  |  0  ... 11  |  0  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9ACA);
+
+
+
+        temp.deviceSpecificInitialization = 1;      // ||  10011  |  0  |  1  |  0  ... 11  |  1  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9AEA);
+
+
+
+        temp.auxCurrent = 5;                        // ||  10011  |  0  |  1  |  1  ... 01  |  1  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9B6A);
+
+
+
+        temp.supportD1 = 0;                         // ||  10011  |  0  |  0  |  1  ... 01  |  1  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x996A);
+
+
+
+        temp.supportD2 = 1;                         // ||  10011  |  1  |  0  |  1  ... 01  |  1  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x9D6A);
+
+
+
+        temp.supportPme = 3;                         // ||  00011  |  1  |  0  |  1  ... 01  |  1  |  0  |  1  |  010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x1D6A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciPowerManagementControlStatus");
+    {
+        PciPowerManagementControlStatus temp;
+
+
+
+        //  PciPowerManagementControlStatus - value16:
+        // ==========================================================================================================================================
+        // |  pmeStatus : 1  |  dataScale : 2  |                                  dataSelect : 4                                  |  enablePme : 1  |
+        // |                  __reserved: 4                  |  noSoftReset : 1  |  __reservedForPciExpress : 1  |          powerState : 2          |
+        // ==========================================================================================================================================
+
+
+
+        temp.value16 = 0xD36A;              // ||  1  |  10  |  1001  |  1  ||  0110  |  1  |  0  |  10  ||
+
+        TEST_ASSERT_EQUALS(temp.powerState,              2);
+        TEST_ASSERT_EQUALS(temp.__reservedForPciExpress, 0);
+        TEST_ASSERT_EQUALS(temp.noSoftReset,             1);
+        TEST_ASSERT_EQUALS(temp.__reserved,              6);
+        TEST_ASSERT_EQUALS(temp.enablePme,               1);
+        TEST_ASSERT_EQUALS(temp.dataSelect,              9);
+        TEST_ASSERT_EQUALS(temp.dataScale,               2);
+        TEST_ASSERT_EQUALS(temp.pmeStatus,               1);
+
+
+
+        temp.powerState = 3;                // ||  1  |  10  |  1001  |  1  ||  0110  |  1  |  0  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD36B);
+
+
+
+        temp.__reservedForPciExpress = 1;   // ||  1  |  10  |  1001  |  1  ||  0110  |  1  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD36F);
+
+
+
+        temp.noSoftReset = 0;               // ||  1  |  10  |  1001  |  1  ||  0110  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD367);
+
+
+
+        temp.__reserved = 9;                // ||  1  |  10  |  1001  |  1  ||  1001  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD397);
+
+
+
+        temp.enablePme = 0;                 // ||  1  |  10  |  1001  |  0  ||  1001  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD297);
+
+
+
+        temp.dataSelect = 13;               // ||  1  |  10  |  1101  |  0  ||  1001  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xDA97);
+
+
+
+        temp.dataScale = 1;                 // ||  1  |  01  |  1101  |  0  ||  1001  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xBA97);
+
+
+
+        temp.pmeStatus = 0;                 // ||  0  |  01  |  1101  |  0  ||  1001  |  0  |  1  |  11  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3A97);
     }
     TEST_CASE_END();
 

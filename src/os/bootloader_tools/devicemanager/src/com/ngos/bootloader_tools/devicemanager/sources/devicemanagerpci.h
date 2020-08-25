@@ -5,6 +5,8 @@
 
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/uefi/uefipcirootbridgeioprotocol.h>
@@ -34,6 +36,8 @@ private:
     static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

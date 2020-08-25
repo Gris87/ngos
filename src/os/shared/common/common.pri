@@ -399,6 +399,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/macros.h \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h \
@@ -1221,16 +1223,25 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfede/pcidevicefede.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffd/pcidevicefffd.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendorfffe/pcidevicefffe.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportrateflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h \
-    $$PWD/src/com/ngos/shared/common/pci/lib/pcicapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementauxcurrent.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementbridgesupportextensions.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementcapabilities.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementcontrolstatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcistatus.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
     $$PWD/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicapabilityheader.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcicapabilitytype.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h \

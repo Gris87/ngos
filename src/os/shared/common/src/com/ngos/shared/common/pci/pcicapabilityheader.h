@@ -4,14 +4,14 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/pci/lib/pcicapability.h>
+#include <com/ngos/shared/common/pci/pcicapabilitytype.h>
 
 
 
 struct PciCapabilityHeader
 {
-    PciCapability capabilityId;
-    u8            nextCapabilityPointer;
+    PciCapabilityType capabilityId;
+    u8                nextCapabilityPointer;
 };
 
 
