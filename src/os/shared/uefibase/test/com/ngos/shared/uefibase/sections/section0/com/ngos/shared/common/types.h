@@ -4371,7 +4371,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         //  PciStatus - value16:
         // =====================================================================================================================
         // |     interruptStatus : 1     |                                   __reserved : 3                                    |
-        // |  fastBackToBackCapable : 1  |      __reserved1 : 1      |     support64MHz : 1      |    capabilitiesList : 1     |
+        // |  fastBackToBackCapable : 1  |      __reserved2 : 1      |     support64MHz : 1      |    capabilitiesList : 1     |
         // |   signaledTargetAbort : 1   |                 deviceSelectTiming : 2                |  masterDataParityError : 1  |
         // |   detectedParityError : 1   |  signaledSystemError : 1  |  receivedMasterAbort : 1  |   receivedTargetAbort : 1   |
         // =====================================================================================================================
@@ -4384,7 +4384,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.interruptStatus,       1);
         TEST_ASSERT_EQUALS(temp.capabilitiesList,      0);
         TEST_ASSERT_EQUALS(temp.support64MHz,          1);
-        TEST_ASSERT_EQUALS(temp.__reserved1,           0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,           0);
         TEST_ASSERT_EQUALS(temp.fastBackToBackCapable, 1);
         TEST_ASSERT_EQUALS(temp.masterDataParityError, 0);
         TEST_ASSERT_EQUALS(temp.deviceSelectTiming,    1);
@@ -4420,7 +4420,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.__reserved1 = 1;                   // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  1  |  0  |  1  |  0  |  001  ||
+        temp.__reserved2 = 1;                   // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  1  |  0  |  1  |  0  |  001  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0xAAD1);
 
