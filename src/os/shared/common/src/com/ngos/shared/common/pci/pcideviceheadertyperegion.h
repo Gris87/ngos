@@ -16,8 +16,8 @@ struct PciDeviceHeaderTypeRegion
     u16       subsystemID;
     u32       expansionRomBaseAddress;
     u8        capabilitiesPointer;
-    u8        reserved[3];
-    u32       reserved2;
+    u8        __reserved[3];
+    u32       __reserved2;
     u8        interruptLine;
     u8        interruptPin;
     u8        minGrant;

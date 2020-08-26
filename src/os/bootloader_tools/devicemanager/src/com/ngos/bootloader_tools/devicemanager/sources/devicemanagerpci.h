@@ -7,6 +7,7 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
@@ -40,6 +41,7 @@ private:
     static NgosStatus initPciWithPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

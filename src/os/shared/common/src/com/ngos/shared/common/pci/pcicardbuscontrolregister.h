@@ -12,7 +12,7 @@ struct PciCardBusControlRegister
 {
     u32       cardBusSocket;
     u8        capabilitiesPointer;
-    u8        reserved;
+    u8        __reserved;
     PciStatus secondaryStatus;
     u8        pciBusNumber;
     u8        cardBusBusNumber;

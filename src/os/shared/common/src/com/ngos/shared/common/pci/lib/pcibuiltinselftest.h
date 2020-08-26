@@ -14,7 +14,7 @@ struct PciBuiltInSelfTest
         struct
         {
             u8 completionCode: 4;
-            u8 reserved:       2;
+            u8 __reserved:     2;
             u8 startBist:      1;
             u8 capable:        1;
         };

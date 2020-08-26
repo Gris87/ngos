@@ -13,11 +13,11 @@ struct PciStatus
     {
         struct
         {
-            u16 reserved:              3;
+            u16 __reserved:            3;
             u16 interruptStatus:       1;
             u16 capabilitiesList:      1;
             u16 support64MHz:          1;
-            u16 reserved1:             1;
+            u16 __reserved1:           1;
             u16 fastBackToBackCapable: 1;
             u16 masterDataParityError: 1;
             u16 deviceSelectTiming:    2; // TODO: Use enum PciDeviceSelectTiming

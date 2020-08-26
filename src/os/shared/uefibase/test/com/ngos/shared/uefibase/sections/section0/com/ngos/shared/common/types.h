@@ -260,6 +260,7 @@
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h>
@@ -1097,6 +1098,7 @@
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementcontrolstatus.h>
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h>
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h>
+#include <com/ngos/shared/common/pci/lib/pcislotnumberingexpansionslot.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
 #include <com/ngos/shared/common/pci/lib/pcivitalproductdataaddressunion.h>
 #include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
@@ -2324,6 +2326,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciPowerManagementSupportPmeFlag),                1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                     1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                             56);
+        TEST_ASSERT_EQUALS(sizeof(PciSlotNumberingCapability),                      4);
+        TEST_ASSERT_EQUALS(sizeof(PciSlotNumberingExpansionSlot),                   1);
         TEST_ASSERT_EQUALS(sizeof(PciStatus),                                       2);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass00),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass01),                                   1);
@@ -4047,16 +4051,16 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
         //  PciBuiltInSelfTest - value8:
-        // ===========================================================================
-        // |  capable : 1  |  startBist : 1  |  reserved : 2  |  completionCode : 4  |
-        // ===========================================================================
+        // =============================================================================
+        // |  capable : 1  |  startBist : 1  |  __reserved : 2  |  completionCode : 4  |
+        // =============================================================================
 
 
 
         temp.value8 = 0x9D;         // ||  1  |  0  |  01  |  1101  ||
 
         TEST_ASSERT_EQUALS(temp.completionCode, 13);
-        TEST_ASSERT_EQUALS(temp.reserved,       1);
+        TEST_ASSERT_EQUALS(temp.__reserved,     1);
         TEST_ASSERT_EQUALS(temp.startBist,      0);
         TEST_ASSERT_EQUALS(temp.capable,        1);
 
@@ -4068,7 +4072,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.reserved = 3;          // ||  1  |  0  |  11  |  1010  ||
+        temp.__reserved = 3;        // ||  1  |  0  |  11  |  1010  ||
 
         TEST_ASSERT_EQUALS(temp.value8, 0xBA);
 
@@ -4317,6 +4321,47 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciSlotNumberingExpansionSlot");
+    {
+        PciSlotNumberingExpansionSlot temp;
+
+
+
+        //  PciSlotNumberingExpansionSlot - value8:
+        // ==========================================================================
+        // |  __reserved : 2  |  firstInChassis : 1  |  expansionSlotsProvided : 5  |
+        // ==========================================================================
+
+
+
+        temp.value8 = 0xB4;                 // ||  10  |  1  |  10100  ||
+
+        TEST_ASSERT_EQUALS(temp.expansionSlotsProvided, 20);
+        TEST_ASSERT_EQUALS(temp.firstInChassis,         1);
+        TEST_ASSERT_EQUALS(temp.__reserved,             2);
+
+
+
+        temp.expansionSlotsProvided = 10;   // ||  10  |  1  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xAA);
+
+
+
+        temp.firstInChassis = 0;            // ||  10  |  0  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x8A);
+
+
+
+        temp.__reserved = 3;                // ||  11  |  0  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0xCA);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciStatus");
     {
         PciStatus temp;
@@ -4325,8 +4370,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
         //  PciStatus - value16:
         // =====================================================================================================================
-        // |     interruptStatus : 1     |                                    reserved : 3                                     |
-        // |  fastBackToBackCapable : 1  |       reserved1 : 1       |     support64MHz : 1      |    capabilitiesList : 1     |
+        // |     interruptStatus : 1     |                                   __reserved : 3                                    |
+        // |  fastBackToBackCapable : 1  |      __reserved1 : 1      |     support64MHz : 1      |    capabilitiesList : 1     |
         // |   signaledTargetAbort : 1   |                 deviceSelectTiming : 2                |  masterDataParityError : 1  |
         // |   detectedParityError : 1   |  signaledSystemError : 1  |  receivedMasterAbort : 1  |   receivedTargetAbort : 1   |
         // =====================================================================================================================
@@ -4335,11 +4380,11 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
         temp.value16 = 0xAAAB;                  // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  1  |  011  ||
 
-        TEST_ASSERT_EQUALS(temp.reserved,              3);
+        TEST_ASSERT_EQUALS(temp.__reserved,            3);
         TEST_ASSERT_EQUALS(temp.interruptStatus,       1);
         TEST_ASSERT_EQUALS(temp.capabilitiesList,      0);
         TEST_ASSERT_EQUALS(temp.support64MHz,          1);
-        TEST_ASSERT_EQUALS(temp.reserved1,             0);
+        TEST_ASSERT_EQUALS(temp.__reserved1,           0);
         TEST_ASSERT_EQUALS(temp.fastBackToBackCapable, 1);
         TEST_ASSERT_EQUALS(temp.masterDataParityError, 0);
         TEST_ASSERT_EQUALS(temp.deviceSelectTiming,    1);
@@ -4351,7 +4396,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.reserved = 1;                      // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  1  |  001  ||
+        temp.__reserved = 1;                    // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  0  |  1  |  0  |  1  |  001  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0xAAA9);
 
@@ -4375,7 +4420,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.reserved1 = 1;                     // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  1  |  0  |  1  |  0  |  001  ||
+        temp.__reserved1 = 1;                   // ||  1  |  0  |  1  |  0  |  1  |  01  |  0  ||  1  |  1  |  0  |  1  |  0  |  001  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0xAAD1);
 
@@ -4437,7 +4482,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciVitalProductDataAddressUnion - value8:
+        //  PciVitalProductDataAddressUnion - value16:
         // =================================
         // |  finished : 1  |  value : 15  |
         // =================================

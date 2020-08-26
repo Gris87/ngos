@@ -27,7 +27,7 @@ struct PciBridgeControlRegister
     u16       ioBaseUpper16;
     u16       ioLimitUpper16;
     u8        capabilitiesPointer;
-    u8        reserved[3];
+    u8        __reserved[3];
     u32       expansionRomBaseAddress;
     u8        interruptLine;
     u8        interruptPin;

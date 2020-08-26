@@ -1185,6 +1185,7 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h
@@ -2022,6 +2023,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementcapabi
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementcontrolstatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcislotnumberingexpansionslot.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcistatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcivitalproductdataaddressunion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/macros.h

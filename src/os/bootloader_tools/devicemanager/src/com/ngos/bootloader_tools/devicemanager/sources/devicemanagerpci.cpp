@@ -392,11 +392,9 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
         UEFI_LVVV(("configurationSpace.header.vendorId                       = 0x%04X (%s)",            configurationSpace.header.vendorId, enumToHumanString(configurationSpace.header.vendorId)));
         UEFI_LVVV(("configurationSpace.header.deviceId                       = 0x%04X (%s)",            configurationSpace.header.deviceId, enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId)));
         UEFI_LVVV(("configurationSpace.header.command                        = %s",                     flagsToFullString(configurationSpace.header.command)));
-        UEFI_LVVV(("configurationSpace.header.status.reserved                = %u",                     configurationSpace.header.status.reserved));
         UEFI_LVVV(("configurationSpace.header.status.interruptStatus         = %s",                     boolToString(configurationSpace.header.status.interruptStatus)));
         UEFI_LVVV(("configurationSpace.header.status.capabilitiesList        = %s",                     boolToString(configurationSpace.header.status.capabilitiesList)));
         UEFI_LVVV(("configurationSpace.header.status.support64MHz            = %s",                     boolToString(configurationSpace.header.status.support64MHz)));
-        UEFI_LVVV(("configurationSpace.header.status.reserved1               = %u",                     configurationSpace.header.status.reserved1));
         UEFI_LVVV(("configurationSpace.header.status.fastBackToBackCapable   = %s",                     boolToString(configurationSpace.header.status.fastBackToBackCapable)));
         UEFI_LVVV(("configurationSpace.header.status.masterDataParityError   = %s",                     boolToString(configurationSpace.header.status.masterDataParityError)));
         UEFI_LVVV(("configurationSpace.header.status.deviceSelectTiming      = %s",                     enumToFullString((PciDeviceSelectTiming)configurationSpace.header.status.deviceSelectTiming)));
@@ -414,7 +412,6 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
         UEFI_LVVV(("configurationSpace.header.headerType.isMultiFunction     = %s",                     boolToString(configurationSpace.header.headerType.isMultiFunction)));
         UEFI_LVVV(("configurationSpace.header.headerType.value8              = 0x%02X",                 configurationSpace.header.headerType.value8));
         UEFI_LVVV(("configurationSpace.header.builtInSelfTest.completionCode = %u",                     configurationSpace.header.builtInSelfTest.completionCode));
-        UEFI_LVVV(("configurationSpace.header.builtInSelfTest.reserved       = %u",                     configurationSpace.header.builtInSelfTest.reserved));
         UEFI_LVVV(("configurationSpace.header.builtInSelfTest.startBist      = %u",                     configurationSpace.header.builtInSelfTest.startBist));
         UEFI_LVVV(("configurationSpace.header.builtInSelfTest.capable        = %u",                     configurationSpace.header.builtInSelfTest.capable));
         UEFI_LVVV(("configurationSpace.header.builtInSelfTest.value8         = 0x%02X",                 configurationSpace.header.builtInSelfTest.value8));
@@ -647,11 +644,9 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
         UEFI_LVVV(("configurationSpace.bridge.secondaryLatencyTimer                 = %u",     configurationSpace.bridge.secondaryLatencyTimer));
         UEFI_LVVV(("configurationSpace.bridge.ioBase                                = 0x%02X", configurationSpace.bridge.ioBase));
         UEFI_LVVV(("configurationSpace.bridge.ioLimit                               = 0x%02X", configurationSpace.bridge.ioLimit));
-        UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.reserved              = %u",     configurationSpace.bridge.secondaryStatus.reserved));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.interruptStatus       = %s",     boolToString(configurationSpace.bridge.secondaryStatus.interruptStatus)));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.capabilitiesList      = %s",     boolToString(configurationSpace.bridge.secondaryStatus.capabilitiesList)));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.support64MHz          = %s",     boolToString(configurationSpace.bridge.secondaryStatus.support64MHz)));
-        UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.reserved1             = %u",     configurationSpace.bridge.secondaryStatus.reserved1));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.fastBackToBackCapable = %s",     boolToString(configurationSpace.bridge.secondaryStatus.fastBackToBackCapable)));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.masterDataParityError = %s",     boolToString(configurationSpace.bridge.secondaryStatus.masterDataParityError)));
         UEFI_LVVV(("configurationSpace.bridge.secondaryStatus.deviceSelectTiming    = %s",     enumToFullString((PciDeviceSelectTiming)configurationSpace.bridge.secondaryStatus.deviceSelectTiming)));
@@ -738,11 +733,9 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
     {
         UEFI_LVVV(("configurationSpace.cardBus.cardBusSocket                         = 0x%08X", configurationSpace.cardBus.cardBusSocket));
         UEFI_LVVV(("configurationSpace.cardBus.capabilitiesPointer                   = 0x%02X", configurationSpace.cardBus.capabilitiesPointer));
-        UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.reserved              = %u",     configurationSpace.cardBus.secondaryStatus.reserved));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.interruptStatus       = %s",     boolToString(configurationSpace.cardBus.secondaryStatus.interruptStatus)));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.capabilitiesList      = %s",     boolToString(configurationSpace.cardBus.secondaryStatus.capabilitiesList)));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.support64MHz          = %s",     boolToString(configurationSpace.cardBus.secondaryStatus.support64MHz)));
-        UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.reserved1             = %u",     configurationSpace.cardBus.secondaryStatus.reserved1));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.fastBackToBackCapable = %s",     boolToString(configurationSpace.cardBus.secondaryStatus.fastBackToBackCapable)));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.masterDataParityError = %s",     boolToString(configurationSpace.cardBus.secondaryStatus.masterDataParityError)));
         UEFI_LVVV(("configurationSpace.cardBus.secondaryStatus.deviceSelectTiming    = %s",     enumToFullString((PciDeviceSelectTiming)configurationSpace.cardBus.secondaryStatus.deviceSelectTiming)));
@@ -890,6 +883,7 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
         case PciCapabilityType::POWER_MANAGEMENT_INTERFACE: UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:  UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,   deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::VITAL_PRODUCT_DATA:         UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SLOT_IDENTIFICATION:        UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                       deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -1063,9 +1057,41 @@ NgosStatus DeviceManagerPci::initPciWithPciVitalProductDataCapability(PciVitalPr
     // Fill Device Manager entry
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address union", mprintf("0x%04X", capability->address.value16), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Finished",      capability->address.finished ? "Yes" : "No",    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address",       mprintf("0x%04X", capability->address.value),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Finished",      capability->address.finished ? "Yes" : "No",    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Data",          mprintf("0x%08X", capability->data),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->expansionSlot.expansionSlotsProvided = 0x%02X", capability->expansionSlot.expansionSlotsProvided));
+        UEFI_LVVV(("capability->expansionSlot.firstInChassis         = %u",     capability->expansionSlot.firstInChassis));
+        UEFI_LVVV(("capability->expansionSlot.value8                 = 0x%02X", capability->expansionSlot.value8));
+        UEFI_LVVV(("capability->chassisNumber                        = 0x%02X", capability->chassisNumber));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Expansion slot",           mprintf("0x%02X", capability->expansionSlot.value8),                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Expansion slots provided", mprintf("0x%02X", capability->expansionSlot.expansionSlotsProvided), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - First in chassis",         capability->expansionSlot.firstInChassis ? "Yes" : "No",             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Chassis number",           mprintf("0x%02X", capability->chassisNumber),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
     }
 
 
