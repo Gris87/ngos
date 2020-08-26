@@ -889,6 +889,7 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
     {
         case PciCapabilityType::POWER_MANAGEMENT_INTERFACE: UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:  UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,   deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VITAL_PRODUCT_DATA:         UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -1033,6 +1034,38 @@ NgosStatus DeviceManagerPci::initPciWithPciAcceleratedGraphicsPortCapability(Pci
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AGP - Command: Enable side band addressing",        capability->command.enableSideBandAddressing      ? "Yes" : "No",  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AGP - Command: Maximum number of command requests", mprintf("%u", capability->command.maximumNumberOfCommandRequests), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->address.value    = 0x%04X", capability->address.value));
+        UEFI_LVVV(("capability->address.finished = %u",     capability->address.finished));
+        UEFI_LVVV(("capability->address.value16  = 0x%04X", capability->address.value16));
+        UEFI_LVVV(("capability->data             = 0x%08X", capability->data));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address union", mprintf("0x%04X", capability->address.value16), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Finished",      capability->address.finished ? "Yes" : "No",    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address",       mprintf("0x%04X", capability->address.value),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Data",          mprintf("0x%08X", capability->data),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
     }
 
 

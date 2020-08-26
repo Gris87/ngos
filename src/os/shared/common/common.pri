@@ -401,6 +401,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h \
@@ -1238,6 +1239,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcistatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcivitalproductdataaddressunion.h \
     $$PWD/src/com/ngos/shared/common/pci/macros.h \
     $$PWD/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicapabilityheader.h \

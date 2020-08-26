@@ -260,6 +260,7 @@
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0105.h>
@@ -1097,6 +1098,7 @@
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h>
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
+#include <com/ngos/shared/common/pci/lib/pcivitalproductdataaddressunion.h>
 #include <com/ngos/shared/common/pci/pcibridgecontrolregister.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pcicapabilitytype.h>
@@ -2343,6 +2345,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass11),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass12),                                   1);
         TEST_ASSERT_EQUALS(sizeof(PciVendor),                                       2);
+        TEST_ASSERT_EQUALS(sizeof(PciVitalProductDataAddressUnion),                 2);
+        TEST_ASSERT_EQUALS(sizeof(PciVitalProductDataCapability),                   8);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                             8);
         TEST_ASSERT_EQUALS(sizeof(PMD),                                             8);
         TEST_ASSERT_EQUALS(sizeof(Png),                                             1);
@@ -4422,6 +4426,40 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.detectedParityError = 0;           // ||  0  |  1  |  0  |  1  |  0  |  11  |  1  ||  0  |  1  |  0  |  1  |  0  |  001  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5751);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciVitalProductDataAddressUnion");
+    {
+        PciVitalProductDataAddressUnion temp;
+
+
+
+        //  PciVitalProductDataAddressUnion - value8:
+        // =================================
+        // |  finished : 1  |  value : 15  |
+        // =================================
+
+
+
+        temp.value16 = 0xBA57;  // ||  1  |  011101001010111  ||
+
+        TEST_ASSERT_EQUALS(temp.value,    14935);
+        TEST_ASSERT_EQUALS(temp.finished, 1);
+
+
+
+        temp.value = 10;        // ||  1  |  000000000001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x800A);
+
+
+
+        temp.finished = 0;      // ||  0  |  000000000001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x000A);
     }
     TEST_CASE_END();
 
