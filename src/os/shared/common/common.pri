@@ -400,6 +400,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcihotswapcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h \

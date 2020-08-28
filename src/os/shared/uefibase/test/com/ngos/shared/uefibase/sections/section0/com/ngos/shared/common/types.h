@@ -259,6 +259,7 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h>
@@ -2305,6 +2306,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                    1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderTypeUnion),                                       1);
+        TEST_ASSERT_EQUALS(sizeof(PciHotSwapCapability),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0101),                                         1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0105),                                         1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0106),                                         1);

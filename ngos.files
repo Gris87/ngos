@@ -1184,6 +1184,7 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcihotswapcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h

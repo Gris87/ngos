@@ -885,6 +885,7 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
         case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                            deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
@@ -1271,6 +1272,23 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64PerVectorMaskingC
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Mask bits",                                   mprintf("0x%08X", capability->maskBits),                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Pending bits",                                mprintf("0x%08X", capability->pendingBits),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
 
 
 
