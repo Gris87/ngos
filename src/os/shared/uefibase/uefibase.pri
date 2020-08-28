@@ -267,6 +267,8 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h \

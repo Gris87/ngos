@@ -1184,6 +1184,10 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h
@@ -2017,6 +2021,10 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedtableoffsetbirunion.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessageaddress.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementauxcurrent.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementbridgesupportextensions.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementcapabilities.h
@@ -2429,6 +2437,8 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h

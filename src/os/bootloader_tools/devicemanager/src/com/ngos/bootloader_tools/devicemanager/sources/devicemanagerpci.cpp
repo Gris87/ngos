@@ -880,10 +880,12 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
 
     switch (capability->capabilityId)
     {
-        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE: UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:  UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,   deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::VITAL_PRODUCT_DATA:         UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::SLOT_IDENTIFICATION:        UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                       deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE:    UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability,            deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:     UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,              deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                            deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -912,24 +914,24 @@ NgosStatus DeviceManagerPci::initPciWithPciPowerManagementInterfaceCapability(Pc
 
     // Validation
     {
-        UEFI_LF(("capability->capabilities.version                      = %u",     capability->capabilities.version));
-        UEFI_LF(("capability->capabilities.pmeClock                     = %u",     capability->capabilities.pmeClock));
-        UEFI_LF(("capability->capabilities.deviceSpecificInitialization = %u",     capability->capabilities.deviceSpecificInitialization));
-        UEFI_LF(("capability->capabilities.auxCurrent                   = %s",     enumToFullString((PciPowerManagementAuxCurrent)capability->capabilities.auxCurrent)));
-        UEFI_LF(("capability->capabilities.supportD1                    = %u",     capability->capabilities.supportD1));
-        UEFI_LF(("capability->capabilities.supportD2                    = %u",     capability->capabilities.supportD2));
-        UEFI_LF(("capability->capabilities.supportPme                   = %s",     flagsToFullString(supportPme)));
-        UEFI_LF(("capability->capabilities.value16                      = 0x%04X", capability->capabilities.value16));
-        UEFI_LF(("capability->controlStatus.powerState                  = %s",     enumToFullString((PciPowerManagementPowerState)capability->controlStatus.powerState)));
-        UEFI_LF(("capability->controlStatus.noSoftReset                 = %u",     capability->controlStatus.noSoftReset));
-        UEFI_LF(("capability->controlStatus.enablePme                   = %u",     capability->controlStatus.enablePme));
-        UEFI_LF(("capability->controlStatus.dataSelect                  = %u",     capability->controlStatus.dataSelect));
-        UEFI_LF(("capability->controlStatus.dataScale                   = %u",     capability->controlStatus.dataScale));
-        UEFI_LF(("capability->controlStatus.pmeStatus                   = %u",     capability->controlStatus.pmeStatus));
-        UEFI_LF(("capability->controlStatus.value16                     = 0x%04X", capability->controlStatus.value16));
-        UEFI_LF(("capability->bridgeExtention.b2B3ForD3Hot              = %u",     capability->bridgeExtention.b2B3ForD3Hot));
-        UEFI_LF(("capability->bridgeExtention.busPowerClockControl      = %u",     capability->bridgeExtention.busPowerClockControl));
-        UEFI_LF(("capability->bridgeExtention.value8                    = 0x%02X", capability->bridgeExtention.value8));
+        UEFI_LVVV(("capability->capabilities.version                      = %u",     capability->capabilities.version));
+        UEFI_LVVV(("capability->capabilities.pmeClock                     = %u",     capability->capabilities.pmeClock));
+        UEFI_LVVV(("capability->capabilities.deviceSpecificInitialization = %u",     capability->capabilities.deviceSpecificInitialization));
+        UEFI_LVVV(("capability->capabilities.auxCurrent                   = %s",     enumToFullString((PciPowerManagementAuxCurrent)capability->capabilities.auxCurrent)));
+        UEFI_LVVV(("capability->capabilities.supportD1                    = %u",     capability->capabilities.supportD1));
+        UEFI_LVVV(("capability->capabilities.supportD2                    = %u",     capability->capabilities.supportD2));
+        UEFI_LVVV(("capability->capabilities.supportPme                   = %s",     flagsToFullString(supportPme)));
+        UEFI_LVVV(("capability->capabilities.value16                      = 0x%04X", capability->capabilities.value16));
+        UEFI_LVVV(("capability->controlStatus.powerState                  = %s",     enumToFullString((PciPowerManagementPowerState)capability->controlStatus.powerState)));
+        UEFI_LVVV(("capability->controlStatus.noSoftReset                 = %u",     capability->controlStatus.noSoftReset));
+        UEFI_LVVV(("capability->controlStatus.enablePme                   = %u",     capability->controlStatus.enablePme));
+        UEFI_LVVV(("capability->controlStatus.dataSelect                  = %u",     capability->controlStatus.dataSelect));
+        UEFI_LVVV(("capability->controlStatus.dataScale                   = %u",     capability->controlStatus.dataScale));
+        UEFI_LVVV(("capability->controlStatus.pmeStatus                   = %u",     capability->controlStatus.pmeStatus));
+        UEFI_LVVV(("capability->controlStatus.value16                     = 0x%04X", capability->controlStatus.value16));
+        UEFI_LVVV(("capability->bridgeExtention.b2B3ForD3Hot              = %u",     capability->bridgeExtention.b2B3ForD3Hot));
+        UEFI_LVVV(("capability->bridgeExtention.busPowerClockControl      = %u",     capability->bridgeExtention.busPowerClockControl));
+        UEFI_LVVV(("capability->bridgeExtention.value8                    = 0x%02X", capability->bridgeExtention.value8));
     }
 
 
@@ -1092,6 +1094,219 @@ NgosStatus DeviceManagerPci::initPciWithPciSlotNumberingCapability(PciSlotNumber
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Expansion slots provided", mprintf("0x%02X", capability->expansionSlot.expansionSlotsProvided), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - First in chassis",         capability->expansionSlot.firstInChassis ? "Yes" : "No",             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Chassis number",           mprintf("0x%02X", capability->chassisNumber),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsCapability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->messageControl.enableMSI               = %u",     capability->messageControl.enableMSI));
+        UEFI_LVVV(("capability->messageControl.supportMultipleMessage  = %u",     capability->messageControl.supportMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.enableMultipleMessage   = %u",     capability->messageControl.enableMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.support64BitAddress     = %u",     capability->messageControl.support64BitAddress));
+        UEFI_LVVV(("capability->messageControl.supportPerVectorMasking = %u",     capability->messageControl.supportPerVectorMasking));
+        UEFI_LVVV(("capability->messageControl.value16                 = 0x%04X", capability->messageControl.value16));
+        UEFI_LVVV(("capability->messageAddress.value                   = 0x%08X", capability->messageAddress.value));
+        UEFI_LVVV(("capability->messageAddress.value32                 = 0x%08X", capability->messageAddress.value32));
+        UEFI_LVVV(("capability->messageData                            = 0x%04X", capability->messageData));
+    }
+
+
+
+    if (capability->messageControl.support64BitAddress)
+    {
+        if (capability->messageControl.supportPerVectorMasking)
+        {
+            UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterrupts64PerVectorMaskingCapability((PciMessageSignaledInterrupts64PerVectorMaskingCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterrupts64Capability((PciMessageSignaledInterrupts64Capability *)capability, deviceManagerEntry), NgosStatus::ASSERTION);
+        }
+    }
+    else
+    {
+        UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterrupts32Capability(capability, deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts32Capability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->messageControl.enableMSI               = %u",     capability->messageControl.enableMSI));
+        UEFI_LVVV(("capability->messageControl.supportMultipleMessage  = %u",     capability->messageControl.supportMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.enableMultipleMessage   = %u",     capability->messageControl.enableMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.support64BitAddress     = %u",     capability->messageControl.support64BitAddress));
+        UEFI_LVVV(("capability->messageControl.supportPerVectorMasking = %u",     capability->messageControl.supportPerVectorMasking));
+        UEFI_LVVV(("capability->messageControl.value16                 = 0x%04X", capability->messageControl.value16));
+        UEFI_LVVV(("capability->messageAddress.value                   = 0x%08X", capability->messageAddress.value));
+        UEFI_LVVV(("capability->messageAddress.value32                 = 0x%08X", capability->messageAddress.value32));
+        UEFI_LVVV(("capability->messageData                            = 0x%04X", capability->messageData));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control",                             mprintf("0x%04X", capability->messageControl.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable MSI",                 capability->messageControl.enableMSI ? "Yes" : "No",                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support multiple message",   mprintf("%u", capability->messageControl.supportMultipleMessageReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable multiple message",    mprintf("%u", capability->messageControl.enableMultipleMessageReal()),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support 64 bit address",     capability->messageControl.support64BitAddress ? "Yes" : "No",          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support per vector masking", capability->messageControl.supportPerVectorMasking ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message address",                             mprintf("0x%08X", capability->messageAddress.value),                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message data",                                mprintf("0x%04X", capability->messageData),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->messageControl.enableMSI               = %u",     capability->messageControl.enableMSI));
+        UEFI_LVVV(("capability->messageControl.supportMultipleMessage  = %u",     capability->messageControl.supportMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.enableMultipleMessage   = %u",     capability->messageControl.enableMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.support64BitAddress     = %u",     capability->messageControl.support64BitAddress));
+        UEFI_LVVV(("capability->messageControl.supportPerVectorMasking = %u",     capability->messageControl.supportPerVectorMasking));
+        UEFI_LVVV(("capability->messageControl.value16                 = 0x%04X", capability->messageControl.value16));
+        UEFI_LVVV(("capability->messageAddress.value                   = 0x%08X", capability->messageAddress.value));
+        UEFI_LVVV(("capability->messageAddress.value32                 = 0x%08X", capability->messageAddress.value32));
+        UEFI_LVVV(("capability->messageAddressUpper                    = 0x%08X", capability->messageAddressUpper));
+        UEFI_LVVV(("capability->messageData                            = 0x%04X", capability->messageData));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control",                             mprintf("0x%04X", capability->messageControl.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable MSI",                 capability->messageControl.enableMSI ? "Yes" : "No",                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support multiple message",   mprintf("%u", capability->messageControl.supportMultipleMessageReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable multiple message",    mprintf("%u", capability->messageControl.enableMultipleMessageReal()),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support 64 bit address",     capability->messageControl.support64BitAddress ? "Yes" : "No",          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support per vector masking", capability->messageControl.supportPerVectorMasking ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message address",                             mprintf("0x%08X", capability->messageAddress.value),                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message address upper",                       mprintf("0x%08X", capability->messageAddressUpper),                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message data",                                mprintf("0x%04X", capability->messageData),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->messageControl.enableMSI               = %u",     capability->messageControl.enableMSI));
+        UEFI_LVVV(("capability->messageControl.supportMultipleMessage  = %u",     capability->messageControl.supportMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.enableMultipleMessage   = %u",     capability->messageControl.enableMultipleMessage));
+        UEFI_LVVV(("capability->messageControl.support64BitAddress     = %u",     capability->messageControl.support64BitAddress));
+        UEFI_LVVV(("capability->messageControl.supportPerVectorMasking = %u",     capability->messageControl.supportPerVectorMasking));
+        UEFI_LVVV(("capability->messageControl.value16                 = 0x%04X", capability->messageControl.value16));
+        UEFI_LVVV(("capability->messageAddress.value                   = 0x%08X", capability->messageAddress.value));
+        UEFI_LVVV(("capability->messageAddress.value32                 = 0x%08X", capability->messageAddress.value32));
+        UEFI_LVVV(("capability->messageAddressUpper                    = 0x%08X", capability->messageAddressUpper));
+        UEFI_LVVV(("capability->messageData                            = 0x%04X", capability->messageData));
+        UEFI_LVVV(("capability->maskBits                               = 0x%08X", capability->maskBits));
+        UEFI_LVVV(("capability->pendingBits                            = 0x%08X", capability->pendingBits));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control",                             mprintf("0x%04X", capability->messageControl.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable MSI",                 capability->messageControl.enableMSI ? "Yes" : "No",                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support multiple message",   mprintf("%u", capability->messageControl.supportMultipleMessageReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Enable multiple message",    mprintf("%u", capability->messageControl.enableMultipleMessageReal()),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support 64 bit address",     capability->messageControl.support64BitAddress ? "Yes" : "No",          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message control: Support per vector masking", capability->messageControl.supportPerVectorMasking ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message address",                             mprintf("0x%08X", capability->messageAddress.value),                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message address upper",                       mprintf("0x%08X", capability->messageAddressUpper),                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Message data",                                mprintf("0x%04X", capability->messageData),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Mask bits",                                   mprintf("0x%08X", capability->maskBits),                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI - Pending bits",                                mprintf("0x%08X", capability->pendingBits),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->messageControl.tableSize               = %u",     capability->messageControl.tableSize));
+        UEFI_LVVV(("capability->messageControl.enableMSIX              = %u",     capability->messageControl.enableMSIX));
+        UEFI_LVVV(("capability->messageControl.value16                 = 0x%04X", capability->messageControl.value16));
+        UEFI_LVVV(("capability->messageAddressUpper                    = 0x%08X", capability->messageAddressUpper));
+        UEFI_LVVV(("capability->tableOffsetAndBir.baseAddressIndicator = %u",     capability->tableOffsetAndBir.baseAddressIndicator));
+        UEFI_LVVV(("capability->tableOffsetAndBir.tableOffset          = 0x%08X", capability->tableOffsetAndBir.tableOffset));
+        UEFI_LVVV(("capability->tableOffsetAndBir.value32              = 0x%08X", capability->tableOffsetAndBir.value32));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Message control",               mprintf("0x%04X", capability->messageControl.value16),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Message control: Enable MSI-X", capability->messageControl.enableMSIX ? "Yes" : "No",              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Message control: Table size",   mprintf("%u", capability->messageControl.tableSizeReal()),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Message address upper",         mprintf("0x%08X", capability->messageAddressUpper),                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Base address indicator",        mprintf("%u", capability->tableOffsetAndBir.baseAddressIndicator), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Table offset",                  mprintf("%u", capability->tableOffsetAndBir.tableOffset),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
     }
 
 

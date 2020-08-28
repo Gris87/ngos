@@ -60,6 +60,8 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessagecontrol.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/random/random.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/string/string.h>
@@ -143,6 +145,8 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_ngos_types);
     CALL_TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pcimessagesignaledinterruptsextendedmessagecontrol);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pcimessagesignaledinterruptsmessagecontrol);
     CALL_TEST_CASES(section0, com_ngos_shared_common_printf_printf);
     CALL_TEST_CASES(section0, com_ngos_shared_common_random_random);
     CALL_TEST_CASES(section0, com_ngos_shared_common_string_string);
