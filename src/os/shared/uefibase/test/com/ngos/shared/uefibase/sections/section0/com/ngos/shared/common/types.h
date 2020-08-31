@@ -2568,8 +2568,6 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                                    1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                               2);
 
-
-
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         TEST_ASSERT_EQUALS(sizeof(P4D), 8);
 #endif
