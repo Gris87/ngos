@@ -6,6 +6,8 @@
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
+#include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h>
@@ -41,8 +43,8 @@ private:
     static NgosStatus initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciWithPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
@@ -52,6 +54,9 @@ private:
     static NgosStatus initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExtendedCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;

@@ -259,6 +259,8 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
+#include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h>
@@ -1095,6 +1097,14 @@
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
 #include <com/ngos/shared/common/pci/lib/pcicommandflags.h>
 #include <com/ngos/shared/common/pci/lib/pcideviceselecttiming.h>
+#include <com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h>
+#include <com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h>
+#include <com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h>
+#include <com/ngos/shared/common/pci/lib/pciextendedbridgestatus.h>
+#include <com/ngos/shared/common/pci/lib/pciextendedbridgeupstreamsplittransaction.h>
+#include <com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h>
+#include <com/ngos/shared/common/pci/lib/pciextendeddevicecomplexity.h>
+#include <com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertype.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
 #include <com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h>
@@ -2304,6 +2314,16 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceHeaderTypeRegion),                                48);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                               16);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeCapability),                              16);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeDownstreamSplitTransaction),              4);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryClockFrequency),                 1);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryStatus),                         2);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeStatus),                                  4);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeUpstreamSplitTransaction),                4);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceCapability),                              8);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceCommand),                                 2);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceComplexity),                              1);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceStatus),                                  4);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderTypeUnion),                                       1);
         TEST_ASSERT_EQUALS(sizeof(PciHotSwapCapability),                                     2);
@@ -2548,6 +2568,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(ZLibCompressionMethod),                                    1);
         TEST_ASSERT_EQUALS(sizeof(ZLibHeader),                                               2);
 
+
+
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         TEST_ASSERT_EQUALS(sizeof(P4D), 8);
 #endif
@@ -2562,7 +2584,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiBiosExtendedRomSize - value16:
+        // DmiBiosExtendedRomSize:
         // =============================
         // |  unit : 2  |  value : 14  |
         // =============================
@@ -2596,7 +2618,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiCacheConfiguration - value16:
+        // DmiCacheConfiguration:
         // =====================================================================================================
         // |  enabled : 1  |  location : 2  |  __reserved : 1  |  socketed : 1  |          level : 3           |
         // |                             __reserved2 : 6                               |  operationalMode : 2  |
@@ -2666,7 +2688,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiCacheSize - value16:
+        // DmiCacheSize:
         // ====================================
         // |  granularity : 1  |  value : 15  |
         // ====================================
@@ -2700,7 +2722,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiCacheSize2 - value32:
+        // DmiCacheSize2:
         // ====================================
         // |  granularity : 1  |  value : 31  |
         // ====================================
@@ -2734,7 +2756,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiChassisContainedElementType - value8:
+        // DmiChassisContainedElementType:
         // ==========================================================
         // |  typeSelect : 1  |  baseboardType or dmiEntryType : 7  |
         // ==========================================================
@@ -2777,7 +2799,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiChassisEntry - typeAndLocked:
+        // DmiChassisEntry:
         // =============================
         // |  locked : 1  |  type : 7  |
         // =============================
@@ -2811,7 +2833,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiCoolingDeviceEntry - deviceTypeAndStatus:
+        // DmiCoolingDeviceEntry:
         // ===================================
         // |  status : 3  |  deviceType : 5  |
         // ===================================
@@ -2845,7 +2867,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiElectricalCurrentProbeEntry - locationAndStatus:
+        // DmiElectricalCurrentProbeEntry:
         // =================================
         // |  status : 3  |  location : 5  |
         // =================================
@@ -2879,7 +2901,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiHardwareSecuritySettings - value8:
+        // DmiHardwareSecuritySettings:
         // ================================================================================================================================
         // |  powerOnPasswordStatus : 2  |  keyboardPasswordStatus : 2  |  administratorPasswordStatus : 2  |  frontPanelResetStatus : 2  |
         // ================================================================================================================================
@@ -2927,7 +2949,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiMemoryDeviceAttributes - value8:
+        // DmiMemoryDeviceAttributes:
         // =================================
         // |  __reserved : 4  |  rank : 4  |
         // =================================
@@ -2961,7 +2983,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiMemoryDeviceExtendedSize - value32:
+        // DmiMemoryDeviceExtendedSize:
         // ====================================
         // |  __reserved : 1  |  value : 31  |
         // ====================================
@@ -2995,7 +3017,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiMemoryDeviceSize - value16:
+        // DmiMemoryDeviceSize:
         // ====================================
         // |  granularity : 1  |  value : 15  |
         // ====================================
@@ -3029,7 +3051,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiOnboardDevicesDevice - deviceTypeAndEnabled:
+        // DmiOnboardDevicesDevice:
         // ====================================
         // |  enabled : 1  |  deviceType : 7  |
         // ====================================
@@ -3063,7 +3085,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiOnboardDevicesExtendedEntry - deviceTypeAndEnabled:
+        // DmiOnboardDevicesExtendedEntry:
         // ====================================
         // |  enabled : 1  |  deviceType : 7  |
         // ====================================
@@ -3089,7 +3111,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiOnboardDevicesExtendedEntry - functionNumberAndDeviceNumber:
+        // DmiOnboardDevicesExtendedEntry:
         // =============================================
         // |  deviceNumber : 5  |  functionNumber : 3  |
         // =============================================
@@ -3123,7 +3145,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiPortableBatteryManufactureDate - value16:
+        // DmiPortableBatteryManufactureDate:
         // =========================================
         // |  year : 7  |  month : 4  |  date : 5  |
         // =========================================
@@ -3164,7 +3186,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiProcessorEntry - processorStatus:
+        // DmiProcessorEntry:
         // ===============================================================================
         // |  __reserved2 : 1  |  socketPopulated : 1  |  __reserved : 3  |  status : 3  |
         // ===============================================================================
@@ -3212,7 +3234,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiProcessorSignature - value32:
+        // DmiProcessorSignature:
         // =========================================================
         // |           model : 4           |      stepping : 4     |
         // |  __reserved : 2  |  type : 2  |       family : 4      |
@@ -3291,7 +3313,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiProcessorVoltage - value8:
+        // DmiProcessorVoltage:
         // =========================================
         // |  modeType : 1  |  flags or value : 7  |
         // =========================================
@@ -3334,7 +3356,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiSystemPowerSupplyCharacteristics - value16:
+        // DmiSystemPowerSupplyCharacteristics:
         // =========================================================================================================================================
         // |  __reserved : 2  |  type : 4  |  status : 3  |  inputVoltageRangeSwitch : 4  |  unplugged : 1  |  present : 1  |  hotReplaceable : 1  |
         // =========================================================================================================================================
@@ -3403,7 +3425,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiSystemResetCapabilities - value8:
+        // DmiSystemResetCapabilities:
         // =========================================================================================================
         // |  __reserved : 2  |  watchdogEnabled : 1  |  bootOptionOnLimit : 2  |  bootOption : 2  |  enabled : 1  |
         // =========================================================================================================
@@ -3458,7 +3480,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiSystemSlotsEntryV26 - functionNumberAndDeviceNumber:
+        // DmiSystemSlotsEntryV26:
         // =============================================
         // |  deviceNumber : 5  |  functionNumber : 3  |
         // =============================================
@@ -3492,7 +3514,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiSystemSlotsPeerGroup - functionNumberAndDeviceNumber:
+        // DmiSystemSlotsPeerGroup:
         // =============================================
         // |  deviceNumber : 5  |  functionNumber : 3  |
         // =============================================
@@ -3526,7 +3548,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiTemperatureProbeEntry - locationAndStatus:
+        // DmiTemperatureProbeEntry:
         // =================================
         // |  status : 3  |  location : 5  |
         // =================================
@@ -3560,7 +3582,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  DmiVoltageProbeEntry - locationAndStatus:
+        // DmiVoltageProbeEntry:
         // =================================
         // |  status : 3  |  location : 5  |
         // =================================
@@ -3754,7 +3776,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  IdtDescriptor - type:
+        // IdtDescriptor:
         // ===========================================================
         // |  p : 1  |  dpl : 2  |  __reserved : 1  |  gateType : 4  |
         // ===========================================================
@@ -3802,7 +3824,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  JpegHuffmanTable - idAndType:
+        // JpegHuffmanTable:
         // ============================================
         // |  __reserved : 3  |  type : 1  |  id : 4  |
         // ===========================================
@@ -3843,7 +3865,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  JpegQuantizationTable - idAndPrecision:
+        // JpegQuantizationTable:
         // ==============================
         // |  precision : 4  |  id : 4  |
         // ==============================
@@ -3877,7 +3899,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  JpegStartOfFrameComponent - samplingFactor:
+        // JpegStartOfFrameComponent:
         // =================================================
         // |  samplingFactorX : 4  |  samplingFactorY : 4  |
         // =================================================
@@ -3911,7 +3933,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  JpegStartOfScanComponent - huffmanTableIds:
+        // JpegStartOfScanComponent:
         // ===================================================
         // |  huffmanDcTableId : 4  |  huffmanAcTableId : 4  |
         // ===================================================
@@ -3945,7 +3967,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciAcceleratedGraphicsPortCommand - value32:
+        // PciAcceleratedGraphicsPortCommand:
         // =====================================================================================================
         // |                                 maximumNumberOfCommandRequests : 8                                |
         // |                                     __reserved2 ... : 8 (14)                                      |
@@ -4010,7 +4032,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciAcceleratedGraphicsPortStatus - value32:
+        // PciAcceleratedGraphicsPortStatus:
         // ===========================================================================================
         // |                            maximumNumberOfCommandRequests : 8                           |
         // |                                __reserved2 : 8 (14) ...                                 |
@@ -4068,7 +4090,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciBuiltInSelfTest - value8:
+        // PciBuiltInSelfTest:
         // =============================================================================
         // |  capable : 1  |  startBist : 1  |  __reserved : 2  |  completionCode : 4  |
         // =============================================================================
@@ -4110,13 +4132,353 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciExtendedBridgeSecondaryStatus");
+    {
+        PciExtendedBridgeSecondaryStatus temp;
+
+
+
+        // PciExtendedBridgeSecondaryStatus:
+        // =====================================================================================================================================================================================================================================
+        // |                                                                                      __reserved : 7                                                                                       |  secondaryClockFrequency : 1 (3) ...  |
+        // |  ... secondaryClockFrequency : 2 (3)  |  splitRequestDelayed : 1  |  splitCompletionOverrun : 1  |  unexpectedSplitCompletion : 1  |  splitCompletionDiscarded : 1  |  support133MHz : 1  |           is64BitDevice : 1           |
+        // =====================================================================================================================================================================================================================================
+
+
+
+        temp.value16 = 0xCB55;                  // ||  1100101  |  1  ...  01  |  0  |  1  |  0  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,             1);
+        TEST_ASSERT_EQUALS(temp.support133MHz,             0);
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  1);
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, 0);
+        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    1);
+        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       0);
+        TEST_ASSERT_EQUALS(temp.secondaryClockFrequency,   5);
+        TEST_ASSERT_EQUALS(temp.__reserved,                101);
+
+
+
+        temp.is64BitDevice = 0;                 // ||  1100101  |  1  ...  01  |  0  |  1  |  0  |  1  |  0  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB54);
+
+
+
+        temp.support133MHz = 1;                 // ||  1100101  |  1  ...  01  |  0  |  1  |  0  |  1  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB56);
+
+
+
+        temp.splitCompletionDiscarded = 0;      // ||  1100101  |  1  ...  01  |  0  |  1  |  0  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB52);
+
+
+
+        temp.unexpectedSplitCompletion = 1;     // ||  1100101  |  1  ...  01  |  0  |  1  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB5A);
+
+
+
+        temp.splitCompletionOverrun = 0;        // ||  1100101  |  1  ...  01  |  0  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB4A);
+
+
+
+        temp.splitRequestDelayed = 1;           // ||  1100101  |  1  ...  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCB6A);
+
+
+
+        temp.secondaryClockFrequency = 3;       // ||  1100101  |  0  ...  11  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCAEA);
+
+
+
+        temp.__reserved = 7;                    // ||  0000111  |  0  ...  11  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x0EEA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExtendedBridgeStatus");
+    {
+        PciExtendedBridgeStatus temp;
+
+
+
+        // PciExtendedBridgeStatus:
+        // =======================================================================================================================================================================================================
+        // |                                                                                       __reserved : 8 (10) ...                                                                                       |
+        // |  ... __reserved : 2 (10)  |  splitRequestDelayed : 1  |  splitCompletionOverrun : 1  |  unexpectedSplitCompletion : 1  |  splitCompletionDiscarded : 1  |  support133MHz : 1  |  is64BitDevice : 1  |
+        // |                                                                                            busNumber : 8                                                                                            |
+        // |                                                    deviceNumber : 5                                                    |                             functionNumber : 3                             |
+        // =======================================================================================================================================================================================================
+
+
+
+        temp.value32 = 0xCB55A9DD;              // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  0  |  1  ||  10101001  ||  11011  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber,            5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,              27);
+        TEST_ASSERT_EQUALS(temp.busNumber,                 169);
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,             1);
+        TEST_ASSERT_EQUALS(temp.support133MHz,             0);
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,  1);
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion, 0);
+        TEST_ASSERT_EQUALS(temp.splitCompletionOverrun,    1);
+        TEST_ASSERT_EQUALS(temp.splitRequestDelayed,       0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                813);
+
+
+
+        temp.functionNumber = 1;                // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  0  |  1  ||  10101001  ||  11011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB55A9D9);
+
+
+
+        temp.deviceNumber = 4;                  // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  0  |  1  ||  10101001  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB55A921);
+
+
+
+        temp.busNumber = 5;                     // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  0  |  1  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB550521);
+
+
+
+        temp.is64BitDevice = 0;                 // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  0  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB540521);
+
+
+
+        temp.support133MHz = 1;                 // ||  11001011  ...  01  |  0  |  1  |  0  |  1  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB560521);
+
+
+
+        temp.splitCompletionDiscarded = 0;      // ||  11001011  ...  01  |  0  |  1  |  0  |  0  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB520521);
+
+
+
+        temp.unexpectedSplitCompletion = 1;     // ||  11001011  ...  01  |  0  |  1  |  1  |  0  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB5A0521);
+
+
+
+        temp.splitCompletionOverrun = 0;        // ||  11001011  ...  01  |  0  |  0  |  1  |  0  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB4A0521);
+
+
+
+        temp.splitRequestDelayed = 1;           // ||  11001011  ...  01  |  1  |  0  |  1  |  0  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCB6A0521);
+
+
+
+        temp.__reserved = 7;                    // ||  00000001  ...  11  |  1  |  0  |  1  |  0  |  1  |  0  ||  00000101  ||  00100  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x01EA0521);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExtendedDeviceCommand");
+    {
+        PciExtendedDeviceCommand temp;
+
+
+
+        // PciExtendedDeviceCommand:
+        // ===============================================================================================================================================================================
+        // |                                                                            __reserved : 8 (9) ...                                                                           |
+        // |  ... __reserved : 1 (9)  |  maximumOutstandingSplitTransactions : 3  |  maximumMemoryReadByteCount : 2  |  enableRelaxedOrdering : 1  |  enableDataParityErrorRecovery : 1  |
+        // ===============================================================================================================================================================================
+
+
+
+        temp.value16 = 0xCBBA;                          // ||  11001011  ...  1  |  011  |  10  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.enableDataParityErrorRecovery,       0);
+        TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,               1);
+        TEST_ASSERT_EQUALS(temp.maximumMemoryReadByteCount,          2);
+        TEST_ASSERT_EQUALS(temp.maximumOutstandingSplitTransactions, 3);
+        TEST_ASSERT_EQUALS(temp.__reserved,                          407);
+
+
+
+        temp.enableDataParityErrorRecovery = 1;         // ||  11001011  ...  1  |  011  |  10  |  1  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCBBB);
+
+
+
+        temp.enableRelaxedOrdering = 0;                 // ||  11001011  ...  1  |  011  |  10  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCBB9);
+
+
+
+        temp.maximumMemoryReadByteCount = 3;            // ||  11001011  ...  1  |  011  |  11  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCBBD);
+
+
+
+        temp.maximumOutstandingSplitTransactions = 5;   // ||  11001011  ...  1  |  101  |  11  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCBDD);
+
+
+
+        temp.__reserved = 9;                            // ||  00000100  ...  1  |  101  |  11  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x04DD);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExtendedDeviceStatus");
+    {
+        PciExtendedDeviceStatus temp;
+
+
+
+        // PciExtendedDeviceStatus:
+        // ======================================================================================================================================================================================================================================================================================
+        // |                                 __reserved : 2                                 |  receivedSplitCompletionErrorMessage : 1  |                           designedMaximumCumulativeReadSize : 3                           |  designedMaximumOutstandingSplitTransactions : 2 (3) ...  |
+        // |  ... designedMaximumOutstandingSplitTransactions : 1 (3)  |             designedMaximumMemoryReadByteCount : 2             |  deviceComplexity : 1  |  unexpectedSplitCompletion : 1  |  splitCompletionDiscarded : 1  |      support133MHz : 1      |      is64BitDevice : 1      |
+        // |                                                                                                                                   busNumber : 8                                                                                                                                    |
+        // |                                                                                   deviceNumber : 5                                                                                    |                                     functionNumber : 3                                     |
+        // ======================================================================================================================================================================================================================================================================================
+
+
+
+        temp.value32 = 0xCBEAAE9D;                              // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  1  |  0  ||  10101110  ||  10011  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.functionNumber,                              5);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,                                19);
+        TEST_ASSERT_EQUALS(temp.busNumber,                                   174);
+        TEST_ASSERT_EQUALS(temp.is64BitDevice,                               0);
+        TEST_ASSERT_EQUALS(temp.support133MHz,                               1);
+        TEST_ASSERT_EQUALS(temp.splitCompletionDiscarded,                    0);
+        TEST_ASSERT_EQUALS(temp.unexpectedSplitCompletion,                   1);
+        TEST_ASSERT_EQUALS(temp.deviceComplexity,                            0);
+        TEST_ASSERT_EQUALS(temp.designedMaximumMemoryReadByteCount,          3);
+        TEST_ASSERT_EQUALS(temp.designedMaximumOutstandingSplitTransactions, 7);
+        TEST_ASSERT_EQUALS(temp.designedMaximumCumulativeReadSize,           2);
+        TEST_ASSERT_EQUALS(temp.receivedSplitCompletionErrorMessage,         0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                                  3);
+
+
+
+        temp.functionNumber = 1;                                // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  1  |  0  ||  10101110  ||  10011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBEAAE99);
+
+
+
+        temp.deviceNumber = 3;                                  // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  1  |  0  ||  10101110  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBEAAE19);
+
+
+
+        temp.busNumber = 9;                                     // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  1  |  0  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBEA0919);
+
+
+
+        temp.is64BitDevice = 1;                                 // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  1  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBEB0919);
+
+
+
+        temp.support133MHz = 0;                                 // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  0  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBE90919);
+
+
+
+        temp.splitCompletionDiscarded = 1;                      // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  1  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBED0919);
+
+
+
+        temp.unexpectedSplitCompletion = 0;                     // ||  11  |  0  |  010  |  11  ...  1  |  11  |  0  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBE50919);
+
+
+
+        temp.deviceComplexity = 1;                              // ||  11  |  0  |  010  |  11  ...  1  |  11  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBF50919);
+
+
+
+        temp.designedMaximumMemoryReadByteCount = 2;            // ||  11  |  0  |  010  |  11  ...  1  |  10  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCBD50919);
+
+
+
+        temp.designedMaximumOutstandingSplitTransactions = 4;   // ||  11  |  0  |  010  |  10  ...  0  |  10  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCA550919);
+
+
+
+        temp.designedMaximumCumulativeReadSize = 5;             // ||  11  |  0  |  101  |  10  ...  0  |  10  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xD6550919);
+
+
+
+        temp.receivedSplitCompletionErrorMessage = 1;           // ||  11  |  1  |  101  |  10  ...  0  |  10  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xF6550919);
+
+
+
+        temp.__reserved = 1;                                    // ||  01  |  1  |  101  |  10  ...  0  |  10  |  1  |  0  |  1  |  0  |  1  ||  00001001  ||  00011  |  001  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x76550919);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciHeaderTypeUnion");
     {
         PciHeaderTypeUnion temp;
 
 
 
-        //  PciHeaderTypeUnion - value8:
+        // PciHeaderTypeUnion:
         // ============================================
         // |  isMultiFunction : 1  |  headerType : 7  |
         // ============================================
@@ -4150,7 +4512,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciMessageSignaledInterruptsExtendedMessageControl - value16:
+        // PciMessageSignaledInterruptsExtendedMessageControl:
         // ==========================================================
         // |  enableMSIX : 1  |  __reserved : 4  |  tableSize : 11  |
         // ==========================================================
@@ -4191,7 +4553,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciMessageSignaledInterruptsExtendedTableOffsetBirUnion - value32:
+        // PciMessageSignaledInterruptsExtendedTableOffsetBirUnion:
         // ===================================================
         // |  tableOffset : 29  |  baseAddressIndicator : 3  |
         // ===================================================
@@ -4225,7 +4587,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciMessageSignaledInterruptsMessageAddress - value32:
+        // PciMessageSignaledInterruptsMessageAddress:
         // ===================================
         // |  value : 30  |  __reserved : 2  |
         // ===================================
@@ -4259,7 +4621,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciMessageSignaledInterruptsMessageControl - value16:
+        // PciMessageSignaledInterruptsMessageControl:
         // ==========================================================================================================================
         // |                                     __reserved : 7                                     |  supportPerVectorMasking : 1  |
         // |  support64BitAddress : 1  |  enableMultipleMessage : 3  |  supportMultipleMessage : 3  |         enableMSI : 1         |
@@ -4322,7 +4684,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciPowerManagementBridgeSupportExtensions - value8:
+        // PciPowerManagementBridgeSupportExtensions:
         // ======================================================================
         // |  busPowerClockControl : 1  |  b2B3ForD3Hot : 1  |  __reserved : 6  |
         // ======================================================================
@@ -4363,7 +4725,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciPowerManagementCapabilities - value16:
+        // PciPowerManagementCapabilities:
         // ====================================================================================================================================================================
         // |                                           supportPme : 5                                          |  supportD2 : 1  |  supportD1 : 1  |  auxCurrent : 1 (3) ...  |
         // |  ... auxCurrent : 2 (3)  |  deviceSpecificInitialization : 1  |  __reserved : 1  |  pmeClock : 1  |                          version : 3                         |
@@ -4440,7 +4802,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciPowerManagementControlStatus - value16:
+        // PciPowerManagementControlStatus:
         // ==========================================================================================================================================
         // |  pmeStatus : 1  |  dataScale : 2  |                                  dataSelect : 4                                  |  enablePme : 1  |
         // |                  __reserved: 4                  |  noSoftReset : 1  |  __reservedForPciExpress : 1  |          powerState : 2          |
@@ -4517,7 +4879,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciSlotNumberingExpansionSlot - value8:
+        // PciSlotNumberingExpansionSlot:
         // ==========================================================================
         // |  __reserved : 2  |  firstInChassis : 1  |  expansionSlotsProvided : 5  |
         // ==========================================================================
@@ -4558,7 +4920,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciStatus - value16:
+        // PciStatus:
         // =====================================================================================================================
         // |     interruptStatus : 1     |                                   __reserved : 3                                    |
         // |  fastBackToBackCapable : 1  |      __reserved2 : 1      |     support64MHz : 1      |    capabilitiesList : 1     |
@@ -4672,7 +5034,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  PciVitalProductDataAddressUnion - value16:
+        // PciVitalProductDataAddressUnion:
         // =================================
         // |  finished : 1  |  value : 15  |
         // =================================
@@ -4706,7 +5068,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        //  ZLibHeader - value16:
+        // ZLibHeader:
         // ===================================================================================
         // |                compressionInfo : 4                    |  compressionMethod : 4  |
         // |  compressionLevel : 2 | presetDictionary : 1  |          checkBits : 5          |

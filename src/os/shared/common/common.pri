@@ -400,6 +400,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcihotswapcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h \
@@ -1236,6 +1238,14 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgestatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgeupstreamsplittransaction.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendeddevicecomplexity.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h \

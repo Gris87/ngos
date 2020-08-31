@@ -559,7 +559,7 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
 
         default:
         {
-            UEFI_LF(("Unexpected PCI header type %s", enumToFullString((PciHeaderType)configurationSpace.header.headerType.type)));
+            UEFI_LF(("Unknown PCI header type %s", enumToFullString((PciHeaderType)configurationSpace.header.headerType.type)));
         }
         break;
     }
@@ -619,7 +619,7 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.device.capabilitiesPointer, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.device.capabilitiesPointer, PciHeaderType::DEVICE, deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -714,7 +714,7 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.bridge.capabilitiesPointer, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.bridge.capabilitiesPointer, PciHeaderType::PCI_TO_PCI_BRIDGE, deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -801,16 +801,16 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.cardBus.capabilitiesPointer, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.cardBus.capabilitiesPointer, PciHeaderType::CARDBUS_BRIDGE, deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
 {
-    UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, deviceManagerEntry = 0x%p", capabilityPointer, deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, headerType = %u, deviceManagerEntry = 0x%p", capabilityPointer, headerType, deviceManagerEntry));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
 
@@ -837,7 +837,7 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
 
 
 
-        UEFI_ASSERT_EXECUTION(initPciWithCapability(capability, deviceManagerEntry), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(initPciWithCapability(capability, headerType, deviceManagerEntry), NgosStatus::ASSERTION);
 
 
 
@@ -854,9 +854,9 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
 {
-    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+    UEFI_LT((" | capability = 0x%p, headerType = %u, deviceManagerEntry = 0x%p", capability, headerType, deviceManagerEntry));
 
     UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
@@ -886,11 +886,12 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
         case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability, headerType,                                                                deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
-            UEFI_LF(("Unexpected PCI capability %s", enumToFullString(capability->capabilityId)));
+            UEFI_LF(("Unknown PCI capability %s", enumToFullString(capability->capabilityId)));
         }
         break;
     }
@@ -1289,6 +1290,170 @@ NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capa
 
     AVOID_UNUSED(capability);
     AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, headerType = %u, deviceManagerEntry = 0x%p", capability, headerType, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    switch (headerType)
+    {
+        case PciHeaderType::DEVICE:            UEFI_ASSERT_EXECUTION(initPciExtendedDeviceCapability((PciExtendedDeviceCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciHeaderType::PCI_TO_PCI_BRIDGE: UEFI_ASSERT_EXECUTION(initPciExtendedBridgeCapability((PciExtendedBridgeCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+
+        case PciHeaderType::CARDBUS_BRIDGE:
+        {
+            UEFI_LF(("Unexpected PCI header type %s", enumToFullString(headerType)));
+        }
+        break;
+
+        default:
+        {
+            UEFI_LF(("Unknown PCI header type %s", enumToFullString(headerType)));
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->command.enableDataParityErrorRecovery              = %u",     capability->command.enableDataParityErrorRecovery));
+        UEFI_LVVV(("capability->command.enableRelaxedOrdering                      = %u",     capability->command.enableRelaxedOrdering));
+        UEFI_LVVV(("capability->command.maximumMemoryReadByteCount                 = %u",     capability->command.maximumMemoryReadByteCount));
+        UEFI_LVVV(("capability->command.maximumOutstandingSplitTransactions        = %u",     capability->command.maximumOutstandingSplitTransactions));
+        UEFI_LVVV(("capability->command.value16                                    = 0x%04X", capability->command.value16));
+        UEFI_LVVV(("capability->status.functionNumber                              = %u",     capability->status.functionNumber));
+        UEFI_LVVV(("capability->status.deviceNumber                                = %u",     capability->status.deviceNumber));
+        UEFI_LVVV(("capability->status.busNumber                                   = %u",     capability->status.busNumber));
+        UEFI_LVVV(("capability->status.is64BitDevice                               = %u",     capability->status.is64BitDevice));
+        UEFI_LVVV(("capability->status.support133MHz                               = %u",     capability->status.support133MHz));
+        UEFI_LVVV(("capability->status.splitCompletionDiscarded                    = %u",     capability->status.splitCompletionDiscarded));
+        UEFI_LVVV(("capability->status.unexpectedSplitCompletion                   = %u",     capability->status.unexpectedSplitCompletion));
+        UEFI_LVVV(("capability->status.deviceComplexity                            = %s",     enumToFullString((PciExtendedDeviceComplexity)capability->status.deviceComplexity)));
+        UEFI_LVVV(("capability->status.designedMaximumMemoryReadByteCount          = %u",     capability->status.designedMaximumMemoryReadByteCount));
+        UEFI_LVVV(("capability->status.designedMaximumOutstandingSplitTransactions = %u",     capability->status.designedMaximumOutstandingSplitTransactions));
+        UEFI_LVVV(("capability->status.designedMaximumCumulativeReadSize           = %u",     capability->status.designedMaximumCumulativeReadSize));
+        UEFI_LVVV(("capability->status.receivedSplitCompletionErrorMessage         = %u",     capability->status.receivedSplitCompletionErrorMessage));
+        UEFI_LVVV(("capability->status.value32                                     = 0x%08X", capability->status.value32));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Command",                                                 mprintf("0x%04X", capability->command.value16),                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Command: Enable data parity error recovery",              capability->command.enableDataParityErrorRecovery      ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Command: Enable relaxed ordering",                        capability->command.enableRelaxedOrdering              ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Command: Maximum memory read byte count",                 mprintf("%u",     capability->command.maximumMemoryReadByteCountReal()),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Command: Maximum outstanding split transactions",         mprintf("%u",     capability->command.maximumOutstandingSplitTransactionsReal()),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status",                                                  mprintf("0x%08X", capability->status.value32),                                              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Function number",                                 mprintf("%u",     capability->status.functionNumber),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Device number",                                   mprintf("%u",     capability->status.deviceNumber),                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Bus number",                                      mprintf("%u",     capability->status.busNumber),                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: 64 bit device",                                   capability->status.is64BitDevice                       ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: 133 MHz capable",                                 capability->status.support133MHz                       ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Split completion discarded",                      capability->status.splitCompletionDiscarded            ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Unexpected split completion",                     capability->status.unexpectedSplitCompletion           ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Device complexity",                               strdup(enumToFullString((PciExtendedDeviceComplexity)capability->status.deviceComplexity)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Designed maximum memory read byte count",         mprintf("%u",     capability->status.designedMaximumMemoryReadByteCountReal()),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Designed maximum outstanding split transactions", mprintf("%u",     capability->status.designedMaximumOutstandingSplitTransactionsReal()),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Designed maximum cumulative read size",           mprintf("%u",     capability->status.designedMaximumCumulativeReadSizeReal()),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Received split completion error message",         capability->status.receivedSplitCompletionErrorMessage ? "Yes" : "No",                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->secondaryStatus.is64BitDevice              = %u",     capability->secondaryStatus.is64BitDevice));
+        UEFI_LVVV(("capability->secondaryStatus.support133MHz              = %u",     capability->secondaryStatus.support133MHz));
+        UEFI_LVVV(("capability->secondaryStatus.splitCompletionDiscarded   = %u",     capability->secondaryStatus.splitCompletionDiscarded));
+        UEFI_LVVV(("capability->secondaryStatus.unexpectedSplitCompletion  = %u",     capability->secondaryStatus.unexpectedSplitCompletion));
+        UEFI_LVVV(("capability->secondaryStatus.splitCompletionOverrun     = %u",     capability->secondaryStatus.splitCompletionOverrun));
+        UEFI_LVVV(("capability->secondaryStatus.splitRequestDelayed        = %u",     capability->secondaryStatus.splitRequestDelayed));
+        UEFI_LVVV(("capability->secondaryStatus.secondaryClockFrequency    = %s",     enumToFullString((PciExtendedBridgeSecondaryClockFrequency)capability->secondaryStatus.secondaryClockFrequency)));
+        UEFI_LVVV(("capability->secondaryStatus.value16                    = 0x%04X", capability->secondaryStatus.value16));
+        UEFI_LVVV(("capability->status.functionNumber                      = %u",     capability->status.functionNumber));
+        UEFI_LVVV(("capability->status.deviceNumber                        = %u",     capability->status.deviceNumber));
+        UEFI_LVVV(("capability->status.busNumber                           = %u",     capability->status.busNumber));
+        UEFI_LVVV(("capability->status.is64BitDevice                       = %u",     capability->status.is64BitDevice));
+        UEFI_LVVV(("capability->status.support133MHz                       = %u",     capability->status.support133MHz));
+        UEFI_LVVV(("capability->status.splitCompletionDiscarded            = %u",     capability->status.splitCompletionDiscarded));
+        UEFI_LVVV(("capability->status.unexpectedSplitCompletion           = %u",     capability->status.unexpectedSplitCompletion));
+        UEFI_LVVV(("capability->status.splitCompletionOverrun              = %u",     capability->status.splitCompletionOverrun));
+        UEFI_LVVV(("capability->status.splitRequestDelayed                 = %u",     capability->status.splitRequestDelayed));
+        UEFI_LVVV(("capability->status.value32                             = 0x%08X", capability->status.value32));
+        UEFI_LVVV(("capability->upstream.splitTransactionCommitmentLimit   = %u",     capability->upstream.splitTransactionCommitmentLimit));
+        UEFI_LVVV(("capability->upstream.splitTransactionCapacity          = %u",     capability->upstream.splitTransactionCapacity));
+        UEFI_LVVV(("capability->downstream.splitTransactionCommitmentLimit = %u",     capability->downstream.splitTransactionCommitmentLimit));
+        UEFI_LVVV(("capability->downstream.splitTransactionCapacity        = %u",     capability->downstream.splitTransactionCapacity));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status",                               mprintf("0x%04X", capability->secondaryStatus.value16),                                                                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: 64 bit device",                capability->secondaryStatus.is64BitDevice             ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: 133 MHz capable",              capability->secondaryStatus.support133MHz             ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: Split completion discarded",   capability->secondaryStatus.splitCompletionDiscarded  ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: Unexpected split completion",  capability->secondaryStatus.unexpectedSplitCompletion ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: Split completion overrun",     capability->secondaryStatus.splitCompletionOverrun    ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: Split request delayed",        capability->secondaryStatus.splitRequestDelayed       ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Secondary status: Secondary clock frequency",    strdup(enumToFullString((PciExtendedBridgeSecondaryClockFrequency)capability->secondaryStatus.secondaryClockFrequency)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status",                                         mprintf("0x%08X", capability->status.value32),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Function number",                        mprintf("%u",     capability->status.functionNumber),                                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Device number",                          mprintf("%u",     capability->status.deviceNumber),                                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Bus number",                             mprintf("%u",     capability->status.busNumber),                                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: 64 bit device",                          capability->status.is64BitDevice                      ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: 133 MHz capable",                        capability->status.support133MHz                      ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Split completion discarded",             capability->status.splitCompletionDiscarded           ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Unexpected split completion",            capability->status.unexpectedSplitCompletion          ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Split completion overrun",               capability->status.splitCompletionOverrun             ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Status: Split request delayed",                  capability->status.splitRequestDelayed                ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Upstream: Split transaction commitment limit",   mprintf("%u",     capability->upstream.splitTransactionCommitmentLimit),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Upstream: Split transaction capacity",           mprintf("%u",     capability->upstream.splitTransactionCapacity),                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Downstream: Split transaction commitment limit", mprintf("%u",     capability->downstream.splitTransactionCommitmentLimit),                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Downstream: Split transaction capacity",         mprintf("%u",     capability->downstream.splitTransactionCapacity),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
 
 
 
