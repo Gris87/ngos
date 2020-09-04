@@ -9,12 +9,16 @@
 #include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransportslaveprimaryinterfaceblockcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcivendorcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
@@ -57,6 +61,10 @@ private:
     static NgosStatus initPciExtendedCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;

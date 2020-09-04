@@ -4,6 +4,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkerrorflags.h>
 #include <com/ngos/shared/common/pci/lib/pcihypertransportlinkfrequency.h>
 
 

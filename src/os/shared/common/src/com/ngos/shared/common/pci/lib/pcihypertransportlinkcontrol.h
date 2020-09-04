@@ -13,7 +13,7 @@ struct PciHyperTransportLinkControl
     {
         struct
         {
-            u16 enableSourceID:               1;
+            u16 enableSourceId:               1;
             u16 enableCrcFlood:               1;
             u16 crcStartTest:                 1;
             u16 crcForceError:                1;

@@ -887,6 +887,8 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability, headerType,                                                                deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HYPER_TRANSPORT:               UEFI_ASSERT_EXECUTION(initPciHyperTransportCapability((PciHyperTransportCapability *)capability,                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VENDOR:                        UEFI_ASSERT_EXECUTION(initPciVendorCapability((PciVendorCapability *)capability,                                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
@@ -1453,6 +1455,368 @@ NgosStatus DeviceManagerPci::initPciExtendedBridgeCapability(PciExtendedBridgeCa
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Downstream: Split transaction commitment limit", mprintf("%u",     capability->downstream.splitTransactionCommitmentLimit),                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-X - Downstream: Split transaction capacity",         mprintf("%u",     capability->downstream.splitTransactionCapacity),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    switch ((PciHyperTransportCapabilityType)capability->command.capabilityType)
+    {
+        case PciHyperTransportCapabilityType::SLAVE_OR_PRIMARY_INTERFACE:  UEFI_ASSERT_EXECUTION(initPciHyperTransportSlavePrimaryInterfaceBlockCapability((PciHyperTransportSlavePrimaryInterfaceBlockCapability *)capability,   deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciHyperTransportCapabilityType::HOST_OR_SECONDARY_INTERFACE: UEFI_ASSERT_EXECUTION(initPciHyperTransportHostSecondaryInterfaceBlockCapability((PciHyperTransportHostSecondaryInterfaceBlockCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+
+        default:
+        {
+            UEFI_LF(("Unknown PCI HyperTransport capability type %s", enumToFullString((PciHyperTransportCapabilityType)capability->command.capabilityType)));
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    PciHyperTransportLinkErrorFlags linkError0(capability->linkErrorAndFrequency0.error);
+    PciHyperTransportLinkErrorFlags linkError1(capability->linkErrorAndFrequency1.error);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->command.baseUnitId                         = %u",     capability->command.baseUnitId));
+        UEFI_LVVV(("capability->command.unitCount                          = %u",     capability->command.unitCount));
+        UEFI_LVVV(("capability->command.masterHost                         = %u",     capability->command.masterHost));
+        UEFI_LVVV(("capability->command.defaultDirection                   = %u",     capability->command.defaultDirection));
+        UEFI_LVVV(("capability->command.dropOnUninit                       = %u",     capability->command.dropOnUninit));
+        UEFI_LVVV(("capability->command.capabilityType                     = %s",     enumToFullString((PciHyperTransportCapabilityType)capability->command.capabilityType)));
+        UEFI_LVVV(("capability->command.value16                            = 0x%04X", capability->command.value16));
+        UEFI_LVVV(("capability->linkControl0.enableSourceId                = %u",     capability->linkControl0.enableSourceId));
+        UEFI_LVVV(("capability->linkControl0.enableCrcFlood                = %u",     capability->linkControl0.enableCrcFlood));
+        UEFI_LVVV(("capability->linkControl0.crcStartTest                  = %u",     capability->linkControl0.crcStartTest));
+        UEFI_LVVV(("capability->linkControl0.crcForceError                 = %u",     capability->linkControl0.crcForceError));
+        UEFI_LVVV(("capability->linkControl0.linkFailure                   = %u",     capability->linkControl0.linkFailure));
+        UEFI_LVVV(("capability->linkControl0.initializationComplete        = %u",     capability->linkControl0.initializationComplete));
+        UEFI_LVVV(("capability->linkControl0.endOfChain                    = %u",     capability->linkControl0.endOfChain));
+        UEFI_LVVV(("capability->linkControl0.transmitterOff                = %u",     capability->linkControl0.transmitterOff));
+        UEFI_LVVV(("capability->linkControl0.crcError                      = %u",     capability->linkControl0.crcError));
+        UEFI_LVVV(("capability->linkControl0.enableIsochronousFlowControl  = %u",     capability->linkControl0.enableIsochronousFlowControl));
+        UEFI_LVVV(("capability->linkControl0.enableLdtStopTristate         = %u",     capability->linkControl0.enableLdtStopTristate));
+        UEFI_LVVV(("capability->linkControl0.extendedCtlTime               = %u",     capability->linkControl0.extendedCtlTime));
+        UEFI_LVVV(("capability->linkControl0.enable64BitAddressing         = %u",     capability->linkControl0.enable64BitAddressing));
+        UEFI_LVVV(("capability->linkControl0.value16                       = 0x%04X", capability->linkControl0.value16));
+        UEFI_LVVV(("capability->linkConfig0.maximumLinkWidthIn             = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.maximumLinkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig0.doublewordFlowControlIn        = %u",     capability->linkConfig0.doublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig0.maximumLinkWidthOut            = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.maximumLinkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig0.doublewordFlowControlOut       = %u",     capability->linkConfig0.doublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig0.linkWidthIn                    = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.linkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig0.enableDoublewordFlowControlIn  = %u",     capability->linkConfig0.enableDoublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig0.linkWidthOut                   = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.linkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig0.enableDoublewordFlowControlOut = %u",     capability->linkConfig0.enableDoublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig0.value16                        = 0x%04X", capability->linkConfig0.value16));
+        UEFI_LVVV(("capability->linkControl1.enableSourceId                = %u",     capability->linkControl1.enableSourceId));
+        UEFI_LVVV(("capability->linkControl1.enableCrcFlood                = %u",     capability->linkControl1.enableCrcFlood));
+        UEFI_LVVV(("capability->linkControl1.crcStartTest                  = %u",     capability->linkControl1.crcStartTest));
+        UEFI_LVVV(("capability->linkControl1.crcForceError                 = %u",     capability->linkControl1.crcForceError));
+        UEFI_LVVV(("capability->linkControl1.linkFailure                   = %u",     capability->linkControl1.linkFailure));
+        UEFI_LVVV(("capability->linkControl1.initializationComplete        = %u",     capability->linkControl1.initializationComplete));
+        UEFI_LVVV(("capability->linkControl1.endOfChain                    = %u",     capability->linkControl1.endOfChain));
+        UEFI_LVVV(("capability->linkControl1.transmitterOff                = %u",     capability->linkControl1.transmitterOff));
+        UEFI_LVVV(("capability->linkControl1.crcError                      = %u",     capability->linkControl1.crcError));
+        UEFI_LVVV(("capability->linkControl1.enableIsochronousFlowControl  = %u",     capability->linkControl1.enableIsochronousFlowControl));
+        UEFI_LVVV(("capability->linkControl1.enableLdtStopTristate         = %u",     capability->linkControl1.enableLdtStopTristate));
+        UEFI_LVVV(("capability->linkControl1.extendedCtlTime               = %u",     capability->linkControl1.extendedCtlTime));
+        UEFI_LVVV(("capability->linkControl1.enable64BitAddressing         = %u",     capability->linkControl1.enable64BitAddressing));
+        UEFI_LVVV(("capability->linkControl1.value16                       = 0x%04X", capability->linkControl1.value16));
+        UEFI_LVVV(("capability->linkConfig1.maximumLinkWidthIn             = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.maximumLinkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig1.doublewordFlowControlIn        = %u",     capability->linkConfig1.doublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig1.maximumLinkWidthOut            = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.maximumLinkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig1.doublewordFlowControlOut       = %u",     capability->linkConfig1.doublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig1.linkWidthIn                    = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.linkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig1.enableDoublewordFlowControlIn  = %u",     capability->linkConfig1.enableDoublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig1.linkWidthOut                   = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.linkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig1.enableDoublewordFlowControlOut = %u",     capability->linkConfig1.enableDoublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig1.value16                        = 0x%04X", capability->linkConfig1.value16));
+        UEFI_LVVV(("capability->revisionId                                 = %s",     enumToFullString(capability->revisionId)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency0.frequency           = %s",     enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency0.frequency)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency0.error               = %s",     flagsToFullString(linkError0)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency0.value8              = 0x%02X", capability->linkErrorAndFrequency0.value8));
+        UEFI_LVVV(("capability->linkFrequencyCapability0                   = %s",     flagsToFullString(capability->linkFrequencyCapability0)));
+        UEFI_LVVV(("capability->feature                                    = %s",     flagsToFullString(capability->feature)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency1.frequency           = %s",     enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency1.frequency)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency1.error               = %s",     flagsToFullString(linkError1)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency1.value8              = 0x%02X", capability->linkErrorAndFrequency1.value8));
+        UEFI_LVVV(("capability->linkFrequencyCapability1                   = %s",     flagsToFullString(capability->linkFrequencyCapability1)));
+        UEFI_LVVV(("capability->enumerationScratchpad                      = %u",     capability->enumerationScratchpad));
+        UEFI_LVVV(("capability->errorHandling                              = %s",     flagsToFullString(capability->errorHandling)));
+        UEFI_LVVV(("capability->memoryBaseUpper                            = 0x%02X", capability->memoryBaseUpper));
+        UEFI_LVVV(("capability->memoryLimitUpper                           = 0x%02X", capability->memoryLimitUpper));
+        UEFI_LVVV(("capability->busNumber                                  = %u",     capability->busNumber));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command",                                           mprintf("0x%04X", capability->command.value16),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Base unit ID",                             mprintf("%u",     capability->command.baseUnitId),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Unit count",                               mprintf("%u",     capability->command.unitCount),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Master host",                              capability->command.masterHost ? "Yes" : "No",                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Default direction",                        capability->command.defaultDirection ? "To master host" : "From master host",                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Drop on uninit",                           capability->command.dropOnUninit ? "Yes" : "No",                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Capability type",                          strdup(enumToFullString((PciHyperTransportCapabilityType)capability->command.capabilityType)),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0",                                    mprintf("0x%04X", capability->linkControl0.value16),                                                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Enable source ID",                  capability->linkControl0.enableSourceId               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Enable CRC flood",                  capability->linkControl0.enableCrcFlood               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: CRC start test",                    capability->linkControl0.crcStartTest                 ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: CRC force error",                   capability->linkControl0.crcForceError                ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Link failure",                      capability->linkControl0.linkFailure                  ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Initialization complete",           capability->linkControl0.initializationComplete       ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: End of chain",                      capability->linkControl0.endOfChain                   ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Transmitter off",                   capability->linkControl0.transmitterOff               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: CRC error",                         mprintf("%u", capability->linkControl0.crcError),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Enable isochronous flow control",   capability->linkControl0.enableIsochronousFlowControl ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Enable LDTSTOP tristate",           capability->linkControl0.enableLdtStopTristate        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Extended CTL time",                 capability->linkControl0.extendedCtlTime              ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 0: Enable 64 bit addressing",          capability->linkControl0.enable64BitAddressing        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0",                                     mprintf("0x%04X", capability->linkConfig0.value16),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Maximum link width in",              strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.maximumLinkWidthIn)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Doubleword flow control in",         capability->linkConfig0.doublewordFlowControlIn ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Maximum link width out",             strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.maximumLinkWidthOut)),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Doubleword flow control out",        capability->linkConfig0.doublewordFlowControlOut ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Link width in",                      strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.linkWidthIn)),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Enable doubleword flow control in",  capability->linkConfig0.enableDoublewordFlowControlIn ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Link width out",                     strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig0.linkWidthOut)),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 0: Enable doubleword flow control out", capability->linkConfig0.enableDoublewordFlowControlOut ? "Yes" : "No",                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1",                                    mprintf("0x%04X", capability->linkControl1.value16),                                                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Enable source ID",                  capability->linkControl1.enableSourceId               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Enable CRC flood",                  capability->linkControl1.enableCrcFlood               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: CRC start test",                    capability->linkControl1.crcStartTest                 ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: CRC force error",                   capability->linkControl1.crcForceError                ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Link failure",                      capability->linkControl1.linkFailure                  ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Initialization complete",           capability->linkControl1.initializationComplete       ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: End of chain",                      capability->linkControl1.endOfChain                   ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Transmitter off",                   capability->linkControl1.transmitterOff               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: CRC error",                         mprintf("%u", capability->linkControl1.crcError),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Enable isochronous flow control",   capability->linkControl1.enableIsochronousFlowControl ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Enable LDTSTOP tristate",           capability->linkControl1.enableLdtStopTristate        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Extended CTL time",                 capability->linkControl1.extendedCtlTime              ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control 1: Enable 64 bit addressing",          capability->linkControl1.enable64BitAddressing        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1",                                     mprintf("0x%04X", capability->linkConfig1.value16),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Maximum link width in",              strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.maximumLinkWidthIn)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Doubleword flow control in",         capability->linkConfig1.doublewordFlowControlIn ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Maximum link width out",             strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.maximumLinkWidthOut)),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Doubleword flow control out",        capability->linkConfig1.doublewordFlowControlOut ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Link width in",                      strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.linkWidthIn)),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Enable doubleword flow control in",  capability->linkConfig1.enableDoublewordFlowControlIn ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Link width out",                     strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig1.linkWidthOut)),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config 1: Enable doubleword flow control out", capability->linkConfig1.enableDoublewordFlowControlOut ? "Yes" : "No",                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Revision ID",                                       strdup(enumToFullString(capability->revisionId)),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link frequency 0",                                  strdup(enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency0.frequency)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link error 0",                linkError0,                           "0x%02X", PciHyperTransportLinkErrorFlag,                    DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link frequency capability 0", capability->linkFrequencyCapability0, "0x%04X", PciHyperTransportLinkFrequencyCapabilityFlag,      DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Feature",                     capability->feature,                  "0x%02X", PciHyperTransportSlavePrimaryInterfaceFeatureFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link frequency 1", strdup(enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency1.frequency)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link error 1",                linkError1,                           "0x%02X", PciHyperTransportLinkErrorFlag,               DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link frequency capability 1", capability->linkFrequencyCapability1, "0x%04X", PciHyperTransportLinkFrequencyCapabilityFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Enumeration scratchpad", mprintf("%u", capability->enumerationScratchpad), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Error handling", capability->errorHandling, "0x%04X", PciHyperTransportErrorHandlingFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Memory base upper",  mprintf("0x%02X", capability->memoryBaseUpper),  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Memory limit upper", mprintf("0x%02X", capability->memoryLimitUpper), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Bus number",         mprintf("%u",     capability->busNumber),        DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    PciHyperTransportLinkErrorFlags linkError(capability->linkErrorAndFrequency.error);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->command.warmReset                         = %u",     capability->command.warmReset));
+        UEFI_LVVV(("capability->command.doubleEnded                       = %u",     capability->command.doubleEnded));
+        UEFI_LVVV(("capability->command.deviceNumber                      = %u",     capability->command.deviceNumber));
+        UEFI_LVVV(("capability->command.chainSide                         = %u",     capability->command.chainSide));
+        UEFI_LVVV(("capability->command.hostHide                          = %u",     capability->command.hostHide));
+        UEFI_LVVV(("capability->command.actAsSlave                        = %u",     capability->command.actAsSlave));
+        UEFI_LVVV(("capability->command.hostInboundEndOfChainError        = %u",     capability->command.hostInboundEndOfChainError));
+        UEFI_LVVV(("capability->command.dropOnUninit                      = %u",     capability->command.dropOnUninit));
+        UEFI_LVVV(("capability->command.capabilityType                    = %s",     enumToFullString((PciHyperTransportCapabilityType)capability->command.capabilityType)));
+        UEFI_LVVV(("capability->command.value16                           = 0x%04X", capability->command.value16));
+        UEFI_LVVV(("capability->linkControl.enableSourceId                = %u",     capability->linkControl.enableSourceId));
+        UEFI_LVVV(("capability->linkControl.enableCrcFlood                = %u",     capability->linkControl.enableCrcFlood));
+        UEFI_LVVV(("capability->linkControl.crcStartTest                  = %u",     capability->linkControl.crcStartTest));
+        UEFI_LVVV(("capability->linkControl.crcForceError                 = %u",     capability->linkControl.crcForceError));
+        UEFI_LVVV(("capability->linkControl.linkFailure                   = %u",     capability->linkControl.linkFailure));
+        UEFI_LVVV(("capability->linkControl.initializationComplete        = %u",     capability->linkControl.initializationComplete));
+        UEFI_LVVV(("capability->linkControl.endOfChain                    = %u",     capability->linkControl.endOfChain));
+        UEFI_LVVV(("capability->linkControl.transmitterOff                = %u",     capability->linkControl.transmitterOff));
+        UEFI_LVVV(("capability->linkControl.crcError                      = %u",     capability->linkControl.crcError));
+        UEFI_LVVV(("capability->linkControl.enableIsochronousFlowControl  = %u",     capability->linkControl.enableIsochronousFlowControl));
+        UEFI_LVVV(("capability->linkControl.enableLdtStopTristate         = %u",     capability->linkControl.enableLdtStopTristate));
+        UEFI_LVVV(("capability->linkControl.extendedCtlTime               = %u",     capability->linkControl.extendedCtlTime));
+        UEFI_LVVV(("capability->linkControl.enable64BitAddressing         = %u",     capability->linkControl.enable64BitAddressing));
+        UEFI_LVVV(("capability->linkControl.value16                       = 0x%04X", capability->linkControl.value16));
+        UEFI_LVVV(("capability->linkConfig.maximumLinkWidthIn             = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.maximumLinkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig.doublewordFlowControlIn        = %u",     capability->linkConfig.doublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig.maximumLinkWidthOut            = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.maximumLinkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig.doublewordFlowControlOut       = %u",     capability->linkConfig.doublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig.linkWidthIn                    = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.linkWidthIn)));
+        UEFI_LVVV(("capability->linkConfig.enableDoublewordFlowControlIn  = %u",     capability->linkConfig.enableDoublewordFlowControlIn));
+        UEFI_LVVV(("capability->linkConfig.linkWidthOut                   = %s",     enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.linkWidthOut)));
+        UEFI_LVVV(("capability->linkConfig.enableDoublewordFlowControlOut = %u",     capability->linkConfig.enableDoublewordFlowControlOut));
+        UEFI_LVVV(("capability->linkConfig.value16                        = 0x%04X", capability->linkConfig.value16));
+        UEFI_LVVV(("capability->revisionId                                = %s",     enumToFullString(capability->revisionId)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency.frequency           = %s",     enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency.frequency)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency.error               = %s",     flagsToFullString(linkError)));
+        UEFI_LVVV(("capability->linkErrorAndFrequency.value8              = 0x%02X", capability->linkErrorAndFrequency.value8));
+        UEFI_LVVV(("capability->linkFrequencyCapability                   = %s",     flagsToFullString(capability->linkFrequencyCapability)));
+        UEFI_LVVV(("capability->feature                                   = %s",     flagsToFullString(capability->feature)));
+        UEFI_LVVV(("capability->enumerationScratchpad                     = %u",     capability->enumerationScratchpad));
+        UEFI_LVVV(("capability->errorHandling                             = %s",     flagsToFullString(capability->errorHandling)));
+        UEFI_LVVV(("capability->memoryBaseUpper                           = 0x%02X", capability->memoryBaseUpper));
+        UEFI_LVVV(("capability->memoryLimitUpper                          = 0x%02X", capability->memoryLimitUpper));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command",                                         mprintf("0x%04X", capability->command.value16),                                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Warm reset",                             capability->command.warmReset                  ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Double ended",                           capability->command.doubleEnded                ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Device number",                          mprintf("%u", capability->command.deviceNumber),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Chain side",                             capability->command.chainSide                  ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Host hide",                              capability->command.hostHide                   ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Act as slave",                           capability->command.actAsSlave                 ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Host inbound end of chain error",        capability->command.hostInboundEndOfChainError ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Drop on uninit",                         capability->command.dropOnUninit               ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Command: Capability type",                        strdup(enumToFullString((PciHyperTransportCapabilityType)capability->command.capabilityType)),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control",                                    mprintf("0x%04X", capability->linkControl.value16),                                                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Enable source ID",                  capability->linkControl.enableSourceId               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Enable CRC flood",                  capability->linkControl.enableCrcFlood               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: CRC start test",                    capability->linkControl.crcStartTest                 ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: CRC force error",                   capability->linkControl.crcForceError                ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Link failure",                      capability->linkControl.linkFailure                  ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Initialization complete",           capability->linkControl.initializationComplete       ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: End of chain",                      capability->linkControl.endOfChain                   ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Transmitter off",                   capability->linkControl.transmitterOff               ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: CRC error",                         mprintf("%u", capability->linkControl.crcError),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Enable isochronous flow control",   capability->linkControl.enableIsochronousFlowControl ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Enable LDTSTOP tristate",           capability->linkControl.enableLdtStopTristate        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Extended CTL time",                 capability->linkControl.extendedCtlTime              ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link control: Enable 64 bit addressing",          capability->linkControl.enable64BitAddressing        ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config",                                     mprintf("0x%04X", capability->linkConfig.value16),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Maximum link width in",              strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.maximumLinkWidthIn)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Doubleword flow control in",         capability->linkConfig.doublewordFlowControlIn ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Maximum link width out",             strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.maximumLinkWidthOut)),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Doubleword flow control out",        capability->linkConfig.doublewordFlowControlOut ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Link width in",                      strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.linkWidthIn)),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Enable doubleword flow control in",  capability->linkConfig.enableDoublewordFlowControlIn ? "Yes" : "No",                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Link width out",                     strdup(enumToFullString((PciHyperTransportLinkWidth)capability->linkConfig.linkWidthOut)),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link config: Enable doubleword flow control out", capability->linkConfig.enableDoublewordFlowControlOut ? "Yes" : "No",                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Revision ID",                                     strdup(enumToFullString(capability->revisionId)),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Link frequency",                                  strdup(enumToFullString((PciHyperTransportLinkFrequency)capability->linkErrorAndFrequency.frequency)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link error",                linkError,                           "0x%02X", PciHyperTransportLinkErrorFlag,                     DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Link frequency capability", capability->linkFrequencyCapability, "0x%04X", PciHyperTransportLinkFrequencyCapabilityFlag,       DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Feature",                   capability->feature,                 "0x%04X", PciHyperTransportHostSecondaryInterfaceFeatureFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Enumeration scratchpad", mprintf("%u", capability->enumerationScratchpad), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "HT - Error handling", capability->errorHandling, "0x%04X", PciHyperTransportErrorHandlingFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Memory base upper",  mprintf("0x%02X", capability->memoryBaseUpper),  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("HT - Memory limit upper", mprintf("0x%02X", capability->memoryLimitUpper), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->length = %u", capability->length));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor - Length", mprintf("%u", capability->length), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
     }
 
 

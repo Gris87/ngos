@@ -21,8 +21,8 @@ struct PciHyperTransportHostSecondaryInterfaceCommand
             u16 hostHide:                   1;
             u16 __reserved:                 1;
             u16 actAsSlave:                 1;
-            u16 dropOnUninit:               1;
             u16 hostInboundEndOfChainError: 1;
+            u16 dropOnUninit:               1;
             u16 capabilityType:             3; // TODO: Use enum PciHyperTransportCapabilityType
         };
 

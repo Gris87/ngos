@@ -271,6 +271,7 @@
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcivendorcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h>
@@ -2423,6 +2424,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass11),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciSubClass12),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciVendor),                                                2);
+        TEST_ASSERT_EQUALS(sizeof(PciVendorCapability),                                      4);
         TEST_ASSERT_EQUALS(sizeof(PciVitalProductDataAddressUnion),                          2);
         TEST_ASSERT_EQUALS(sizeof(PciVitalProductDataCapability),                            8);
         TEST_ASSERT_EQUALS(sizeof(PGD),                                                      8);
@@ -4582,7 +4584,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
         // PciHyperTransportHostSecondaryInterfaceCommand:
         // =============================================================================================================================================================================
-        // |                    capabilityType : 3                    |  hostInboundEndOfChainError : 1  |  dropOnUninit : 1  |  actAsSlave : 1  |  __reserved : 1   |  hostHide : 1   |
+        // |                    capabilityType : 3                    |  dropOnUninit : 1  |  hostInboundEndOfChainError : 1  |  actAsSlave : 1  |  __reserved : 1   |  hostHide : 1   |
         // |  chainSide : 1  |                                                 deviceNumber : 5                                                  |  doubleEnded : 1  |  warmReset : 1  |
         // =============================================================================================================================================================================
 
@@ -4597,8 +4599,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.hostHide,                   0);
         TEST_ASSERT_EQUALS(temp.__reserved,                 1);
         TEST_ASSERT_EQUALS(temp.actAsSlave,                 1);
-        TEST_ASSERT_EQUALS(temp.dropOnUninit,               0);
-        TEST_ASSERT_EQUALS(temp.hostInboundEndOfChainError, 1);
+        TEST_ASSERT_EQUALS(temp.hostInboundEndOfChainError, 0);
+        TEST_ASSERT_EQUALS(temp.dropOnUninit,               1);
         TEST_ASSERT_EQUALS(temp.capabilityType,             1);
 
 
@@ -4645,13 +4647,13 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.dropOnUninit = 1;                  // ||  001  |  1  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+        temp.hostInboundEndOfChainError = 1;    // ||  001  |  1  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x3992);
 
 
 
-        temp.hostInboundEndOfChainError = 0;    // ||  001  |  0  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+        temp.dropOnUninit = 0;                  // ||  001  |  0  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x2992);
 
@@ -4751,14 +4753,14 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         // PciHyperTransportLinkControl:
         // ====================================================================================================================================================================================================================
         // |  enable64BitAddressing : 1  |  extendedCtlTime : 1  |  enableLdtStopTristate : 1   |  enableIsochronousFlowControl : 1  |                                      crcError : 4                                      |
-        // |      transmitterOff : 1     |     endOfChain : 1    |  initializationComplete : 1  |          linkFailure : 1           |  crcForceError : 1  |  crcStartTest : 1  |  enableCrcFlood : 1  |  enableSourceID : 1  |
+        // |      transmitterOff : 1     |     endOfChain : 1    |  initializationComplete : 1  |          linkFailure : 1           |  crcForceError : 1  |  crcStartTest : 1  |  enableCrcFlood : 1  |  enableSourceId : 1  |
         // ====================================================================================================================================================================================================================
 
 
 
         temp.value16 = 0x5655;                  // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  0  |  1  ||
 
-        TEST_ASSERT_EQUALS(temp.enableSourceID,               1);
+        TEST_ASSERT_EQUALS(temp.enableSourceId,               1);
         TEST_ASSERT_EQUALS(temp.enableCrcFlood,               0);
         TEST_ASSERT_EQUALS(temp.crcStartTest,                 1);
         TEST_ASSERT_EQUALS(temp.crcForceError,                0);
@@ -4774,7 +4776,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
 
 
 
-        temp.enableSourceID = 0;                // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  0  |  0  ||
+        temp.enableSourceId = 0;                // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  0  |  0  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x5654);
 

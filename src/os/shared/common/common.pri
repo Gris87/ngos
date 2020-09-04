@@ -412,6 +412,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcivendorcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h \

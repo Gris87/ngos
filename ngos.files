@@ -1196,6 +1196,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignale
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcivendorcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass00/pcisubclass00.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/baseclass01/pciinterface0101.h
