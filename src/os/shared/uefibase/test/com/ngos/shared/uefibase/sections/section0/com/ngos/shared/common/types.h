@@ -262,6 +262,9 @@
 #include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihypertransportslaveprimaryinterfaceblockcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h>
@@ -1107,6 +1110,21 @@
 #include <com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertype.h>
 #include <com/ngos/shared/common/pci/lib/pciheadertypeunion.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportcapabilitytype.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportcommand.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransporterrorhandlingflags.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransporthostsecondaryinterfacecommand.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransporthostsecondaryinterfacefeatureflags.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkconfig.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkerrorandfrequencyunion.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkerrorflags.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkfrequency.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkfrequencycapabilityflags.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportlinkwidth.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportrevision.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportslaveprimaryinterfacecommand.h>
+#include <com/ngos/shared/common/pci/lib/pcihypertransportslaveprimaryinterfacefeatureflags.h>
 #include <com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h>
 #include <com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedtableoffsetbirunion.h>
 #include <com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessageaddress.h>
@@ -2327,6 +2345,24 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderTypeUnion),                                       1);
         TEST_ASSERT_EQUALS(sizeof(PciHotSwapCapability),                                     2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportCapability),                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportCapabilityType),                          1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportCommand),                                 2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportErrorHandlingFlag),                       2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportHostSecondaryInterfaceBlockCapability),   24);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportHostSecondaryInterfaceCommand),           2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportHostSecondaryInterfaceFeatureFlag),       2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkConfig),                              2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkControl),                             2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkErrorAndFrequencyUnion),              1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkErrorFlag),                           1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkFrequency),                           1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkFrequencyCapabilityFlag),             2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportLinkWidth),                               1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportRevision),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportSlavePrimaryInterfaceBlockCapability),    28);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportSlavePrimaryInterfaceCommand),            2);
+        TEST_ASSERT_EQUALS(sizeof(PciHyperTransportSlavePrimaryInterfaceFeatureFlag),        1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0101),                                         1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0105),                                         1);
         TEST_ASSERT_EQUALS(sizeof(PciInterface0106),                                         1);
@@ -4499,6 +4535,417 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.isMultiFunction = 0;   // ||  0  |  0001010  ||
 
         TEST_ASSERT_EQUALS(temp.value8, 0x0A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportCommand");
+    {
+        PciHyperTransportCommand temp;
+
+
+
+        // PciHyperTransportCommand:
+        // ============================================
+        // |  capabilityType : 3  |  __reserved : 13  |
+        // ============================================
+
+
+
+        temp.value16 = 0x3645;      // ||  001  |  10110  ...  01000101  ||
+
+        TEST_ASSERT_EQUALS(temp.__reserved,     5701);
+        TEST_ASSERT_EQUALS(temp.capabilityType, 1);
+
+
+
+        temp.__reserved = 10;       // ||  001  |  00000  ...  00001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x200A);
+
+
+
+        temp.capabilityType = 5;    // ||  101  |  00000  ...  00001010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA00A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportHostSecondaryInterfaceCommand");
+    {
+        PciHyperTransportHostSecondaryInterfaceCommand temp;
+
+
+
+        // PciHyperTransportHostSecondaryInterfaceCommand:
+        // =============================================================================================================================================================================
+        // |                    capabilityType : 3                    |  hostInboundEndOfChainError : 1  |  dropOnUninit : 1  |  actAsSlave : 1  |  __reserved : 1   |  hostHide : 1   |
+        // |  chainSide : 1  |                                                 deviceNumber : 5                                                  |  doubleEnded : 1  |  warmReset : 1  |
+        // =============================================================================================================================================================================
+
+
+
+        temp.value16 = 0x3645;                  // ||  001  |  1  |  0  |  1  |  1  |  0  ||  0  |  10001  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.warmReset,                  1);
+        TEST_ASSERT_EQUALS(temp.doubleEnded,                0);
+        TEST_ASSERT_EQUALS(temp.deviceNumber,               17);
+        TEST_ASSERT_EQUALS(temp.chainSide,                  0);
+        TEST_ASSERT_EQUALS(temp.hostHide,                   0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                 1);
+        TEST_ASSERT_EQUALS(temp.actAsSlave,                 1);
+        TEST_ASSERT_EQUALS(temp.dropOnUninit,               0);
+        TEST_ASSERT_EQUALS(temp.hostInboundEndOfChainError, 1);
+        TEST_ASSERT_EQUALS(temp.capabilityType,             1);
+
+
+
+        temp.warmReset = 0;                     // ||  001  |  1  |  0  |  1  |  1  |  0  ||  0  |  10001  |  0  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3644);
+
+
+
+        temp.doubleEnded = 1;                   // ||  001  |  1  |  0  |  1  |  1  |  0  ||  0  |  10001  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3646);
+
+
+
+        temp.deviceNumber = 4;                  // ||  001  |  1  |  0  |  1  |  1  |  0  ||  0  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3612);
+
+
+
+        temp.chainSide = 1;                     // ||  001  |  1  |  0  |  1  |  1  |  0  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3692);
+
+
+
+        temp.hostHide = 1;                      // ||  001  |  1  |  0  |  1  |  1  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3792);
+
+
+
+        temp.__reserved = 0;                    // ||  001  |  1  |  0  |  1  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3592);
+
+
+
+        temp.actAsSlave = 0;                    // ||  001  |  1  |  0  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3192);
+
+
+
+        temp.dropOnUninit = 1;                  // ||  001  |  1  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3992);
+
+
+
+        temp.hostInboundEndOfChainError = 0;    // ||  001  |  0  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2992);
+
+
+
+        temp.capabilityType = 6;                // ||  110  |  0  |  1  |  0  |  0  |  1  ||  1  |  00100  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xC992);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportLinkConfig");
+    {
+        PciHyperTransportLinkConfig temp;
+
+
+
+        // PciHyperTransportLinkConfig:
+        // =====================================================================================================================================
+        // |  enableDoublewordFlowControlOut : 1  |      linkWidthOut : 3     |  enableDoublewordFlowControlIn : 1  |      linkWidthIn : 3     |
+        // |     doublewordFlowControlOut : 1     |  maximumLinkWidthOut : 3  |     doublewordFlowControlIn : 1     |  maximumLinkWidthIn : 3  |
+        // =====================================================================================================================================
+
+
+
+        temp.value16 = 0x5555;                      // ||  0  |  101  |  0  |  101  ||  0  |  101  |  0  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidthIn,             5);
+        TEST_ASSERT_EQUALS(temp.doublewordFlowControlIn,        0);
+        TEST_ASSERT_EQUALS(temp.maximumLinkWidthOut,            5);
+        TEST_ASSERT_EQUALS(temp.doublewordFlowControlOut,       0);
+        TEST_ASSERT_EQUALS(temp.linkWidthIn,                    5);
+        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlIn,  0);
+        TEST_ASSERT_EQUALS(temp.linkWidthOut,                   5);
+        TEST_ASSERT_EQUALS(temp.enableDoublewordFlowControlOut, 0);
+
+
+
+        temp.maximumLinkWidthIn = 3;                // ||  0  |  101  |  0  |  101  ||  0  |  101  |  0  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5553);
+
+
+
+        temp.doublewordFlowControlIn = 1;           // ||  0  |  101  |  0  |  101  ||  0  |  101  |  1  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x555B);
+
+
+
+        temp.maximumLinkWidthOut = 3;               // ||  0  |  101  |  0  |  101  ||  0  |  011  |  0  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x553B);
+
+
+
+        temp.doublewordFlowControlOut = 1;          // ||  0  |  101  |  0  |  101  ||  1  |  011  |  1  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x55BB);
+
+
+
+        temp.linkWidthIn = 3;                       // ||  0  |  101  |  0  |  011  ||  0  |  011  |  0  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x53BB);
+
+
+
+        temp.enableDoublewordFlowControlIn = 1;     // ||  0  |  101  |  1  |  011  ||  1  |  011  |  1  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5BBB);
+
+
+
+        temp.linkWidthOut = 3;                      // ||  0  |  011  |  0  |  011  ||  0  |  011  |  0  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3BBB);
+
+
+
+        temp.enableDoublewordFlowControlOut = 1;    // ||  1  |  011  |  1  |  011  ||  1  |  011  |  1  |  011  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xBBBB);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportLinkControl");
+    {
+        PciHyperTransportLinkControl temp;
+
+
+
+        // PciHyperTransportLinkControl:
+        // ====================================================================================================================================================================================================================
+        // |  enable64BitAddressing : 1  |  extendedCtlTime : 1  |  enableLdtStopTristate : 1   |  enableIsochronousFlowControl : 1  |                                      crcError : 4                                      |
+        // |      transmitterOff : 1     |     endOfChain : 1    |  initializationComplete : 1  |          linkFailure : 1           |  crcForceError : 1  |  crcStartTest : 1  |  enableCrcFlood : 1  |  enableSourceID : 1  |
+        // ====================================================================================================================================================================================================================
+
+
+
+        temp.value16 = 0x5655;                  // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.enableSourceID,               1);
+        TEST_ASSERT_EQUALS(temp.enableCrcFlood,               0);
+        TEST_ASSERT_EQUALS(temp.crcStartTest,                 1);
+        TEST_ASSERT_EQUALS(temp.crcForceError,                0);
+        TEST_ASSERT_EQUALS(temp.linkFailure,                  1);
+        TEST_ASSERT_EQUALS(temp.initializationComplete,       0);
+        TEST_ASSERT_EQUALS(temp.endOfChain,                   1);
+        TEST_ASSERT_EQUALS(temp.transmitterOff,               0);
+        TEST_ASSERT_EQUALS(temp.crcError,                     6);
+        TEST_ASSERT_EQUALS(temp.enableIsochronousFlowControl, 1);
+        TEST_ASSERT_EQUALS(temp.enableLdtStopTristate,        0);
+        TEST_ASSERT_EQUALS(temp.extendedCtlTime,              1);
+        TEST_ASSERT_EQUALS(temp.enable64BitAddressing,        0);
+
+
+
+        temp.enableSourceID = 0;                // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  0  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5654);
+
+
+
+        temp.enableCrcFlood = 1;                // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  1  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5656);
+
+
+
+        temp.crcStartTest = 0;                  // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  0  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x5652);
+
+
+
+        temp.crcForceError = 1;                 // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  1  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x565A);
+
+
+
+        temp.linkFailure = 0;                   // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  0  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x564A);
+
+
+
+        temp.initializationComplete = 1;        // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  1  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x566A);
+
+
+
+        temp.endOfChain = 0;                    // ||  0  |  1  |  0  |  1  |  0110  ||  0  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x562A);
+
+
+
+        temp.transmitterOff = 1;                // ||  0  |  1  |  0  |  1  |  0110  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x56AA);
+
+
+
+        temp.crcError = 7;                      // ||  0  |  1  |  0  |  1  |  0111  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x57AA);
+
+
+
+        temp.enableIsochronousFlowControl = 0;  // ||  0  |  1  |  0  |  0  |  0111  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x47AA);
+
+
+
+        temp.enableLdtStopTristate = 1;         // ||  0  |  1  |  1  |  0  |  0111  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x67AA);
+
+
+
+        temp.extendedCtlTime = 0;               // ||  0  |  0  |  1  |  0  |  0111  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x27AA);
+
+
+
+        temp.enable64BitAddressing = 1;         // ||  1  |  0  |  1  |  0  |  0111  ||  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA7AA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportLinkErrorAndFrequencyUnion");
+    {
+        PciHyperTransportLinkErrorAndFrequencyUnion temp;
+
+
+
+        // PciHyperTransportLinkErrorAndFrequencyUnion:
+        // =================================
+        // |  error : 4  |  frequency : 4  |
+        // =================================
+
+
+
+        temp.value8 = 0x53;     // ||  0101  |  0011  ||
+
+        TEST_ASSERT_EQUALS(temp.frequency, 3);
+        TEST_ASSERT_EQUALS(temp.error,     5);
+
+
+
+        temp.frequency = 7;     // ||  0101  |  0111  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x57);
+
+
+
+        temp.error = 4;         // ||  0100  |  0111  ||
+
+        TEST_ASSERT_EQUALS(temp.value8, 0x47);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciHyperTransportSlavePrimaryInterfaceCommand");
+    {
+        PciHyperTransportSlavePrimaryInterfaceCommand temp;
+
+
+
+        // PciHyperTransportSlavePrimaryInterfaceCommand:
+        // ======================================================================================================================
+        // |    capabilityType : 3   |  dropOnUninit : 1  |  defaultDirection : 1  |  masterHost : 1  |  unitCount : 2 (5) ...  |
+        // |  ... unitCount : 3 (5)  |                                      baseUnitId : 5                                      |
+        // ======================================================================================================================
+
+
+
+        temp.value16 = 0x3645;          // ||  001  |  1  |  0  |  1  |  10  ...  010  |  00101  ||
+
+        TEST_ASSERT_EQUALS(temp.baseUnitId,       5);
+        TEST_ASSERT_EQUALS(temp.unitCount,        18);
+        TEST_ASSERT_EQUALS(temp.masterHost,       1);
+        TEST_ASSERT_EQUALS(temp.defaultDirection, 0);
+        TEST_ASSERT_EQUALS(temp.dropOnUninit,     1);
+        TEST_ASSERT_EQUALS(temp.capabilityType,   1);
+
+
+
+        temp.baseUnitId = 10;           // ||  001  |  1  |  0  |  1  |  10  ...  010  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x364A);
+
+
+
+        temp.unitCount = 3;             // ||  001  |  1  |  0  |  1  |  00  ...  011  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x346A);
+
+
+
+        temp.masterHost = 0;            // ||  001  |  1  |  0  |  0  |  00  ...  011  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x306A);
+
+
+
+        temp.defaultDirection = 1;      // ||  001  |  1  |  1  |  0  |  00  ...  011  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x386A);
+
+
+
+        temp.dropOnUninit = 0;          // ||  001  |  0  |  1  |  0  |  00  ...  011  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x286A);
+
+
+
+        temp.capabilityType = 5;        // ||  101  |  0  |  1  |  0  |  00  ...  011  |  01010  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA86A);
     }
     TEST_CASE_END();
 

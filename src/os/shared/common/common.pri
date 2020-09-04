@@ -403,6 +403,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcihotswapcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcihypertransportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcihypertransportslaveprimaryinterfaceblockcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64capability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterrupts64pervectormaskingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h \
@@ -1248,6 +1251,21 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciheadertypeunion.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportcapabilitytype.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportcommand.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransporterrorhandlingflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransporthostsecondaryinterfacecommand.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransporthostsecondaryinterfacefeatureflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkconfig.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkerrorandfrequencyunion.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkerrorflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkfrequency.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkfrequencycapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportlinkwidth.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportrevision.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportslaveprimaryinterfacecommand.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcihypertransportslaveprimaryinterfacefeatureflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedtableoffsetbirunion.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsmessageaddress.h \
