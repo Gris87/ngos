@@ -24,6 +24,7 @@ enum class PciCapabilityType: u8
     CENTRAL_RESOURCE_CONTROL      = 11,
     HOT_PLUG                      = 12,
     ACCELERATED_GRAPHICS_PORT_8X  = 14,
+    SECURE_DEVICE                 = 15,
     PCI_EXPRESS                   = 16,
     MESSAGE_SIGNALED_INTERRUPTS_X = 17
 };
@@ -52,6 +53,7 @@ inline const char8* enumToString(PciCapabilityType type) // TEST: NO
         case PciCapabilityType::CENTRAL_RESOURCE_CONTROL:      return "CENTRAL_RESOURCE_CONTROL";
         case PciCapabilityType::HOT_PLUG:                      return "HOT_PLUG";
         case PciCapabilityType::ACCELERATED_GRAPHICS_PORT_8X:  return "ACCELERATED_GRAPHICS_PORT_8X";
+        case PciCapabilityType::SECURE_DEVICE:                 return "SECURE_DEVICE";
         case PciCapabilityType::PCI_EXPRESS:                   return "PCI_EXPRESS";
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: return "MESSAGE_SIGNALED_INTERRUPTS_X";
 

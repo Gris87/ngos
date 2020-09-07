@@ -258,9 +258,14 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcidebugportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pciexpresscapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihotplugcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihypertransportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h>
@@ -270,6 +275,7 @@
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcisecuredevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivendorcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
@@ -1537,6 +1543,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(NgosStatus),                                               8);
         TEST_ASSERT_EQUALS(sizeof(NinePatch),                                                40);
         TEST_ASSERT_EQUALS(sizeof(PanelWidget),                                              104);
+        TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPort8xCapability),                   2);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortCapability),                     12);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortCommand),                        4);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortRateFlag),                       1);
@@ -1547,8 +1554,10 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciCapabilityHeader),                                      2);
         TEST_ASSERT_EQUALS(sizeof(PciCapabilityType),                                        1);
         TEST_ASSERT_EQUALS(sizeof(PciCardBusControlRegister),                                48);
+        TEST_ASSERT_EQUALS(sizeof(PciCentralResourceControlCapability),                      2);
         TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                           2);
         TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                                    256);
+        TEST_ASSERT_EQUALS(sizeof(PciDebugPortCapability),                                   2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0010),                                            2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice0014),                                            2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice001C),                                            2);
@@ -2333,6 +2342,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceHeaderTypeRegion),                                48);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                               16);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeCapability),                              16);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeDownstreamSplitTransaction),              4);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryClockFrequency),                 1);
@@ -2345,6 +2355,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceStatus),                                  4);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderType),                                            1);
         TEST_ASSERT_EQUALS(sizeof(PciHeaderTypeUnion),                                       1);
+        TEST_ASSERT_EQUALS(sizeof(PciHotPlugCapability),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciHotSwapCapability),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciHyperTransportCapability),                              4);
         TEST_ASSERT_EQUALS(sizeof(PciHyperTransportCapabilityType),                          1);
@@ -2401,6 +2412,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciPowerManagementSupportPmeFlag),                         1);
         TEST_ASSERT_EQUALS(sizeof(PciRegister),                                              1);
         TEST_ASSERT_EQUALS(sizeof(PciRomImageWithInfo),                                      56);
+        TEST_ASSERT_EQUALS(sizeof(PciSecureDeviceCapability),                                2);
         TEST_ASSERT_EQUALS(sizeof(PciSlotNumberingCapability),                               4);
         TEST_ASSERT_EQUALS(sizeof(PciSlotNumberingExpansionSlot),                            1);
         TEST_ASSERT_EQUALS(sizeof(PciStatus),                                                2);

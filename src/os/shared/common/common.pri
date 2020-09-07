@@ -399,9 +399,14 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/macros.h \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcidebugportcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pciexpresscapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcihotplugcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcihotswapcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcihypertransportcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h \
@@ -411,6 +416,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/pcisecuredevicecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcivendorcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h \

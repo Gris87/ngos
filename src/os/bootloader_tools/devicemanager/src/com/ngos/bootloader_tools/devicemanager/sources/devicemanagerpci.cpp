@@ -889,6 +889,12 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
         case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability, headerType,                                                                deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::HYPER_TRANSPORT:               UEFI_ASSERT_EXECUTION(initPciHyperTransportCapability((PciHyperTransportCapability *)capability,                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::VENDOR:                        UEFI_ASSERT_EXECUTION(initPciVendorCapability((PciVendorCapability *)capability,                                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::DEBUG_PORT:                    UEFI_ASSERT_EXECUTION(initPciDebugPortCapability((PciDebugPortCapability *)capability,                                                 deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::CENTRAL_RESOURCE_CONTROL:      UEFI_ASSERT_EXECUTION(initPciCentralResourceControlCapability((PciCentralResourceControlCapability *)capability,                       deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HOT_PLUG:                      UEFI_ASSERT_EXECUTION(initPciHotPlugCapability((PciHotPlugCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT_8X:  UEFI_ASSERT_EXECUTION(initPciAcceleratedGraphicsPort8xCapability((PciAcceleratedGraphicsPort8xCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SECURE_DEVICE:                 UEFI_ASSERT_EXECUTION(initPciSecureDeviceCapability((PciSecureDeviceCapability *)capability,                                           deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::PCI_EXPRESS:                   UEFI_ASSERT_EXECUTION(initPciExpressCapability((PciExpressCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
@@ -1818,6 +1824,108 @@ NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capabi
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor - Length", mprintf("%u", capability->length), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
 
 
 

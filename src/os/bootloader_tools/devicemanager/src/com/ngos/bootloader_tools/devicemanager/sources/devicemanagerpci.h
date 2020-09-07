@@ -5,9 +5,14 @@
 
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
+#include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h>
+#include <com/ngos/shared/common/pci/capability/pcidebugportcapability.h>
+#include <com/ngos/shared/common/pci/capability/pciexpresscapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendedbridgecapability.h>
 #include <com/ngos/shared/common/pci/capability/pciextendeddevicecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcihotplugcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihotswapcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihypertransportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcihypertransporthostsecondaryinterfaceblockcapability.h>
@@ -17,6 +22,7 @@
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptscapability.h>
 #include <com/ngos/shared/common/pci/capability/pcimessagesignaledinterruptsextendedcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcipowermanagementinterfacecapability.h>
+#include <com/ngos/shared/common/pci/capability/pcisecuredevicecapability.h>
 #include <com/ngos/shared/common/pci/capability/pcislotnumberingcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivendorcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcivitalproductdatacapability.h>
@@ -65,6 +71,12 @@ private:
     static NgosStatus initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
