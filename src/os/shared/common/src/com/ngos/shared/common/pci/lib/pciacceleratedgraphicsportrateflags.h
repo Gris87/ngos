@@ -33,8 +33,8 @@ inline const char8* flagToString(PciAcceleratedGraphicsPortRateFlag flag) // TES
     switch (flag)
     {
         case PciAcceleratedGraphicsPortRateFlag::NONE: return "NONE";
-        case PciAcceleratedGraphicsPortRateFlag::_1X:  return "_1X";
-        case PciAcceleratedGraphicsPortRateFlag::_2X:  return "_2X";
+        case PciAcceleratedGraphicsPortRateFlag::_1X:  return "1X";
+        case PciAcceleratedGraphicsPortRateFlag::_2X:  return "2X";
 
         default: return "UNKNOWN";
     }
@@ -63,7 +63,7 @@ inline const char8* flagsToString(const PciAcceleratedGraphicsPortRateFlags &fla
 
 
 
-    static char8 res[25];
+    static char8 res[23];
 
     FLAGS_TO_STRING(res, flags.flags, PciAcceleratedGraphicsPortRateFlag);
 
@@ -78,7 +78,7 @@ inline const char8* flagsToFullString(const PciAcceleratedGraphicsPortRateFlags 
 
 
 
-    static char8 res[32];
+    static char8 res[30];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, PciAcceleratedGraphicsPortRateFlag, "0x%02X");
 

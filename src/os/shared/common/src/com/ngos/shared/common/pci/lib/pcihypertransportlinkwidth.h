@@ -28,11 +28,11 @@ inline const char8* enumToString(PciHyperTransportLinkWidth width) // TEST: NO
 
     switch (width)
     {
-        case PciHyperTransportLinkWidth::_8_BITS:       return "_8_BITS";
-        case PciHyperTransportLinkWidth::_16_BITS:      return "_16_BITS";
-        case PciHyperTransportLinkWidth::_32_BITS:      return "_32_BITS";
-        case PciHyperTransportLinkWidth::_2_BITS:       return "_2_BITS";
-        case PciHyperTransportLinkWidth::_4_BITS:       return "_4_BITS";
+        case PciHyperTransportLinkWidth::_8_BITS:       return "8_BITS";
+        case PciHyperTransportLinkWidth::_16_BITS:      return "16_BITS";
+        case PciHyperTransportLinkWidth::_32_BITS:      return "32_BITS";
+        case PciHyperTransportLinkWidth::_2_BITS:       return "2_BITS";
+        case PciHyperTransportLinkWidth::_4_BITS:       return "4_BITS";
         case PciHyperTransportLinkWidth::NOT_CONNECTED: return "NOT_CONNECTED";
 
         default: return "UNKNOWN";

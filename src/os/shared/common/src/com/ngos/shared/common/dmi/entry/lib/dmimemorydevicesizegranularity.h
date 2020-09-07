@@ -26,8 +26,8 @@ inline const char8* enumToString(DmiMemoryDeviceSizeGranularity granularity) // 
 
     switch (granularity)
     {
-        case DmiMemoryDeviceSizeGranularity::_1_MEGABYTE: return "_1_MEGABYTE";
-        case DmiMemoryDeviceSizeGranularity::_1_KILOBYTE: return "_1_KILOBYTE";
+        case DmiMemoryDeviceSizeGranularity::_1_MEGABYTE: return "1_MEGABYTE";
+        case DmiMemoryDeviceSizeGranularity::_1_KILOBYTE: return "1_KILOBYTE";
 
         default: return "UNKNOWN";
     }
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceSizeGranularity granularity)
 
 
 
-    static char8 res[19];
+    static char8 res[18];
 
     sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
 

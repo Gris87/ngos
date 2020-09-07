@@ -27,9 +27,9 @@ inline const char8* enumToString(PciExtendedBridgeSecondaryClockFrequency freque
     switch (frequency)
     {
         case PciExtendedBridgeSecondaryClockFrequency::CONVENTIONAL_MODE: return "CONVENTIONAL_MODE";
-        case PciExtendedBridgeSecondaryClockFrequency::_66_MHZ:           return "_66_MHZ";
-        case PciExtendedBridgeSecondaryClockFrequency::_100_MHZ:          return "_100_MHZ";
-        case PciExtendedBridgeSecondaryClockFrequency::_133_MHZ:          return "_133_MHZ";
+        case PciExtendedBridgeSecondaryClockFrequency::_66_MHZ:           return "66_MHZ";
+        case PciExtendedBridgeSecondaryClockFrequency::_100_MHZ:          return "100_MHZ";
+        case PciExtendedBridgeSecondaryClockFrequency::_133_MHZ:          return "133_MHZ";
 
         default: return "UNKNOWN";
     }

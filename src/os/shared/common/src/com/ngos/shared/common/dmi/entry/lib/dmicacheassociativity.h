@@ -43,17 +43,17 @@ inline const char8* enumToString(DmiCacheAssociativity associativity) // TEST: N
         case DmiCacheAssociativity::OTHER:         return "OTHER";
         case DmiCacheAssociativity::UNKNOWN:       return "UNKNOWN";
         case DmiCacheAssociativity::DIRECT_MAPPED: return "DIRECT_MAPPED";
-        case DmiCacheAssociativity::_2_WAY:        return "_2_WAY";
-        case DmiCacheAssociativity::_4_WAY:        return "_4_WAY";
+        case DmiCacheAssociativity::_2_WAY:        return "2_WAY";
+        case DmiCacheAssociativity::_4_WAY:        return "4_WAY";
         case DmiCacheAssociativity::FULLY:         return "FULLY";
-        case DmiCacheAssociativity::_8_WAY:        return "_8_WAY";
-        case DmiCacheAssociativity::_16_WAY:       return "_16_WAY";
-        case DmiCacheAssociativity::_12_WAY:       return "_12_WAY";
-        case DmiCacheAssociativity::_24_WAY:       return "_24_WAY";
-        case DmiCacheAssociativity::_32_WAY:       return "_32_WAY";
-        case DmiCacheAssociativity::_48_WAY:       return "_48_WAY";
-        case DmiCacheAssociativity::_64_WAY:       return "_64_WAY";
-        case DmiCacheAssociativity::_20_WAY:       return "_20_WAY";
+        case DmiCacheAssociativity::_8_WAY:        return "8_WAY";
+        case DmiCacheAssociativity::_16_WAY:       return "16_WAY";
+        case DmiCacheAssociativity::_12_WAY:       return "12_WAY";
+        case DmiCacheAssociativity::_24_WAY:       return "24_WAY";
+        case DmiCacheAssociativity::_32_WAY:       return "32_WAY";
+        case DmiCacheAssociativity::_48_WAY:       return "48_WAY";
+        case DmiCacheAssociativity::_64_WAY:       return "64_WAY";
+        case DmiCacheAssociativity::_20_WAY:       return "20_WAY";
 
         default: return "UNKNOWN";
     }

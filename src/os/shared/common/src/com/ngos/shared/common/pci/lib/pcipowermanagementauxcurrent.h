@@ -31,13 +31,13 @@ inline const char8* enumToString(PciPowerManagementAuxCurrent current) // TEST: 
     switch (current)
     {
         case PciPowerManagementAuxCurrent::SELF_POWERED: return "SELF_POWERED";
-        case PciPowerManagementAuxCurrent::_55_MA:       return "_55_MA";
-        case PciPowerManagementAuxCurrent::_100_MA:      return "_100_MA";
-        case PciPowerManagementAuxCurrent::_160_MA:      return "_160_MA";
-        case PciPowerManagementAuxCurrent::_220_MA:      return "_220_MA";
-        case PciPowerManagementAuxCurrent::_270_MA:      return "_270_MA";
-        case PciPowerManagementAuxCurrent::_320_MA:      return "_320_MA";
-        case PciPowerManagementAuxCurrent::_375_MA:      return "_375_MA";
+        case PciPowerManagementAuxCurrent::_55_MA:       return "55_MA";
+        case PciPowerManagementAuxCurrent::_100_MA:      return "100_MA";
+        case PciPowerManagementAuxCurrent::_160_MA:      return "160_MA";
+        case PciPowerManagementAuxCurrent::_220_MA:      return "220_MA";
+        case PciPowerManagementAuxCurrent::_270_MA:      return "270_MA";
+        case PciPowerManagementAuxCurrent::_320_MA:      return "320_MA";
+        case PciPowerManagementAuxCurrent::_375_MA:      return "375_MA";
 
         default: return "UNKNOWN";
     }

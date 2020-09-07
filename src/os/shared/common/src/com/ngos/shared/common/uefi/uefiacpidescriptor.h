@@ -49,9 +49,9 @@ inline const char8* enumToString(UefiAcpiDescriptor descriptor) // TEST: NO
         case UefiAcpiDescriptor::IO_PORT:                    return "IO_PORT";
         case UefiAcpiDescriptor::FIXED_LOCATION_IO_PORT:     return "FIXED_LOCATION_IO_PORT";
         case UefiAcpiDescriptor::END_TAG:                    return "END_TAG";
-        case UefiAcpiDescriptor::_24_BIT_MEMORY_RANGE:       return "_24_BIT_MEMORY_RANGE";
-        case UefiAcpiDescriptor::_32_BIT_MEMORY_RANGE:       return "_32_BIT_MEMORY_RANGE";
-        case UefiAcpiDescriptor::_32_BIT_FIXED_MEMORY_RANGE: return "_32_BIT_FIXED_MEMORY_RANGE";
+        case UefiAcpiDescriptor::_24_BIT_MEMORY_RANGE:       return "24_BIT_MEMORY_RANGE";
+        case UefiAcpiDescriptor::_32_BIT_MEMORY_RANGE:       return "32_BIT_MEMORY_RANGE";
+        case UefiAcpiDescriptor::_32_BIT_FIXED_MEMORY_RANGE: return "32_BIT_FIXED_MEMORY_RANGE";
         case UefiAcpiDescriptor::DWORD_ADDRESS_SPACE:        return "DWORD_ADDRESS_SPACE";
         case UefiAcpiDescriptor::WORD_ADDRESS_SPACE:         return "WORD_ADDRESS_SPACE";
         case UefiAcpiDescriptor::EXTENDED_INTERRUPT:         return "EXTENDED_INTERRUPT";
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(UefiAcpiDescriptor descriptor) // TEST: NO
 
 
 
-    static char8 res[34];
+    static char8 res[33];
 
     sprintf(res, "0x%02X (%s)", (u8)descriptor, enumToString(descriptor));
 

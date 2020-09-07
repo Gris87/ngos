@@ -95,7 +95,7 @@ inline const char8* enumToString(DmiProcessorUpgrade upgrade) // TEST: NO
         case DmiProcessorUpgrade::LIF_SOCKET:             return "LIF_SOCKET";
         case DmiProcessorUpgrade::SLOT_1:                 return "SLOT_1";
         case DmiProcessorUpgrade::SLOT_2:                 return "SLOT_2";
-        case DmiProcessorUpgrade::_370_PIN_SOCKET:        return "_370_PIN_SOCKET";
+        case DmiProcessorUpgrade::_370_PIN_SOCKET:        return "370_PIN_SOCKET";
         case DmiProcessorUpgrade::SLOT_A:                 return "SLOT_A";
         case DmiProcessorUpgrade::SLOT_M:                 return "SLOT_M";
         case DmiProcessorUpgrade::SOCKET_423:             return "SOCKET_423";

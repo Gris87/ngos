@@ -26,8 +26,8 @@ inline const char8* enumToString(DmiCacheSizeGranularity granularity) // TEST: N
 
     switch (granularity)
     {
-        case DmiCacheSizeGranularity::_1_KILOBYTE:   return "_1_KILOBYTE";
-        case DmiCacheSizeGranularity::_64_KILOBYTES: return "_64_KILOBYTES";
+        case DmiCacheSizeGranularity::_1_KILOBYTE:   return "1_KILOBYTE";
+        case DmiCacheSizeGranularity::_64_KILOBYTES: return "64_KILOBYTES";
 
         default: return "UNKNOWN";
     }
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(DmiCacheSizeGranularity granularity) // TES
 
 
 
-    static char8 res[21];
+    static char8 res[20];
 
     sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
 

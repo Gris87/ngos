@@ -69,7 +69,7 @@ inline const char8* enumToString(DmiMemoryDeviceType type) // TEST: NO
         case DmiMemoryDeviceType::FEPROM:                      return "FEPROM";
         case DmiMemoryDeviceType::EPROM:                       return "EPROM";
         case DmiMemoryDeviceType::CDRAM:                       return "CDRAM";
-        case DmiMemoryDeviceType::_3DRAM:                      return "_3DRAM";
+        case DmiMemoryDeviceType::_3DRAM:                      return "3DRAM";
         case DmiMemoryDeviceType::SDRAM:                       return "SDRAM";
         case DmiMemoryDeviceType::SGRAM:                       return "SGRAM";
         case DmiMemoryDeviceType::RDRAM:                       return "RDRAM";

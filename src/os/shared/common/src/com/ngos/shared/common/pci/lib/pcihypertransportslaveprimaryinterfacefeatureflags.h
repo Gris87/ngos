@@ -42,7 +42,7 @@ inline const char8* flagToString(PciHyperTransportSlavePrimaryInterfaceFeatureFl
         case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::LDTSTOP:                    return "LDTSTOP";
         case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::CRC_TEST_MODE:              return "CRC_TEST_MODE";
         case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::EXTENDED_CTL_TIME_REQUIRED: return "EXTENDED_CTL_TIME_REQUIRED";
-        case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::_64_BIT_ADDRESSING:         return "_64_BIT_ADDRESSING";
+        case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::_64_BIT_ADDRESSING:         return "64_BIT_ADDRESSING";
         case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::DISABLE_UNIT_ID_REORDER:    return "DISABLE_UNIT_ID_REORDER";
         case PciHyperTransportSlavePrimaryInterfaceFeatureFlag::SOURCE_ID:                  return "SOURCE_ID";
 
@@ -73,7 +73,7 @@ inline const char8* flagsToString(const PciHyperTransportSlavePrimaryInterfaceFe
 
 
 
-    static char8 res[154];
+    static char8 res[153];
 
     FLAGS_TO_STRING(res, flags.flags, PciHyperTransportSlavePrimaryInterfaceFeatureFlag);
 
@@ -88,7 +88,7 @@ inline const char8* flagsToFullString(const PciHyperTransportSlavePrimaryInterfa
 
 
 
-    static char8 res[161];
+    static char8 res[160];
 
     FLAGS_TO_FULL_STRING(res, flags.flags, PciHyperTransportSlavePrimaryInterfaceFeatureFlag, "0x%02X");
 

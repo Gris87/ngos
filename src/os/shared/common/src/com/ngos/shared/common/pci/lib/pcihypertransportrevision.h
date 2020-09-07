@@ -33,15 +33,15 @@ inline const char8* enumToString(PciHyperTransportRevision revision) // TEST: NO
     switch (revision)
     {
         case PciHyperTransportRevision::NONE:  return "NONE";
-        case PciHyperTransportRevision::_1_00: return "_1_00";
-        case PciHyperTransportRevision::_1_01: return "_1_01";
-        case PciHyperTransportRevision::_1_02: return "_1_02";
-        case PciHyperTransportRevision::_1_03: return "_1_03";
-        case PciHyperTransportRevision::_1_04: return "_1_04";
-        case PciHyperTransportRevision::_1_05: return "_1_05";
-        case PciHyperTransportRevision::_1_10: return "_1_10";
-        case PciHyperTransportRevision::_2_00: return "_2_00";
-        case PciHyperTransportRevision::_3_00: return "_3_00";
+        case PciHyperTransportRevision::_1_00: return "1_00";
+        case PciHyperTransportRevision::_1_01: return "1_01";
+        case PciHyperTransportRevision::_1_02: return "1_02";
+        case PciHyperTransportRevision::_1_03: return "1_03";
+        case PciHyperTransportRevision::_1_04: return "1_04";
+        case PciHyperTransportRevision::_1_05: return "1_05";
+        case PciHyperTransportRevision::_1_10: return "1_10";
+        case PciHyperTransportRevision::_2_00: return "2_00";
+        case PciHyperTransportRevision::_3_00: return "3_00";
 
         default: return "UNKNOWN";
     }

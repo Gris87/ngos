@@ -38,21 +38,21 @@ inline const char8* enumToString(PciHyperTransportLinkFrequency frequency) // TE
 
     switch (frequency)
     {
-        case PciHyperTransportLinkFrequency::_200_MHZ:        return "_200_MHZ";
-        case PciHyperTransportLinkFrequency::_300_MHZ:        return "_300_MHZ";
-        case PciHyperTransportLinkFrequency::_400_MHZ:        return "_400_MHZ";
-        case PciHyperTransportLinkFrequency::_500_MHZ:        return "_500_MHZ";
-        case PciHyperTransportLinkFrequency::_600_MHZ:        return "_600_MHZ";
-        case PciHyperTransportLinkFrequency::_800_MHZ:        return "_800_MHZ";
-        case PciHyperTransportLinkFrequency::_1000_MHZ:       return "_1000_MHZ";
-        case PciHyperTransportLinkFrequency::_1200_MHZ:       return "_1200_MHZ";
-        case PciHyperTransportLinkFrequency::_1400_MHZ:       return "_1400_MHZ";
-        case PciHyperTransportLinkFrequency::_1600_MHZ:       return "_1600_MHZ";
-        case PciHyperTransportLinkFrequency::_1800_MHZ:       return "_1800_MHZ";
-        case PciHyperTransportLinkFrequency::_2000_MHZ:       return "_2000_MHZ";
-        case PciHyperTransportLinkFrequency::_2200_MHZ:       return "_2200_MHZ";
-        case PciHyperTransportLinkFrequency::_2400_MHZ:       return "_2400_MHZ";
-        case PciHyperTransportLinkFrequency::_2600_MHZ:       return "_2600_MHZ";
+        case PciHyperTransportLinkFrequency::_200_MHZ:        return "200_MHZ";
+        case PciHyperTransportLinkFrequency::_300_MHZ:        return "300_MHZ";
+        case PciHyperTransportLinkFrequency::_400_MHZ:        return "400_MHZ";
+        case PciHyperTransportLinkFrequency::_500_MHZ:        return "500_MHZ";
+        case PciHyperTransportLinkFrequency::_600_MHZ:        return "600_MHZ";
+        case PciHyperTransportLinkFrequency::_800_MHZ:        return "800_MHZ";
+        case PciHyperTransportLinkFrequency::_1000_MHZ:       return "1000_MHZ";
+        case PciHyperTransportLinkFrequency::_1200_MHZ:       return "1200_MHZ";
+        case PciHyperTransportLinkFrequency::_1400_MHZ:       return "1400_MHZ";
+        case PciHyperTransportLinkFrequency::_1600_MHZ:       return "1600_MHZ";
+        case PciHyperTransportLinkFrequency::_1800_MHZ:       return "1800_MHZ";
+        case PciHyperTransportLinkFrequency::_2000_MHZ:       return "2000_MHZ";
+        case PciHyperTransportLinkFrequency::_2200_MHZ:       return "2200_MHZ";
+        case PciHyperTransportLinkFrequency::_2400_MHZ:       return "2400_MHZ";
+        case PciHyperTransportLinkFrequency::_2600_MHZ:       return "2600_MHZ";
         case PciHyperTransportLinkFrequency::VENDOR_SPECIFIC: return "VENDOR_SPECIFIC";
 
         default: return "UNKNOWN";

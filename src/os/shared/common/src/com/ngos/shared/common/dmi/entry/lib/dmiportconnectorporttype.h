@@ -99,8 +99,8 @@ inline const char8* enumToString(DmiPortConnectorPortType type) // TEST: NO
         case DmiPortConnectorPortType::SAS:                         return "SAS";
         case DmiPortConnectorPortType::MULTI_FUNCTION_DISPLAY_PORT: return "MULTI_FUNCTION_DISPLAY_PORT";
         case DmiPortConnectorPortType::THUNDERBOLT:                 return "THUNDERBOLT";
-        case DmiPortConnectorPortType::_8251_COMPATIBLE:            return "_8251_COMPATIBLE";
-        case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:       return "_8251_FIFO_COMPATIBLE";
+        case DmiPortConnectorPortType::_8251_COMPATIBLE:            return "8251_COMPATIBLE";
+        case DmiPortConnectorPortType::_8251_FIFO_COMPATIBLE:       return "8251_FIFO_COMPATIBLE";
         case DmiPortConnectorPortType::OTHER:                       return "OTHER";
 
         default: return "UNKNOWN";

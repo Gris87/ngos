@@ -78,7 +78,7 @@ inline const char8* enumToString(DmiPortConnectorType type) // TEST: NO
         case DmiPortConnectorType::DB9_FEMALE:              return "DB9_FEMALE";
         case DmiPortConnectorType::RJ11:                    return "RJ11";
         case DmiPortConnectorType::RJ45:                    return "RJ45";
-        case DmiPortConnectorType::_50_PIN_MINI_SCSI:       return "_50_PIN_MINI_SCSI";
+        case DmiPortConnectorType::_50_PIN_MINI_SCSI:       return "50_PIN_MINI_SCSI";
         case DmiPortConnectorType::MINI_DIN:                return "MINI_DIN";
         case DmiPortConnectorType::MICRO_DIN:               return "MICRO_DIN";
         case DmiPortConnectorType::PS2:                     return "PS2";
@@ -90,10 +90,10 @@ inline const char8* enumToString(DmiPortConnectorType type) // TEST: NO
         case DmiPortConnectorType::CIRCULAR_DIN_8_FEMALE:   return "CIRCULAR_DIN_8_FEMALE";
         case DmiPortConnectorType::ONBOARD_IDE:             return "ONBOARD_IDE";
         case DmiPortConnectorType::ONBOARD_FLOPPY:          return "ONBOARD_FLOPPY";
-        case DmiPortConnectorType::_9_PIN_DUAL_INLINE:      return "_9_PIN_DUAL_INLINE";
-        case DmiPortConnectorType::_25_PIN_DUAL_INLINE:     return "_25_PIN_DUAL_INLINE";
-        case DmiPortConnectorType::_50_PIN_DUAL_INLINE:     return "_50_PIN_DUAL_INLINE";
-        case DmiPortConnectorType::_68_PIN_DUAL_INLINE:     return "_68_PIN_DUAL_INLINE";
+        case DmiPortConnectorType::_9_PIN_DUAL_INLINE:      return "9_PIN_DUAL_INLINE";
+        case DmiPortConnectorType::_25_PIN_DUAL_INLINE:     return "25_PIN_DUAL_INLINE";
+        case DmiPortConnectorType::_50_PIN_DUAL_INLINE:     return "50_PIN_DUAL_INLINE";
+        case DmiPortConnectorType::_68_PIN_DUAL_INLINE:     return "68_PIN_DUAL_INLINE";
         case DmiPortConnectorType::ONBOARD_SOUND_INPUT:     return "ONBOARD_SOUND_INPUT";
         case DmiPortConnectorType::MINI_CENTRONICS_TYPE_14: return "MINI_CENTRONICS_TYPE_14";
         case DmiPortConnectorType::MINI_CENTRONICS_TYPE_26: return "MINI_CENTRONICS_TYPE_26";

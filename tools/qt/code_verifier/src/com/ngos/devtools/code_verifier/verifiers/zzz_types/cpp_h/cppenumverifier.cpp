@@ -48,7 +48,8 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                 {
                     QStringList values;
                     QStringList valuesNumeric;
-                    qint64      maxValueLength = 0;
+                    qint64      maxValueLength                  = 0;
+                    qint64      maxValueLengthWithoutUnderscore = 0;
 
 
 
@@ -77,6 +78,21 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                 if (value.length() > maxValueLength)
                                 {
                                     maxValueLength = value.length();
+                                }
+
+                                if (value.startsWith('_'))
+                                {
+                                    if (value.length() - 1 > maxValueLengthWithoutUnderscore)
+                                    {
+                                        maxValueLengthWithoutUnderscore = value.length() - 1;
+                                    }
+                                }
+                                else
+                                {
+                                    if (value.length() > maxValueLengthWithoutUnderscore)
+                                    {
+                                        maxValueLengthWithoutUnderscore = value.length();
+                                    }
                                 }
                             }
                             else
@@ -143,11 +159,12 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                     for (qint64 j = 0; j < values.length(); ++j)
                     {
-                        const QString &value   = values.at(j);
-                        QString        spaces  = QString("%1").arg("", maxValueLength - value.length(), QChar(' '));
-                        QString        comment = value.length() > 1 ? "" : " // Ignore CppSingleCharVerifier";
+                        const QString &value    = values.at(j);
+                        QString        spaces   = QString("%1").arg("", maxValueLength - value.length(), QChar(' '));
+                        QString        comment  = value.length() > 1 ? "" : " // Ignore CppSingleCharVerifier";
+                        QString        valueStr = value.startsWith('_') ? value.mid(1) : value;
 
-                        toStringFunction += "        case " + enumName + "::" + value + ": " + spaces + "return \"" + value + "\";" + comment + '\n';
+                        toStringFunction += "        case " + enumName + "::" + value + ": " + spaces + "return \"" + valueStr + "\";" + comment + '\n';
                     }
 
                     toStringFunction += '\n';
@@ -293,7 +310,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
 
 
-                        quint64 totalStringSize = QString("UNKNOWN x 99").length() + 1;
+                        quint64 totalStringSize = QString("UNKNOWN x 99").length() + 1; // 1 == zero terminator
 
                         for (qint64 j = 0; j < values.length(); ++j)
                         {
@@ -301,7 +318,14 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                             if (value != "NONE")
                             {
-                                totalStringSize += values.at(j).length() + 3; // 3 == length of " | "
+                                if (value.startsWith('_'))
+                                {
+                                    totalStringSize += values.at(j).length() + 2; // 2 == length of " | " - 1 char for underscore
+                                }
+                                else
+                                {
+                                    totalStringSize += values.at(j).length() + 3; // 3 == length of " | "
+                                }
                             }
                         }
 
@@ -318,7 +342,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             toStringFunction += "\n\n\n";
                         }
 
-                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator
+                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator
                         toStringFunction += '\n';
                         toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ")flag, flagToString(flag));\n";
                         toStringFunction += '\n';
@@ -497,7 +521,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             toStringFunction += "\n\n\n";
                         }
 
-                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLength, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator
+                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator
                         toStringFunction += '\n';
                         toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ')' + variableName + ", enumToString(" + variableName + "));\n";
                         toStringFunction += '\n';
