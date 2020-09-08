@@ -1496,7 +1496,7 @@ bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 v
 
 
 
-    return save(QString(path + FOLDER_PATH + "vendor%1/pcisubdevice%2.h").arg(vendorId, 4, 16, QChar('0')).arg(deviceId, 4, 16, QChar('0')), lines);
+    return save(QString(path + FOLDER_PATH + "vendor%1/pcisubdevice%1%2.h").arg(vendorId, 4, 16, QChar('0')).arg(deviceId, 4, 16, QChar('0')), lines);
 }
 
 
