@@ -3,13 +3,17 @@
 
 
 
+#include <QMap>
 #include <QString>
+
+#include <com/ngos/devtools/code_generator/other/pcisubdevice.h>
 
 
 
 struct PciDevice
 {
-    QString description;
+    QString                     description;
+    QMap<quint32, PciSubDevice> subdevices;
 };
 
 

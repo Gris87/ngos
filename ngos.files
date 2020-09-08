@@ -2607,6 +2607,7 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcibaseclass.
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcidevice.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pciinterface.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcisubclass.h
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcisubdevice.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcivendor.h
 tools/qt/code_verifier/.gitignore
 tools/qt/code_verifier/code_verifier.pro

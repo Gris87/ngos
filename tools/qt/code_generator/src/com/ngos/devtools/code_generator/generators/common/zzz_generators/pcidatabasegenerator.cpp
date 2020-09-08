@@ -124,6 +124,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
     // Parse vendors and devices
     {
         PciVendor *vendor = nullptr;
+        PciDevice *device = nullptr;
 
         while (i < lines.length())
         {
@@ -155,6 +156,9 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
             bool isDevice    = false;
             bool isSubDevice = false;
 
+            bool    ok;
+            quint32 id = 0;
+
 
 
             // Try to get type of the line
@@ -164,6 +168,19 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
                     isSubDevice = true;
 
                     line.remove(0, 2);
+
+
+
+                    id = line.left(4).toUShort(&ok, 16) << 16;
+
+                    if (!ok)
+                    {
+                        Console::err("Failed to parse line in PCI database: " + lines.at(i));
+
+                        return false;
+                    }
+
+                    line.remove(0, 5);
                 }
                 else
                 if (line.startsWith('\t'))
@@ -180,8 +197,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
 
-            bool    ok;
-            quint16 id = line.left(4).toUShort(&ok, 16);
+            id |= line.left(4).toUShort(&ok, 16);
 
             if (!ok)
             {
@@ -209,12 +225,13 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
             else
             if (isDevice)
             {
-                vendor->devices[id].description = line;
+                device              = &vendor->devices[id];
+                device->description = line;
             }
             else
             if (isSubDevice)
             {
-                // Nothing
+                device->subdevices[id].description = line;
             }
             else
             {
@@ -424,7 +441,7 @@ bool PciDatabaseGenerator::generateVendors(const QString &path, const PciVendors
 
             if (!vendor.devices.isEmpty())
             {
-                if (!generateDevicesFile(path, vendorId, vendor))
+                if (!generateDevices(path, vendorId, vendor))
                 {
                     return false;
                 }
@@ -433,6 +450,32 @@ bool PciDatabaseGenerator::generateVendors(const QString &path, const PciVendors
     }
 
     return generateVendorsFile(path, vendors);
+}
+
+bool PciDatabaseGenerator::generateDevices(const QString &path, quint16 vendorId, const PciVendor &vendor)
+{
+    // Iterate over subclasses and generate interfaces
+    {
+        QMapIterator<quint16, PciDevice> it(vendor.devices);
+
+        while (it.hasNext())
+        {
+            it.next();
+
+            quint16          deviceId = it.key();
+            const PciDevice &device   = it.value();
+
+            if (!device.subdevices.isEmpty())
+            {
+                if (!generateSubDevicesFile(path, vendorId, deviceId, device))
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return generateDevicesFile(path, vendorId, vendor);
 }
 
 bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const PciBaseClasses &baseClasses)
@@ -1426,6 +1469,34 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
 
     return save(QString(path + FOLDER_PATH + "vendor%1/pcidevice%1.h").arg(vendorId, 4, 16, QChar('0')), lines);
+}
+
+bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 vendorId, quint16 deviceId, const PciDevice &device)
+{
+    QString vendorIdStr = QString("%1").arg(vendorId, 4, 16, QChar('0')).toUpper();
+    QString deviceIdStr = QString("%1").arg(deviceId, 4, 16, QChar('0')).toUpper();
+
+
+
+    QStringList lines;
+
+
+
+    // Headers
+    {
+        lines.append("#include <com/ngos/shared/common/ngos/types.h>");
+        lines.append("#include <com/ngos/shared/common/printf/printf.h>");
+    }
+
+
+
+    Q_UNUSED(device);
+    Q_UNUSED(vendorIdStr);
+    Q_UNUSED(deviceIdStr);
+
+
+
+    return save(QString(path + FOLDER_PATH + "vendor%1/pcisubdevice%2.h").arg(vendorId, 4, 16, QChar('0')).arg(deviceId, 4, 16, QChar('0')), lines);
 }
 
 
