@@ -577,6 +577,11 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
 
 
 
+    const char8 *subsystemVendorID = enumToHumanString(configurationSpace.device.subsystemVendorID);
+    const char8 *subsystemID       = enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId, configurationSpace.device.subsystemVendorID, configurationSpace.device.subsystemID);
+
+
+
     // Validation
     {
         UEFI_LVVV(("configurationSpace.device.baseAddressRegisters[0]         = 0x%08X",      configurationSpace.device.baseAddressRegisters[0]));
@@ -586,8 +591,8 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
         UEFI_LVVV(("configurationSpace.device.baseAddressRegisters[4]         = 0x%08X",      configurationSpace.device.baseAddressRegisters[4]));
         UEFI_LVVV(("configurationSpace.device.baseAddressRegisters[5]         = 0x%08X",      configurationSpace.device.baseAddressRegisters[5]));
         UEFI_LVVV(("configurationSpace.device.cardInformationStructurePointer = 0x%08X",      configurationSpace.device.cardInformationStructurePointer));
-        UEFI_LVVV(("configurationSpace.device.subsystemVendorID               = 0x%04X (%s)", configurationSpace.device.subsystemVendorID, enumToHumanString(configurationSpace.device.subsystemVendorID)));
-        UEFI_LVVV(("configurationSpace.device.subsystemID                     = 0x%04X",      configurationSpace.device.subsystemID));
+        UEFI_LVVV(("configurationSpace.device.subsystemVendorID               = 0x%04X (%s)", configurationSpace.device.subsystemVendorID, subsystemVendorID));
+        UEFI_LVVV(("configurationSpace.device.subsystemID                     = 0x%04X (%s)", configurationSpace.device.subsystemID, subsystemID));
         UEFI_LVVV(("configurationSpace.device.expansionRomBaseAddress         = 0x%08X",      configurationSpace.device.expansionRomBaseAddress));
         UEFI_LVVV(("configurationSpace.device.capabilitiesPointer             = 0x%02X",      configurationSpace.device.capabilitiesPointer));
         UEFI_LVVV(("configurationSpace.device.interruptLine                   = %u",          configurationSpace.device.interruptLine));
@@ -595,11 +600,6 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
         UEFI_LVVV(("configurationSpace.device.minGrant                        = %u",          configurationSpace.device.minGrant));
         UEFI_LVVV(("configurationSpace.device.maxLatency                      = %u",          configurationSpace.device.maxLatency));
     }
-
-
-
-    const char8 *subsystemVendorID = enumToHumanString(configurationSpace.device.subsystemVendorID);
-    const char8 *subsystemID       = enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId, configurationSpace.device.subsystemVendorID, configurationSpace.device.subsystemID);
 
 
 
