@@ -21,13 +21,13 @@ enum class PciSubClass04: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubClass04 class04) // TEST: NO
+inline const char8* enumToString(PciSubClass04 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class04 = %u", class04)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class04)
+    switch (subClass)
     {
         case PciSubClass04::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass04::SUB_CLASS_01: return "SUB_CLASS_01";
@@ -41,28 +41,28 @@ inline const char8* enumToString(PciSubClass04 class04) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubClass04 class04) // TEST: NO
+inline const char8* enumToFullString(PciSubClass04 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class04 = %u", class04)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)class04, enumToString(class04));
+    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciSubClass04 class04) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass04 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class04 = %u", class04)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class04)
+    switch (subClass)
     {
         case PciSubClass04::SUB_CLASS_00: return "Multimedia controller - Multimedia video controller";
         case PciSubClass04::SUB_CLASS_01: return "Multimedia controller - Multimedia audio controller";

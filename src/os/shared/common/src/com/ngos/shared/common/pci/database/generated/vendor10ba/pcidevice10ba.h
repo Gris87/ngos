@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10ba/pcisubdevice10ba0308.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -21,13 +22,13 @@ enum class PciDevice10BA: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice10BA device10BA) // TEST: NO
+inline const char8* enumToString(PciDevice10BA device) // TEST: NO
 {
-    // COMMON_LT((" | device10BA = %u", device10BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device10BA)
+    switch (device)
     {
         case PciDevice10BA::NONE:        return "NONE";
         case PciDevice10BA::DEVICE_0301: return "DEVICE_0301";
@@ -41,33 +42,52 @@ inline const char8* enumToString(PciDevice10BA device10BA) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice10BA device10BA) // TEST: NO
+inline const char8* enumToFullString(PciDevice10BA device) // TEST: NO
 {
-    // COMMON_LT((" | device10BA = %u", device10BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device10BA, enumToString(device10BA));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice10BA device10BA) // TEST: NO
+inline const char8* enumToHumanString(PciDevice10BA device) // TEST: NO
 {
-    // COMMON_LT((" | device10BA = %u", device10BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device10BA)
+    switch (device)
     {
         case PciDevice10BA::DEVICE_0301: return "AccelGraphics AccelECLIPSE";
         case PciDevice10BA::DEVICE_0304: return "AccelGALAXY A2100 [OEM Evans & Sutherland]";
         case PciDevice10BA::DEVICE_0308: return "Tornado 3000 [OEM Evans & Sutherland]";
         case PciDevice10BA::DEVICE_1002: return "VG500 [VolumePro Volume Rendering Accelerator]";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice10BA device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice10BA::DEVICE_0301: return "Unknown device";
+        case PciDevice10BA::DEVICE_0304: return "Unknown device";
+        case PciDevice10BA::DEVICE_0308: return enumToHumanString((PciSubDevice10BA0308)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10BA::DEVICE_1002: return "Unknown device";
 
         default: return "Unknown device";
     }

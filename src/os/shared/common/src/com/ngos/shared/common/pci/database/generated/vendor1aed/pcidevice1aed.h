@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1aed/pcisubdevice1aed1005.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -26,13 +27,13 @@ enum class PciDevice1AED: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1AED device1AED) // TEST: NO
+inline const char8* enumToString(PciDevice1AED device) // TEST: NO
 {
-    // COMMON_LT((" | device1AED = %u", device1AED)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1AED)
+    switch (device)
     {
         case PciDevice1AED::NONE:        return "NONE";
         case PciDevice1AED::DEVICE_1003: return "DEVICE_1003";
@@ -51,28 +52,28 @@ inline const char8* enumToString(PciDevice1AED device1AED) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1AED device1AED) // TEST: NO
+inline const char8* enumToFullString(PciDevice1AED device) // TEST: NO
 {
-    // COMMON_LT((" | device1AED = %u", device1AED)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1AED, enumToString(device1AED));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1AED device1AED) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1AED device) // TEST: NO
 {
-    // COMMON_LT((" | device1AED = %u", device1AED)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1AED)
+    switch (device)
     {
         case PciDevice1AED::DEVICE_1003: return "ioDimm3 (v1.2)";
         case PciDevice1AED::DEVICE_1005: return "ioDimm3";
@@ -83,6 +84,30 @@ inline const char8* enumToHumanString(PciDevice1AED device1AED) // TEST: NO
         case PciDevice1AED::DEVICE_3001: return "ioMemory FHHL";
         case PciDevice1AED::DEVICE_3002: return "ioMemory HHHL";
         case PciDevice1AED::DEVICE_3003: return "ioMemory Mezzanine";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1AED device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1AED::DEVICE_1003: return "Unknown device";
+        case PciDevice1AED::DEVICE_1005: return enumToHumanString((PciSubDevice1AED1005)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1AED::DEVICE_1006: return "Unknown device";
+        case PciDevice1AED::DEVICE_1007: return "Unknown device";
+        case PciDevice1AED::DEVICE_1008: return "Unknown device";
+        case PciDevice1AED::DEVICE_2001: return "Unknown device";
+        case PciDevice1AED::DEVICE_3001: return "Unknown device";
+        case PciDevice1AED::DEVICE_3002: return "Unknown device";
+        case PciDevice1AED::DEVICE_3003: return "Unknown device";
 
         default: return "Unknown device";
     }

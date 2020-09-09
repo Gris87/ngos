@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11de/pcisubdevice11de6057.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11de/pcisubdevice11de6120.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -20,13 +22,13 @@ enum class PciDevice11DE: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice11DE device11DE) // TEST: NO
+inline const char8* enumToString(PciDevice11DE device) // TEST: NO
 {
-    // COMMON_LT((" | device11DE = %u", device11DE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device11DE)
+    switch (device)
     {
         case PciDevice11DE::NONE:        return "NONE";
         case PciDevice11DE::DEVICE_6017: return "DEVICE_6017";
@@ -39,32 +41,50 @@ inline const char8* enumToString(PciDevice11DE device11DE) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice11DE device11DE) // TEST: NO
+inline const char8* enumToFullString(PciDevice11DE device) // TEST: NO
 {
-    // COMMON_LT((" | device11DE = %u", device11DE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device11DE, enumToString(device11DE));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice11DE device11DE) // TEST: NO
+inline const char8* enumToHumanString(PciDevice11DE device) // TEST: NO
 {
-    // COMMON_LT((" | device11DE = %u", device11DE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device11DE)
+    switch (device)
     {
         case PciDevice11DE::DEVICE_6017: return "miroVIDEO DC30";
         case PciDevice11DE::DEVICE_6057: return "ZR36057PQC Video cutting chipset";
         case PciDevice11DE::DEVICE_6120: return "ZR36120";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice11DE device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice11DE::DEVICE_6017: return "Unknown device";
+        case PciDevice11DE::DEVICE_6057: return enumToHumanString((PciSubDevice11DE6057)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11DE::DEVICE_6120: return enumToHumanString((PciSubDevice11DE6120)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

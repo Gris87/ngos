@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor134d/pcisubdevice134d7890.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor134d/pcisubdevice134d7891.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -27,13 +29,13 @@ enum class PciDevice134D: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice134D device134D) // TEST: NO
+inline const char8* enumToString(PciDevice134D device) // TEST: NO
 {
-    // COMMON_LT((" | device134D = %u", device134D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device134D)
+    switch (device)
     {
         case PciDevice134D::NONE:        return "NONE";
         case PciDevice134D::DEVICE_2189: return "DEVICE_2189";
@@ -53,28 +55,28 @@ inline const char8* enumToString(PciDevice134D device134D) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice134D device134D) // TEST: NO
+inline const char8* enumToFullString(PciDevice134D device) // TEST: NO
 {
-    // COMMON_LT((" | device134D = %u", device134D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device134D, enumToString(device134D));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice134D device134D) // TEST: NO
+inline const char8* enumToHumanString(PciDevice134D device) // TEST: NO
 {
-    // COMMON_LT((" | device134D = %u", device134D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device134D)
+    switch (device)
     {
         case PciDevice134D::DEVICE_2189: return "HSP56 MicroModem";
         case PciDevice134D::DEVICE_2486: return "2304WT V.92 MDC Modem";
@@ -86,6 +88,31 @@ inline const char8* enumToHumanString(PciDevice134D device134D) // TEST: NO
         case PciDevice134D::DEVICE_7895: return "HSP MicroModem 56";
         case PciDevice134D::DEVICE_7896: return "HSP MicroModem 56";
         case PciDevice134D::DEVICE_7897: return "HSP MicroModem 56";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice134D device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice134D::DEVICE_2189: return "Unknown device";
+        case PciDevice134D::DEVICE_2486: return "Unknown device";
+        case PciDevice134D::DEVICE_7890: return enumToHumanString((PciSubDevice134D7890)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice134D::DEVICE_7891: return enumToHumanString((PciSubDevice134D7891)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice134D::DEVICE_7892: return "Unknown device";
+        case PciDevice134D::DEVICE_7893: return "Unknown device";
+        case PciDevice134D::DEVICE_7894: return "Unknown device";
+        case PciDevice134D::DEVICE_7895: return "Unknown device";
+        case PciDevice134D::DEVICE_7896: return "Unknown device";
+        case PciDevice134D::DEVICE_7897: return "Unknown device";
 
         default: return "Unknown device";
     }

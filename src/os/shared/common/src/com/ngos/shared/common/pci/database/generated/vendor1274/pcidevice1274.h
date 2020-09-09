@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1274/pcisubdevice12741371.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1274/pcisubdevice12745880.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -23,13 +25,13 @@ enum class PciDevice1274: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1274 device1274) // TEST: NO
+inline const char8* enumToString(PciDevice1274 device) // TEST: NO
 {
-    // COMMON_LT((" | device1274 = %u", device1274)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1274)
+    switch (device)
     {
         case PciDevice1274::NONE:        return "NONE";
         case PciDevice1274::DEVICE_1171: return "DEVICE_1171";
@@ -45,28 +47,28 @@ inline const char8* enumToString(PciDevice1274 device1274) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1274 device1274) // TEST: NO
+inline const char8* enumToFullString(PciDevice1274 device) // TEST: NO
 {
-    // COMMON_LT((" | device1274 = %u", device1274)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1274, enumToString(device1274));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1274 device1274) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1274 device) // TEST: NO
 {
-    // COMMON_LT((" | device1274 = %u", device1274)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1274)
+    switch (device)
     {
         case PciDevice1274::DEVICE_1171: return "ES1373 / Creative Labs CT5803 [AudioPCI]";
         case PciDevice1274::DEVICE_1371: return "ES1371/ES1373 / Creative Labs CT2518";
@@ -74,6 +76,27 @@ inline const char8* enumToHumanString(PciDevice1274 device1274) // TEST: NO
         case PciDevice1274::DEVICE_5880: return "5880B / Creative Labs CT5880";
         case PciDevice1274::DEVICE_8001: return "CT5880 [AudioPCI]";
         case PciDevice1274::DEVICE_8002: return "5880A [AudioPCI]";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1274 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1274::DEVICE_1171: return "Unknown device";
+        case PciDevice1274::DEVICE_1371: return enumToHumanString((PciSubDevice12741371)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1274::DEVICE_5000: return "Unknown device";
+        case PciDevice1274::DEVICE_5880: return enumToHumanString((PciSubDevice12745880)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1274::DEVICE_8001: return "Unknown device";
+        case PciDevice1274::DEVICE_8002: return "Unknown device";
 
         default: return "Unknown device";
     }

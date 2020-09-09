@@ -19,13 +19,13 @@ enum class PciInterface0105: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciInterface0105 interface0105) // TEST: NO
+inline const char8* enumToString(PciInterface0105 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0105 = %u", interface0105)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
-    switch (interface0105)
+    switch (interface)
     {
         case PciInterface0105::NONE:         return "NONE";
         case PciInterface0105::INTERFACE_20: return "INTERFACE_20";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciInterface0105 interface0105) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciInterface0105 interface0105) // TEST: NO
+inline const char8* enumToFullString(PciInterface0105 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0105 = %u", interface0105)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)interface0105, enumToString(interface0105));
+    sprintf(res, "0x%02X (%s)", (u8)interface, enumToString(interface));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciInterface0105 interface0105) // TEST: NO
+inline const char8* enumToHumanString(PciInterface0105 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0105 = %u", interface0105)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
-    switch (interface0105)
+    switch (interface)
     {
         case PciInterface0105::INTERFACE_20: return "Mass storage controller - ATA controller - ADMA single stepping";
         case PciInterface0105::INTERFACE_30: return "Mass storage controller - ATA controller - ADMA continuous operation";

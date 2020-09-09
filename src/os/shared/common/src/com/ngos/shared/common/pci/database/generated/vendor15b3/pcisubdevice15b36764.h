@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice15B36764: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_103C3313 = 0x103C3313
+};
+
+
+
+inline const char8* enumToString(PciSubDevice15B36764 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice15B36764::NONE:               return "NONE";
+        case PciSubDevice15B36764::SUBDEVICE_103C3313: return "SUBDEVICE_103C3313";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice15B36764 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice15B36764 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice15B36764::SUBDEVICE_103C3313: return "NC542m Dual Port Flex-10 10GbE BLc Adapter";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR15B3_PCISUBDEVICE15B36764_H

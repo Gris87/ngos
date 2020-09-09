@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1044/pcisubdevice1044a501.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1044/pcisubdevice1044a511.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -23,13 +25,13 @@ enum class PciDevice1044: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1044 device1044) // TEST: NO
+inline const char8* enumToString(PciDevice1044 device) // TEST: NO
 {
-    // COMMON_LT((" | device1044 = %u", device1044)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1044)
+    switch (device)
     {
         case PciDevice1044::NONE:        return "NONE";
         case PciDevice1044::DEVICE_1012: return "DEVICE_1012";
@@ -45,28 +47,28 @@ inline const char8* enumToString(PciDevice1044 device1044) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1044 device1044) // TEST: NO
+inline const char8* enumToFullString(PciDevice1044 device) // TEST: NO
 {
-    // COMMON_LT((" | device1044 = %u", device1044)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1044, enumToString(device1044));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1044 device1044) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1044 device) // TEST: NO
 {
-    // COMMON_LT((" | device1044 = %u", device1044)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1044)
+    switch (device)
     {
         case PciDevice1044::DEVICE_1012: return "Domino RAID Engine";
         case PciDevice1044::DEVICE_A400: return "SmartCache/Raid I-IV Controller";
@@ -74,6 +76,27 @@ inline const char8* enumToHumanString(PciDevice1044 device1044) // TEST: NO
         case PciDevice1044::DEVICE_A501: return "SmartRAID V Controller";
         case PciDevice1044::DEVICE_A511: return "SmartRAID V Controller";
         case PciDevice1044::DEVICE_C066: return "3010S Ultra3 Dual Channel";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1044 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1044::DEVICE_1012: return "Unknown device";
+        case PciDevice1044::DEVICE_A400: return "Unknown device";
+        case PciDevice1044::DEVICE_A500: return "Unknown device";
+        case PciDevice1044::DEVICE_A501: return enumToHumanString((PciSubDevice1044A501)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1044::DEVICE_A511: return enumToHumanString((PciSubDevice1044A511)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1044::DEVICE_C066: return "Unknown device";
 
         default: return "Unknown device";
     }

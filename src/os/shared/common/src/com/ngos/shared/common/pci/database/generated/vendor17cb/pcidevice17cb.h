@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17cb/pcisubdevice17cb0001.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor17cb/pcisubdevice17cb0002.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -27,13 +29,13 @@ enum class PciDevice17CB: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice17CB device17CB) // TEST: NO
+inline const char8* enumToString(PciDevice17CB device) // TEST: NO
 {
-    // COMMON_LT((" | device17CB = %u", device17CB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17CB)
+    switch (device)
     {
         case PciDevice17CB::NONE:        return "NONE";
         case PciDevice17CB::DEVICE_0001: return "DEVICE_0001";
@@ -53,28 +55,28 @@ inline const char8* enumToString(PciDevice17CB device17CB) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice17CB device17CB) // TEST: NO
+inline const char8* enumToFullString(PciDevice17CB device) // TEST: NO
 {
-    // COMMON_LT((" | device17CB = %u", device17CB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device17CB, enumToString(device17CB));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice17CB device17CB) // TEST: NO
+inline const char8* enumToHumanString(PciDevice17CB device) // TEST: NO
 {
-    // COMMON_LT((" | device17CB = %u", device17CB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17CB)
+    switch (device)
     {
         case PciDevice17CB::DEVICE_0001: return "AGN100 802.11 a/b/g True MIMO Wireless Card";
         case PciDevice17CB::DEVICE_0002: return "AGN300 802.11 a/b/g True MIMO Wireless Card";
@@ -86,6 +88,31 @@ inline const char8* enumToHumanString(PciDevice17CB device17CB) // TEST: NO
         case PciDevice17CB::DEVICE_0400: return "Datacenter Technologies QDF2432 PCI Express Root Port";
         case PciDevice17CB::DEVICE_0401: return "Datacenter Technologies QDF2400 PCI Express Root Port";
         case PciDevice17CB::DEVICE_1000: return "QCS405 PCIe Root Complex";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice17CB device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice17CB::DEVICE_0001: return enumToHumanString((PciSubDevice17CB0001)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice17CB::DEVICE_0002: return enumToHumanString((PciSubDevice17CB0002)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice17CB::DEVICE_0105: return "Unknown device";
+        case PciDevice17CB::DEVICE_0108: return "Unknown device";
+        case PciDevice17CB::DEVICE_0300: return "Unknown device";
+        case PciDevice17CB::DEVICE_0301: return "Unknown device";
+        case PciDevice17CB::DEVICE_0302: return "Unknown device";
+        case PciDevice17CB::DEVICE_0400: return "Unknown device";
+        case PciDevice17CB::DEVICE_0401: return "Unknown device";
+        case PciDevice17CB::DEVICE_1000: return "Unknown device";
 
         default: return "Unknown device";
     }

@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14c1/pcisubdevice14c10008.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14c1/pcisubdevice14c18043.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -19,13 +21,13 @@ enum class PciDevice14C1: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice14C1 device14C1) // TEST: NO
+inline const char8* enumToString(PciDevice14C1 device) // TEST: NO
 {
-    // COMMON_LT((" | device14C1 = %u", device14C1)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device14C1)
+    switch (device)
     {
         case PciDevice14C1::NONE:        return "NONE";
         case PciDevice14C1::DEVICE_0008: return "DEVICE_0008";
@@ -37,31 +39,48 @@ inline const char8* enumToString(PciDevice14C1 device14C1) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice14C1 device14C1) // TEST: NO
+inline const char8* enumToFullString(PciDevice14C1 device) // TEST: NO
 {
-    // COMMON_LT((" | device14C1 = %u", device14C1)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device14C1, enumToString(device14C1));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice14C1 device14C1) // TEST: NO
+inline const char8* enumToHumanString(PciDevice14C1 device) // TEST: NO
 {
-    // COMMON_LT((" | device14C1 = %u", device14C1)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device14C1)
+    switch (device)
     {
         case PciDevice14C1::DEVICE_0008: return "Myri-10G Dual-Protocol NIC";
         case PciDevice14C1::DEVICE_8043: return "Myrinet 2000 Scalable Cluster Interconnect";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice14C1 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice14C1::DEVICE_0008: return enumToHumanString((PciSubDevice14C10008)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice14C1::DEVICE_8043: return enumToHumanString((PciSubDevice14C18043)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

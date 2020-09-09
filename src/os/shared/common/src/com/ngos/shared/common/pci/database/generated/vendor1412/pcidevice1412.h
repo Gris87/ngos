@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1412/pcisubdevice14121712.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1412/pcisubdevice14121724.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -19,13 +21,13 @@ enum class PciDevice1412: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1412 device1412) // TEST: NO
+inline const char8* enumToString(PciDevice1412 device) // TEST: NO
 {
-    // COMMON_LT((" | device1412 = %u", device1412)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1412)
+    switch (device)
     {
         case PciDevice1412::NONE:        return "NONE";
         case PciDevice1412::DEVICE_1712: return "DEVICE_1712";
@@ -37,31 +39,48 @@ inline const char8* enumToString(PciDevice1412 device1412) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1412 device1412) // TEST: NO
+inline const char8* enumToFullString(PciDevice1412 device) // TEST: NO
 {
-    // COMMON_LT((" | device1412 = %u", device1412)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1412, enumToString(device1412));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1412 device1412) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1412 device) // TEST: NO
 {
-    // COMMON_LT((" | device1412 = %u", device1412)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1412)
+    switch (device)
     {
         case PciDevice1412::DEVICE_1712: return "ICE1712 [Envy24] PCI Multi-Channel I/O Controller";
         case PciDevice1412::DEVICE_1724: return "VT1720/24 [Envy24PT/HT] PCI Multi-Channel Audio Controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1412 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1412::DEVICE_1712: return enumToHumanString((PciSubDevice14121712)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1412::DEVICE_1724: return enumToHumanString((PciSubDevice14121724)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

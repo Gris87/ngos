@@ -18,13 +18,13 @@ enum class PciDevice167D: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice167D device167D) // TEST: NO
+inline const char8* enumToString(PciDevice167D device) // TEST: NO
 {
-    // COMMON_LT((" | device167D = %u", device167D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device167D)
+    switch (device)
     {
         case PciDevice167D::NONE:        return "NONE";
         case PciDevice167D::DEVICE_A000: return "DEVICE_A000";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice167D device167D) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice167D device167D) // TEST: NO
+inline const char8* enumToFullString(PciDevice167D device) // TEST: NO
 {
-    // COMMON_LT((" | device167D = %u", device167D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device167D, enumToString(device167D));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice167D device167D) // TEST: NO
+inline const char8* enumToHumanString(PciDevice167D device) // TEST: NO
 {
-    // COMMON_LT((" | device167D = %u", device167D)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device167D)
+    switch (device)
     {
         case PciDevice167D::DEVICE_A000: return "MagicLAN SWL-2210P 802.11b [Intersil ISL3874]";
 

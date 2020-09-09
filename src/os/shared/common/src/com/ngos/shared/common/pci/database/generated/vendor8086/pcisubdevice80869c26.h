@@ -10,4 +10,63 @@
 
 
 
+enum class PciSubDevice80869C26: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_17AA220C = 0x17AA220C,
+    SUBDEVICE_17AA2214 = 0x17AA2214
+};
+
+
+
+inline const char8* enumToString(PciSubDevice80869C26 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80869C26::NONE:               return "NONE";
+        case PciSubDevice80869C26::SUBDEVICE_17AA220C: return "SUBDEVICE_17AA220C";
+        case PciSubDevice80869C26::SUBDEVICE_17AA2214: return "SUBDEVICE_17AA2214";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice80869C26 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice80869C26 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80869C26::SUBDEVICE_17AA220C: return "T440s";
+        case PciSubDevice80869C26::SUBDEVICE_17AA2214: return "ThinkPad X240";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8086_PCISUBDEVICE80869C26_H

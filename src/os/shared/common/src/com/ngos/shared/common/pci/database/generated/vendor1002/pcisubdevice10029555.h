@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice10029555: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_103C1411 = 0x103C1411
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10029555 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10029555::NONE:               return "NONE";
+        case PciSubDevice10029555::SUBDEVICE_103C1411: return "SUBDEVICE_103C1411";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10029555 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10029555 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10029555::SUBDEVICE_103C1411: return "ProBook 4720s GPU (Mobility Radeon HD 4350)";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1002_PCISUBDEVICE10029555_H

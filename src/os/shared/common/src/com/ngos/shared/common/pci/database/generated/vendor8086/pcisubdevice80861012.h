@@ -10,4 +10,63 @@
 
 
 
+enum class PciSubDevice80861012: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_0E1100DC = 0x0E1100DC,
+    SUBDEVICE_80861012 = 0x80861012
+};
+
+
+
+inline const char8* enumToString(PciSubDevice80861012 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80861012::NONE:               return "NONE";
+        case PciSubDevice80861012::SUBDEVICE_0E1100DC: return "SUBDEVICE_0E1100DC";
+        case PciSubDevice80861012::SUBDEVICE_80861012: return "SUBDEVICE_80861012";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice80861012 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice80861012 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80861012::SUBDEVICE_0E1100DC: return "NC6170 Gigabit Server Adapter";
+        case PciSubDevice80861012::SUBDEVICE_80861012: return "PRO/1000 MF Dual Port Server Adapter";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8086_PCISUBDEVICE80861012_H

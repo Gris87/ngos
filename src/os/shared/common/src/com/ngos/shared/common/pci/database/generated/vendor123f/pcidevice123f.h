@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor123f/pcisubdevice123f8120.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor123f/pcisubdevice123f8888.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -20,13 +22,13 @@ enum class PciDevice123F: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice123F device123F) // TEST: NO
+inline const char8* enumToString(PciDevice123F device) // TEST: NO
 {
-    // COMMON_LT((" | device123F = %u", device123F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device123F)
+    switch (device)
     {
         case PciDevice123F::NONE:        return "NONE";
         case PciDevice123F::DEVICE_00E4: return "DEVICE_00E4";
@@ -39,32 +41,50 @@ inline const char8* enumToString(PciDevice123F device123F) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice123F device123F) // TEST: NO
+inline const char8* enumToFullString(PciDevice123F device) // TEST: NO
 {
-    // COMMON_LT((" | device123F = %u", device123F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device123F, enumToString(device123F));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice123F device123F) // TEST: NO
+inline const char8* enumToHumanString(PciDevice123F device) // TEST: NO
 {
-    // COMMON_LT((" | device123F = %u", device123F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device123F)
+    switch (device)
     {
         case PciDevice123F::DEVICE_00E4: return "MPEG";
         case PciDevice123F::DEVICE_8120: return "DVxplore Codec";
         case PciDevice123F::DEVICE_8888: return "Cinemaster C 3.0 DVD Decoder";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice123F device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice123F::DEVICE_00E4: return "Unknown device";
+        case PciDevice123F::DEVICE_8120: return enumToHumanString((PciSubDevice123F8120)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice123F::DEVICE_8888: return enumToHumanString((PciSubDevice123F8888)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

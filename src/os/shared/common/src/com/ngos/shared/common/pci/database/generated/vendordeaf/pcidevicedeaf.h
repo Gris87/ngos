@@ -20,13 +20,13 @@ enum class PciDeviceDEAF: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDeviceDEAF deviceDEAF) // TEST: NO
+inline const char8* enumToString(PciDeviceDEAF device) // TEST: NO
 {
-    // COMMON_LT((" | deviceDEAF = %u", deviceDEAF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceDEAF)
+    switch (device)
     {
         case PciDeviceDEAF::NONE:        return "NONE";
         case PciDeviceDEAF::DEVICE_9050: return "DEVICE_9050";
@@ -39,28 +39,28 @@ inline const char8* enumToString(PciDeviceDEAF deviceDEAF) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDeviceDEAF deviceDEAF) // TEST: NO
+inline const char8* enumToFullString(PciDeviceDEAF device) // TEST: NO
 {
-    // COMMON_LT((" | deviceDEAF = %u", deviceDEAF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)deviceDEAF, enumToString(deviceDEAF));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDeviceDEAF deviceDEAF) // TEST: NO
+inline const char8* enumToHumanString(PciDeviceDEAF device) // TEST: NO
 {
-    // COMMON_LT((" | deviceDEAF = %u", deviceDEAF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceDEAF)
+    switch (device)
     {
         case PciDeviceDEAF::DEVICE_9050: return "PC Weasel Virtual VGA";
         case PciDeviceDEAF::DEVICE_9051: return "PC Weasel Serial Port";

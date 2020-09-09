@@ -20,13 +20,13 @@ enum class PciDevice196A: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice196A device196A) // TEST: NO
+inline const char8* enumToString(PciDevice196A device) // TEST: NO
 {
-    // COMMON_LT((" | device196A = %u", device196A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device196A)
+    switch (device)
     {
         case PciDevice196A::NONE:        return "NONE";
         case PciDevice196A::DEVICE_0101: return "DEVICE_0101";
@@ -39,28 +39,28 @@ inline const char8* enumToString(PciDevice196A device196A) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice196A device196A) // TEST: NO
+inline const char8* enumToFullString(PciDevice196A device) // TEST: NO
 {
-    // COMMON_LT((" | device196A = %u", device196A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device196A, enumToString(device196A));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice196A device196A) // TEST: NO
+inline const char8* enumToHumanString(PciDevice196A device) // TEST: NO
 {
-    // COMMON_LT((" | device196A = %u", device196A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device196A)
+    switch (device)
     {
         case PciDevice196A::DEVICE_0101: return "NodalCore C-1000 Content Classification Accelerator";
         case PciDevice196A::DEVICE_0102: return "NodalCore C-2000 Content Classification Accelerator";

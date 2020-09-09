@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice13190801: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_13191319 = 0x13191319
+};
+
+
+
+inline const char8* enumToString(PciSubDevice13190801 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice13190801::NONE:               return "NONE";
+        case PciSubDevice13190801::SUBDEVICE_13191319: return "SUBDEVICE_13191319";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice13190801 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice13190801 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice13190801::SUBDEVICE_13191319: return "FM801 PCI Audio";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1319_PCISUBDEVICE13190801_H

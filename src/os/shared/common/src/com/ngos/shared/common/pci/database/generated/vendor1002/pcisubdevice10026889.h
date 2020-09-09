@@ -10,4 +10,63 @@
 
 
 
+enum class PciSubDevice10026889: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_10020301 = 0x10020301,
+    SUBDEVICE_13CC3D1F = 0x13CC3D1F
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10026889 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10026889::NONE:               return "NONE";
+        case PciSubDevice10026889::SUBDEVICE_10020301: return "SUBDEVICE_10020301";
+        case PciSubDevice10026889::SUBDEVICE_13CC3D1F: return "SUBDEVICE_13CC3D1F";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10026889 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10026889 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10026889::SUBDEVICE_10020301: return "FirePro V7800P";
+        case PciSubDevice10026889::SUBDEVICE_13CC3D1F: return "MXRT-7400";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1002_PCISUBDEVICE10026889_H

@@ -6,6 +6,9 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102a/pcisubdevice102a001f.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102a/pcisubdevice102a00c5.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor102a/pcisubdevice102a00cf.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -21,13 +24,13 @@ enum class PciDevice102A: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice102A device102A) // TEST: NO
+inline const char8* enumToString(PciDevice102A device) // TEST: NO
 {
-    // COMMON_LT((" | device102A = %u", device102A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device102A)
+    switch (device)
     {
         case PciDevice102A::DEVICE_0000: return "DEVICE_0000";
         case PciDevice102A::DEVICE_0010: return "DEVICE_0010";
@@ -41,34 +44,54 @@ inline const char8* enumToString(PciDevice102A device102A) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice102A device102A) // TEST: NO
+inline const char8* enumToFullString(PciDevice102A device) // TEST: NO
 {
-    // COMMON_LT((" | device102A = %u", device102A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device102A, enumToString(device102A));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice102A device102A) // TEST: NO
+inline const char8* enumToHumanString(PciDevice102A device) // TEST: NO
 {
-    // COMMON_LT((" | device102A = %u", device102A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device102A)
+    switch (device)
     {
         case PciDevice102A::DEVICE_0000: return "HYDRA";
         case PciDevice102A::DEVICE_0010: return "ASPEN";
         case PciDevice102A::DEVICE_001F: return "AHA-2940U2/U2W /7890/7891 SCSI Controllers";
         case PciDevice102A::DEVICE_00C5: return "AIC-7899 U160/m SCSI Controller";
         case PciDevice102A::DEVICE_00CF: return "AIC-7899P U160/m";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice102A device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice102A::DEVICE_0000: return "Unknown device";
+        case PciDevice102A::DEVICE_0010: return "Unknown device";
+        case PciDevice102A::DEVICE_001F: return enumToHumanString((PciSubDevice102A001F)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice102A::DEVICE_00C5: return enumToHumanString((PciSubDevice102A00C5)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice102A::DEVICE_00CF: return enumToHumanString((PciSubDevice102A00CF)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

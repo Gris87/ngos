@@ -19,13 +19,13 @@ enum class PciDevice118C: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice118C device118C) // TEST: NO
+inline const char8* enumToString(PciDevice118C device) // TEST: NO
 {
-    // COMMON_LT((" | device118C = %u", device118C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device118C)
+    switch (device)
     {
         case PciDevice118C::NONE:        return "NONE";
         case PciDevice118C::DEVICE_0014: return "DEVICE_0014";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDevice118C device118C) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice118C device118C) // TEST: NO
+inline const char8* enumToFullString(PciDevice118C device) // TEST: NO
 {
-    // COMMON_LT((" | device118C = %u", device118C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device118C, enumToString(device118C));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice118C device118C) // TEST: NO
+inline const char8* enumToHumanString(PciDevice118C device) // TEST: NO
 {
-    // COMMON_LT((" | device118C = %u", device118C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device118C)
+    switch (device)
     {
         case PciDevice118C::DEVICE_0014: return "PCIB [C-bus II to PCI bus host bridge chip]";
         case PciDevice118C::DEVICE_1117: return "Intel 8-way XEON Profusion Chipset [Cache Coherency Filter]";

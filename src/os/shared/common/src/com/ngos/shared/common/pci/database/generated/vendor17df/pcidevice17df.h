@@ -62,13 +62,13 @@ enum class PciDevice17DF: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice17DF device17DF) // TEST: NO
+inline const char8* enumToString(PciDevice17DF device) // TEST: NO
 {
-    // COMMON_LT((" | device17DF = %u", device17DF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17DF)
+    switch (device)
     {
         case PciDevice17DF::NONE:        return "NONE";
         case PciDevice17DF::DEVICE_1864: return "DEVICE_1864";
@@ -123,28 +123,28 @@ inline const char8* enumToString(PciDevice17DF device17DF) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice17DF device17DF) // TEST: NO
+inline const char8* enumToFullString(PciDevice17DF device) // TEST: NO
 {
-    // COMMON_LT((" | device17DF = %u", device17DF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device17DF, enumToString(device17DF));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice17DF device17DF) // TEST: NO
+inline const char8* enumToHumanString(PciDevice17DF device) // TEST: NO
 {
-    // COMMON_LT((" | device17DF = %u", device17DF)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17DF)
+    switch (device)
     {
         case PciDevice17DF::DEVICE_1864: return "Virtex4 PCI Board w/ QL5064 Bridge [DN7000K10PCI/DN8000K10PCI/DN8000K10PSX/NOTUS]";
         case PciDevice17DF::DEVICE_1865: return "Virtex4 ASIC Emulator [DN8000K10PCIe]";

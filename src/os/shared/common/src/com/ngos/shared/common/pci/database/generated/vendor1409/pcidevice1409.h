@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1409/pcisubdevice14097168.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1409/pcisubdevice14097268.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -19,13 +21,13 @@ enum class PciDevice1409: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1409 device1409) // TEST: NO
+inline const char8* enumToString(PciDevice1409 device) // TEST: NO
 {
-    // COMMON_LT((" | device1409 = %u", device1409)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1409)
+    switch (device)
     {
         case PciDevice1409::NONE:        return "NONE";
         case PciDevice1409::DEVICE_7168: return "DEVICE_7168";
@@ -37,31 +39,48 @@ inline const char8* enumToString(PciDevice1409 device1409) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1409 device1409) // TEST: NO
+inline const char8* enumToFullString(PciDevice1409 device) // TEST: NO
 {
-    // COMMON_LT((" | device1409 = %u", device1409)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1409, enumToString(device1409));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1409 device1409) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1409 device) // TEST: NO
 {
-    // COMMON_LT((" | device1409 = %u", device1409)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1409)
+    switch (device)
     {
         case PciDevice1409::DEVICE_7168: return "PCI2S550 (Dual 16550 UART)";
         case PciDevice1409::DEVICE_7268: return "SUN1888 (Dual IEEE1284 parallel port)";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1409 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1409::DEVICE_7168: return enumToHumanString((PciSubDevice14097168)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1409::DEVICE_7268: return enumToHumanString((PciSubDevice14097268)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

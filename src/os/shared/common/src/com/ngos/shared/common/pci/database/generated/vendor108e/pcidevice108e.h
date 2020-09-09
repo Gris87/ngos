@@ -6,6 +6,12 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108e1100.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108e1101.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108e1102.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108e1103.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108e5000.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor108e/pcisubdevice108ea001.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -68,13 +74,13 @@ enum class PciDevice108E: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice108E device108E) // TEST: NO
+inline const char8* enumToString(PciDevice108E device) // TEST: NO
 {
-    // COMMON_LT((" | device108E = %u", device108E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device108E)
+    switch (device)
     {
         case PciDevice108E::NONE:        return "NONE";
         case PciDevice108E::DEVICE_0001: return "DEVICE_0001";
@@ -135,28 +141,28 @@ inline const char8* enumToString(PciDevice108E device108E) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice108E device108E) // TEST: NO
+inline const char8* enumToFullString(PciDevice108E device) // TEST: NO
 {
-    // COMMON_LT((" | device108E = %u", device108E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device108E, enumToString(device108E));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice108E device108E) // TEST: NO
+inline const char8* enumToHumanString(PciDevice108E device) // TEST: NO
 {
-    // COMMON_LT((" | device108E = %u", device108E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device108E)
+    switch (device)
     {
         case PciDevice108E::DEVICE_0001: return "EBUS";
         case PciDevice108E::DEVICE_1000: return "EBUS";
@@ -209,6 +215,72 @@ inline const char8* enumToHumanString(PciDevice108E device108E) // TEST: NO
         case PciDevice108E::DEVICE_ABBA: return "Cassini 10/100/1000";
         case PciDevice108E::DEVICE_ABCD: return "Multithreaded 10-Gigabit Ethernet Network Controller";
         case PciDevice108E::DEVICE_C416: return "Sun Fire System/System Controller Interface chip [sbbc]";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice108E device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice108E::DEVICE_0001: return "Unknown device";
+        case PciDevice108E::DEVICE_1000: return "Unknown device";
+        case PciDevice108E::DEVICE_1001: return "Unknown device";
+        case PciDevice108E::DEVICE_1100: return enumToHumanString((PciSubDevice108E1100)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_1101: return enumToHumanString((PciSubDevice108E1101)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_1102: return enumToHumanString((PciSubDevice108E1102)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_1103: return enumToHumanString((PciSubDevice108E1103)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_1647: return "Unknown device";
+        case PciDevice108E::DEVICE_1648: return "Unknown device";
+        case PciDevice108E::DEVICE_16A7: return "Unknown device";
+        case PciDevice108E::DEVICE_16A8: return "Unknown device";
+        case PciDevice108E::DEVICE_2BAD: return "Unknown device";
+        case PciDevice108E::DEVICE_5000: return enumToHumanString((PciSubDevice108E5000)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_5043: return "Unknown device";
+        case PciDevice108E::DEVICE_5CA0: return "Unknown device";
+        case PciDevice108E::DEVICE_6300: return "Unknown device";
+        case PciDevice108E::DEVICE_6301: return "Unknown device";
+        case PciDevice108E::DEVICE_6302: return "Unknown device";
+        case PciDevice108E::DEVICE_6303: return "Unknown device";
+        case PciDevice108E::DEVICE_6310: return "Unknown device";
+        case PciDevice108E::DEVICE_6311: return "Unknown device";
+        case PciDevice108E::DEVICE_6312: return "Unknown device";
+        case PciDevice108E::DEVICE_6313: return "Unknown device";
+        case PciDevice108E::DEVICE_6320: return "Unknown device";
+        case PciDevice108E::DEVICE_6323: return "Unknown device";
+        case PciDevice108E::DEVICE_6330: return "Unknown device";
+        case PciDevice108E::DEVICE_6331: return "Unknown device";
+        case PciDevice108E::DEVICE_6332: return "Unknown device";
+        case PciDevice108E::DEVICE_6333: return "Unknown device";
+        case PciDevice108E::DEVICE_6340: return "Unknown device";
+        case PciDevice108E::DEVICE_6343: return "Unknown device";
+        case PciDevice108E::DEVICE_6350: return "Unknown device";
+        case PciDevice108E::DEVICE_6353: return "Unknown device";
+        case PciDevice108E::DEVICE_6722: return "Unknown device";
+        case PciDevice108E::DEVICE_676E: return "Unknown device";
+        case PciDevice108E::DEVICE_7063: return "Unknown device";
+        case PciDevice108E::DEVICE_8000: return "Unknown device";
+        case PciDevice108E::DEVICE_8001: return "Unknown device";
+        case PciDevice108E::DEVICE_8002: return "Unknown device";
+        case PciDevice108E::DEVICE_80F0: return "Unknown device";
+        case PciDevice108E::DEVICE_80F8: return "Unknown device";
+        case PciDevice108E::DEVICE_9010: return "Unknown device";
+        case PciDevice108E::DEVICE_9020: return "Unknown device";
+        case PciDevice108E::DEVICE_9102: return "Unknown device";
+        case PciDevice108E::DEVICE_A000: return "Unknown device";
+        case PciDevice108E::DEVICE_A001: return enumToHumanString((PciSubDevice108EA001)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice108E::DEVICE_A801: return "Unknown device";
+        case PciDevice108E::DEVICE_AAAA: return "Unknown device";
+        case PciDevice108E::DEVICE_ABBA: return "Unknown device";
+        case PciDevice108E::DEVICE_ABCD: return "Unknown device";
+        case PciDevice108E::DEVICE_C416: return "Unknown device";
 
         default: return "Unknown device";
     }

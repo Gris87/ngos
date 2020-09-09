@@ -18,13 +18,13 @@ enum class PciDevice1725: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1725 device1725) // TEST: NO
+inline const char8* enumToString(PciDevice1725 device) // TEST: NO
 {
-    // COMMON_LT((" | device1725 = %u", device1725)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1725)
+    switch (device)
     {
         case PciDevice1725::NONE:        return "NONE";
         case PciDevice1725::DEVICE_7174: return "DEVICE_7174";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice1725 device1725) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1725 device1725) // TEST: NO
+inline const char8* enumToFullString(PciDevice1725 device) // TEST: NO
 {
-    // COMMON_LT((" | device1725 = %u", device1725)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1725, enumToString(device1725));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1725 device1725) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1725 device) // TEST: NO
 {
-    // COMMON_LT((" | device1725 = %u", device1725)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1725)
+    switch (device)
     {
         case PciDevice1725::DEVICE_7174: return "VSC7174 PCI/PCI-X Serial ATA Host Bus Controller";
 

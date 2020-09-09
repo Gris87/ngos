@@ -17,13 +17,13 @@ enum class PciDevice14EC: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice14EC device14EC) // TEST: NO
+inline const char8* enumToString(PciDevice14EC device) // TEST: NO
 {
-    // COMMON_LT((" | device14EC = %u", device14EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device14EC)
+    switch (device)
     {
         case PciDevice14EC::DEVICE_0000: return "DEVICE_0000";
 
@@ -33,28 +33,28 @@ inline const char8* enumToString(PciDevice14EC device14EC) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice14EC device14EC) // TEST: NO
+inline const char8* enumToFullString(PciDevice14EC device) // TEST: NO
 {
-    // COMMON_LT((" | device14EC = %u", device14EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device14EC, enumToString(device14EC));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice14EC device14EC) // TEST: NO
+inline const char8* enumToHumanString(PciDevice14EC device) // TEST: NO
 {
-    // COMMON_LT((" | device14EC = %u", device14EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device14EC)
+    switch (device)
     {
         case PciDevice14EC::DEVICE_0000: return "Aciris Digitizer (malformed ID)";
 

@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice80865914: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_17AA225D = 0x17AA225D
+};
+
+
+
+inline const char8* enumToString(PciSubDevice80865914 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80865914::NONE:               return "NONE";
+        case PciSubDevice80865914::SUBDEVICE_17AA225D: return "SUBDEVICE_17AA225D";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice80865914 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice80865914 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80865914::SUBDEVICE_17AA225D: return "ThinkPad T480";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8086_PCISUBDEVICE80865914_H

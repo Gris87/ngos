@@ -31,13 +31,13 @@ enum class PciSubClass06: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubClass06 class06) // TEST: NO
+inline const char8* enumToString(PciSubClass06 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class06 = %u", class06)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class06)
+    switch (subClass)
     {
         case PciSubClass06::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass06::SUB_CLASS_01: return "SUB_CLASS_01";
@@ -58,28 +58,28 @@ inline const char8* enumToString(PciSubClass06 class06) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubClass06 class06) // TEST: NO
+inline const char8* enumToFullString(PciSubClass06 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class06 = %u", class06)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)class06, enumToString(class06));
+    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciSubClass06 class06, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass06 subClass, u8 interfaceId) // TEST: NO
 {
-    // COMMON_LT((" | class06 = %u, interfaceId = %u", class06, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u, interfaceId = %u", subClass, interfaceId)); // Commented to avoid bad looking logs
 
 
 
-    switch (class06)
+    switch (subClass)
     {
         case PciSubClass06::SUB_CLASS_00: return "Bridge - Host bridge";
         case PciSubClass06::SUB_CLASS_01: return "Bridge - ISA bridge";

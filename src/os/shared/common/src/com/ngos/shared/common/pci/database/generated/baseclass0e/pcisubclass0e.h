@@ -17,13 +17,13 @@ enum class PciSubClass0E: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubClass0E class0E) // TEST: NO
+inline const char8* enumToString(PciSubClass0E subClass) // TEST: NO
 {
-    // COMMON_LT((" | class0E = %u", class0E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class0E)
+    switch (subClass)
     {
         case PciSubClass0E::SUB_CLASS_00: return "SUB_CLASS_00";
 
@@ -33,28 +33,28 @@ inline const char8* enumToString(PciSubClass0E class0E) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubClass0E class0E) // TEST: NO
+inline const char8* enumToFullString(PciSubClass0E subClass) // TEST: NO
 {
-    // COMMON_LT((" | class0E = %u", class0E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)class0E, enumToString(class0E));
+    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciSubClass0E class0E) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass0E subClass) // TEST: NO
 {
-    // COMMON_LT((" | class0E = %u", class0E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class0E)
+    switch (subClass)
     {
         case PciSubClass0E::SUB_CLASS_00: return "Intelligent controller - I2O";
 

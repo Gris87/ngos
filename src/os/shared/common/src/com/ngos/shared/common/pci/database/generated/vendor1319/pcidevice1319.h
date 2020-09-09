@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1319/pcisubdevice13190801.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1319/pcisubdevice13190802.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -21,13 +23,13 @@ enum class PciDevice1319: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1319 device1319) // TEST: NO
+inline const char8* enumToString(PciDevice1319 device) // TEST: NO
 {
-    // COMMON_LT((" | device1319 = %u", device1319)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1319)
+    switch (device)
     {
         case PciDevice1319::NONE:        return "NONE";
         case PciDevice1319::DEVICE_0801: return "DEVICE_0801";
@@ -41,33 +43,52 @@ inline const char8* enumToString(PciDevice1319 device1319) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1319 device1319) // TEST: NO
+inline const char8* enumToFullString(PciDevice1319 device) // TEST: NO
 {
-    // COMMON_LT((" | device1319 = %u", device1319)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1319, enumToString(device1319));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1319 device1319) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1319 device) // TEST: NO
 {
-    // COMMON_LT((" | device1319 = %u", device1319)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1319)
+    switch (device)
     {
         case PciDevice1319::DEVICE_0801: return "Xwave QS3000A [FM801]";
         case PciDevice1319::DEVICE_0802: return "Xwave QS3000A [FM801 game port]";
         case PciDevice1319::DEVICE_1000: return "FM801 PCI Audio";
         case PciDevice1319::DEVICE_1001: return "FM801 PCI Joystick";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1319 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1319::DEVICE_0801: return enumToHumanString((PciSubDevice13190801)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1319::DEVICE_0802: return enumToHumanString((PciSubDevice13190802)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1319::DEVICE_1000: return "Unknown device";
+        case PciDevice1319::DEVICE_1001: return "Unknown device";
 
         default: return "Unknown device";
     }

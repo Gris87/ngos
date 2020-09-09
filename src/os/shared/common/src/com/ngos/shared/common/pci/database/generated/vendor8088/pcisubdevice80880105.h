@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice80880105: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_80880202 = 0x80880202
+};
+
+
+
+inline const char8* enumToString(PciSubDevice80880105 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80880105::NONE:               return "NONE";
+        case PciSubDevice80880105::SUBDEVICE_80880202: return "SUBDEVICE_80880202";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice80880105 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice80880105 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80880105::SUBDEVICE_80880202: return "Dual-Port Ethernet Network Adaptor SF200HT";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8088_PCISUBDEVICE80880105_H

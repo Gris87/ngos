@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice808624F4: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_80860030 = 0x80860030
+};
+
+
+
+inline const char8* enumToString(PciSubDevice808624F4 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice808624F4::NONE:               return "NONE";
+        case PciSubDevice808624F4::SUBDEVICE_80860030: return "SUBDEVICE_80860030";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice808624F4 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice808624F4 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice808624F4::SUBDEVICE_80860030: return "Dual Band Wireless-AC 8260";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8086_PCISUBDEVICE808624F4_H

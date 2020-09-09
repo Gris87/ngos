@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor10d9/pcisubdevice10d90531.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -23,13 +24,13 @@ enum class PciDevice10D9: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice10D9 device10D9) // TEST: NO
+inline const char8* enumToString(PciDevice10D9 device) // TEST: NO
 {
-    // COMMON_LT((" | device10D9 = %u", device10D9)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device10D9)
+    switch (device)
     {
         case PciDevice10D9::NONE:        return "NONE";
         case PciDevice10D9::DEVICE_0431: return "DEVICE_0431";
@@ -45,28 +46,28 @@ inline const char8* enumToString(PciDevice10D9 device10D9) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice10D9 device10D9) // TEST: NO
+inline const char8* enumToFullString(PciDevice10D9 device) // TEST: NO
 {
-    // COMMON_LT((" | device10D9 = %u", device10D9)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device10D9, enumToString(device10D9));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice10D9 device10D9) // TEST: NO
+inline const char8* enumToHumanString(PciDevice10D9 device) // TEST: NO
 {
-    // COMMON_LT((" | device10D9 = %u", device10D9)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device10D9)
+    switch (device)
     {
         case PciDevice10D9::DEVICE_0431: return "MX98715";
         case PciDevice10D9::DEVICE_0512: return "MX98713";
@@ -74,6 +75,27 @@ inline const char8* enumToHumanString(PciDevice10D9 device10D9) // TEST: NO
         case PciDevice10D9::DEVICE_8625: return "MX86250";
         case PciDevice10D9::DEVICE_8626: return "Macronix MX86251 + 3Dfx Voodoo Rush";
         case PciDevice10D9::DEVICE_8888: return "MX86200";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice10D9 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice10D9::DEVICE_0431: return "Unknown device";
+        case PciDevice10D9::DEVICE_0512: return "Unknown device";
+        case PciDevice10D9::DEVICE_0531: return enumToHumanString((PciSubDevice10D90531)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10D9::DEVICE_8625: return "Unknown device";
+        case PciDevice10D9::DEVICE_8626: return "Unknown device";
+        case PciDevice10D9::DEVICE_8888: return "Unknown device";
 
         default: return "Unknown device";
     }

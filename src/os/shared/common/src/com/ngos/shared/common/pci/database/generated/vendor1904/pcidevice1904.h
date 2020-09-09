@@ -19,13 +19,13 @@ enum class PciDevice1904: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1904 device1904) // TEST: NO
+inline const char8* enumToString(PciDevice1904 device) // TEST: NO
 {
-    // COMMON_LT((" | device1904 = %u", device1904)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1904)
+    switch (device)
     {
         case PciDevice1904::NONE:        return "NONE";
         case PciDevice1904::DEVICE_2031: return "DEVICE_2031";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDevice1904 device1904) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1904 device1904) // TEST: NO
+inline const char8* enumToFullString(PciDevice1904 device) // TEST: NO
 {
-    // COMMON_LT((" | device1904 = %u", device1904)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1904, enumToString(device1904));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1904 device1904) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1904 device) // TEST: NO
 {
-    // COMMON_LT((" | device1904 = %u", device1904)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1904)
+    switch (device)
     {
         case PciDevice1904::DEVICE_2031: return "SC92031 PCI Fast Ethernet Adapter";
         case PciDevice1904::DEVICE_8139: return "RTL8139D [Realtek] PCI 10/100BaseTX ethernet adaptor";

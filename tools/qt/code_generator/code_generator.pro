@@ -101,4 +101,5 @@ HEADERS += \
     src/com/ngos/devtools/code_generator/other/pcidevice.h \
     src/com/ngos/devtools/code_generator/other/pciinterface.h \
     src/com/ngos/devtools/code_generator/other/pcisubclass.h \
+    src/com/ngos/devtools/code_generator/other/pcisubdevice.h \
     src/com/ngos/devtools/code_generator/other/pcivendor.h

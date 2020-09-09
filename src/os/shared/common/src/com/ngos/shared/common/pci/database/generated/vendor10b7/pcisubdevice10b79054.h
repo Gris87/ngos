@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice10B79054: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_10B79054 = 0x10B79054
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10B79054 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10B79054::NONE:               return "NONE";
+        case PciSubDevice10B79054::SUBDEVICE_10B79054: return "SUBDEVICE_10B79054";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10B79054 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10B79054 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10B79054::SUBDEVICE_10B79054: return "3C905B-TX Fast Etherlink XL PCI";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR10B7_PCISUBDEVICE10B79054_H

@@ -598,6 +598,11 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
 
 
 
+    const char8 *subsystemVendorID = enumToHumanString(configurationSpace.device.subsystemVendorID);
+    const char8 *subsystemID       = enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId, configurationSpace.device.subsystemVendorID, configurationSpace.device.subsystemID);
+
+
+
     // Fill Device Manager entry
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #0",           mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[0]),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
@@ -607,8 +612,8 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #4",           mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[4]),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #5",           mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[5]),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card information structure pointer", mprintf("0x%08X", configurationSpace.device.cardInformationStructurePointer), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID",                mprintf("0x%04X", configurationSpace.device.subsystemVendorID),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",                       mprintf("0x%04X", configurationSpace.device.subsystemID),                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID",                mprintf("%s",     subsystemVendorID),                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",                       mprintf("%s",     subsystemID),                                               DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion ROM base address",         mprintf("0x%08X", configurationSpace.device.expansionRomBaseAddress),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer",               mprintf("0x%02X", configurationSpace.device.capabilitiesPointer),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",                     mprintf("%u",     configurationSpace.device.interruptLine),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);

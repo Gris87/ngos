@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice102243B5: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_184943C8 = 0x184943C8
+};
+
+
+
+inline const char8* enumToString(PciSubDevice102243B5 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice102243B5::NONE:               return "NONE";
+        case PciSubDevice102243B5::SUBDEVICE_184943C8: return "SUBDEVICE_184943C8";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice102243B5 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice102243B5 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice102243B5::SUBDEVICE_184943C8: return "Fatal1ty X370 Professional Gaming";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1022_PCISUBDEVICE102243B5_H

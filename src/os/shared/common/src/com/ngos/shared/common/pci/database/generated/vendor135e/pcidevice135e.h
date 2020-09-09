@@ -26,13 +26,13 @@ enum class PciDevice135E: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice135E device135E) // TEST: NO
+inline const char8* enumToString(PciDevice135E device) // TEST: NO
 {
-    // COMMON_LT((" | device135E = %u", device135E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device135E)
+    switch (device)
     {
         case PciDevice135E::NONE:        return "NONE";
         case PciDevice135E::DEVICE_5101: return "DEVICE_5101";
@@ -51,28 +51,28 @@ inline const char8* enumToString(PciDevice135E device135E) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice135E device135E) // TEST: NO
+inline const char8* enumToFullString(PciDevice135E device) // TEST: NO
 {
-    // COMMON_LT((" | device135E = %u", device135E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device135E, enumToString(device135E));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice135E device135E) // TEST: NO
+inline const char8* enumToHumanString(PciDevice135E device) // TEST: NO
 {
-    // COMMON_LT((" | device135E = %u", device135E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device135E)
+    switch (device)
     {
         case PciDevice135E::DEVICE_5101: return "Route 56.PCI - Multi-Protocol Serial Interface (Zilog Z16C32)";
         case PciDevice135E::DEVICE_7101: return "Single Port RS-232/422/485/530";

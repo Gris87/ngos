@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12d8/pcisubdevice12d8e110.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -36,13 +37,13 @@ enum class PciDevice12D8: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice12D8 device12D8) // TEST: NO
+inline const char8* enumToString(PciDevice12D8 device) // TEST: NO
 {
-    // COMMON_LT((" | device12D8 = %u", device12D8)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device12D8)
+    switch (device)
     {
         case PciDevice12D8::NONE:        return "NONE";
         case PciDevice12D8::DEVICE_01A7: return "DEVICE_01A7";
@@ -71,28 +72,28 @@ inline const char8* enumToString(PciDevice12D8 device12D8) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice12D8 device12D8) // TEST: NO
+inline const char8* enumToFullString(PciDevice12D8 device) // TEST: NO
 {
-    // COMMON_LT((" | device12D8 = %u", device12D8)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device12D8, enumToString(device12D8));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice12D8 device12D8) // TEST: NO
+inline const char8* enumToHumanString(PciDevice12D8 device) // TEST: NO
 {
-    // COMMON_LT((" | device12D8 = %u", device12D8)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device12D8)
+    switch (device)
     {
         case PciDevice12D8::DEVICE_01A7: return "7C21P100 2-port PCI-X to PCI-X Bridge";
         case PciDevice12D8::DEVICE_0303: return "PCI Express Switch 3-3";
@@ -113,6 +114,40 @@ inline const char8* enumToHumanString(PciDevice12D8 device12D8) // TEST: NO
         case PciDevice12D8::DEVICE_E110: return "PI7C9X110 PCI Express to PCI bridge";
         case PciDevice12D8::DEVICE_E111: return "PI7C9X111SL PCIe-to-PCI Reversible Bridge";
         case PciDevice12D8::DEVICE_E130: return "PCI Express to PCI-XPI7C9X130 PCI-X Bridge";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice12D8 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice12D8::DEVICE_01A7: return "Unknown device";
+        case PciDevice12D8::DEVICE_0303: return "Unknown device";
+        case PciDevice12D8::DEVICE_0508: return "Unknown device";
+        case PciDevice12D8::DEVICE_2304: return "Unknown device";
+        case PciDevice12D8::DEVICE_2404: return "Unknown device";
+        case PciDevice12D8::DEVICE_2608: return "Unknown device";
+        case PciDevice12D8::DEVICE_400A: return "Unknown device";
+        case PciDevice12D8::DEVICE_400E: return "Unknown device";
+        case PciDevice12D8::DEVICE_400F: return "Unknown device";
+        case PciDevice12D8::DEVICE_71E2: return "Unknown device";
+        case PciDevice12D8::DEVICE_71E3: return "Unknown device";
+        case PciDevice12D8::DEVICE_8140: return "Unknown device";
+        case PciDevice12D8::DEVICE_8148: return "Unknown device";
+        case PciDevice12D8::DEVICE_8150: return "Unknown device";
+        case PciDevice12D8::DEVICE_8152: return "Unknown device";
+        case PciDevice12D8::DEVICE_8154: return "Unknown device";
+        case PciDevice12D8::DEVICE_E110: return enumToHumanString((PciSubDevice12D8E110)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice12D8::DEVICE_E111: return "Unknown device";
+        case PciDevice12D8::DEVICE_E130: return "Unknown device";
 
         default: return "Unknown device";
     }

@@ -18,13 +18,13 @@ enum class PciDeviceAECB: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDeviceAECB deviceAECB) // TEST: NO
+inline const char8* enumToString(PciDeviceAECB device) // TEST: NO
 {
-    // COMMON_LT((" | deviceAECB = %u", deviceAECB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceAECB)
+    switch (device)
     {
         case PciDeviceAECB::NONE:        return "NONE";
         case PciDeviceAECB::DEVICE_6250: return "DEVICE_6250";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDeviceAECB deviceAECB) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDeviceAECB deviceAECB) // TEST: NO
+inline const char8* enumToFullString(PciDeviceAECB device) // TEST: NO
 {
-    // COMMON_LT((" | deviceAECB = %u", deviceAECB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)deviceAECB, enumToString(deviceAECB));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDeviceAECB deviceAECB) // TEST: NO
+inline const char8* enumToHumanString(PciDeviceAECB device) // TEST: NO
 {
-    // COMMON_LT((" | deviceAECB = %u", deviceAECB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceAECB)
+    switch (device)
     {
         case PciDeviceAECB::DEVICE_6250: return "VITC/LTC Timecode Reader card [PCI-VLTC/RDR]";
 

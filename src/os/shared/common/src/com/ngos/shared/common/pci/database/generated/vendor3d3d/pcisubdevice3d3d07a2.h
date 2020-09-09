@@ -10,4 +10,60 @@
 
 
 
+enum class PciSubDevice3D3D07A2: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_3D3D1047 = 0x3D3D1047
+};
+
+
+
+inline const char8* enumToString(PciSubDevice3D3D07A2 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice3D3D07A2::NONE:               return "NONE";
+        case PciSubDevice3D3D07A2::SUBDEVICE_3D3D1047: return "SUBDEVICE_3D3D1047";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice3D3D07A2 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice3D3D07A2 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice3D3D07A2::SUBDEVICE_3D3D1047: return "Sun XVR-600 Graphics Accelerator";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR3D3D_PCISUBDEVICE3D3D07A2_H

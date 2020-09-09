@@ -10,4 +10,66 @@
 
 
 
+enum class PciSubDevice10DE075C: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_103C2A9E = 0x103C2A9E,
+    SUBDEVICE_14627508 = 0x14627508,
+    SUBDEVICE_1849075C = 0x1849075C
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10DE075C subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10DE075C::NONE:               return "NONE";
+        case PciSubDevice10DE075C::SUBDEVICE_103C2A9E: return "SUBDEVICE_103C2A9E";
+        case PciSubDevice10DE075C::SUBDEVICE_14627508: return "SUBDEVICE_14627508";
+        case PciSubDevice10DE075C::SUBDEVICE_1849075C: return "SUBDEVICE_1849075C";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10DE075C subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10DE075C subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10DE075C::SUBDEVICE_103C2A9E: return "Pavilion p6310f";
+        case PciSubDevice10DE075C::SUBDEVICE_14627508: return "K9N2GM-FIH";
+        case PciSubDevice10DE075C::SUBDEVICE_1849075C: return "K10N78FullHD-hSLI R3.0 LPC Bridge";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR10DE_PCISUBDEVICE10DE075C_H

@@ -21,13 +21,13 @@ enum class PciInterface0800: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciInterface0800 interface0800) // TEST: NO
+inline const char8* enumToString(PciInterface0800 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0800 = %u", interface0800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
-    switch (interface0800)
+    switch (interface)
     {
         case PciInterface0800::INTERFACE_00: return "INTERFACE_00";
         case PciInterface0800::INTERFACE_01: return "INTERFACE_01";
@@ -41,28 +41,28 @@ inline const char8* enumToString(PciInterface0800 interface0800) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciInterface0800 interface0800) // TEST: NO
+inline const char8* enumToFullString(PciInterface0800 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0800 = %u", interface0800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)interface0800, enumToString(interface0800));
+    sprintf(res, "0x%02X (%s)", (u8)interface, enumToString(interface));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciInterface0800 interface0800) // TEST: NO
+inline const char8* enumToHumanString(PciInterface0800 interface) // TEST: NO
 {
-    // COMMON_LT((" | interface0800 = %u", interface0800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | interface = %u", interface)); // Commented to avoid bad looking logs
 
 
 
-    switch (interface0800)
+    switch (interface)
     {
         case PciInterface0800::INTERFACE_00: return "Generic system peripheral - PIC - 8259";
         case PciInterface0800::INTERFACE_01: return "Generic system peripheral - PIC - ISA PIC";

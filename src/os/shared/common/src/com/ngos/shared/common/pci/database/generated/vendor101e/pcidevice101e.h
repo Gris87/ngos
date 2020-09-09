@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101e/pcisubdevice101e1960.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor101e/pcisubdevice101e9063.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -27,13 +29,13 @@ enum class PciDevice101E: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice101E device101E) // TEST: NO
+inline const char8* enumToString(PciDevice101E device) // TEST: NO
 {
-    // COMMON_LT((" | device101E = %u", device101E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device101E)
+    switch (device)
     {
         case PciDevice101E::NONE:        return "NONE";
         case PciDevice101E::DEVICE_0009: return "DEVICE_0009";
@@ -53,28 +55,28 @@ inline const char8* enumToString(PciDevice101E device101E) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice101E device101E) // TEST: NO
+inline const char8* enumToFullString(PciDevice101E device) // TEST: NO
 {
-    // COMMON_LT((" | device101E = %u", device101E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device101E, enumToString(device101E));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice101E device101E) // TEST: NO
+inline const char8* enumToHumanString(PciDevice101E device) // TEST: NO
 {
-    // COMMON_LT((" | device101E = %u", device101E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device101E)
+    switch (device)
     {
         case PciDevice101E::DEVICE_0009: return "MegaRAID 428 Ultra RAID Controller (rev 03)";
         case PciDevice101E::DEVICE_1960: return "MegaRAID";
@@ -86,6 +88,31 @@ inline const char8* enumToHumanString(PciDevice101E device101E) // TEST: NO
         case PciDevice101E::DEVICE_9040: return "Multimedia card";
         case PciDevice101E::DEVICE_9060: return "MegaRAID 434 Ultra GT RAID Controller";
         case PciDevice101E::DEVICE_9063: return "MegaRAC";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice101E device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice101E::DEVICE_0009: return "Unknown device";
+        case PciDevice101E::DEVICE_1960: return enumToHumanString((PciSubDevice101E1960)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice101E::DEVICE_9010: return "Unknown device";
+        case PciDevice101E::DEVICE_9030: return "Unknown device";
+        case PciDevice101E::DEVICE_9031: return "Unknown device";
+        case PciDevice101E::DEVICE_9032: return "Unknown device";
+        case PciDevice101E::DEVICE_9033: return "Unknown device";
+        case PciDevice101E::DEVICE_9040: return "Unknown device";
+        case PciDevice101E::DEVICE_9060: return "Unknown device";
+        case PciDevice101E::DEVICE_9063: return enumToHumanString((PciSubDevice101E9063)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

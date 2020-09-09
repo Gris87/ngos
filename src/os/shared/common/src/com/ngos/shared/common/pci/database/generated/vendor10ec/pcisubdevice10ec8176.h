@@ -10,4 +10,63 @@
 
 
 
+enum class PciSubDevice10EC8176: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_104384B5 = 0x104384B5,
+    SUBDEVICE_1A3B1139 = 0x1A3B1139
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10EC8176 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10EC8176::NONE:               return "NONE";
+        case PciSubDevice10EC8176::SUBDEVICE_104384B5: return "SUBDEVICE_104384B5";
+        case PciSubDevice10EC8176::SUBDEVICE_1A3B1139: return "SUBDEVICE_1A3B1139";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10EC8176 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10EC8176 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10EC8176::SUBDEVICE_104384B5: return "PCE-N10";
+        case PciSubDevice10EC8176::SUBDEVICE_1A3B1139: return "AW-NE139H Half-size Mini PCIe Card";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR10EC_PCISUBDEVICE10EC8176_H

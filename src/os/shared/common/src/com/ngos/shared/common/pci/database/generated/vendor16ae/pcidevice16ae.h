@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor16ae/pcisubdevice16ae1141.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -21,13 +22,13 @@ enum class PciDevice16AE: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice16AE device16AE) // TEST: NO
+inline const char8* enumToString(PciDevice16AE device) // TEST: NO
 {
-    // COMMON_LT((" | device16AE = %u", device16AE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device16AE)
+    switch (device)
     {
         case PciDevice16AE::NONE:        return "NONE";
         case PciDevice16AE::DEVICE_0001: return "DEVICE_0001";
@@ -41,33 +42,52 @@ inline const char8* enumToString(PciDevice16AE device16AE) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice16AE device16AE) // TEST: NO
+inline const char8* enumToFullString(PciDevice16AE device) // TEST: NO
 {
-    // COMMON_LT((" | device16AE = %u", device16AE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device16AE, enumToString(device16AE));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice16AE device16AE) // TEST: NO
+inline const char8* enumToHumanString(PciDevice16AE device) // TEST: NO
 {
-    // COMMON_LT((" | device16AE = %u", device16AE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device16AE)
+    switch (device)
     {
         case PciDevice16AE::DEVICE_0001: return "SafeXcel 1140";
         case PciDevice16AE::DEVICE_000A: return "SafeXcel 1841";
         case PciDevice16AE::DEVICE_1141: return "SafeXcel 1141";
         case PciDevice16AE::DEVICE_1841: return "SafeXcel 1842";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice16AE device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice16AE::DEVICE_0001: return "Unknown device";
+        case PciDevice16AE::DEVICE_000A: return "Unknown device";
+        case PciDevice16AE::DEVICE_1141: return enumToHumanString((PciSubDevice16AE1141)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice16AE::DEVICE_1841: return "Unknown device";
 
         default: return "Unknown device";
     }

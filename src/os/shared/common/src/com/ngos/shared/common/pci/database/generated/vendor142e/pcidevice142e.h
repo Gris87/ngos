@@ -19,13 +19,13 @@ enum class PciDevice142E: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice142E device142E) // TEST: NO
+inline const char8* enumToString(PciDevice142E device) // TEST: NO
 {
-    // COMMON_LT((" | device142E = %u", device142E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device142E)
+    switch (device)
     {
         case PciDevice142E::NONE:        return "NONE";
         case PciDevice142E::DEVICE_4020: return "DEVICE_4020";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDevice142E device142E) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice142E device142E) // TEST: NO
+inline const char8* enumToFullString(PciDevice142E device) // TEST: NO
 {
-    // COMMON_LT((" | device142E = %u", device142E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device142E, enumToString(device142E));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice142E device142E) // TEST: NO
+inline const char8* enumToHumanString(PciDevice142E device) // TEST: NO
 {
-    // COMMON_LT((" | device142E = %u", device142E)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device142E)
+    switch (device)
     {
         case PciDevice142E::DEVICE_4020: return "VM2-2 [Video Maker 2] MPEG1/2 Encoder";
         case PciDevice142E::DEVICE_4337: return "VM2-2-C7 [Video Maker 2 rev. C7] MPEG1/2 Encoder";

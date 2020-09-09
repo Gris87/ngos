@@ -76,13 +76,13 @@ enum class PciDevice1D17: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1D17 device1D17) // TEST: NO
+inline const char8* enumToString(PciDevice1D17 device) // TEST: NO
 {
-    // COMMON_LT((" | device1D17 = %u", device1D17)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1D17)
+    switch (device)
     {
         case PciDevice1D17::NONE:        return "NONE";
         case PciDevice1D17::DEVICE_070F: return "DEVICE_070F";
@@ -151,28 +151,28 @@ inline const char8* enumToString(PciDevice1D17 device1D17) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1D17 device1D17) // TEST: NO
+inline const char8* enumToFullString(PciDevice1D17 device) // TEST: NO
 {
-    // COMMON_LT((" | device1D17 = %u", device1D17)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1D17, enumToString(device1D17));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1D17 device1D17) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1D17 device) // TEST: NO
 {
-    // COMMON_LT((" | device1D17 = %u", device1D17)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1D17)
+    switch (device)
     {
         case PciDevice1D17::DEVICE_070F: return "ZX-100 PCI Express Root Port";
         case PciDevice1D17::DEVICE_0710: return "ZX-100/ZX-200 PCI Express Root Port";

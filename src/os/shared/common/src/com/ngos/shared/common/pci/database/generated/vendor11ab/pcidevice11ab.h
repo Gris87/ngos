@@ -6,6 +6,26 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab1fa6.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab1faa.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab2a02.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4320.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4347.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4350.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4351.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4353.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4354.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4355.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4360.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4361.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4362.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4364.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab436a.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab4381.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab6101.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab6121.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab6480.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor11ab/pcisubdevice11ab7042.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -111,13 +131,13 @@ enum class PciDevice11AB: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice11AB device11AB) // TEST: NO
+inline const char8* enumToString(PciDevice11AB device) // TEST: NO
 {
-    // COMMON_LT((" | device11AB = %u", device11AB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device11AB)
+    switch (device)
     {
         case PciDevice11AB::NONE:        return "NONE";
         case PciDevice11AB::DEVICE_0146: return "DEVICE_0146";
@@ -221,28 +241,28 @@ inline const char8* enumToString(PciDevice11AB device11AB) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice11AB device11AB) // TEST: NO
+inline const char8* enumToFullString(PciDevice11AB device) // TEST: NO
 {
-    // COMMON_LT((" | device11AB = %u", device11AB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device11AB, enumToString(device11AB));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice11AB device11AB) // TEST: NO
+inline const char8* enumToHumanString(PciDevice11AB device) // TEST: NO
 {
-    // COMMON_LT((" | device11AB = %u", device11AB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device11AB)
+    switch (device)
     {
         case PciDevice11AB::DEVICE_0146: return "GT-64010/64010A System Controller";
         case PciDevice11AB::DEVICE_0F53: return "88E6318 Link Street network controller";
@@ -338,6 +358,115 @@ inline const char8* enumToHumanString(PciDevice11AB device11AB) // TEST: NO
         case PciDevice11AB::DEVICE_7846: return "88F6820 [Armada 385] ARM SoC";
         case PciDevice11AB::DEVICE_D40F: return "Bobcat3 Ethernet Switch";
         case PciDevice11AB::DEVICE_F003: return "GT-64010 Primary Image Piranha Image Generator";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice11AB device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice11AB::DEVICE_0146: return "Unknown device";
+        case PciDevice11AB::DEVICE_0F53: return "Unknown device";
+        case PciDevice11AB::DEVICE_11AB: return "Unknown device";
+        case PciDevice11AB::DEVICE_138F: return "Unknown device";
+        case PciDevice11AB::DEVICE_1FA6: return enumToHumanString((PciSubDevice11AB1FA6)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_1FA7: return "Unknown device";
+        case PciDevice11AB::DEVICE_1FAA: return enumToHumanString((PciSubDevice11AB1FAA)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_2211: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A01: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A02: return enumToHumanString((PciSubDevice11AB2A02)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_2A08: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A0A: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A0C: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A24: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A2B: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A30: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A40: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A41: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A42: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A43: return "Unknown device";
+        case PciDevice11AB::DEVICE_2A55: return "Unknown device";
+        case PciDevice11AB::DEVICE_2B36: return "Unknown device";
+        case PciDevice11AB::DEVICE_2B38: return "Unknown device";
+        case PciDevice11AB::DEVICE_2B40: return "Unknown device";
+        case PciDevice11AB::DEVICE_4101: return "Unknown device";
+        case PciDevice11AB::DEVICE_4320: return enumToHumanString((PciSubDevice11AB4320)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4340: return "Unknown device";
+        case PciDevice11AB::DEVICE_4341: return "Unknown device";
+        case PciDevice11AB::DEVICE_4342: return "Unknown device";
+        case PciDevice11AB::DEVICE_4343: return "Unknown device";
+        case PciDevice11AB::DEVICE_4344: return "Unknown device";
+        case PciDevice11AB::DEVICE_4345: return "Unknown device";
+        case PciDevice11AB::DEVICE_4346: return "Unknown device";
+        case PciDevice11AB::DEVICE_4347: return enumToHumanString((PciSubDevice11AB4347)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4350: return enumToHumanString((PciSubDevice11AB4350)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4351: return enumToHumanString((PciSubDevice11AB4351)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4352: return "Unknown device";
+        case PciDevice11AB::DEVICE_4353: return enumToHumanString((PciSubDevice11AB4353)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4354: return enumToHumanString((PciSubDevice11AB4354)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4355: return enumToHumanString((PciSubDevice11AB4355)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4356: return "Unknown device";
+        case PciDevice11AB::DEVICE_4357: return "Unknown device";
+        case PciDevice11AB::DEVICE_435A: return "Unknown device";
+        case PciDevice11AB::DEVICE_4360: return enumToHumanString((PciSubDevice11AB4360)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4361: return enumToHumanString((PciSubDevice11AB4361)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4362: return enumToHumanString((PciSubDevice11AB4362)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4363: return "Unknown device";
+        case PciDevice11AB::DEVICE_4364: return enumToHumanString((PciSubDevice11AB4364)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4365: return "Unknown device";
+        case PciDevice11AB::DEVICE_4366: return "Unknown device";
+        case PciDevice11AB::DEVICE_4367: return "Unknown device";
+        case PciDevice11AB::DEVICE_4368: return "Unknown device";
+        case PciDevice11AB::DEVICE_4369: return "Unknown device";
+        case PciDevice11AB::DEVICE_436A: return enumToHumanString((PciSubDevice11AB436A)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_436B: return "Unknown device";
+        case PciDevice11AB::DEVICE_436C: return "Unknown device";
+        case PciDevice11AB::DEVICE_436D: return "Unknown device";
+        case PciDevice11AB::DEVICE_4370: return "Unknown device";
+        case PciDevice11AB::DEVICE_4380: return "Unknown device";
+        case PciDevice11AB::DEVICE_4381: return enumToHumanString((PciSubDevice11AB4381)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_4611: return "Unknown device";
+        case PciDevice11AB::DEVICE_4620: return "Unknown device";
+        case PciDevice11AB::DEVICE_4801: return "Unknown device";
+        case PciDevice11AB::DEVICE_5005: return "Unknown device";
+        case PciDevice11AB::DEVICE_5040: return "Unknown device";
+        case PciDevice11AB::DEVICE_5041: return "Unknown device";
+        case PciDevice11AB::DEVICE_5080: return "Unknown device";
+        case PciDevice11AB::DEVICE_5081: return "Unknown device";
+        case PciDevice11AB::DEVICE_5181: return "Unknown device";
+        case PciDevice11AB::DEVICE_5182: return "Unknown device";
+        case PciDevice11AB::DEVICE_5281: return "Unknown device";
+        case PciDevice11AB::DEVICE_6041: return "Unknown device";
+        case PciDevice11AB::DEVICE_6042: return "Unknown device";
+        case PciDevice11AB::DEVICE_6081: return "Unknown device";
+        case PciDevice11AB::DEVICE_6101: return enumToHumanString((PciSubDevice11AB6101)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_6121: return enumToHumanString((PciSubDevice11AB6121)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_6141: return "Unknown device";
+        case PciDevice11AB::DEVICE_6145: return "Unknown device";
+        case PciDevice11AB::DEVICE_6180: return "Unknown device";
+        case PciDevice11AB::DEVICE_6192: return "Unknown device";
+        case PciDevice11AB::DEVICE_6281: return "Unknown device";
+        case PciDevice11AB::DEVICE_6381: return "Unknown device";
+        case PciDevice11AB::DEVICE_6440: return "Unknown device";
+        case PciDevice11AB::DEVICE_6450: return "Unknown device";
+        case PciDevice11AB::DEVICE_6460: return "Unknown device";
+        case PciDevice11AB::DEVICE_6480: return enumToHumanString((PciSubDevice11AB6480)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_6485: return "Unknown device";
+        case PciDevice11AB::DEVICE_7042: return enumToHumanString((PciSubDevice11AB7042)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice11AB::DEVICE_7810: return "Unknown device";
+        case PciDevice11AB::DEVICE_7820: return "Unknown device";
+        case PciDevice11AB::DEVICE_7823: return "Unknown device";
+        case PciDevice11AB::DEVICE_7846: return "Unknown device";
+        case PciDevice11AB::DEVICE_D40F: return "Unknown device";
+        case PciDevice11AB::DEVICE_F003: return "Unknown device";
 
         default: return "Unknown device";
     }

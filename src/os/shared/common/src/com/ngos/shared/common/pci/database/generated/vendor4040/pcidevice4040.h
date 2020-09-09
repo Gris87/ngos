@@ -6,6 +6,10 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4040/pcisubdevice40400001.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4040/pcisubdevice40400002.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4040/pcisubdevice40400005.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor4040/pcisubdevice40400100.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -25,13 +29,13 @@ enum class PciDevice4040: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice4040 device4040) // TEST: NO
+inline const char8* enumToString(PciDevice4040 device) // TEST: NO
 {
-    // COMMON_LT((" | device4040 = %u", device4040)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device4040)
+    switch (device)
     {
         case PciDevice4040::NONE:        return "NONE";
         case PciDevice4040::DEVICE_0001: return "DEVICE_0001";
@@ -49,28 +53,28 @@ inline const char8* enumToString(PciDevice4040 device4040) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice4040 device4040) // TEST: NO
+inline const char8* enumToFullString(PciDevice4040 device) // TEST: NO
 {
-    // COMMON_LT((" | device4040 = %u", device4040)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device4040, enumToString(device4040));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice4040 device4040) // TEST: NO
+inline const char8* enumToHumanString(PciDevice4040 device) // TEST: NO
 {
-    // COMMON_LT((" | device4040 = %u", device4040)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device4040)
+    switch (device)
     {
         case PciDevice4040::DEVICE_0001: return "NXB-10GXSR 10-Gigabit Ethernet PCIe Adapter with SR-XFP optical interface";
         case PciDevice4040::DEVICE_0002: return "NXB-10GCX4 10-Gigabit Ethernet PCIe Adapter with CX4 copper interface";
@@ -80,6 +84,29 @@ inline const char8* enumToHumanString(PciDevice4040 device4040) // TEST: NO
         case PciDevice4040::DEVICE_0024: return "XG Mgmt";
         case PciDevice4040::DEVICE_0025: return "XG Mgmt";
         case PciDevice4040::DEVICE_0100: return "NX3031 Multifunction 1/10-Gigabit Server Adapter";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice4040 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice4040::DEVICE_0001: return enumToHumanString((PciSubDevice40400001)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice4040::DEVICE_0002: return enumToHumanString((PciSubDevice40400002)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice4040::DEVICE_0003: return "Unknown device";
+        case PciDevice4040::DEVICE_0004: return "Unknown device";
+        case PciDevice4040::DEVICE_0005: return enumToHumanString((PciSubDevice40400005)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice4040::DEVICE_0024: return "Unknown device";
+        case PciDevice4040::DEVICE_0025: return "Unknown device";
+        case PciDevice4040::DEVICE_0100: return enumToHumanString((PciSubDevice40400100)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

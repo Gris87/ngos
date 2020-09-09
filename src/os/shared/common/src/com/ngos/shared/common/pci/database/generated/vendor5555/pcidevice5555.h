@@ -19,13 +19,13 @@ enum class PciDevice5555: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice5555 device5555) // TEST: NO
+inline const char8* enumToString(PciDevice5555 device) // TEST: NO
 {
-    // COMMON_LT((" | device5555 = %u", device5555)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device5555)
+    switch (device)
     {
         case PciDevice5555::NONE:        return "NONE";
         case PciDevice5555::DEVICE_0003: return "DEVICE_0003";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDevice5555 device5555) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice5555 device5555) // TEST: NO
+inline const char8* enumToFullString(PciDevice5555 device) // TEST: NO
 {
-    // COMMON_LT((" | device5555 = %u", device5555)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device5555, enumToString(device5555));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice5555 device5555) // TEST: NO
+inline const char8* enumToHumanString(PciDevice5555 device) // TEST: NO
 {
-    // COMMON_LT((" | device5555 = %u", device5555)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device5555)
+    switch (device)
     {
         case PciDevice5555::DEVICE_0003: return "TURBOstor HFP-832 [HiPPI NIC]";
         case PciDevice5555::DEVICE_3B00: return "Epiphan DVI2PCIe video capture card";

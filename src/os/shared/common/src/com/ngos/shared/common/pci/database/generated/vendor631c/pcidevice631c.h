@@ -19,13 +19,13 @@ enum class PciDevice631C: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice631C device631C) // TEST: NO
+inline const char8* enumToString(PciDevice631C device) // TEST: NO
 {
-    // COMMON_LT((" | device631C = %u", device631C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device631C)
+    switch (device)
     {
         case PciDevice631C::NONE:        return "NONE";
         case PciDevice631C::DEVICE_1652: return "DEVICE_1652";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDevice631C device631C) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice631C device631C) // TEST: NO
+inline const char8* enumToFullString(PciDevice631C device) // TEST: NO
 {
-    // COMMON_LT((" | device631C = %u", device631C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device631C, enumToString(device631C));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice631C device631C) // TEST: NO
+inline const char8* enumToHumanString(PciDevice631C device) // TEST: NO
 {
-    // COMMON_LT((" | device631C = %u", device631C)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device631C)
+    switch (device)
     {
         case PciDevice631C::DEVICE_1652: return "PXI-1652 Signal Generator";
         case PciDevice631C::DEVICE_2504: return "PXI-2504 Signal Interrogator";

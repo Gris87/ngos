@@ -31,13 +31,13 @@ enum class PciSubClass01: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubClass01 class01) // TEST: NO
+inline const char8* enumToString(PciSubClass01 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class01 = %u", class01)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class01)
+    switch (subClass)
     {
         case PciSubClass01::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass01::SUB_CLASS_01: return "SUB_CLASS_01";
@@ -56,28 +56,28 @@ inline const char8* enumToString(PciSubClass01 class01) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubClass01 class01) // TEST: NO
+inline const char8* enumToFullString(PciSubClass01 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class01 = %u", class01)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)class01, enumToString(class01));
+    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciSubClass01 class01, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass01 subClass, u8 interfaceId) // TEST: NO
 {
-    // COMMON_LT((" | class01 = %u, interfaceId = %u", class01, interfaceId)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u, interfaceId = %u", subClass, interfaceId)); // Commented to avoid bad looking logs
 
 
 
-    switch (class01)
+    switch (subClass)
     {
         case PciSubClass01::SUB_CLASS_00: return "Mass storage controller - SCSI storage controller";
         case PciSubClass01::SUB_CLASS_01: return enumToHumanString((PciInterface0101)interfaceId);

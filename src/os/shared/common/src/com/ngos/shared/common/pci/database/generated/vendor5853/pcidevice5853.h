@@ -22,13 +22,13 @@ enum class PciDevice5853: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice5853 device5853) // TEST: NO
+inline const char8* enumToString(PciDevice5853 device) // TEST: NO
 {
-    // COMMON_LT((" | device5853 = %u", device5853)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device5853)
+    switch (device)
     {
         case PciDevice5853::NONE:        return "NONE";
         case PciDevice5853::DEVICE_0001: return "DEVICE_0001";
@@ -43,28 +43,28 @@ inline const char8* enumToString(PciDevice5853 device5853) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice5853 device5853) // TEST: NO
+inline const char8* enumToFullString(PciDevice5853 device) // TEST: NO
 {
-    // COMMON_LT((" | device5853 = %u", device5853)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device5853, enumToString(device5853));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice5853 device5853) // TEST: NO
+inline const char8* enumToHumanString(PciDevice5853 device) // TEST: NO
 {
-    // COMMON_LT((" | device5853 = %u", device5853)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device5853)
+    switch (device)
     {
         case PciDevice5853::DEVICE_0001: return "Xen Platform Device";
         case PciDevice5853::DEVICE_C000: return "Citrix XenServer PCI Device for Windows Update";

@@ -18,13 +18,13 @@ enum class PciDevice19BA: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice19BA device19BA) // TEST: NO
+inline const char8* enumToString(PciDevice19BA device) // TEST: NO
 {
-    // COMMON_LT((" | device19BA = %u", device19BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device19BA)
+    switch (device)
     {
         case PciDevice19BA::NONE:        return "NONE";
         case PciDevice19BA::DEVICE_2330: return "DEVICE_2330";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice19BA device19BA) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice19BA device19BA) // TEST: NO
+inline const char8* enumToFullString(PciDevice19BA device) // TEST: NO
 {
-    // COMMON_LT((" | device19BA = %u", device19BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device19BA, enumToString(device19BA));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice19BA device19BA) // TEST: NO
+inline const char8* enumToHumanString(PciDevice19BA device) // TEST: NO
 {
-    // COMMON_LT((" | device19BA = %u", device19BA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device19BA)
+    switch (device)
     {
         case PciDevice19BA::DEVICE_2330: return "ZyWALL Turbo Card";
 

@@ -18,13 +18,13 @@ enum class PciSubClass00: u8 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciSubClass00 class00) // TEST: NO
+inline const char8* enumToString(PciSubClass00 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class00 = %u", class00)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class00)
+    switch (subClass)
     {
         case PciSubClass00::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass00::SUB_CLASS_01: return "SUB_CLASS_01";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciSubClass00 class00) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciSubClass00 class00) // TEST: NO
+inline const char8* enumToFullString(PciSubClass00 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class00 = %u", class00)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)class00, enumToString(class00));
+    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciSubClass00 class00) // TEST: NO
+inline const char8* enumToHumanString(PciSubClass00 subClass) // TEST: NO
 {
-    // COMMON_LT((" | class00 = %u", class00)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | subClass = %u", subClass)); // Commented to avoid bad looking logs
 
 
 
-    switch (class00)
+    switch (subClass)
     {
         case PciSubClass00::SUB_CLASS_00: return "Unclassified device - Non-VGA unclassified device";
         case PciSubClass00::SUB_CLASS_01: return "Unclassified device - VGA compatible unclassified device";

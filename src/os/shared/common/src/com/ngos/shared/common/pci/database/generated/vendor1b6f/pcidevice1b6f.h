@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b6f/pcisubdevice1b6f7023.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b6f/pcisubdevice1b6f7052.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -19,13 +21,13 @@ enum class PciDevice1B6F: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1B6F device1B6F) // TEST: NO
+inline const char8* enumToString(PciDevice1B6F device) // TEST: NO
 {
-    // COMMON_LT((" | device1B6F = %u", device1B6F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1B6F)
+    switch (device)
     {
         case PciDevice1B6F::NONE:        return "NONE";
         case PciDevice1B6F::DEVICE_7023: return "DEVICE_7023";
@@ -37,31 +39,48 @@ inline const char8* enumToString(PciDevice1B6F device1B6F) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1B6F device1B6F) // TEST: NO
+inline const char8* enumToFullString(PciDevice1B6F device) // TEST: NO
 {
-    // COMMON_LT((" | device1B6F = %u", device1B6F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1B6F, enumToString(device1B6F));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1B6F device1B6F) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1B6F device) // TEST: NO
 {
-    // COMMON_LT((" | device1B6F = %u", device1B6F)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1B6F)
+    switch (device)
     {
         case PciDevice1B6F::DEVICE_7023: return "EJ168 USB 3.0 Host Controller";
         case PciDevice1B6F::DEVICE_7052: return "EJ188/EJ198 USB 3.0 Host Controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1B6F device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1B6F::DEVICE_7023: return enumToHumanString((PciSubDevice1B6F7023)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1B6F::DEVICE_7052: return enumToHumanString((PciSubDevice1B6F7052)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

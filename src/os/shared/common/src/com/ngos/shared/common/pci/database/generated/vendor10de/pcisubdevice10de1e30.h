@@ -10,4 +10,63 @@
 
 
 
+enum class PciSubDevice10DE1E30: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_10DE129E = 0x10DE129E,
+    SUBDEVICE_10DE12BA = 0x10DE12BA
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10DE1E30 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10DE1E30::NONE:               return "NONE";
+        case PciSubDevice10DE1E30::SUBDEVICE_10DE129E: return "SUBDEVICE_10DE129E";
+        case PciSubDevice10DE1E30::SUBDEVICE_10DE12BA: return "SUBDEVICE_10DE12BA";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10DE1E30 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10DE1E30 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10DE1E30::SUBDEVICE_10DE129E: return "Quadro RTX 8000";
+        case PciSubDevice10DE1E30::SUBDEVICE_10DE12BA: return "Quadro RTX 6000";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR10DE_PCISUBDEVICE10DE1E30_H

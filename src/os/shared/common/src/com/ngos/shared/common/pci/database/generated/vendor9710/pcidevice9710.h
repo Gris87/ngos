@@ -6,6 +6,10 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9710/pcisubdevice97109815.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9710/pcisubdevice97109835.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9710/pcisubdevice97109845.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor9710/pcisubdevice97109855.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -31,13 +35,13 @@ enum class PciDevice9710: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice9710 device9710) // TEST: NO
+inline const char8* enumToString(PciDevice9710 device) // TEST: NO
 {
-    // COMMON_LT((" | device9710 = %u", device9710)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device9710)
+    switch (device)
     {
         case PciDevice9710::NONE:        return "NONE";
         case PciDevice9710::DEVICE_9250: return "DEVICE_9250";
@@ -61,28 +65,28 @@ inline const char8* enumToString(PciDevice9710 device9710) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice9710 device9710) // TEST: NO
+inline const char8* enumToFullString(PciDevice9710 device) // TEST: NO
 {
-    // COMMON_LT((" | device9710 = %u", device9710)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device9710, enumToString(device9710));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice9710 device9710) // TEST: NO
+inline const char8* enumToHumanString(PciDevice9710 device) // TEST: NO
 {
-    // COMMON_LT((" | device9710 = %u", device9710)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device9710)
+    switch (device)
     {
         case PciDevice9710::DEVICE_9250: return "PCI-to-PCI bridge [MCS9250]";
         case PciDevice9710::DEVICE_9805: return "PCI 1 port parallel adapter";
@@ -98,6 +102,35 @@ inline const char8* enumToHumanString(PciDevice9710 device9710) // TEST: NO
         case PciDevice9710::DEVICE_9912: return "PCIe 9912 Multi-I/O Controller";
         case PciDevice9710::DEVICE_9922: return "MCS9922 PCIe Multi-I/O Controller";
         case PciDevice9710::DEVICE_9990: return "MCS9990 PCIe to 4-Port USB 2.0 Host Controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice9710 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice9710::DEVICE_9250: return "Unknown device";
+        case PciDevice9710::DEVICE_9805: return "Unknown device";
+        case PciDevice9710::DEVICE_9815: return enumToHumanString((PciSubDevice97109815)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice9710::DEVICE_9820: return "Unknown device";
+        case PciDevice9710::DEVICE_9835: return enumToHumanString((PciSubDevice97109835)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice9710::DEVICE_9845: return enumToHumanString((PciSubDevice97109845)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice9710::DEVICE_9855: return enumToHumanString((PciSubDevice97109855)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice9710::DEVICE_9865: return "Unknown device";
+        case PciDevice9710::DEVICE_9900: return "Unknown device";
+        case PciDevice9710::DEVICE_9901: return "Unknown device";
+        case PciDevice9710::DEVICE_9904: return "Unknown device";
+        case PciDevice9710::DEVICE_9912: return "Unknown device";
+        case PciDevice9710::DEVICE_9922: return "Unknown device";
+        case PciDevice9710::DEVICE_9990: return "Unknown device";
 
         default: return "Unknown device";
     }

@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1d6a/pcisubdevice1d6ad107.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -26,13 +27,13 @@ enum class PciDevice1D6A: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1D6A device1D6A) // TEST: NO
+inline const char8* enumToString(PciDevice1D6A device) // TEST: NO
 {
-    // COMMON_LT((" | device1D6A = %u", device1D6A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1D6A)
+    switch (device)
     {
         case PciDevice1D6A::NONE:        return "NONE";
         case PciDevice1D6A::DEVICE_0001: return "DEVICE_0001";
@@ -51,28 +52,28 @@ inline const char8* enumToString(PciDevice1D6A device1D6A) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1D6A device1D6A) // TEST: NO
+inline const char8* enumToFullString(PciDevice1D6A device) // TEST: NO
 {
-    // COMMON_LT((" | device1D6A = %u", device1D6A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1D6A, enumToString(device1D6A));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1D6A device1D6A) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1D6A device) // TEST: NO
 {
-    // COMMON_LT((" | device1D6A = %u", device1D6A)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1D6A)
+    switch (device)
     {
         case PciDevice1D6A::DEVICE_0001: return "AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_00B1: return "AQC100 10G Ethernet MAC controller [AQtion]";
@@ -83,6 +84,30 @@ inline const char8* enumToHumanString(PciDevice1D6A device1D6A) // TEST: NO
         case PciDevice1D6A::DEVICE_87B1: return "AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_D107: return "AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
         case PciDevice1D6A::DEVICE_D108: return "AQC108 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion]";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1D6A device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1D6A::DEVICE_0001: return "Unknown device";
+        case PciDevice1D6A::DEVICE_00B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_07B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_08B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_11B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_12B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_87B1: return "Unknown device";
+        case PciDevice1D6A::DEVICE_D107: return enumToHumanString((PciSubDevice1D6AD107)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1D6A::DEVICE_D108: return "Unknown device";
 
         default: return "Unknown device";
     }

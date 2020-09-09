@@ -18,13 +18,13 @@ enum class PciDevice13EC: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice13EC device13EC) // TEST: NO
+inline const char8* enumToString(PciDevice13EC device) // TEST: NO
 {
-    // COMMON_LT((" | device13EC = %u", device13EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device13EC)
+    switch (device)
     {
         case PciDevice13EC::NONE:        return "NONE";
         case PciDevice13EC::DEVICE_000A: return "DEVICE_000A";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice13EC device13EC) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice13EC device13EC) // TEST: NO
+inline const char8* enumToFullString(PciDevice13EC device) // TEST: NO
 {
-    // COMMON_LT((" | device13EC = %u", device13EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device13EC, enumToString(device13EC));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice13EC device13EC) // TEST: NO
+inline const char8* enumToHumanString(PciDevice13EC device) // TEST: NO
 {
-    // COMMON_LT((" | device13EC = %u", device13EC)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device13EC)
+    switch (device)
     {
         case PciDevice13EC::DEVICE_000A: return "NPC-RC01 Remote control receiver";
 

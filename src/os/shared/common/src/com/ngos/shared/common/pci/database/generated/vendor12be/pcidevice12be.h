@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor12be/pcisubdevice12be3042.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -19,13 +20,13 @@ enum class PciDevice12BE: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice12BE device12BE) // TEST: NO
+inline const char8* enumToString(PciDevice12BE device) // TEST: NO
 {
-    // COMMON_LT((" | device12BE = %u", device12BE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device12BE)
+    switch (device)
     {
         case PciDevice12BE::NONE:        return "NONE";
         case PciDevice12BE::DEVICE_3041: return "DEVICE_3041";
@@ -37,31 +38,48 @@ inline const char8* enumToString(PciDevice12BE device12BE) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice12BE device12BE) // TEST: NO
+inline const char8* enumToFullString(PciDevice12BE device) // TEST: NO
 {
-    // COMMON_LT((" | device12BE = %u", device12BE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device12BE, enumToString(device12BE));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice12BE device12BE) // TEST: NO
+inline const char8* enumToHumanString(PciDevice12BE device) // TEST: NO
 {
-    // COMMON_LT((" | device12BE = %u", device12BE)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device12BE)
+    switch (device)
     {
         case PciDevice12BE::DEVICE_3041: return "AN3041Q CO-MEM";
         case PciDevice12BE::DEVICE_3042: return "AN3042Q CO-MEM Lite";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice12BE device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice12BE::DEVICE_3041: return "Unknown device";
+        case PciDevice12BE::DEVICE_3042: return enumToHumanString((PciSubDevice12BE3042)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

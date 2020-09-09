@@ -19,13 +19,13 @@ enum class PciDeviceFEDA: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDeviceFEDA deviceFEDA) // TEST: NO
+inline const char8* enumToString(PciDeviceFEDA device) // TEST: NO
 {
-    // COMMON_LT((" | deviceFEDA = %u", deviceFEDA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceFEDA)
+    switch (device)
     {
         case PciDeviceFEDA::NONE:        return "NONE";
         case PciDeviceFEDA::DEVICE_A0FA: return "DEVICE_A0FA";
@@ -37,28 +37,28 @@ inline const char8* enumToString(PciDeviceFEDA deviceFEDA) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDeviceFEDA deviceFEDA) // TEST: NO
+inline const char8* enumToFullString(PciDeviceFEDA device) // TEST: NO
 {
-    // COMMON_LT((" | deviceFEDA = %u", deviceFEDA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)deviceFEDA, enumToString(deviceFEDA));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDeviceFEDA deviceFEDA) // TEST: NO
+inline const char8* enumToHumanString(PciDeviceFEDA device) // TEST: NO
 {
-    // COMMON_LT((" | deviceFEDA = %u", deviceFEDA)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (deviceFEDA)
+    switch (device)
     {
         case PciDeviceFEDA::DEVICE_A0FA: return "BCM4210 iLine10 HomePNA 2.0";
         case PciDeviceFEDA::DEVICE_A10E: return "BCM4230 iLine10 HomePNA 2.0";

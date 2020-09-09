@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1af4/pcisubdevice1af41110.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -35,13 +36,13 @@ enum class PciDevice1AF4: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1AF4 device1AF4) // TEST: NO
+inline const char8* enumToString(PciDevice1AF4 device) // TEST: NO
 {
-    // COMMON_LT((" | device1AF4 = %u", device1AF4)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1AF4)
+    switch (device)
     {
         case PciDevice1AF4::NONE:        return "NONE";
         case PciDevice1AF4::DEVICE_1000: return "DEVICE_1000";
@@ -69,28 +70,28 @@ inline const char8* enumToString(PciDevice1AF4 device1AF4) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1AF4 device1AF4) // TEST: NO
+inline const char8* enumToFullString(PciDevice1AF4 device) // TEST: NO
 {
-    // COMMON_LT((" | device1AF4 = %u", device1AF4)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1AF4, enumToString(device1AF4));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1AF4 device1AF4) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1AF4 device) // TEST: NO
 {
-    // COMMON_LT((" | device1AF4 = %u", device1AF4)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1AF4)
+    switch (device)
     {
         case PciDevice1AF4::DEVICE_1000: return "Virtio network device";
         case PciDevice1AF4::DEVICE_1001: return "Virtio block device";
@@ -110,6 +111,39 @@ inline const char8* enumToHumanString(PciDevice1AF4 device1AF4) // TEST: NO
         case PciDevice1AF4::DEVICE_1052: return "Virtio input";
         case PciDevice1AF4::DEVICE_1053: return "Virtio socket";
         case PciDevice1AF4::DEVICE_1110: return "Inter-VM shared memory";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1AF4 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1AF4::DEVICE_1000: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1001: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1002: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1003: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1004: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1005: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1009: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1041: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1042: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1043: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1044: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1045: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1048: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1049: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1050: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1052: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1053: return "Unknown device";
+        case PciDevice1AF4::DEVICE_1110: return enumToHumanString((PciSubDevice1AF41110)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

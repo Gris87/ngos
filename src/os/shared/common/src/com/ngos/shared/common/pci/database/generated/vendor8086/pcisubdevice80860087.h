@@ -10,4 +10,69 @@
 
 
 
+enum class PciSubDevice80860087: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_80861301 = 0x80861301,
+    SUBDEVICE_80861306 = 0x80861306,
+    SUBDEVICE_80861321 = 0x80861321,
+    SUBDEVICE_80861326 = 0x80861326
+};
+
+
+
+inline const char8* enumToString(PciSubDevice80860087 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80860087::NONE:               return "NONE";
+        case PciSubDevice80860087::SUBDEVICE_80861301: return "SUBDEVICE_80861301";
+        case PciSubDevice80860087::SUBDEVICE_80861306: return "SUBDEVICE_80861306";
+        case PciSubDevice80860087::SUBDEVICE_80861321: return "SUBDEVICE_80861321";
+        case PciSubDevice80860087::SUBDEVICE_80861326: return "SUBDEVICE_80861326";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice80860087 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice80860087 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice80860087::SUBDEVICE_80861301: return "Centrino Advanced-N + WiMAX 6250 2x2 AGN";
+        case PciSubDevice80860087::SUBDEVICE_80861306: return "Centrino Advanced-N + WiMAX 6250 2x2 ABG";
+        case PciSubDevice80860087::SUBDEVICE_80861321: return "Centrino Advanced-N + WiMAX 6250 2x2 AGN";
+        case PciSubDevice80860087::SUBDEVICE_80861326: return "Centrino Advanced-N + WiMAX 6250 2x2 ABG";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR8086_PCISUBDEVICE80860087_H

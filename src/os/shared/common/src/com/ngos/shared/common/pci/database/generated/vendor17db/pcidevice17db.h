@@ -18,13 +18,13 @@ enum class PciDevice17DB: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice17DB device17DB) // TEST: NO
+inline const char8* enumToString(PciDevice17DB device) // TEST: NO
 {
-    // COMMON_LT((" | device17DB = %u", device17DB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17DB)
+    switch (device)
     {
         case PciDevice17DB::NONE:        return "NONE";
         case PciDevice17DB::DEVICE_0101: return "DEVICE_0101";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice17DB device17DB) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice17DB device17DB) // TEST: NO
+inline const char8* enumToFullString(PciDevice17DB device) // TEST: NO
 {
-    // COMMON_LT((" | device17DB = %u", device17DB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device17DB, enumToString(device17DB));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice17DB device17DB) // TEST: NO
+inline const char8* enumToHumanString(PciDevice17DB device) // TEST: NO
 {
-    // COMMON_LT((" | device17DB = %u", device17DB)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device17DB)
+    switch (device)
     {
         case PciDevice17DB::DEVICE_0101: return "XT Series [Seastar] 3D Toroidal Router";
 

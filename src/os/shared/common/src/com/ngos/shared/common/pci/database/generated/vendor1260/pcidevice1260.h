@@ -6,6 +6,11 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcisubdevice12603872.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcisubdevice12603873.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcisubdevice12603886.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcisubdevice12603890.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1260/pcisubdevice1260ffff.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -25,13 +30,13 @@ enum class PciDevice1260: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1260 device1260) // TEST: NO
+inline const char8* enumToString(PciDevice1260 device) // TEST: NO
 {
-    // COMMON_LT((" | device1260 = %u", device1260)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1260)
+    switch (device)
     {
         case PciDevice1260::NONE:        return "NONE";
         case PciDevice1260::DEVICE_3872: return "DEVICE_3872";
@@ -49,28 +54,28 @@ inline const char8* enumToString(PciDevice1260 device1260) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1260 device1260) // TEST: NO
+inline const char8* enumToFullString(PciDevice1260 device) // TEST: NO
 {
-    // COMMON_LT((" | device1260 = %u", device1260)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1260, enumToString(device1260));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1260 device1260) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1260 device) // TEST: NO
 {
-    // COMMON_LT((" | device1260 = %u", device1260)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1260)
+    switch (device)
     {
         case PciDevice1260::DEVICE_3872: return "ISL3872 [Prism 3]";
         case PciDevice1260::DEVICE_3873: return "ISL3874 [Prism 2.5]/ISL3872 [Prism 3]";
@@ -80,6 +85,29 @@ inline const char8* enumToHumanString(PciDevice1260 device1260) // TEST: NO
         case PciDevice1260::DEVICE_8130: return "HMP8130 NTSC/PAL Video Decoder";
         case PciDevice1260::DEVICE_8131: return "HMP8131 NTSC/PAL Video Decoder";
         case PciDevice1260::DEVICE_FFFF: return "ISL3886IK";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1260 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1260::DEVICE_3872: return enumToHumanString((PciSubDevice12603872)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1260::DEVICE_3873: return enumToHumanString((PciSubDevice12603873)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1260::DEVICE_3877: return "Unknown device";
+        case PciDevice1260::DEVICE_3886: return enumToHumanString((PciSubDevice12603886)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1260::DEVICE_3890: return enumToHumanString((PciSubDevice12603890)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1260::DEVICE_8130: return "Unknown device";
+        case PciDevice1260::DEVICE_8131: return "Unknown device";
+        case PciDevice1260::DEVICE_FFFF: return enumToHumanString((PciSubDevice1260FFFF)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

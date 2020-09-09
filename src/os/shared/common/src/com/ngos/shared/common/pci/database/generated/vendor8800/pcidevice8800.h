@@ -18,13 +18,13 @@ enum class PciDevice8800: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice8800 device8800) // TEST: NO
+inline const char8* enumToString(PciDevice8800 device) // TEST: NO
 {
-    // COMMON_LT((" | device8800 = %u", device8800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device8800)
+    switch (device)
     {
         case PciDevice8800::NONE:        return "NONE";
         case PciDevice8800::DEVICE_2008: return "DEVICE_2008";
@@ -35,28 +35,28 @@ inline const char8* enumToString(PciDevice8800 device8800) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice8800 device8800) // TEST: NO
+inline const char8* enumToFullString(PciDevice8800 device) // TEST: NO
 {
-    // COMMON_LT((" | device8800 = %u", device8800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device8800, enumToString(device8800));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice8800 device8800) // TEST: NO
+inline const char8* enumToHumanString(PciDevice8800 device) // TEST: NO
 {
-    // COMMON_LT((" | device8800 = %u", device8800)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device8800)
+    switch (device)
     {
         case PciDevice8800::DEVICE_2008: return "Video assistant component";
 

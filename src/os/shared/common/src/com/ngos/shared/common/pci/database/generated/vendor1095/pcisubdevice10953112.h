@@ -10,4 +10,66 @@
 
 
 
+enum class PciSubDevice10953112: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_10953112 = 0x10953112,
+    SUBDEVICE_10956112 = 0x10956112,
+    SUBDEVICE_90050250 = 0x90050250
+};
+
+
+
+inline const char8* enumToString(PciSubDevice10953112 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10953112::NONE:               return "NONE";
+        case PciSubDevice10953112::SUBDEVICE_10953112: return "SUBDEVICE_10953112";
+        case PciSubDevice10953112::SUBDEVICE_10956112: return "SUBDEVICE_10956112";
+        case PciSubDevice10953112::SUBDEVICE_90050250: return "SUBDEVICE_90050250";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice10953112 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice10953112 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice10953112::SUBDEVICE_10953112: return "SiI 3112 SATALink Controller";
+        case PciSubDevice10953112::SUBDEVICE_10956112: return "SiI 3112 SATARaid Controller";
+        case PciSubDevice10953112::SUBDEVICE_90050250: return "SATAConnect 1205SA Host Controller";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
 #endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1095_PCISUBDEVICE10953112_H

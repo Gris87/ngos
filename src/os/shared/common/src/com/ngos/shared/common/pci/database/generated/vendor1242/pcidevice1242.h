@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1242/pcisubdevice12421560.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -21,13 +22,13 @@ enum class PciDevice1242: u16 // Ignore CppEnumVerifier
 
 
 
-inline const char8* enumToString(PciDevice1242 device1242) // TEST: NO
+inline const char8* enumToString(PciDevice1242 device) // TEST: NO
 {
-    // COMMON_LT((" | device1242 = %u", device1242)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1242)
+    switch (device)
     {
         case PciDevice1242::NONE:        return "NONE";
         case PciDevice1242::DEVICE_1560: return "DEVICE_1560";
@@ -41,33 +42,52 @@ inline const char8* enumToString(PciDevice1242 device1242) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice1242 device1242) // TEST: NO
+inline const char8* enumToFullString(PciDevice1242 device) // TEST: NO
 {
-    // COMMON_LT((" | device1242 = %u", device1242)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device1242, enumToString(device1242));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciDevice1242 device1242) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1242 device) // TEST: NO
 {
-    // COMMON_LT((" | device1242 = %u", device1242)); // Commented to avoid bad looking logs
+    // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
 
 
-    switch (device1242)
+    switch (device)
     {
         case PciDevice1242::DEVICE_1560: return "JNIC-1560 PCI-X Fibre Channel Controller";
         case PciDevice1242::DEVICE_4643: return "FCI-1063 Fibre Channel Adapter";
         case PciDevice1242::DEVICE_6562: return "FCX2-6562 Dual Channel PCI-X Fibre Channel Adapter";
         case PciDevice1242::DEVICE_656A: return "FCX-6562 PCI-X Fibre Channel Adapter";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1242 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1242::DEVICE_1560: return enumToHumanString((PciSubDevice12421560)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1242::DEVICE_4643: return "Unknown device";
+        case PciDevice1242::DEVICE_6562: return "Unknown device";
+        case PciDevice1242::DEVICE_656A: return "Unknown device";
 
         default: return "Unknown device";
     }
