@@ -153,7 +153,7 @@ inline const char8* enumToHumanString(PciSubDevice100267B0 subDevice) // TEST: N
         case PciSubDevice100267B0::SUBDEVICE_174BE282: return "Vapor-X R9 290X Tri-X OC";
         case PciSubDevice100267B0::SUBDEVICE_174BE285: return "R9 290X Tri-X OC";
         case PciSubDevice100267B0::SUBDEVICE_174BE324: return "Grenada XT2 [Radeon R9 390X]";
-        case PciSubDevice100267B0::SUBDEVICE_17872020: return "R9 290X IceQ X² Turbo";
+        case PciSubDevice100267B0::SUBDEVICE_17872020: return "R9 290X IceQ X^2 Turbo";
         case PciSubDevice100267B0::SUBDEVICE_17872357: return "Grenada XT [Radeon R9 390X]";
 
         default: return "Unknown device";

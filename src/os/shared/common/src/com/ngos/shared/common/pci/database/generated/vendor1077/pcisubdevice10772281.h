@@ -79,7 +79,7 @@ inline const char8* enumToHumanString(PciSubDevice10772281 subDevice) // TEST: N
         case PciSubDevice10772281::SUBDEVICE_107702F2: return "QLogic 1x32Gb QLE2770 FC HBA";
         case PciSubDevice10772281::SUBDEVICE_107702F3: return "QLogic 2x32Gb QLE2772 FC HBA";
         case PciSubDevice10772281::SUBDEVICE_159002D3: return "SN1610Q - 1P Enhanced 32GFC Single Port Fibre Channel Host Bus Adapter";
-        case PciSubDevice10772281::SUBDEVICE_159002D4: return "SN1610Q – 2P Enhanced 32GFC Dual Port Fibre Channel Host Bus Adapter";
+        case PciSubDevice10772281::SUBDEVICE_159002D4: return "SN1610Q - 2P Enhanced 32GFC Dual Port Fibre Channel Host Bus Adapter";
 
         default: return "Unknown device";
     }

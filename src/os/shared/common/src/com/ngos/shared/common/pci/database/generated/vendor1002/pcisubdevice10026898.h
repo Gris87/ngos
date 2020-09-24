@@ -64,7 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice10026898 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10026898::SUBDEVICE_10020B00: return "Radeon HD 5870 Eyefinity⁶ Edition";
+        case PciSubDevice10026898::SUBDEVICE_10020B00: return "Radeon HD 5870 Eyefinity^6 Edition";
         case PciSubDevice10026898::SUBDEVICE_106B00D0: return "Radeon HD 5870 Mac Edition";
         case PciSubDevice10026898::SUBDEVICE_14628032: return "Radeon HD 5870 1 GB GDDR5";
         case PciSubDevice10026898::SUBDEVICE_174B6870: return "Radeon HD 6870 1600SP Edition";

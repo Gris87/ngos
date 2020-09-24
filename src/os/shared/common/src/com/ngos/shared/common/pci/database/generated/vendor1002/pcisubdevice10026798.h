@@ -128,7 +128,7 @@ inline const char8* enumToHumanString(PciSubDevice10026798 subDevice) // TEST: N
         case PciSubDevice10026798::SUBDEVICE_16823211: return "Double D HD 7970 Black Edition";
         case PciSubDevice10026798::SUBDEVICE_16823213: return "HD 7970 Black Edition";
         case PciSubDevice10026798::SUBDEVICE_16823214: return "Double D HD 7970";
-        case PciSubDevice10026798::SUBDEVICE_1787201C: return "HD 7970 IceQ X²";
+        case PciSubDevice10026798::SUBDEVICE_1787201C: return "HD 7970 IceQ X^2";
         case PciSubDevice10026798::SUBDEVICE_17872317: return "Radeon HD 7990";
         case PciSubDevice10026798::SUBDEVICE_17873000: return "Tahiti XT2 [Radeon HD 7970 GHz Edition]";
 

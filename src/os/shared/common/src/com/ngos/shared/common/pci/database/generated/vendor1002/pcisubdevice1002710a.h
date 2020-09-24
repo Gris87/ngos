@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice1002710A subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1002710A::SUBDEVICE_10020B12: return "Radeon X1800 GTO²";
+        case PciSubDevice1002710A::SUBDEVICE_10020B12: return "Radeon X1800 GTO^2";
 
         default: return "Unknown device";
     }

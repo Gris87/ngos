@@ -64,10 +64,10 @@ inline const char8* enumToHumanString(PciSubDevice15B31017 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice15B31017::SUBDEVICE_15B30006: return "ConnectX®-5 EN network interface card, 100GbE single-port QSFP28, PCIe3.0 x16, tall bracket; MCX515A-CCAT";
-        case PciSubDevice15B31017::SUBDEVICE_15B30007: return "Mellanox ConnectX®-5 MCX516A-CCAT";
-        case PciSubDevice15B31017::SUBDEVICE_15B30020: return "ConnectX®-5 EN network interface card, 10/25GbE dual-port SFP28, PCIe3.0 x8, tall bracket ; MCX512A-ACAT";
-        case PciSubDevice15B31017::SUBDEVICE_15B30068: return "ConnectX®-5 EN network interface card for OCP2.0, Type 1, with host management, 25GbE dual-port SFP28, PCIe3.0 x8, no bracket Halogen free ; MCX542B-ACAN";
+        case PciSubDevice15B31017::SUBDEVICE_15B30006: return "ConnectX*-5 EN network interface card, 100GbE single-port QSFP28, PCIe3.0 x16, tall bracket; MCX515A-CCAT";
+        case PciSubDevice15B31017::SUBDEVICE_15B30007: return "Mellanox ConnectX*-5 MCX516A-CCAT";
+        case PciSubDevice15B31017::SUBDEVICE_15B30020: return "ConnectX*-5 EN network interface card, 10/25GbE dual-port SFP28, PCIe3.0 x8, tall bracket ; MCX512A-ACAT";
+        case PciSubDevice15B31017::SUBDEVICE_15B30068: return "ConnectX*-5 EN network interface card for OCP2.0, Type 1, with host management, 25GbE dual-port SFP28, PCIe3.0 x8, no bracket Halogen free ; MCX542B-ACAN";
 
         default: return "Unknown device";
     }

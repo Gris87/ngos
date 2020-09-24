@@ -67,7 +67,7 @@ inline const char8* enumToHumanString(PciSubDevice168C0032 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice168C0032::SUBDEVICE_10280208: return "Wireless 1506 WLAN Half Mini-Card";
-        case PciSubDevice168C0032::SUBDEVICE_103C1838: return "AR9485/HB125 802.11bgn 1×1 Wi-Fi Adapter";
+        case PciSubDevice168C0032::SUBDEVICE_103C1838: return "AR9485/HB125 802.11bgn 1*1 Wi-Fi Adapter";
         case PciSubDevice168C0032::SUBDEVICE_105BE044: return "Unex DHXA-225";
         case PciSubDevice168C0032::SUBDEVICE_144D410E: return "AR9485WB-EG 802.11b/g/n mini-PCIe card on a series 3 laptop";
         case PciSubDevice168C0032::SUBDEVICE_1A3B1186: return "AW-NE186H";

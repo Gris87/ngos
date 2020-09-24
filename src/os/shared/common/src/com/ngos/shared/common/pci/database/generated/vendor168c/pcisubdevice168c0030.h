@@ -66,7 +66,7 @@ inline const char8* enumToHumanString(PciSubDevice168C0030 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice168C0030::SUBDEVICE_103C1627: return "AR9380/HB112 802.11abgn 3×3 Wi-Fi Adapter";
+        case PciSubDevice168C0030::SUBDEVICE_103C1627: return "AR9380/HB112 802.11abgn 3*3 Wi-Fi Adapter";
         case PciSubDevice168C0030::SUBDEVICE_106B009A: return "AirPort Extreme";
         case PciSubDevice168C0030::SUBDEVICE_11863A7E: return "DWA-566 Wireless N 300 Dual Band PCIe Desktop Adapter";
         case PciSubDevice168C0030::SUBDEVICE_1A562000: return "Killer Wireless-N 1102 Half-size Mini PCIe Card [AR9382]";
