@@ -13,7 +13,8 @@
 enum class PciSubClass00: u8 // Ignore CppEnumVerifier
 {
     SUB_CLASS_00 = 0x00,
-    SUB_CLASS_01 = 0x01
+    SUB_CLASS_01 = 0x01,
+    SUB_CLASS_05 = 0x05
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubClass00 subClass) // TEST: NO
     {
         case PciSubClass00::SUB_CLASS_00: return "SUB_CLASS_00";
         case PciSubClass00::SUB_CLASS_01: return "SUB_CLASS_01";
+        case PciSubClass00::SUB_CLASS_05: return "SUB_CLASS_05";
 
         default: return "UNKNOWN";
     }
@@ -60,6 +62,7 @@ inline const char8* enumToHumanString(PciSubClass00 subClass) // TEST: NO
     {
         case PciSubClass00::SUB_CLASS_00: return "Unclassified device - Non-VGA unclassified device";
         case PciSubClass00::SUB_CLASS_01: return "Unclassified device - VGA compatible unclassified device";
+        case PciSubClass00::SUB_CLASS_05: return "Unclassified device - Image coprocessor";
 
         default: return "Unclassified device";
     }

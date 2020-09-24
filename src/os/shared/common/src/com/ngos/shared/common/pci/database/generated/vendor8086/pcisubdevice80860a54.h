@@ -205,7 +205,7 @@ inline const char8* enumToHumanString(PciSubDevice80860A54 subDevice) // TEST: N
         case PciSubDevice80860A54::SUBDEVICE_1D494714: return "Thinksystem Intel P4600 NVMe AIC";
         case PciSubDevice80860A54::SUBDEVICE_1D494802: return "Thinksystem U.2 P4510 NVMe SSD";
         case PciSubDevice80860A54::SUBDEVICE_1D494812: return "Thinksystem U.2 P4610 NVMe SSD";
-        case PciSubDevice80860A54::SUBDEVICE_80864308: return "Intel SSD D5-P4320 and D5-P4326";
+        case PciSubDevice80860A54::SUBDEVICE_80864308: return "SSD D5-P4320 and D5-P4326";
         case PciSubDevice80860A54::SUBDEVICE_80864702: return "NVMe Datacenter SSD [3DNAND] SE 2.5\" U.2 (P4500)";
         case PciSubDevice80860A54::SUBDEVICE_80864704: return "NVMe Datacenter SSD [3DNAND] SE AIC (P4500)";
         case PciSubDevice80860A54::SUBDEVICE_80864712: return "NVMe Datacenter SSD [3DNAND] ME 2.5\" U.2 (P4600)";

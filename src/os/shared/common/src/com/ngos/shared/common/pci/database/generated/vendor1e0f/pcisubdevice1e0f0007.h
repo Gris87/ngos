@@ -31,7 +31,8 @@ enum class PciSubDevice1E0F0007: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1028210D = 0x1028210D,
     SUBDEVICE_1028210E = 0x1028210E,
     SUBDEVICE_1028210F = 0x1028210F,
-    SUBDEVICE_10282110 = 0x10282110
+    SUBDEVICE_10282110 = 0x10282110,
+    SUBDEVICE_1E0F0001 = 0x1E0F0001
 };
 
 
@@ -64,6 +65,7 @@ inline const char8* enumToString(PciSubDevice1E0F0007 subDevice) // TEST: NO
         case PciSubDevice1E0F0007::SUBDEVICE_1028210E: return "SUBDEVICE_1028210E";
         case PciSubDevice1E0F0007::SUBDEVICE_1028210F: return "SUBDEVICE_1028210F";
         case PciSubDevice1E0F0007::SUBDEVICE_10282110: return "SUBDEVICE_10282110";
+        case PciSubDevice1E0F0007::SUBDEVICE_1E0F0001: return "SUBDEVICE_1E0F0001";
 
         default: return "UNKNOWN";
     }
@@ -113,6 +115,7 @@ inline const char8* enumToHumanString(PciSubDevice1E0F0007 subDevice) // TEST: N
         case PciSubDevice1E0F0007::SUBDEVICE_1028210E: return "Dell Ent NVMe FIPS CM6 MU 1.6TB";
         case PciSubDevice1E0F0007::SUBDEVICE_1028210F: return "Dell Ent NVMe FIPS CM6 MU 3.2TB";
         case PciSubDevice1E0F0007::SUBDEVICE_10282110: return "Dell Ent NVMe FIPS CM6 MU 6.4TB";
+        case PciSubDevice1E0F0007::SUBDEVICE_1E0F0001: return "Generic NVMe CM6 RI 3.84TB";
 
         default: return "Unknown device";
     }

@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice8086F1A6 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice8086F1A6::SUBDEVICE_8086390B: return "Intel Corporation SSD Pro 7600p/760p/E 6100p Series [NVM Express]";
+        case PciSubDevice8086F1A6::SUBDEVICE_8086390B: return "SSD Pro 7600p/760p/E 6100p Series [NVM Express]";
 
         default: return "Unknown device";
     }

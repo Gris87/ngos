@@ -14,6 +14,7 @@ enum class PciSubDevice808606F0: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_80860034 = 0x80860034,
+    SUBDEVICE_80860074 = 0x80860074,
     SUBDEVICE_808602A4 = 0x808602A4
 };
 
@@ -29,6 +30,7 @@ inline const char8* enumToString(PciSubDevice808606F0 subDevice) // TEST: NO
     {
         case PciSubDevice808606F0::NONE:               return "NONE";
         case PciSubDevice808606F0::SUBDEVICE_80860034: return "SUBDEVICE_80860034";
+        case PciSubDevice808606F0::SUBDEVICE_80860074: return "SUBDEVICE_80860074";
         case PciSubDevice808606F0::SUBDEVICE_808602A4: return "SUBDEVICE_808602A4";
 
         default: return "UNKNOWN";
@@ -61,6 +63,7 @@ inline const char8* enumToHumanString(PciSubDevice808606F0 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice808606F0::SUBDEVICE_80860034: return "Wireless-AC 9560";
+        case PciSubDevice808606F0::SUBDEVICE_80860074: return "Wi-Fi 6 AX201 160MHz";
         case PciSubDevice808606F0::SUBDEVICE_808602A4: return "Wireless-AC 9462";
 
         default: return "Unknown device";

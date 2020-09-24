@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice808615D5 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice808615D5::SUBDEVICE_80860001: return "Intel(R) Ethernet SDI Adapter FM10420-25GbE-DA2";
+        case PciSubDevice808615D5::SUBDEVICE_80860001: return "Ethernet SDI Adapter FM10420-25GbE-DA2";
 
         default: return "Unknown device";
     }

@@ -19,6 +19,7 @@ enum class PciDevice144D: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_1600 = 0x1600,
+    DEVICE_A544 = 0xA544,
     DEVICE_A800 = 0xA800,
     DEVICE_A802 = 0xA802,
     DEVICE_A804 = 0xA804,
@@ -26,7 +27,8 @@ enum class PciDevice144D: u16 // Ignore CppEnumVerifier
     DEVICE_A820 = 0xA820,
     DEVICE_A821 = 0xA821,
     DEVICE_A822 = 0xA822,
-    DEVICE_A824 = 0xA824
+    DEVICE_A824 = 0xA824,
+    DEVICE_ECEC = 0xECEC
 };
 
 
@@ -41,6 +43,7 @@ inline const char8* enumToString(PciDevice144D device) // TEST: NO
     {
         case PciDevice144D::NONE:        return "NONE";
         case PciDevice144D::DEVICE_1600: return "DEVICE_1600";
+        case PciDevice144D::DEVICE_A544: return "DEVICE_A544";
         case PciDevice144D::DEVICE_A800: return "DEVICE_A800";
         case PciDevice144D::DEVICE_A802: return "DEVICE_A802";
         case PciDevice144D::DEVICE_A804: return "DEVICE_A804";
@@ -49,6 +52,7 @@ inline const char8* enumToString(PciDevice144D device) // TEST: NO
         case PciDevice144D::DEVICE_A821: return "DEVICE_A821";
         case PciDevice144D::DEVICE_A822: return "DEVICE_A822";
         case PciDevice144D::DEVICE_A824: return "DEVICE_A824";
+        case PciDevice144D::DEVICE_ECEC: return "DEVICE_ECEC";
 
         default: return "UNKNOWN";
     }
@@ -80,6 +84,7 @@ inline const char8* enumToHumanString(PciDevice144D device) // TEST: NO
     switch (device)
     {
         case PciDevice144D::DEVICE_1600: return "Apple PCIe SSD";
+        case PciDevice144D::DEVICE_A544: return "Exynos 8890 PCIe Root Complex";
         case PciDevice144D::DEVICE_A800: return "XP941 PCIe SSD";
         case PciDevice144D::DEVICE_A802: return "NVMe SSD Controller SM951/PM951";
         case PciDevice144D::DEVICE_A804: return "NVMe SSD Controller SM961/PM961";
@@ -88,6 +93,7 @@ inline const char8* enumToHumanString(PciDevice144D device) // TEST: NO
         case PciDevice144D::DEVICE_A821: return "NVMe SSD Controller 172X";
         case PciDevice144D::DEVICE_A822: return "NVMe SSD Controller 172Xa/172Xb";
         case PciDevice144D::DEVICE_A824: return "NVMe SSD Controller PM173X";
+        case PciDevice144D::DEVICE_ECEC: return "Exynos 8895 PCIe Root Complex";
 
         default: return "Unknown device";
     }
@@ -104,6 +110,7 @@ inline const char8* enumToHumanString(PciDevice144D device, u16 subsystemVendorI
     switch (device)
     {
         case PciDevice144D::DEVICE_1600: return "Unknown device";
+        case PciDevice144D::DEVICE_A544: return "Unknown device";
         case PciDevice144D::DEVICE_A800: return "Unknown device";
         case PciDevice144D::DEVICE_A802: return "Unknown device";
         case PciDevice144D::DEVICE_A804: return "Unknown device";
@@ -112,6 +119,7 @@ inline const char8* enumToHumanString(PciDevice144D device, u16 subsystemVendorI
         case PciDevice144D::DEVICE_A821: return enumToHumanString((PciSubDevice144DA821)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice144D::DEVICE_A822: return enumToHumanString((PciSubDevice144DA822)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice144D::DEVICE_A824: return enumToHumanString((PciSubDevice144DA824)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice144D::DEVICE_ECEC: return "Unknown device";
 
         default: return "Unknown device";
     }

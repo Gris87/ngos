@@ -14,7 +14,8 @@ enum class PciDevice1DE5: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_1000 = 0x1000,
-    DEVICE_2000 = 0x2000
+    DEVICE_2000 = 0x2000,
+    DEVICE_3000 = 0x3000
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciDevice1DE5 device) // TEST: NO
         case PciDevice1DE5::NONE:        return "NONE";
         case PciDevice1DE5::DEVICE_1000: return "DEVICE_1000";
         case PciDevice1DE5::DEVICE_2000: return "DEVICE_2000";
+        case PciDevice1DE5::DEVICE_3000: return "DEVICE_3000";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciDevice1DE5 device) // TEST: NO
     {
         case PciDevice1DE5::DEVICE_1000: return "IO Memory Controller";
         case PciDevice1DE5::DEVICE_2000: return "NoLoad Hardware Development Kit";
+        case PciDevice1DE5::DEVICE_3000: return "eBPF-based PCIe Accelerator";
 
         default: return "Unknown device";
     }

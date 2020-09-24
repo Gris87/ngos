@@ -17,6 +17,7 @@ enum class PciSubDevice1000005D: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10009363 = 0x10009363,
     SUBDEVICE_10009364 = 0x10009364,
     SUBDEVICE_1000936A = 0x1000936A,
+    SUBDEVICE_10009380 = 0x10009380,
     SUBDEVICE_10281F41 = 0x10281F41,
     SUBDEVICE_10281F42 = 0x10281F42,
     SUBDEVICE_10281F43 = 0x10281F43,
@@ -58,6 +59,7 @@ inline const char8* enumToString(PciSubDevice1000005D subDevice) // TEST: NO
         case PciSubDevice1000005D::SUBDEVICE_10009363: return "SUBDEVICE_10009363";
         case PciSubDevice1000005D::SUBDEVICE_10009364: return "SUBDEVICE_10009364";
         case PciSubDevice1000005D::SUBDEVICE_1000936A: return "SUBDEVICE_1000936A";
+        case PciSubDevice1000005D::SUBDEVICE_10009380: return "SUBDEVICE_10009380";
         case PciSubDevice1000005D::SUBDEVICE_10281F41: return "SUBDEVICE_10281F41";
         case PciSubDevice1000005D::SUBDEVICE_10281F42: return "SUBDEVICE_10281F42";
         case PciSubDevice1000005D::SUBDEVICE_10281F43: return "SUBDEVICE_10281F43";
@@ -116,6 +118,7 @@ inline const char8* enumToHumanString(PciSubDevice1000005D subDevice) // TEST: N
         case PciSubDevice1000005D::SUBDEVICE_10009363: return "MegaRAID SAS 9361-4i";
         case PciSubDevice1000005D::SUBDEVICE_10009364: return "MegaRAID SAS 9364-8i";
         case PciSubDevice1000005D::SUBDEVICE_1000936A: return "MegaRAID SAS 9364-8i";
+        case PciSubDevice1000005D::SUBDEVICE_10009380: return "MegaRAID SAS 9380-8e";
         case PciSubDevice1000005D::SUBDEVICE_10281F41: return "PERC H830 Adapter";
         case PciSubDevice1000005D::SUBDEVICE_10281F42: return "PERC H730P Adapter";
         case PciSubDevice1000005D::SUBDEVICE_10281F43: return "PERC H730 Adapter";

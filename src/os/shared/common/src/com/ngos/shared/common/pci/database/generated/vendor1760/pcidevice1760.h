@@ -22,6 +22,16 @@ enum class PciDevice1760: u16 // Ignore CppEnumVerifier
     DEVICE_0142 = 0x0142,
     DEVICE_0143 = 0x0143,
     DEVICE_0144 = 0x0144,
+    DEVICE_0145 = 0x0145,
+    DEVICE_0146 = 0x0146,
+    DEVICE_0147 = 0x0147,
+    DEVICE_0148 = 0x0148,
+    DEVICE_0149 = 0x0149,
+    DEVICE_0150 = 0x0150,
+    DEVICE_0151 = 0x0151,
+    DEVICE_0152 = 0x0152,
+    DEVICE_0161 = 0x0161,
+    DEVICE_0180 = 0x0180,
     DEVICE_0214 = 0x0214,
     DEVICE_0215 = 0x0215,
     DEVICE_0216 = 0x0216,
@@ -57,6 +67,16 @@ inline const char8* enumToString(PciDevice1760 device) // TEST: NO
         case PciDevice1760::DEVICE_0142: return "DEVICE_0142";
         case PciDevice1760::DEVICE_0143: return "DEVICE_0143";
         case PciDevice1760::DEVICE_0144: return "DEVICE_0144";
+        case PciDevice1760::DEVICE_0145: return "DEVICE_0145";
+        case PciDevice1760::DEVICE_0146: return "DEVICE_0146";
+        case PciDevice1760::DEVICE_0147: return "DEVICE_0147";
+        case PciDevice1760::DEVICE_0148: return "DEVICE_0148";
+        case PciDevice1760::DEVICE_0149: return "DEVICE_0149";
+        case PciDevice1760::DEVICE_0150: return "DEVICE_0150";
+        case PciDevice1760::DEVICE_0151: return "DEVICE_0151";
+        case PciDevice1760::DEVICE_0152: return "DEVICE_0152";
+        case PciDevice1760::DEVICE_0161: return "DEVICE_0161";
+        case PciDevice1760::DEVICE_0180: return "DEVICE_0180";
         case PciDevice1760::DEVICE_0214: return "DEVICE_0214";
         case PciDevice1760::DEVICE_0215: return "DEVICE_0215";
         case PciDevice1760::DEVICE_0216: return "DEVICE_0216";
@@ -109,6 +129,16 @@ inline const char8* enumToHumanString(PciDevice1760 device) // TEST: NO
         case PciDevice1760::DEVICE_0142: return "PCA7208AS - Analog inputs/Outputs";
         case PciDevice1760::DEVICE_0143: return "PCA7408AL - Analog Inputs/Outputs";
         case PciDevice1760::DEVICE_0144: return "PCA7408AS - Analog Inputs/Outputs";
+        case PciDevice1760::DEVICE_0145: return "PCA-7228AL Multifunction PCI IO card";
+        case PciDevice1760::DEVICE_0146: return "PCA-7228AS Multifunction PCI IO card";
+        case PciDevice1760::DEVICE_0147: return "PCA7428AL Multifunction PCI IO card";
+        case PciDevice1760::DEVICE_0148: return "PCA7428AS Multifunction PCI IO card";
+        case PciDevice1760::DEVICE_0149: return "PCA7228EL Multifunction PCI IO card with isolated analog inputs";
+        case PciDevice1760::DEVICE_0150: return "PCA7428EL Multifunction PCI IO card with isolated analog inputs";
+        case PciDevice1760::DEVICE_0151: return "PCA7628AL - PCI card with analog inputs, counters and DIO";
+        case PciDevice1760::DEVICE_0152: return "PCA7628AS PCI card with analog inputs, outputs, counters and DIO";
+        case PciDevice1760::DEVICE_0161: return "PCA7288A PCI card with analog outputs, counters and DIO";
+        case PciDevice1760::DEVICE_0180: return "PCI1052 Communication card for MicroUnit network";
         case PciDevice1760::DEVICE_0214: return "PCT-7424C (F0) PC card with standard counters";
         case PciDevice1760::DEVICE_0215: return "PCT-7424C (F1) PC card with standard counters";
         case PciDevice1760::DEVICE_0216: return "PCT-7424E (F0) PC card with standard counters";

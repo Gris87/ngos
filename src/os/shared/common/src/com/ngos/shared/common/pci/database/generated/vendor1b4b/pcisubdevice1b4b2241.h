@@ -1,0 +1,72 @@
+// This file generated with the code_generator
+// Please do not modify it manually
+#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1B4B_PCISUBDEVICE1B4B2241_H
+#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1B4B_PCISUBDEVICE1B4B2241_H
+
+
+
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
+
+
+
+enum class PciSubDevice1B4B2241: u32 // Ignore CppEnumVerifier
+{
+    NONE               = 0,
+    SUBDEVICE_1D490306 = 0x1D490306,
+    SUBDEVICE_1D490307 = 0x1D490307
+};
+
+
+
+inline const char8* enumToString(PciSubDevice1B4B2241 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice1B4B2241::NONE:               return "NONE";
+        case PciSubDevice1B4B2241::SUBDEVICE_1D490306: return "SUBDEVICE_1D490306";
+        case PciSubDevice1B4B2241::SUBDEVICE_1D490307: return "SUBDEVICE_1D490307";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* enumToFullString(PciSubDevice1B4B2241 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[32];
+
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+
+    return res;
+}
+
+
+
+inline const char8* enumToHumanString(PciSubDevice1B4B2241 subDevice) // TEST: NO
+{
+    // COMMON_LT((" | subDevice = %u", subDevice)); // Commented to avoid bad looking logs
+
+
+
+    switch (subDevice)
+    {
+        case PciSubDevice1B4B2241::SUBDEVICE_1D490306: return "ThinkSystem M.2 NVMe 2-Bay RAID Enablement Kit";
+        case PciSubDevice1B4B2241::SUBDEVICE_1D490307: return "ThinkSystem 7mm NVMe 2-Bay Rear RAID Enablement Kit";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1B4B_PCISUBDEVICE1B4B2241_H

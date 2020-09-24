@@ -13,11 +13,15 @@
 enum class PciSubDevice1CB0D000: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_1CB02010 = 0x1CB02010,
+    SUBDEVICE_1CB02011 = 0x1CB02011,
+    SUBDEVICE_1CB02012 = 0x1CB02012,
     SUBDEVICE_1CB02F10 = 0x1CB02F10,
     SUBDEVICE_1CB02F11 = 0x1CB02F11,
     SUBDEVICE_1CB02F12 = 0x1CB02F12,
+    SUBDEVICE_1CB0A010 = 0x1CB0A010,
+    SUBDEVICE_1CB0A012 = 0x1CB0A012,
     SUBDEVICE_1CB0AF10 = 0x1CB0AF10,
-    SUBDEVICE_1CB0AF11 = 0x1CB0AF11,
     SUBDEVICE_1CB0AF12 = 0x1CB0AF12
 };
 
@@ -32,11 +36,15 @@ inline const char8* enumToString(PciSubDevice1CB0D000 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice1CB0D000::NONE:               return "NONE";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02010: return "SUBDEVICE_1CB02010";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02011: return "SUBDEVICE_1CB02011";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02012: return "SUBDEVICE_1CB02012";
         case PciSubDevice1CB0D000::SUBDEVICE_1CB02F10: return "SUBDEVICE_1CB02F10";
         case PciSubDevice1CB0D000::SUBDEVICE_1CB02F11: return "SUBDEVICE_1CB02F11";
         case PciSubDevice1CB0D000::SUBDEVICE_1CB02F12: return "SUBDEVICE_1CB02F12";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0A010: return "SUBDEVICE_1CB0A010";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0A012: return "SUBDEVICE_1CB0A012";
         case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF10: return "SUBDEVICE_1CB0AF10";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF11: return "SUBDEVICE_1CB0AF11";
         case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF12: return "SUBDEVICE_1CB0AF12";
 
         default: return "UNKNOWN";
@@ -68,12 +76,16 @@ inline const char8* enumToHumanString(PciSubDevice1CB0D000 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F10: return "Venice-E Series U.2 SSD";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F11: return "Venice Series U.2 SSD";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F12: return "Venice-X Series U.2 SSD";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF10: return "Venice-E Series AIC SSD";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF11: return "Venice Series AIC SSD";
-        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF12: return "Venice-X Series AIC SSD";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02010: return "Venice-E Series OCS U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02011: return "Venice Series OCS U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02012: return "Venice-X Series OCS U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F10: return "Venice-E Series NVMe U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F11: return "Venice Series NVMe U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB02F12: return "Venice-X Series NVMe U.2";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0A010: return "Venice-E Series OCS AIC";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0A012: return "Venice-X Series OCS AIC";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF10: return "Venice-E Series NVMe AIC";
+        case PciSubDevice1CB0D000::SUBDEVICE_1CB0AF12: return "Venice-X Series NVMe AIC";
 
         default: return "Unknown device";
     }
