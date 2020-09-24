@@ -62,7 +62,7 @@ inline const char8* enumToHumanString(PciSubDevice10ECB822 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10ECB822::SUBDEVICE_103C831B: return "Realtek RTL8822BE 802.11ac 2 * 2 Wi-Fi + Bluetooth 4.2 Combo Adapter (MU-MIMO supported)";
+        case PciSubDevice10ECB822::SUBDEVICE_103C831B: return "Realtek RTL8822BE 802.11ac 2 x 2 Wi-Fi + Bluetooth 4.2 Combo Adapter (MU-MIMO supported)";
         case PciSubDevice10ECB822::SUBDEVICE_17AA5124: return "ThinkPad E595";
         case PciSubDevice10ECB822::SUBDEVICE_17AAB023: return "ThinkPad E595";
 
