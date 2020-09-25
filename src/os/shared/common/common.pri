@@ -4085,7 +4085,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportrateflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcibridgecontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pcicardbuscontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
@@ -4131,6 +4133,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/pcicapabilityheader.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicapabilitytype.h \
     $$PWD/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/pcicardbusdata.h \
     $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \

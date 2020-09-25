@@ -1149,6 +1149,7 @@
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 #include <com/ngos/shared/common/pci/pcicapabilitytype.h>
 #include <com/ngos/shared/common/pci/pcicardbuscontrolregister.h>
+#include <com/ngos/shared/common/pci/pcicardbusdata.h>
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
@@ -1549,11 +1550,14 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortRateFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortStatus),                         4);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(PciBridgeControlFlag),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciBridgeControlRegister),                                 48);
         TEST_ASSERT_EQUALS(sizeof(PciBuiltInSelfTest),                                       1);
         TEST_ASSERT_EQUALS(sizeof(PciCapabilityHeader),                                      2);
         TEST_ASSERT_EQUALS(sizeof(PciCapabilityType),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(PciCardBusControlFlag),                                    2);
         TEST_ASSERT_EQUALS(sizeof(PciCardBusControlRegister),                                48);
+        TEST_ASSERT_EQUALS(sizeof(PciCardBusData),                                           8);
         TEST_ASSERT_EQUALS(sizeof(PciCentralResourceControlCapability),                      2);
         TEST_ASSERT_EQUALS(sizeof(PciCommandFlag),                                           2);
         TEST_ASSERT_EQUALS(sizeof(PciConfigurationSpace),                                    256);

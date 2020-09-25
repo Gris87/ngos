@@ -12,6 +12,13 @@
 
 struct PciConfigurationSpace
 {
+    PciConfigurationSpace() // TEST: NO
+    {
+        // Nothing
+    }
+
+
+
     PciDeviceIndependentRegion header;
 
     union

@@ -4869,7 +4869,9 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendorfff
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportrateflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcibridgecontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicardbuscontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h
@@ -4915,6 +4917,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/pcibridgecontrolregister.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcicapabilityheader.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcicapabilitytype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcicardbuscontrolregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pcicardbusdata.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciconfigurationspace.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
