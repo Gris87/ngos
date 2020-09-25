@@ -30,7 +30,7 @@ struct PciStatus
 
         u16 value16;
     };
-} __attribute__((packed));
+};
 
 
 

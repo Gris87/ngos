@@ -780,9 +780,9 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
         UEFI_LVVV(("configurationSpace.cardBus.interruptLine                         = %u",          configurationSpace.cardBus.interruptLine));
         UEFI_LVVV(("configurationSpace.cardBus.interruptPin                          = %u",          configurationSpace.cardBus.interruptPin));
         UEFI_LVVV(("configurationSpace.cardBus.bridgeControl                         = %s",          flagsToFullString(configurationSpace.cardBus.bridgeControl)));
-        UEFI_LF(("cardBusData->subsystemVendorID                                     = 0x%04X (%s)", cardBusData->subsystemVendorID, subsystemVendorID));
-        UEFI_LF(("cardBusData->subsystemID                                           = 0x%04X (%s)", cardBusData->subsystemID, subsystemID));
-        UEFI_LF(("cardBusData->legacyBase                                            = 0x%08X",      cardBusData->legacyBase));
+        UEFI_LVVV(("cardBusData->subsystemVendorID                                   = 0x%04X (%s)", cardBusData->subsystemVendorID, subsystemVendorID));
+        UEFI_LVVV(("cardBusData->subsystemID                                         = 0x%04X (%s)", cardBusData->subsystemID, subsystemID));
+        UEFI_LVVV(("cardBusData->legacyBase                                          = 0x%08X",      cardBusData->legacyBase));
     }
 
 
