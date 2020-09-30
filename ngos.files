@@ -4874,6 +4874,14 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcibuiltinselftest.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicardbuscontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscapturedslotpowerlimitscale.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressdeviceporttype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h

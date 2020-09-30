@@ -4090,6 +4090,14 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicardbuscontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapturedslotpowerlimitscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeviceporttype.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h \

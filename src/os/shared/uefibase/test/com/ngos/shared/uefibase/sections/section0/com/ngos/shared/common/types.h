@@ -2347,7 +2347,15 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceHeaderTypeRegion),                                48);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                               16);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                    1);
-        TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressCapabilityRegister),                             2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressCapturedSlotPowerLimitScale),                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceCapability),                               4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDevicePortType),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL0sAcceptableLatency),                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL1AcceptableLatency),                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressExtendedTagField),                               1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressPayloadSize),                                    1);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeCapability),                              16);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeDownstreamSplitTransaction),              4);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryClockFrequency),                 1);
@@ -7019,6 +7027,176 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.capable = 0;           // ||  0  |  1  |  11  |  1010  ||
 
         TEST_ASSERT_EQUALS(temp.value8, 0x7A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressCapabilityRegister");
+    {
+        PciExpressCapabilityRegister temp;
+
+
+
+        // PciExpressCapabilityRegister:
+        // ==============================================================================================
+        // |  __reserved : 1  |  undefined : 1  |  interruptMessageNumber : 5   |  slotImplemented : 1  |
+        // |                devicePortType : 4                |          capabilityVersion : 4          |
+        // ==============================================================================================
+
+
+
+        temp.value16 = 0x4BB5;              // ||  0  |  1  |  00101  |  1  ||  1011  |  0101  ||
+
+        TEST_ASSERT_EQUALS(temp.capabilityVersion,      5);
+        TEST_ASSERT_EQUALS(temp.devicePortType,         11);
+        TEST_ASSERT_EQUALS(temp.slotImplemented,        1);
+        TEST_ASSERT_EQUALS(temp.interruptMessageNumber, 5);
+        TEST_ASSERT_EQUALS(temp.undefined,              1);
+        TEST_ASSERT_EQUALS(temp.__reserved,             0);
+
+
+
+        temp.capabilityVersion = 8;         // ||  0  |  1  |  00101  |  1  ||  1011  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4BB8);
+
+
+
+        temp.devicePortType = 9;            // ||  0  |  1  |  00101  |  1  ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4B98);
+
+
+
+        temp.slotImplemented = 0;           // ||  0  |  1  |  00101  |  0  ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x4A98);
+
+
+
+        temp.interruptMessageNumber = 17;   // ||  0  |  1  |  10001  |  0  ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x6298);
+
+
+
+        temp.undefined = 0;                 // ||  0  |  0  |  10001  |  0  ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2298);
+
+
+
+        temp.__reserved = 1;                // ||  1  |  0  |  10001  |  0  ||  1001  |  1000  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA298);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressDeviceCapability");
+    {
+        PciExpressDeviceCapability temp;
+
+
+
+        // PciExpressDeviceCapability:
+        // =========================================================================================================================================================================================================================================================
+        // |                                      __reserved2 : 3                                      |  functionLevelReset : 1  |    capturedSlotPowerLimitScale : 2    |                     capturedSlotPowerLimitValue : 2 (8) ...                            |
+        // |                                                            ... capturedSlotPowerLimitValue : 6 (8)                                                           |                                 __reserved : 2                                         |
+        // |  roleBasedErrorReporting : 1  |                                      undefined : 3                                   |                          endpointL1AcceptableLatency : 3                          |  endpointL0sAcceptableLatency : 1 (3) ...  |
+        // |        ... endpointL0sAcceptableLatency : 2 (3)        |  extendedTagFieldSupported : 1   |      phantomFunctionsSupported : 2      |                                      maximumPayloadSizeSupported : 3                                            |
+        // =========================================================================================================================================================================================================================================================
+
+
+
+        temp.value32 = 0xCDB5D7AD;              // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  011  |  1  ...  10  |  1  |  01  |  101  ||
+
+        TEST_ASSERT_EQUALS(temp.maximumPayloadSizeSupported,  5);
+        TEST_ASSERT_EQUALS(temp.phantomFunctionsSupported,    1);
+        TEST_ASSERT_EQUALS(temp.extendedTagFieldSupported,    1);
+        TEST_ASSERT_EQUALS(temp.endpointL0sAcceptableLatency, 6);
+        TEST_ASSERT_EQUALS(temp.endpointL1AcceptableLatency,  3);
+        TEST_ASSERT_EQUALS(temp.undefined,                    5);
+        TEST_ASSERT_EQUALS(temp.roleBasedErrorReporting,      1);
+        TEST_ASSERT_EQUALS(temp.__reserved,                   1);
+        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitValue,  109);
+        TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitScale,  3);
+        TEST_ASSERT_EQUALS(temp.functionLevelReset,           0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                  6);
+
+
+
+        temp.maximumPayloadSizeSupported = 7;   // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  011  |  1  ...  10  |  1  |  01  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5D7AF);
+
+
+
+        temp.phantomFunctionsSupported = 2;     // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  011  |  1  ...  10  |  1  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5D7B7);
+
+
+
+        temp.extendedTagFieldSupported = 0;     // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  011  |  1  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5D797);
+
+
+
+        temp.endpointL0sAcceptableLatency = 2;  // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  011  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5D697);
+
+
+
+        temp.endpointL1AcceptableLatency = 1;   // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  101  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5D297);
+
+
+
+        temp.undefined = 2;                     // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  1  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB5A297);
+
+
+
+        temp.roleBasedErrorReporting = 0;       // ||  110  |  0  |  11  |  01  ...  101101  |  01  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB52297);
+
+
+
+        temp.__reserved = 2;                    // ||  110  |  0  |  11  |  01  ...  101101  |  10  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCDB62297);
+
+
+
+        temp.capturedSlotPowerLimitValue = 69;  // ||  110  |  0  |  11  |  01  ...  000101  |  10  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCD162297);
+
+
+
+        temp.capturedSlotPowerLimitScale = 1;   // ||  110  |  0  |  01  |  01  ...  000101  |  10  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xC5162297);
+
+
+
+        temp.functionLevelReset = 1;            // ||  110  |  1  |  01  |  01  ...  000101  |  10  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xD5162297);
+
+
+
+        temp.__reserved2 = 4;                   // ||  100  |  1  |  01  |  01  ...  000101  |  10  ||  0  |  010  |  001  |  0  ...  10  |  0  |  10  |  111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x95162297);
     }
     TEST_CASE_END();
 
