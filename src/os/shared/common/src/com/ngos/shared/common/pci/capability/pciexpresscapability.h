@@ -5,6 +5,11 @@
 
 #include <com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdevicecontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdevicestatusflags.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 
 
@@ -14,12 +19,12 @@ struct PciExpressCapability
     PciCapabilityHeader          header;
     PciExpressCapabilityRegister capability;
     PciExpressDeviceCapability   deviceCapability;
+    PciExpressDeviceControl      deviceControl;
+    PciExpressDeviceStatusFlags  deviceStatus;
+    PciExpressLinkCapability     linkCapability;
+    PciExpressLinkControl        linkControl;
+    PciExpressLinkStatus         linkStatus;
 
-    //    PCI_REG_PCIE_DEVICE_CONTROL     deviceControl;
-    //    PCI_REG_PCIE_DEVICE_STATUS      deviceStatus;
-    //    PCI_REG_PCIE_LINK_CAPABILITY    linkCapability;
-    //    PCI_REG_PCIE_LINK_CONTROL       linkControl;
-    //    PCI_REG_PCIE_LINK_STATUS        linkStatus;
     //    PCI_REG_PCIE_SLOT_CAPABILITY    slotCapability;
     //    PCI_REG_PCIE_SLOT_CONTROL       slotControl;
     //    PCI_REG_PCIE_SLOT_STATUS        slotStatus;
