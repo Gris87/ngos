@@ -4,11 +4,11 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
-#include <com/ngos/shared/common/pci/lib/pciexpresscapturedslotpowerlimitscale.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotpowerlimitscale.h>
 
 
 
@@ -27,7 +27,7 @@ struct PciExpressDeviceCapability
             u32 roleBasedErrorReporting      : 1;
             u32 __reserved                   : 2;
             u32 capturedSlotPowerLimitValue  : 8;
-            u32 capturedSlotPowerLimitScale  : 2; // TODO: Use enum PciExpressCapturedSlotPowerLimitScale
+            u32 capturedSlotPowerLimitScale  : 2; // TODO: Use enum PciExpressSlotPowerLimitScale
             u32 functionLevelReset           : 1;
             u32 __reserved2                  : 3;
         };

@@ -10,27 +10,33 @@
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 
 
 
 struct PciExpressCapability
 {
-    PciCapabilityHeader          header;
-    PciExpressCapabilityRegister capability;
-    PciExpressDeviceCapability   deviceCapability;
-    PciExpressDeviceControl      deviceControl;
-    PciExpressDeviceStatusFlags  deviceStatus;
-    PciExpressLinkCapability     linkCapability;
-    PciExpressLinkControl        linkControl;
-    PciExpressLinkStatus         linkStatus;
+    PciCapabilityHeader           header;
+    PciExpressCapabilityRegister  capability;
+    PciExpressDeviceCapability    deviceCapability;
+    PciExpressDeviceControl       deviceControl;
+    PciExpressDeviceStatusFlags   deviceStatus;
+    PciExpressLinkCapability      linkCapability;
+    PciExpressLinkControl         linkControl;
+    PciExpressLinkStatus          linkStatus;
+    PciExpressSlotCapability      slotCapability;
+    PciExpressSlotControl         slotControl;
+    PciExpressSlotStatusFlags     slotStatus;
+    PciExpressRootControlFlags    rootControl;
+    PciExpressRootCapabilityFlags rootCapability;
+    PciExpressRootStatus          rootStatus;
 
-    //    PCI_REG_PCIE_SLOT_CAPABILITY    slotCapability;
-    //    PCI_REG_PCIE_SLOT_CONTROL       slotControl;
-    //    PCI_REG_PCIE_SLOT_STATUS        slotStatus;
-    //    PCI_REG_PCIE_ROOT_CONTROL       rootControl;
-    //    PCI_REG_PCIE_ROOT_CAPABILITY    rootCapability;
-    //    PCI_REG_PCIE_ROOT_STATUS        rootStatus;
     //    PCI_REG_PCIE_DEVICE_CAPABILITY2 deviceCapability2;
     //    PCI_REG_PCIE_DEVICE_CONTROL2    deviceControl2;
     //    u16                             deviceStatus2;

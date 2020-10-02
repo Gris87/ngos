@@ -4093,7 +4093,6 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h \
-    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapturedslotpowerlimitscale.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeviceporttype.h \
@@ -4101,6 +4100,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressindicatorcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl0sexitlatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl1exitlatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h \
@@ -4109,8 +4109,16 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkwidth.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrollercontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootstatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotpowerlimitscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h \

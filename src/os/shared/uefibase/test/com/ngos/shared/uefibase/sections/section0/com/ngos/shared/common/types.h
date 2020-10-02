@@ -2349,9 +2349,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                    1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementControl),              1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementSupport),              1);
-        TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     20);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     36);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCapabilityRegister),                             2);
-        TEST_ASSERT_EQUALS(sizeof(PciExpressCapturedSlotPowerLimitScale),                    1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceCapability),                               4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceControl),                                  2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDevicePortType),                                 1);
@@ -2359,6 +2358,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL0sAcceptableLatency),                   1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL1AcceptableLatency),                    1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressExtendedTagField),                               1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressIndicatorControl),                               1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressL0sExitLatency),                                 1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressL1ExitLatency),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkCapability),                                 4);
@@ -2367,8 +2367,16 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkStatus),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkWidth),                                      1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPayloadSize),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressPowerControllerControl),                         1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressReadCompletionBoundary),                         1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRequestSize),                                    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRootCapabilityFlag),                             2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRootControlFlag),                                2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRootStatus),                                     4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressSlotCapability),                                 4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressSlotControl),                                    2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressSlotPowerLimitScale),                            1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressSlotStatusFlag),                                 2);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeCapability),                              16);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeDownstreamSplitTransaction),              4);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryClockFrequency),                 1);
@@ -7604,6 +7612,266 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         temp.linkAutonomousBandwidthStatus = 0;     // ||  0  |  1  |  0  |  1  |  0  |  1  |  00  ...  1011  |  0111  ||
 
         TEST_ASSERT_EQUALS(temp.value16, 0x54B7);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressRootStatus");
+    {
+        PciExpressRootStatus temp;
+
+
+
+        // PciExpressRootStatus:
+        // ==================================================================================
+        // |  __reserved : 14  |  pmePending : 1  |  pmeStatus : 1  |  pmeRequesterId : 16  |
+        // ==================================================================================
+
+
+
+        temp.value32 = 0xBDBDBDBD;  // ||  10111101101111  |  0  |  1  ||  1011110110111101  ||
+
+        TEST_ASSERT_EQUALS(temp.pmeRequesterId, 48573);
+        TEST_ASSERT_EQUALS(temp.pmeStatus,      1);
+        TEST_ASSERT_EQUALS(temp.pmePending,     0);
+        TEST_ASSERT_EQUALS(temp.__reserved,     12143);
+
+
+
+        temp.pmeRequesterId = 7;    // ||  10111101101111  |  0  |  1  ||  0000000000000111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBDBD0007);
+
+
+
+        temp.pmeStatus = 0;         // ||  10111101101111  |  0  |  0  ||  0000000000000111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBDBC0007);
+
+
+
+        temp.pmePending = 1;         // ||  10111101101111  |  1  |  0  ||  0000000000000111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBDBE0007);
+
+
+
+        temp.__reserved = 7;         // ||  00000000000111  |  1  |  0  ||  0000000000000111  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x001E0007);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressSlotCapability");
+    {
+        PciExpressSlotCapability temp;
+
+
+
+        // PciExpressSlotCapability:
+        // ======================================================================================================================================================================================================================================================================
+        // |                                                                                                                   physicalSlotNumber : 8 (13) ...                                                                                                                  |
+        // |                                                         ... physicalSlotNumber : 5 (13)                                                           |  noCommandCompletedSupport : 1  |  electromechanicalInterlockPresent : 1   |  slotPowerLimitScale : 1 (2) ...  |
+        // |  ... slotPowerLimitScale : 1 (2)  |                                                                                                slotPowerLimitValue : 7 (8) ...                                                                                                 |
+        // |  ... slotPowerLimitValue : 1 (8)  |  hotsPlugCapable : 1  |  hotPlugSurprise : 1  |  powerIndicatorPresent : 1  |  attentionIndicatorPresent : 1  |      mrlSensorPresent : 1       |        powerControllerPresent : 1        |    attentionButtonPresent : 1     |
+        // ======================================================================================================================================================================================================================================================================
+
+
+
+        temp.value32 = 0xA9DD6A55;                      // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  1  |  0  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.attentionButtonPresent,            1);
+        TEST_ASSERT_EQUALS(temp.powerControllerPresent,            0);
+        TEST_ASSERT_EQUALS(temp.mrlSensorPresent,                  1);
+        TEST_ASSERT_EQUALS(temp.attentionIndicatorPresent,         0);
+        TEST_ASSERT_EQUALS(temp.powerIndicatorPresent,             1);
+        TEST_ASSERT_EQUALS(temp.hotPlugSurprise,                   0);
+        TEST_ASSERT_EQUALS(temp.hotPlugCapable,                    1);
+        TEST_ASSERT_EQUALS(temp.slotPowerLimitValue,               212);
+        TEST_ASSERT_EQUALS(temp.slotPowerLimitScale,               2);
+        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockPresent, 0);
+        TEST_ASSERT_EQUALS(temp.noCommandCompletedSupport,         1);
+        TEST_ASSERT_EQUALS(temp.physicalSlotNumber,                5435);
+
+
+
+        temp.attentionButtonPresent = 0;                // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  1  |  0  |  1  |  0  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A54);
+
+
+
+        temp.powerControllerPresent = 1;                // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  1  |  0  |  1  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A56);
+
+
+
+        temp.mrlSensorPresent = 0;                      // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  1  |  0  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A52);
+
+
+
+        temp.attentionIndicatorPresent = 1;             // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  1  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A5A);
+
+
+
+        temp.powerIndicatorPresent = 0;                 // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  0  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A4A);
+
+
+
+        temp.hotPlugSurprise = 1;                       // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  1  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A6A);
+
+
+
+        temp.hotPlugCapable = 0;                        // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  1101010  ...  0  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD6A2A);
+
+
+
+        temp.slotPowerLimitValue = 101;                 // ||  10101001  ...  11011  |  1  |  0  |  1  ...  0  |  0110010  ...  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DD32AA);
+
+
+
+        temp.slotPowerLimitScale = 3;                   // ||  10101001  ...  11011  |  1  |  0  |  1  ...  1  |  0110010  ...  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DDB2AA);
+
+
+
+        temp.electromechanicalInterlockPresent = 1;     // ||  10101001  ...  11011  |  1  |  1  |  1  ...  1  |  0110010  ...  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DFB2AA);
+
+
+
+        temp.noCommandCompletedSupport = 0;             // ||  10101001  ...  11011  |  0  |  1  |  1  ...  1  |  0110010  ...  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA9DBB2AA);
+
+
+
+        temp.physicalSlotNumber = 39;                   // ||  00000001  ...  00111  |  0  |  1  |  1  ...  1  |  0110010  ...  1  |  0  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x013BB2AA);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressSlotControl");
+    {
+        PciExpressSlotControl temp;
+
+
+
+        // PciExpressSlotControl:
+        // =========================================================================================================================================================================================================================================================
+        // |                         __reserved : 3                         |  dataLinkLayerStateChangedEnable : 1  |  electromechanicalInterlockControl : 1  |  powerControllerControl : 1  |                      powerIndicatorControl : 2                      |
+        // |  attentionIndicatorControl : 2  |  hotPlugInterruptEnable : 1  |  commandCompletedInterruptEnable : 1  |     presenceDetectChangedEnable : 1     |  mrlSensorChangedEnable : 1  |  powerFaultDetectedEnable : 1  |  attentionButtonPressedEnable : 1  |
+        // =========================================================================================================================================================================================================================================================
+
+
+
+        temp.value16 = 0xAAD5;                          // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  1  |  0  |  1  |  0  |  1  ||
+
+        TEST_ASSERT_EQUALS(temp.attentionButtonPressedEnable,      1);
+        TEST_ASSERT_EQUALS(temp.powerFaultDetectedEnable,          0);
+        TEST_ASSERT_EQUALS(temp.mrlSensorChangedEnable,            1);
+        TEST_ASSERT_EQUALS(temp.presenceDetectChangedEnable,       0);
+        TEST_ASSERT_EQUALS(temp.commandCompletedInterruptEnable,   1);
+        TEST_ASSERT_EQUALS(temp.hotPlugInterruptEnable,            0);
+        TEST_ASSERT_EQUALS(temp.attentionIndicatorControl,         3);
+        TEST_ASSERT_EQUALS(temp.powerIndicatorControl,             2);
+        TEST_ASSERT_EQUALS(temp.powerControllerControl,            0);
+        TEST_ASSERT_EQUALS(temp.electromechanicalInterlockControl, 1);
+        TEST_ASSERT_EQUALS(temp.dataLinkLayerStateChangedEnable,   0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                        5);
+
+
+
+        temp.attentionButtonPressedEnable = 0;          // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  1  |  0  |  1  |  0  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAD4);
+
+
+
+        temp.powerFaultDetectedEnable = 1;              // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  1  |  0  |  1  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAD6);
+
+
+
+        temp.mrlSensorChangedEnable = 0;                // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  1  |  0  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAD2);
+
+
+
+        temp.presenceDetectChangedEnable = 1;           // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  1  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAADA);
+
+
+
+        temp.commandCompletedInterruptEnable = 0;       // ||  101  |  0  |  1  |  0  |  10  ||  11  |  0  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAACA);
+
+
+
+        temp.hotPlugInterruptEnable = 1;                // ||  101  |  0  |  1  |  0  |  10  ||  11  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAAEA);
+
+
+
+        temp.attentionIndicatorControl = 1;             // ||  101  |  0  |  1  |  0  |  10  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAA6A);
+
+
+
+        temp.powerIndicatorControl = 1;                 // ||  101  |  0  |  1  |  0  |  01  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA96A);
+
+
+
+        temp.powerControllerControl = 1;                // ||  101  |  0  |  1  |  1  |  01  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xAD6A);
+
+
+
+        temp.electromechanicalInterlockControl = 0;     // ||  101  |  0  |  0  |  1  |  01  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xA56A);
+
+
+
+        temp.dataLinkLayerStateChangedEnable = 1;       // ||  101  |  1  |  0  |  1  |  01  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xB56A);
+
+
+
+        temp.__reserved = 3;                            // ||  011  |  1  |  0  |  1  |  01  ||  01  |  1  |  0  |  1  |  0  |  1  |  0  ||
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x756A);
     }
     TEST_CASE_END();
 
