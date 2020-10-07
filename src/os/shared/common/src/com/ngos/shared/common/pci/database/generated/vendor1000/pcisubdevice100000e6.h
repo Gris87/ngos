@@ -83,7 +83,7 @@ inline const char8* enumToHumanString(PciSubDevice100000E6 subDevice) // TEST: N
         case PciSubDevice100000E6::SUBDEVICE_1028200B: return "HBA355i Adapter";
         case PciSubDevice100000E6::SUBDEVICE_1028200C: return "HBA355i Front";
         case PciSubDevice100000E6::SUBDEVICE_1028200D: return "HBA355e Adapter";
-        case PciSubDevice100000E6::SUBDEVICE_1028200E: return "HBA355i MX";
+        case PciSubDevice100000E6::SUBDEVICE_1028200E: return "HBA350i MX";
         case PciSubDevice100000E6::SUBDEVICE_1D490205: return "ThinkSystem 440-16i SAS/SATA PCIe Gen4 12Gb Internal HBA";
         case PciSubDevice100000E6::SUBDEVICE_1D490206: return "ThinkSystem 440-16e SAS/SATA PCIe Gen4 12Gb HBA";
 

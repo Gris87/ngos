@@ -5,16 +5,25 @@
 
 #include <com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdevicecontrol2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdevicestatus2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicestatusflags.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotcapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h>
 #include <com/ngos/shared/common/pci/pcicapabilityheader.h>
 
@@ -36,16 +45,15 @@ struct PciExpressCapability
     PciExpressRootControlFlags    rootControl;
     PciExpressRootCapabilityFlags rootCapability;
     PciExpressRootStatus          rootStatus;
-
-    //    PCI_REG_PCIE_DEVICE_CAPABILITY2 deviceCapability2;
-    //    PCI_REG_PCIE_DEVICE_CONTROL2    deviceControl2;
-    //    u16                             deviceStatus2;
-    //    PCI_REG_PCIE_LINK_CAPABILITY2   linkCapability2;
-    //    PCI_REG_PCIE_LINK_CONTROL2      linkControl2;
-    //    PCI_REG_PCIE_LINK_STATUS2       linkStatus2;
-    //    u32                             slotCapability2;
-    //    u16                             slotControl2;
-    //    u16                             slotStatus2;
+    PciExpressDeviceCapability2   deviceCapability2;
+    PciExpressDeviceControl2      deviceControl2;
+    PciExpressDeviceStatus2       deviceStatus2;
+    PciExpressLinkCapability2     linkCapability2;
+    PciExpressLinkControl2        linkControl2;
+    PciExpressLinkStatus2         linkStatus2;
+    PciExpressSlotCapability2     slotCapability2;
+    PciExpressSlotControl2        slotControl2;
+    PciExpressSlotStatus2         slotStatus2;
 };
 
 

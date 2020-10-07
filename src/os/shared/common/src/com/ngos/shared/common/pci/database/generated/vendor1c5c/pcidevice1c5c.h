@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1c5c/pcisubdevice1c5c2839.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -17,7 +18,8 @@ enum class PciDevice1C5C: u16 // Ignore CppEnumVerifier
     DEVICE_1284 = 0x1284,
     DEVICE_1285 = 0x1285,
     DEVICE_1327 = 0x1327,
-    DEVICE_1504 = 0x1504
+    DEVICE_1504 = 0x1504,
+    DEVICE_2839 = 0x2839
 };
 
 
@@ -36,6 +38,7 @@ inline const char8* enumToString(PciDevice1C5C device) // TEST: NO
         case PciDevice1C5C::DEVICE_1285: return "DEVICE_1285";
         case PciDevice1C5C::DEVICE_1327: return "DEVICE_1327";
         case PciDevice1C5C::DEVICE_1504: return "DEVICE_1504";
+        case PciDevice1C5C::DEVICE_2839: return "DEVICE_2839";
 
         default: return "UNKNOWN";
     }
@@ -71,6 +74,28 @@ inline const char8* enumToHumanString(PciDevice1C5C device) // TEST: NO
         case PciDevice1C5C::DEVICE_1285: return "PC300 NVMe Solid State Drive 1TB";
         case PciDevice1C5C::DEVICE_1327: return "BC501 NVMe Solid State Drive 512GB";
         case PciDevice1C5C::DEVICE_1504: return "SC300 512GB M.2 2280 SATA Solid State Drive";
+        case PciDevice1C5C::DEVICE_2839: return "PE8000 Series NVMe Solid State Drive";
+
+        default: return "Unknown device";
+    }
+}
+
+
+
+inline const char8* enumToHumanString(PciDevice1C5C device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+{
+    // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
+
+
+
+    switch (device)
+    {
+        case PciDevice1C5C::DEVICE_1283: return "Unknown device";
+        case PciDevice1C5C::DEVICE_1284: return "Unknown device";
+        case PciDevice1C5C::DEVICE_1285: return "Unknown device";
+        case PciDevice1C5C::DEVICE_1327: return "Unknown device";
+        case PciDevice1C5C::DEVICE_1504: return "Unknown device";
+        case PciDevice1C5C::DEVICE_2839: return enumToHumanString((PciSubDevice1C5C2839)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice1957C006 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1957C006::SUBDEVICE_1A561201: return "Killer E2100 Gigabit Ethernet Controller";
+        case PciSubDevice1957C006::SUBDEVICE_1A561201: return "Bigfoot Killer E2100 Gigabit Ethernet Controller";
 
         default: return "Unknown device";
     }

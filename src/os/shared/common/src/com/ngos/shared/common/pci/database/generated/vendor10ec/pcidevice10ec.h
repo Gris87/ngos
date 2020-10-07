@@ -85,6 +85,7 @@ enum class PciDevice10EC: u16 // Ignore CppEnumVerifier
     DEVICE_B822 = 0xB822,
     DEVICE_C821 = 0xC821,
     DEVICE_C822 = 0xC822,
+    DEVICE_C82F = 0xC82F,
     DEVICE_D723 = 0xD723
 };
 
@@ -150,6 +151,7 @@ inline const char8* enumToString(PciDevice10EC device) // TEST: NO
         case PciDevice10EC::DEVICE_B822: return "DEVICE_B822";
         case PciDevice10EC::DEVICE_C821: return "DEVICE_C821";
         case PciDevice10EC::DEVICE_C822: return "DEVICE_C822";
+        case PciDevice10EC::DEVICE_C82F: return "DEVICE_C82F";
         case PciDevice10EC::DEVICE_D723: return "DEVICE_D723";
 
         default: return "UNKNOWN";
@@ -232,6 +234,7 @@ inline const char8* enumToHumanString(PciDevice10EC device) // TEST: NO
         case PciDevice10EC::DEVICE_B822: return "RTL8822BE 802.11a/b/g/n/ac WiFi adapter";
         case PciDevice10EC::DEVICE_C821: return "RTL8821CE 802.11ac PCIe Wireless Network Adapter";
         case PciDevice10EC::DEVICE_C822: return "RTL8822CE 802.11ac PCIe Wireless Network Adapter";
+        case PciDevice10EC::DEVICE_C82F: return "RTL8822CE 802.11ac PCIe Wireless Network Adapter";
         case PciDevice10EC::DEVICE_D723: return "RTL8723DE 802.11b/g/n PCIe Adapter";
 
         default: return "Unknown device";
@@ -299,6 +302,7 @@ inline const char8* enumToHumanString(PciDevice10EC device, u16 subsystemVendorI
         case PciDevice10EC::DEVICE_B822: return enumToHumanString((PciSubDevice10ECB822)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EC::DEVICE_C821: return "Unknown device";
         case PciDevice10EC::DEVICE_C822: return "Unknown device";
+        case PciDevice10EC::DEVICE_C82F: return "Unknown device";
         case PciDevice10EC::DEVICE_D723: return "Unknown device";
 
         default: return "Unknown device";

@@ -294,7 +294,7 @@ inline const char8* enumToHumanString(PciDevice9005 device) // TEST: NO
         case PciDevice9005::DEVICE_028B: return "Series 6 - 6G SAS/PCIe 2";
         case PciDevice9005::DEVICE_028C: return "Series 7 6G SAS/PCIe 3";
         case PciDevice9005::DEVICE_028D: return "Series 8 12G SAS/PCIe 3";
-        case PciDevice9005::DEVICE_028F: return "Smart Storage PQI 12G SAS/PCIe 3";
+        case PciDevice9005::DEVICE_028F: return "Smart Storage PQI SAS";
         case PciDevice9005::DEVICE_0410: return "AIC-9410W SAS (Razor HBA RAID)";
         case PciDevice9005::DEVICE_0412: return "AIC-9410W SAS (Razor HBA non-RAID)";
         case PciDevice9005::DEVICE_0415: return "ASC-58300 SAS (Razor-External HBA RAID)";

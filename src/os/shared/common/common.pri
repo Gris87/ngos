@@ -2971,6 +2971,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c58/pcisubdevice1c580003.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c58/pcisubdevice1c580023.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c5c/pcidevice1c5c.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c5c/pcisubdevice1c5c2839.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c5f/pcidevice1c5f.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c63/pcidevice1c63.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1c7e/pcidevice1c7e.h \
@@ -3040,6 +3041,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e4c/pcisubdevice1e4c0010.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e57/pcisubdevice1e570100.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e7c/pcidevice1e7c.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e89/pcidevice1e89.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1eb1/pcidevice1eb1.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1fc0/pcidevice1fc0.h \
@@ -3063,6 +3065,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor2003/pcidevice2003.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor22b8/pcidevice22b8.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor2348/pcidevice2348.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor2646/pcidevice2646.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor2955/pcidevice2955.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor31ab/pcidevice31ab.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor3388/pcidevice3388.h \
@@ -4093,9 +4096,15 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeout.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeoutrangeflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeemphasis.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecontrol2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeviceporttype.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicestatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicestatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h \
@@ -4104,9 +4113,12 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl0sexitlatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl1exitlatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcapability2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcontrol2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkspeed.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkwidth.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrollercontrol.h \
@@ -4116,9 +4128,13 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcontrol2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotpowerlimitscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h \

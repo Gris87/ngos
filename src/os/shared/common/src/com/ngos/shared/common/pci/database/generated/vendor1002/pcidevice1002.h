@@ -968,6 +968,7 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_692F = 0x692F,
     DEVICE_6938 = 0x6938,
     DEVICE_6939 = 0x6939,
+    DEVICE_693B = 0x693B,
     DEVICE_694C = 0x694C,
     DEVICE_694E = 0x694E,
     DEVICE_694F = 0x694F,
@@ -2015,6 +2016,7 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_692F: return "DEVICE_692F";
         case PciDevice1002::DEVICE_6938: return "DEVICE_6938";
         case PciDevice1002::DEVICE_6939: return "DEVICE_6939";
+        case PciDevice1002::DEVICE_693B: return "DEVICE_693B";
         case PciDevice1002::DEVICE_694C: return "DEVICE_694C";
         case PciDevice1002::DEVICE_694E: return "DEVICE_694E";
         case PciDevice1002::DEVICE_694F: return "DEVICE_694F";
@@ -2495,9 +2497,9 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_3154: return "RV380/M24 GL [Mobility FireGL V3200]";
         case PciDevice1002::DEVICE_3155: return "RV380 GL [FireMV 2400]";
         case PciDevice1002::DEVICE_3171: return "RV380 GL [FireMV 2400] (Secondary)";
-        case PciDevice1002::DEVICE_3E50: return "RV380 [Radeon X600]";
+        case PciDevice1002::DEVICE_3E50: return "RV380 [Radeon X550/X600]";
         case PciDevice1002::DEVICE_3E54: return "RV380 GL [FireGL V3200]";
-        case PciDevice1002::DEVICE_3E70: return "RV380 [Radeon X600] (Secondary)";
+        case PciDevice1002::DEVICE_3E70: return "RV380 [Radeon X550/X600] (Secondary)";
         case PciDevice1002::DEVICE_4136: return "RS100 [Mobility IGP 320M]";
         case PciDevice1002::DEVICE_4137: return "RS200 [Radeon IGP 340]";
         case PciDevice1002::DEVICE_4144: return "R300 [Radeon 9500]";
@@ -3079,6 +3081,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_692F: return "Tonga XTV GL [FirePro S7150V]";
         case PciDevice1002::DEVICE_6938: return "Tonga XT / Amethyst XT [Radeon R9 380X / R9 M295X]";
         case PciDevice1002::DEVICE_6939: return "Tonga PRO [Radeon R9 285/380]";
+        case PciDevice1002::DEVICE_693B: return "Tonga PRO GL [FirePro W7100 / Barco MXRT-7600]";
         case PciDevice1002::DEVICE_694C: return "Polaris 22 XT [Radeon RX Vega M GH]";
         case PciDevice1002::DEVICE_694E: return "Polaris 22 XL [Radeon RX Vega M GL]";
         case PciDevice1002::DEVICE_694F: return "Polaris 22 MGL XL [Radeon Pro WX Vega M GL]";
@@ -3100,7 +3103,7 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_7100: return "R520 [Radeon X1800 XT]";
         case PciDevice1002::DEVICE_7101: return "R520/M58 [Mobility Radeon X1800 XT]";
         case PciDevice1002::DEVICE_7102: return "R520/M58 [Mobility Radeon X1800]";
-        case PciDevice1002::DEVICE_7104: return "R520 GL [FireGL V7200]";
+        case PciDevice1002::DEVICE_7104: return "R520 GL [FireGL V7200 / Barco MXTR-5100]";
         case PciDevice1002::DEVICE_7109: return "R520 [Radeon X1800 XL]";
         case PciDevice1002::DEVICE_710A: return "R520 [Radeon X1800 GTO]";
         case PciDevice1002::DEVICE_710B: return "R520 [Radeon X1800 GTO]";
@@ -4128,6 +4131,7 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_692F: return "Unknown device";
         case PciDevice1002::DEVICE_6938: return enumToHumanString((PciSubDevice10026938)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_6939: return enumToHumanString((PciSubDevice10026939)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1002::DEVICE_693B: return "Unknown device";
         case PciDevice1002::DEVICE_694C: return "Unknown device";
         case PciDevice1002::DEVICE_694E: return "Unknown device";
         case PciDevice1002::DEVICE_694F: return "Unknown device";

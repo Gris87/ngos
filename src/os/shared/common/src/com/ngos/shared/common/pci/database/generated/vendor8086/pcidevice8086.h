@@ -908,6 +908,7 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_02ED = 0x02ED,
     DEVICE_02EF = 0x02EF,
     DEVICE_02F0 = 0x02F0,
+    DEVICE_02F5 = 0x02F5,
     DEVICE_02F9 = 0x02F9,
     DEVICE_02FC = 0x02FC,
     DEVICE_0309 = 0x0309,
@@ -4748,6 +4749,7 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_02ED: return "DEVICE_02ED";
         case PciDevice8086::DEVICE_02EF: return "DEVICE_02EF";
         case PciDevice8086::DEVICE_02F0: return "DEVICE_02F0";
+        case PciDevice8086::DEVICE_02F5: return "DEVICE_02F5";
         case PciDevice8086::DEVICE_02F9: return "DEVICE_02F9";
         case PciDevice8086::DEVICE_02FC: return "DEVICE_02FC";
         case PciDevice8086::DEVICE_0309: return "DEVICE_0309";
@@ -8605,6 +8607,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_02ED: return "Comet Lake PCH-LP USB 3.1 xHCI Host Controller";
         case PciDevice8086::DEVICE_02EF: return "Comet Lake PCH-LP Shared SRAM";
         case PciDevice8086::DEVICE_02F0: return "Comet Lake PCH-LP CNVi WiFi";
+        case PciDevice8086::DEVICE_02F5: return "Comet Lake PCH-LP SCS3";
         case PciDevice8086::DEVICE_02F9: return "Comet Lake Thermal Subsytem";
         case PciDevice8086::DEVICE_02FC: return "Comet Lake Integrated Sensor Solution";
         case PciDevice8086::DEVICE_0309: return "80303 I/O Processor PCI-to-PCI Bridge";
@@ -12447,6 +12450,7 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_02ED: return "Unknown device";
         case PciDevice8086::DEVICE_02EF: return "Unknown device";
         case PciDevice8086::DEVICE_02F0: return enumToHumanString((PciSubDevice808602F0)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice8086::DEVICE_02F5: return "Unknown device";
         case PciDevice8086::DEVICE_02F9: return "Unknown device";
         case PciDevice8086::DEVICE_02FC: return "Unknown device";
         case PciDevice8086::DEVICE_0309: return "Unknown device";

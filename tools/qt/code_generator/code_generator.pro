@@ -68,6 +68,7 @@ SOURCES += \
     src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/consoleglyphgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/guiglyphgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/commongenerator.cpp \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bitstestgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.cpp \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.cpp \
@@ -86,6 +87,7 @@ HEADERS += \
     src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/consoleglyphgenerator.h \
     src/com/ngos/devtools/code_generator/generators/assets/zzz_generators/guiglyphgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/commongenerator.h \
+    src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bitstestgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/bytesdecimalsgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/hexcharsgenerator.h \
     src/com/ngos/devtools/code_generator/generators/common/zzz_generators/numberdecimalsgenerator.h \
