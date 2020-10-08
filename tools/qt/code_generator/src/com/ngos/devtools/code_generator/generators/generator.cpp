@@ -215,7 +215,7 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
     }
     else
     {
-        Console::out(QString("Generated file: %1 [up-to-date]").arg(path, -110, QChar(' ')));
+        Console::out(QString("Generated file: %1 [up-to-date]").arg(path, -120, QChar(' ')));
     }
 
 

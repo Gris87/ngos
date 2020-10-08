@@ -4,6 +4,7 @@
 
 
 #include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
+#include <com/ngos/devtools/code_generator/other/bitstestmetadata.h>
 
 
 
@@ -15,7 +16,9 @@ public:
     bool generate(const QString &path) override; // TEST: NO
 
 private:
-    bool generateTests(const QString &path, const QString &fileName); // TEST: NO
+    bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO
+    QList<BitsTestMetadata> obtainBits(const QString &path); // TEST: NO
+    bool obtainBitsFromFile(const QString &path, QList<BitsTestMetadata> &bits); // TEST: NO
 };
 
 

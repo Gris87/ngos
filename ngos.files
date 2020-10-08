@@ -5490,6 +5490,7 @@ tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/usb_boot
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.cpp
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/main.cpp
+tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/bitstestmetadata.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcibaseclass.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pcidevice.h
 tools/qt/code_generator/src/com/ngos/devtools/code_generator/other/pciinterface.h

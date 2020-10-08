@@ -99,6 +99,7 @@ HEADERS += \
     src/com/ngos/devtools/code_generator/generators/generator.h \
     src/com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h \
     src/com/ngos/devtools/code_generator/generators/usb_boot_maker/zzz_generators/protectivembrgenerator.h \
+    src/com/ngos/devtools/code_generator/other/bitstestmetadata.h \
     src/com/ngos/devtools/code_generator/other/pcibaseclass.h \
     src/com/ngos/devtools/code_generator/other/pcidevice.h \
     src/com/ngos/devtools/code_generator/other/pciinterface.h \
