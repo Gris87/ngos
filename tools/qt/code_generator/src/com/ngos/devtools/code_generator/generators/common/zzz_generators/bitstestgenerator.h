@@ -17,7 +17,7 @@ public:
 
 private:
     bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO
-    QList<BitsTestMetadata> obtainBits(const QString &path); // TEST: NO
+    bool obtainBitsFromFolder(const QString &path, QList<BitsTestMetadata> &bits); // TEST: NO
     bool obtainBitsFromFile(const QString &path, QList<BitsTestMetadata> &bits); // TEST: NO
 };
 

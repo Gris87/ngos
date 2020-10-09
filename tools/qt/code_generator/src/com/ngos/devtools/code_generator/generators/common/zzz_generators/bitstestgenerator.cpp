@@ -1,5 +1,7 @@
 #include "bitstestgenerator.h"
 
+#include <QDir>
+
 #include <com/ngos/devtools/shared/console/console.h>
 
 
@@ -17,24 +19,78 @@ bool BitsTestGenerator::generate(const QString &path)
 
 bool BitsTestGenerator::generateTests(const QString &path, const QString &destinationFilePath)
 {
-    QList<BitsTestMetadata> bits = obtainBits(path);
+    QList<BitsTestMetadata> bits;
+
+    if (!obtainBitsFromFolder(path, bits))
+    {
+        Console::err("Failed to get structures with bits");
+
+        return false;
+    }
 
 
 
     QStringList lines;
+
+    lines.append("#include <buildconfig.h>");
+    lines.append("#include <com/ngos/shared/uefibase/testengine.h>");
+
+    addThreeBlankLines(lines);
+
+
+
+    lines.append("#if NGOS_BUILD_TEST_MODE == OPTION_YES");
+
+    addThreeBlankLines(lines);
+
+
+
+    lines.append("TEST_CASES(section0, generated_com_ngos_shared_common_types);");
+    lines.append("{"); // Ignore CppSingleCharVerifier
+    lines.append("}"); // Ignore CppSingleCharVerifier
+    lines.append("TEST_CASES_END();");
+
+
+
+    addThreeBlankLines(lines);
+
+    lines.append("#endif");
 
 
 
     return save(destinationFilePath, lines);
 }
 
-QList<BitsTestMetadata> BitsTestGenerator::obtainBits(const QString &path)
+bool BitsTestGenerator::obtainBitsFromFolder(const QString &path, QList<BitsTestMetadata> &bits)
 {
-    QList<BitsTestMetadata> res;
+    QFileInfoList files = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-    Console::err(path);
+    for (qint64 i = 0; i < files.length(); ++i)
+    {
+        QFileInfo file = files.at(i);
 
-    return res;
+        QString fileName = file.fileName();
+
+        if (file.isDir())
+        {
+            if (!obtainBitsFromFolder(path + '/' + fileName, bits))
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (fileName.endsWith(".h"))
+            {
+                if (!obtainBitsFromFile(path + '/' + fileName, bits))
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsTestMetadata> &bits)

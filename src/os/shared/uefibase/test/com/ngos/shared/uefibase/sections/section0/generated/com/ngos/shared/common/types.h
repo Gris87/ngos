@@ -5,6 +5,23 @@
 
 
 
+#include <buildconfig.h>
+#include <com/ngos/shared/uefibase/testengine.h>
+
+
+
+#if NGOS_BUILD_TEST_MODE == OPTION_YES
+
+
+
+TEST_CASES(section0, generated_com_ngos_shared_common_types);
+{
+}
+TEST_CASES_END();
+
+
+
+#endif
 
 
 
