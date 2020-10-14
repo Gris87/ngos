@@ -8,7 +8,7 @@
 #include <com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelement.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmichassissecuritystatus.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmichassisstate.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmichassistype.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmichassistypeandlocked.h>
 
 
 
@@ -25,23 +25,12 @@
 
 struct DmiChassisEntry
 {
-    DmiEntryHeader header;
-    DmiStringId    manufacturer;
-
-    union
-    {
-        struct
-        {
-            u8 type:   7; // TODO: Use enum DmiChassisType
-            u8 locked: 1;
-        };
-
-        u8 typeAndLocked;
-    };
-
-    DmiStringId version;
-    DmiStringId serialNumber;
-    DmiStringId assetTag;
+    DmiEntryHeader          header;
+    DmiStringId             manufacturer;
+    DmiChassisTypeAndLocked typeAndLocked;
+    DmiStringId             version;
+    DmiStringId             serialNumber;
+    DmiStringId             assetTag;
 } __attribute__((packed));
 
 

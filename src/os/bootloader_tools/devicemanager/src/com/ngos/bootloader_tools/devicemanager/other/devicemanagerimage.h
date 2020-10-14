@@ -421,7 +421,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevic
 
 
 
-    switch ((DmiOnboardDevicesDeviceType)device->deviceType)
+    switch ((DmiOnboardDevicesDeviceType)device->deviceTypeAndEnabled.deviceType)
     {
         case DmiOnboardDevicesDeviceType::VIDEO:           return DeviceManagerImage::ONBOARD_VIDEO;
         case DmiOnboardDevicesDeviceType::ETHERNET:        return DeviceManagerImage::ONBOARD_ETHERNET;
@@ -442,7 +442,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiOnboardDevice(DmiOnboardDevic
 
         default:
         {
-            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesDeviceType)device->deviceType), __FILE__, __LINE__));
+            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesDeviceType)device->deviceTypeAndEnabled.deviceType), __FILE__, __LINE__));
         }
         break;
     }
@@ -467,7 +467,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtend
 
 
 
-    switch ((DmiOnboardDevicesExtendedDeviceType)entry->deviceType)
+    switch ((DmiOnboardDevicesExtendedDeviceType)entry->deviceTypeAndEnabled.deviceType)
     {
         case DmiOnboardDevicesExtendedDeviceType::VIDEO:           return DeviceManagerImage::ONBOARD_VIDEO;
         case DmiOnboardDevicesExtendedDeviceType::ETHERNET:        return DeviceManagerImage::ONBOARD_ETHERNET;
@@ -488,7 +488,7 @@ inline DeviceManagerImage deviceManagerImageFromDmiEntry(DmiOnboardDevicesExtend
 
         default:
         {
-            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceType), __FILE__, __LINE__));
+            UEFI_LF(("Unknown DMI onboard device type %s, %s:%u", enumToFullString((DmiOnboardDevicesExtendedDeviceType)entry->deviceTypeAndEnabled.deviceType), __FILE__, __LINE__));
         }
         break;
     }

@@ -5,8 +5,7 @@
 
 #include <com/ngos/shared/common/dmi/dmientryheader.h>
 #include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobestatus.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocationandstatus.h>
 
 
 
@@ -21,27 +20,16 @@
 
 struct DmiVoltageProbeEntry
 {
-    DmiEntryHeader header;
-    DmiStringId    description;
-
-    union
-    {
-        struct
-        {
-            u8 location: 5; // TODO: Use enum DmiVoltageProbeLocation
-            u8 status:   3; // TODO: Use enum DmiVoltageProbeStatus
-        };
-
-        u8 locationAndStatus;
-    };
-
-    u16 maximumValue;
-    u16 minimumValue;
-    u16 resolution;
-    u16 tolerance;
-    u16 accuracy;
-    u32 oemDefined;
-    u16 nominalValue;
+    DmiEntryHeader                   header;
+    DmiStringId                      description;
+    DmiVoltageProbeLocationAndStatus locationAndStatus;
+    u16                              maximumValue;
+    u16                              minimumValue;
+    u16                              resolution;
+    u16                              tolerance;
+    u16                              accuracy;
+    u32                              oemDefined;
+    u16                              nominalValue;
 } __attribute__((packed));
 
 

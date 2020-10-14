@@ -176,10 +176,14 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmichassissecuritystatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmichassisstate.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmichassistype.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmichassistypeandlocked.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicestatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetype.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetypeandstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobelocation.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobestatus.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmifunctionnumberanddevicenumber.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmigroupassociationsitem.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmihardwaresecuritysettings.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmihardwaresecuritystatus.h \
@@ -198,7 +202,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmimemorydevicetypedetailflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevice.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetype.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetypeandenabled.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesextendeddevicetype.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesextendeddevicetypeandenabled.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmioutofbandremoteaccessconnectionflags.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarrayerrorcorrection.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiphysicalmemoryarraylocation.h \
@@ -215,6 +221,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorid.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorsignature.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatus.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatusandsocketpopulated.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessortype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorupgrade.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h \
@@ -235,8 +242,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmisystemslotsusage.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmisystemwakeuptype.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobelocation.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobelocationandstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmitemperatureprobestatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocation.h \
+    $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobelocationandstatus.h \
     $$PWD/src/com/ngos/shared/common/dmi/entry/lib/dmivoltageprobestatus.h \
     $$PWD/src/com/ngos/shared/common/early/earlyassert.h \
     $$PWD/src/com/ngos/shared/common/early/earlylog.h \
@@ -257,6 +266,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/elf/sectiontype.h \
     $$PWD/src/com/ngos/shared/common/elf/symbol.h \
     $$PWD/src/com/ngos/shared/common/elf/symbolbind.h \
+    $$PWD/src/com/ngos/shared/common/elf/symbolinfo.h \
+    $$PWD/src/com/ngos/shared/common/elf/symbolother.h \
     $$PWD/src/com/ngos/shared/common/elf/symboltype.h \
     $$PWD/src/com/ngos/shared/common/elf/symbolvisibility.h \
     $$PWD/src/com/ngos/shared/common/elf/type.h \
@@ -303,13 +314,17 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinequantizationtablemarker.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegdefinerestartintervalmarker.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantable.h \
+    $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantableidandtype.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantabletype.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkerheader.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegmarkertype.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegquantizationtable.h \
+    $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegquantizationtableidandprecision.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframecomponent.h \
+    $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframecomponentsamplingfactor.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframemarker.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscancomponent.h \
+    $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscancomponenthuffmantableids.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscanmarker.h \
     $$PWD/src/com/ngos/shared/common/graphics/jpeg/lib/jpegzigzagorder.h \
     $$PWD/src/com/ngos/shared/common/graphics/ninepatch.h \
@@ -368,6 +383,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/hex/hex.h \
     $$PWD/src/com/ngos/shared/common/idt/flags.h \
     $$PWD/src/com/ngos/shared/common/idt/idtdescriptor.h \
+    $$PWD/src/com/ngos/shared/common/idt/idtdescriptortype.h \
     $$PWD/src/com/ngos/shared/common/idt/idtgatetype.h \
     $$PWD/src/com/ngos/shared/common/idt/idtregister.h \
     $$PWD/src/com/ngos/shared/common/idt/macros.h \

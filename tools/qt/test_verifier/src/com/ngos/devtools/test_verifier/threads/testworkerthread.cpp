@@ -304,17 +304,41 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
 
                     bool bitsDefined = false;
 
-                    for (qint64 j = i + 1; j < lines.length(); ++j)
+
+
+                    qint64 level = 0;
+                    qint64 j     = i;
+
+                    do
                     {
+                        ++j;
+
+                        if (j >= lines.length())
+                        {
+                            break;
+                        }
+
                         QString anotherLine = lines.at(j);
 
+                        if (anotherLine == '{')
+                        {
+                            ++level;
+                        }
+                        else
                         if (
+                            anotherLine == '}'
+                            ||
                             anotherLine == "};"
                             ||
                             anotherLine == "} __attribute__((packed));"
                            )
                         {
-                            break;
+                            --level;
+
+                            if (level <= 0)
+                            {
+                                break;
+                            }
                         }
 
 
@@ -327,7 +351,7 @@ void TestWorkerThread::processLines(const QString &path, const QStringList &line
 
                             break;
                         }
-                    }
+                    } while(true);
 
 
 

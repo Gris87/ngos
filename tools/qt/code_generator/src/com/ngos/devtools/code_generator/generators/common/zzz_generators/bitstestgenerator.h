@@ -4,7 +4,10 @@
 
 
 #include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
-#include <com/ngos/devtools/code_generator/other/bitstestmetadata.h>
+
+#include <QRegularExpression>
+
+#include <com/ngos/devtools/code_generator/other/bitsstructure.h>
 
 
 
@@ -17,8 +20,11 @@ public:
 
 private:
     bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO
-    bool obtainBitsFromFolder(const QString &path, QList<BitsTestMetadata> &bits); // TEST: NO
-    bool obtainBitsFromFile(const QString &path, QList<BitsTestMetadata> &bits); // TEST: NO
+    bool obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits); // TEST: NO
+    bool obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits); // TEST: NO
+
+    QRegularExpression mDefinitionRegExp;
+    QRegularExpression mBitsDefinitionRegExp;
 };
 
 

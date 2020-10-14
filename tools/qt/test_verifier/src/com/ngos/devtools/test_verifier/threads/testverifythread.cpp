@@ -489,7 +489,7 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
                 expectedPath = "";
             }
         }
-
+        else
         if (
             line.startsWith("TEST_CASE(\"")
             &&

@@ -5122,8 +5122,8 @@ inline const char8* enumToHumanString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_21D1: return "TU116BM [GeForce GTX 1660 Ti Mobile]";
         case PciDevice10DE::DEVICE_2204: return "GA102 [GeForce RTX 3090]";
         case PciDevice10DE::DEVICE_2206: return "GA102 [GeForce RTX 3080 10GB / 20GB]";
-        case PciDevice10DE::DEVICE_222B: return "GA102 [GeForce RTX 3080 Ti Engineering Sample]";
-        case PciDevice10DE::DEVICE_222F: return "GA102 [GeForce RTX 3080 11GB Engineering Sample]";
+        case PciDevice10DE::DEVICE_222B: return "GA102 [GeForce RTX 3090 Engineering Sample]";
+        case PciDevice10DE::DEVICE_222F: return "GA102 [GeForce RTX 3080 11GB / 12GB Engineering Sample]";
         case PciDevice10DE::DEVICE_2230: return "GA102GL [RTX A6000]";
         case PciDevice10DE::DEVICE_223F: return "GA102GL";
         case PciDevice10DE::DEVICE_2482: return "GA104 [GeForce RTX 3070 Ti]";

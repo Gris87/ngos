@@ -1,0 +1,18 @@
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H
+
+
+
+#include <QString>
+
+
+
+struct BitsField
+{
+    QString name;
+    quint8  length;
+};
+
+
+
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H

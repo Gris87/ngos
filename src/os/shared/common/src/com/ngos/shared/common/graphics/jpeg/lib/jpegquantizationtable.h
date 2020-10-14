@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegquantizationtableidandprecision.h>
 
 
 
@@ -13,19 +13,9 @@
 
 struct JpegQuantizationTable
 {
-    union
-    {
-        struct
-        {
-            u8 id:        4;
-            u8 precision: 4;
-        };
-
-        u8 idAndPrecision;
-    };
-
-    u8  data8[0];
-    u16 data16[0];
+    JpegQuantizationTableIdAndPrecision idAndPrecision;
+    u8                                  data8[0];
+    u16                                 data16[0];
 } __attribute__((packed));
 
 

@@ -3,42 +3,20 @@
 
 
 
-#include <com/ngos/shared/common/elf/symbolbind.h>
-#include <com/ngos/shared/common/elf/symboltype.h>
-#include <com/ngos/shared/common/elf/symbolvisibility.h>
+#include <com/ngos/shared/common/elf/symbolinfo.h>
+#include <com/ngos/shared/common/elf/symbolother.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
 
 struct ElfSymbol
 {
-    u32 nameOffset;
-
-    union
-    {
-        struct
-        {
-            u8 bind: 4; // TODO: Use enum ElfSymbolBind
-            u8 type: 4; // TODO: Use enum ElfSymbolType
-        };
-
-        u8 info;
-    };
-
-    union
-    {
-        struct
-        {
-            u8 __reserved: 5;
-            u8 visibility: 3; // TODO: Use enum ElfSymbolVisibility
-        };
-
-        u8 other;
-    };
-
-    u16 sectionIndex;
-    u64 value;
-    u64 size;
+    u32            nameOffset;
+    ElfSymbolInfo  info;
+    ElfSymbolOther other;
+    u16            sectionIndex;
+    u64            value;
+    u64            size;
 };
 
 

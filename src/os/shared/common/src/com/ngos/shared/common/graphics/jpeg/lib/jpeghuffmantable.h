@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantabletype.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpeghuffmantableidandtype.h>
 #include <com/ngos/shared/common/log/assert.h>
 #include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
@@ -18,20 +18,9 @@
 
 struct JpegHuffmanTable
 {
-    union
-    {
-        struct
-        {
-            u8 id:         4;
-            u8 type:       1; // TODO: Use enum JpegHuffmanTableType
-            u8 __reserved: 3;
-        };
-
-        u8 idAndType;
-    };
-
-    u8 numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
-    u8 symbols[0];
+    JpegHuffmanTableIdAndType idAndType;
+    u8                        numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
+    u8                        symbols[0];
 } __attribute__((packed));
 
 

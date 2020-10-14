@@ -5,6 +5,7 @@
 
 #include <com/ngos/shared/common/dmi/dmientryheader.h>
 #include <com/ngos/shared/common/dmi/dmistringid.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmifunctionnumberanddevicenumber.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotscharacteristicsflags.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotsdatabuswidth.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmisystemslotslength.h>
@@ -30,19 +31,9 @@ struct DmiSystemSlotsEntry
 
 struct DmiSystemSlotsEntryV26: public DmiSystemSlotsEntry
 {
-    u16 segmentGroupNumber;
-    u8  busNumber;
-
-    union
-    {
-        struct
-        {
-            u8 functionNumber: 3;
-            u8 deviceNumber:   5;
-        };
-
-        u8 functionNumberAndDeviceNumber;
-    };
+    u16                              segmentGroupNumber;
+    u8                               busNumber;
+    DmiFunctionNumberAndDeviceNumber functionNumberAndDeviceNumber;
 } __attribute__((packed));
 
 

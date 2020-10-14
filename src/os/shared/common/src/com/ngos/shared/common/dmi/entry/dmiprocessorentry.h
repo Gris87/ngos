@@ -9,7 +9,7 @@
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorfamily2.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatus.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorstatusandsocketpopulated.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessortype.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorupgrade.h>
 #include <com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h>
@@ -33,32 +33,19 @@
 
 struct DmiProcessorEntry
 {
-    DmiEntryHeader      header;
-    DmiStringId         socketDesignation;
-    DmiProcessorType    processorType;
-    DmiProcessorFamily  processorFamily;
-    DmiStringId         processorManufacturer;
-    DmiProcessorId      processorId;
-    DmiStringId         processorVersion;
-    DmiProcessorVoltage voltage;
-    u16                 externalClock;
-    u16                 maxSpeed;
-    u16                 currentSpeed;
-
-    union
-    {
-        struct
-        {
-            u8 status:          3; // TODO: Use enum DmiProcessorStatus
-            u8 __reserved:      3;
-            u8 socketPopulated: 1;
-            u8 __reserved2:     1;
-        };
-
-        u8 processorStatus;
-    };
-
-    DmiProcessorUpgrade processorUpgrade;
+    DmiEntryHeader                       header;
+    DmiStringId                          socketDesignation;
+    DmiProcessorType                     processorType;
+    DmiProcessorFamily                   processorFamily;
+    DmiStringId                          processorManufacturer;
+    DmiProcessorId                       processorId;
+    DmiStringId                          processorVersion;
+    DmiProcessorVoltage                  voltage;
+    u16                                  externalClock;
+    u16                                  maxSpeed;
+    u16                                  currentSpeed;
+    DmiProcessorStatusAndSocketPopulated processorStatusAndSocketPopulated;
+    DmiProcessorUpgrade                  processorUpgrade;
 } __attribute__((packed));
 
 

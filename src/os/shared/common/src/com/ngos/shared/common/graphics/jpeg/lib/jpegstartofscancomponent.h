@@ -4,24 +4,14 @@
 
 
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegcomponentid.h>
-#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegstartofscancomponenthuffmantableids.h>
 
 
 
 struct JpegStartOfScanComponent
 {
-    JpegComponentId id;
-
-    union
-    {
-        struct
-        {
-            u8 huffmanAcTableId: 4;
-            u8 huffmanDcTableId: 4;
-        };
-
-        u8 huffmanTableIds;
-    };
+    JpegComponentId                         id;
+    JpegStartOfScanComponentHuffmanTableIds huffmanTableIds;
 } __attribute__((packed));
 
 

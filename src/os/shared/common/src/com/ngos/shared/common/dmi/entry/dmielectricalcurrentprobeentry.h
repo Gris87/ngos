@@ -5,8 +5,7 @@
 
 #include <com/ngos/shared/common/dmi/dmientryheader.h>
 #include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobelocation.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobestatus.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmielectricalcurrentprobelocationandstatus.h>
 
 
 
@@ -21,27 +20,16 @@
 
 struct DmiElectricalCurrentProbeEntry
 {
-    DmiEntryHeader header;
-    DmiStringId    description;
-
-    union
-    {
-        struct
-        {
-            u8 location: 5; // TODO: Use enum DmiElectricalCurrentProbeLocation
-            u8 status:   3; // TODO: Use enum DmiElectricalCurrentProbeStatus
-        };
-
-        u8 locationAndStatus;
-    };
-
-    u16 maximumValue;
-    u16 minimumValue;
-    u16 resolution;
-    u16 tolerance;
-    u16 accuracy;
-    u32 oemDefined;
-    u16 nominalValue;
+    DmiEntryHeader                             header;
+    DmiStringId                                description;
+    DmiElectricalCurrentProbeLocationAndStatus locationAndStatus;
+    u16                                        maximumValue;
+    u16                                        minimumValue;
+    u16                                        resolution;
+    u16                                        tolerance;
+    u16                                        accuracy;
+    u32                                        oemDefined;
+    u16                                        nominalValue;
 } __attribute__((packed));
 
 

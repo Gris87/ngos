@@ -420,8 +420,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         JpegComponent             *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId         = component->id;
-        u8              samplingFactorX     = component->samplingFactorX;
-        u8              samplingFactorY     = component->samplingFactorY;
+        u8              samplingFactorX     = component->samplingFactor.x;
+        u8              samplingFactorY     = component->samplingFactor.y;
         u8              quantizationTableId = component->quantizationTableId;
 
         COMMON_LVVV(("componentId         = %s", enumToFullString(componentId)));
@@ -580,7 +580,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
     while (length >= 17)
     {
-        u8 tableId = table->id;
+        u8 tableId = table->idAndType.id;
 
         COMMON_LVVV(("tableId = %u", tableId));
 
@@ -593,12 +593,12 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        JpegHuffmanTableType tableType = (JpegHuffmanTableType)table->type;
+        JpegHuffmanTableType tableType = (JpegHuffmanTableType)table->idAndType.type;
 
         COMMON_LVVV(("tableType = %s", enumToFullString(tableType)));
 
         COMMON_TEST_ASSERT(tableType == JpegHuffmanTableType::DC || tableType == JpegHuffmanTableType::AC, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(table->__reserved == 0,                                                         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(table->idAndType.__reserved == 0,                                               NgosStatus::ASSERTION);
 
 
 
@@ -752,8 +752,8 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
     {
         --length;
 
-        u8 tableId        = table->id;
-        u8 tablePrecision = table->precision;
+        u8 tableId        = table->idAndPrecision.id;
+        u8 tablePrecision = table->idAndPrecision.precision;
 
         COMMON_LVVV(("tableId        = %u", tableId));
         COMMON_LVVV(("tablePrecision = %u", tablePrecision));
@@ -965,8 +965,8 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
         JpegComponent            *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId      = component->id;
-        u8              huffmanDcTableId = component->huffmanDcTableId;
-        u8              huffmanAcTableId = component->huffmanAcTableId;
+        u8              huffmanDcTableId = component->huffmanTableIds.dc;
+        u8              huffmanAcTableId = component->huffmanTableIds.ac;
 
         COMMON_LVVV(("componentId      = %s", enumToFullString(componentId)));
         COMMON_LVVV(("huffmanDcTableId = %u", huffmanDcTableId));

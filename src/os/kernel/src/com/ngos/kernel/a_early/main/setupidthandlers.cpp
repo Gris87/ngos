@@ -30,16 +30,16 @@ NgosStatus setupIdtInterruptGate(u8 vectorNumber, void *address)
 
     IdtDescriptor &idtEntry = idt[vectorNumber];
 
-    idtEntry.segment      = GDT_KERNEL_CS;
-    idtEntry.offsetLow    = (u64)address & 0xFFFF;
-    idtEntry.offsetMiddle = ((u64)address >> 16) & 0xFFFF;
-    idtEntry.offsetHigh   = (u64)address >> 32;
-    idtEntry.ist          = IDT_INTERRUPT_STACK_TABLE_NOT_USED;
-    idtEntry.gateType     = (u8)IdtGateType::INTERRUPT;
-    idtEntry.dpl          = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_0_HIGHEST;
-    idtEntry.p            = IDT_ENTRY_PRESENT_YES;
-    idtEntry.__reserved   = 0;
-    idtEntry.__reserved2  = 0;
+    idtEntry.segment         = GDT_KERNEL_CS;
+    idtEntry.offsetLow       = (u64)address & 0xFFFF;
+    idtEntry.offsetMiddle    = ((u64)address >> 16) & 0xFFFF;
+    idtEntry.offsetHigh      = (u64)address >> 32;
+    idtEntry.ist             = IDT_INTERRUPT_STACK_TABLE_NOT_USED;
+    idtEntry.type.gateType   = (u8)IdtGateType::INTERRUPT;
+    idtEntry.type.dpl        = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_0_HIGHEST;
+    idtEntry.type.p          = IDT_ENTRY_PRESENT_YES;
+    idtEntry.type.__reserved = 0;
+    idtEntry.__reserved2     = 0;
 
 
 
@@ -82,7 +82,7 @@ NgosStatus setupIdtBreakpointTrap()
     idtEntry.offsetLow    = address & 0xFFFF;
     idtEntry.offsetMiddle = (address >> 16) & 0xFFFF;
     idtEntry.offsetHigh   = address >> 32;
-    idtEntry.dpl          = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_3_LOWEST;
+    idtEntry.type.dpl     = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_3_LOWEST;
 
 
 

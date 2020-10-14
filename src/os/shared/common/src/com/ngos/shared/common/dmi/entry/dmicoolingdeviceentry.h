@@ -5,8 +5,7 @@
 
 #include <com/ngos/shared/common/dmi/dmientryheader.h>
 #include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicestatus.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetype.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmicoolingdevicetypeandstatus.h>
 
 
 
@@ -18,23 +17,12 @@
 
 struct DmiCoolingDeviceEntry
 {
-    DmiEntryHeader header;
-    u16            temperatureProbeHandle;
-
-    union
-    {
-        struct
-        {
-            u8 deviceType: 5; // TODO: Use enum DmiCoolingDeviceType
-            u8 status:     3; // TODO: Use enum DmiCoolingDeviceStatus
-        };
-
-        u8 deviceTypeAndStatus;
-    };
-
-    u8  coolingUnitGroup;
-    u32 oemDefined;
-    u16 nominalSpeed;
+    DmiEntryHeader                header;
+    u16                           temperatureProbeHandle;
+    DmiCoolingDeviceTypeAndStatus deviceTypeAndStatus;
+    u8                            coolingUnitGroup;
+    u32                           oemDefined;
+    u16                           nominalSpeed;
 } __attribute__((packed));
 
 

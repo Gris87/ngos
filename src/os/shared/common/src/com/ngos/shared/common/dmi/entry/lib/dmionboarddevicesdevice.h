@@ -4,24 +4,14 @@
 
 
 #include <com/ngos/shared/common/dmi/dmistringid.h>
-#include <com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetype.h>
+#include <com/ngos/shared/common/dmi/entry/lib/dmionboarddevicesdevicetypeandenabled.h>
 
 
 
 struct DmiOnboardDevicesDevice
 {
-    union
-    {
-        struct
-        {
-            u8 deviceType: 7; // TODO: Use enum DmiOnboardDevicesDeviceType
-            u8 enabled:    1;
-        };
-
-        u8 deviceTypeAndEnabled;
-    };
-
-    DmiStringId description;
+    DmiOnboardDevicesDeviceTypeAndEnabled deviceTypeAndEnabled;
+    DmiStringId                           description;
 } __attribute__((packed));
 
 

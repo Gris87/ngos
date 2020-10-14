@@ -4,26 +4,15 @@
 
 
 #include <com/ngos/shared/common/graphics/jpeg/lib/jpegcomponentid.h>
-#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/graphics/jpeg/lib/jpegstartofframecomponentsamplingfactor.h>
 
 
 
 struct JpegStartOfFrameComponent
 {
-    JpegComponentId id;
-
-    union
-    {
-        struct
-        {
-            u8 samplingFactorY: 4;
-            u8 samplingFactorX: 4;
-        };
-
-        u8 samplingFactor;
-    };
-
-    u8 quantizationTableId;
+    JpegComponentId                         id;
+    JpegStartOfFrameComponentSamplingFactor samplingFactor;
+    u8                                      quantizationTableId;
 } __attribute__((packed));
 
 
