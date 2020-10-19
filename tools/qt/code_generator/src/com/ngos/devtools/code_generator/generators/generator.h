@@ -16,7 +16,6 @@ public:
     static qint64 getNumberOfGeneratedFiles(); // TEST: NO
 
 protected:
-    void addOneBlankLine(QStringList &lines); // TEST: NO
     void addThreeBlankLines(QStringList &lines); // TEST: NO
 
     bool save(const QString &path, const QStringList &lines); // TEST: NO

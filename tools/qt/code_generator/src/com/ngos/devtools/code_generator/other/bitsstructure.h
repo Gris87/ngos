@@ -14,7 +14,7 @@ struct BitsStructure
 {
     QString          includePath;
     QString          name;
-    quint8           width;
+    qint8            width;
     QList<BitsField> fields;
 };
 

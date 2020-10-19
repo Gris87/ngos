@@ -75,6 +75,7 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/other/uefibootmemorymap.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/types.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/uefibase/uefi/uefi.h>
+#include <com/ngos/shared/uefibase/sections/section0/generated/com/ngos/shared/common/types.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
 
@@ -162,6 +163,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_uefibase_other_uefibootmemorymap);
     CALL_TEST_CASES(section0, com_ngos_shared_uefibase_types);
     CALL_TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
+    CALL_TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
     SUMMARY_TEST_SECTION();
 }

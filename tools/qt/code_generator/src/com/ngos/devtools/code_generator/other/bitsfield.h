@@ -10,7 +10,7 @@
 struct BitsField
 {
     QString name;
-    quint8  length;
+    qint8   length;
 };
 
 

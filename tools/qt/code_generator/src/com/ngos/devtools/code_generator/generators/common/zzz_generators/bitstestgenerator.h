@@ -8,6 +8,7 @@
 #include <QRegularExpression>
 
 #include <com/ngos/devtools/code_generator/other/bitsstructure.h>
+#include <com/ngos/shared/common/ngos/types.h>
 
 
 
@@ -20,11 +21,13 @@ public:
 
 private:
     bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO
+    bool addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue = false, qint64 value = 0); // TEST: NO
     bool obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits); // TEST: NO
     bool obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits); // TEST: NO
 
-    QRegularExpression mDefinitionRegExp;
-    QRegularExpression mBitsDefinitionRegExp;
+    static const char8 *sFieldShortcuts;
+    QRegularExpression  mDefinitionRegExp;
+    QRegularExpression  mBitsDefinitionRegExp;
 };
 
 

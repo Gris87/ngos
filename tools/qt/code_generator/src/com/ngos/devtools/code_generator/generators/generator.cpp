@@ -21,11 +21,6 @@ qint64 Generator::getNumberOfGeneratedFiles()
     return sNumberOfGeneratedFiles;
 }
 
-void Generator::addOneBlankLine(QStringList &lines)
-{
-    lines.append("");
-}
-
 void Generator::addThreeBlankLines(QStringList &lines)
 {
     lines.append("");

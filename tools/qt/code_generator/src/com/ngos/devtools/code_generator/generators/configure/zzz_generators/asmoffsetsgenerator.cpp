@@ -27,7 +27,7 @@ bool AsmOffsetsGenerator::generate(const QString &path)
     ADD_ASM_OFFSET(ASM_OFFSET_BOOT_PARAM_KERNEL_LOCATION, 37, BootParams, header.kernelLocation);
     ADD_ASM_OFFSET(ASM_OFFSET_BOOT_PARAM_KERNEL_SIZE,     37, BootParams, header.kernelSize);
 
-    addOneBlankLine(lines);
+    lines.append("");
 
     ADD_ASM_OFFSET(ASM_OFFSET_KERNEL_DESCRIPTOR_CONTENT,  37, KernelDescriptor, content);
 

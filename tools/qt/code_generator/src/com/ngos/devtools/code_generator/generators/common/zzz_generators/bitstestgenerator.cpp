@@ -1,9 +1,14 @@
 #include "bitstestgenerator.h"
 
+#include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
 
 #include <com/ngos/devtools/shared/console/console.h>
+
+
+
+const char8 *BitsTestGenerator::sFieldShortcuts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&*+-()[]";
 
 
 
@@ -57,6 +62,160 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
     lines.append("TEST_CASES(section0, generated_com_ngos_shared_common_types);");
     lines.append("{"); // Ignore CppSingleCharVerifier
+
+    for (qint64 i = 0; i < bits.length(); ++i)
+    {
+        const BitsStructure &structure = bits.at(i);
+
+
+
+        // Ignore CppAlignmentVerifier [BEGIN]
+        lines.append(QString("    TEST_CASE(\"%1\");").arg(structure.name));
+        lines.append("    {");
+        // Ignore CppAlignmentVerifier [END]
+
+
+
+        lines.append(QString("        %1 temp;").arg(structure.name));
+
+        addThreeBlankLines(lines);
+
+        lines.append(QString("        // %1:").arg(structure.name));
+
+
+
+        lines.append("        //");
+
+        if (!addBitsStructureLines(lines, structure))
+        {
+            Console::err("Failed to add bits structure");
+
+            return false;
+        }
+
+        lines.append("        //");
+
+
+
+        qint64 maximumFieldLength = 0;
+
+        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        {
+            qint64 fieldLength = structure.fields.at(j).name.length();
+
+            if (fieldLength > maximumFieldLength)
+            {
+                maximumFieldLength = fieldLength;
+            }
+        }
+
+
+
+        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        {
+            const BitsField &field = structure.fields.at(j);
+
+            lines.append(QString("        // %1 : %2 '%3'").arg(field.name, -maximumFieldLength).arg(field.length, -2).arg(sFieldShortcuts[j]));
+        }
+
+        addThreeBlankLines(lines);
+
+
+
+        QCryptographicHash hash(QCryptographicHash::Md5);
+        hash.addData(structure.name.toUtf8());
+
+        qint64 value = *((qint64 *)hash.result().data());
+
+
+
+        if (structure.width < 64)
+        {
+            value = value & ((1ULL << structure.width) - 1);
+        }
+
+
+
+        if (!addBitsStructureLines(lines, structure, true, value))
+        {
+            Console::err("Failed to add bits structure");
+
+            return false;
+        }
+
+        lines.append(QString("        temp.value%1 = 0x%2;").arg(structure.width).arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0')));
+        lines.append("");
+
+
+
+        qint8 offset = 0;
+
+        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        {
+            const BitsField &field = structure.fields.at(j);
+
+
+
+            lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);").arg(field.name).arg("", maximumFieldLength - field.name.length()).arg((value >> offset) & ((1ULL << field.length) - 1)));
+
+            offset += field.length;
+        }
+
+
+
+        addThreeBlankLines(lines);
+
+
+
+        offset = 0;
+
+        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        {
+            const BitsField &field = structure.fields.at(j);
+
+
+
+            value           ^= ((1ULL << field.length) - 1) << offset;
+            qint64 newValue =  (value >> offset) & ((1ULL << field.length) - 1);
+
+            offset += field.length;
+
+
+
+            if (!addBitsStructureLines(lines, structure, true, value))
+            {
+                Console::err("Failed to add bits structure");
+
+                return false;
+            }
+
+
+
+            lines.append(QString("        temp.%1 = %2;").arg(field.name).arg(newValue));
+            lines.append("");
+            lines.append(QString("        TEST_ASSERT_EQUALS(temp.value%1, 0x%2);").arg(structure.width).arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0')));
+
+
+
+            if (j < structure.fields.length() - 1)
+            {
+                addThreeBlankLines(lines);
+            }
+        }
+
+
+
+        lines.append("    }");
+        lines.append("    TEST_CASE_END();");
+
+
+
+        if (i < bits.length() - 1)
+        {
+            addThreeBlankLines(lines);
+        }
+    }
+
     lines.append("}"); // Ignore CppSingleCharVerifier
     lines.append("TEST_CASES_END();");
 
@@ -69,6 +228,89 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
     return save(destinationFilePath, lines);
+}
+
+bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue, qint64 value)
+{
+    QStringList contentLines;
+    QString     contentLine     = "|"; // Ignore CppSingleCharVerifier
+    qint8       remainingLength = 8;
+    qint8       offset          = structure.width;
+
+    for (qint64 j = structure.fields.length() - 1; j >= 0; --j)
+    {
+        const BitsField &field = structure.fields.at(j);
+
+
+
+        QString fieldContent;
+
+        if (useValue)
+        {
+            offset -= field.length;
+
+            fieldContent = QString("%1").arg((value >> offset) & ((1ULL << field.length) - 1), field.length, 2, QChar('0'));
+        }
+        else
+        {
+            fieldContent = QString(field.length, QChar(sFieldShortcuts[j]));
+        }
+
+
+
+        while (fieldContent.length() > remainingLength)
+        {
+            if (remainingLength > 0)
+            {
+                qint8 freeSpaceLength = remainingLength * 3 - 1;
+
+                QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
+                QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
+
+                contentLine.append(spaces);
+                contentLine.append(fieldContent.left(remainingLength));
+                contentLine.append(spaces2);
+                contentLine.append("|"); // Ignore CppSingleCharVerifier
+
+                fieldContent = fieldContent.mid(remainingLength);
+            }
+
+            contentLines.append(contentLine);
+
+            contentLine     = "|"; // Ignore CppSingleCharVerifier
+            remainingLength = 8;
+        }
+
+
+
+        if (fieldContent != "")
+        {
+            qint8 freeSpaceLength = fieldContent.length() * 3 - 1;
+
+            QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
+            QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
+
+            contentLine.append(spaces);
+            contentLine.append(fieldContent.left(remainingLength));
+            contentLine.append(spaces2);
+            contentLine.append("|"); // Ignore CppSingleCharVerifier
+
+            remainingLength -= fieldContent.length();
+        }
+    }
+
+    contentLines.append(contentLine);
+
+
+
+    for (qint64 j = 0; j < contentLines.length(); ++j)
+    {
+        lines.append(QString("        // %1").arg(contentLines.at(j)));
+    }
+
+
+
+    return true;
 }
 
 bool BitsTestGenerator::obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits)
@@ -147,7 +389,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
         {
             BitsStructure structure;
 
-            quint8 totalLength = 0;
+            qint8 totalLength = 0;
 
 
 
@@ -199,7 +441,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                     BitsField field;
 
                     field.name   = match2.captured(1);
-                    field.length = match2.captured(2).toUShort(&ok);
+                    field.length = match2.captured(2).toShort(&ok);
 
                     if (
                         !ok

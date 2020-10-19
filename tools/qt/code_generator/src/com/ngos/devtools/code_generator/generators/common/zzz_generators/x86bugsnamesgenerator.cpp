@@ -51,7 +51,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
     QStringList lines;
 
     lines.append("#include \"x86bugsnames.h\"");
-    addOneBlankLine(lines);
+    lines.append("");
     lines.append("#include <com/ngos/shared/common/log/assert.h>");
     lines.append("#include <com/ngos/shared/common/log/log.h>");
     lines.append("#include <com/ngos/shared/common/ngos/utils.h>");
@@ -146,11 +146,11 @@ bool X86BugsNamesGenerator::generate(const QString &path)
             {
                 if (currentWord > 0)
                 {
-                    addOneBlankLine(lines);
+                    lines.append("");
                 }
 
                 lines.append(QString("    // word %1").arg(currentWord));
-                addOneBlankLine(lines);
+                lines.append("");
 
                 lines.append(wordBlock);
                 ++currentWord;
@@ -182,11 +182,11 @@ bool X86BugsNamesGenerator::generate(const QString &path)
     // Ignore CppAlignmentVerifier [BEGIN]
     if (currentWord > 0)
     {
-        addOneBlankLine(lines);
+        lines.append("");
     }
 
     lines.append(QString("    // word %1").arg(currentWord));
-    addOneBlankLine(lines);
+    lines.append("");
 
     lines.append(wordBlock);
 
