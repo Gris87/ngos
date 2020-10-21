@@ -232,14 +232,13 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue, qint64 value)
 {
-    QStringList contentLines;
     QString     contentLine     = "|"; // Ignore CppSingleCharVerifier
     qint8       remainingLength = 8;
     qint8       offset          = structure.width;
 
-    for (qint64 j = structure.fields.length() - 1; j >= 0; --j)
+    for (qint64 i = structure.fields.length() - 1; i >= 0; --i)
     {
-        const BitsField &field = structure.fields.at(j);
+        const BitsField &field = structure.fields.at(i);
 
 
 
@@ -253,7 +252,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
         }
         else
         {
-            fieldContent = QString(field.length, QChar(sFieldShortcuts[j]));
+            fieldContent = QString(field.length, QChar(sFieldShortcuts[i]));
         }
 
 
@@ -275,7 +274,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
                 fieldContent = fieldContent.mid(remainingLength);
             }
 
-            contentLines.append(contentLine);
+            lines.append(QString("        // %1").arg(contentLine));
 
             contentLine     = "|"; // Ignore CppSingleCharVerifier
             remainingLength = 8;
@@ -283,30 +282,20 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
 
 
 
-        if (fieldContent != "")
-        {
-            qint8 freeSpaceLength = fieldContent.length() * 3 - 1;
+        qint8 freeSpaceLength = fieldContent.length() * 3 - 1;
 
-            QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
-            QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
+        QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
+        QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
 
-            contentLine.append(spaces);
-            contentLine.append(fieldContent.left(remainingLength));
-            contentLine.append(spaces2);
-            contentLine.append("|"); // Ignore CppSingleCharVerifier
+        contentLine.append(spaces);
+        contentLine.append(fieldContent.left(remainingLength));
+        contentLine.append(spaces2);
+        contentLine.append("|"); // Ignore CppSingleCharVerifier
 
-            remainingLength -= fieldContent.length();
-        }
+        remainingLength -= fieldContent.length();
     }
 
-    contentLines.append(contentLine);
-
-
-
-    for (qint64 j = 0; j < contentLines.length(); ++j)
-    {
-        lines.append(QString("        // %1").arg(contentLines.at(j)));
-    }
+    lines.append(QString("        // %1").arg(contentLine));
 
 
 

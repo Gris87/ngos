@@ -4198,6 +4198,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/pciconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h \
     $$PWD/src/com/ngos/shared/common/pci/pcideviceindependentregion.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciextendedcapabilityheader.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciextendedcapabilitytype.h \
+    $$PWD/src/com/ngos/shared/common/pci/pciextendedconfigurationspace.h \
     $$PWD/src/com/ngos/shared/common/pci/pciregister.h \
     $$PWD/src/com/ngos/shared/common/printf/printf.h \
     $$PWD/src/com/ngos/shared/common/random/random.h \

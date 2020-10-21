@@ -339,7 +339,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
 
 
-                            UEFI_ASSERT_EXECUTION(initPciWithConfigurationSpace(configurationSpace, deviceManagerEntry), NgosStatus::ASSERTION);
+                            UEFI_ASSERT_EXECUTION(initPciWithConfigurationSpace(configurationSpace, deviceManagerEntry, pci, i, j, k), NgosStatus::ASSERTION);
 
 
 
@@ -380,11 +380,12 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -554,9 +555,9 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
 
     switch ((PciHeaderType)configurationSpace.header.headerType.type)
     {
-        case PciHeaderType::DEVICE:            UEFI_ASSERT_EXECUTION(initPciWithDeviceConfigurationSpace(configurationSpace, deviceManagerEntry),  NgosStatus::ASSERTION); break;
-        case PciHeaderType::PCI_TO_PCI_BRIDGE: UEFI_ASSERT_EXECUTION(initPciWithBridgeConfigurationSpace(configurationSpace, deviceManagerEntry),  NgosStatus::ASSERTION); break;
-        case PciHeaderType::CARDBUS_BRIDGE:    UEFI_ASSERT_EXECUTION(initPciWithCardBusConfigurationSpace(configurationSpace, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciHeaderType::DEVICE:            UEFI_ASSERT_EXECUTION(initPciWithDeviceConfigurationSpace(configurationSpace, deviceManagerEntry, pci, bus, device, function),  NgosStatus::ASSERTION); break;
+        case PciHeaderType::PCI_TO_PCI_BRIDGE: UEFI_ASSERT_EXECUTION(initPciWithBridgeConfigurationSpace(configurationSpace, deviceManagerEntry, pci, bus, device, function),  NgosStatus::ASSERTION); break;
+        case PciHeaderType::CARDBUS_BRIDGE:    UEFI_ASSERT_EXECUTION(initPciWithCardBusConfigurationSpace(configurationSpace, deviceManagerEntry, pci, bus, device, function), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -570,11 +571,12 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -627,18 +629,19 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.device.capabilitiesPointer, PciHeaderType::DEVICE, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.device.capabilitiesPointer, deviceManagerEntry, PciHeaderType::DEVICE, pci, bus, device, function), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -725,18 +728,19 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.bridge.capabilitiesPointer, PciHeaderType::PCI_TO_PCI_BRIDGE, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.bridge.capabilitiesPointer, deviceManagerEntry, PciHeaderType::PCI_TO_PCI_BRIDGE, pci, bus, device, function), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -833,18 +837,19 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
 
 
 
-    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.cardBus.capabilitiesPointer, PciHeaderType::CARDBUS_BRIDGE, deviceManagerEntry), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(initPciWithCapabilitiesPointer(configurationSpace, configurationSpace.cardBus.capabilitiesPointer, deviceManagerEntry, PciHeaderType::CARDBUS_BRIDGE, pci, bus, device, function), NgosStatus::ASSERTION);
 
 
 
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, headerType = %u, deviceManagerEntry = 0x%p", capabilityPointer, headerType, deviceManagerEntry));
+    UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capabilityPointer, deviceManagerEntry, headerType, pci, bus, device, function));
 
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -869,7 +874,7 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
 
 
 
-        UEFI_ASSERT_EXECUTION(initPciWithCapability(capability, headerType, deviceManagerEntry), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(initPciWithCapability(capability, deviceManagerEntry, headerType, pci, bus, device, function), NgosStatus::ASSERTION);
 
 
 
@@ -886,12 +891,13 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | capability = 0x%p, headerType = %u, deviceManagerEntry = 0x%p", capability, headerType, deviceManagerEntry));
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, headerType, pci, bus, device, function));
 
     UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
@@ -912,22 +918,22 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
 
     switch (capability->capabilityId)
     {
-        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE:    UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability,            deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:     UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,              deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                            deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability, headerType,                                                                deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::HYPER_TRANSPORT:               UEFI_ASSERT_EXECUTION(initPciHyperTransportCapability((PciHyperTransportCapability *)capability,                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::VENDOR:                        UEFI_ASSERT_EXECUTION(initPciVendorCapability((PciVendorCapability *)capability,                                                       deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::DEBUG_PORT:                    UEFI_ASSERT_EXECUTION(initPciDebugPortCapability((PciDebugPortCapability *)capability,                                                 deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::CENTRAL_RESOURCE_CONTROL:      UEFI_ASSERT_EXECUTION(initPciCentralResourceControlCapability((PciCentralResourceControlCapability *)capability,                       deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::HOT_PLUG:                      UEFI_ASSERT_EXECUTION(initPciHotPlugCapability((PciHotPlugCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT_8X:  UEFI_ASSERT_EXECUTION(initPciAcceleratedGraphicsPort8xCapability((PciAcceleratedGraphicsPort8xCapability *)capability,                 deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::SECURE_DEVICE:                 UEFI_ASSERT_EXECUTION(initPciSecureDeviceCapability((PciSecureDeviceCapability *)capability,                                           deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::PCI_EXPRESS:                   UEFI_ASSERT_EXECUTION(initPciExpressCapability((PciExpressCapability *)capability,                                                     deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE:    UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability,            deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:     UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,              deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                            deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability,                                                                            deviceManagerEntry, headerType),                 NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HYPER_TRANSPORT:               UEFI_ASSERT_EXECUTION(initPciHyperTransportCapability((PciHyperTransportCapability *)capability,                                       deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VENDOR:                        UEFI_ASSERT_EXECUTION(initPciVendorCapability((PciVendorCapability *)capability,                                                       deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::DEBUG_PORT:                    UEFI_ASSERT_EXECUTION(initPciDebugPortCapability((PciDebugPortCapability *)capability,                                                 deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::CENTRAL_RESOURCE_CONTROL:      UEFI_ASSERT_EXECUTION(initPciCentralResourceControlCapability((PciCentralResourceControlCapability *)capability,                       deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::HOT_PLUG:                      UEFI_ASSERT_EXECUTION(initPciHotPlugCapability((PciHotPlugCapability *)capability,                                                     deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT_8X:  UEFI_ASSERT_EXECUTION(initPciAcceleratedGraphicsPort8xCapability((PciAcceleratedGraphicsPort8xCapability *)capability,                 deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SECURE_DEVICE:                 UEFI_ASSERT_EXECUTION(initPciSecureDeviceCapability((PciSecureDeviceCapability *)capability,                                           deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::PCI_EXPRESS:                   UEFI_ASSERT_EXECUTION(initPciExpressCapability((PciExpressCapability *)capability,                                                     deviceManagerEntry, pci, bus, device, function), NgosStatus::ASSERTION); break;
+        case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS_X: UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsExtendedCapability((PciMessageSignaledInterruptsExtendedCapability *)capability, deviceManagerEntry),                             NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -1336,9 +1342,9 @@ NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capability, PciHeaderType headerType, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType)
 {
-    UEFI_LT((" | capability = 0x%p, headerType = %u, deviceManagerEntry = 0x%p", capability, headerType, deviceManagerEntry));
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, headerType = %u", capability, deviceManagerEntry, headerType));
 
     UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
@@ -1947,17 +1953,39 @@ NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapabi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
-    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, pci, bus, device, function));
 
     UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
     UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(pci                != nullptr, "pci is null",                NgosStatus::ASSERTION);
 
 
 
     AVOID_UNUSED(capability);
     AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    u64 address = UEFI_PCI_ADDRESS(bus, device, function, 0x0100);
+
+
+
+    PciExtendedConfigurationSpace configurationSpace;
+
+    if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
+    {
+        UEFI_LVV(("Successfully read PCI extended configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
+
+
+
+        UEFI_ASSERT_EXECUTION(initPciWithExtendedConfigurationSpace(configurationSpace, deviceManagerEntry), NgosStatus::ASSERTION);
+    }
+    else
+    {
+        UEFI_LE(("Failed to read PCI configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
+    }
 
 
 
@@ -1995,6 +2023,21 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsExtendedCapability(
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Base address indicator",        mprintf("%u", capability->tableOffsetAndBir.baseAddressIndicator), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MSI-X - Table offset",                  mprintf("%u", capability->tableOffsetAndBir.tableOffset),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
     }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExtendedConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
+
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(configurationSpace);
 
 
 

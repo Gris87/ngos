@@ -3,8 +3,6 @@
 
 
 
-#include <com/ngos/shared/common/log/assert.h>
-#include <com/ngos/shared/common/log/log.h>
 #include <com/ngos/shared/common/ngos/types.h>
 
 
@@ -13,7 +11,7 @@ struct RgbaPixel
 {
     RgbaPixel()
     {
-        COMMON_LT((""));
+        // COMMON_LT(("")); // Commented to avoid infinite loop
 
 
 
@@ -22,7 +20,7 @@ struct RgbaPixel
 
     RgbaPixel(u8 r, u8 g, u8 b, u8 a)
     {
-        COMMON_LT((" | r = %u, g = %u, b = %u, a = %u", r, g, b, a));
+        // COMMON_LT((" | r = %u, g = %u, b = %u, a = %u", r, g, b, a)); // Commented to avoid infinite loop
 
 
 
@@ -34,7 +32,7 @@ struct RgbaPixel
 
     RgbaPixel(u32 value)
     {
-        COMMON_LT((" | value = %u", value));
+        // COMMON_LT((" | value = %u", value)); // Commented to avoid infinite loop
 
 
 

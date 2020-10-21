@@ -4982,6 +4982,9 @@ src/os/shared/common/src/com/ngos/shared/common/pci/pcicardbusdata.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciconfigurationspace.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceheadertyperegion.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pcideviceindependentregion.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciextendedcapabilityheader.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciextendedcapabilitytype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/pciextendedconfigurationspace.h
 src/os/shared/common/src/com/ngos/shared/common/pci/pciregister.h
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.cpp
 src/os/shared/common/src/com/ngos/shared/common/printf/printf.h

@@ -1153,6 +1153,9 @@
 #include <com/ngos/shared/common/pci/pciconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pcideviceheadertyperegion.h>
 #include <com/ngos/shared/common/pci/pcideviceindependentregion.h>
+#include <com/ngos/shared/common/pci/pciextendedcapabilityheader.h>
+#include <com/ngos/shared/common/pci/pciextendedcapabilitytype.h>
+#include <com/ngos/shared/common/pci/pciextendedconfigurationspace.h>
 #include <com/ngos/shared/common/pci/pciregister.h>
 #include <com/ngos/shared/common/serial/serial.h>
 #include <com/ngos/shared/common/time/time.h>
@@ -2414,6 +2417,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryStatus),                         2);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeStatus),                                  4);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeUpstreamSplitTransaction),                4);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedCapabilityHeader),                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedCapabilityType),                                2);
+        TEST_ASSERT_EQUALS(sizeof(PciExtendedConfigurationSpace),                            3840);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceCapability),                              8);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceCommand),                                 2);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedDeviceComplexity),                              1);

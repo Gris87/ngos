@@ -73,6 +73,7 @@
 #include <com/ngos/shared/common/pci/lib/pcislotnumberingexpansionslot.h>
 #include <com/ngos/shared/common/pci/lib/pcistatus.h>
 #include <com/ngos/shared/common/pci/lib/pcivitalproductdataaddressunion.h>
+#include <com/ngos/shared/common/pci/pciextendedcapabilityheader.h>
 #include <com/ngos/shared/common/zlib/zlibheader.h>
 #include <com/ngos/shared/uefibase/testengine.h>
 
@@ -5710,6 +5711,69 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.finished = 1;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xD0C5);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExtendedCapabilityHeader");
+    {
+        PciExtendedCapabilityHeader temp;
+
+
+
+        // PciExtendedCapabilityHeader:
+        //
+        // |           CCCCCCCC            |
+        // |     CCCC      |     BBBB      |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        //
+        // capabilityId         : 16 'A'
+        // capabilityVersion    : 4  'B'
+        // nextCapabilityOffset : 12 'C'
+
+
+
+        // |           10111100            |
+        // |     0110      |     1000      |
+        // |           11110010            |
+        // |           00010001            |
+        temp.value32 = 0xBC68F211;
+
+        TEST_ASSERT_EQUALS(temp.capabilityId,         61969);
+        TEST_ASSERT_EQUALS(temp.capabilityVersion,    8);
+        TEST_ASSERT_EQUALS(temp.nextCapabilityOffset, 3014);
+
+
+
+        // |           10111100            |
+        // |     0110      |     1000      |
+        // |           00001101            |
+        // |           11101110            |
+        temp.capabilityId = 3566;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBC680DEE);
+
+
+
+        // |           10111100            |
+        // |     0110      |     0111      |
+        // |           00001101            |
+        // |           11101110            |
+        temp.capabilityVersion = 7;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xBC670DEE);
+
+
+
+        // |           01000011            |
+        // |     1001      |     0111      |
+        // |           00001101            |
+        // |           11101110            |
+        temp.nextCapabilityOffset = 1081;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x43970DEE);
     }
     TEST_CASE_END();
 
