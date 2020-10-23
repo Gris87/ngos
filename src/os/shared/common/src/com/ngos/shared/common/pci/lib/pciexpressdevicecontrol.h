@@ -21,7 +21,7 @@ struct PciExpressDeviceControl
             u16 fatalErrorReportingEnable                                  : 1;
             u16 unsupportedRequestReportingEnable                          : 1;
             u16 enableRelaxedOrdering                                      : 1;
-            u16 maximumPayloadSizeSupported                                : 3; // TODO: Use enum PciExpressPayloadSize
+            u16 maximumPayloadSize                                         : 3; // TODO: Use enum PciExpressPayloadSize
             u16 extendedTagFieldEnable                                     : 1; // TODO: Use enum PciExpressExtendedTagField
             u16 phantomFunctionsEnable                                     : 1;
             u16 auxPowerPmEnable                                           : 1;

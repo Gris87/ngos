@@ -2101,7 +2101,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // __reserved                   : 2  'H'
         // capturedSlotPowerLimitValue  : 8  'I'
         // capturedSlotPowerLimitScale  : 2  'J'
-        // functionLevelReset           : 1  'K'
+        // functionLevelResetCapability : 1  'K'
         // __reserved2                  : 3  'L'
 
 
@@ -2122,7 +2122,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.__reserved,                   2);
         TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitValue,  96);
         TEST_ASSERT_EQUALS(temp.capturedSlotPowerLimitScale,  2);
-        TEST_ASSERT_EQUALS(temp.functionLevelReset,           1);
+        TEST_ASSERT_EQUALS(temp.functionLevelResetCapability, 1);
         TEST_ASSERT_EQUALS(temp.__reserved2,                  3);
 
 
@@ -2231,7 +2231,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |        011111         |  01   |
         // | 0 |    111    |    010    | 1 |
         // |  10   | 1 |  01   |    100    |
-        temp.functionLevelReset = 0;
+        temp.functionLevelResetCapability = 0;
 
         TEST_ASSERT_EQUALS(temp.value32, 0x667D75AC);
 
@@ -2544,7 +2544,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // fatalErrorReportingEnable                                  : 1  'C'
         // unsupportedRequestReportingEnable                          : 1  'D'
         // enableRelaxedOrdering                                      : 1  'E'
-        // maximumPayloadSizeSupported                                : 3  'F'
+        // maximumPayloadSize                                         : 3  'F'
         // extendedTagFieldEnable                                     : 1  'G'
         // phantomFunctionsEnable                                     : 1  'H'
         // auxPowerPmEnable                                           : 1  'I'
@@ -2563,7 +2563,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.fatalErrorReportingEnable,                                  0);
         TEST_ASSERT_EQUALS(temp.unsupportedRequestReportingEnable,                          1);
         TEST_ASSERT_EQUALS(temp.enableRelaxedOrdering,                                      1);
-        TEST_ASSERT_EQUALS(temp.maximumPayloadSizeSupported,                                5);
+        TEST_ASSERT_EQUALS(temp.maximumPayloadSize,                                         5);
         TEST_ASSERT_EQUALS(temp.extendedTagFieldEnable,                                     1);
         TEST_ASSERT_EQUALS(temp.phantomFunctionsEnable,                                     1);
         TEST_ASSERT_EQUALS(temp.auxPowerPmEnable,                                           1);
@@ -2615,7 +2615,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // | 0 |    000    | 0 | 1 | 1 | 1 |
         // |    010    | 0 | 0 | 1 | 0 | 0 |
-        temp.maximumPayloadSizeSupported = 2;
+        temp.maximumPayloadSize = 2;
 
         TEST_ASSERT_EQUALS(temp.value16, 0x0744);
 
@@ -3221,7 +3221,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // transmitMargin                 : 3  'E'
         // enterModifiedCompliance        : 1  'F'
         // complianceSos                  : 1  'G'
-        // compliancePresetDeemphasis     : 4  'H'
+        // complianceDeemphasis           : 4  'H'
 
 
 
@@ -3236,7 +3236,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(temp.transmitMargin,                 3);
         TEST_ASSERT_EQUALS(temp.enterModifiedCompliance,        0);
         TEST_ASSERT_EQUALS(temp.complianceSos,                  0);
-        TEST_ASSERT_EQUALS(temp.compliancePresetDeemphasis,     3);
+        TEST_ASSERT_EQUALS(temp.complianceDeemphasis,           3);
 
 
 
@@ -3298,7 +3298,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
         // |     1100      | 1 | 1 |  10   |
         // | 0 | 1 | 0 | 0 |     1000      |
-        temp.compliancePresetDeemphasis = 12;
+        temp.complianceDeemphasis = 12;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xCE48);
     }

@@ -28,7 +28,7 @@ struct PciExpressDeviceCapability
             u32 __reserved                   : 2;
             u32 capturedSlotPowerLimitValue  : 8;
             u32 capturedSlotPowerLimitScale  : 2; // TODO: Use enum PciExpressSlotPowerLimitScale
-            u32 functionLevelReset           : 1;
+            u32 functionLevelResetCapability : 1;
             u32 __reserved2                  : 3;
         };
 

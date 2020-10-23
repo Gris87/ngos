@@ -22,7 +22,7 @@ struct PciExpressLinkControl2
             u16 transmitMargin                 : 3;
             u16 enterModifiedCompliance        : 1;
             u16 complianceSos                  : 1;
-            u16 compliancePresetDeemphasis     : 4; // TODO: Use enum PciExpressDeemphasis
+            u16 complianceDeemphasis           : 4; // TODO: Use enum PciExpressDeemphasis
         };
 
         u16 value16;
