@@ -1963,28 +1963,367 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
 
 
-    AVOID_UNUSED(capability);
-    AVOID_UNUSED(deviceManagerEntry);
+    PciExpressCompletionTimeoutRangeFlags completionTimeoutRangesSupported(capability->deviceCapability2.completionTimeoutRangesSupported);
+    PciExpressTphCompleterFlags           tphCompleterSupported(capability->deviceCapability2.tphCompleterSupported);
 
 
 
-    u64 address = UEFI_PCI_ADDRESS(bus, device, function, 0x0100);
-
-
-
-    PciExtendedConfigurationSpace configurationSpace;
-
-    if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
+    // Validation
     {
-        UEFI_LVV(("Successfully read PCI extended configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
-
-
-
-        UEFI_ASSERT_EXECUTION(initPciWithExtendedConfigurationSpace(configurationSpace, deviceManagerEntry), NgosStatus::ASSERTION);
+        UEFI_LVVV(("capability->capability.capabilityVersion                                             = %u",     capability->capability.capabilityVersion));
+        UEFI_LVVV(("capability->capability.devicePortType                                                = %s",     enumToFullString((PciExpressDevicePortType)capability->capability.devicePortType)));
+        UEFI_LVVV(("capability->capability.slotImplemented                                               = %u",     capability->capability.slotImplemented));
+        UEFI_LVVV(("capability->capability.interruptMessageNumber                                        = %u",     capability->capability.interruptMessageNumber));
+        UEFI_LVVV(("capability->capability.value16                                                       = 0x%04X", capability->capability.value16));
+        UEFI_LVVV(("capability->deviceCapability.maximumPayloadSizeSupported                             = %s",     enumToFullString((PciExpressPayloadSize)capability->deviceCapability.maximumPayloadSizeSupported)));
+        UEFI_LVVV(("capability->deviceCapability.phantomFunctionsSupported                               = %u",     capability->deviceCapability.phantomFunctionsSupported));
+        UEFI_LVVV(("capability->deviceCapability.extendedTagFieldSupported                               = %s",     enumToFullString((PciExpressExtendedTagField)capability->deviceCapability.extendedTagFieldSupported)));
+        UEFI_LVVV(("capability->deviceCapability.endpointL0sAcceptableLatency                            = %s",     enumToFullString((PciExpressEndpointL0sAcceptableLatency)capability->deviceCapability.endpointL0sAcceptableLatency)));
+        UEFI_LVVV(("capability->deviceCapability.endpointL1AcceptableLatency                             = %s",     enumToFullString((PciExpressEndpointL1AcceptableLatency)capability->deviceCapability.endpointL1AcceptableLatency)));
+        UEFI_LVVV(("capability->deviceCapability.roleBasedErrorReporting                                 = %u",     capability->deviceCapability.roleBasedErrorReporting));
+        UEFI_LVVV(("capability->deviceCapability.capturedSlotPowerLimitValue                             = %u",     capability->deviceCapability.capturedSlotPowerLimitValue));
+        UEFI_LVVV(("capability->deviceCapability.capturedSlotPowerLimitScale                             = %s",     enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)));
+        UEFI_LVVV(("capability->deviceCapability.functionLevelReset                                      = %u",     capability->deviceCapability.functionLevelReset));
+        UEFI_LVVV(("capability->deviceCapability.value32                                                 = 0x%08X", capability->deviceCapability.value32));
+        UEFI_LVVV(("capability->deviceControl.correctableErrorReportingEnable                            = %u",     capability->deviceControl.correctableErrorReportingEnable));
+        UEFI_LVVV(("capability->deviceControl.nonFatalErrorReportingEnable                               = %u",     capability->deviceControl.nonFatalErrorReportingEnable));
+        UEFI_LVVV(("capability->deviceControl.fatalErrorReportingEnable                                  = %u",     capability->deviceControl.fatalErrorReportingEnable));
+        UEFI_LVVV(("capability->deviceControl.unsupportedRequestReportingEnable                          = %u",     capability->deviceControl.unsupportedRequestReportingEnable));
+        UEFI_LVVV(("capability->deviceControl.enableRelaxedOrdering                                      = %u",     capability->deviceControl.enableRelaxedOrdering));
+        UEFI_LVVV(("capability->deviceControl.maximumPayloadSizeSupported                                = %s",     enumToFullString((PciExpressPayloadSize)capability->deviceControl.maximumPayloadSizeSupported)));
+        UEFI_LVVV(("capability->deviceControl.extendedTagFieldEnable                                     = %s",     enumToFullString((PciExpressExtendedTagField)capability->deviceControl.extendedTagFieldEnable)));
+        UEFI_LVVV(("capability->deviceControl.phantomFunctionsEnable                                     = %u",     capability->deviceControl.phantomFunctionsEnable));
+        UEFI_LVVV(("capability->deviceControl.auxPowerPmEnable                                           = %u",     capability->deviceControl.auxPowerPmEnable));
+        UEFI_LVVV(("capability->deviceControl.enableNoSnoop                                              = %u",     capability->deviceControl.enableNoSnoop));
+        UEFI_LVVV(("capability->deviceControl.maximumReadRequestSize                                     = %s",     enumToFullString((PciExpressRequestSize)capability->deviceControl.maximumReadRequestSize)));
+        UEFI_LVVV(("capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset = %u",     capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset));
+        UEFI_LVVV(("capability->deviceControl.value16                                                    = 0x%04X", capability->deviceControl.value16));
+        UEFI_LVVV(("capability->deviceStatus                                                             = %s",     flagsToFullString(capability->deviceStatus)));
+        UEFI_LVVV(("capability->linkCapability.supportedLinkSpeeds                                       = %s",     enumToFullString((PciExpressLinkSpeed)capability->linkCapability.supportedLinkSpeeds)));
+        UEFI_LVVV(("capability->linkCapability.maximumLinkWidth                                          = %s",     enumToFullString((PciExpressLinkWidth)capability->linkCapability.maximumLinkWidth)));
+        UEFI_LVVV(("capability->linkCapability.aspmSupport                                               = %s",     enumToFullString((PciExpressActiveStatePowerManagementSupport)capability->linkCapability.aspmSupport)));
+        UEFI_LVVV(("capability->linkCapability.l0sExitLatency                                            = %s",     enumToFullString((PciExpressL0sExitLatency)capability->linkCapability.l0sExitLatency)));
+        UEFI_LVVV(("capability->linkCapability.l1ExitLatency                                             = %s",     enumToFullString((PciExpressL1ExitLatency)capability->linkCapability.l1ExitLatency)));
+        UEFI_LVVV(("capability->linkCapability.clockPowerManagement                                      = %u",     capability->linkCapability.clockPowerManagement));
+        UEFI_LVVV(("capability->linkCapability.surpriseDownErrorReportingCapable                         = %u",     capability->linkCapability.surpriseDownErrorReportingCapable));
+        UEFI_LVVV(("capability->linkCapability.dataLinkLayerLinkActiveReportingCapable                   = %u",     capability->linkCapability.dataLinkLayerLinkActiveReportingCapable));
+        UEFI_LVVV(("capability->linkCapability.linkBandwidthNotificationCapability                       = %u",     capability->linkCapability.linkBandwidthNotificationCapability));
+        UEFI_LVVV(("capability->linkCapability.aspmOptionalityCompliance                                 = %u",     capability->linkCapability.aspmOptionalityCompliance));
+        UEFI_LVVV(("capability->linkCapability.portNumber                                                = %u",     capability->linkCapability.portNumber));
+        UEFI_LVVV(("capability->linkCapability.value32                                                   = 0x%08X", capability->linkCapability.value32));
+        UEFI_LVVV(("capability->linkControl.aspmControl                                                  = %s",     enumToFullString((PciExpressActiveStatePowerManagementControl)capability->linkControl.aspmControl)));
+        UEFI_LVVV(("capability->linkControl.readCompletionBoundary                                       = %s",     enumToFullString((PciExpressReadCompletionBoundary)capability->linkControl.readCompletionBoundary)));
+        UEFI_LVVV(("capability->linkControl.linkDisable                                                  = %u",     capability->linkControl.linkDisable));
+        UEFI_LVVV(("capability->linkControl.retrainLink                                                  = %u",     capability->linkControl.retrainLink));
+        UEFI_LVVV(("capability->linkControl.commonClockConfiguration                                     = %u",     capability->linkControl.commonClockConfiguration));
+        UEFI_LVVV(("capability->linkControl.extendedSynch                                                = %u",     capability->linkControl.extendedSynch));
+        UEFI_LVVV(("capability->linkControl.enableClockPowerManagement                                   = %u",     capability->linkControl.enableClockPowerManagement));
+        UEFI_LVVV(("capability->linkControl.hardwareAutonomousWidthDisable                               = %u",     capability->linkControl.hardwareAutonomousWidthDisable));
+        UEFI_LVVV(("capability->linkControl.linkBandwidthManagementInterruptEnable                       = %u",     capability->linkControl.linkBandwidthManagementInterruptEnable));
+        UEFI_LVVV(("capability->linkControl.linkAutonomousBandwidthInterruptEnable                       = %u",     capability->linkControl.linkAutonomousBandwidthInterruptEnable));
+        UEFI_LVVV(("capability->linkControl.value16                                                      = 0x%04X", capability->linkControl.value16));
+        UEFI_LVVV(("capability->linkStatus.currentLinkSpeed                                              = %s",     enumToFullString((PciExpressLinkSpeed)capability->linkStatus.currentLinkSpeed)));
+        UEFI_LVVV(("capability->linkStatus.negotiatedLinkWidth                                           = %s",     enumToFullString((PciExpressLinkWidth)capability->linkStatus.negotiatedLinkWidth)));
+        UEFI_LVVV(("capability->linkStatus.linkTraining                                                  = %u",     capability->linkStatus.linkTraining));
+        UEFI_LVVV(("capability->linkStatus.slotClockConfiguration                                        = %u",     capability->linkStatus.slotClockConfiguration));
+        UEFI_LVVV(("capability->linkStatus.dataLinkLayerLinkActive                                       = %u",     capability->linkStatus.dataLinkLayerLinkActive));
+        UEFI_LVVV(("capability->linkStatus.linkBandwidthManagementStatus                                 = %u",     capability->linkStatus.linkBandwidthManagementStatus));
+        UEFI_LVVV(("capability->linkStatus.linkAutonomousBandwidthStatus                                 = %u",     capability->linkStatus.linkAutonomousBandwidthStatus));
+        UEFI_LVVV(("capability->linkStatus.value16                                                       = 0x%04X", capability->linkStatus.value16));
+        UEFI_LVVV(("capability->slotCapability.attentionButtonPresent                                    = %u",     capability->slotCapability.attentionButtonPresent));
+        UEFI_LVVV(("capability->slotCapability.powerControllerPresent                                    = %u",     capability->slotCapability.powerControllerPresent));
+        UEFI_LVVV(("capability->slotCapability.mrlSensorPresent                                          = %u",     capability->slotCapability.mrlSensorPresent));
+        UEFI_LVVV(("capability->slotCapability.attentionIndicatorPresent                                 = %u",     capability->slotCapability.attentionIndicatorPresent));
+        UEFI_LVVV(("capability->slotCapability.powerIndicatorPresent                                     = %u",     capability->slotCapability.powerIndicatorPresent));
+        UEFI_LVVV(("capability->slotCapability.hotPlugSurprise                                           = %u",     capability->slotCapability.hotPlugSurprise));
+        UEFI_LVVV(("capability->slotCapability.hotPlugCapable                                            = %u",     capability->slotCapability.hotPlugCapable));
+        UEFI_LVVV(("capability->slotCapability.slotPowerLimitValue                                       = %u",     capability->slotCapability.slotPowerLimitValue));
+        UEFI_LVVV(("capability->slotCapability.slotPowerLimitScale                                       = %s",     enumToFullString((PciExpressSlotPowerLimitScale)capability->slotCapability.slotPowerLimitScale)));
+        UEFI_LVVV(("capability->slotCapability.electromechanicalInterlockPresent                         = %u",     capability->slotCapability.electromechanicalInterlockPresent));
+        UEFI_LVVV(("capability->slotCapability.noCommandCompletedSupport                                 = %u",     capability->slotCapability.noCommandCompletedSupport));
+        UEFI_LVVV(("capability->slotCapability.physicalSlotNumber                                        = %u",     capability->slotCapability.physicalSlotNumber));
+        UEFI_LVVV(("capability->slotCapability.value32                                                   = 0x%08X", capability->slotCapability.value32));
+        UEFI_LVVV(("capability->slotControl.attentionButtonPressedEnable                                 = %u",     capability->slotControl.attentionButtonPressedEnable));
+        UEFI_LVVV(("capability->slotControl.powerFaultDetectedEnable                                     = %u",     capability->slotControl.powerFaultDetectedEnable));
+        UEFI_LVVV(("capability->slotControl.mrlSensorChangedEnable                                       = %u",     capability->slotControl.mrlSensorChangedEnable));
+        UEFI_LVVV(("capability->slotControl.presenceDetectChangedEnable                                  = %u",     capability->slotControl.presenceDetectChangedEnable));
+        UEFI_LVVV(("capability->slotControl.commandCompletedInterruptEnable                              = %u",     capability->slotControl.commandCompletedInterruptEnable));
+        UEFI_LVVV(("capability->slotControl.hotPlugInterruptEnable                                       = %u",     capability->slotControl.hotPlugInterruptEnable));
+        UEFI_LVVV(("capability->slotControl.attentionIndicatorControl                                    = %s",     enumToFullString((PciExpressIndicatorControl)capability->slotControl.attentionIndicatorControl)));
+        UEFI_LVVV(("capability->slotControl.powerIndicatorControl                                        = %s",     enumToFullString((PciExpressIndicatorControl)capability->slotControl.powerIndicatorControl)));
+        UEFI_LVVV(("capability->slotControl.powerControllerControl                                       = %s",     enumToFullString((PciExpressPowerControllerControl)capability->slotControl.powerControllerControl)));
+        UEFI_LVVV(("capability->slotControl.electromechanicalInterlockControl                            = %u",     capability->slotControl.electromechanicalInterlockControl));
+        UEFI_LVVV(("capability->slotControl.dataLinkLayerStateChangedEnable                              = %u",     capability->slotControl.dataLinkLayerStateChangedEnable));
+        UEFI_LVVV(("capability->slotControl.value16                                                      = 0x%04X", capability->slotControl.value16));
+        UEFI_LVVV(("capability->slotStatus                                                               = %s",     flagsToFullString(capability->slotStatus)));
+        UEFI_LVVV(("capability->rootControl                                                              = %s",     flagsToFullString(capability->rootControl)));
+        UEFI_LVVV(("capability->rootCapability                                                           = %s",     flagsToFullString(capability->rootCapability)));
+        UEFI_LVVV(("capability->rootStatus.pmeRequesterId                                                = %u",     capability->rootStatus.pmeRequesterId));
+        UEFI_LVVV(("capability->rootStatus.pmeStatus                                                     = %u",     capability->rootStatus.pmeStatus));
+        UEFI_LVVV(("capability->rootStatus.pmePending                                                    = %u",     capability->rootStatus.pmePending));
+        UEFI_LVVV(("capability->rootStatus.value32                                                       = 0x%08X", capability->rootStatus.value32));
+        UEFI_LVVV(("capability->deviceCapability2.completionTimeoutRangesSupported                       = %s",     flagsToFullString(completionTimeoutRangesSupported)));
+        UEFI_LVVV(("capability->deviceCapability2.completionTimeoutDisableSupported                      = %u",     capability->deviceCapability2.completionTimeoutDisableSupported));
+        UEFI_LVVV(("capability->deviceCapability2.ariForwardingSupported                                 = %u",     capability->deviceCapability2.ariForwardingSupported));
+        UEFI_LVVV(("capability->deviceCapability2.atomicOpRoutingSupported                               = %u",     capability->deviceCapability2.atomicOpRoutingSupported));
+        UEFI_LVVV(("capability->deviceCapability2.atomicOp32CompleterSupported                           = %u",     capability->deviceCapability2.atomicOp32CompleterSupported));
+        UEFI_LVVV(("capability->deviceCapability2.atomicOp64CompleterSupported                           = %u",     capability->deviceCapability2.atomicOp64CompleterSupported));
+        UEFI_LVVV(("capability->deviceCapability2.cas128CompleterSupported                               = %u",     capability->deviceCapability2.cas128CompleterSupported));
+        UEFI_LVVV(("capability->deviceCapability2.noRoEnabledPrPrPassing                                 = %u",     capability->deviceCapability2.noRoEnabledPrPrPassing));
+        UEFI_LVVV(("capability->deviceCapability2.ltrMechanismSupported                                  = %u",     capability->deviceCapability2.ltrMechanismSupported));
+        UEFI_LVVV(("capability->deviceCapability2.tphCompleterSupported                                  = %s",     flagsToFullString(tphCompleterSupported)));
+        UEFI_LVVV(("capability->deviceCapability2.lnSystemCls                                            = %u",     capability->deviceCapability2.lnSystemCls));
+        UEFI_LVVV(("capability->deviceCapability2.tenBitTagCompleterSupported                            = %u",     capability->deviceCapability2.tenBitTagCompleterSupported));
+        UEFI_LVVV(("capability->deviceCapability2.tenBitTagRequesterSupported                            = %u",     capability->deviceCapability2.tenBitTagRequesterSupported));
+        UEFI_LVVV(("capability->deviceCapability2.obff                                                   = %u",     capability->deviceCapability2.obff));
+        UEFI_LVVV(("capability->deviceCapability2.extendedFmtFieldSupported                              = %u",     capability->deviceCapability2.extendedFmtFieldSupported));
+        UEFI_LVVV(("capability->deviceCapability2.endEndTlpPrefixSupported                               = %u",     capability->deviceCapability2.endEndTlpPrefixSupported));
+        UEFI_LVVV(("capability->deviceCapability2.maxEndEndTlpPrefixes                                   = %u",     capability->deviceCapability2.maxEndEndTlpPrefixes));
+        UEFI_LVVV(("capability->deviceCapability2.emergencyPowerReductionSupported                       = %u",     capability->deviceCapability2.emergencyPowerReductionSupported));
+        UEFI_LVVV(("capability->deviceCapability2.emergencyPowerReductionInitializationRequired          = %u",     capability->deviceCapability2.emergencyPowerReductionInitializationRequired));
+        UEFI_LVVV(("capability->deviceCapability2.frsSupported                                           = %u",     capability->deviceCapability2.frsSupported));
+        UEFI_LVVV(("capability->deviceCapability2.value32                                                = 0x%08X", capability->deviceCapability2.value32));
+        UEFI_LVVV(("capability->deviceControl2.completionTimeoutValue                                    = %s",     enumToFullString((PciExpressCompletionTimeout)capability->deviceControl2.completionTimeoutValue)));
+        UEFI_LVVV(("capability->deviceControl2.completionTimeoutDisable                                  = %u",     capability->deviceControl2.completionTimeoutDisable));
+        UEFI_LVVV(("capability->deviceControl2.ariForwardingEnable                                       = %u",     capability->deviceControl2.ariForwardingEnable));
+        UEFI_LVVV(("capability->deviceControl2.atomicOpRequesterEnable                                   = %u",     capability->deviceControl2.atomicOpRequesterEnable));
+        UEFI_LVVV(("capability->deviceControl2.atomicOpEgressBlocking                                    = %u",     capability->deviceControl2.atomicOpEgressBlocking));
+        UEFI_LVVV(("capability->deviceControl2.idoRequestEnable                                          = %u",     capability->deviceControl2.idoRequestEnable));
+        UEFI_LVVV(("capability->deviceControl2.idoCompletionEnable                                       = %u",     capability->deviceControl2.idoCompletionEnable));
+        UEFI_LVVV(("capability->deviceControl2.ltrMechanismEnable                                        = %u",     capability->deviceControl2.ltrMechanismEnable));
+        UEFI_LVVV(("capability->deviceControl2.emergencyPowerReductionRequest                            = %u",     capability->deviceControl2.emergencyPowerReductionRequest));
+        UEFI_LVVV(("capability->deviceControl2.tenBitTagRequesterEnable                                  = %u",     capability->deviceControl2.tenBitTagRequesterEnable));
+        UEFI_LVVV(("capability->deviceControl2.obff                                                      = %u",     capability->deviceControl2.obff));
+        UEFI_LVVV(("capability->deviceControl2.endEndTlpPrefixBlocking                                   = %u",     capability->deviceControl2.endEndTlpPrefixBlocking));
+        UEFI_LVVV(("capability->deviceControl2.value16                                                   = 0x%04X", capability->deviceControl2.value16));
+        UEFI_LVVV(("capability->deviceStatus2.value16                                                    = 0x%04X", capability->deviceStatus2.value16));
+        UEFI_LVVV(("capability->linkCapability2.linkSpeedsVector                                         = %u",     capability->linkCapability2.linkSpeedsVector));
+        UEFI_LVVV(("capability->linkCapability2.crosslink                                                = %u",     capability->linkCapability2.crosslink));
+        UEFI_LVVV(("capability->linkCapability2.value32                                                  = 0x%08X", capability->linkCapability2.value32));
+        UEFI_LVVV(("capability->linkControl2.targetLinkSpeed                                             = %s",     enumToFullString((PciExpressLinkSpeed)capability->linkControl2.targetLinkSpeed)));
+        UEFI_LVVV(("capability->linkControl2.enterCompliance                                             = %u",     capability->linkControl2.enterCompliance));
+        UEFI_LVVV(("capability->linkControl2.hardwareAutonomousSpeedDisable                              = %u",     capability->linkControl2.hardwareAutonomousSpeedDisable));
+        UEFI_LVVV(("capability->linkControl2.selectableDeemphasis                                        = %s",     enumToFullString((PciExpressDeemphasis)capability->linkControl2.selectableDeemphasis)));
+        UEFI_LVVV(("capability->linkControl2.transmitMargin                                              = %u",     capability->linkControl2.transmitMargin));
+        UEFI_LVVV(("capability->linkControl2.enterModifiedCompliance                                     = %u",     capability->linkControl2.enterModifiedCompliance));
+        UEFI_LVVV(("capability->linkControl2.complianceSos                                               = %u",     capability->linkControl2.complianceSos));
+        UEFI_LVVV(("capability->linkControl2.compliancePresetDeemphasis                                  = %s",     enumToFullString((PciExpressDeemphasis)capability->linkControl2.compliancePresetDeemphasis)));
+        UEFI_LVVV(("capability->linkControl2.value16                                                     = 0x%04X", capability->linkControl2.value16));
+        UEFI_LVVV(("capability->linkStatus2.currentDeemphasisLevel                                       = %s",     enumToFullString((PciExpressDeemphasis)capability->linkStatus2.currentDeemphasisLevel)));
+        UEFI_LVVV(("capability->linkStatus2.equalizationComplete                                         = %u",     capability->linkStatus2.equalizationComplete));
+        UEFI_LVVV(("capability->linkStatus2.equalizationPhase1Successful                                 = %u",     capability->linkStatus2.equalizationPhase1Successful));
+        UEFI_LVVV(("capability->linkStatus2.equalizationPhase2Successful                                 = %u",     capability->linkStatus2.equalizationPhase2Successful));
+        UEFI_LVVV(("capability->linkStatus2.equalizationPhase3Successful                                 = %u",     capability->linkStatus2.equalizationPhase3Successful));
+        UEFI_LVVV(("capability->linkStatus2.linkEqualizationRequest                                      = %u",     capability->linkStatus2.linkEqualizationRequest));
+        UEFI_LVVV(("capability->linkStatus2.value16                                                      = 0x%04X", capability->linkStatus2.value16));
+        UEFI_LVVV(("capability->slotCapability2.value32                                                  = 0x%08X", capability->slotCapability2.value32));
+        UEFI_LVVV(("capability->slotControl2.value16                                                     = 0x%04X", capability->slotControl2.value16));
+        UEFI_LVVV(("capability->slotStatus2.value16                                                      = 0x%04X", capability->slotStatus2.value16));
     }
-    else
+
+
+
+    // Fill Device Manager entry
     {
-        UEFI_LE(("Failed to read PCI configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability",                                                                         mprintf("0x%04X", capability->capability.value16),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Version",                                                                mprintf("%u",     capability->capability.capabilityVersion),                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Device port type",                                                       strdup(enumToFullString((PciExpressDevicePortType)capability->capability.devicePortType)),                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Slot implemented",                                                       capability->capability.slotImplemented ? "Yes" : "No",                                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Interrupt message number",                                               mprintf("%u",     capability->capability.interruptMessageNumber),                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability",                                                                  mprintf("0x%08X", capability->deviceCapability.value32),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Maximum payload size supported",                                  strdup(enumToFullString((PciExpressPayloadSize)capability->deviceCapability.maximumPayloadSizeSupported)),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Phantom functions supported",                                     mprintf("%u",     capability->deviceCapability.phantomFunctionsSupported),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Extended tag field supported",                                    strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceCapability.extendedTagFieldSupported)),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L0s acceptable latency",                                 strdup(enumToFullString((PciExpressEndpointL0sAcceptableLatency)capability->deviceCapability.endpointL0sAcceptableLatency)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L1 acceptable latency",                                  strdup(enumToFullString((PciExpressEndpointL1AcceptableLatency)capability->deviceCapability.endpointL1AcceptableLatency)),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Role based error reporting",                                      mprintf("%u",     capability->deviceCapability.roleBasedErrorReporting),                                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit value",                                 mprintf("%u",     capability->deviceCapability.capturedSlotPowerLimitValue),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit scale",                                 strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Function level reset",                                            mprintf("%u",     capability->deviceCapability.functionLevelReset),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control",                                                                     mprintf("0x%04X", capability->deviceControl.value16),                                                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Correctable error reporting enable",                                 mprintf("%u",     capability->deviceControl.correctableErrorReportingEnable),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Non-fatal error reporting enable",                                   mprintf("%u",     capability->deviceControl.nonFatalErrorReportingEnable),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Fatal error reporting enable",                                       mprintf("%u",     capability->deviceControl.fatalErrorReportingEnable),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Unsupported request reporting enable",                               mprintf("%u",     capability->deviceControl.unsupportedRequestReportingEnable),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable relaxed ordering",                                            mprintf("%u",     capability->deviceControl.enableRelaxedOrdering),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum payload size supported",                                     strdup(enumToFullString((PciExpressPayloadSize)capability->deviceControl.maximumPayloadSizeSupported)),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Extended tag field enable",                                          strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceControl.extendedTagFieldEnable)),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Phantom functions enable",                                           mprintf("%u",     capability->deviceControl.phantomFunctionsEnable),                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: AUX power PM enable",                                                mprintf("%u",     capability->deviceControl.auxPowerPmEnable),                                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable no snoop",                                                    mprintf("%u",     capability->deviceControl.enableNoSnoop),                                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum read request size",                                          strdup(enumToFullString((PciExpressRequestSize)capability->deviceControl.maximumReadRequestSize)),                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Bridge configuration retry enable or initiate function level reset", mprintf("%u",     capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset),                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Device status", capability->deviceStatus, "0x%04X", PciExpressDeviceStatusFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability",                                                mprintf("0x%08X", capability->linkCapability.value32),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Supported link speeds",                         strdup(enumToFullString((PciExpressLinkSpeed)capability->linkCapability.supportedLinkSpeeds)),                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Maximum link width",                            strdup(enumToFullString((PciExpressLinkWidth)capability->linkCapability.maximumLinkWidth)),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Aspm support",                                  strdup(enumToFullString((PciExpressActiveStatePowerManagementSupport)capability->linkCapability.aspmSupport)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: L0s exit latency",                              strdup(enumToFullString((PciExpressL0sExitLatency)capability->linkCapability.l0sExitLatency)),                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: L1 exit latency",                               strdup(enumToFullString((PciExpressL1ExitLatency)capability->linkCapability.l1ExitLatency)),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Clock power management",                        mprintf("%u",     capability->linkCapability.clockPowerManagement),                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Surprise down error reporting capable",         mprintf("%u",     capability->linkCapability.surpriseDownErrorReportingCapable),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Data link layer link active reporting capable", mprintf("%u",     capability->linkCapability.dataLinkLayerLinkActiveReportingCapable),                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Link bandwidth notification capability",        mprintf("%u",     capability->linkCapability.linkBandwidthNotificationCapability),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Aspm optionality compliance",                   mprintf("%u",     capability->linkCapability.aspmOptionalityCompliance),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability: Port number",                                   mprintf("%u",     capability->linkCapability.portNumber),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control",                                                   mprintf("0x%04X", capability->linkControl.value16),                                                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Aspm control",                                     strdup(enumToFullString((PciExpressActiveStatePowerManagementControl)capability->linkControl.aspmControl)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Read completion boundary",                         strdup(enumToFullString((PciExpressReadCompletionBoundary)capability->linkControl.readCompletionBoundary)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link disable",                                     mprintf("%u",     capability->linkControl.linkDisable),                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Retrain link",                                     mprintf("%u",     capability->linkControl.retrainLink),                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Common clock configuration",                       mprintf("%u",     capability->linkControl.commonClockConfiguration),                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Extended synch",                                   mprintf("%u",     capability->linkControl.extendedSynch),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Enable clock power management",                    mprintf("%u",     capability->linkControl.enableClockPowerManagement),                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Hardware autonomous width disable",                mprintf("%u",     capability->linkControl.hardwareAutonomousWidthDisable),                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link bandwidth management interrupt enable",       mprintf("%u",     capability->linkControl.linkBandwidthManagementInterruptEnable),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link autonomous bandwidth interrupt enable",       mprintf("%u",     capability->linkControl.linkAutonomousBandwidthInterruptEnable),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status",                                                    mprintf("0x%04X", capability->linkStatus.value16),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Current link speed",                                strdup(enumToFullString((PciExpressLinkSpeed)capability->linkStatus.currentLinkSpeed)),                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Negotiated link width",                             strdup(enumToFullString((PciExpressLinkWidth)capability->linkStatus.negotiatedLinkWidth)),                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Link training",                                     mprintf("%u",     capability->linkStatus.linkTraining),                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Slot clock configuration",                          mprintf("%u",     capability->linkStatus.slotClockConfiguration),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Data link layer link active",                       mprintf("%u",     capability->linkStatus.dataLinkLayerLinkActive),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Link bandwidth management status",                  mprintf("%u",     capability->linkStatus.linkBandwidthManagementStatus),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status: Link autonomous bandwidth status",                  mprintf("%u",     capability->linkStatus.linkAutonomousBandwidthStatus),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability",                                                mprintf("0x%08X", capability->slotCapability.value32),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention button present",                      mprintf("%u",     capability->slotCapability.attentionButtonPresent),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power controller present",                      mprintf("%u",     capability->slotCapability.powerControllerPresent),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Mrl sensor present",                            mprintf("%u",     capability->slotCapability.mrlSensorPresent),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention indicator present",                   mprintf("%u",     capability->slotCapability.attentionIndicatorPresent),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power indicator present",                       mprintf("%u",     capability->slotCapability.powerIndicatorPresent),                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot plug surprise",                             mprintf("%u",     capability->slotCapability.hotPlugSurprise),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot plug capable",                              mprintf("%u",     capability->slotCapability.hotPlugCapable),                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit value",                        mprintf("%u",     capability->slotCapability.slotPowerLimitValue),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit scale",                        strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->slotCapability.slotPowerLimitScale)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Electromechanical interlock present",           mprintf("%u",     capability->slotCapability.electromechanicalInterlockPresent),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: No command completed support",                  mprintf("%u",     capability->slotCapability.noCommandCompletedSupport),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Physical slot number",                          mprintf("%u",     capability->slotCapability.physicalSlotNumber),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control",                                                   mprintf("0x%04X", capability->slotControl.value16),                                                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Attention button pressed enable",                  mprintf("%u",     capability->slotControl.attentionButtonPressedEnable),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Power fault detected enable",                      mprintf("%u",     capability->slotControl.powerFaultDetectedEnable),                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Mrl sensor changed enable",                        mprintf("%u",     capability->slotControl.mrlSensorChangedEnable),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Presence detect changed enable",                   mprintf("%u",     capability->slotControl.presenceDetectChangedEnable),                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Command completed interrupt enable",               mprintf("%u",     capability->slotControl.commandCompletedInterruptEnable),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Hot plug interrupt enable",                        mprintf("%u",     capability->slotControl.hotPlugInterruptEnable),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Attention indicator control",                      strdup(enumToFullString((PciExpressIndicatorControl)capability->slotControl.attentionIndicatorControl)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Power indicator control",                          strdup(enumToFullString((PciExpressIndicatorControl)capability->slotControl.powerIndicatorControl)),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Power controller control",                         strdup(enumToFullString((PciExpressPowerControllerControl)capability->slotControl.powerControllerControl)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Electromechanical interlock control",              mprintf("%u",     capability->slotControl.electromechanicalInterlockControl),                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control: Data link layer state changed enable",             mprintf("%u",     capability->slotControl.dataLinkLayerStateChangedEnable),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Slot status",     capability->slotStatus,     "0x%04X", PciExpressSlotStatusFlag,     DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Root control",    capability->rootControl,    "0x%04X", PciExpressRootControlFlag,    DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Root capability", capability->rootCapability, "0x%04X", PciExpressRootCapabilityFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Root status",                   mprintf("0x%08X", capability->rootStatus.value32),        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Root status: Pme requester ID", mprintf("%u",     capability->rootStatus.pmeRequesterId), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Root status: Pme status",       mprintf("%u",     capability->rootStatus.pmeStatus),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Root status: Pme pending",      mprintf("%u",     capability->rootStatus.pmePending),     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2",           mprintf("0x%08X", capability->deviceCapability2.value32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Device capability 2: Completion timeout ranges supported", completionTimeoutRangesSupported, "0x%02X", PciExpressCompletionTimeoutRangeFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Completion timeout disable supported", mprintf("%u", capability->deviceCapability2.completionTimeoutDisableSupported), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Ari forwarding supported",             mprintf("%u", capability->deviceCapability2.ariForwardingSupported),            DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Atomic op routing supported",          mprintf("%u", capability->deviceCapability2.atomicOpRoutingSupported),          DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Atomic op 32 completer supported",     mprintf("%u", capability->deviceCapability2.atomicOp32CompleterSupported),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Atomic op 64 completer supported",     mprintf("%u", capability->deviceCapability2.atomicOp64CompleterSupported),      DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Cas 128 completer supported",          mprintf("%u", capability->deviceCapability2.cas128CompleterSupported),          DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: No ro enabled pr pr passing",          mprintf("%u", capability->deviceCapability2.noRoEnabledPrPrPassing),            DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Ltr mechanism supported",              mprintf("%u", capability->deviceCapability2.ltrMechanismSupported),             DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PCI-E - Device capability 2: Tph completer supported", tphCompleterSupported, "0x%02X", PciExpressTphCompleterFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Ln system cls",                                     mprintf("%u",     capability->deviceCapability2.lnSystemCls),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Ten bit tag completer supported",                   mprintf("%u",     capability->deviceCapability2.tenBitTagCompleterSupported),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Ten bit tag requester supported",                   mprintf("%u",     capability->deviceCapability2.tenBitTagRequesterSupported),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Obff",                                              mprintf("%u",     capability->deviceCapability2.obff),                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Extended fmt field supported",                      mprintf("%u",     capability->deviceCapability2.extendedFmtFieldSupported),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: End end tlp prefix supported",                      mprintf("%u",     capability->deviceCapability2.endEndTlpPrefixSupported),                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Max end end tlp prefixes",                          mprintf("%u",     capability->deviceCapability2.maxEndEndTlpPrefixes),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Emergency power reduction supported",               mprintf("%u",     capability->deviceCapability2.emergencyPowerReductionSupported),                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Emergency power reduction initialization required", mprintf("%u",     capability->deviceCapability2.emergencyPowerReductionInitializationRequired),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability 2: Frs supported",                                     mprintf("%u",     capability->deviceCapability2.frsSupported),                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2",                                                       mprintf("0x%04X", capability->deviceControl2.value16),                                                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Completion timeout value",                             strdup(enumToFullString((PciExpressCompletionTimeout)capability->deviceControl2.completionTimeoutValue)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Completion timeout disable",                           mprintf("%u",     capability->deviceControl2.completionTimeoutDisable),                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ari forwarding enable",                                mprintf("%u",     capability->deviceControl2.ariForwardingEnable),                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Atomic op requester enable",                           mprintf("%u",     capability->deviceControl2.atomicOpRequesterEnable),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Atomic op egress blocking",                            mprintf("%u",     capability->deviceControl2.atomicOpEgressBlocking),                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ido request enable",                                   mprintf("%u",     capability->deviceControl2.idoRequestEnable),                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ido completion enable",                                mprintf("%u",     capability->deviceControl2.idoCompletionEnable),                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ltr mechanism enable",                                 mprintf("%u",     capability->deviceControl2.ltrMechanismEnable),                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Emergency power reduction request",                    mprintf("%u",     capability->deviceControl2.emergencyPowerReductionRequest),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ten bit tag requester enable",                         mprintf("%u",     capability->deviceControl2.tenBitTagRequesterEnable),                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Obff",                                                 mprintf("%u",     capability->deviceControl2.obff),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: End end tlp prefix blocking",                          mprintf("%u",     capability->deviceControl2.endEndTlpPrefixBlocking),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device status 2",                                                        mprintf("0x%04X", capability->deviceStatus2.value16),                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability 2",                                                      mprintf("0x%08X", capability->linkCapability2.value32),                                                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability 2: Link speeds vector",                                  mprintf("%u",     capability->linkCapability2.linkSpeedsVector),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link capability 2: Crosslink",                                           mprintf("%u",     capability->linkCapability2.crosslink),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2",                                                         mprintf("0x%04X", capability->linkControl2.value16),                                                      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Target link speed",                                      strdup(enumToFullString((PciExpressLinkSpeed)capability->linkControl2.targetLinkSpeed)),                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Enter compliance",                                       mprintf("%u",     capability->linkControl2.enterCompliance),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Hardware autonomous speed disable",                      mprintf("%u",     capability->linkControl2.hardwareAutonomousSpeedDisable),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Selectable deemphasis",                                  strdup(enumToFullString((PciExpressDeemphasis)capability->linkControl2.selectableDeemphasis)),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Transmit margin",                                        mprintf("%u",     capability->linkControl2.transmitMargin),                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Enter modified compliance",                              mprintf("%u",     capability->linkControl2.enterModifiedCompliance),                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Compliance sos",                                         mprintf("%u",     capability->linkControl2.complianceSos),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control 2: Compliance preset deemphasis",                           strdup(enumToFullString((PciExpressDeemphasis)capability->linkControl2.compliancePresetDeemphasis)),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2",                                                          mprintf("0x%04X", capability->linkStatus2.value16),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Current deemphasis level",                                strdup(enumToFullString((PciExpressDeemphasis)capability->linkStatus2.currentDeemphasisLevel)),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Equalization complete",                                   mprintf("%u",     capability->linkStatus2.equalizationComplete),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Equalization phase 1 successful",                         mprintf("%u",     capability->linkStatus2.equalizationPhase1Successful),                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Equalization phase 2 successful",                         mprintf("%u",     capability->linkStatus2.equalizationPhase2Successful),                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Equalization phase 3 successful",                         mprintf("%u",     capability->linkStatus2.equalizationPhase3Successful),                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link status 2: Link equalization request",                               mprintf("%u",     capability->linkStatus2.linkEqualizationRequest),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability 2",                                                      mprintf("0x%08X", capability->slotCapability2.value32),                                                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot control 2",                                                         mprintf("0x%04X", capability->slotControl2.value16),                                                      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot status 2",                                                          mprintf("0x%04X", capability->slotStatus2.value16),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    // Read and parse PCI extended configuration space
+    {
+        u64 address = UEFI_PCI_ADDRESS(bus, device, function, 0x0100);
+
+
+
+        PciExtendedConfigurationSpace configurationSpace;
+
+        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
+        {
+            UEFI_LVV(("Successfully read PCI extended configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
+
+
+
+            UEFI_ASSERT_EXECUTION(initPciWithExtendedConfigurationSpace(configurationSpace, deviceManagerEntry), NgosStatus::ASSERTION);
+        }
+        else
+        {
+            UEFI_LE(("Failed to read PCI configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
+        }
     }
 
 
