@@ -29,7 +29,7 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_TEST_TRACE(name) \
+#define __UEFI_LOG_FILE_TEST_TRACE_1(name) \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
@@ -38,13 +38,79 @@
         UefiLogFile::print(name); \
         UefiLogFile::println("\")"); \
     }
+
+#define __UEFI_LOG_FILE_TEST_TRACE_2(name) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::init(); \
+        \
+        UefiLogFile::print(timestampBuffer); \
+        UefiLogFile::print("| TRACE:     TEST_CASE(\""); \
+        UefiLogFile::print(name); \
+        UefiLogFile::println("\")"); \
+    }
 #else
-#define __UEFI_LOG_FILE_TEST_TRACE(name)
+#define __UEFI_LOG_FILE_TEST_TRACE_1(name)
+#define __UEFI_LOG_FILE_TEST_TRACE_2(name)
 #endif
 
 
 
-#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
+#define TEST_CASE(name) \
+        do \
+        { \
+            UEFI::currentTimestampToString(timestampBuffer); \
+            \
+            if (GraphicalConsole::canPrint()) \
+            { \
+                GraphicalConsole::init(); \
+                \
+                Serial::print(timestampBuffer); \
+                GraphicalConsole::print(timestampBuffer); \
+                \
+                Serial::print("| TRACE:     TEST_CASE(\""); \
+                GraphicalConsole::print("| TRACE:     TEST_CASE(\""); \
+                \
+                Serial::print(name); \
+                GraphicalConsole::print(name); \
+                \
+                Serial::println("\")"); \
+                GraphicalConsole::println("\")"); \
+            } \
+            else \
+            if (Console::canPrint()) \
+            { \
+                Serial::print(timestampBuffer); \
+                Console::print(timestampBuffer); \
+                \
+                Serial::print("| TRACE:     TEST_CASE(\""); \
+                Console::print("| TRACE:     TEST_CASE(\""); \
+                \
+                Serial::print(name); \
+                Console::print(name); \
+                \
+                Serial::println("\")"); \
+                Console::println("\")"); \
+            } \
+            else \
+            if (UEFI::canPrint()) \
+            { \
+                UEFI::print(timestampBuffer); \
+                UEFI::print("| TRACE:     TEST_CASE(\""); \
+                UEFI::print(name); \
+                UEFI::println("\")"); \
+            } \
+            else \
+            { \
+                Serial::print(timestampBuffer); \
+                Serial::print("| TRACE:     TEST_CASE(\""); \
+                Serial::print(name); \
+                Serial::println("\")"); \
+            } \
+            \
+            __UEFI_LOG_FILE_TEST_TRACE_2(name);
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define TEST_CASE(name) \
         do \
         { \
@@ -87,8 +153,20 @@
                 Serial::println("\")"); \
             } \
             \
-            __UEFI_LOG_FILE_TEST_TRACE(name);
-#else
+            __UEFI_LOG_FILE_TEST_TRACE_1(name);
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
+#define TEST_CASE(name) \
+        do \
+        { \
+            UEFI::currentTimestampToString(timestampBuffer); \
+            \
+            Serial::print(timestampBuffer); \
+            Serial::print("| TRACE:     TEST_CASE(\""); \
+            Serial::print(name); \
+            Serial::println("\")"); \
+            \
+            __UEFI_LOG_FILE_TEST_TRACE_2(name);
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define TEST_CASE(name) \
         do \
         { \
@@ -96,7 +174,7 @@
             Serial::print(name); \
             Serial::println("\")"); \
             \
-            __UEFI_LOG_FILE_TEST_TRACE(name);
+            __UEFI_LOG_FILE_TEST_TRACE_1(name);
 #endif
 #else
 #define TEST_CASE(name) \
