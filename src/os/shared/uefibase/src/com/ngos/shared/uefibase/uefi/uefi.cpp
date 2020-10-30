@@ -626,6 +626,28 @@ UefiStatus UEFI::getTime(UefiTime *time, UefiTimeCapabilities *capabilities)
     return sSystemTable->runtimeServices->getTime(time, capabilities);
 }
 
+NgosStatus UEFI::currentTimestampToString(char8 *buffer)
+{
+    // UEFI_LT((" | buffer = 0x%p", buffer)); // Commented to avoid infinite loop
+
+    UEFI_ASSERT(buffer, "buffer is null", NgosStatus::ASSERTION);
+
+
+
+    UefiTime             time;
+    UefiTimeCapabilities capabilities;
+
+    UEFI_ASSERT_EXECUTION(getTime(&time, &capabilities), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+
+
+
+    sprintf(buffer, "%04u-%02u-%02u %02u:%02u:%02u.%09u", time.year, time.month, time.day, time.hour, time.minute, time.second, time.nanosecond);
+
+
+
+    return NgosStatus::OK;
+}
+
 UefiStatus UEFI::createEvent(UefiEventType type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event)
 {
     UEFI_LT((" | type = %u, notifyTpl = %u, notifyFunction = 0x%p, notifyContext = 0x%p, event = 0x%p", type, notifyTpl, notifyFunction, notifyContext, event));

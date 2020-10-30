@@ -9,7 +9,8 @@
 
 
 
-extern char8 printfBuffer[1024]; // printfBuffer declared in printf.cpp file
+extern char8 timestampBuffer[32]; // timestampBuffer declared in printf.cpp file
+extern char8 printfBuffer[1024];  // printfBuffer declared in printf.cpp file
 
 
 

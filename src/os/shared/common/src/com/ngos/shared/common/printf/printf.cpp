@@ -19,6 +19,7 @@
 
 
 
+char8 timestampBuffer[32];
 char8 printfBuffer[1024];
 
 

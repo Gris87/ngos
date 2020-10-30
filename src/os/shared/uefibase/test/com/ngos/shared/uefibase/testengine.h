@@ -44,6 +44,7 @@
 
 
 
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES
 #define TEST_CASE(name) \
         do \
         { \
@@ -87,6 +88,16 @@
             } \
             \
             __UEFI_LOG_FILE_TEST_TRACE(name);
+#else
+#define TEST_CASE(name) \
+        do \
+        { \
+            Serial::print("TRACE:     TEST_CASE(\""); \
+            Serial::print(name); \
+            Serial::println("\")"); \
+            \
+            __UEFI_LOG_FILE_TEST_TRACE(name);
+#endif
 #else
 #define TEST_CASE(name) \
         do \

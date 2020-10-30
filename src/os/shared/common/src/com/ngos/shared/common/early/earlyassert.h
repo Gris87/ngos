@@ -15,7 +15,7 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
-#if NGOS_BUILD_RELEASE == OPTION_NO
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES
 #define __EARLY_PRINT_ASSERT(message) \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -34,9 +34,14 @@
     { \
         Serial::printf message; \
     }
+#else
+#define __EARLY_PRINT_ASSERT(message) \
+    Serial::printf message;
+#endif
 
 
 
+#if NGOS_BUILD_RELEASE == OPTION_NO
 #define __EARLY_ASSERT_2(condition, message) \
     if (!(condition)) \
     { \

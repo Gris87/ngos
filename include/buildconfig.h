@@ -160,7 +160,7 @@
  *** Category: General
  *** Name: 5 level paging
  ***
- *** Description: Build kernel with 5 level paging.
+ *** Description: Build kernel with 5 level paging support.
  ***
  *** Type: Boolean
  ***
@@ -170,6 +170,77 @@
  *** Default: OPTION_NO
  ***/
 #define NGOS_BUILD_5_LEVEL_PAGING OPTION_NO
+
+
+
+/***
+ *** Category: General -> Logging
+ *** Name: Display logs on the screen
+ ***
+ *** Description: Output log entries on the screen.
+ ***
+ *** Type: Boolean
+ ***
+ *** Values: true = OPTION_YES, false = OPTION_NO
+ *** Value description: true = Write logs to screen, serial (and file), false = Write logs to serial (and file)
+ ***
+ *** Default: OPTION_YES
+ ***/
+#define NGOS_BUILD_LOG_TO_SCREEN OPTION_YES
+
+
+
+/***
+ *** Category: General -> Logging
+ *** Name: Log with timestamp
+ ***
+ *** Description: Adds timestamp to log entries.
+ ***
+ *** Type: Boolean
+ ***
+ *** Values: true = OPTION_YES, false = OPTION_NO
+ *** Value description: true = Add timestamp to log, false = Do not add timestamp to log
+ ***
+ *** Default: OPTION_YES
+ ***/
+#define NGOS_BUILD_LOG_WITH_TIMESTAMP OPTION_YES
+
+
+
+#if NGOS_BUILD_RELEASE == OPTION_NO
+/***
+ *** Category: General -> Logging
+ *** Name: Log to UEFI file
+ ***
+ *** Description: Enable logging to file located on ESP.
+ ***
+ *** Type: Boolean
+ ***
+ *** Values: true = OPTION_YES, false = OPTION_NO
+ *** Value description: true = Log to UEFI file, false = Do not log to UEFI file
+ ***
+ *** Default: OPTION_NO
+ ***/
+#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
+#else
+#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
+#endif
+
+
+
+/***
+ *** Category: General -> Logging
+ *** Name: UEFI log file
+ ***
+ *** Description: Path to log file located on ESP.
+ ***
+ *** Enabled: NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
+ ***
+ *** Type: Text
+ ***
+ *** Default: "/EFI/logs/NGOS.log"
+ ***/
+#define NGOS_BUILD_UEFI_LOG_FILE "/EFI/logs/NGOS.log"
 
 
 
@@ -196,7 +267,7 @@
  ***
  *** Default: OPTION_LOG_LEVEL_DEBUG
  ***/
-#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_DEBUG
+#define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
 #else
 #define NGOS_BUILD_LOG_LEVEL OPTION_LOG_LEVEL_ERROR
 #endif
@@ -293,43 +364,6 @@
 #else
 #define NGOS_BUILD_EARLY_LOG_LEVEL OPTION_LOG_LEVEL_INHERIT
 #endif
-
-
-
-#if NGOS_BUILD_RELEASE == OPTION_NO
-/***
- *** Category: General -> Logging
- *** Name: Log to UEFI file
- ***
- *** Description: Enable logging to file located on ESP.
- ***
- *** Type: Boolean
- ***
- *** Values: true = OPTION_YES, false = OPTION_NO
- *** Value description: true = Log to UEFI file, false = Do not log to UEFI file
- ***
- *** Default: OPTION_NO
- ***/
-#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
-#else
-#define NGOS_BUILD_LOG_TO_UEFI_FILE OPTION_NO
-#endif
-
-
-
-/***
- *** Category: General -> Logging
- *** Name: UEFI log file
- ***
- *** Description: Path to log file located on ESP.
- ***
- *** Enabled: NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
- ***
- *** Type: Text
- ***
- *** Default: "/EFI/logs/NGOS.log"
- ***/
-#define NGOS_BUILD_UEFI_LOG_FILE "/EFI/logs/NGOS.log"
 
 
 
@@ -465,6 +499,18 @@
 #error Invalid value for NGOS_BUILD_KERNEL_COMPRESSION parameter
 #endif
 
+#if NGOS_BUILD_LOG_TO_SCREEN != OPTION_NO && NGOS_BUILD_LOG_TO_SCREEN != OPTION_YES
+#error Invalid value for NGOS_BUILD_LOG_TO_SCREEN parameter
+#endif
+
+#if NGOS_BUILD_LOG_WITH_TIMESTAMP != OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP != OPTION_YES
+#error Invalid value for NGOS_BUILD_LOG_WITH_TIMESTAMP parameter
+#endif
+
+#if NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_NO && NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_YES
+#error Invalid value for NGOS_BUILD_LOG_TO_UEFI_FILE parameter
+#endif
+
 #if NGOS_BUILD_LOG_LEVEL < OPTION_LOG_LEVEL_NONE || NGOS_BUILD_LOG_LEVEL > OPTION_LOG_LEVEL_TRACE
 #error Invalid value for NGOS_BUILD_LOG_LEVEL parameter
 #endif
@@ -479,10 +525,6 @@
 
 #if NGOS_BUILD_EARLY_LOG_LEVEL < OPTION_LOG_LEVEL_INHERIT || NGOS_BUILD_EARLY_LOG_LEVEL > OPTION_LOG_LEVEL_TRACE
 #error Invalid value for NGOS_BUILD_EARLY_LOG_LEVEL parameter
-#endif
-
-#if NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_NO && NGOS_BUILD_LOG_TO_UEFI_FILE != OPTION_YES
-#error Invalid value for NGOS_BUILD_LOG_TO_UEFI_FILE parameter
 #endif
 
 #if NGOS_BUILD_REALTIME != OPTION_NO && NGOS_BUILD_REALTIME != OPTION_YES

@@ -51,6 +51,7 @@ public:
     static u64 getDevicePathSize(UefiDevicePath *path);
 
     static UefiStatus getTime(UefiTime *time, UefiTimeCapabilities *capabilities); // TEST: NO
+    static NgosStatus currentTimestampToString(char8 *buffer); // TEST: NO
 
     static UefiStatus createEvent(UefiEventType type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
     static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO

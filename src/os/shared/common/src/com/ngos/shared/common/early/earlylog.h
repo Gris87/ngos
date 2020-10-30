@@ -13,6 +13,7 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES
 #define __EARLY_PRINT_LOG(level, message) \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -73,6 +74,18 @@
         Serial::print(__PRETTY_FUNCTION__); \
         Serial::printf message; \
     }
+#else
+#define __EARLY_PRINT_LOG(level, message) \
+    Serial::print(level); \
+    Serial::printf message;
+
+
+
+#define __EARLY_PRINT_LT(message) \
+    Serial::print("TRACE:     "); \
+    Serial::print(__PRETTY_FUNCTION__); \
+    Serial::printf message;
+#endif
 
 
 
@@ -158,7 +171,8 @@
 
 
 #if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
-#define EARLY_LT(message) __EARLY_PRINT_LT(message) // TEST: NO
+#define EARLY_LT(message) \
+    __EARLY_PRINT_LT(message);
 #else
 #define EARLY_LT(message)
 #endif

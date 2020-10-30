@@ -27,6 +27,7 @@
 
 // Ignore CppAlignmentVerifier [BEGIN]
 #if NGOS_BUILD_EARLY_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_EARLY_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES
 #define TEST_CASE(name) \
         do \
         { \
@@ -61,6 +62,14 @@
                 Serial::print(name); \
                 Serial::println("\")"); \
             }
+#else
+#define TEST_CASE(name) \
+    do \
+    { \
+        Serial::print("TRACE:     TEST_CASE(\""); \
+        Serial::print(name); \
+        Serial::println("\")");
+#endif
 #else
 #define TEST_CASE(name) \
         do \

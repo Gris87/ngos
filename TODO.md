@@ -27,7 +27,6 @@ NGOS:
 - Per CPU?
 - Initialization via multiple CPU cores
 
-- Add option to provide timestamp for logs
 - Add option to disable inline
 - Add stack protector to build
 
@@ -122,7 +121,7 @@ MathZip:
 SpecVerifier:
 
 - Implement tool
-- Check the code with several specifications like SMBIOS, TCP ...
+- Check the code with several specifications like SMBIOS, TCP, PCI, PCI Express ...
 
 
 

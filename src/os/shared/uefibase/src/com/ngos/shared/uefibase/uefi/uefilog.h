@@ -16,48 +16,179 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LOG_1(level, message) \
+#define __UEFI_LOG_FILE_PRINT_LOG_1 \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_LOG_2(level, message) \
+#define __UEFI_LOG_FILE_PRINT_LOG_2(level) \
     if (UefiLogFile::canPrint()) \
     { \
+        UefiLogFile::print(level); \
+        UefiLogFile::println(message); \
+    }
+
+#define __UEFI_LOG_FILE_PRINT_LOG_3(level) \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::print(timestampBuffer); \
+        UefiLogFile::print("| "); \
         UefiLogFile::print(level); \
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_LOG_1(level, message)
-#define __UEFI_LOG_FILE_PRINT_LOG_2(level, message)
+#define __UEFI_LOG_FILE_PRINT_LOG_1
+#define __UEFI_LOG_FILE_PRINT_LOG_2(level)
+#define __UEFI_LOG_FILE_PRINT_LOG_3(level)
 #endif
 
 
 
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LT_1(message) \
+#define __UEFI_LOG_FILE_PRINT_LT_1 \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_LT_2(message) \
+#define __UEFI_LOG_FILE_PRINT_LT_2 \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::print("TRACE:     "); \
         UefiLogFile::print(__PRETTY_FUNCTION__); \
         UefiLogFile::println(printfBuffer); \
     }
+
+#define __UEFI_LOG_FILE_PRINT_LT_3 \
+    if (UefiLogFile::canPrint()) \
+    { \
+        UefiLogFile::print(timestampBuffer); \
+        UefiLogFile::print("| TRACE:     "); \
+        UefiLogFile::print(__PRETTY_FUNCTION__); \
+        UefiLogFile::println(printfBuffer); \
+    }
 #else
-#define __UEFI_LOG_FILE_PRINT_LT_1(message)
-#define __UEFI_LOG_FILE_PRINT_LT_2(message)
+#define __UEFI_LOG_FILE_PRINT_LT_1
+#define __UEFI_LOG_FILE_PRINT_LT_2
+#define __UEFI_LOG_FILE_PRINT_LT_3
 #endif
 
 
 
+#if NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
 #define __UEFI_PRINT_LOG(level, message) \
-    __UEFI_LOG_FILE_PRINT_LOG_1(level, message); \
+    UEFI::currentTimestampToString(timestampBuffer); \
+    \
+    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    \
+    if (GraphicalConsole::canPrint()) \
+    { \
+        GraphicalConsole::init(); \
+        \
+        Serial::print(timestampBuffer); \
+        GraphicalConsole::print(timestampBuffer); \
+        \
+        Serial::print("| "); \
+        GraphicalConsole::print("| "); \
+        \
+        Serial::print(level); \
+        GraphicalConsole::print(level); \
+        \
+        Serial::printf message; \
+        GraphicalConsole::println(printfBuffer); \
+    } \
+    else \
+    if (Console::canPrint()) \
+    { \
+        Serial::print(timestampBuffer); \
+        Console::print(timestampBuffer); \
+        \
+        Serial::print("| "); \
+        Console::print("| "); \
+        \
+        Serial::print(level); \
+        Console::print(level); \
+        \
+        Serial::printf message; \
+        Console::println(printfBuffer); \
+    } \
+    else \
+    if (UEFI::canPrint()) \
+    { \
+        UEFI::print(timestampBuffer); \
+        UEFI::print("| "); \
+        UEFI::print(level); \
+        UEFI::printf message; \
+    } \
+    else \
+    { \
+        Serial::print(timestampBuffer); \
+        Serial::print("| "); \
+        Serial::print(level); \
+        Serial::printf message; \
+    } \
+    \
+    __UEFI_LOG_FILE_PRINT_LOG_3(level);
+
+
+
+#define __UEFI_PRINT_LT(message) \
+    UEFI::currentTimestampToString(timestampBuffer); \
+    \
+    __UEFI_LOG_FILE_PRINT_LT_1; \
+    \
+    if (GraphicalConsole::canPrint()) \
+    { \
+        GraphicalConsole::init(); \
+        \
+        Serial::print(timestampBuffer); \
+        GraphicalConsole::print(timestampBuffer); \
+        \
+        Serial::print("| TRACE:     "); \
+        GraphicalConsole::print("| TRACE:     "); \
+        \
+        Serial::print(__PRETTY_FUNCTION__); \
+        GraphicalConsole::print(__PRETTY_FUNCTION__); \
+        \
+        Serial::printf message; \
+        GraphicalConsole::println(printfBuffer); \
+    } \
+    else \
+    if (Console::canPrint()) \
+    { \
+        Serial::print(timestampBuffer); \
+        Console::print(timestampBuffer); \
+        \
+        Serial::print("| TRACE:     "); \
+        Console::print("| TRACE:     "); \
+        \
+        Serial::print(__PRETTY_FUNCTION__); \
+        Console::print(__PRETTY_FUNCTION__); \
+        \
+        Serial::printf message; \
+        Console::println(printfBuffer); \
+    } \
+    else \
+    if (UEFI::canPrint()) \
+    { \
+        UEFI::print(timestampBuffer); \
+        UEFI::print("| TRACE:     "); \
+        UEFI::print(__PRETTY_FUNCTION__); \
+        UEFI::printf message; \
+    } \
+    else \
+    { \
+        Serial::print(timestampBuffer); \
+        Serial::print("| TRACE:     "); \
+        Serial::print(__PRETTY_FUNCTION__); \
+        Serial::printf message; \
+    } \
+    \
+    __UEFI_LOG_FILE_PRINT_LT_3;
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
+#define __UEFI_PRINT_LOG(level, message) \
+    __UEFI_LOG_FILE_PRINT_LOG_1; \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -90,12 +221,12 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LOG_2(level, message);
+    __UEFI_LOG_FILE_PRINT_LOG_2(level);
 
 
 
 #define __UEFI_PRINT_LT(message) \
-    __UEFI_LOG_FILE_PRINT_LT_1(message); \
+    __UEFI_LOG_FILE_PRINT_LT_1; \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -136,7 +267,53 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LT_2(message);
+    __UEFI_LOG_FILE_PRINT_LT_2;
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
+#define __UEFI_PRINT_LOG(level, message) \
+    UEFI::currentTimestampToString(timestampBuffer); \
+    \
+    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    \
+    Serial::print(timestampBuffer); \
+    Serial::print("| "); \
+    Serial::print(level); \
+    Serial::printf message; \
+    \
+    __UEFI_LOG_FILE_PRINT_LOG_3(level);
+
+
+
+#define __UEFI_PRINT_LT(message) \
+    UEFI::currentTimestampToString(timestampBuffer); \
+    \
+    __UEFI_LOG_FILE_PRINT_LT_1; \
+    \
+    Serial::print(timestampBuffer); \
+    Serial::print("| TRACE:     "); \
+    Serial::print(__PRETTY_FUNCTION__); \
+    Serial::printf message; \
+    \
+    __UEFI_LOG_FILE_PRINT_LT_3;
+#elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
+#define __UEFI_PRINT_LOG(level, message) \
+    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    \
+    Serial::print(level); \
+    Serial::printf message; \
+    \
+    __UEFI_LOG_FILE_PRINT_LOG_2(level);
+
+
+
+#define __UEFI_PRINT_LT(message) \
+    __UEFI_LOG_FILE_PRINT_LT_1; \
+    \
+    Serial::print("TRACE:     "); \
+    Serial::print(__PRETTY_FUNCTION__); \
+    Serial::printf message; \
+    \
+    __UEFI_LOG_FILE_PRINT_LT_2;
+#endif
 
 
 
@@ -222,7 +399,8 @@
 
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_TRACE
-#define UEFI_LT(message) __UEFI_PRINT_LT(message) // TEST: NO
+#define UEFI_LT(message) \
+    __UEFI_PRINT_LT(message);
 #else
 #define UEFI_LT(message)
 #endif

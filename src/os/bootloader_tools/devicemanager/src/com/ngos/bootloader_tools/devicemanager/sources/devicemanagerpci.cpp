@@ -2306,7 +2306,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
     // Read and parse PCI extended configuration space
     {
-        u64 address = UEFI_PCI_ADDRESS(bus, device, function, 0x0100);
+        u64 address = UEFI_PCI_ADDRESS(bus, device, function, sizeof(PciConfigurationSpace));
 
 
 
@@ -2376,7 +2376,53 @@ NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExte
 
 
 
-    AVOID_UNUSED(configurationSpace);
+    PciExtendedCapabilityHeader *capability = (PciExtendedCapabilityHeader *)&configurationSpace.capability;
+
+    while (
+           capability->capabilityId != 0
+           &&
+           capability->capabilityVersion != 0
+          )
+    {
+        UEFI_ASSERT_EXECUTION(initPciWithExtendedCapability(capability, deviceManagerEntry), NgosStatus::ASSERTION);
+
+
+
+        if (capability->nextCapabilityOffset == 0)
+        {
+            break;
+        }
+
+        capability = (PciExtendedCapabilityHeader *)((u64)&configurationSpace + capability->nextCapabilityOffset - sizeof(PciConfigurationSpace));
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->capabilityId         = %s",     enumToFullString((PciExtendedCapabilityType)capability->capabilityId)));
+        UEFI_LVVV(("capability->capabilityVersion    = 0x%04X", capability->capabilityVersion));
+        UEFI_LVVV(("capability->nextCapabilityOffset = 0x%04X", capability->nextCapabilityOffset));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended capability", strdup(enumToFullString((PciExtendedCapabilityType)capability->capabilityId)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+    }
 
 
 
