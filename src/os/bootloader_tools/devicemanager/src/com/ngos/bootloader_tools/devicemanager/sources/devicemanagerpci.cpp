@@ -2126,34 +2126,101 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability",                                                                         mprintf("0x%04X", capability->capability.value16),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Version",                                                                mprintf("%u",     capability->capability.capabilityVersion),                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Device port type",                                                       strdup(enumToFullString((PciExpressDevicePortType)capability->capability.devicePortType)),                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Slot implemented",                                                       capability->capability.slotImplemented ? "Yes" : "No",                                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Interrupt message number",                                               mprintf("%u",     capability->capability.interruptMessageNumber),                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability",                                                                  mprintf("0x%08X", capability->deviceCapability.value32),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Maximum payload size supported",                                  strdup(enumToFullString((PciExpressPayloadSize)capability->deviceCapability.maximumPayloadSizeSupported)),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Phantom functions supported",                                     mprintf("%u",     capability->deviceCapability.phantomFunctionsSupported),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Extended tag field supported",                                    strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceCapability.extendedTagFieldSupported)),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L0s acceptable latency",                                 strdup(enumToFullString((PciExpressEndpointL0sAcceptableLatency)capability->deviceCapability.endpointL0sAcceptableLatency)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L1 acceptable latency",                                  strdup(enumToFullString((PciExpressEndpointL1AcceptableLatency)capability->deviceCapability.endpointL1AcceptableLatency)),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Role based error reporting",                                      capability->deviceCapability.roleBasedErrorReporting ? "Yes" : "No",                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit value",                                 mprintf("%u",     capability->deviceCapability.capturedSlotPowerLimitValue),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit scale",                                 strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Function level reset capability",                                 capability->deviceCapability.functionLevelResetCapability ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control",                                                                     mprintf("0x%04X", capability->deviceControl.value16),                                                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Correctable error reporting enable",                                 capability->deviceControl.correctableErrorReportingEnable   ? "Yes" : "No",                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Non-fatal error reporting enable",                                   capability->deviceControl.nonFatalErrorReportingEnable      ? "Yes" : "No",                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Fatal error reporting enable",                                       capability->deviceControl.fatalErrorReportingEnable         ? "Yes" : "No",                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Unsupported request reporting enable",                               capability->deviceControl.unsupportedRequestReportingEnable ? "Yes" : "No",                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable relaxed ordering",                                            capability->deviceControl.enableRelaxedOrdering             ? "Yes" : "No",                                                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum payload size",                                               strdup(enumToFullString((PciExpressPayloadSize)capability->deviceControl.maximumPayloadSize)),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Extended tag field enable",                                          strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceControl.extendedTagFieldEnable)),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Phantom functions enable",                                           capability->deviceControl.phantomFunctionsEnable ? "Yes" : "No",                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Auxiliary power PM enable",                                          capability->deviceControl.auxPowerPmEnable       ? "Yes" : "No",                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable no snoop",                                                    capability->deviceControl.enableNoSnoop          ? "Yes" : "No",                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum read request size",                                          strdup(enumToFullString((PciExpressRequestSize)capability->deviceControl.maximumReadRequestSize)),                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Bridge configuration retry enable or initiate function level reset", capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset ? "Yes" : "No",                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // PCI-E - Capability
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability",                   mprintf("0x%04X", capability->capability.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Version",          mprintf("%u",     capability->capability.capabilityVersion),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Device port type", strdup(enumToFullString((PciExpressDevicePortType)capability->capability.devicePortType)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+            if (
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::ROOT_PORT_OF_PCI_EXPRESS_ROOT_COMPLEX
+                ||
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::DOWNSTREAM_PORT_OF_PCI_EXPRESS_SWITCH
+               )
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Slot implemented", capability->capability.slotImplemented ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
+
+
+
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Capability: Interrupt message number", mprintf("%u", capability->capability.interruptMessageNumber), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        }
+
+
+
+        // PCI-E - Device capability
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability",                                 mprintf("0x%08X", capability->deviceCapability.value32),                                                      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Maximum payload size supported", strdup(enumToFullString((PciExpressPayloadSize)capability->deviceCapability.maximumPayloadSizeSupported)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Phantom functions supported",    mprintf("%u",     capability->deviceCapability.phantomFunctionsSupported),                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Extended tag field supported",   strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceCapability.extendedTagFieldSupported)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+            if (
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::PCI_EXPRESS_ENDPOINT
+                ||
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::LEGACY_PCI_EXPRESS_ENDPOINT
+                ||
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::ROOT_COMPLEX_INTEGRATED_ENDPOINT
+               )
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L0s acceptable latency", strdup(enumToFullString((PciExpressEndpointL0sAcceptableLatency)capability->deviceCapability.endpointL0sAcceptableLatency)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Endpoint L1 acceptable latency",  strdup(enumToFullString((PciExpressEndpointL1AcceptableLatency)capability->deviceCapability.endpointL1AcceptableLatency)),   DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
+
+
+
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Role based error reporting", capability->deviceCapability.roleBasedErrorReporting ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+            if ((PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::UPSTREAM_PORT_OF_PCI_EXPRESS_SWITCH)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit value", mprintf("%u",     capability->deviceCapability.capturedSlotPowerLimitValue),                                       DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit scale", strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
+
+
+
+            if (
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::PCI_EXPRESS_ENDPOINT
+                ||
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::LEGACY_PCI_EXPRESS_ENDPOINT
+                ||
+                (PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::ROOT_COMPLEX_INTEGRATED_ENDPOINT
+               )
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Function level reset capability", capability->deviceCapability.functionLevelResetCapability ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
+        }
+
+
+
+        // PCI-E - Device control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control",                                       mprintf("0x%04X", capability->deviceControl.value16),                                                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Correctable error reporting enable",   capability->deviceControl.correctableErrorReportingEnable   ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Non-fatal error reporting enable",     capability->deviceControl.nonFatalErrorReportingEnable      ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Fatal error reporting enable",         capability->deviceControl.fatalErrorReportingEnable         ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Unsupported request reporting enable", capability->deviceControl.unsupportedRequestReportingEnable ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable relaxed ordering",              capability->deviceControl.enableRelaxedOrdering             ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum payload size",                 strdup(enumToFullString((PciExpressPayloadSize)capability->deviceControl.maximumPayloadSize)),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Extended tag field enable",            strdup(enumToFullString((PciExpressExtendedTagField)capability->deviceControl.extendedTagFieldEnable)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Phantom functions enable",             capability->deviceControl.phantomFunctionsEnable ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Auxiliary power PM enable",            capability->deviceControl.auxPowerPmEnable       ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Enable no snoop",                      capability->deviceControl.enableNoSnoop          ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Maximum read request size",            strdup(enumToFullString((PciExpressRequestSize)capability->deviceControl.maximumReadRequestSize)),      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+            if ((PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::PCI_EXPRESS_TO_PCI_BRIDGE)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Bridge configuration retry enable or initiate function level reset", capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
+        }
 
 
 

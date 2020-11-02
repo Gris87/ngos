@@ -47,6 +47,7 @@ Code verifier:
 - Verify for headers in assembler
 - Verify for function asserts
 - Verify for log alignment
+- Verify for 3 lines for if and while
 - Verify for amount of arguments in log
 - Verify for asserts alignment
 - Verify for DeviceManagerGUI::sImagesPath
