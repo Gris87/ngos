@@ -12,6 +12,7 @@ enum class PciExpressActiveStatePowerManagementSupport: u8
 {
     NONE                 = 0,
     L0S_ENTRY_SUPPORTED  = 1,
+    L1_ENTRY_SUPPORTED   = 2,
     L0S_AND_L1_SUPPORTED = 3
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciExpressActiveStatePowerManagementSupport sup
     {
         case PciExpressActiveStatePowerManagementSupport::NONE:                 return "NONE";
         case PciExpressActiveStatePowerManagementSupport::L0S_ENTRY_SUPPORTED:  return "L0S_ENTRY_SUPPORTED";
+        case PciExpressActiveStatePowerManagementSupport::L1_ENTRY_SUPPORTED:   return "L1_ENTRY_SUPPORTED";
         case PciExpressActiveStatePowerManagementSupport::L0S_AND_L1_SUPPORTED: return "L0S_AND_L1_SUPPORTED";
 
         default: return "UNKNOWN";
