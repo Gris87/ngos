@@ -2281,13 +2281,13 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
 
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Retrain link",                               capability->linkControl.retrainLink                            ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Common clock configuration",                 capability->linkControl.commonClockConfiguration               ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Extended synch",                             capability->linkControl.extendedSynch                          ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Enable clock power management",              capability->linkControl.enableClockPowerManagement             ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Hardware autonomous width disable",          capability->linkControl.hardwareAutonomousWidthDisable         ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link bandwidth management interrupt enable", capability->linkControl.linkBandwidthManagementInterruptEnable ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link autonomous bandwidth interrupt enable", capability->linkControl.linkAutonomousBandwidthInterruptEnable ? "Yes" : "No",                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Retrain link",                               capability->linkControl.retrainLink                            ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Common clock configuration",                 capability->linkControl.commonClockConfiguration               ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Extended synch",                             capability->linkControl.extendedSynch                          ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Enable clock power management",              capability->linkControl.enableClockPowerManagement             ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Hardware autonomous width disable",          capability->linkControl.hardwareAutonomousWidthDisable         ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link bandwidth management interrupt enable", capability->linkControl.linkBandwidthManagementInterruptEnable ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Link control: Link autonomous bandwidth interrupt enable", capability->linkControl.linkAutonomousBandwidthInterruptEnable ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
         }
 
 
@@ -2549,8 +2549,6 @@ NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExte
         UEFI_ASSERT_EXECUTION(initPciWithExtendedCapability(capability, deviceManagerEntry), NgosStatus::ASSERTION);
 
 
-
-        UEFI_TEST_ASSERT(capability->nextCapabilityOffset < sizeof(PciConfigurationSpace) + sizeof(PciExtendedConfigurationSpace), NgosStatus::ASSERTION);
 
         if (capability->nextCapabilityOffset < sizeof(PciConfigurationSpace))
         {
