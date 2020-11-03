@@ -2218,7 +2218,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
             if ((PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::PCI_EXPRESS_TO_PCI_BRIDGE)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Bridge configuration retry enable or initiate function level reset", capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control: Bridge configuration retry enable", capability->deviceControl.bridgeConfigurationRetryEnableOrInitiateFunctionLevelReset ? "Yes" : "No", DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
             }
         }
 
@@ -2412,7 +2412,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Emergency power reduction request", capability->deviceControl2.emergencyPowerReductionRequest ? "Yes" : "No",                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Ten bit tag requester enable",      capability->deviceControl2.tenBitTagRequesterEnable       ? "Yes" : "No",                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: Obff",                              mprintf("%u",     capability->deviceControl2.obff),                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: End-End TLP prefix blocking",       capability->deviceControl2.endEndTlpPrefixBlocking ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device control 2: End-End TLP prefix blocking",       capability->deviceControl2.endEndTlpPrefixBlocking        ? "Yes" : "No",                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         }
 
 
