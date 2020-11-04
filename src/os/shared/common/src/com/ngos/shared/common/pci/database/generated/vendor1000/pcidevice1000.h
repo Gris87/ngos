@@ -163,6 +163,7 @@ enum class PciDevice1000: u16 // Ignore CppEnumVerifier
     DEVICE_00AC = 0x00AC,
     DEVICE_00AE = 0x00AE,
     DEVICE_00AF = 0x00AF,
+    DEVICE_00B2 = 0x00B2,
     DEVICE_00BE = 0x00BE,
     DEVICE_00BF = 0x00BF,
     DEVICE_00C0 = 0x00C0,
@@ -317,6 +318,7 @@ inline const char8* enumToString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_00AC: return "DEVICE_00AC";
         case PciDevice1000::DEVICE_00AE: return "DEVICE_00AE";
         case PciDevice1000::DEVICE_00AF: return "DEVICE_00AF";
+        case PciDevice1000::DEVICE_00B2: return "DEVICE_00B2";
         case PciDevice1000::DEVICE_00BE: return "DEVICE_00BE";
         case PciDevice1000::DEVICE_00BF: return "DEVICE_00BF";
         case PciDevice1000::DEVICE_00C0: return "DEVICE_00C0";
@@ -488,6 +490,7 @@ inline const char8* enumToHumanString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_00AC: return "SAS3416 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
         case PciDevice1000::DEVICE_00AE: return "SAS3508 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
         case PciDevice1000::DEVICE_00AF: return "SAS3408 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
+        case PciDevice1000::DEVICE_00B2: return "PEX880xx PCIe Gen 4 Switch SES management endpoint";
         case PciDevice1000::DEVICE_00BE: return "SAS3504 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
         case PciDevice1000::DEVICE_00BF: return "SAS3404 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
         case PciDevice1000::DEVICE_00C0: return "SAS3324 PCI-Express Fusion-MPT SAS-3";
@@ -644,6 +647,7 @@ inline const char8* enumToHumanString(PciDevice1000 device, u16 subsystemVendorI
         case PciDevice1000::DEVICE_00AC: return enumToHumanString((PciSubDevice100000AC)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_00AE: return "Unknown device";
         case PciDevice1000::DEVICE_00AF: return enumToHumanString((PciSubDevice100000AF)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1000::DEVICE_00B2: return "Unknown device";
         case PciDevice1000::DEVICE_00BE: return "Unknown device";
         case PciDevice1000::DEVICE_00BF: return "Unknown device";
         case PciDevice1000::DEVICE_00C0: return "Unknown device";

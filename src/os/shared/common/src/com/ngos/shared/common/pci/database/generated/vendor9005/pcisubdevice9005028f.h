@@ -34,6 +34,10 @@ enum class PciSubDevice9005028F: u32 // Ignore CppEnumVerifier
     SUBDEVICE_152D8A24 = 0x152D8A24,
     SUBDEVICE_152D8A36 = 0x152D8A36,
     SUBDEVICE_152D8A37 = 0x152D8A37,
+    SUBDEVICE_193D1104 = 0x193D1104,
+    SUBDEVICE_193D1105 = 0x193D1105,
+    SUBDEVICE_193D1106 = 0x193D1106,
+    SUBDEVICE_193D1107 = 0x193D1107,
     SUBDEVICE_193D8460 = 0x193D8460,
     SUBDEVICE_193D8461 = 0x193D8461,
     SUBDEVICE_193DC460 = 0x193DC460,
@@ -63,6 +67,8 @@ enum class PciSubDevice9005028F: u32 // Ignore CppEnumVerifier
     SUBDEVICE_90050805 = 0x90050805,
     SUBDEVICE_90050806 = 0x90050806,
     SUBDEVICE_90050807 = 0x90050807,
+    SUBDEVICE_90050808 = 0x90050808,
+    SUBDEVICE_90050809 = 0x90050809,
     SUBDEVICE_90050900 = 0x90050900,
     SUBDEVICE_90050901 = 0x90050901,
     SUBDEVICE_90050902 = 0x90050902,
@@ -78,6 +84,7 @@ enum class PciSubDevice9005028F: u32 // Ignore CppEnumVerifier
     SUBDEVICE_90051202 = 0x90051202,
     SUBDEVICE_90051280 = 0x90051280,
     SUBDEVICE_90051281 = 0x90051281,
+    SUBDEVICE_90051282 = 0x90051282,
     SUBDEVICE_90051300 = 0x90051300,
     SUBDEVICE_90051301 = 0x90051301,
     SUBDEVICE_90051302 = 0x90051302,
@@ -117,6 +124,10 @@ inline const char8* enumToString(PciSubDevice9005028F subDevice) // TEST: NO
         case PciSubDevice9005028F::SUBDEVICE_152D8A24: return "SUBDEVICE_152D8A24";
         case PciSubDevice9005028F::SUBDEVICE_152D8A36: return "SUBDEVICE_152D8A36";
         case PciSubDevice9005028F::SUBDEVICE_152D8A37: return "SUBDEVICE_152D8A37";
+        case PciSubDevice9005028F::SUBDEVICE_193D1104: return "SUBDEVICE_193D1104";
+        case PciSubDevice9005028F::SUBDEVICE_193D1105: return "SUBDEVICE_193D1105";
+        case PciSubDevice9005028F::SUBDEVICE_193D1106: return "SUBDEVICE_193D1106";
+        case PciSubDevice9005028F::SUBDEVICE_193D1107: return "SUBDEVICE_193D1107";
         case PciSubDevice9005028F::SUBDEVICE_193D8460: return "SUBDEVICE_193D8460";
         case PciSubDevice9005028F::SUBDEVICE_193D8461: return "SUBDEVICE_193D8461";
         case PciSubDevice9005028F::SUBDEVICE_193DC460: return "SUBDEVICE_193DC460";
@@ -146,6 +157,8 @@ inline const char8* enumToString(PciSubDevice9005028F subDevice) // TEST: NO
         case PciSubDevice9005028F::SUBDEVICE_90050805: return "SUBDEVICE_90050805";
         case PciSubDevice9005028F::SUBDEVICE_90050806: return "SUBDEVICE_90050806";
         case PciSubDevice9005028F::SUBDEVICE_90050807: return "SUBDEVICE_90050807";
+        case PciSubDevice9005028F::SUBDEVICE_90050808: return "SUBDEVICE_90050808";
+        case PciSubDevice9005028F::SUBDEVICE_90050809: return "SUBDEVICE_90050809";
         case PciSubDevice9005028F::SUBDEVICE_90050900: return "SUBDEVICE_90050900";
         case PciSubDevice9005028F::SUBDEVICE_90050901: return "SUBDEVICE_90050901";
         case PciSubDevice9005028F::SUBDEVICE_90050902: return "SUBDEVICE_90050902";
@@ -161,6 +174,7 @@ inline const char8* enumToString(PciSubDevice9005028F subDevice) // TEST: NO
         case PciSubDevice9005028F::SUBDEVICE_90051202: return "SUBDEVICE_90051202";
         case PciSubDevice9005028F::SUBDEVICE_90051280: return "SUBDEVICE_90051280";
         case PciSubDevice9005028F::SUBDEVICE_90051281: return "SUBDEVICE_90051281";
+        case PciSubDevice9005028F::SUBDEVICE_90051282: return "SUBDEVICE_90051282";
         case PciSubDevice9005028F::SUBDEVICE_90051300: return "SUBDEVICE_90051300";
         case PciSubDevice9005028F::SUBDEVICE_90051301: return "SUBDEVICE_90051301";
         case PciSubDevice9005028F::SUBDEVICE_90051302: return "SUBDEVICE_90051302";
@@ -217,6 +231,10 @@ inline const char8* enumToHumanString(PciSubDevice9005028F subDevice) // TEST: N
         case PciSubDevice9005028F::SUBDEVICE_152D8A24: return "QS-8236-16i";
         case PciSubDevice9005028F::SUBDEVICE_152D8A36: return "QS-8240-24i";
         case PciSubDevice9005028F::SUBDEVICE_152D8A37: return "QS-8242-24i";
+        case PciSubDevice9005028F::SUBDEVICE_193D1104: return "RAID P2404-Mf-4i-2GB";
+        case PciSubDevice9005028F::SUBDEVICE_193D1105: return "RAID P4408-Mf-8i-2GB";
+        case PciSubDevice9005028F::SUBDEVICE_193D1106: return "RAID P2404-Mf-4i-1GB";
+        case PciSubDevice9005028F::SUBDEVICE_193D1107: return "RAID P4408-Mf-8i-4GB";
         case PciSubDevice9005028F::SUBDEVICE_193D8460: return "HBA H460-M1";
         case PciSubDevice9005028F::SUBDEVICE_193D8461: return "HBA H460-B1";
         case PciSubDevice9005028F::SUBDEVICE_193DC460: return "RAID P460-M2";
@@ -246,6 +264,8 @@ inline const char8* enumToHumanString(PciSubDevice9005028F subDevice) // TEST: N
         case PciSubDevice9005028F::SUBDEVICE_90050805: return "SmartRAID 3102-8i";
         case PciSubDevice9005028F::SUBDEVICE_90050806: return "SmartRAID 3100";
         case PciSubDevice9005028F::SUBDEVICE_90050807: return "SmartRAID 3162-8i";
+        case PciSubDevice9005028F::SUBDEVICE_90050808: return "SmartRAID 3101E-4i";
+        case PciSubDevice9005028F::SUBDEVICE_90050809: return "SmartRAID 3102E-8i";
         case PciSubDevice9005028F::SUBDEVICE_90050900: return "SmartHBA 2100-8i";
         case PciSubDevice9005028F::SUBDEVICE_90050901: return "SmartHBA 2100-4i";
         case PciSubDevice9005028F::SUBDEVICE_90050902: return "HBA 1100-8i";
@@ -261,6 +281,7 @@ inline const char8* enumToHumanString(PciSubDevice9005028F subDevice) // TEST: N
         case PciSubDevice9005028F::SUBDEVICE_90051202: return "SmartRAID 3154-8i8e";
         case PciSubDevice9005028F::SUBDEVICE_90051280: return "HBA 1100-16i";
         case PciSubDevice9005028F::SUBDEVICE_90051281: return "HBA 1100-16e";
+        case PciSubDevice9005028F::SUBDEVICE_90051282: return "SmartHBA 2100-16i";
         case PciSubDevice9005028F::SUBDEVICE_90051300: return "HBA 1100-8i8e";
         case PciSubDevice9005028F::SUBDEVICE_90051301: return "HBA 1100-24i";
         case PciSubDevice9005028F::SUBDEVICE_90051302: return "SmartHBA 2100-8i8e";

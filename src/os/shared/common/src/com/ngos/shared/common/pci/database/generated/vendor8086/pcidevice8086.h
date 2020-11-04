@@ -245,6 +245,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615d5.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615d8.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615f2.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615f3.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615ff.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861616.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861903.h>
@@ -1789,6 +1790,15 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_163D = 0x163D,
     DEVICE_163E = 0x163E,
     DEVICE_1889 = 0x1889,
+    DEVICE_1890 = 0x1890,
+    DEVICE_1891 = 0x1891,
+    DEVICE_1892 = 0x1892,
+    DEVICE_1893 = 0x1893,
+    DEVICE_1894 = 0x1894,
+    DEVICE_1897 = 0x1897,
+    DEVICE_1898 = 0x1898,
+    DEVICE_1899 = 0x1899,
+    DEVICE_189A = 0x189A,
     DEVICE_18A0 = 0x18A0,
     DEVICE_18A1 = 0x18A1,
     DEVICE_1900 = 0x1900,
@@ -3510,6 +3520,7 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_3E30 = 0x3E30,
     DEVICE_3E33 = 0x3E33,
     DEVICE_3E34 = 0x3E34,
+    DEVICE_3E35 = 0x3E35,
     DEVICE_3E81 = 0x3E81,
     DEVICE_3E85 = 0x3E85,
     DEVICE_3E89 = 0x3E89,
@@ -5630,6 +5641,15 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_163D: return "DEVICE_163D";
         case PciDevice8086::DEVICE_163E: return "DEVICE_163E";
         case PciDevice8086::DEVICE_1889: return "DEVICE_1889";
+        case PciDevice8086::DEVICE_1890: return "DEVICE_1890";
+        case PciDevice8086::DEVICE_1891: return "DEVICE_1891";
+        case PciDevice8086::DEVICE_1892: return "DEVICE_1892";
+        case PciDevice8086::DEVICE_1893: return "DEVICE_1893";
+        case PciDevice8086::DEVICE_1894: return "DEVICE_1894";
+        case PciDevice8086::DEVICE_1897: return "DEVICE_1897";
+        case PciDevice8086::DEVICE_1898: return "DEVICE_1898";
+        case PciDevice8086::DEVICE_1899: return "DEVICE_1899";
+        case PciDevice8086::DEVICE_189A: return "DEVICE_189A";
         case PciDevice8086::DEVICE_18A0: return "DEVICE_18A0";
         case PciDevice8086::DEVICE_18A1: return "DEVICE_18A1";
         case PciDevice8086::DEVICE_1900: return "DEVICE_1900";
@@ -7351,6 +7371,7 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_3E30: return "DEVICE_3E30";
         case PciDevice8086::DEVICE_3E33: return "DEVICE_3E33";
         case PciDevice8086::DEVICE_3E34: return "DEVICE_3E34";
+        case PciDevice8086::DEVICE_3E35: return "DEVICE_3E35";
         case PciDevice8086::DEVICE_3E81: return "DEVICE_3E81";
         case PciDevice8086::DEVICE_3E85: return "DEVICE_3E85";
         case PciDevice8086::DEVICE_3E89: return "DEVICE_3E89";
@@ -9488,6 +9509,15 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_163D: return "Broadwell-U Integrated Graphics";
         case PciDevice8086::DEVICE_163E: return "Broadwell-U Integrated Graphics";
         case PciDevice8086::DEVICE_1889: return "Ethernet Adaptive Virtual Function";
+        case PciDevice8086::DEVICE_1890: return "Ethernet Connection E822-C for backplane";
+        case PciDevice8086::DEVICE_1891: return "Ethernet Connection E822-C for QSFP";
+        case PciDevice8086::DEVICE_1892: return "Ethernet Connection E822-C for SFP";
+        case PciDevice8086::DEVICE_1893: return "Ethernet Connection E822-C/X557-AT 10GBASE-T";
+        case PciDevice8086::DEVICE_1894: return "Ethernet Connection E822-C 1GbE";
+        case PciDevice8086::DEVICE_1897: return "Ethernet Connection E822-L for backplane";
+        case PciDevice8086::DEVICE_1898: return "Ethernet Connection E822-L for SFP";
+        case PciDevice8086::DEVICE_1899: return "Ethernet Connection E822-L/X557-AT 10GBASE-T";
+        case PciDevice8086::DEVICE_189A: return "Ethernet Connection E822-L 1GbE";
         case PciDevice8086::DEVICE_18A0: return "C4xxx Series QAT";
         case PciDevice8086::DEVICE_18A1: return "C4XXX Series QAT Virtual Function";
         case PciDevice8086::DEVICE_1900: return "Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers";
@@ -11209,6 +11239,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_3E30: return "8th/9th Gen Core 8-core Desktop Processor Host Bridge/DRAM Registers [Coffee Lake S]";
         case PciDevice8086::DEVICE_3E33: return "8th/9th Gen Core Processor Host Bridge/DRAM Registers [Coffee Lake]";
         case PciDevice8086::DEVICE_3E34: return "Coffee Lake HOST and DRAM Controller";
+        case PciDevice8086::DEVICE_3E35: return "Coffee Lake Host Bridge/DRAM Registers";
         case PciDevice8086::DEVICE_3E81: return "8th Gen Core Processor PCIe Controller (x16)";
         case PciDevice8086::DEVICE_3E85: return "8th Gen Core Processor PCIe Controller (x8)";
         case PciDevice8086::DEVICE_3E89: return "8th Gen Core Processor PCIe Controller (x4)";
@@ -13284,7 +13315,7 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_15EF: return "Unknown device";
         case PciDevice8086::DEVICE_15F0: return "Unknown device";
         case PciDevice8086::DEVICE_15F2: return enumToHumanString((PciSubDevice808615F2)(subsystemVendorID << 16 | subDeviceId));
-        case PciDevice8086::DEVICE_15F3: return "Unknown device";
+        case PciDevice8086::DEVICE_15F3: return enumToHumanString((PciSubDevice808615F3)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_15F4: return "Unknown device";
         case PciDevice8086::DEVICE_15F5: return "Unknown device";
         case PciDevice8086::DEVICE_15F6: return "Unknown device";
@@ -13331,6 +13362,15 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_163D: return "Unknown device";
         case PciDevice8086::DEVICE_163E: return "Unknown device";
         case PciDevice8086::DEVICE_1889: return "Unknown device";
+        case PciDevice8086::DEVICE_1890: return "Unknown device";
+        case PciDevice8086::DEVICE_1891: return "Unknown device";
+        case PciDevice8086::DEVICE_1892: return "Unknown device";
+        case PciDevice8086::DEVICE_1893: return "Unknown device";
+        case PciDevice8086::DEVICE_1894: return "Unknown device";
+        case PciDevice8086::DEVICE_1897: return "Unknown device";
+        case PciDevice8086::DEVICE_1898: return "Unknown device";
+        case PciDevice8086::DEVICE_1899: return "Unknown device";
+        case PciDevice8086::DEVICE_189A: return "Unknown device";
         case PciDevice8086::DEVICE_18A0: return "Unknown device";
         case PciDevice8086::DEVICE_18A1: return "Unknown device";
         case PciDevice8086::DEVICE_1900: return "Unknown device";
@@ -15052,6 +15092,7 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_3E30: return "Unknown device";
         case PciDevice8086::DEVICE_3E33: return "Unknown device";
         case PciDevice8086::DEVICE_3E34: return "Unknown device";
+        case PciDevice8086::DEVICE_3E35: return "Unknown device";
         case PciDevice8086::DEVICE_3E81: return "Unknown device";
         case PciDevice8086::DEVICE_3E85: return "Unknown device";
         case PciDevice8086::DEVICE_3E89: return "Unknown device";

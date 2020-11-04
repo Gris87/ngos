@@ -18,7 +18,9 @@ enum class PciSubDevice11370042: u32 // Ignore CppEnumVerifier
     SUBDEVICE_113700CD = 0x113700CD,
     SUBDEVICE_113700CE = 0x113700CE,
     SUBDEVICE_1137012E = 0x1137012E,
-    SUBDEVICE_1137014D = 0x1137014D
+    SUBDEVICE_1137014D = 0x1137014D,
+    SUBDEVICE_11370217 = 0x11370217,
+    SUBDEVICE_11370218 = 0x11370218
 };
 
 
@@ -38,6 +40,8 @@ inline const char8* enumToString(PciSubDevice11370042 subDevice) // TEST: NO
         case PciSubDevice11370042::SUBDEVICE_113700CE: return "SUBDEVICE_113700CE";
         case PciSubDevice11370042::SUBDEVICE_1137012E: return "SUBDEVICE_1137012E";
         case PciSubDevice11370042::SUBDEVICE_1137014D: return "SUBDEVICE_1137014D";
+        case PciSubDevice11370042::SUBDEVICE_11370217: return "SUBDEVICE_11370217";
+        case PciSubDevice11370042::SUBDEVICE_11370218: return "SUBDEVICE_11370218";
 
         default: return "UNKNOWN";
     }
@@ -74,6 +78,8 @@ inline const char8* enumToHumanString(PciSubDevice11370042 subDevice) // TEST: N
         case PciSubDevice11370042::SUBDEVICE_113700CE: return "VIC 1225T PCIe Management Controller";
         case PciSubDevice11370042::SUBDEVICE_1137012E: return "VIC 1227 PCIe Management Controller";
         case PciSubDevice11370042::SUBDEVICE_1137014D: return "VIC 1385 PCIe Management Controller";
+        case PciSubDevice11370042::SUBDEVICE_11370217: return "VIC 1455 PCIe Management Controller";
+        case PciSubDevice11370042::SUBDEVICE_11370218: return "VIC 1457 PCIe Management Controller";
 
         default: return "Unknown device";
     }

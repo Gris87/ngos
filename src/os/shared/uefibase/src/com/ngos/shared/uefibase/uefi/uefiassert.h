@@ -18,19 +18,19 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_ASSERT_1 \
+#define __UEFI_LOG_FILE_PRINT_ASSERT_1() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_ASSERT_2 \
+#define __UEFI_LOG_FILE_PRINT_ASSERT_2() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::println(printfBuffer); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_ASSERT_3 \
+#define __UEFI_LOG_FILE_PRINT_ASSERT_3() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::print(timestampBuffer); \
@@ -38,9 +38,9 @@
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_ASSERT_1
-#define __UEFI_LOG_FILE_PRINT_ASSERT_2
-#define __UEFI_LOG_FILE_PRINT_ASSERT_3
+#define __UEFI_LOG_FILE_PRINT_ASSERT_1()
+#define __UEFI_LOG_FILE_PRINT_ASSERT_2()
+#define __UEFI_LOG_FILE_PRINT_ASSERT_3()
 #endif
 
 
@@ -49,7 +49,7 @@
 #define __UEFI_PRINT_ASSERT(message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_1; \
+    __UEFI_LOG_FILE_PRINT_ASSERT_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -90,10 +90,10 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_3;
+    __UEFI_LOG_FILE_PRINT_ASSERT_3();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define __UEFI_PRINT_ASSERT(message) \
-    __UEFI_LOG_FILE_PRINT_ASSERT_1; \
+    __UEFI_LOG_FILE_PRINT_ASSERT_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -118,25 +118,25 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_2;
+    __UEFI_LOG_FILE_PRINT_ASSERT_2();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
 #define __UEFI_PRINT_ASSERT(message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_1; \
+    __UEFI_LOG_FILE_PRINT_ASSERT_1(); \
     \
     Serial::print(timestampBuffer); \
     Serial::print("| "); \
     Serial::printf message; \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_3;
+    __UEFI_LOG_FILE_PRINT_ASSERT_3();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define __UEFI_PRINT_ASSERT(message) \
-    __UEFI_LOG_FILE_PRINT_ASSERT_1; \
+    __UEFI_LOG_FILE_PRINT_ASSERT_1(); \
     \
     Serial::printf message; \
     \
-    __UEFI_LOG_FILE_PRINT_ASSERT_2;
+    __UEFI_LOG_FILE_PRINT_ASSERT_2();
 #endif
 
 

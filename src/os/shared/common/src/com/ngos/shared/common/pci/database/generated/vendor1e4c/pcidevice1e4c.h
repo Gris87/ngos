@@ -59,7 +59,7 @@ inline const char8* enumToHumanString(PciDevice1E4C device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice1E4C::DEVICE_0010: return "Gemini [ Lida ]";
+        case PciDevice1E4C::DEVICE_0010: return "APU [Leda-G]";
 
         default: return "Unknown device";
     }

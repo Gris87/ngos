@@ -1,0 +1,118 @@
+#ifndef COM_NGOS_SHARED_COMMON_PCI_LIB_PCIEXPRESSUNCORRECTABLEERRORFLAGS_H
+#define COM_NGOS_SHARED_COMMON_PCI_LIB_PCIEXPRESSUNCORRECTABLEERRORFLAGS_H
+
+
+
+#include <com/ngos/shared/common/ngos/flags.h>
+#include <com/ngos/shared/common/ngos/linkage.h>
+#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/printf/printf.h>
+#include <com/ngos/shared/common/string/string.h>
+
+
+
+typedef u32 pci_express_uncorrectable_error_flags;
+
+enum class PciExpressUncorrectableErrorFlag: pci_express_uncorrectable_error_flags
+{
+    NONE                         = 0,
+    DATA_LINK_PROTOCOL_ERROR     = (1ULL << 4),
+    SURPRISE_DOWN_ERROR          = (1ULL << 5),
+    POISONED_TLP                 = (1ULL << 12),
+    FLOW_CONTROL_PROTOCOL_ERROR  = (1ULL << 13),
+    COMPLETION_TIMEOUT           = (1ULL << 14),
+    COMPLETER_ABORT              = (1ULL << 15),
+    UNEXPECTED_COMPLETION        = (1ULL << 16),
+    RECEIVER_OVERFLOW            = (1ULL << 17),
+    MALFORMED_TLP                = (1ULL << 18),
+    ECRC_ERROR                   = (1ULL << 19),
+    UNSUPPORTED_REQUEST_ERROR    = (1ULL << 20),
+    ACS_VOILATION                = (1ULL << 21),
+    UNCORRECTABLE_INTERNAL_ERROR = (1ULL << 22),
+    MC_BLOCKED_TLP               = (1ULL << 23),
+    ATOMIC_OP_EGRESS_BLOCKED     = (1ULL << 24),
+    TLP_PREFIX_BLOCKED_ERROR     = (1ULL << 25)
+};
+
+DEFINE_FLAGS(PciExpressUncorrectableErrorFlags, pci_express_uncorrectable_error_flags); // TEST: NO
+
+
+
+inline const char8* flagToString(PciExpressUncorrectableErrorFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    switch (flag)
+    {
+        case PciExpressUncorrectableErrorFlag::NONE:                         return "NONE";
+        case PciExpressUncorrectableErrorFlag::DATA_LINK_PROTOCOL_ERROR:     return "DATA_LINK_PROTOCOL_ERROR";
+        case PciExpressUncorrectableErrorFlag::SURPRISE_DOWN_ERROR:          return "SURPRISE_DOWN_ERROR";
+        case PciExpressUncorrectableErrorFlag::POISONED_TLP:                 return "POISONED_TLP";
+        case PciExpressUncorrectableErrorFlag::FLOW_CONTROL_PROTOCOL_ERROR:  return "FLOW_CONTROL_PROTOCOL_ERROR";
+        case PciExpressUncorrectableErrorFlag::COMPLETION_TIMEOUT:           return "COMPLETION_TIMEOUT";
+        case PciExpressUncorrectableErrorFlag::COMPLETER_ABORT:              return "COMPLETER_ABORT";
+        case PciExpressUncorrectableErrorFlag::UNEXPECTED_COMPLETION:        return "UNEXPECTED_COMPLETION";
+        case PciExpressUncorrectableErrorFlag::RECEIVER_OVERFLOW:            return "RECEIVER_OVERFLOW";
+        case PciExpressUncorrectableErrorFlag::MALFORMED_TLP:                return "MALFORMED_TLP";
+        case PciExpressUncorrectableErrorFlag::ECRC_ERROR:                   return "ECRC_ERROR";
+        case PciExpressUncorrectableErrorFlag::UNSUPPORTED_REQUEST_ERROR:    return "UNSUPPORTED_REQUEST_ERROR";
+        case PciExpressUncorrectableErrorFlag::ACS_VOILATION:                return "ACS_VOILATION";
+        case PciExpressUncorrectableErrorFlag::UNCORRECTABLE_INTERNAL_ERROR: return "UNCORRECTABLE_INTERNAL_ERROR";
+        case PciExpressUncorrectableErrorFlag::MC_BLOCKED_TLP:               return "MC_BLOCKED_TLP";
+        case PciExpressUncorrectableErrorFlag::ATOMIC_OP_EGRESS_BLOCKED:     return "ATOMIC_OP_EGRESS_BLOCKED";
+        case PciExpressUncorrectableErrorFlag::TLP_PREFIX_BLOCKED_ERROR:     return "TLP_PREFIX_BLOCKED_ERROR";
+
+        default: return "UNKNOWN";
+    }
+}
+
+
+
+inline const char8* flagToFullString(PciExpressUncorrectableErrorFlag flag) // TEST: NO
+{
+    // COMMON_LT((" | flag = %u", flag)); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[42];
+
+    sprintf(res, "0x%08X (%s)", (pci_express_uncorrectable_error_flags)flag, flagToString(flag));
+
+    return res;
+}
+
+
+
+inline const char8* flagsToString(const PciExpressUncorrectableErrorFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[365];
+
+    FLAGS_TO_STRING(res, flags.flags, PciExpressUncorrectableErrorFlag);
+
+    return res;
+}
+
+
+
+inline const char8* flagsToFullString(const PciExpressUncorrectableErrorFlags &flags) // TEST: NO
+{
+    // COMMON_LT((" | flags = ...")); // Commented to avoid bad looking logs
+
+
+
+    static char8 res[378];
+
+    FLAGS_TO_FULL_STRING(res, flags.flags, PciExpressUncorrectableErrorFlag, "0x%08X");
+
+    return res;
+}
+
+
+
+#endif // COM_NGOS_SHARED_COMMON_PCI_LIB_PCIEXPRESSUNCORRECTABLEERRORFLAGS_H

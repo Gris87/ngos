@@ -7,6 +7,7 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor125b/pcisubdevice125b1400.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor125b/pcisubdevice125b9100.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -14,7 +15,8 @@
 enum class PciDevice125B: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_1400 = 0x1400
+    DEVICE_1400 = 0x1400,
+    DEVICE_9100 = 0x9100
 };
 
 
@@ -29,6 +31,7 @@ inline const char8* enumToString(PciDevice125B device) // TEST: NO
     {
         case PciDevice125B::NONE:        return "NONE";
         case PciDevice125B::DEVICE_1400: return "DEVICE_1400";
+        case PciDevice125B::DEVICE_9100: return "DEVICE_9100";
 
         default: return "UNKNOWN";
     }
@@ -60,6 +63,7 @@ inline const char8* enumToHumanString(PciDevice125B device) // TEST: NO
     switch (device)
     {
         case PciDevice125B::DEVICE_1400: return "AX88141 Fast Ethernet Controller";
+        case PciDevice125B::DEVICE_9100: return "AX99100 PCIe to Multi I/O Controller";
 
         default: return "Unknown device";
     }
@@ -76,6 +80,7 @@ inline const char8* enumToHumanString(PciDevice125B device, u16 subsystemVendorI
     switch (device)
     {
         case PciDevice125B::DEVICE_1400: return enumToHumanString((PciSubDevice125B1400)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice125B::DEVICE_9100: return enumToHumanString((PciSubDevice125B9100)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";
     }

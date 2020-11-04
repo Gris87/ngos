@@ -1084,6 +1084,9 @@ enum class PciDevice1002: u16 // Ignore CppEnumVerifier
     DEVICE_7347 = 0x7347,
     DEVICE_734F = 0x734F,
     DEVICE_7360 = 0x7360,
+    DEVICE_73BF = 0x73BF,
+    DEVICE_73C3 = 0x73C3,
+    DEVICE_73DF = 0x73DF,
     DEVICE_7833 = 0x7833,
     DEVICE_7834 = 0x7834,
     DEVICE_7835 = 0x7835,
@@ -2132,6 +2135,9 @@ inline const char8* enumToString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_7347: return "DEVICE_7347";
         case PciDevice1002::DEVICE_734F: return "DEVICE_734F";
         case PciDevice1002::DEVICE_7360: return "DEVICE_7360";
+        case PciDevice1002::DEVICE_73BF: return "DEVICE_73BF";
+        case PciDevice1002::DEVICE_73C3: return "DEVICE_73C3";
+        case PciDevice1002::DEVICE_73DF: return "DEVICE_73DF";
         case PciDevice1002::DEVICE_7833: return "DEVICE_7833";
         case PciDevice1002::DEVICE_7834: return "DEVICE_7834";
         case PciDevice1002::DEVICE_7835: return "DEVICE_7835";
@@ -3197,6 +3203,9 @@ inline const char8* enumToHumanString(PciDevice1002 device) // TEST: NO
         case PciDevice1002::DEVICE_7347: return "Navi 14 [Radeon Pro W5500M]";
         case PciDevice1002::DEVICE_734F: return "Navi 14 [Radeon Pro W5300M]";
         case PciDevice1002::DEVICE_7360: return "Navi 12 [Radeon Pro 5600M]";
+        case PciDevice1002::DEVICE_73BF: return "Navi 21 [Radeon RX 6900 Series]";
+        case PciDevice1002::DEVICE_73C3: return "Navi 23";
+        case PciDevice1002::DEVICE_73DF: return "Navi 22";
         case PciDevice1002::DEVICE_7833: return "RS350 Host Bridge";
         case PciDevice1002::DEVICE_7834: return "RS350 [Radeon 9100 PRO/XT IGP]";
         case PciDevice1002::DEVICE_7835: return "RS350M [Mobility Radeon 9000 IGP]";
@@ -4247,6 +4256,9 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_7347: return "Unknown device";
         case PciDevice1002::DEVICE_734F: return "Unknown device";
         case PciDevice1002::DEVICE_7360: return "Unknown device";
+        case PciDevice1002::DEVICE_73BF: return "Unknown device";
+        case PciDevice1002::DEVICE_73C3: return "Unknown device";
+        case PciDevice1002::DEVICE_73DF: return "Unknown device";
         case PciDevice1002::DEVICE_7833: return "Unknown device";
         case PciDevice1002::DEVICE_7834: return "Unknown device";
         case PciDevice1002::DEVICE_7835: return "Unknown device";

@@ -918,10 +918,10 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
 
     switch (capability->capabilityId)
     {
-        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE:    UEFI_ASSERT_EXECUTION(initPciWithPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability,            deviceManagerEntry),                             NgosStatus::ASSERTION); break;
-        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:     UEFI_ASSERT_EXECUTION(initPciWithPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,              deviceManagerEntry),                             NgosStatus::ASSERTION); break;
-        case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciWithPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                            deviceManagerEntry),                             NgosStatus::ASSERTION); break;
-        case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciWithPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                  deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::POWER_MANAGEMENT_INTERFACE:    UEFI_ASSERT_EXECUTION(initPciPowerManagementInterfaceCapability((PciPowerManagementInterfaceCapability *)capability,                   deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::ACCELERATED_GRAPHICS_PORT:     UEFI_ASSERT_EXECUTION(initPciAcceleratedGraphicsPortCapability((PciAcceleratedGraphicsPortCapability *)capability,                     deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::VITAL_PRODUCT_DATA:            UEFI_ASSERT_EXECUTION(initPciVitalProductDataCapability((PciVitalProductDataCapability *)capability,                                   deviceManagerEntry),                             NgosStatus::ASSERTION); break;
+        case PciCapabilityType::SLOT_IDENTIFICATION:           UEFI_ASSERT_EXECUTION(initPciSlotNumberingCapability((PciSlotNumberingCapability *)capability,                                         deviceManagerEntry),                             NgosStatus::ASSERTION); break;
         case PciCapabilityType::MESSAGE_SIGNALED_INTERRUPTS:   UEFI_ASSERT_EXECUTION(initPciMessageSignaledInterruptsCapability((PciMessageSignaledInterruptsCapability *)capability,                 deviceManagerEntry),                             NgosStatus::ASSERTION); break;
         case PciCapabilityType::HOT_SWAP:                      UEFI_ASSERT_EXECUTION(initPciHotSwapCapability((PciHotSwapCapability *)capability,                                                     deviceManagerEntry),                             NgosStatus::ASSERTION); break;
         case PciCapabilityType::PCI_X:                         UEFI_ASSERT_EXECUTION(initPciExtendedCapability(capability,                                                                            deviceManagerEntry, headerType),                 NgosStatus::ASSERTION); break;
@@ -947,7 +947,7 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1022,7 +1022,7 @@ NgosStatus DeviceManagerPci::initPciWithPciPowerManagementInterfaceCapability(Pc
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1085,7 +1085,7 @@ NgosStatus DeviceManagerPci::initPciWithPciAcceleratedGraphicsPortCapability(Pci
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1117,7 +1117,7 @@ NgosStatus DeviceManagerPci::initPciWithPciVitalProductDataCapability(PciVitalPr
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -2585,6 +2585,36 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Extended capability", strdup(enumToFullString((PciExtendedCapabilityType)capability->capabilityId)), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }
+
+
+
+    switch ((PciExtendedCapabilityType)capability->capabilityId)
+    {
+        case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING: UEFI_ASSERT_EXECUTION(initPciAdvancedErrorReportingCapability((PciAdvancedErrorReportingCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+
+        default:
+        {
+            UEFI_LF(("Unknown PCI extended capability %s", enumToFullString((PciExtendedCapabilityType)capability->capabilityId)));
+        }
+        break;
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciAdvancedErrorReportingCapability(PciAdvancedErrorReportingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
 
 
 

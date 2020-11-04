@@ -16,7 +16,7 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 // Ignore CppIndentVerifier [BEGIN]
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LOG_1 \
+#define __UEFI_LOG_FILE_PRINT_LOG_1() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
@@ -38,7 +38,7 @@
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_LOG_1
+#define __UEFI_LOG_FILE_PRINT_LOG_1()
 #define __UEFI_LOG_FILE_PRINT_LOG_2(level)
 #define __UEFI_LOG_FILE_PRINT_LOG_3(level)
 #endif
@@ -46,13 +46,13 @@
 
 
 #if NGOS_BUILD_LOG_TO_UEFI_FILE == OPTION_YES
-#define __UEFI_LOG_FILE_PRINT_LT_1 \
+#define __UEFI_LOG_FILE_PRINT_LT_1() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::init(); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_LT_2 \
+#define __UEFI_LOG_FILE_PRINT_LT_2() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::print("TRACE:     "); \
@@ -60,7 +60,7 @@
         UefiLogFile::println(printfBuffer); \
     }
 
-#define __UEFI_LOG_FILE_PRINT_LT_3 \
+#define __UEFI_LOG_FILE_PRINT_LT_3() \
     if (UefiLogFile::canPrint()) \
     { \
         UefiLogFile::print(timestampBuffer); \
@@ -69,9 +69,9 @@
         UefiLogFile::println(printfBuffer); \
     }
 #else
-#define __UEFI_LOG_FILE_PRINT_LT_1
-#define __UEFI_LOG_FILE_PRINT_LT_2
-#define __UEFI_LOG_FILE_PRINT_LT_3
+#define __UEFI_LOG_FILE_PRINT_LT_1()
+#define __UEFI_LOG_FILE_PRINT_LT_2()
+#define __UEFI_LOG_FILE_PRINT_LT_3()
 #endif
 
 
@@ -80,7 +80,7 @@
 #define __UEFI_PRINT_LOG(level, message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    __UEFI_LOG_FILE_PRINT_LOG_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -136,7 +136,7 @@
 #define __UEFI_PRINT_LT(message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_LT_1; \
+    __UEFI_LOG_FILE_PRINT_LT_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -185,10 +185,10 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LT_3;
+    __UEFI_LOG_FILE_PRINT_LT_3();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_YES && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define __UEFI_PRINT_LOG(level, message) \
-    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    __UEFI_LOG_FILE_PRINT_LOG_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -226,7 +226,7 @@
 
 
 #define __UEFI_PRINT_LT(message) \
-    __UEFI_LOG_FILE_PRINT_LT_1; \
+    __UEFI_LOG_FILE_PRINT_LT_1(); \
     \
     if (GraphicalConsole::canPrint()) \
     { \
@@ -267,12 +267,12 @@
         Serial::printf message; \
     } \
     \
-    __UEFI_LOG_FILE_PRINT_LT_2;
+    __UEFI_LOG_FILE_PRINT_LT_2();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_YES
 #define __UEFI_PRINT_LOG(level, message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    __UEFI_LOG_FILE_PRINT_LOG_1(); \
     \
     Serial::print(timestampBuffer); \
     Serial::print("| "); \
@@ -286,17 +286,17 @@
 #define __UEFI_PRINT_LT(message) \
     UEFI::currentTimestampToString(timestampBuffer); \
     \
-    __UEFI_LOG_FILE_PRINT_LT_1; \
+    __UEFI_LOG_FILE_PRINT_LT_1(); \
     \
     Serial::print(timestampBuffer); \
     Serial::print("| TRACE:     "); \
     Serial::print(__PRETTY_FUNCTION__); \
     Serial::printf message; \
     \
-    __UEFI_LOG_FILE_PRINT_LT_3;
+    __UEFI_LOG_FILE_PRINT_LT_3();
 #elif NGOS_BUILD_LOG_TO_SCREEN == OPTION_NO && NGOS_BUILD_LOG_WITH_TIMESTAMP == OPTION_NO
 #define __UEFI_PRINT_LOG(level, message) \
-    __UEFI_LOG_FILE_PRINT_LOG_1; \
+    __UEFI_LOG_FILE_PRINT_LOG_1(); \
     \
     Serial::print(level); \
     Serial::printf message; \
@@ -306,13 +306,13 @@
 
 
 #define __UEFI_PRINT_LT(message) \
-    __UEFI_LOG_FILE_PRINT_LT_1; \
+    __UEFI_LOG_FILE_PRINT_LT_1(); \
     \
     Serial::print("TRACE:     "); \
     Serial::print(__PRETTY_FUNCTION__); \
     Serial::printf message; \
     \
-    __UEFI_LOG_FILE_PRINT_LT_2;
+    __UEFI_LOG_FILE_PRINT_LT_2();
 #endif
 
 
