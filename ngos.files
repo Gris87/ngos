@@ -2607,6 +2607,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10d
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10de/pcisubdevice10de1e78.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10de/pcisubdevice10de1f02.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10de/pcisubdevice10de2206.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10de/pcisubdevice10de2484.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10df/pcidevice10df.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10df0720.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor10df/pcisubdevice10dfe200.h
@@ -3022,6 +3023,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1259/pcidevice1259.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125b/pcidevice125b.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125b/pcisubdevice125b1400.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125b/pcisubdevice125b9100.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125c/pcidevice125c.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125d/pcidevice125d.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor125d/pcisubdevice125d1968.h
@@ -3418,6 +3420,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b3/pcisubdevice15b36764.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b6/pcidevice15b6.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b7/pcidevice15b7.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b7/pcisubdevice15b75009.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15b8/pcidevice15b8.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15bc/pcidevice15bc.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor15bc/pcisubdevice15bc0105.h
@@ -3772,6 +3775,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c5
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c58/pcisubdevice1c580003.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c58/pcisubdevice1c580023.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c5c/pcidevice1c5c.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c5c/pcisubdevice1c5c243b.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c5c/pcisubdevice1c5c2839.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c5f/pcidevice1c5f.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor1c63/pcidevice1c63.h
@@ -4192,6 +4196,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor808
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615d5.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615d8.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615f2.h
+src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615f3.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808615ff.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861616.h
 src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861903.h
