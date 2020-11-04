@@ -3,6 +3,10 @@
 
 
 
+#include <com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresscorrectableerrorflags.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrooterrorcommandflags.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h>
 #include <com/ngos/shared/common/pci/pciextendedcapabilityheader.h>
 
@@ -10,19 +14,19 @@
 
 struct PciAdvancedErrorReportingCapability
 {
-    PciExtendedCapabilityHeader       header;
-    PciExpressUncorrectableErrorFlags uncorrectableErrorStatus;
-    PciExpressUncorrectableErrorFlags uncorrectableErrorMask;
-    PciExpressUncorrectableErrorFlags uncorrectableErrorSeverity;
-    u32                               correctableErrorStatus;
-    u32                               correctableErrorMask;
-    u32                               advancedErrorCapabilitiesAndControl;
-    u32                               headerLog[4];
-    u32                               rootErrorCommand;
-    u32                               rootErrorStatus;
-    u16                               errorSourceIdentification;
-    u16                               correctableErrorSourceIdentification;
-    u32                               tlpPrefixLog[4];
+    PciExtendedCapabilityHeader                   header;
+    PciExpressUncorrectableErrorFlags             uncorrectableErrorStatus;
+    PciExpressUncorrectableErrorFlags             uncorrectableErrorMask;
+    PciExpressUncorrectableErrorFlags             uncorrectableErrorSeverity;
+    PciExpressCorrectableErrorFlags               correctableErrorStatus;
+    PciExpressCorrectableErrorFlags               correctableErrorMask;
+    PciExpressAdvancedErrorCapabilitiesAndControl advancedErrorCapabilitiesAndControl;
+    u32                                           headerLog[4];
+    PciExpressRootErrorCommandFlags               rootErrorCommand;
+    PciExpressRootErrorStatus                     rootErrorStatus;
+    u16                                           errorSourceIdentification;
+    u16                                           correctableErrorSourceIdentification;
+    u32                                           tlpPrefixLog[4];
 };
 
 

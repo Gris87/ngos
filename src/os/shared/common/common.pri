@@ -4117,9 +4117,11 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeout.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeoutrangeflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscorrectableerrorflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeemphasis.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h \
@@ -4148,6 +4150,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorcommandflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability2.h \

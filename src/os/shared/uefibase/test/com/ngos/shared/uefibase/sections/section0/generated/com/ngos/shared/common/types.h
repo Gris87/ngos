@@ -38,6 +38,7 @@
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h>
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h>
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h>
@@ -49,6 +50,7 @@
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
@@ -1995,6 +1997,141 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciExpressAdvancedErrorCapabilitiesAndControl");
+    {
+        PciExpressAdvancedErrorCapabilitiesAndControl temp;
+
+
+
+        // PciExpressAdvancedErrorCapabilitiesAndControl:
+        //
+        // |           IIIIIIII            |
+        // |           IIIIIIII            |
+        // |     IIII      | H | G | F | E |
+        // | D | C | B |       AAAAA       |
+        //
+        // firstErrorPointer              : 5  'A'
+        // ecrcGenerationCapable          : 1  'B'
+        // ecrcGenerationEnable           : 1  'C'
+        // ecrcCheckCapable               : 1  'D'
+        // ecrcCheckEnable                : 1  'E'
+        // multipleHeaderRecordingCapable : 1  'F'
+        // multipleHeaderRecordingEnable  : 1  'G'
+        // tlpPrefixLogPresent            : 1  'H'
+        // __reserved                     : 20 'I'
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 1 |
+        // | 0 | 0 | 0 |       01110       |
+        temp.value32 = 0x9FAA1B0E;
+
+        TEST_ASSERT_EQUALS(temp.firstErrorPointer,              14);
+        TEST_ASSERT_EQUALS(temp.ecrcGenerationCapable,          0);
+        TEST_ASSERT_EQUALS(temp.ecrcGenerationEnable,           0);
+        TEST_ASSERT_EQUALS(temp.ecrcCheckCapable,               0);
+        TEST_ASSERT_EQUALS(temp.ecrcCheckEnable,                1);
+        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingCapable, 1);
+        TEST_ASSERT_EQUALS(temp.multipleHeaderRecordingEnable,  0);
+        TEST_ASSERT_EQUALS(temp.tlpPrefixLogPresent,            1);
+        TEST_ASSERT_EQUALS(temp.__reserved,                     653985);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 1 |
+        // | 0 | 0 | 0 |       10001       |
+        temp.firstErrorPointer = 17;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B11);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 1 |
+        // | 0 | 0 | 1 |       10001       |
+        temp.ecrcGenerationCapable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B31);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 1 |
+        // | 0 | 1 | 1 |       10001       |
+        temp.ecrcGenerationEnable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1B71);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 1 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.ecrcCheckCapable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1BF1);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 1 | 0 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.ecrcCheckEnable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1AF1);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 0 | 0 | 0 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.multipleHeaderRecordingCapable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA18F1);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 1 | 1 | 0 | 0 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.multipleHeaderRecordingEnable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA1CF1);
+
+
+
+        // |           10011111            |
+        // |           10101010            |
+        // |     0001      | 0 | 1 | 0 | 0 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.tlpPrefixLogPresent = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x9FAA14F1);
+
+
+
+        // |           01100000            |
+        // |           01010101            |
+        // |     1110      | 0 | 1 | 0 | 0 |
+        // | 1 | 1 | 1 |       10001       |
+        temp.__reserved = 394590;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6055E4F1);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciExpressCapabilityRegister");
     {
         PciExpressCapabilityRegister temp;
@@ -3497,6 +3634,141 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 902;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE190);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressRootErrorStatus");
+    {
+        PciExpressRootErrorStatus temp;
+
+
+
+        // PciExpressRootErrorStatus:
+        //
+        // |       IIIII       |    HHH    |
+        // |           HHHHHHHH            |
+        // |           HHHHHHHH            |
+        // | H | G | F | E | D | C | B | A |
+        //
+        // errCorReceived                      : 1  'A'
+        // multipleErrCorReceived              : 1  'B'
+        // errFatalOrNonFatalReceived          : 1  'C'
+        // multipleErrFatalOrNonFatalReceived  : 1  'D'
+        // firstUncorrectableFatal             : 1  'E'
+        // nonFatalErrorMessagesReceived       : 1  'F'
+        // fatalErrorMessagesReceived          : 1  'G'
+        // __reserved                          : 20 'H'
+        // advancedErrorInterruptMessageNumber : 5  'I'
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 0 | 1 | 1 | 0 | 0 |
+        temp.value32 = 0x005423EC;
+
+        TEST_ASSERT_EQUALS(temp.errCorReceived,                      0);
+        TEST_ASSERT_EQUALS(temp.multipleErrCorReceived,              0);
+        TEST_ASSERT_EQUALS(temp.errFatalOrNonFatalReceived,          1);
+        TEST_ASSERT_EQUALS(temp.multipleErrFatalOrNonFatalReceived,  1);
+        TEST_ASSERT_EQUALS(temp.firstUncorrectableFatal,             0);
+        TEST_ASSERT_EQUALS(temp.nonFatalErrorMessagesReceived,       1);
+        TEST_ASSERT_EQUALS(temp.fatalErrorMessagesReceived,          1);
+        TEST_ASSERT_EQUALS(temp.__reserved,                          43079);
+        TEST_ASSERT_EQUALS(temp.advancedErrorInterruptMessageNumber, 0);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
+        temp.errCorReceived = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423ED);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 0 | 1 | 1 | 1 | 1 |
+        temp.multipleErrCorReceived = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423EF);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 0 | 1 | 0 | 1 | 1 |
+        temp.errFatalOrNonFatalReceived = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423EB);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 0 | 0 | 0 | 1 | 1 |
+        temp.multipleErrFatalOrNonFatalReceived = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423E3);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 |
+        temp.firstUncorrectableFatal = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423F3);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 1 | 0 | 1 | 0 | 0 | 1 | 1 |
+        temp.nonFatalErrorMessagesReceived = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x005423D3);
+
+
+
+        // |       00000       |    000    |
+        // |           01010100            |
+        // |           00100011            |
+        // | 1 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
+        temp.fatalErrorMessagesReceived = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x00542393);
+
+
+
+        // |       00000       |    111    |
+        // |           10101011            |
+        // |           11011100            |
+        // | 0 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
+        temp.__reserved = 1005496;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x07ABDC13);
+
+
+
+        // |       11111       |    111    |
+        // |           10101011            |
+        // |           11011100            |
+        // | 0 | 0 | 0 | 1 | 0 | 0 | 1 | 1 |
+        temp.advancedErrorInterruptMessageNumber = 31;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFABDC13);
     }
     TEST_CASE_END();
 

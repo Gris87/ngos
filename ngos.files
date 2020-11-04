@@ -4901,9 +4901,11 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcicommandflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeout.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeoutrangeflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresscorrectableerrorflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressdeemphasis.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h
@@ -4932,6 +4934,8 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletion
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorcommandflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootstatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability2.h
