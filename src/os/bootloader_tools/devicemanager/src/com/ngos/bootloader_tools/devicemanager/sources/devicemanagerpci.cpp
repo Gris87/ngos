@@ -2590,7 +2590,10 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
 
     switch ((PciExtendedCapabilityType)capability->capabilityId)
     {
-        case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING: UEFI_ASSERT_EXECUTION(initPciAdvancedErrorReportingCapability((PciAdvancedErrorReportingCapability *)capability, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING:       UEFI_ASSERT_EXECUTION(initPciExpressAdvancedErrorReportingCapability((PciExpressAdvancedErrorReportingCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::VIRTUAL_CHANNEL:                UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:           UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL: UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -2604,12 +2607,127 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciAdvancedErrorReportingCapability(PciAdvancedErrorReportingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
 {
-    UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
-    UEFI_ASSERT(capability         != nullptr, "capability is null",         NgosStatus::ASSERTION);
-    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 2, "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->uncorrectableErrorStatus                                           = %s",     flagsToFullString(capability->uncorrectableErrorStatus)));
+        UEFI_LVVV(("capability->uncorrectableErrorMask                                             = %s",     flagsToFullString(capability->uncorrectableErrorMask)));
+        UEFI_LVVV(("capability->uncorrectableErrorSeverity                                         = %s",     flagsToFullString(capability->uncorrectableErrorSeverity)));
+        UEFI_LVVV(("capability->correctableErrorStatus                                             = %s",     flagsToFullString(capability->correctableErrorStatus)));
+        UEFI_LVVV(("capability->correctableErrorMask                                               = %s",     flagsToFullString(capability->correctableErrorMask)));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.firstErrorPointer              = %u",     capability->advancedErrorCapabilitiesAndControl.firstErrorPointer));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.ecrcGenerationCapable          = %u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationCapable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.ecrcGenerationEnable           = %u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationEnable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.ecrcCheckCapable               = %u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckCapable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.ecrcCheckEnable                = %u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckEnable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingCapable = %u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingCapable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingEnable  = %u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingEnable));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.tlpPrefixLogPresent            = %u",     capability->advancedErrorCapabilitiesAndControl.tlpPrefixLogPresent));
+        UEFI_LVVV(("capability->advancedErrorCapabilitiesAndControl.value32                        = 0x%08X", capability->advancedErrorCapabilitiesAndControl.value32));
+        UEFI_LVVV(("capability->headerLog[0]                                                       = 0x%08X", capability->headerLog[0]));
+        UEFI_LVVV(("capability->headerLog[1]                                                       = 0x%08X", capability->headerLog[1]));
+        UEFI_LVVV(("capability->headerLog[2]                                                       = 0x%08X", capability->headerLog[2]));
+        UEFI_LVVV(("capability->headerLog[3]                                                       = 0x%08X", capability->headerLog[3]));
+        UEFI_LVVV(("capability->rootErrorCommand                                                   = %s",     flagsToFullString(capability->rootErrorCommand)));
+        UEFI_LVVV(("capability->rootErrorStatus.errCorReceived                                     = %u",     capability->rootErrorStatus.errCorReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.multipleErrCorReceived                             = %u",     capability->rootErrorStatus.multipleErrCorReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.errFatalOrNonFatalReceived                         = %u",     capability->rootErrorStatus.errFatalOrNonFatalReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.multipleErrFatalOrNonFatalReceived                 = %u",     capability->rootErrorStatus.multipleErrFatalOrNonFatalReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.firstUncorrectableFatal                            = %u",     capability->rootErrorStatus.firstUncorrectableFatal));
+        UEFI_LVVV(("capability->rootErrorStatus.nonFatalErrorMessagesReceived                      = %u",     capability->rootErrorStatus.nonFatalErrorMessagesReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.fatalErrorMessagesReceived                         = %u",     capability->rootErrorStatus.fatalErrorMessagesReceived));
+        UEFI_LVVV(("capability->rootErrorStatus.advancedErrorInterruptMessageNumber                = %u",     capability->rootErrorStatus.advancedErrorInterruptMessageNumber));
+        UEFI_LVVV(("capability->rootErrorStatus.value32                                            = 0x%08X", capability->rootErrorStatus.value32));
+        UEFI_LVVV(("capability->errorSourceIdentification                                          = 0x%04X", capability->errorSourceIdentification));
+        UEFI_LVVV(("capability->correctableErrorSourceIdentification                               = 0x%04X", capability->correctableErrorSourceIdentification));
+
+
+
+        if (capabilityVersion >= 2)
+        {
+            UEFI_LVVV(("capability->tlpPrefixLog[0] = 0x%08X", capability->tlpPrefixLog[0]));
+            UEFI_LVVV(("capability->tlpPrefixLog[1] = 0x%08X", capability->tlpPrefixLog[1]));
+            UEFI_LVVV(("capability->tlpPrefixLog[2] = 0x%08X", capability->tlpPrefixLog[2]));
+            UEFI_LVVV(("capability->tlpPrefixLog[3] = 0x%08X", capability->tlpPrefixLog[3]));
+        }
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error status",   capability->uncorrectableErrorStatus,   "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error mask",     capability->uncorrectableErrorMask,     "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error severity", capability->uncorrectableErrorSeverity, "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Correctable error status",     capability->correctableErrorStatus,     "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Correctable error mask",       capability->correctableErrorMask,       "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control",                                    mprintf("0x%08X", capability->advancedErrorCapabilitiesAndControl.value32),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: First error pointer",               mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.firstErrorPointer),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC generation capable",           mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationCapable),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC generation enable",            mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationEnable),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC check capable",                mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckCapable),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC check enable",                 mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckEnable),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: Multiple header recording capable", mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingCapable), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: Multiple header recording enable",  mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingEnable),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: TLP prefix log present",            mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.tlpPrefixLogPresent),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #0",                                                              mprintf("0x%08X", capability->headerLog[0]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #1",                                                              mprintf("0x%08X", capability->headerLog[1]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #2",                                                              mprintf("0x%08X", capability->headerLog[2]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #3",                                                              mprintf("0x%08X", capability->headerLog[3]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Root error command", capability->rootErrorCommand, "0x%04X", PciExpressRootErrorCommandFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status",                                          mprintf("0x%08X", capability->rootErrorStatus.value32),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: ERR_COR received",                        mprintf("%u",     capability->rootErrorStatus.errCorReceived),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Multiple ERR_COR received",               mprintf("%u",     capability->rootErrorStatus.multipleErrCorReceived),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: ERR_FATAL/NONFATAL received",             mprintf("%u",     capability->rootErrorStatus.errFatalOrNonFatalReceived),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Multiple ERR_FATAL/NONFATAL received",    mprintf("%u",     capability->rootErrorStatus.multipleErrFatalOrNonFatalReceived),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: First uncorrectable fatal",               mprintf("%u",     capability->rootErrorStatus.firstUncorrectableFatal),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Non-Fatal error messages received",       mprintf("%u",     capability->rootErrorStatus.nonFatalErrorMessagesReceived),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Fatal error messages received",           mprintf("%u",     capability->rootErrorStatus.fatalErrorMessagesReceived),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Advanced error interrupt message number", mprintf("%u",     capability->rootErrorStatus.advancedErrorInterruptMessageNumber), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Error source identification",                                mprintf("0x%04X", capability->errorSourceIdentification),                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Correctable error source identification",                    mprintf("0x%04X", capability->correctableErrorSourceIdentification),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        if (capabilityVersion >= 2)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #0", mprintf("0x%08X", capability->tlpPrefixLog[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #1", mprintf("0x%08X", capability->tlpPrefixLog[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #2", mprintf("0x%08X", capability->tlpPrefixLog[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #3", mprintf("0x%08X", capability->tlpPrefixLog[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 1, "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
 
 
 

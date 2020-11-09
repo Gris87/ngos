@@ -54,6 +54,11 @@
 #include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h>
 #include <com/ngos/shared/common/pci/lib/pciextendedbridgestatus.h>
 #include <com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h>
@@ -4158,6 +4163,467 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 6;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC6BB);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVirtualChannelPortVirtualChannelCapability1");
+    {
+        PciExpressVirtualChannelPortVirtualChannelCapability1 temp;
+
+
+
+        // PciExpressVirtualChannelPortVirtualChannelCapability1:
+        //
+        // |           GGGGGGGG            |
+        // |           GGGGGGGG            |
+        // |     GGGG      |  FF   |  EE   |
+        // | D |    CCC    | B |    AAA    |
+        //
+        // extendedVirtualChannelCount            : 3  'A'
+        // __reserved                             : 1  'B'
+        // lowPriorityExtendedVirtualChannelCount : 3  'C'
+        // __reserved2                            : 1  'D'
+        // referenceClock                         : 2  'E'
+        // portArbitrationTableEntrySize          : 2  'F'
+        // __reserved3                            : 20 'G'
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  11   |
+        // | 1 |    000    | 0 |    100    |
+        temp.value32 = 0xCAF20F84;
+
+        TEST_ASSERT_EQUALS(temp.extendedVirtualChannelCount,            4);
+        TEST_ASSERT_EQUALS(temp.__reserved,                             0);
+        TEST_ASSERT_EQUALS(temp.lowPriorityExtendedVirtualChannelCount, 0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                            1);
+        TEST_ASSERT_EQUALS(temp.referenceClock,                         3);
+        TEST_ASSERT_EQUALS(temp.portArbitrationTableEntrySize,          3);
+        TEST_ASSERT_EQUALS(temp.__reserved3,                            831264);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  11   |
+        // | 1 |    000    | 0 |    011    |
+        temp.extendedVirtualChannelCount = 3;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F83);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  11   |
+        // | 1 |    000    | 1 |    011    |
+        temp.__reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F8B);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  11   |
+        // | 1 |    111    | 1 |    011    |
+        temp.lowPriorityExtendedVirtualChannelCount = 7;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF20FFB);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  11   |
+        // | 0 |    111    | 1 |    011    |
+        temp.__reserved2 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF20F7B);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  11   |  00   |
+        // | 0 |    111    | 1 |    011    |
+        temp.referenceClock = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF20C7B);
+
+
+
+        // |           11001010            |
+        // |           11110010            |
+        // |     0000      |  00   |  00   |
+        // | 0 |    111    | 1 |    011    |
+        temp.portArbitrationTableEntrySize = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xCAF2007B);
+
+
+
+        // |           00110101            |
+        // |           00001101            |
+        // |     1111      |  00   |  00   |
+        // | 0 |    111    | 1 |    011    |
+        temp.__reserved3 = 217311;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x350DF07B);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVirtualChannelPortVirtualChannelCapability2");
+    {
+        PciExpressVirtualChannelPortVirtualChannelCapability2 temp;
+
+
+
+        // PciExpressVirtualChannelPortVirtualChannelCapability2:
+        //
+        // |           CCCCCCCC            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        //
+        // virtualChannelArbitrationCapability  : 8  'A'
+        // __reserved                           : 16 'B'
+        // virtualChannelArbitrationTableOffset : 8  'C'
+
+
+
+        // |           11010100            |
+        // |           10101011            |
+        // |           01010001            |
+        // |           11011001            |
+        temp.value32 = 0xD4AB51D9;
+
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationCapability,  217);
+        TEST_ASSERT_EQUALS(temp.__reserved,                           43857);
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationTableOffset, 212);
+
+
+
+        // |           11010100            |
+        // |           10101011            |
+        // |           01010001            |
+        // |           00100110            |
+        temp.virtualChannelArbitrationCapability = 38;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xD4AB5126);
+
+
+
+        // |           11010100            |
+        // |           01010100            |
+        // |           10101110            |
+        // |           00100110            |
+        temp.__reserved = 21678;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xD454AE26);
+
+
+
+        // |           00101011            |
+        // |           01010100            |
+        // |           10101110            |
+        // |           00100110            |
+        temp.virtualChannelArbitrationTableOffset = 43;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x2B54AE26);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVirtualChannelPortVirtualChannelControl");
+    {
+        PciExpressVirtualChannelPortVirtualChannelControl temp;
+
+
+
+        // PciExpressVirtualChannelPortVirtualChannelControl:
+        //
+        // |           CCCCCCCC            |
+        // |     CCCC      |    BBB    | A |
+        //
+        // loadVirtualChannelArbitrationTable : 1  'A'
+        // virtualChannelArbitrationSelect    : 3  'B'
+        // __reserved                         : 12 'C'
+
+
+
+        // |           00110001            |
+        // |     0111      |    110    | 1 |
+        temp.value16 = 0x317D;
+
+        TEST_ASSERT_EQUALS(temp.loadVirtualChannelArbitrationTable, 1);
+        TEST_ASSERT_EQUALS(temp.virtualChannelArbitrationSelect,    6);
+        TEST_ASSERT_EQUALS(temp.__reserved,                         791);
+
+
+
+        // |           00110001            |
+        // |     0111      |    110    | 0 |
+        temp.loadVirtualChannelArbitrationTable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x317C);
+
+
+
+        // |           00110001            |
+        // |     0111      |    001    | 0 |
+        temp.virtualChannelArbitrationSelect = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3172);
+
+
+
+        // |           11001110            |
+        // |     1000      |    001    | 0 |
+        temp.__reserved = 3304;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xCE82);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVirtualChannelVirtualChannelResourceCapability");
+    {
+        PciExpressVirtualChannelVirtualChannelResourceCapability temp;
+
+
+
+        // PciExpressVirtualChannelVirtualChannelResourceCapability:
+        //
+        // |           GGGGGGGG            |
+        // | F |          EEEEEEE          |
+        // | D | C |        BBBBBB         |
+        // |           AAAAAAAA            |
+        //
+        // portArbitrationCapability  : 8  'A'
+        // __reserved                 : 6  'B'
+        // undefined                  : 1  'C'
+        // rejectSnoopTransactions    : 1  'D'
+        // maximumTimeSlots           : 7  'E'
+        // __reserved2                : 1  'F'
+        // portArbitrationTableOffset : 8  'G'
+
+
+
+        // |           11111111            |
+        // | 1 |          0111110          |
+        // | 0 | 1 |        011111         |
+        // |           10010110            |
+        temp.value32 = 0xFFBE5F96;
+
+        TEST_ASSERT_EQUALS(temp.portArbitrationCapability,  150);
+        TEST_ASSERT_EQUALS(temp.__reserved,                 31);
+        TEST_ASSERT_EQUALS(temp.undefined,                  1);
+        TEST_ASSERT_EQUALS(temp.rejectSnoopTransactions,    0);
+        TEST_ASSERT_EQUALS(temp.maximumTimeSlots,           62);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                1);
+        TEST_ASSERT_EQUALS(temp.portArbitrationTableOffset, 255);
+
+
+
+        // |           11111111            |
+        // | 1 |          0111110          |
+        // | 0 | 1 |        011111         |
+        // |           01101001            |
+        temp.portArbitrationCapability = 105;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFBE5F69);
+
+
+
+        // |           11111111            |
+        // | 1 |          0111110          |
+        // | 0 | 1 |        100000         |
+        // |           01101001            |
+        temp.__reserved = 32;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFBE6069);
+
+
+
+        // |           11111111            |
+        // | 1 |          0111110          |
+        // | 0 | 0 |        100000         |
+        // |           01101001            |
+        temp.undefined = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFBE2069);
+
+
+
+        // |           11111111            |
+        // | 1 |          0111110          |
+        // | 1 | 0 |        100000         |
+        // |           01101001            |
+        temp.rejectSnoopTransactions = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFBEA069);
+
+
+
+        // |           11111111            |
+        // | 1 |          1000001          |
+        // | 1 | 0 |        100000         |
+        // |           01101001            |
+        temp.maximumTimeSlots = 65;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFFC1A069);
+
+
+
+        // |           11111111            |
+        // | 0 |          1000001          |
+        // | 1 | 0 |        100000         |
+        // |           01101001            |
+        temp.__reserved2 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xFF41A069);
+
+
+
+        // |           00000000            |
+        // | 0 |          1000001          |
+        // | 1 | 0 |        100000         |
+        // |           01101001            |
+        temp.portArbitrationTableOffset = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0041A069);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVirtualChannelVirtualChannelResourceControl");
+    {
+        PciExpressVirtualChannelVirtualChannelResourceControl temp;
+
+
+
+        // PciExpressVirtualChannelVirtualChannelResourceControl:
+        //
+        // | H |     GGGG      |    FFF    |
+        // |     EEEE      |    DDD    | C |
+        // |           BBBBBBBB            |
+        // |           AAAAAAAA            |
+        //
+        // tcVcMap                  : 8  'A'
+        // __reserved               : 8  'B'
+        // loadPortArbitrationTable : 1  'C'
+        // portArbitrationSelect    : 3  'D'
+        // __reserved2              : 4  'E'
+        // virtualChannelId         : 3  'F'
+        // __reserved3              : 4  'G'
+        // virtualChannelEnable     : 1  'H'
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     1011      |    001    | 1 |
+        // |           11100011            |
+        // |           01100010            |
+        temp.value32 = 0x76B3E362;
+
+        TEST_ASSERT_EQUALS(temp.tcVcMap,                  98);
+        TEST_ASSERT_EQUALS(temp.__reserved,               227);
+        TEST_ASSERT_EQUALS(temp.loadPortArbitrationTable, 1);
+        TEST_ASSERT_EQUALS(temp.portArbitrationSelect,    1);
+        TEST_ASSERT_EQUALS(temp.__reserved2,              11);
+        TEST_ASSERT_EQUALS(temp.virtualChannelId,         6);
+        TEST_ASSERT_EQUALS(temp.__reserved3,              14);
+        TEST_ASSERT_EQUALS(temp.virtualChannelEnable,     0);
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     1011      |    001    | 1 |
+        // |           11100011            |
+        // |           10011101            |
+        temp.tcVcMap = 157;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x76B3E39D);
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     1011      |    001    | 1 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.__reserved = 28;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x76B31C9D);
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     1011      |    001    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.loadPortArbitrationTable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x76B21C9D);
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     1011      |    110    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.portArbitrationSelect = 6;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x76BC1C9D);
+
+
+
+        // | 0 |     1110      |    110    |
+        // |     0100      |    110    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.__reserved2 = 4;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x764C1C9D);
+
+
+
+        // | 0 |     1110      |    001    |
+        // |     0100      |    110    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.virtualChannelId = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x714C1C9D);
+
+
+
+        // | 0 |     0001      |    001    |
+        // |     0100      |    110    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.__reserved3 = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x094C1C9D);
+
+
+
+        // | 1 |     0001      |    001    |
+        // |     0100      |    110    | 0 |
+        // |           00011100            |
+        // |           10011101            |
+        temp.virtualChannelEnable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x894C1C9D);
     }
     TEST_CASE_END();
 

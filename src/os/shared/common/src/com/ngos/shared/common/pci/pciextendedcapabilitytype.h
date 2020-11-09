@@ -19,6 +19,7 @@ enum class PciExtendedCapabilityType: u16
     LINK_CONTROL                         = 6,
     EVENT_COLLECTOR_ENDPOINT_ASSOCIATION = 7,
     MULTI_FUNCTION_VIRTUAL_CHANNEL       = 8,
+    VIRTUAL_CHANNEL_MFVC                 = 9,
     RCRB_HEADER                          = 10,
     VENDOR_SPECIFIC                      = 11,
     ACS_EXTENDED                         = 13,
@@ -53,6 +54,7 @@ inline const char8* enumToString(PciExtendedCapabilityType type) // TEST: NO
         case PciExtendedCapabilityType::LINK_CONTROL:                         return "LINK_CONTROL";
         case PciExtendedCapabilityType::EVENT_COLLECTOR_ENDPOINT_ASSOCIATION: return "EVENT_COLLECTOR_ENDPOINT_ASSOCIATION";
         case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL:       return "MULTI_FUNCTION_VIRTUAL_CHANNEL";
+        case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:                 return "VIRTUAL_CHANNEL_MFVC";
         case PciExtendedCapabilityType::RCRB_HEADER:                          return "RCRB_HEADER";
         case PciExtendedCapabilityType::VENDOR_SPECIFIC:                      return "VENDOR_SPECIFIC";
         case PciExtendedCapabilityType::ACS_EXTENDED:                         return "ACS_EXTENDED";

@@ -1199,7 +1199,8 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/flags.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/macros.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
-src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciadvancederrorreportingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h
@@ -4946,6 +4947,18 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationtableentrysize.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelstatusflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelreferenceclock.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcestatusflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h
@@ -5391,6 +5404,7 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pcimessagesignaledinterruptsextendedmessagecontrol.h

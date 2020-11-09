@@ -415,7 +415,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/macros.h \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
-    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciadvancederrorreportingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h \
@@ -4162,6 +4163,18 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationtableentrysize.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelstatusflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelreferenceclock.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcestatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgedownstreamsplittransaction.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondaryclockfrequency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciextendedbridgesecondarystatus.h \

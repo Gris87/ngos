@@ -258,7 +258,8 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
-#include <com/ngos/shared/common/pci/capability/extended/pciadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
 #include <com/ngos/shared/common/pci/capability/pcicentralresourcecontrolcapability.h>
@@ -1569,7 +1570,6 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortCommand),                        4);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortRateFlag),                       1);
         TEST_ASSERT_EQUALS(sizeof(PciAcceleratedGraphicsPortStatus),                         4);
-        TEST_ASSERT_EQUALS(sizeof(PciAdvancedErrorReportingCapability),                      72);
         TEST_ASSERT_EQUALS(sizeof(PciBaseClass),                                             1);
         TEST_ASSERT_EQUALS(sizeof(PciBridgeControlFlag),                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciBridgeControlRegister),                                 48);
@@ -2373,6 +2373,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementControl),              1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementSupport),              1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressAdvancedErrorCapabilitiesAndControl),            4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAdvancedErrorReportingCapability),               72);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                     60);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCapabilityRegister),                             2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCompletionTimeout),                              1);
@@ -2418,6 +2419,19 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressSlotStatusFlag),                                 2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressTphCompleterFlag),                               1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressUncorrectableErrorFlag),                         4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannel),                                 12);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelArbitrationCapabilityFlag),        1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelCapability),                       16);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortArbitrationCapabilityFlag),    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortArbitrationTableEntrySize),    1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortVirtualChannelCapability1),    4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortVirtualChannelCapability2),    4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortVirtualChannelControl),        2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelPortVirtualChannelStatusFlag),     2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelReferenceClock),                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelVirtualChannelResourceCapability), 4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelVirtualChannelResourceControl),    4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelVirtualChannelResourceStatusFlag), 2);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeCapability),                              16);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeDownstreamSplitTransaction),              4);
         TEST_ASSERT_EQUALS(sizeof(PciExtendedBridgeSecondaryClockFrequency),                 1);
