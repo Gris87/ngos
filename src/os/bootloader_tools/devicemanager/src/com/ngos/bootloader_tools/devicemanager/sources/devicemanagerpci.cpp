@@ -2594,6 +2594,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL:                UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:           UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL: UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::SERIAL_NUMBER:                  UEFI_ASSERT_EXECUTION(initPciExpressDeviceSerialNumberCapability((PciExpressDeviceSerialNumberCapability *)capability,         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -2728,6 +2729,32 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
     UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
     UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 1, "capabilityVersion is invalid", NgosStatus::ASSERTION);
     UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    AVOID_UNUSED(capability);
+    AVOID_UNUSED(deviceManagerEntry);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 1, "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
 
 
 

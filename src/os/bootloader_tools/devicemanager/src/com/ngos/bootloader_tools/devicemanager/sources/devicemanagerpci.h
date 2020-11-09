@@ -6,6 +6,7 @@
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
@@ -86,6 +87,7 @@ private:
     static NgosStatus initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

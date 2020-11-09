@@ -259,6 +259,7 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
@@ -2385,6 +2386,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceControl),                                  2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceControl2),                                 2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDevicePortType),                                 1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceSerialNumberCapability),                   12);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceStatus2),                                  2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceStatusFlag),                               2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL0sAcceptableLatency),                   1);

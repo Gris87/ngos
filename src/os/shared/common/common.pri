@@ -416,6 +416,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
