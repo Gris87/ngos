@@ -2726,9 +2726,9 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
-    UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
-    UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 1, "capabilityVersion is invalid", NgosStatus::ASSERTION);
-    UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
 
 
 
