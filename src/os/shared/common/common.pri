@@ -4166,7 +4166,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationselect.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationselect.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationtableentrysize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h \

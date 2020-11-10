@@ -4950,7 +4950,9 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterfl
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationselect.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationselect.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationtableentrysize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h

@@ -17,13 +17,30 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flagsVar) * 8); ++i) \
+        for (i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
         { \
-            u64 flag = (1ULL << i); \
+            u64 flag = (1ULL << _); \
             \
             if (flagsVar.flags & flag) \
             { \
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", flagToString((flagType)flag)), "Yes", mode), NgosStatus::ASSERTION); \
+            } \
+        } \
+    }
+
+
+
+#define ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, name, i, flagsVar, format, flagType, mode) \
+    { \
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name, i), mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
+        \
+        for (i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
+        { \
+            u64 flag = (1ULL << _); \
+            \
+            if (flagsVar.flags & flag) \
+            { \
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name ": %s", i, flagToString((flagType)flag)), "Yes", mode), NgosStatus::ASSERTION); \
             } \
         } \
     }
@@ -2736,8 +2753,103 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
 
 
 
-    AVOID_UNUSED(capability);
-    AVOID_UNUSED(deviceManagerEntry);
+    PciExpressVirtualChannelArbitrationCapabilityFlags virtualChannelArbitrationCapability(capability->portVirtualChannelCapability2.virtualChannelArbitrationCapability);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->portVirtualChannelCapability1.extendedVirtualChannelCount            = %u",     capability->portVirtualChannelCapability1.extendedVirtualChannelCount));
+        UEFI_LVVV(("capability->portVirtualChannelCapability1.lowPriorityExtendedVirtualChannelCount = %u",     capability->portVirtualChannelCapability1.lowPriorityExtendedVirtualChannelCount));
+        UEFI_LVVV(("capability->portVirtualChannelCapability1.referenceClock                         = %s",     enumToFullString((PciExpressVirtualChannelReferenceClock)capability->portVirtualChannelCapability1.referenceClock)));
+        UEFI_LVVV(("capability->portVirtualChannelCapability1.portArbitrationTableEntrySize          = %s",     enumToFullString((PciExpressVirtualChannelPortArbitrationTableEntrySize)capability->portVirtualChannelCapability1.portArbitrationTableEntrySize)));
+        UEFI_LVVV(("capability->portVirtualChannelCapability1.value32                                = 0x%08X", capability->portVirtualChannelCapability1.value32));
+        UEFI_LVVV(("capability->portVirtualChannelCapability2.virtualChannelArbitrationCapability    = %s",     flagsToFullString(virtualChannelArbitrationCapability)));
+        UEFI_LVVV(("capability->portVirtualChannelCapability2.virtualChannelArbitrationTableOffset   = %u",     capability->portVirtualChannelCapability2.virtualChannelArbitrationTableOffset));
+        UEFI_LVVV(("capability->portVirtualChannelCapability2.value32                                = 0x%08X", capability->portVirtualChannelCapability2.value32));
+        UEFI_LVVV(("capability->portVirtualChannelControl.loadVirtualChannelArbitrationTable         = %u",     capability->portVirtualChannelControl.loadVirtualChannelArbitrationTable));
+        UEFI_LVVV(("capability->portVirtualChannelControl.virtualChannelArbitrationSelect            = %s",     enumToFullString((PciExpressVirtualChannelArbitrationSelect)capability->portVirtualChannelControl.virtualChannelArbitrationSelect)));
+        UEFI_LVVV(("capability->portVirtualChannelControl.value16                                    = 0x%04X", capability->portVirtualChannelControl.value16));
+        UEFI_LVVV(("capability->portVirtualChannelStatus                                             = %s",     flagsToFullString(capability->portVirtualChannelStatus)));
+
+
+
+        for (i64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
+        {
+            PciExpressVirtualChannelPortArbitrationCapabilityFlags portArbitrationCapability(capability->capability[i].virtualChannelResourceCapability.portArbitrationCapability);
+
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceCapability.portArbitrationCapability  = %s",     i, flagsToFullString(portArbitrationCapability)));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceCapability.rejectSnoopTransactions    = %u",     i, capability->capability[i].virtualChannelResourceCapability.rejectSnoopTransactions));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceCapability.maximumTimeSlots           = %u",     i, capability->capability[i].virtualChannelResourceCapability.maximumTimeSlots));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceCapability.portArbitrationTableOffset = %u",     i, capability->capability[i].virtualChannelResourceCapability.portArbitrationTableOffset));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceCapability.value32                    = 0x%08X", i, capability->capability[i].virtualChannelResourceCapability.value32));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.tcVcMap                       = 0x%02X", i, capability->capability[i].virtualChannelResourceControl.tcVcMap));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.loadPortArbitrationTable      = %u",     i, capability->capability[i].virtualChannelResourceControl.loadPortArbitrationTable));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.portArbitrationSelect         = %s",     i, enumToFullString((PciExpressVirtualChannelPortArbitrationSelect)capability->capability[i].virtualChannelResourceControl.portArbitrationSelect)));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.virtualChannelId              = %u",     i, capability->capability[i].virtualChannelResourceControl.virtualChannelId));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.virtualChannelEnable          = %u",     i, capability->capability[i].virtualChannelResourceControl.virtualChannelEnable));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceControl.value32                       = 0x%08X", i, capability->capability[i].virtualChannelResourceControl.value32));
+            UEFI_LVVV(("capability->capability[%d].virtualChannelResourceStatus                                = %s",     i, flagsToFullString(capability->capability[i].virtualChannelResourceStatus)));
+        }
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1",                                              mprintf("0x%08X", capability->portVirtualChannelCapability1.value32),                                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Extended virtual channel count",              mprintf("%u",     capability->portVirtualChannelCapability1.extendedVirtualChannelCount),                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Low priority extended virtual channel count", mprintf("%u",     capability->portVirtualChannelCapability1.lowPriorityExtendedVirtualChannelCount),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Reference clock",                             strdup(enumToFullString((PciExpressVirtualChannelReferenceClock)capability->portVirtualChannelCapability1.referenceClock)),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Port arbitration table entry size",           strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationTableEntrySize)capability->portVirtualChannelCapability1.portArbitrationTableEntrySize)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 2",                                              mprintf("0x%08X", capability->portVirtualChannelCapability2.value32),                                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "VC - Port virtual channel capability 2: Virtual channel arbitration capability", virtualChannelArbitrationCapability, "0x%02X", PciExpressVirtualChannelArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 2: Virtual channel arbitration table offset", mprintf("%u",     capability->portVirtualChannelCapability2.virtualChannelArbitrationTableOffset),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control",                                                mprintf("0x%04X", capability->portVirtualChannelControl.value16),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control: Load virtual channel arbitration table",        capability->portVirtualChannelControl.loadVirtualChannelArbitrationTable ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control: Virtual channel arbitration select",            strdup(enumToFullString((PciExpressVirtualChannelArbitrationSelect)capability->portVirtualChannelControl.virtualChannelArbitrationSelect)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "VC - Port virtual channel status", capability->portVirtualChannelStatus, "0x%04X", PciExpressVirtualChannelPortVirtualChannelStatusFlag, DeviceManagerMode::EXPERT);
+
+
+
+        for (i64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
+        {
+            PciExpressVirtualChannelPortArbitrationCapabilityFlags portArbitrationCapability(capability->capability[i].virtualChannelResourceCapability.portArbitrationCapability);
+
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability", i), mprintf("0x%08X", capability->capability[i].virtualChannelResourceCapability.value32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "VC - capability %d virtual channel resource capability: Port arbitration capability", i, portArbitrationCapability, "0x%02X", PciExpressVirtualChannelPortArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+
+
+
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Reject snoop transactions", i),     capability->capability[i].virtualChannelResourceCapability.rejectSnoopTransactions ? "Yes" : "No",                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Maximum time slots", i),            mprintf("%u",     capability->capability[i].virtualChannelResourceCapability.maximumTimeSlotsReal()),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Port arbitration table offset", i), mprintf("%u",     capability->capability[i].virtualChannelResourceCapability.portArbitrationTableOffset),                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control", i),                                   mprintf("0x%08X", capability->capability[i].virtualChannelResourceControl.value32),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: TC/VC map", i),                        mprintf("0x%02X", capability->capability[i].virtualChannelResourceControl.tcVcMap),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: load port arbitration table", i),      capability->capability[i].virtualChannelResourceControl.loadPortArbitrationTable ? "Yes" : "No",                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Port arbitration select", i),          strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationSelect)capability->capability[i].virtualChannelResourceControl.portArbitrationSelect)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Virtual channel ID", i),               mprintf("%u",     capability->capability[i].virtualChannelResourceControl.virtualChannelId),                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Virtual channel enable", i),           capability->capability[i].virtualChannelResourceControl.virtualChannelEnable ? "Yes" : "No",                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "VC - capability %d virtual channel resource status", i, capability->capability[i].virtualChannelResourceStatus, "0x%04X", PciExpressVirtualChannelVirtualChannelResourceStatusFlag, DeviceManagerMode::EXPERT);
+        }
+        // Ignore CppAlignmentVerifier [END]
+    }
 
 
 
@@ -2748,9 +2860,9 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
-    UEFI_ASSERT(capability != nullptr,                            "capability is null",           NgosStatus::ASSERTION);
-    UEFI_ASSERT(capabilityVersion >= 1 && capabilityVersion <= 1, "capabilityVersion is invalid", NgosStatus::ASSERTION);
-    UEFI_ASSERT(deviceManagerEntry != nullptr,                    "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
 
 
 
@@ -2758,8 +2870,17 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
 
 
 
-    AVOID_UNUSED(capability);
-    AVOID_UNUSED(deviceManagerEntry);
+    // Validation
+    {
+        UEFI_LVVV(("capability->serialNumber = 0x%016llX", capability->serialNumber));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device Serial Number - Serial number", mprintf("%016llX", capability->serialNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+    }
 
 
 

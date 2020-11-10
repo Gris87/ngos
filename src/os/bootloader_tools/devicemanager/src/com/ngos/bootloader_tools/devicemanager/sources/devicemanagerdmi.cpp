@@ -13,9 +13,9 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flagsVar) * 8); ++i) \
+        for (i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
         { \
-            u64 flag = (1ULL << i); \
+            u64 flag = (1ULL << _); \
             \
             if (flagsVar.flags & flag) \
             { \

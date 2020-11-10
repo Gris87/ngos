@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationselect.h>
 
 
 
@@ -14,7 +14,7 @@ struct PciExpressVirtualChannelPortVirtualChannelControl
         struct
         {
             u16 loadVirtualChannelArbitrationTable: 1;
-            u16 virtualChannelArbitrationSelect:    3;
+            u16 virtualChannelArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelArbitrationSelect
             u16 __reserved:                         12;
         };
 

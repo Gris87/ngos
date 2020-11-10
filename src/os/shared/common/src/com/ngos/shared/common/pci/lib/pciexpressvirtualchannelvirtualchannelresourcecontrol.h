@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportarbitrationselect.h>
 
 
 
@@ -16,7 +16,7 @@ struct PciExpressVirtualChannelVirtualChannelResourceControl
             u32 tcVcMap:                  8;
             u32 __reserved:               8;
             u32 loadPortArbitrationTable: 1;
-            u32 portArbitrationSelect:    3;
+            u32 portArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelPortArbitrationSelect
             u32 __reserved2:              4;
             u32 virtualChannelId:         3;
             u32 __reserved3:              4;
