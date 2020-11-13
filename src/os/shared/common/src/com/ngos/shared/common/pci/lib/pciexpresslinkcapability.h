@@ -3,7 +3,6 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressl0sexitlatency.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressl1exitlatency.h>

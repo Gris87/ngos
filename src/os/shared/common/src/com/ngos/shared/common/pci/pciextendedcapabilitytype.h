@@ -13,10 +13,10 @@ enum class PciExtendedCapabilityType: u16
     NONE                                 = 0,
     ADVANCED_ERROR_REPORTING             = 1,
     VIRTUAL_CHANNEL                      = 2,
-    SERIAL_NUMBER                        = 3,
+    DEVICE_SERIAL_NUMBER                 = 3,
     POWER_BUDGETING                      = 4,
-    LINK_DECLARATION                     = 5,
-    LINK_CONTROL                         = 6,
+    ROOT_COMPLEX_LINK_DECLARATION        = 5,
+    ROOT_COMPLEX_INTERNAL_LINK_CONTROL   = 6,
     EVENT_COLLECTOR_ENDPOINT_ASSOCIATION = 7,
     MULTI_FUNCTION_VIRTUAL_CHANNEL       = 8,
     VIRTUAL_CHANNEL_MFVC                 = 9,
@@ -48,10 +48,10 @@ inline const char8* enumToString(PciExtendedCapabilityType type) // TEST: NO
         case PciExtendedCapabilityType::NONE:                                 return "NONE";
         case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING:             return "ADVANCED_ERROR_REPORTING";
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL:                      return "VIRTUAL_CHANNEL";
-        case PciExtendedCapabilityType::SERIAL_NUMBER:                        return "SERIAL_NUMBER";
+        case PciExtendedCapabilityType::DEVICE_SERIAL_NUMBER:                 return "DEVICE_SERIAL_NUMBER";
         case PciExtendedCapabilityType::POWER_BUDGETING:                      return "POWER_BUDGETING";
-        case PciExtendedCapabilityType::LINK_DECLARATION:                     return "LINK_DECLARATION";
-        case PciExtendedCapabilityType::LINK_CONTROL:                         return "LINK_CONTROL";
+        case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:        return "ROOT_COMPLEX_LINK_DECLARATION";
+        case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL:   return "ROOT_COMPLEX_INTERNAL_LINK_CONTROL";
         case PciExtendedCapabilityType::EVENT_COLLECTOR_ENDPOINT_ASSOCIATION: return "EVENT_COLLECTOR_ENDPOINT_ASSOCIATION";
         case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL:       return "MULTI_FUNCTION_VIRTUAL_CHANNEL";
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:                 return "VIRTUAL_CHANNEL_MFVC";

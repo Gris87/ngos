@@ -1201,6 +1201,8 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
@@ -4935,6 +4937,17 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrolle
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkstatus.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationelementselfdescription.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationelementtype.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddress.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkmemorymappedspace.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkdescription.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkentry.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinktype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorcommandflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h
@@ -5407,6 +5420,7 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h

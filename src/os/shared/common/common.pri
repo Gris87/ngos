@@ -417,6 +417,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
@@ -4151,6 +4153,17 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkstatus.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationelementselfdescription.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationelementtype.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddress.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkmemorymappedspace.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkdescription.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkentry.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinktype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorcommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrooterrorstatus.h \

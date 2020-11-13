@@ -3,7 +3,6 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h>
 
