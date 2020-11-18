@@ -415,6 +415,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/macros.h \
     $$PWD/src/com/ngos/shared/common/pagetable/types.h \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h \
@@ -4129,6 +4130,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicardbuscontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcicommandflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pcideviceselecttiming.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h \

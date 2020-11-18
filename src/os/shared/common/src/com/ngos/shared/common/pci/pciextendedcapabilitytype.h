@@ -22,7 +22,7 @@ enum class PciExtendedCapabilityType: u16
     VIRTUAL_CHANNEL_MFVC                 = 9,
     RCRB_HEADER                          = 10,
     VENDOR_SPECIFIC                      = 11,
-    ACS_EXTENDED                         = 13,
+    ACCESS_CONTROL_SERVICES              = 13,
     ARI_CAPABILITY                       = 14,
     MULTICAST                            = 18,
     RESIZABLE_BAR                        = 21,
@@ -57,7 +57,7 @@ inline const char8* enumToString(PciExtendedCapabilityType type) // TEST: NO
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:                 return "VIRTUAL_CHANNEL_MFVC";
         case PciExtendedCapabilityType::RCRB_HEADER:                          return "RCRB_HEADER";
         case PciExtendedCapabilityType::VENDOR_SPECIFIC:                      return "VENDOR_SPECIFIC";
-        case PciExtendedCapabilityType::ACS_EXTENDED:                         return "ACS_EXTENDED";
+        case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:              return "ACCESS_CONTROL_SERVICES";
         case PciExtendedCapabilityType::ARI_CAPABILITY:                       return "ARI_CAPABILITY";
         case PciExtendedCapabilityType::MULTICAST:                            return "MULTICAST";
         case PciExtendedCapabilityType::RESIZABLE_BAR:                        return "RESIZABLE_BAR";

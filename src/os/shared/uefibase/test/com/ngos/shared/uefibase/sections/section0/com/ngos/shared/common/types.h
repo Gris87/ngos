@@ -258,6 +258,7 @@
 #include <com/ngos/shared/common/mbr/mbrpartitiontype.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pagetable/types.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
@@ -2378,6 +2379,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceHeaderTypeRegion),                                         48);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceIndependentRegion),                                        16);
         TEST_ASSERT_EQUALS(sizeof(PciDeviceSelectTiming),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAccessControlServicesAcsCapability),                      2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAccessControlServicesAcsControlFlag),                     2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAccessControlServicesCapability),                         8);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementControl),                       1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementSupport),                       1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressAdvancedErrorCapabilitiesAndControl),                     4);

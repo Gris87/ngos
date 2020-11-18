@@ -2615,6 +2615,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
         case PciExtendedCapabilityType::POWER_BUDGETING:                    UEFI_ASSERT_EXECUTION(initPciExpressPowerBudgetingCapability((PciExpressPowerBudgetingCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:      UEFI_ASSERT_EXECUTION(initPciExpressRootComplexLinkDeclarationCapability((PciExpressRootComplexLinkDeclarationCapability *)capability,         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL: UEFI_ASSERT_EXECUTION(initPciExpressRootComplexInternalLinkControlCapability((PciExpressRootComplexInternalLinkControlCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:            UEFI_ASSERT_EXECUTION(initPciExpressAccessControlServicesCapability((PciExpressAccessControlServicesCapability *)capability,                   capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -3126,6 +3127,85 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapabil
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status",                        mprintf("0x%04X", capability->rootComplexLinkStatus.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status: Current link speed",    strdup(enumToFullString((PciExpressLinkSpeed)capability->rootComplexLinkStatus.currentLinkSpeed)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status: Negotiated link width", strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkStatus.negotiatedLinkWidth)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    u8 numberOfWords = capability->capability.egressControlVectorSizeNumberOfWords();
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->capability.acsSourceValidation      = %u",     capability->capability.acsSourceValidation));
+        UEFI_LVVV(("capability->capability.acsTranslationBlocking   = %u",     capability->capability.acsTranslationBlocking));
+        UEFI_LVVV(("capability->capability.acsP2pRequestRedirect    = %u",     capability->capability.acsP2pRequestRedirect));
+        UEFI_LVVV(("capability->capability.acsP2pCompletionRedirect = %u",     capability->capability.acsP2pCompletionRedirect));
+        UEFI_LVVV(("capability->capability.acsUpstreamForwarding    = %u",     capability->capability.acsUpstreamForwarding));
+        UEFI_LVVV(("capability->capability.acsP2pEgressControl      = %u",     capability->capability.acsP2pEgressControl));
+        UEFI_LVVV(("capability->capability.acsDirectTranslatedP2p   = %u",     capability->capability.acsDirectTranslatedP2p));
+        UEFI_LVVV(("capability->capability.egressControlVectorSize  = %u",     capability->capability.egressControlVectorSizeReal()));
+        UEFI_LVVV(("capability->capability.value16                  = 0x%04X", capability->capability.value16));
+        UEFI_LVVV(("capability->control                             = %s",     flagsToFullString(capability->control)));
+        UEFI_LVVV(("numberOfWords                                   = %u",     numberOfWords));
+
+
+
+        if (capability->capability.acsP2pEgressControl)
+        {
+            for (i64 i = 0; i < numberOfWords; ++i)
+            {
+                UEFI_LVVV(("capability->egressControlVector[%d] = 0x%08X", i, capability->egressControlVector[i]));
+            }
+        }
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability",                              mprintf("0x%04X", capability->capability.value16),                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS source validation",       capability->capability.acsSourceValidation      ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS translation blocking",    capability->capability.acsTranslationBlocking   ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P request redirect",    capability->capability.acsP2pRequestRedirect    ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P completion redirect", capability->capability.acsP2pCompletionRedirect ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS upstream forwarding",     capability->capability.acsUpstreamForwarding    ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P egress control",      capability->capability.acsP2pEgressControl      ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS direct translated P2P",   capability->capability.acsDirectTranslatedP2p   ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: Egress control vector size ", mprintf("%u", capability->capability.egressControlVectorSizeReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "ACS - Control", capability->control, "0x%04X", PciExpressAccessControlServicesAcsControlFlag, DeviceManagerMode::EXPERT);
+
+
+
+        if (capability->capability.acsP2pEgressControl)
+        {
+            for (i64 i = 0; i < numberOfWords; ++i)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ACS - Egress control vector #%d", i), mprintf("0x%08X", capability->egressControlVector[i]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            }
         }
         // Ignore CppAlignmentVerifier [END]
     }

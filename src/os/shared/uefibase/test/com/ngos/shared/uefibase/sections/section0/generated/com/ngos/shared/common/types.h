@@ -38,6 +38,7 @@
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportcommand.h>
 #include <com/ngos/shared/common/pci/lib/pciacceleratedgraphicsportstatus.h>
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h>
@@ -2004,6 +2005,119 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.capable = 0;
 
         TEST_ASSERT_EQUALS(temp.value8, 0x1C);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressAccessControlServicesAcsCapability");
+    {
+        PciExpressAccessControlServicesAcsCapability temp;
+
+
+
+        // PciExpressAccessControlServicesAcsCapability:
+        //
+        // |           IIIIIIII            |
+        // | H | G | F | E | D | C | B | A |
+        //
+        // acsSourceValidation      : 1  'A'
+        // acsTranslationBlocking   : 1  'B'
+        // acsP2pRequestRedirect    : 1  'C'
+        // acsP2pCompletionRedirect : 1  'D'
+        // acsUpstreamForwarding    : 1  'E'
+        // acsP2pEgressControl      : 1  'F'
+        // acsDirectTranslatedP2p   : 1  'G'
+        // __reserved               : 1  'H'
+        // egressControlVectorSize  : 8  'I'
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 |
+        temp.value16 = 0x3F18;
+
+        TEST_ASSERT_EQUALS(temp.acsSourceValidation,      0);
+        TEST_ASSERT_EQUALS(temp.acsTranslationBlocking,   0);
+        TEST_ASSERT_EQUALS(temp.acsP2pRequestRedirect,    0);
+        TEST_ASSERT_EQUALS(temp.acsP2pCompletionRedirect, 1);
+        TEST_ASSERT_EQUALS(temp.acsUpstreamForwarding,    1);
+        TEST_ASSERT_EQUALS(temp.acsP2pEgressControl,      0);
+        TEST_ASSERT_EQUALS(temp.acsDirectTranslatedP2p,   0);
+        TEST_ASSERT_EQUALS(temp.__reserved,               0);
+        TEST_ASSERT_EQUALS(temp.egressControlVectorSize,  63);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 1 |
+        temp.acsSourceValidation = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F19);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 1 | 1 | 0 | 1 | 1 |
+        temp.acsTranslationBlocking = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F1B);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 1 | 1 | 1 | 1 | 1 |
+        temp.acsP2pRequestRedirect = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F1F);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 1 |
+        temp.acsP2pCompletionRedirect = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F17);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+        temp.acsUpstreamForwarding = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F07);
+
+
+
+        // |           00111111            |
+        // | 0 | 0 | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.acsP2pEgressControl = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F27);
+
+
+
+        // |           00111111            |
+        // | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.acsDirectTranslatedP2p = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3F67);
+
+
+
+        // |           00111111            |
+        // | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.__reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3FE7);
+
+
+
+        // |           11000000            |
+        // | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 |
+        temp.egressControlVectorSize = 192;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xC0E7);
     }
     TEST_CASE_END();
 

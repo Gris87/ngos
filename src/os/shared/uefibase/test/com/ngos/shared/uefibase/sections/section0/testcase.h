@@ -60,6 +60,7 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h>
@@ -150,6 +151,7 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_ngos_types);
     CALL_TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressaccesscontrolservicesacscapability);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressvirtualchannelvirtualchannelresourcecapability);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciextendeddevicecommand);
