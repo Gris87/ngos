@@ -1999,7 +1999,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
         UEFI_LVVV(("capability->deviceCapability.endpointL1AcceptableLatency                             = %s",     enumToFullString((PciExpressEndpointL1AcceptableLatency)capability->deviceCapability.endpointL1AcceptableLatency)));
         UEFI_LVVV(("capability->deviceCapability.roleBasedErrorReporting                                 = %u",     capability->deviceCapability.roleBasedErrorReporting));
         UEFI_LVVV(("capability->deviceCapability.capturedSlotPowerLimitValue                             = %u",     capability->deviceCapability.capturedSlotPowerLimitValue));
-        UEFI_LVVV(("capability->deviceCapability.capturedSlotPowerLimitScale                             = %s",     enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)));
+        UEFI_LVVV(("capability->deviceCapability.capturedSlotPowerLimitScale                             = %s",     enumToFullString((PciExpressPowerScale)capability->deviceCapability.capturedSlotPowerLimitScale)));
         UEFI_LVVV(("capability->deviceCapability.functionLevelResetCapability                            = %u",     capability->deviceCapability.functionLevelResetCapability));
         UEFI_LVVV(("capability->deviceCapability.value32                                                 = 0x%08X", capability->deviceCapability.value32));
         UEFI_LVVV(("capability->deviceControl.correctableErrorReportingEnable                            = %u",     capability->deviceControl.correctableErrorReportingEnable));
@@ -2055,7 +2055,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
         UEFI_LVVV(("capability->slotCapability.hotPlugSurprise                                           = %u",     capability->slotCapability.hotPlugSurprise));
         UEFI_LVVV(("capability->slotCapability.hotPlugCapable                                            = %u",     capability->slotCapability.hotPlugCapable));
         UEFI_LVVV(("capability->slotCapability.slotPowerLimitValue                                       = %u",     capability->slotCapability.slotPowerLimitValue));
-        UEFI_LVVV(("capability->slotCapability.slotPowerLimitScale                                       = %s",     enumToFullString((PciExpressSlotPowerLimitScale)capability->slotCapability.slotPowerLimitScale)));
+        UEFI_LVVV(("capability->slotCapability.slotPowerLimitScale                                       = %s",     enumToFullString((PciExpressPowerScale)capability->slotCapability.slotPowerLimitScale)));
         UEFI_LVVV(("capability->slotCapability.electromechanicalInterlockPresent                         = %u",     capability->slotCapability.electromechanicalInterlockPresent));
         UEFI_LVVV(("capability->slotCapability.noCommandCompletedSupport                                 = %u",     capability->slotCapability.noCommandCompletedSupport));
         UEFI_LVVV(("capability->slotCapability.physicalSlotNumber                                        = %u",     capability->slotCapability.physicalSlotNumber));
@@ -2196,8 +2196,8 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
             if ((PciExpressDevicePortType)capability->capability.devicePortType == PciExpressDevicePortType::UPSTREAM_PORT_OF_PCI_EXPRESS_SWITCH)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit value", mprintf("%u",     capability->deviceCapability.capturedSlotPowerLimitValue),                                       DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit scale", strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->deviceCapability.capturedSlotPowerLimitScale)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit value", mprintf("%u",     capability->deviceCapability.capturedSlotPowerLimitValue),                              DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Device capability: Captured slot power limit scale", strdup(enumToFullString((PciExpressPowerScale)capability->deviceCapability.capturedSlotPowerLimitScale)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
             }
 
 
@@ -2325,19 +2325,19 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
         // PCI-E - Slot capability
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability",                                      mprintf("0x%08X", capability->slotCapability.value32),                                                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention button present",            capability->slotCapability.attentionButtonPresent    ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power controller present",            capability->slotCapability.powerControllerPresent    ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: MRL sensor present",                  capability->slotCapability.mrlSensorPresent          ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention indicator present",         capability->slotCapability.attentionIndicatorPresent ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power indicator present",             capability->slotCapability.powerIndicatorPresent     ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot-plug surprise",                   capability->slotCapability.hotPlugSurprise           ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot-plug capable",                    capability->slotCapability.hotPlugCapable            ? "Yes" : "No",                                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit value",              mprintf("%u",     capability->slotCapability.slotPowerLimitValue),                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit scale",              strdup(enumToFullString((PciExpressSlotPowerLimitScale)capability->slotCapability.slotPowerLimitScale)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Electromechanical interlock present", capability->slotCapability.electromechanicalInterlockPresent ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: No command completed support",        capability->slotCapability.noCommandCompletedSupport         ? "Yes" : "No",                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Physical slot number",                mprintf("%u",     capability->slotCapability.physicalSlotNumber),                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability",                                      mprintf("0x%08X", capability->slotCapability.value32),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention button present",            capability->slotCapability.attentionButtonPresent    ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power controller present",            capability->slotCapability.powerControllerPresent    ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: MRL sensor present",                  capability->slotCapability.mrlSensorPresent          ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Attention indicator present",         capability->slotCapability.attentionIndicatorPresent ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Power indicator present",             capability->slotCapability.powerIndicatorPresent     ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot-plug surprise",                   capability->slotCapability.hotPlugSurprise           ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Hot-plug capable",                    capability->slotCapability.hotPlugCapable            ? "Yes" : "No",                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit value",              mprintf("%u",     capability->slotCapability.slotPowerLimitValue),                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Slot power limit scale",              strdup(enumToFullString((PciExpressPowerScale)capability->slotCapability.slotPowerLimitScale)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Electromechanical interlock present", capability->slotCapability.electromechanicalInterlockPresent ? "Yes" : "No",                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: No command completed support",        capability->slotCapability.noCommandCompletedSupport         ? "Yes" : "No",                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI-E - Slot capability: Physical slot number",                mprintf("%u",     capability->slotCapability.physicalSlotNumber),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         }
 
 
@@ -2612,6 +2612,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
         case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:               UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL:     UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::DEVICE_SERIAL_NUMBER:               UEFI_ASSERT_EXECUTION(initPciExpressDeviceSerialNumberCapability((PciExpressDeviceSerialNumberCapability *)capability,                         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::POWER_BUDGETING:                    UEFI_ASSERT_EXECUTION(initPciExpressPowerBudgetingCapability((PciExpressPowerBudgetingCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:      UEFI_ASSERT_EXECUTION(initPciExpressRootComplexLinkDeclarationCapability((PciExpressRootComplexLinkDeclarationCapability *)capability,         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL: UEFI_ASSERT_EXECUTION(initPciExpressRootComplexInternalLinkControlCapability((PciExpressRootComplexInternalLinkControlCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
@@ -2882,6 +2883,58 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
     // Fill Device Manager entry
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device Serial Number - Serial number", mprintf("%016llX", capability->serialNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->dataSelect            = %u",     capability->dataSelect));
+        UEFI_LVVV(("capability->data.basePower        = %u",     capability->data.basePower));
+        UEFI_LVVV(("capability->data.dataScale        = %s",     enumToFullString((PciExpressPowerScale)capability->data.dataScale)));
+        UEFI_LVVV(("capability->data.pmSubState       = %s",     enumToFullString((PciExpressPowerBudgetingPowerManagementSubState)capability->data.pmSubState)));
+        UEFI_LVVV(("capability->data.pmState          = %s",     enumToFullString((PciExpressPowerBudgetingPowerManagementState)capability->data.pmState)));
+        UEFI_LVVV(("capability->data.type             = %s",     enumToFullString((PciExpressPowerBudgetingType)capability->data.type)));
+        UEFI_LVVV(("capability->data.powerRail        = %s",     enumToFullString((PciExpressPowerBudgetingPowerRail)capability->data.powerRail)));
+        UEFI_LVVV(("capability->data.value32          = 0x%08X", capability->data.value32));
+        UEFI_LVVV(("capability->powerBudgetCapability = %s",     flagsToFullString(capability->powerBudgetCapability)));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data select",             mprintf("%u",     capability->dataSelect),                                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data",                    mprintf("0x%08X", capability->data.value32),                                                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Base power",        mprintf("%u",     capability->data.basePower),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Data scale",        strdup(enumToFullString((PciExpressPowerScale)capability->data.dataScale)),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: PM sub state",      strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementSubState)capability->data.pmSubState)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: PM state",          strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementState)capability->data.pmState)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Type",              strdup(enumToFullString((PciExpressPowerBudgetingType)capability->data.type)),                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Power rail",        strdup(enumToFullString((PciExpressPowerBudgetingPowerRail)capability->data.powerRail)),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PB - Power budget capability", capability->powerBudgetCapability, "0x%02X", PciExpressPowerBudgetingCapabilityFlag, DeviceManagerMode::EXPERT);
+        // Ignore CppAlignmentVerifier [END]
     }
 
 

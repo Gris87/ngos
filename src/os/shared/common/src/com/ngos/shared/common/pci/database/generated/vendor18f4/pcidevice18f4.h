@@ -38,7 +38,9 @@ enum class PciDevice18F4: u16 // Ignore CppEnumVerifier
     DEVICE_0175 = 0x0175,
     DEVICE_0185 = 0x0185,
     DEVICE_01A5 = 0x01A5,
-    DEVICE_01C5 = 0x01C5
+    DEVICE_01C5 = 0x01C5,
+    DEVICE_01D5 = 0x01D5,
+    DEVICE_01E5 = 0x01E5
 };
 
 
@@ -78,6 +80,8 @@ inline const char8* enumToString(PciDevice18F4 device) // TEST: NO
         case PciDevice18F4::DEVICE_0185: return "DEVICE_0185";
         case PciDevice18F4::DEVICE_01A5: return "DEVICE_01A5";
         case PciDevice18F4::DEVICE_01C5: return "DEVICE_01C5";
+        case PciDevice18F4::DEVICE_01D5: return "DEVICE_01D5";
+        case PciDevice18F4::DEVICE_01E5: return "DEVICE_01E5";
 
         default: return "UNKNOWN";
     }
@@ -134,6 +138,8 @@ inline const char8* enumToHumanString(PciDevice18F4 device) // TEST: NO
         case PciDevice18F4::DEVICE_0185: return "NT40A01 Network Adapter";
         case PciDevice18F4::DEVICE_01A5: return "NT200A01 Network Adapter";
         case PciDevice18F4::DEVICE_01C5: return "NT200A02 Network Adapter";
+        case PciDevice18F4::DEVICE_01D5: return "NT50B01 Network Adapter";
+        case PciDevice18F4::DEVICE_01E5: return "NT100A01 Network Adapter";
 
         default: return "Unknown device";
     }

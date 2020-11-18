@@ -13,7 +13,10 @@
 enum class PciDevice1E36: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_0001 = 0x0001
+    DEVICE_0001 = 0x0001,
+    DEVICE_0002 = 0x0002,
+    DEVICE_0003 = 0x0003,
+    DEVICE_8011 = 0x8011
 };
 
 
@@ -28,6 +31,9 @@ inline const char8* enumToString(PciDevice1E36 device) // TEST: NO
     {
         case PciDevice1E36::NONE:        return "NONE";
         case PciDevice1E36::DEVICE_0001: return "DEVICE_0001";
+        case PciDevice1E36::DEVICE_0002: return "DEVICE_0002";
+        case PciDevice1E36::DEVICE_0003: return "DEVICE_0003";
+        case PciDevice1E36::DEVICE_8011: return "DEVICE_8011";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +65,9 @@ inline const char8* enumToHumanString(PciDevice1E36 device) // TEST: NO
     switch (device)
     {
         case PciDevice1E36::DEVICE_0001: return "T10 [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0002: return "T11 [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0003: return "T10s [CloudBlazer]";
+        case PciDevice1E36::DEVICE_8011: return "I10 [CloudBlazer]";
 
         default: return "Unknown device";
     }

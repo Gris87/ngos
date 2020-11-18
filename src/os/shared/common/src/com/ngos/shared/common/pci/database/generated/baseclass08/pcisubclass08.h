@@ -10,6 +10,7 @@
 #include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0801.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0802.h>
 #include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0803.h>
+#include <com/ngos/shared/common/pci/database/generated/baseclass08/pciinterface0899.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -23,7 +24,8 @@ enum class PciSubClass08: u8 // Ignore CppEnumVerifier
     SUB_CLASS_04 = 0x04,
     SUB_CLASS_05 = 0x05,
     SUB_CLASS_06 = 0x06,
-    SUB_CLASS_80 = 0x80
+    SUB_CLASS_80 = 0x80,
+    SUB_CLASS_99 = 0x99
 };
 
 
@@ -44,6 +46,7 @@ inline const char8* enumToString(PciSubClass08 subClass) // TEST: NO
         case PciSubClass08::SUB_CLASS_05: return "SUB_CLASS_05";
         case PciSubClass08::SUB_CLASS_06: return "SUB_CLASS_06";
         case PciSubClass08::SUB_CLASS_80: return "SUB_CLASS_80";
+        case PciSubClass08::SUB_CLASS_99: return "SUB_CLASS_99";
 
         default: return "UNKNOWN";
     }
@@ -82,6 +85,7 @@ inline const char8* enumToHumanString(PciSubClass08 subClass, u8 interfaceId) //
         case PciSubClass08::SUB_CLASS_05: return "Generic system peripheral - SD Host controller";
         case PciSubClass08::SUB_CLASS_06: return "Generic system peripheral - IOMMU";
         case PciSubClass08::SUB_CLASS_80: return "Generic system peripheral - System peripheral";
+        case PciSubClass08::SUB_CLASS_99: return enumToHumanString((PciInterface0899)interfaceId);
 
         default: return "Generic system peripheral";
     }

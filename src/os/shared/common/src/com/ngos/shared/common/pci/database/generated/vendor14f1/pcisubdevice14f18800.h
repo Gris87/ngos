@@ -19,6 +19,7 @@ enum class PciSubDevice14F18800: u32 // Ignore CppEnumVerifier
     SUBDEVICE_00706902 = 0x00706902,
     SUBDEVICE_00707801 = 0x00707801,
     SUBDEVICE_00709001 = 0x00709001,
+    SUBDEVICE_00709002 = 0x00709002,
     SUBDEVICE_00709200 = 0x00709200,
     SUBDEVICE_00709202 = 0x00709202,
     SUBDEVICE_00709402 = 0x00709402,
@@ -81,6 +82,7 @@ inline const char8* enumToString(PciSubDevice14F18800 subDevice) // TEST: NO
         case PciSubDevice14F18800::SUBDEVICE_00706902: return "SUBDEVICE_00706902";
         case PciSubDevice14F18800::SUBDEVICE_00707801: return "SUBDEVICE_00707801";
         case PciSubDevice14F18800::SUBDEVICE_00709001: return "SUBDEVICE_00709001";
+        case PciSubDevice14F18800::SUBDEVICE_00709002: return "SUBDEVICE_00709002";
         case PciSubDevice14F18800::SUBDEVICE_00709200: return "SUBDEVICE_00709200";
         case PciSubDevice14F18800::SUBDEVICE_00709202: return "SUBDEVICE_00709202";
         case PciSubDevice14F18800::SUBDEVICE_00709402: return "SUBDEVICE_00709402";
@@ -160,6 +162,7 @@ inline const char8* enumToHumanString(PciSubDevice14F18800 subDevice) // TEST: N
         case PciSubDevice14F18800::SUBDEVICE_00706902: return "WinTV HVR-4000-HD";
         case PciSubDevice14F18800::SUBDEVICE_00707801: return "WinTV HVR-1800 MCE";
         case PciSubDevice14F18800::SUBDEVICE_00709001: return "Nova-T DVB-T";
+        case PciSubDevice14F18800::SUBDEVICE_00709002: return "Nova-T DVB-T Model 909";
         case PciSubDevice14F18800::SUBDEVICE_00709200: return "Nova-SE2 DVB-S";
         case PciSubDevice14F18800::SUBDEVICE_00709202: return "Nova-S-Plus DVB-S";
         case PciSubDevice14F18800::SUBDEVICE_00709402: return "WinTV-HVR1100 DVB-T/Hybrid";

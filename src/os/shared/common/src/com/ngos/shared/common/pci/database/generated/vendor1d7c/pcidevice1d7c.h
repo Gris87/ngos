@@ -1,7 +1,7 @@
 // This file generated with the code_generator
 // Please do not modify it manually
-#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR2646_PCIDEVICE2646_H
-#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR2646_PCIDEVICE2646_H
+#ifndef COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1D7C_PCIDEVICE1D7C_H
+#define COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1D7C_PCIDEVICE1D7C_H
 
 
 
@@ -10,15 +10,15 @@
 
 
 
-enum class PciDevice2646: u16 // Ignore CppEnumVerifier
+enum class PciDevice1D7C: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_2263 = 0x2263
+    DEVICE_0001 = 0x0001
 };
 
 
 
-inline const char8* enumToString(PciDevice2646 device) // TEST: NO
+inline const char8* enumToString(PciDevice1D7C device) // TEST: NO
 {
     // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
@@ -26,8 +26,8 @@ inline const char8* enumToString(PciDevice2646 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice2646::NONE:        return "NONE";
-        case PciDevice2646::DEVICE_2263: return "DEVICE_2263";
+        case PciDevice1D7C::NONE:        return "NONE";
+        case PciDevice1D7C::DEVICE_0001: return "DEVICE_0001";
 
         default: return "UNKNOWN";
     }
@@ -35,7 +35,7 @@ inline const char8* enumToString(PciDevice2646 device) // TEST: NO
 
 
 
-inline const char8* enumToFullString(PciDevice2646 device) // TEST: NO
+inline const char8* enumToFullString(PciDevice1D7C device) // TEST: NO
 {
     // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
@@ -50,7 +50,7 @@ inline const char8* enumToFullString(PciDevice2646 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice2646 device) // TEST: NO
+inline const char8* enumToHumanString(PciDevice1D7C device) // TEST: NO
 {
     // COMMON_LT((" | device = %u", device)); // Commented to avoid bad looking logs
 
@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciDevice2646 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice2646::DEVICE_2263: return "A2000 NVMe SSD";
+        case PciDevice1D7C::DEVICE_0001: return "HyperWire Adapter";
 
         default: return "Unknown device";
     }
@@ -66,4 +66,4 @@ inline const char8* enumToHumanString(PciDevice2646 device) // TEST: NO
 
 
 
-#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR2646_PCIDEVICE2646_H
+#endif // COM_NGOS_SHARED_COMMON_PCI_DATABASE_GENERATED_VENDOR1D7C_PCIDEVICE1D7C_H

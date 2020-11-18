@@ -50,6 +50,7 @@
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingdata.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkstatus.h>
@@ -3645,6 +3646,117 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 902;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xE190);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressPowerBudgetingData");
+    {
+        PciExpressPowerBudgetingData temp;
+
+
+
+        // PciExpressPowerBudgetingData:
+        //
+        // |           GGGGGGGG            |
+        // |    GGG    |    FFF    |  EE   |
+        // | E |  DD   |    CCC    |  BB   |
+        // |           AAAAAAAA            |
+        //
+        // basePower  : 8  'A'
+        // dataScale  : 2  'B'
+        // pmSubState : 3  'C'
+        // pmState    : 2  'D'
+        // type       : 3  'E'
+        // powerRail  : 3  'F'
+        // __reserved : 11 'G'
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  00   |
+        // | 1 |  10   |    110    |  10   |
+        // |           11001010            |
+        temp.value32 = 0x91D0DACA;
+
+        TEST_ASSERT_EQUALS(temp.basePower,  202);
+        TEST_ASSERT_EQUALS(temp.dataScale,  2);
+        TEST_ASSERT_EQUALS(temp.pmSubState, 6);
+        TEST_ASSERT_EQUALS(temp.pmState,    2);
+        TEST_ASSERT_EQUALS(temp.type,       1);
+        TEST_ASSERT_EQUALS(temp.powerRail,  4);
+        TEST_ASSERT_EQUALS(temp.__reserved, 1166);
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  00   |
+        // | 1 |  10   |    110    |  10   |
+        // |           00110101            |
+        temp.basePower = 53;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91D0DA35);
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  00   |
+        // | 1 |  10   |    110    |  01   |
+        // |           00110101            |
+        temp.dataScale = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91D0D935);
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  00   |
+        // | 1 |  10   |    001    |  01   |
+        // |           00110101            |
+        temp.pmSubState = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91D0C535);
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  00   |
+        // | 1 |  01   |    001    |  01   |
+        // |           00110101            |
+        temp.pmState = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91D0A535);
+
+
+
+        // |           10010001            |
+        // |    110    |    100    |  11   |
+        // | 0 |  01   |    001    |  01   |
+        // |           00110101            |
+        temp.type = 6;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91D32535);
+
+
+
+        // |           10010001            |
+        // |    110    |    011    |  11   |
+        // | 0 |  01   |    001    |  01   |
+        // |           00110101            |
+        temp.powerRail = 3;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x91CF2535);
+
+
+
+        // |           01101110            |
+        // |    001    |    011    |  11   |
+        // | 0 |  01   |    001    |  01   |
+        // |           00110101            |
+        temp.__reserved = 881;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x6E2F2535);
     }
     TEST_CASE_END();
 

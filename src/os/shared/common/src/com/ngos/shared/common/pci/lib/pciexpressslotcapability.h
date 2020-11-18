@@ -21,7 +21,7 @@ struct PciExpressSlotCapability
             u32 hotPlugSurprise                   : 1;
             u32 hotPlugCapable                    : 1;
             u32 slotPowerLimitValue               : 8;
-            u32 slotPowerLimitScale               : 2; // TODO: Use enum PciExpressSlotPowerLimitScale
+            u32 slotPowerLimitScale               : 2; // TODO: Use enum PciExpressPowerScale
             u32 electromechanicalInterlockPresent : 1;
             u32 noCommandCompletedSupport         : 1;
             u32 physicalSlotNumber                : 13;

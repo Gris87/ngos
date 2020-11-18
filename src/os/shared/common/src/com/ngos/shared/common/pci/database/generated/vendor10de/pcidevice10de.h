@@ -1977,6 +1977,7 @@ enum class PciDevice10DE: u16 // Ignore CppEnumVerifier
     DEVICE_24AF = 0x24AF,
     DEVICE_24BF = 0x24BF,
     DEVICE_24DC = 0x24DC,
+    DEVICE_24DD = 0x24DD,
     DEVICE_252F = 0x252F,
     DEVICE_25AF = 0x25AF
 };
@@ -3557,6 +3558,7 @@ inline const char8* enumToString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_24AF: return "DEVICE_24AF";
         case PciDevice10DE::DEVICE_24BF: return "DEVICE_24BF";
         case PciDevice10DE::DEVICE_24DC: return "DEVICE_24DC";
+        case PciDevice10DE::DEVICE_24DD: return "DEVICE_24DD";
         case PciDevice10DE::DEVICE_252F: return "DEVICE_252F";
         case PciDevice10DE::DEVICE_25AF: return "DEVICE_25AF";
 
@@ -3708,7 +3710,7 @@ inline const char8* enumToHumanString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_00F2: return "NV43 [GeForce 6600]";
         case PciDevice10DE::DEVICE_00F3: return "NV43 [GeForce 6200]";
         case PciDevice10DE::DEVICE_00F4: return "NV43 [GeForce 6600 LE]";
-        case PciDevice10DE::DEVICE_00F5: return "G71 [GeForce 7800 GS AGP]";
+        case PciDevice10DE::DEVICE_00F5: return "G70/G71 [GeForce 7800 GS AGP]";
         case PciDevice10DE::DEVICE_00F6: return "NV43 [GeForce 6800 GS/XT]";
         case PciDevice10DE::DEVICE_00F8: return "NV45GL [Quadro FX 3400/4400]";
         case PciDevice10DE::DEVICE_00F9: return "NV40 [GeForce 6800 GT/GTO/Ultra]";
@@ -5139,21 +5141,22 @@ inline const char8* enumToHumanString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_21C4: return "TU116 [GeForce GTX 1660 SUPER]";
         case PciDevice10DE::DEVICE_21D1: return "TU116BM [GeForce GTX 1660 Ti Mobile]";
         case PciDevice10DE::DEVICE_2204: return "GA102 [GeForce RTX 3090]";
-        case PciDevice10DE::DEVICE_2206: return "GA102 [GeForce RTX 3080 10GB / 20GB]";
+        case PciDevice10DE::DEVICE_2206: return "GA102 [GeForce RTX 3080]";
         case PciDevice10DE::DEVICE_222B: return "GA102 [GeForce RTX 3090 Engineering Sample]";
         case PciDevice10DE::DEVICE_222F: return "GA102 [GeForce RTX 3080 11GB / 12GB Engineering Sample]";
         case PciDevice10DE::DEVICE_2230: return "GA102GL [RTX A6000]";
         case PciDevice10DE::DEVICE_223F: return "GA102GL";
         case PciDevice10DE::DEVICE_2482: return "GA104 [GeForce RTX 3070 Ti]";
-        case PciDevice10DE::DEVICE_2484: return "GA104 [GeForce RTX 3070 8GB / 16GB]";
+        case PciDevice10DE::DEVICE_2484: return "GA104 [GeForce RTX 3070]";
         case PciDevice10DE::DEVICE_2486: return "GA104 [GeForce RTX 3060 Ti]";
-        case PciDevice10DE::DEVICE_249C: return "GA104M [GeForce RTX 3070 Mobile / Max-Q]";
+        case PciDevice10DE::DEVICE_249C: return "GA104M [GeForce RTX 3070 Mobile / Max-Q 8GB/16GB]";
         case PciDevice10DE::DEVICE_249D: return "GA104M [GeForce RTX 3070 Mobile / Max-Q]";
         case PciDevice10DE::DEVICE_24AC: return "GA104 [GeForce RTX 30x0 Engineering Sample]";
         case PciDevice10DE::DEVICE_24AD: return "GA104 [GeForce RTX 3060 Engineering Sample]";
         case PciDevice10DE::DEVICE_24AF: return "GA104 [GeForce RTX 3070 Engineering Sample]";
         case PciDevice10DE::DEVICE_24BF: return "GA104 [GeForce RTX 3070 Engineering Sample]";
-        case PciDevice10DE::DEVICE_24DC: return "GA104 [GeForce RTX 3070 16GB Engineering Sample]";
+        case PciDevice10DE::DEVICE_24DC: return "GA104M [GeForce RTX 3070 Mobile 16GB]";
+        case PciDevice10DE::DEVICE_24DD: return "GA104M [GeForce RTX 3070 Mobile / Max-Q]";
         case PciDevice10DE::DEVICE_252F: return "GA106 [GeForce RTX 3060 Engineering Sample]";
         case PciDevice10DE::DEVICE_25AF: return "GA107 [GeForce RTX 3050 Engineering Sample]";
 
@@ -6736,6 +6739,7 @@ inline const char8* enumToHumanString(PciDevice10DE device, u16 subsystemVendorI
         case PciDevice10DE::DEVICE_24AF: return "Unknown device";
         case PciDevice10DE::DEVICE_24BF: return "Unknown device";
         case PciDevice10DE::DEVICE_24DC: return "Unknown device";
+        case PciDevice10DE::DEVICE_24DD: return "Unknown device";
         case PciDevice10DE::DEVICE_252F: return "Unknown device";
         case PciDevice10DE::DEVICE_25AF: return "Unknown device";
 

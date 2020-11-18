@@ -167,7 +167,7 @@ inline const char8* enumToHumanString(PciDevice19E5 device) // TEST: NO
         case PciDevice19E5::DEVICE_0211: return "Hi1822 Family (4*25GE)";
         case PciDevice19E5::DEVICE_0212: return "Hi1822 Family (2*8G FC)";
         case PciDevice19E5::DEVICE_1710: return "iBMA Virtual Network Adapter";
-        case PciDevice19E5::DEVICE_1711: return "Hi1710 [iBMC Intelligent Management system chip w/VGA support]";
+        case PciDevice19E5::DEVICE_1711: return "Hi171x Series [iBMC Intelligent Management system chip w/VGA support]";
         case PciDevice19E5::DEVICE_1822: return "Hi1822 Family (4*25GE)";
         case PciDevice19E5::DEVICE_371E: return "Hi1822 Family Virtual Bridge";
         case PciDevice19E5::DEVICE_375E: return "Hi1822 Family Virtual Function";

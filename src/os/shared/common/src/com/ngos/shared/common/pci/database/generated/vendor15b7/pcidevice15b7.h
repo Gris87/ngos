@@ -18,8 +18,11 @@ enum class PciDevice15B7: u16 // Ignore CppEnumVerifier
     DEVICE_5001 = 0x5001,
     DEVICE_5002 = 0x5002,
     DEVICE_5003 = 0x5003,
+    DEVICE_5004 = 0x5004,
+    DEVICE_5005 = 0x5005,
     DEVICE_5006 = 0x5006,
-    DEVICE_5009 = 0x5009
+    DEVICE_5009 = 0x5009,
+    DEVICE_500D = 0x500D
 };
 
 
@@ -37,8 +40,11 @@ inline const char8* enumToString(PciDevice15B7 device) // TEST: NO
         case PciDevice15B7::DEVICE_5001: return "DEVICE_5001";
         case PciDevice15B7::DEVICE_5002: return "DEVICE_5002";
         case PciDevice15B7::DEVICE_5003: return "DEVICE_5003";
+        case PciDevice15B7::DEVICE_5004: return "DEVICE_5004";
+        case PciDevice15B7::DEVICE_5005: return "DEVICE_5005";
         case PciDevice15B7::DEVICE_5006: return "DEVICE_5006";
         case PciDevice15B7::DEVICE_5009: return "DEVICE_5009";
+        case PciDevice15B7::DEVICE_500D: return "DEVICE_500D";
 
         default: return "UNKNOWN";
     }
@@ -73,8 +79,11 @@ inline const char8* enumToHumanString(PciDevice15B7 device) // TEST: NO
         case PciDevice15B7::DEVICE_5001: return "WD Black NVMe SSD";
         case PciDevice15B7::DEVICE_5002: return "WD Black 2018 / PC SN720 NVMe SSD";
         case PciDevice15B7::DEVICE_5003: return "WD Black 2018 / PC SN520 NVMe SSD";
+        case PciDevice15B7::DEVICE_5004: return "PC SN520 NVMe SSD";
+        case PciDevice15B7::DEVICE_5005: return "PC SN520 NVMe SSD";
         case PciDevice15B7::DEVICE_5006: return "WD Black 2019/PC SN750 NVMe SSD";
         case PciDevice15B7::DEVICE_5009: return "WD Blue SN550 NVMe SSD";
+        case PciDevice15B7::DEVICE_500D: return "WD Ultrastar DC SN340 NVMe SSD";
 
         default: return "Unknown device";
     }
@@ -94,8 +103,11 @@ inline const char8* enumToHumanString(PciDevice15B7 device, u16 subsystemVendorI
         case PciDevice15B7::DEVICE_5001: return "Unknown device";
         case PciDevice15B7::DEVICE_5002: return "Unknown device";
         case PciDevice15B7::DEVICE_5003: return "Unknown device";
+        case PciDevice15B7::DEVICE_5004: return "Unknown device";
+        case PciDevice15B7::DEVICE_5005: return "Unknown device";
         case PciDevice15B7::DEVICE_5006: return "Unknown device";
         case PciDevice15B7::DEVICE_5009: return enumToHumanString((PciSubDevice15B75009)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice15B7::DEVICE_500D: return "Unknown device";
 
         default: return "Unknown device";
     }

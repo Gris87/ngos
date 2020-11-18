@@ -19,6 +19,7 @@ enum class PciDevice197B: u16 // Ignore CppEnumVerifier
     DEVICE_0250 = 0x0250,
     DEVICE_0260 = 0x0260,
     DEVICE_0368 = 0x0368,
+    DEVICE_0585 = 0x0585,
     DEVICE_2360 = 0x2360,
     DEVICE_2361 = 0x2361,
     DEVICE_2362 = 0x2362,
@@ -57,6 +58,7 @@ inline const char8* enumToString(PciDevice197B device) // TEST: NO
         case PciDevice197B::DEVICE_0250: return "DEVICE_0250";
         case PciDevice197B::DEVICE_0260: return "DEVICE_0260";
         case PciDevice197B::DEVICE_0368: return "DEVICE_0368";
+        case PciDevice197B::DEVICE_0585: return "DEVICE_0585";
         case PciDevice197B::DEVICE_2360: return "DEVICE_2360";
         case PciDevice197B::DEVICE_2361: return "DEVICE_2361";
         case PciDevice197B::DEVICE_2362: return "DEVICE_2362";
@@ -112,6 +114,7 @@ inline const char8* enumToHumanString(PciDevice197B device) // TEST: NO
         case PciDevice197B::DEVICE_0250: return "JMC250 PCI Express Gigabit Ethernet Controller";
         case PciDevice197B::DEVICE_0260: return "JMC260 PCI Express Fast Ethernet Controller";
         case PciDevice197B::DEVICE_0368: return "JMB368 IDE controller";
+        case PciDevice197B::DEVICE_0585: return "JMB58x AHCI SATA controller";
         case PciDevice197B::DEVICE_2360: return "JMB360 AHCI Controller";
         case PciDevice197B::DEVICE_2361: return "JMB361 AHCI/IDE";
         case PciDevice197B::DEVICE_2362: return "JMB362 SATA Controller";
@@ -152,6 +155,7 @@ inline const char8* enumToHumanString(PciDevice197B device, u16 subsystemVendorI
         case PciDevice197B::DEVICE_0250: return "Unknown device";
         case PciDevice197B::DEVICE_0260: return "Unknown device";
         case PciDevice197B::DEVICE_0368: return "Unknown device";
+        case PciDevice197B::DEVICE_0585: return "Unknown device";
         case PciDevice197B::DEVICE_2360: return "Unknown device";
         case PciDevice197B::DEVICE_2361: return enumToHumanString((PciSubDevice197B2361)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice197B::DEVICE_2362: return enumToHumanString((PciSubDevice197B2362)(subsystemVendorID << 16 | subDeviceId));

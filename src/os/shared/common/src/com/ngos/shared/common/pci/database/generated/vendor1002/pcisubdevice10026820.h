@@ -16,7 +16,8 @@ enum class PciSubDevice10026820: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C1851 = 0x103C1851,
     SUBDEVICE_17AA3643 = 0x17AA3643,
     SUBDEVICE_17AA3801 = 0x17AA3801,
-    SUBDEVICE_17AA3824 = 0x17AA3824
+    SUBDEVICE_17AA3824 = 0x17AA3824,
+    SUBDEVICE_1DA2E26A = 0x1DA2E26A
 };
 
 
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice10026820 subDevice) // TEST: NO
         case PciSubDevice10026820::SUBDEVICE_17AA3643: return "SUBDEVICE_17AA3643";
         case PciSubDevice10026820::SUBDEVICE_17AA3801: return "SUBDEVICE_17AA3801";
         case PciSubDevice10026820::SUBDEVICE_17AA3824: return "SUBDEVICE_17AA3824";
+        case PciSubDevice10026820::SUBDEVICE_1DA2E26A: return "SUBDEVICE_1DA2E26A";
 
         default: return "UNKNOWN";
     }
@@ -68,6 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice10026820 subDevice) // TEST: N
         case PciSubDevice10026820::SUBDEVICE_17AA3643: return "Radeon R9 A375";
         case PciSubDevice10026820::SUBDEVICE_17AA3801: return "Radeon R9 M275";
         case PciSubDevice10026820::SUBDEVICE_17AA3824: return "Radeon R9 M375";
+        case PciSubDevice10026820::SUBDEVICE_1DA2E26A: return "Radeon R7 250";
 
         default: return "Unknown device";
     }

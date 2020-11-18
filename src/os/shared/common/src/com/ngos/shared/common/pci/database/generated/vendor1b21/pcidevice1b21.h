@@ -19,6 +19,7 @@ enum class PciDevice1B21: u16 // Ignore CppEnumVerifier
     NONE        = 0,
     DEVICE_0611 = 0x0611,
     DEVICE_0612 = 0x0612,
+    DEVICE_1040 = 0x1040,
     DEVICE_1042 = 0x1042,
     DEVICE_1080 = 0x1080,
     DEVICE_1142 = 0x1142,
@@ -42,6 +43,7 @@ inline const char8* enumToString(PciDevice1B21 device) // TEST: NO
         case PciDevice1B21::NONE:        return "NONE";
         case PciDevice1B21::DEVICE_0611: return "DEVICE_0611";
         case PciDevice1B21::DEVICE_0612: return "DEVICE_0612";
+        case PciDevice1B21::DEVICE_1040: return "DEVICE_1040";
         case PciDevice1B21::DEVICE_1042: return "DEVICE_1042";
         case PciDevice1B21::DEVICE_1080: return "DEVICE_1080";
         case PciDevice1B21::DEVICE_1142: return "DEVICE_1142";
@@ -82,6 +84,7 @@ inline const char8* enumToHumanString(PciDevice1B21 device) // TEST: NO
     {
         case PciDevice1B21::DEVICE_0611: return "ASM1061 SATA IDE Controller";
         case PciDevice1B21::DEVICE_0612: return "ASM1062 Serial ATA Controller";
+        case PciDevice1B21::DEVICE_1040: return "ASM1040 XHCI Controller";
         case PciDevice1B21::DEVICE_1042: return "ASM1042 SuperSpeed USB Host Controller";
         case PciDevice1B21::DEVICE_1080: return "ASM1083/1085 PCIe to PCI Bridge";
         case PciDevice1B21::DEVICE_1142: return "ASM1042A USB 3.0 Host Controller";
@@ -107,6 +110,7 @@ inline const char8* enumToHumanString(PciDevice1B21 device, u16 subsystemVendorI
     {
         case PciDevice1B21::DEVICE_0611: return "Unknown device";
         case PciDevice1B21::DEVICE_0612: return enumToHumanString((PciSubDevice1B210612)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1B21::DEVICE_1040: return "Unknown device";
         case PciDevice1B21::DEVICE_1042: return enumToHumanString((PciSubDevice1B211042)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1080: return enumToHumanString((PciSubDevice1B211080)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1142: return "Unknown device";

@@ -49,6 +49,7 @@ enum class PciDevice10EC: u16 // Ignore CppEnumVerifier
     DEVICE_5287 = 0x5287,
     DEVICE_5288 = 0x5288,
     DEVICE_5289 = 0x5289,
+    DEVICE_5762 = 0x5762,
     DEVICE_8029 = 0x8029,
     DEVICE_8125 = 0x8125,
     DEVICE_8129 = 0x8129,
@@ -115,6 +116,7 @@ inline const char8* enumToString(PciDevice10EC device) // TEST: NO
         case PciDevice10EC::DEVICE_5287: return "DEVICE_5287";
         case PciDevice10EC::DEVICE_5288: return "DEVICE_5288";
         case PciDevice10EC::DEVICE_5289: return "DEVICE_5289";
+        case PciDevice10EC::DEVICE_5762: return "DEVICE_5762";
         case PciDevice10EC::DEVICE_8029: return "DEVICE_8029";
         case PciDevice10EC::DEVICE_8125: return "DEVICE_8125";
         case PciDevice10EC::DEVICE_8129: return "DEVICE_8129";
@@ -198,6 +200,7 @@ inline const char8* enumToHumanString(PciDevice10EC device) // TEST: NO
         case PciDevice10EC::DEVICE_5287: return "RTL8411B PCI Express Card Reader";
         case PciDevice10EC::DEVICE_5288: return "RTS5288 PCI Express Card Reader";
         case PciDevice10EC::DEVICE_5289: return "RTL8411 PCI Express Card Reader";
+        case PciDevice10EC::DEVICE_5762: return "RTS5763DL NVMe SSD Controller";
         case PciDevice10EC::DEVICE_8029: return "RTL-8029(AS)";
         case PciDevice10EC::DEVICE_8125: return "RTL8125 2.5GbE Controller";
         case PciDevice10EC::DEVICE_8129: return "RTL-8129";
@@ -266,6 +269,7 @@ inline const char8* enumToHumanString(PciDevice10EC device, u16 subsystemVendorI
         case PciDevice10EC::DEVICE_5287: return enumToHumanString((PciSubDevice10EC5287)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EC::DEVICE_5288: return "Unknown device";
         case PciDevice10EC::DEVICE_5289: return enumToHumanString((PciSubDevice10EC5289)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10EC::DEVICE_5762: return "Unknown device";
         case PciDevice10EC::DEVICE_8029: return enumToHumanString((PciSubDevice10EC8029)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice10EC::DEVICE_8125: return "Unknown device";
         case PciDevice10EC::DEVICE_8129: return enumToHumanString((PciSubDevice10EC8129)(subsystemVendorID << 16 | subDeviceId));

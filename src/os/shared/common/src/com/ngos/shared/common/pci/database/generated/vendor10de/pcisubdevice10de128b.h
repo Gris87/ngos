@@ -13,7 +13,8 @@
 enum class PciSubDevice10DE128B: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_104385F7 = 0x104385F7
+    SUBDEVICE_104385F7 = 0x104385F7,
+    SUBDEVICE_10438770 = 0x10438770
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice10DE128B subDevice) // TEST: NO
     {
         case PciSubDevice10DE128B::NONE:               return "NONE";
         case PciSubDevice10DE128B::SUBDEVICE_104385F7: return "SUBDEVICE_104385F7";
+        case PciSubDevice10DE128B::SUBDEVICE_10438770: return "SUBDEVICE_10438770";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice10DE128B subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10DE128B::SUBDEVICE_104385F7: return "GT710-SL-1GD5";
+        case PciSubDevice10DE128B::SUBDEVICE_10438770: return "GT710-4H-SL-2GD5";
 
         default: return "Unknown device";
     }

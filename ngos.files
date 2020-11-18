@@ -1201,6 +1201,7 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/types.h
 src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h
@@ -4933,7 +4934,14 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkwidth.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingcapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingdata.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingpowermanagementstate.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingpowermanagementsubstate.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingpowerrail.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingtype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrollercontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerscale.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h
@@ -4956,7 +4964,6 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcapability2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotcontrol2.h
-src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotpowerlimitscale.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h
