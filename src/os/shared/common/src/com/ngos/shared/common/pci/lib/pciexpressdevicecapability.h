@@ -3,7 +3,6 @@
 
 
 
-#include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h>
