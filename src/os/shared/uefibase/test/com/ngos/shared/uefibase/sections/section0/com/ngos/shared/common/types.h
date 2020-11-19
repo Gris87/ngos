@@ -262,8 +262,10 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h>
@@ -2427,6 +2429,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressReadCompletionBoundary),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRequestSize),                                             1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootCapabilityFlag),                                      2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexEventCollectorEndpointAssociationCapability),  8);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexInternalLinkControlCapability),                12);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexInternalLinkControlLinkCapabilities),          4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexInternalLinkControlLinkControl),               2);
@@ -2452,6 +2455,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressSlotStatusFlag),                                          2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressTphCompleterFlag),                                        1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressUncorrectableErrorFlag),                                  4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVendorSpecificCapability),                                8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressVendorSpecificHeader),                                    4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannel),                                          12);
         TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelArbitrationCapabilityFlag),                 1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressVirtualChannelArbitrationSelect),                         1);

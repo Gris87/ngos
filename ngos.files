@@ -1203,8 +1203,10 @@ src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpre
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h
@@ -4971,6 +4973,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvendorspecificheader.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationselect.h

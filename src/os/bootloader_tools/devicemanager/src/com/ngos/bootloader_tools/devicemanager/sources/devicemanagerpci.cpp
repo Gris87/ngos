@@ -2607,15 +2607,17 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
 
     switch ((PciExtendedCapabilityType)capability->capabilityId)
     {
-        case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING:           UEFI_ASSERT_EXECUTION(initPciExpressAdvancedErrorReportingCapability((PciExpressAdvancedErrorReportingCapability *)capability,                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::VIRTUAL_CHANNEL:                    UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:               UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL:     UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::DEVICE_SERIAL_NUMBER:               UEFI_ASSERT_EXECUTION(initPciExpressDeviceSerialNumberCapability((PciExpressDeviceSerialNumberCapability *)capability,                         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::POWER_BUDGETING:                    UEFI_ASSERT_EXECUTION(initPciExpressPowerBudgetingCapability((PciExpressPowerBudgetingCapability *)capability,                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:      UEFI_ASSERT_EXECUTION(initPciExpressRootComplexLinkDeclarationCapability((PciExpressRootComplexLinkDeclarationCapability *)capability,         capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL: UEFI_ASSERT_EXECUTION(initPciExpressRootComplexInternalLinkControlCapability((PciExpressRootComplexInternalLinkControlCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
-        case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:            UEFI_ASSERT_EXECUTION(initPciExpressAccessControlServicesCapability((PciExpressAccessControlServicesCapability *)capability,                   capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ADVANCED_ERROR_REPORTING:                          UEFI_ASSERT_EXECUTION(initPciExpressAdvancedErrorReportingCapability((PciExpressAdvancedErrorReportingCapability *)capability,                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::VIRTUAL_CHANNEL:                                   UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::VIRTUAL_CHANNEL_MFVC:                              UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::MULTI_FUNCTION_VIRTUAL_CHANNEL:                    UEFI_ASSERT_EXECUTION(initPciExpressVirtualChannelCapability((PciExpressVirtualChannelCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::DEVICE_SERIAL_NUMBER:                              UEFI_ASSERT_EXECUTION(initPciExpressDeviceSerialNumberCapability((PciExpressDeviceSerialNumberCapability *)capability,                                                     capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::POWER_BUDGETING:                                   UEFI_ASSERT_EXECUTION(initPciExpressPowerBudgetingCapability((PciExpressPowerBudgetingCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:                     UEFI_ASSERT_EXECUTION(initPciExpressRootComplexLinkDeclarationCapability((PciExpressRootComplexLinkDeclarationCapability *)capability,                                     capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL:                UEFI_ASSERT_EXECUTION(initPciExpressRootComplexInternalLinkControlCapability((PciExpressRootComplexInternalLinkControlCapability *)capability,                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ROOT_COMPLEX_EVENT_COLLECTOR_ENDPOINT_ASSOCIATION: UEFI_ASSERT_EXECUTION(initPciExpressRootComplexEventCollectorEndpointAssociationCapability((PciExpressRootComplexEventCollectorEndpointAssociationCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::VENDOR_SPECIFIC:                                   UEFI_ASSERT_EXECUTION(initPciExpressVendorSpecificCapability((PciExpressVendorSpecificCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:                           UEFI_ASSERT_EXECUTION(initPciExpressAccessControlServicesCapability((PciExpressAccessControlServicesCapability *)capability,                                               capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -3129,6 +3131,74 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapabil
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status: Negotiated link width", strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkStatus.negotiatedLinkWidth)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         }
         // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->associationBitmapForRootComplexIntegratedDevices = 0x%08X", capability->associationBitmapForRootComplexIntegratedDevices));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCECEA - Association bitmap for root complex integrated devices", mprintf("0x%08X", capability->associationBitmapForRootComplexIntegratedDevices), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->vendorSpecificHeader.id       = %u",     capability->vendorSpecificHeader.id));
+        UEFI_LVVV(("capability->vendorSpecificHeader.revision = %u",     capability->vendorSpecificHeader.revision));
+        UEFI_LVVV(("capability->vendorSpecificHeader.length   = %u",     capability->vendorSpecificHeader.length));
+        UEFI_LVVV(("capability->vendorSpecificHeader.value32  = 0x%08X", capability->vendorSpecificHeader.value32));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header",           mprintf("0x%08X", capability->vendorSpecificHeader.value32),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: ID",       mprintf("%u",     capability->vendorSpecificHeader.id),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: Revision", mprintf("%u",     capability->vendorSpecificHeader.revision), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: Length",   mprintf("%u",     capability->vendorSpecificHeader.length),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
     }
 
 

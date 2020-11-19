@@ -62,6 +62,7 @@
 #include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressvendorspecificheader.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcontrol.h>
@@ -4927,6 +4928,69 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 6;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC6BB);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressVendorSpecificHeader");
+    {
+        PciExpressVendorSpecificHeader temp;
+
+
+
+        // PciExpressVendorSpecificHeader:
+        //
+        // |           CCCCCCCC            |
+        // |     CCCC      |     BBBB      |
+        // |           AAAAAAAA            |
+        // |           AAAAAAAA            |
+        //
+        // id       : 16 'A'
+        // revision : 4  'B'
+        // length   : 12 'C'
+
+
+
+        // |           10101011            |
+        // |     0111      |     1110      |
+        // |           00001101            |
+        // |           00101110            |
+        temp.value32 = 0xAB7E0D2E;
+
+        TEST_ASSERT_EQUALS(temp.id,       3374);
+        TEST_ASSERT_EQUALS(temp.revision, 14);
+        TEST_ASSERT_EQUALS(temp.length,   2743);
+
+
+
+        // |           10101011            |
+        // |     0111      |     1110      |
+        // |           11110010            |
+        // |           11010001            |
+        temp.id = 62161;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xAB7EF2D1);
+
+
+
+        // |           10101011            |
+        // |     0111      |     0001      |
+        // |           11110010            |
+        // |           11010001            |
+        temp.revision = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xAB71F2D1);
+
+
+
+        // |           01010100            |
+        // |     1000      |     0001      |
+        // |           11110010            |
+        // |           11010001            |
+        temp.length = 1352;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x5481F2D1);
     }
     TEST_CASE_END();
 

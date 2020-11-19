@@ -419,8 +419,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsportcapability.h \
@@ -4196,6 +4198,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvendorspecificheader.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationcapabilityflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelarbitrationselect.h \
