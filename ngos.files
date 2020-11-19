@@ -1203,6 +1203,7 @@ src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpre
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h
@@ -4947,6 +4948,8 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgeting
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingtype.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrollercontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerscale.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercapabilitiesflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h

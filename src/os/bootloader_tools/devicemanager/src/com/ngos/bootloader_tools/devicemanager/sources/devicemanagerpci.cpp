@@ -2616,6 +2616,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
         case PciExtendedCapabilityType::ROOT_COMPLEX_LINK_DECLARATION:                     UEFI_ASSERT_EXECUTION(initPciExpressRootComplexLinkDeclarationCapability((PciExpressRootComplexLinkDeclarationCapability *)capability,                                     capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_INTERNAL_LINK_CONTROL:                UEFI_ASSERT_EXECUTION(initPciExpressRootComplexInternalLinkControlCapability((PciExpressRootComplexInternalLinkControlCapability *)capability,                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ROOT_COMPLEX_EVENT_COLLECTOR_ENDPOINT_ASSOCIATION: UEFI_ASSERT_EXECUTION(initPciExpressRootComplexEventCollectorEndpointAssociationCapability((PciExpressRootComplexEventCollectorEndpointAssociationCapability *)capability, capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::RCRB_HEADER:                                       UEFI_ASSERT_EXECUTION(initPciExpressRcrbHeaderCapability((PciExpressRcrbHeaderCapability *)capability,                                                                     capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::VENDOR_SPECIFIC:                                   UEFI_ASSERT_EXECUTION(initPciExpressVendorSpecificCapability((PciExpressVendorSpecificCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:                           UEFI_ASSERT_EXECUTION(initPciExpressAccessControlServicesCapability((PciExpressAccessControlServicesCapability *)capability,                                               capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
@@ -3162,6 +3163,48 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAsso
     // Fill Device Manager entry
     {
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCECEA - Association bitmap for root complex integrated devices", mprintf("0x%08X", capability->associationBitmapForRootComplexIntegratedDevices), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LF(("capability->vendorId     = 0x%04X (%s)", capability->vendorId, enumToHumanString(capability->vendorId)));
+        UEFI_LF(("capability->deviceId     = 0x%04X (%s)", capability->deviceId, enumToHumanString(capability->vendorId, capability->deviceId)));
+        UEFI_LF(("capability->capabilities = %s",          flagsToFullString(capability->capabilities)));
+        UEFI_LF(("capability->control      = %s",          flagsToFullString(capability->control)));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Vendor",      enumToHumanString(capability->vendorId),                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Device name", enumToHumanString(capability->vendorId, capability->deviceId), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Vendor ID",   mprintf("0x%04X", capability->vendorId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Device ID",   mprintf("0x%04X", capability->deviceId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "RCRB - Capabilities", capability->capabilities, "0x%08X", PciExpressRcrbHeaderCapabilitiesFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "RCRB - Control",      capability->control,      "0x%08X", PciExpressRcrbHeaderControlFlag,      DeviceManagerMode::EXPERT);
     }
 
 

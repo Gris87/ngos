@@ -9,6 +9,7 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
@@ -98,6 +99,7 @@ private:
     static NgosStatus initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 

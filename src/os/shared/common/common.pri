@@ -419,6 +419,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h \
@@ -4172,6 +4173,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingtype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowercontrollercontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowerscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercapabilitiesflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h \

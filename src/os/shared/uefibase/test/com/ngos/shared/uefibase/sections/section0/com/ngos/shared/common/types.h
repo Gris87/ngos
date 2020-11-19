@@ -262,6 +262,7 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
@@ -2426,6 +2427,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPowerBudgetingType),                                      1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPowerControllerControl),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPowerScale),                                              1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRcrbHeaderCapabilitiesFlag),                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRcrbHeaderCapability),                                    20);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressRcrbHeaderControlFlag),                                   4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressReadCompletionBoundary),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRequestSize),                                             1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootCapabilityFlag),                                      2);
