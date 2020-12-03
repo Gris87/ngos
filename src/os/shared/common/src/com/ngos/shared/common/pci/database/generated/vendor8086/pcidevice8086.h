@@ -589,6 +589,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863165.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863166.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863198.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808631a8.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863200.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863310.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863340.h>
@@ -1538,6 +1539,9 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_1130 = 0x1130,
     DEVICE_1131 = 0x1131,
     DEVICE_1132 = 0x1132,
+    DEVICE_1136 = 0x1136,
+    DEVICE_1137 = 0x1137,
+    DEVICE_1138 = 0x1138,
     DEVICE_1161 = 0x1161,
     DEVICE_1162 = 0x1162,
     DEVICE_1190 = 0x1190,
@@ -3124,6 +3128,7 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_3198 = 0x3198,
     DEVICE_319A = 0x319A,
     DEVICE_31A2 = 0x31A2,
+    DEVICE_31A8 = 0x31A8,
     DEVICE_31AC = 0x31AC,
     DEVICE_31AE = 0x31AE,
     DEVICE_31BC = 0x31BC,
@@ -3141,6 +3146,8 @@ enum class PciDevice8086: u16 // Ignore CppEnumVerifier
     DEVICE_31DA = 0x31DA,
     DEVICE_31DB = 0x31DB,
     DEVICE_31DC = 0x31DC,
+    DEVICE_31E3 = 0x31E3,
+    DEVICE_31E8 = 0x31E8,
     DEVICE_31EE = 0x31EE,
     DEVICE_31F0 = 0x31F0,
     DEVICE_3200 = 0x3200,
@@ -5404,6 +5411,9 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_1130: return "DEVICE_1130";
         case PciDevice8086::DEVICE_1131: return "DEVICE_1131";
         case PciDevice8086::DEVICE_1132: return "DEVICE_1132";
+        case PciDevice8086::DEVICE_1136: return "DEVICE_1136";
+        case PciDevice8086::DEVICE_1137: return "DEVICE_1137";
+        case PciDevice8086::DEVICE_1138: return "DEVICE_1138";
         case PciDevice8086::DEVICE_1161: return "DEVICE_1161";
         case PciDevice8086::DEVICE_1162: return "DEVICE_1162";
         case PciDevice8086::DEVICE_1190: return "DEVICE_1190";
@@ -6990,6 +7000,7 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_3198: return "DEVICE_3198";
         case PciDevice8086::DEVICE_319A: return "DEVICE_319A";
         case PciDevice8086::DEVICE_31A2: return "DEVICE_31A2";
+        case PciDevice8086::DEVICE_31A8: return "DEVICE_31A8";
         case PciDevice8086::DEVICE_31AC: return "DEVICE_31AC";
         case PciDevice8086::DEVICE_31AE: return "DEVICE_31AE";
         case PciDevice8086::DEVICE_31BC: return "DEVICE_31BC";
@@ -7007,6 +7018,8 @@ inline const char8* enumToString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_31DA: return "DEVICE_31DA";
         case PciDevice8086::DEVICE_31DB: return "DEVICE_31DB";
         case PciDevice8086::DEVICE_31DC: return "DEVICE_31DC";
+        case PciDevice8086::DEVICE_31E3: return "DEVICE_31E3";
+        case PciDevice8086::DEVICE_31E8: return "DEVICE_31E8";
         case PciDevice8086::DEVICE_31EE: return "DEVICE_31EE";
         case PciDevice8086::DEVICE_31F0: return "DEVICE_31F0";
         case PciDevice8086::DEVICE_3200: return "DEVICE_3200";
@@ -9287,6 +9300,9 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_1130: return "82815 815 Chipset Host Bridge and Memory Controller Hub";
         case PciDevice8086::DEVICE_1131: return "82815 815 Chipset AGP Bridge";
         case PciDevice8086::DEVICE_1132: return "82815 Chipset Graphics Controller (CGC)";
+        case PciDevice8086::DEVICE_1136: return "Thunderbolt 4 Bridge [Maple Ridge 4C 2020]";
+        case PciDevice8086::DEVICE_1137: return "Thunderbolt 4 NHI [Maple Ridge 4C 2020]";
+        case PciDevice8086::DEVICE_1138: return "Thunderbolt 4 USB Controller [Maple Ridge 4C 2020]";
         case PciDevice8086::DEVICE_1161: return "82806AA PCI64 Hub Advanced Programmable Interrupt Controller";
         case PciDevice8086::DEVICE_1162: return "Xscale 80200 Big Endian Companion Chip";
         case PciDevice8086::DEVICE_1190: return "Merrifield SD/SDIO/eMMC Controller";
@@ -10873,6 +10889,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_3198: return "Celeron/Pentium Silver Processor High Definition Audio";
         case PciDevice8086::DEVICE_319A: return "Celeron/Pentium Silver Processor Trusted Execution Engine Interface";
         case PciDevice8086::DEVICE_31A2: return "Celeron/Pentium Silver Processor Integrated Sensor Solution";
+        case PciDevice8086::DEVICE_31A8: return "Celeron/Pentium Silver Processor USB 3.0 xHCI Controller";
         case PciDevice8086::DEVICE_31AC: return "Celeron/Pentium Silver Processor Serial IO I2C Host Controller";
         case PciDevice8086::DEVICE_31AE: return "Celeron/Pentium Silver Processor Serial IO I2C Host Controller";
         case PciDevice8086::DEVICE_31BC: return "Celeron/Pentium Silver Processor Serial IO UART Host Controller";
@@ -10890,6 +10907,8 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_31DA: return "Gemini Lake PCI Express Root Port";
         case PciDevice8086::DEVICE_31DB: return "Gemini Lake PCI Express Root Port";
         case PciDevice8086::DEVICE_31DC: return "AC 1550i Wireless";
+        case PciDevice8086::DEVICE_31E3: return "Celeron/Pentium Silver Processor SATA Controller";
+        case PciDevice8086::DEVICE_31E8: return "Celeron/Pentium Silver Processor LPC Controller";
         case PciDevice8086::DEVICE_31EE: return "Celeron/Pentium Silver Processor Serial IO UART Host Controller";
         case PciDevice8086::DEVICE_31F0: return "Gemini Lake Host Bridge";
         case PciDevice8086::DEVICE_3200: return "GD31244 PCI-X SATA HBA";
@@ -11946,21 +11965,21 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_96A1: return "Integrated RAID";
         case PciDevice8086::DEVICE_9A09: return "11th Gen Core Processor PCIe Controller";
         case PciDevice8086::DEVICE_9A0B: return "Volume Management Device NVMe RAID Controller";
-        case PciDevice8086::DEVICE_9A13: return "Tiger Lake-LP Thunderbolt USB Controller";
+        case PciDevice8086::DEVICE_9A13: return "Tiger Lake-LP Thunderbolt 4 USB Controller";
         case PciDevice8086::DEVICE_9A14: return "11th Gen Core Processor Host Bridge/DRAM Registers";
-        case PciDevice8086::DEVICE_9A17: return "Tiger Lake-H Thunderbolt USB Controller";
-        case PciDevice8086::DEVICE_9A1B: return "Tiger Lake-LP Thunderbolt NHI #0";
-        case PciDevice8086::DEVICE_9A1D: return "Tiger Lake-LP Thunderbolt NHI #1";
-        case PciDevice8086::DEVICE_9A1F: return "Tiger Lake-H Thunderbolt NHI #0";
-        case PciDevice8086::DEVICE_9A21: return "Tiger Lake-H Thunderbolt NHI #1";
-        case PciDevice8086::DEVICE_9A23: return "Tiger Lake-LP Thunderbolt PCI Express Root Port #0";
-        case PciDevice8086::DEVICE_9A25: return "Tiger Lake-LP Thunderbolt PCI Express Root Port #1";
-        case PciDevice8086::DEVICE_9A27: return "Tiger Lake-LP Thunderbolt PCI Express Root Port #2";
-        case PciDevice8086::DEVICE_9A29: return "Tiger Lake-LP Thunderbolt PCI Express Root Port #3";
-        case PciDevice8086::DEVICE_9A2B: return "Tiger Lake-H Thunderbolt PCI Express Root Port #0";
-        case PciDevice8086::DEVICE_9A2D: return "Tiger Lake-H Thunderbolt PCI Express Root Port #1";
-        case PciDevice8086::DEVICE_9A2F: return "Tiger Lake-H Thunderbolt PCI Express Root Port #2";
-        case PciDevice8086::DEVICE_9A31: return "Tiger Lake-H Thunderbolt PCI Express Root Port #3";
+        case PciDevice8086::DEVICE_9A17: return "Tiger Lake-H Thunderbolt 4 USB Controller";
+        case PciDevice8086::DEVICE_9A1B: return "Tiger Lake-LP Thunderbolt 4 NHI #0";
+        case PciDevice8086::DEVICE_9A1D: return "Tiger Lake-LP Thunderbolt 4 NHI #1";
+        case PciDevice8086::DEVICE_9A1F: return "Tiger Lake-H Thunderbolt 4 NHI #0";
+        case PciDevice8086::DEVICE_9A21: return "Tiger Lake-H Thunderbolt 4 NHI #1";
+        case PciDevice8086::DEVICE_9A23: return "Tiger Lake-LP Thunderbolt 4 PCI Express Root Port #0";
+        case PciDevice8086::DEVICE_9A25: return "Tiger Lake-LP Thunderbolt 4 PCI Express Root Port #1";
+        case PciDevice8086::DEVICE_9A27: return "Tiger Lake-LP Thunderbolt 4 PCI Express Root Port #2";
+        case PciDevice8086::DEVICE_9A29: return "Tiger Lake-LP Thunderbolt 4 PCI Express Root Port #3";
+        case PciDevice8086::DEVICE_9A2B: return "Tiger Lake-H Thunderbolt 4 PCI Express Root Port #0";
+        case PciDevice8086::DEVICE_9A2D: return "Tiger Lake-H Thunderbolt 4 PCI Express Root Port #1";
+        case PciDevice8086::DEVICE_9A2F: return "Tiger Lake-H Thunderbolt 4 PCI Express Root Port #2";
+        case PciDevice8086::DEVICE_9A31: return "Tiger Lake-H Thunderbolt 4 PCI Express Root Port #3";
         case PciDevice8086::DEVICE_9A33: return "Tiger Lake Trace Hub";
         case PciDevice8086::DEVICE_9A49: return "Iris Xe Graphics";
         case PciDevice8086::DEVICE_9B41: return "UHD Graphics";
@@ -13155,6 +13174,9 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_1130: return enumToHumanString((PciSubDevice80861130)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_1131: return "Unknown device";
         case PciDevice8086::DEVICE_1132: return enumToHumanString((PciSubDevice80861132)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice8086::DEVICE_1136: return "Unknown device";
+        case PciDevice8086::DEVICE_1137: return "Unknown device";
+        case PciDevice8086::DEVICE_1138: return "Unknown device";
         case PciDevice8086::DEVICE_1161: return enumToHumanString((PciSubDevice80861161)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_1162: return "Unknown device";
         case PciDevice8086::DEVICE_1190: return "Unknown device";
@@ -14741,6 +14763,7 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_3198: return enumToHumanString((PciSubDevice80863198)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_319A: return "Unknown device";
         case PciDevice8086::DEVICE_31A2: return "Unknown device";
+        case PciDevice8086::DEVICE_31A8: return enumToHumanString((PciSubDevice808631A8)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8086::DEVICE_31AC: return "Unknown device";
         case PciDevice8086::DEVICE_31AE: return "Unknown device";
         case PciDevice8086::DEVICE_31BC: return "Unknown device";
@@ -14758,6 +14781,8 @@ inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorI
         case PciDevice8086::DEVICE_31DA: return "Unknown device";
         case PciDevice8086::DEVICE_31DB: return "Unknown device";
         case PciDevice8086::DEVICE_31DC: return "Unknown device";
+        case PciDevice8086::DEVICE_31E3: return "Unknown device";
+        case PciDevice8086::DEVICE_31E8: return "Unknown device";
         case PciDevice8086::DEVICE_31EE: return "Unknown device";
         case PciDevice8086::DEVICE_31F0: return "Unknown device";
         case PciDevice8086::DEVICE_3200: return enumToHumanString((PciSubDevice80863200)(subsystemVendorID << 16 | subDeviceId));

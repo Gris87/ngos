@@ -7,6 +7,7 @@
 
 #include <com/ngos/shared/common/ngos/types.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790110.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790113.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790601.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice1179060a.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice1179060f.h>
@@ -20,10 +21,12 @@ enum class PciDevice1179: u16 // Ignore CppEnumVerifier
     NONE        = 0,
     DEVICE_0102 = 0x0102,
     DEVICE_0103 = 0x0103,
+    DEVICE_010E = 0x010E,
     DEVICE_010F = 0x010F,
     DEVICE_0110 = 0x0110,
     DEVICE_0113 = 0x0113,
     DEVICE_0115 = 0x0115,
+    DEVICE_011A = 0x011A,
     DEVICE_0404 = 0x0404,
     DEVICE_0406 = 0x0406,
     DEVICE_0407 = 0x0407,
@@ -55,10 +58,12 @@ inline const char8* enumToString(PciDevice1179 device) // TEST: NO
         case PciDevice1179::NONE:        return "NONE";
         case PciDevice1179::DEVICE_0102: return "DEVICE_0102";
         case PciDevice1179::DEVICE_0103: return "DEVICE_0103";
+        case PciDevice1179::DEVICE_010E: return "DEVICE_010E";
         case PciDevice1179::DEVICE_010F: return "DEVICE_010F";
         case PciDevice1179::DEVICE_0110: return "DEVICE_0110";
         case PciDevice1179::DEVICE_0113: return "DEVICE_0113";
         case PciDevice1179::DEVICE_0115: return "DEVICE_0115";
+        case PciDevice1179::DEVICE_011A: return "DEVICE_011A";
         case PciDevice1179::DEVICE_0404: return "DEVICE_0404";
         case PciDevice1179::DEVICE_0406: return "DEVICE_0406";
         case PciDevice1179::DEVICE_0407: return "DEVICE_0407";
@@ -107,10 +112,12 @@ inline const char8* enumToHumanString(PciDevice1179 device) // TEST: NO
     {
         case PciDevice1179::DEVICE_0102: return "Extended IDE Controller";
         case PciDevice1179::DEVICE_0103: return "EX-IDE Type-B";
+        case PciDevice1179::DEVICE_010E: return "PXP04 NVMe SSD";
         case PciDevice1179::DEVICE_010F: return "NVMe Controller";
         case PciDevice1179::DEVICE_0110: return "NVMe SSD Controller Cx5";
         case PciDevice1179::DEVICE_0113: return "BG3 NVMe SSD Controller";
         case PciDevice1179::DEVICE_0115: return "XG4 NVMe SSD Controller";
+        case PciDevice1179::DEVICE_011A: return "XG6 NVMe SSD Controller";
         case PciDevice1179::DEVICE_0404: return "DVD Decoder card";
         case PciDevice1179::DEVICE_0406: return "Tecra Video Capture device";
         case PciDevice1179::DEVICE_0407: return "DVD Decoder card (Version 2)";
@@ -144,10 +151,12 @@ inline const char8* enumToHumanString(PciDevice1179 device, u16 subsystemVendorI
     {
         case PciDevice1179::DEVICE_0102: return "Unknown device";
         case PciDevice1179::DEVICE_0103: return "Unknown device";
+        case PciDevice1179::DEVICE_010E: return "Unknown device";
         case PciDevice1179::DEVICE_010F: return "Unknown device";
         case PciDevice1179::DEVICE_0110: return enumToHumanString((PciSubDevice11790110)(subsystemVendorID << 16 | subDeviceId));
-        case PciDevice1179::DEVICE_0113: return "Unknown device";
+        case PciDevice1179::DEVICE_0113: return enumToHumanString((PciSubDevice11790113)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1179::DEVICE_0115: return "Unknown device";
+        case PciDevice1179::DEVICE_011A: return "Unknown device";
         case PciDevice1179::DEVICE_0404: return "Unknown device";
         case PciDevice1179::DEVICE_0406: return "Unknown device";
         case PciDevice1179::DEVICE_0407: return "Unknown device";

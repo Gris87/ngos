@@ -41,6 +41,7 @@ enum class PciSubDevice100267DF: u32 // Ignore CppEnumVerifier
     SUBDEVICE_148C2379 = 0x148C2379,
     SUBDEVICE_16829470 = 0x16829470,
     SUBDEVICE_16829480 = 0x16829480,
+    SUBDEVICE_16829587 = 0x16829587,
     SUBDEVICE_16829588 = 0x16829588,
     SUBDEVICE_1682C570 = 0x1682C570,
     SUBDEVICE_1682C580 = 0x1682C580,
@@ -94,6 +95,7 @@ inline const char8* enumToString(PciSubDevice100267DF subDevice) // TEST: NO
         case PciSubDevice100267DF::SUBDEVICE_148C2379: return "SUBDEVICE_148C2379";
         case PciSubDevice100267DF::SUBDEVICE_16829470: return "SUBDEVICE_16829470";
         case PciSubDevice100267DF::SUBDEVICE_16829480: return "SUBDEVICE_16829480";
+        case PciSubDevice100267DF::SUBDEVICE_16829587: return "SUBDEVICE_16829587";
         case PciSubDevice100267DF::SUBDEVICE_16829588: return "SUBDEVICE_16829588";
         case PciSubDevice100267DF::SUBDEVICE_1682C570: return "SUBDEVICE_1682C570";
         case PciSubDevice100267DF::SUBDEVICE_1682C580: return "SUBDEVICE_1682C580";
@@ -164,6 +166,7 @@ inline const char8* enumToHumanString(PciSubDevice100267DF subDevice) // TEST: N
         case PciSubDevice100267DF::SUBDEVICE_148C2379: return "Radeon RX 570 4G [Red Dragon]";
         case PciSubDevice100267DF::SUBDEVICE_16829470: return "Radeon RX 470";
         case PciSubDevice100267DF::SUBDEVICE_16829480: return "Radeon RX 480";
+        case PciSubDevice100267DF::SUBDEVICE_16829587: return "Radeon RX 590 FATBOY 8GB";
         case PciSubDevice100267DF::SUBDEVICE_16829588: return "Radeon RX 580 XTR";
         case PciSubDevice100267DF::SUBDEVICE_1682C570: return "Radeon RX 570";
         case PciSubDevice100267DF::SUBDEVICE_1682C580: return "Radeon RX 580";

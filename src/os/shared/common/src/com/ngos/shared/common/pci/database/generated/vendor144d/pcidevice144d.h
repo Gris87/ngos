@@ -6,6 +6,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da802.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da804.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da808.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da820.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da821.h>
@@ -87,7 +89,7 @@ inline const char8* enumToHumanString(PciDevice144D device) // TEST: NO
         case PciDevice144D::DEVICE_A544: return "Exynos 8890 PCIe Root Complex";
         case PciDevice144D::DEVICE_A800: return "XP941 PCIe SSD";
         case PciDevice144D::DEVICE_A802: return "NVMe SSD Controller SM951/PM951";
-        case PciDevice144D::DEVICE_A804: return "NVMe SSD Controller SM961/PM961";
+        case PciDevice144D::DEVICE_A804: return "NVMe SSD Controller SM961/PM961/SM963";
         case PciDevice144D::DEVICE_A808: return "NVMe SSD Controller SM981/PM981/PM983";
         case PciDevice144D::DEVICE_A820: return "NVMe SSD Controller 171X";
         case PciDevice144D::DEVICE_A821: return "NVMe SSD Controller 172X";
@@ -112,8 +114,8 @@ inline const char8* enumToHumanString(PciDevice144D device, u16 subsystemVendorI
         case PciDevice144D::DEVICE_1600: return "Unknown device";
         case PciDevice144D::DEVICE_A544: return "Unknown device";
         case PciDevice144D::DEVICE_A800: return "Unknown device";
-        case PciDevice144D::DEVICE_A802: return "Unknown device";
-        case PciDevice144D::DEVICE_A804: return "Unknown device";
+        case PciDevice144D::DEVICE_A802: return enumToHumanString((PciSubDevice144DA802)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice144D::DEVICE_A804: return enumToHumanString((PciSubDevice144DA804)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice144D::DEVICE_A808: return enumToHumanString((PciSubDevice144DA808)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice144D::DEVICE_A820: return enumToHumanString((PciSubDevice144DA820)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice144D::DEVICE_A821: return enumToHumanString((PciSubDevice144DA821)(subsystemVendorID << 16 | subDeviceId));

@@ -18,6 +18,7 @@ enum class PciSubDevice80862A00: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1028022F = 0x1028022F,
     SUBDEVICE_103C30C0 = 0x103C30C0,
     SUBDEVICE_103C30C1 = 0x103C30C1,
+    SUBDEVICE_103C30C5 = 0x103C30C5,
     SUBDEVICE_103C30CC = 0x103C30CC,
     SUBDEVICE_103C30D9 = 0x103C30D9,
     SUBDEVICE_10431017 = 0x10431017,
@@ -45,6 +46,7 @@ inline const char8* enumToString(PciSubDevice80862A00 subDevice) // TEST: NO
         case PciSubDevice80862A00::SUBDEVICE_1028022F: return "SUBDEVICE_1028022F";
         case PciSubDevice80862A00::SUBDEVICE_103C30C0: return "SUBDEVICE_103C30C0";
         case PciSubDevice80862A00::SUBDEVICE_103C30C1: return "SUBDEVICE_103C30C1";
+        case PciSubDevice80862A00::SUBDEVICE_103C30C5: return "SUBDEVICE_103C30C5";
         case PciSubDevice80862A00::SUBDEVICE_103C30CC: return "SUBDEVICE_103C30CC";
         case PciSubDevice80862A00::SUBDEVICE_103C30D9: return "SUBDEVICE_103C30D9";
         case PciSubDevice80862A00::SUBDEVICE_10431017: return "SUBDEVICE_10431017";
@@ -89,6 +91,7 @@ inline const char8* enumToHumanString(PciSubDevice80862A00 subDevice) // TEST: N
         case PciSubDevice80862A00::SUBDEVICE_1028022F: return "Inspiron 1525";
         case PciSubDevice80862A00::SUBDEVICE_103C30C0: return "Compaq 6710b";
         case PciSubDevice80862A00::SUBDEVICE_103C30C1: return "Compaq 6910p";
+        case PciSubDevice80862A00::SUBDEVICE_103C30C5: return "Compaq 8510p";
         case PciSubDevice80862A00::SUBDEVICE_103C30CC: return "Pavilion dv6700";
         case PciSubDevice80862A00::SUBDEVICE_103C30D9: return "Presario C700";
         case PciSubDevice80862A00::SUBDEVICE_10431017: return "X58LE";

@@ -418,8 +418,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressresizablebaseaddresscapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h \
@@ -2080,6 +2082,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1178/pcidevice1178.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcidevice1179.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790110.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790113.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice11790601.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice1179060a.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1179/pcisubdevice1179060f.h \
@@ -2442,6 +2445,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1435/pcidevice1435.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144a/pcidevice144a.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcidevice144d.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da802.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da804.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da808.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da820.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor144d/pcisubdevice144da821.h \
@@ -2647,6 +2652,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15b6/pcidevice15b6.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15b7/pcidevice15b7.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15b7/pcisubdevice15b75009.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15b7/pcisubdevice15b7500b.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15b8/pcidevice15b8.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15bc/pcidevice15bc.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor15bc/pcisubdevice15bc0105.h \
@@ -3080,6 +3086,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e57/pcisubdevice1e570100.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e7c/pcidevice1e7c.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1e89/pcidevice1e89.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1eab/pcidevice1eab.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1eb1/pcidevice1eb1.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1fc0/pcidevice1fc0.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1fc1/pcidevice1fc1.h \
@@ -3772,6 +3779,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863165.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863166.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863198.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice808631a8.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863200.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863310.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863340.h \
@@ -4164,6 +4172,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkwidth.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressmulticastbaseaddressregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressmulticastoverlaybaseaddressregister.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingcapabilityflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingdata.h \
@@ -4177,6 +4189,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercontrolflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddressbarsize.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscapabilityandcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscapabilityflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h \

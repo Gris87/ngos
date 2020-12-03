@@ -25,7 +25,8 @@ enum class PciDevice126F: u16 // Ignore CppEnumVerifier
     DEVICE_0811 = 0x0811,
     DEVICE_0820 = 0x0820,
     DEVICE_0910 = 0x0910,
-    DEVICE_2262 = 0x2262
+    DEVICE_2262 = 0x2262,
+    DEVICE_2263 = 0x2263
 };
 
 
@@ -52,6 +53,7 @@ inline const char8* enumToString(PciDevice126F device) // TEST: NO
         case PciDevice126F::DEVICE_0820: return "DEVICE_0820";
         case PciDevice126F::DEVICE_0910: return "DEVICE_0910";
         case PciDevice126F::DEVICE_2262: return "DEVICE_2262";
+        case PciDevice126F::DEVICE_2263: return "DEVICE_2263";
 
         default: return "UNKNOWN";
     }
@@ -95,6 +97,7 @@ inline const char8* enumToHumanString(PciDevice126F device) // TEST: NO
         case PciDevice126F::DEVICE_0820: return "SM820 Lynx3D";
         case PciDevice126F::DEVICE_0910: return "SM910";
         case PciDevice126F::DEVICE_2262: return "SM2262/SM2262EN SSD Controller";
+        case PciDevice126F::DEVICE_2263: return "SM2263EN/SM2263XT SSD Controller";
 
         default: return "Unknown device";
     }

@@ -1202,8 +1202,10 @@ src/os/shared/common/src/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h
+src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressresizablebaseaddresscapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h
 src/os/shared/common/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h
@@ -4939,6 +4941,10 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkspeed.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresslinkwidth.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressmulticastbaseaddressregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressmulticastoverlaybaseaddressregister.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspayloadsize.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingcapabilityflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingdata.h
@@ -4952,6 +4958,10 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercapa
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrcrbheadercontrolflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressreadcompletionboundary.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrequestsize.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddressbarsize.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscapabilityandcontrol.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscapabilityflags.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcapabilityflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h
@@ -5437,6 +5447,9 @@ src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h
+src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h
 src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h

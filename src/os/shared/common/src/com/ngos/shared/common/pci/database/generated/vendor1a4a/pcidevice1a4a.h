@@ -15,6 +15,7 @@ enum class PciDevice1A4A: u16 // Ignore CppEnumVerifier
     NONE        = 0,
     DEVICE_1000 = 0x1000,
     DEVICE_1010 = 0x1010,
+    DEVICE_1020 = 0x1020,
     DEVICE_1030 = 0x1030,
     DEVICE_2000 = 0x2000,
     DEVICE_2001 = 0x2001,
@@ -40,6 +41,7 @@ inline const char8* enumToString(PciDevice1A4A device) // TEST: NO
         case PciDevice1A4A::NONE:        return "NONE";
         case PciDevice1A4A::DEVICE_1000: return "DEVICE_1000";
         case PciDevice1A4A::DEVICE_1010: return "DEVICE_1010";
+        case PciDevice1A4A::DEVICE_1020: return "DEVICE_1020";
         case PciDevice1A4A::DEVICE_1030: return "DEVICE_1030";
         case PciDevice1A4A::DEVICE_2000: return "DEVICE_2000";
         case PciDevice1A4A::DEVICE_2001: return "DEVICE_2001";
@@ -82,6 +84,7 @@ inline const char8* enumToHumanString(PciDevice1A4A device) // TEST: NO
     {
         case PciDevice1A4A::DEVICE_1000: return "MCOR Power Supply Controller";
         case PciDevice1A4A::DEVICE_1010: return "AMC EVR - Stockholm Timing Board";
+        case PciDevice1A4A::DEVICE_1020: return "PGPCard - Gen3 Cameralink Interface";
         case PciDevice1A4A::DEVICE_1030: return "PGPCard - Gen3 GIGe Interface";
         case PciDevice1A4A::DEVICE_2000: return "PGPCard - 4 Lane";
         case PciDevice1A4A::DEVICE_2001: return "PGPCard - 8 Lane Plus EVR";

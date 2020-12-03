@@ -261,8 +261,10 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressresizablebaseaddresscapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
@@ -2273,6 +2275,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E57),                                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E7C),                                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1E89),                                                     2);
+        TEST_ASSERT_EQUALS(sizeof(PciDevice1EAB),                                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1EB1),                                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1FC0),                                                     2);
         TEST_ASSERT_EQUALS(sizeof(PciDevice1FC1),                                                     2);
@@ -2417,6 +2420,11 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkStatus),                                              2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkStatus2),                                             2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkWidth),                                               1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressMulticastBaseAddressRegister),                            8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressMulticastCapability),                                     48);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressMulticastCapabilityRegister),                             2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressMulticastControlRegister),                                2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressMulticastOverlayBaseAddressRegister),                     8);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPayloadSize),                                             1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPowerBudgetingCapability),                                16);
         TEST_ASSERT_EQUALS(sizeof(PciExpressPowerBudgetingCapabilityFlag),                            1);
@@ -2432,6 +2440,11 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRcrbHeaderControlFlag),                                   4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressReadCompletionBoundary),                                  1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRequestSize),                                             1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressResizableBaseAddressBarSize),                             1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressResizableBaseAddressCapability),                          4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressResizableBaseAddressCapabilityAndControl),                8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressResizableBaseAddressCapabilityFlag),                      4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressResizableBaseAddressControl),                             4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootCapabilityFlag),                                      2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexEventCollectorEndpointAssociationCapability),  8);
         TEST_ASSERT_EQUALS(sizeof(PciExpressRootComplexInternalLinkControlCapability),                12);
@@ -3981,6 +3994,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice1166024B),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice1166040A),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice11790110),                                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciSubDevice11790113),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice11790601),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice1179060A),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice1179060F),                                              4);
@@ -4174,6 +4188,8 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice1415C158),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice14250030),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice14255001),                                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciSubDevice144DA802),                                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciSubDevice144DA804),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice144DA808),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice144DA820),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice144DA821),                                              4);
@@ -4314,6 +4330,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice15B36750),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice15B36764),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice15B75009),                                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciSubDevice15B7500B),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice15BC0105),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice16570013),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice16570014),                                              4);
@@ -5115,6 +5132,7 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863165),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863166),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863198),                                              4);
+        TEST_ASSERT_EQUALS(sizeof(PciSubDevice808631A8),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863200),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863310),                                              4);
         TEST_ASSERT_EQUALS(sizeof(PciSubDevice80863340),                                              4);

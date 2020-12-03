@@ -688,6 +688,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1e57/pcidevice1e57.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e7c/pcidevice1e7c.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e89/pcidevice1e89.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1eab/pcidevice1eab.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1eb1/pcidevice1eb1.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1fc0/pcidevice1fc0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1fc1/pcidevice1fc1.h>
@@ -9527,7 +9528,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: N
         case PciVendor::VENDOR_1E89: return enumToHumanString((PciDevice1E89)deviceId);
         case PciVendor::VENDOR_1E94: return "Unknown device";
         case PciVendor::VENDOR_1E95: return "Unknown device";
-        case PciVendor::VENDOR_1EAB: return "Unknown device";
+        case PciVendor::VENDOR_1EAB: return enumToHumanString((PciDevice1EAB)deviceId);
         case PciVendor::VENDOR_1EAE: return "Unknown device";
         case PciVendor::VENDOR_1EB1: return enumToHumanString((PciDevice1EB1)deviceId);
         case PciVendor::VENDOR_1FC0: return enumToHumanString((PciDevice1FC0)deviceId);

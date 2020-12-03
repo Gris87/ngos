@@ -24,6 +24,7 @@ enum class PciSubDevice10B59050: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10B52905 = 0x10B52905,
     SUBDEVICE_10B53196 = 0x10B53196,
     SUBDEVICE_10B59050 = 0x10B59050,
+    SUBDEVICE_12FE0001 = 0x12FE0001,
     SUBDEVICE_13698901 = 0x13698901,
     SUBDEVICE_13698F01 = 0x13698F01,
     SUBDEVICE_13699401 = 0x13699401,
@@ -84,6 +85,7 @@ inline const char8* enumToString(PciSubDevice10B59050 subDevice) // TEST: NO
         case PciSubDevice10B59050::SUBDEVICE_10B52905: return "SUBDEVICE_10B52905";
         case PciSubDevice10B59050::SUBDEVICE_10B53196: return "SUBDEVICE_10B53196";
         case PciSubDevice10B59050::SUBDEVICE_10B59050: return "SUBDEVICE_10B59050";
+        case PciSubDevice10B59050::SUBDEVICE_12FE0001: return "SUBDEVICE_12FE0001";
         case PciSubDevice10B59050::SUBDEVICE_13698901: return "SUBDEVICE_13698901";
         case PciSubDevice10B59050::SUBDEVICE_13698F01: return "SUBDEVICE_13698F01";
         case PciSubDevice10B59050::SUBDEVICE_13699401: return "SUBDEVICE_13699401";
@@ -161,6 +163,7 @@ inline const char8* enumToHumanString(PciSubDevice10B59050 subDevice) // TEST: N
         case PciSubDevice10B59050::SUBDEVICE_10B52905: return "Alpermann+Velte PCI TS: Time Synchronisation Board";
         case PciSubDevice10B59050::SUBDEVICE_10B53196: return "Goramo PLX200SYN sync serial card";
         case PciSubDevice10B59050::SUBDEVICE_10B59050: return "PCI-I04 PCI Passive PC/CAN Interface";
+        case PciSubDevice10B59050::SUBDEVICE_12FE0001: return "CAN-PCI/331 CAN bus controller";
         case PciSubDevice10B59050::SUBDEVICE_13698901: return "PCX11+ PCI";
         case PciSubDevice10B59050::SUBDEVICE_13698F01: return "VX222";
         case PciSubDevice10B59050::SUBDEVICE_13699401: return "PCX924";

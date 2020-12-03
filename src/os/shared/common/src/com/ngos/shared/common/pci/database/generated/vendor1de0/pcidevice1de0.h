@@ -56,7 +56,7 @@ inline const char8* enumToHumanString(PciDevice1DE0 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice1DE0::DEVICE_0000: return "Q100 Tensor Streaming Processor";
+        case PciDevice1DE0::DEVICE_0000: return "TSP100 Tensor Streaming Processor";
 
         default: return "Unknown device";
     }

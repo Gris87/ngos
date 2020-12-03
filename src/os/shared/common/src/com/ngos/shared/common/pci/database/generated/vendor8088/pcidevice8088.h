@@ -31,6 +31,7 @@ enum class PciDevice8088: u16 // Ignore CppEnumVerifier
     DEVICE_0106 = 0x0106,
     DEVICE_0107 = 0x0107,
     DEVICE_0108 = 0x0108,
+    DEVICE_010B = 0x010B,
     DEVICE_1001 = 0x1001,
     DEVICE_2001 = 0x2001
 };
@@ -54,6 +55,7 @@ inline const char8* enumToString(PciDevice8088 device) // TEST: NO
         case PciDevice8088::DEVICE_0106: return "DEVICE_0106";
         case PciDevice8088::DEVICE_0107: return "DEVICE_0107";
         case PciDevice8088::DEVICE_0108: return "DEVICE_0108";
+        case PciDevice8088::DEVICE_010B: return "DEVICE_010B";
         case PciDevice8088::DEVICE_1001: return "DEVICE_1001";
         case PciDevice8088::DEVICE_2001: return "DEVICE_2001";
 
@@ -94,6 +96,7 @@ inline const char8* enumToHumanString(PciDevice8088 device) // TEST: NO
         case PciDevice8088::DEVICE_0106: return "WX1860AL2S Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_0107: return "WX1860AL4 Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_0108: return "WX1860AL4S Gigabit Ethernet Controller";
+        case PciDevice8088::DEVICE_010B: return "WX1860AL1 Gigabit Ethernet Controller";
         case PciDevice8088::DEVICE_1001: return "Ethernet Controller RP1000 for 10GbE SFP+";
         case PciDevice8088::DEVICE_2001: return "Ethernet Controller RP2000 for 10GbE SFP+";
 
@@ -119,6 +122,7 @@ inline const char8* enumToHumanString(PciDevice8088 device, u16 subsystemVendorI
         case PciDevice8088::DEVICE_0106: return enumToHumanString((PciSubDevice80880106)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8088::DEVICE_0107: return enumToHumanString((PciSubDevice80880107)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8088::DEVICE_0108: return enumToHumanString((PciSubDevice80880108)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice8088::DEVICE_010B: return "Unknown device";
         case PciDevice8088::DEVICE_1001: return enumToHumanString((PciSubDevice80881001)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice8088::DEVICE_2001: return enumToHumanString((PciSubDevice80882001)(subsystemVendorID << 16 | subDeviceId));
 

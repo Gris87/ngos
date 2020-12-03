@@ -51,7 +51,12 @@
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkstatus2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressmulticastbaseaddressregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressmulticastoverlaybaseaddressregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresspowerbudgetingdata.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcapabilities.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkcontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressrootcomplexinternallinkcontrollinkstatus.h>
@@ -3766,6 +3771,282 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciExpressMulticastBaseAddressRegister");
+    {
+        PciExpressMulticastBaseAddressRegister temp;
+
+
+
+        // PciExpressMulticastBaseAddressRegister:
+        //
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |           CCCCCCCC            |
+        // |     CCCC      |     BBBB      |
+        // |  BB   |        AAAAAA         |
+        //
+        // mcIndexPosition : 6  'A'
+        // __reserved      : 6  'B'
+        // mcBaseAddress   : 52 'C'
+
+
+
+        // |           11111010            |
+        // |           11111110            |
+        // |           11111010            |
+        // |           00011111            |
+        // |           00011110            |
+        // |           01101111            |
+        // |     1000      |     1111      |
+        // |  10   |        101111         |
+        temp.value64 = 0xFAFEFA1F1E6F8FAF;
+
+        TEST_ASSERT_EQUALS(temp.mcIndexPosition, 47);
+        TEST_ASSERT_EQUALS(temp.__reserved,      62);
+        TEST_ASSERT_EQUALS(temp.mcBaseAddress,   4415568399689464);
+
+
+
+        // |           11111010            |
+        // |           11111110            |
+        // |           11111010            |
+        // |           00011111            |
+        // |           00011110            |
+        // |           01101111            |
+        // |     1000      |     1111      |
+        // |  10   |        010000         |
+        temp.mcIndexPosition = 16;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8F90);
+
+
+
+        // |           11111010            |
+        // |           11111110            |
+        // |           11111010            |
+        // |           00011111            |
+        // |           00011110            |
+        // |           01101111            |
+        // |     1000      |     0000      |
+        // |  01   |        010000         |
+        temp.__reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8050);
+
+
+
+        // |           00000101            |
+        // |           00000001            |
+        // |           00000101            |
+        // |           11100000            |
+        // |           11100001            |
+        // |           10010000            |
+        // |     0111      |     0000      |
+        // |  01   |        010000         |
+        temp.mcBaseAddress = 88031227681031;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0x050105E0E1907050);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressMulticastCapabilityRegister");
+    {
+        PciExpressMulticastCapabilityRegister temp;
+
+
+
+        // PciExpressMulticastCapabilityRegister:
+        //
+        // | E | D |        CCCCCC         |
+        // |  BB   |        AAAAAA         |
+        //
+        // mcMaxGroup                  : 6  'A'
+        // __reserved                  : 2  'B'
+        // mcWindowSizeRequested       : 6  'C'
+        // __reserved2                 : 1  'D'
+        // mcEcrcRegenerationSupported : 1  'E'
+
+
+
+        // | 0 | 1 |        110111         |
+        // |  00   |        110111         |
+        temp.value16 = 0x7737;
+
+        TEST_ASSERT_EQUALS(temp.mcMaxGroup,                  55);
+        TEST_ASSERT_EQUALS(temp.__reserved,                  0);
+        TEST_ASSERT_EQUALS(temp.mcWindowSizeRequested,       55);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                 1);
+        TEST_ASSERT_EQUALS(temp.mcEcrcRegenerationSupported, 0);
+
+
+
+        // | 0 | 1 |        110111         |
+        // |  00   |        001000         |
+        temp.mcMaxGroup = 8;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x7708);
+
+
+
+        // | 0 | 1 |        110111         |
+        // |  11   |        001000         |
+        temp.__reserved = 3;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x77C8);
+
+
+
+        // | 0 | 1 |        001000         |
+        // |  11   |        001000         |
+        temp.mcWindowSizeRequested = 8;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x48C8);
+
+
+
+        // | 0 | 0 |        001000         |
+        // |  11   |        001000         |
+        temp.__reserved2 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x08C8);
+
+
+
+        // | 1 | 0 |        001000         |
+        // |  11   |        001000         |
+        temp.mcEcrcRegenerationSupported = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x88C8);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressMulticastControlRegister");
+    {
+        PciExpressMulticastControlRegister temp;
+
+
+
+        // PciExpressMulticastControlRegister:
+        //
+        // | C |          BBBBBBB          |
+        // |  BB   |        AAAAAA         |
+        //
+        // mcNumGroup : 6  'A'
+        // __reserved : 9  'B'
+        // mcEnable   : 1  'C'
+
+
+
+        // | 0 |          0010001          |
+        // |  10   |        011100         |
+        temp.value16 = 0x119C;
+
+        TEST_ASSERT_EQUALS(temp.mcNumGroup, 28);
+        TEST_ASSERT_EQUALS(temp.__reserved, 70);
+        TEST_ASSERT_EQUALS(temp.mcEnable,   0);
+
+
+
+        // | 0 |          0010001          |
+        // |  10   |        100011         |
+        temp.mcNumGroup = 35;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x11A3);
+
+
+
+        // | 0 |          1101110          |
+        // |  01   |        100011         |
+        temp.__reserved = 441;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x6E63);
+
+
+
+        // | 1 |          1101110          |
+        // |  01   |        100011         |
+        temp.mcEnable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xEE63);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressMulticastOverlayBaseAddressRegister");
+    {
+        PciExpressMulticastOverlayBaseAddressRegister temp;
+
+
+
+        // PciExpressMulticastOverlayBaseAddressRegister:
+        //
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |           BBBBBBBB            |
+        // |  BB   |        AAAAAA         |
+        //
+        // mcOverlaySize        : 6  'A'
+        // mcOverlayBaseAddress : 58 'B'
+
+
+
+        // |           10101110            |
+        // |           00011000            |
+        // |           10111001            |
+        // |           10010101            |
+        // |           10101110            |
+        // |           11001001            |
+        // |           00110010            |
+        // |  10   |        010101         |
+        temp.value64 = 0xAE18B995AEC93295;
+
+        TEST_ASSERT_EQUALS(temp.mcOverlaySize,        21);
+        TEST_ASSERT_EQUALS(temp.mcOverlayBaseAddress, 196015325227721930);
+
+
+
+        // |           10101110            |
+        // |           00011000            |
+        // |           10111001            |
+        // |           10010101            |
+        // |           10101110            |
+        // |           11001001            |
+        // |           00110010            |
+        // |  10   |        101010         |
+        temp.mcOverlaySize = 42;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0xAE18B995AEC932AA);
+
+
+
+        // |           01010001            |
+        // |           11100111            |
+        // |           01000110            |
+        // |           01101010            |
+        // |           01010001            |
+        // |           00110110            |
+        // |           11001101            |
+        // |  01   |        101010         |
+        temp.mcOverlayBaseAddress = 92215050923989813;
+
+        TEST_ASSERT_EQUALS(temp.value64, 0x51E7466A5136CD6A);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciExpressPowerBudgetingData");
     {
         PciExpressPowerBudgetingData temp;
@@ -3872,6 +4153,93 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 881;
 
         TEST_ASSERT_EQUALS(temp.value32, 0x6E2F2535);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressResizableBaseAddressControl");
+    {
+        PciExpressResizableBaseAddressControl temp;
+
+
+
+        // PciExpressResizableBaseAddressControl:
+        //
+        // |           EEEEEEEE            |
+        // |           EEEEEEEE            |
+        // |    EEE    |       DDDDD       |
+        // |    CCC    |  BB   |    AAA    |
+        //
+        // barIndex              : 3  'A'
+        // __reserved            : 2  'B'
+        // numberOfResizableBars : 3  'C'
+        // barSize               : 5  'D'
+        // __reserved2           : 19 'E'
+
+
+
+        // |           01011001            |
+        // |           10111001            |
+        // |    011    |       00001       |
+        // |    101    |  01   |    101    |
+        temp.value32 = 0x59B961AD;
+
+        TEST_ASSERT_EQUALS(temp.barIndex,              5);
+        TEST_ASSERT_EQUALS(temp.__reserved,            1);
+        TEST_ASSERT_EQUALS(temp.numberOfResizableBars, 5);
+        TEST_ASSERT_EQUALS(temp.barSize,               1);
+        TEST_ASSERT_EQUALS(temp.__reserved2,           183755);
+
+
+
+        // |           01011001            |
+        // |           10111001            |
+        // |    011    |       00001       |
+        // |    101    |  01   |    010    |
+        temp.barIndex = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x59B961AA);
+
+
+
+        // |           01011001            |
+        // |           10111001            |
+        // |    011    |       00001       |
+        // |    101    |  10   |    010    |
+        temp.__reserved = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x59B961B2);
+
+
+
+        // |           01011001            |
+        // |           10111001            |
+        // |    011    |       00001       |
+        // |    010    |  10   |    010    |
+        temp.numberOfResizableBars = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x59B96152);
+
+
+
+        // |           01011001            |
+        // |           10111001            |
+        // |    011    |       11110       |
+        // |    010    |  10   |    010    |
+        temp.barSize = 30;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x59B97E52);
+
+
+
+        // |           10100110            |
+        // |           01000110            |
+        // |    100    |       11110       |
+        // |    010    |  10   |    010    |
+        temp.__reserved2 = 340532;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xA6469E52);
     }
     TEST_CASE_END();
 

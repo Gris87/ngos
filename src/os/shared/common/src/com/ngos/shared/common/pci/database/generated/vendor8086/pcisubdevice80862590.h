@@ -18,6 +18,7 @@ enum class PciSubDevice80862590: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C0934 = 0x103C0934,
     SUBDEVICE_103C0944 = 0x103C0944,
     SUBDEVICE_103C099C = 0x103C099C,
+    SUBDEVICE_104382D9 = 0x104382D9,
     SUBDEVICE_104D81B7 = 0x104D81B7,
     SUBDEVICE_A30481B7 = 0xA30481B7,
     SUBDEVICE_E4BF0CCD = 0xE4BF0CCD,
@@ -41,6 +42,7 @@ inline const char8* enumToString(PciSubDevice80862590 subDevice) // TEST: NO
         case PciSubDevice80862590::SUBDEVICE_103C0934: return "SUBDEVICE_103C0934";
         case PciSubDevice80862590::SUBDEVICE_103C0944: return "SUBDEVICE_103C0944";
         case PciSubDevice80862590::SUBDEVICE_103C099C: return "SUBDEVICE_103C099C";
+        case PciSubDevice80862590::SUBDEVICE_104382D9: return "SUBDEVICE_104382D9";
         case PciSubDevice80862590::SUBDEVICE_104D81B7: return "SUBDEVICE_104D81B7";
         case PciSubDevice80862590::SUBDEVICE_A30481B7: return "SUBDEVICE_A30481B7";
         case PciSubDevice80862590::SUBDEVICE_E4BF0CCD: return "SUBDEVICE_E4BF0CCD";
@@ -81,6 +83,7 @@ inline const char8* enumToHumanString(PciSubDevice80862590 subDevice) // TEST: N
         case PciSubDevice80862590::SUBDEVICE_103C0934: return "Compaq nw8240/nx8220";
         case PciSubDevice80862590::SUBDEVICE_103C0944: return "Compaq nc6220 Notebook PC";
         case PciSubDevice80862590::SUBDEVICE_103C099C: return "NX6110/NC6120";
+        case PciSubDevice80862590::SUBDEVICE_104382D9: return "Asus Eee PC 900";
         case PciSubDevice80862590::SUBDEVICE_104D81B7: return "Vaio VGN-S3XP";
         case PciSubDevice80862590::SUBDEVICE_A30481B7: return "Vaio VGN-S3XP";
         case PciSubDevice80862590::SUBDEVICE_E4BF0CCD: return "CCD-CALYPSO";

@@ -30,6 +30,7 @@ enum class PciDevice12D8: u16 // Ignore CppEnumVerifier
     DEVICE_8150 = 0x8150,
     DEVICE_8152 = 0x8152,
     DEVICE_8154 = 0x8154,
+    DEVICE_8619 = 0x8619,
     DEVICE_E110 = 0xE110,
     DEVICE_E111 = 0xE111,
     DEVICE_E130 = 0xE130
@@ -62,6 +63,7 @@ inline const char8* enumToString(PciDevice12D8 device) // TEST: NO
         case PciDevice12D8::DEVICE_8150: return "DEVICE_8150";
         case PciDevice12D8::DEVICE_8152: return "DEVICE_8152";
         case PciDevice12D8::DEVICE_8154: return "DEVICE_8154";
+        case PciDevice12D8::DEVICE_8619: return "DEVICE_8619";
         case PciDevice12D8::DEVICE_E110: return "DEVICE_E110";
         case PciDevice12D8::DEVICE_E111: return "DEVICE_E111";
         case PciDevice12D8::DEVICE_E130: return "DEVICE_E130";
@@ -111,6 +113,7 @@ inline const char8* enumToHumanString(PciDevice12D8 device) // TEST: NO
         case PciDevice12D8::DEVICE_8150: return "PCI to PCI Bridge";
         case PciDevice12D8::DEVICE_8152: return "PI7C8152A/PI7C8152B/PI7C8152BI PCI-to-PCI Bridge";
         case PciDevice12D8::DEVICE_8154: return "PI7C8154A/PI7C8154B/PI7C8154BI PCI-to-PCI Bridge";
+        case PciDevice12D8::DEVICE_8619: return "PI7C9X2G1616PR PCIe2 16-Port/16-Lane Packet Switch";
         case PciDevice12D8::DEVICE_E110: return "PI7C9X110 PCI Express to PCI bridge";
         case PciDevice12D8::DEVICE_E111: return "PI7C9X111SL PCIe-to-PCI Reversible Bridge";
         case PciDevice12D8::DEVICE_E130: return "PCI Express to PCI-XPI7C9X130 PCI-X Bridge";
@@ -145,6 +148,7 @@ inline const char8* enumToHumanString(PciDevice12D8 device, u16 subsystemVendorI
         case PciDevice12D8::DEVICE_8150: return "Unknown device";
         case PciDevice12D8::DEVICE_8152: return "Unknown device";
         case PciDevice12D8::DEVICE_8154: return "Unknown device";
+        case PciDevice12D8::DEVICE_8619: return "Unknown device";
         case PciDevice12D8::DEVICE_E110: return enumToHumanString((PciSubDevice12D8E110)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice12D8::DEVICE_E111: return "Unknown device";
         case PciDevice12D8::DEVICE_E130: return "Unknown device";

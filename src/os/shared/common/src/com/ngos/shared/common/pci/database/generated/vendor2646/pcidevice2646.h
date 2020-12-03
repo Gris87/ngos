@@ -13,7 +13,8 @@
 enum class PciDevice2646: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_2263 = 0x2263
+    DEVICE_2263 = 0x2263,
+    DEVICE_500D = 0x500D
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciDevice2646 device) // TEST: NO
     {
         case PciDevice2646::NONE:        return "NONE";
         case PciDevice2646::DEVICE_2263: return "DEVICE_2263";
+        case PciDevice2646::DEVICE_500D: return "DEVICE_500D";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciDevice2646 device) // TEST: NO
     switch (device)
     {
         case PciDevice2646::DEVICE_2263: return "A2000 NVMe SSD";
+        case PciDevice2646::DEVICE_500D: return "OM3PDP3 NVMe SSD";
 
         default: return "Unknown device";
     }

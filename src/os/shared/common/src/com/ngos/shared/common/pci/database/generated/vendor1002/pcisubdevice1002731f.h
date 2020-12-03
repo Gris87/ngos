@@ -14,6 +14,7 @@ enum class PciSubDevice1002731F: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_14582313 = 0x14582313,
+    SUBDEVICE_16825701 = 0x16825701,
     SUBDEVICE_1DA2E411 = 0x1DA2E411
 };
 
@@ -29,6 +30,7 @@ inline const char8* enumToString(PciSubDevice1002731F subDevice) // TEST: NO
     {
         case PciSubDevice1002731F::NONE:               return "NONE";
         case PciSubDevice1002731F::SUBDEVICE_14582313: return "SUBDEVICE_14582313";
+        case PciSubDevice1002731F::SUBDEVICE_16825701: return "SUBDEVICE_16825701";
         case PciSubDevice1002731F::SUBDEVICE_1DA2E411: return "SUBDEVICE_1DA2E411";
 
         default: return "UNKNOWN";
@@ -61,6 +63,7 @@ inline const char8* enumToHumanString(PciSubDevice1002731F subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1002731F::SUBDEVICE_14582313: return "Radeon RX 5700 XT Gaming OC";
+        case PciSubDevice1002731F::SUBDEVICE_16825701: return "RX 5700 XT RAW II";
         case PciSubDevice1002731F::SUBDEVICE_1DA2E411: return "Radeon RX 5600 XT";
 
         default: return "Unknown device";
