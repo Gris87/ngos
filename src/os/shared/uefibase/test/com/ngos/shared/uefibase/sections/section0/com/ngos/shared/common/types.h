@@ -260,7 +260,10 @@
 #include <com/ngos/shared/common/pagetable/types.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressaricapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressdynamicpowerallocationcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpresslatencytolerancereportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h>
@@ -268,6 +271,7 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpresstphrequestercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
@@ -2392,6 +2396,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressActiveStatePowerManagementSupport),                       1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressAdvancedErrorCapabilitiesAndControl),                     4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressAdvancedErrorReportingCapability),                        72);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAriCapability),                                           8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAriCapabilityRegister),                                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressAriControlRegister),                                      2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCapability),                                              60);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCapabilityRegister),                                      2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressCompletionTimeout),                                       1);
@@ -2406,12 +2413,22 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceSerialNumberCapability),                            12);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceStatus2),                                           2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressDeviceStatusFlag),                                        2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationCapability),                        16);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationCapabilityRegister),                4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationControlRegister),                   2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationPowerAllocationScale),              1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationStatusRegister),                    2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressDynamicPowerAllocationTransitionLatencyUnit),             1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL0sAcceptableLatency),                            1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressEndpointL1AcceptableLatency),                             1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressExtendedTagField),                                        1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressIndicatorControl),                                        1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressL0sExitLatency),                                          1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressL1ExitLatency),                                           1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressLatencyToleranceReportingCapability),                     8);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressLatencyToleranceReportingLatencyScale),                   1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressLatencyToleranceReportingMaxNoSnoopLatencyRegister),      2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressLatencyToleranceReportingMaxSnoopLatencyRegister),        2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkCapability2),                                         4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkCapability),                                          4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressLinkControl),                                             2);
@@ -2471,6 +2488,13 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(PciExpressSlotStatus2),                                             2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressSlotStatusFlag),                                          2);
         TEST_ASSERT_EQUALS(sizeof(PciExpressTphCompleterFlag),                                        1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterCapability),                                  12);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterCapabilityRegister),                          4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterControlRegister),                             4);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterStModeSelect),                                1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterStTableEntry),                                2);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterStTableLocation),                             1);
+        TEST_ASSERT_EQUALS(sizeof(PciExpressTphRequesterTphRequesterEnable),                          1);
         TEST_ASSERT_EQUALS(sizeof(PciExpressUncorrectableErrorFlag),                                  4);
         TEST_ASSERT_EQUALS(sizeof(PciExpressVendorSpecificCapability),                                8);
         TEST_ASSERT_EQUALS(sizeof(PciExpressVendorSpecificHeader),                                    4);

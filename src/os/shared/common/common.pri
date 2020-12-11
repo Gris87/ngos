@@ -417,7 +417,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressaricapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressdynamicpowerallocationcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresslatencytolerancereportingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h \
@@ -425,6 +428,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h \
+    $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpresstphrequestercapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h \
@@ -4146,6 +4150,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressactivestatepowermanagementsupport.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressaricapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressaricontrolregister.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeout.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresscompletiontimeoutrangeflags.h \
@@ -4158,12 +4164,20 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdeviceporttype.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicestatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdevicestatusflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationpowerallocationscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationstatusregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationtransitionlatencyunit.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl0sacceptablelatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressendpointl1acceptablelatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressextendedtagfield.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressindicatorcontrol.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl0sexitlatency.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressl1exitlatency.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslatencytolerancereportinglatencyscale.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslatencytolerancereportingmaxnosnooplatencyregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslatencytolerancereportingmaxsnooplatencyregister.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcapability2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h \
@@ -4216,6 +4230,12 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatus2.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressslotstatusflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphcompleterflags.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequestercontrolregister.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequesterstmodeselect.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequestersttableentry.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequestersttablelocation.h \
+    $$PWD/src/com/ngos/shared/common/pci/lib/pciexpresstphrequestertphrequesterenable.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressuncorrectableerrorflags.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvendorspecificheader.h \
     $$PWD/src/com/ngos/shared/common/pci/lib/pciexpressvirtualchannel.h \

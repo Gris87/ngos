@@ -7,7 +7,10 @@
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressaricapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressdeviceserialnumbercapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpressdynamicpowerallocationcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpresslatencytolerancereportingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressmulticastcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpresspowerbudgetingcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrcrbheadercapability.h>
@@ -15,6 +18,7 @@
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexeventcollectorendpointassociationcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexinternallinkcontrolcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressrootcomplexlinkdeclarationcapability.h>
+#include <com/ngos/shared/common/pci/capability/extended/pciexpresstphrequestercapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvendorspecificcapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressvirtualchannelcapability.h>
 #include <com/ngos/shared/common/pci/capability/pciacceleratedgraphicsport8xcapability.h>
@@ -104,8 +108,12 @@ private:
     static NgosStatus initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
     static NgosStatus initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
 
     static ArrayList<DeviceManagerEntry *> sEntries;
 };

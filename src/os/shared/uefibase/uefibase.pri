@@ -268,10 +268,12 @@ HEADERS += \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h \
+    $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h \
     $$PWD/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h \

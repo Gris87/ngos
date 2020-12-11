@@ -61,10 +61,12 @@
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/ngos/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pagetable/utils.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcapabilityregister.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressmulticastcontrolregister.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressresizablebaseaddresscontrol.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace.h>
+#include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciexpressvirtualchannelvirtualchannelresourcecapability.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicecommand.h>
 #include <com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/pci/lib/pciextendeddevicestatus.h>
@@ -155,10 +157,12 @@ NgosStatus startTestSection0()
     CALL_TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressaccesscontrolservicesacscapability);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressdynamicpowerallocationcapabilityregister);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressmulticastcapabilityregister);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressmulticastcontrolregister);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressresizablebaseaddresscontrol);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressrootcomplexlinkdeclarationlinkaddresslinkconfigurationspace);
+    CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpresstphrequestercapabilityregister);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciexpressvirtualchannelvirtualchannelresourcecapability);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciextendeddevicecommand);
     CALL_TEST_CASES(section0, com_ngos_shared_common_pci_lib_pciextendeddevicestatus);

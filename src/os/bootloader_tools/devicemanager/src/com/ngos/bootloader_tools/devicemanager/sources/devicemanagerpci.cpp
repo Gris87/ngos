@@ -2619,8 +2619,12 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
         case PciExtendedCapabilityType::RCRB_HEADER:                                       UEFI_ASSERT_EXECUTION(initPciExpressRcrbHeaderCapability((PciExpressRcrbHeaderCapability *)capability,                                                                     capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::VENDOR_SPECIFIC:                                   UEFI_ASSERT_EXECUTION(initPciExpressVendorSpecificCapability((PciExpressVendorSpecificCapability *)capability,                                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::ACCESS_CONTROL_SERVICES:                           UEFI_ASSERT_EXECUTION(initPciExpressAccessControlServicesCapability((PciExpressAccessControlServicesCapability *)capability,                                               capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::ARI_CAPABILITY:                                    UEFI_ASSERT_EXECUTION(initPciExpressAriCapability((PciExpressAriCapability *)capability,                                                                                   capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::MULTICAST:                                         UEFI_ASSERT_EXECUTION(initPciExpressMulticastCapability((PciExpressMulticastCapability *)capability,                                                                       capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
         case PciExtendedCapabilityType::RESIZABLE_BAR:                                     UEFI_ASSERT_EXECUTION(initPciExpressResizableBaseAddressCapability((PciExpressResizableBaseAddressCapability *)capability,                                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::DYNAMIC_POWER_ALLOCATION:                          UEFI_ASSERT_EXECUTION(initPciExpressDynamicPowerAllocationCapability((PciExpressDynamicPowerAllocationCapability *)capability,                                             capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::TPH_REQUESTER:                                     UEFI_ASSERT_EXECUTION(initPciExpressTphRequesterCapability((PciExpressTphRequesterCapability *)capability,                                                                 capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
+        case PciExtendedCapabilityType::LATENCY_TOLERANCE_REPORTING:                       UEFI_ASSERT_EXECUTION(initPciExpressLatencyToleranceReportingCapability((PciExpressLatencyToleranceReportingCapability *)capability,                                       capability->capabilityVersion, deviceManagerEntry), NgosStatus::ASSERTION); break;
 
         default:
         {
@@ -3330,6 +3334,53 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
     return NgosStatus::OK;
 }
 
+NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->capability.mfvcFunctionGroupsCapability = %u",     capability->capability.mfvcFunctionGroupsCapability));
+        UEFI_LVVV(("capability->capability.acsFunctionGroupsCapability  = %u",     capability->capability.acsFunctionGroupsCapability));
+        UEFI_LVVV(("capability->capability.nextFunctionNumber           = %u",     capability->capability.nextFunctionNumber));
+        UEFI_LVVV(("capability->capability.value16                      = 0x%04X", capability->capability.value16));
+        UEFI_LVVV(("capability->control.mfvcFunctionGroupsEnable        = %u",     capability->control.mfvcFunctionGroupsEnable));
+        UEFI_LVVV(("capability->control.acsFunctionGroupsEnable         = %u",     capability->control.acsFunctionGroupsEnable));
+        UEFI_LVVV(("capability->control.functionGroup                   = %u",     capability->control.functionGroup));
+        UEFI_LVVV(("capability->control.value16                         = 0x%04X", capability->control.value16));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability",                                  mprintf("0x%04X", capability->capability.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: MFVC function groups capability", capability->capability.mfvcFunctionGroupsCapability ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: ACS function groups capability",  capability->capability.acsFunctionGroupsCapability  ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: Next function number",            mprintf("%u",     capability->capability.nextFunctionNumber),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control",                                     mprintf("0x%04X", capability->control.value16),                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: MFVC function groups enable",        capability->control.mfvcFunctionGroupsEnable        ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: ACS function groups enable",         capability->control.acsFunctionGroupsEnable         ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: Function group",                     mprintf("%u",     capability->control.functionGroup),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
 NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
@@ -3434,6 +3485,183 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RBAR - Control #%d: BAR index", i), mprintf("%u",     capability->capabilityAndControl[i].control.barIndex),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
             UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RBAR - Control #%d: BAR size",  i), strdup(enumToFullString((PciExpressResizableBaseAddressBarSize)capability->capabilityAndControl[i].control.barSize)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         }
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->capability.substateMaximum         = %u",     capability->capability.substateMaximumReal()));
+        UEFI_LVVV(("capability->capability.transitionLatencyUnit   = %s",     enumToFullString((PciExpressDynamicPowerAllocationTransitionLatencyUnit)capability->capability.transitionLatencyUnit)));
+        UEFI_LVVV(("capability->capability.powerAllocationScale    = %s",     enumToFullString((PciExpressDynamicPowerAllocationPowerAllocationScale)capability->capability.transitionLatencyUnit)));
+        UEFI_LVVV(("capability->capability.transitionLatencyValue0 = %u",     capability->capability.transitionLatencyValue0));
+        UEFI_LVVV(("capability->capability.transitionLatencyValue1 = %u",     capability->capability.transitionLatencyValue1));
+        UEFI_LVVV(("capability->capability.value32                 = 0x%08X", capability->capability.value32));
+        UEFI_LVVV(("capability->latencyIndicator                   = 0x%08X", capability->latencyIndicator));
+        UEFI_LVVV(("capability->status.substateStatus              = 0x%02X", capability->status.substateStatus));
+        UEFI_LVVV(("capability->status.substateControlEnabled      = %u",     capability->status.substateControlEnabled));
+        UEFI_LVVV(("capability->status.value16                     = 0x%04X", capability->status.value16));
+        UEFI_LVVV(("capability->control.substateControl            = 0x%02X", capability->control.substateControl));
+        UEFI_LVVV(("capability->control.value16                    = 0x%04X", capability->control.value16));
+
+        for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+        {
+            UEFI_LVVV(("capability->substatePowerAllocation[%d] = %u", i, capability->substatePowerAllocation[i]));
+        }
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability",                              mprintf("0x%08X", capability->capability.value32),                                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Substate maximum",            mprintf("%u",     capability->capability.substateMaximumReal()),                                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency unit",     strdup(enumToFullString((PciExpressDynamicPowerAllocationTransitionLatencyUnit)capability->capability.transitionLatencyUnit)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Power allocation scale",      strdup(enumToFullString((PciExpressDynamicPowerAllocationPowerAllocationScale)capability->capability.transitionLatencyUnit)),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency value #0", mprintf("%u",     capability->capability.transitionLatencyValue0),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency value #1", mprintf("%u",     capability->capability.transitionLatencyValue1),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Latency indicator",                       mprintf("0x%08X", capability->latencyIndicator),                                                                               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status",                                  mprintf("0x%04X", capability->status.value16),                                                                                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status: Substate status",                 mprintf("0x%02X", capability->status.substateStatus),                                                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status: Substate control enabled",        capability->status.substateControlEnabled ? "Yes" : "No",                                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Control",                                 mprintf("0x%04X", capability->control.value16),                                                                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Control: Substate control",               mprintf("0x%02X", capability->control.substateControl),                                                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+        for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("DPA - Substate power allocation #%d", i), mprintf("%u", capability->substatePowerAllocation[i]), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        }
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->capability.noStModeSupported             = %u",     capability->capability.noStModeSupported));
+        UEFI_LVVV(("capability->capability.interruptVectorModeSupported  = %u",     capability->capability.interruptVectorModeSupported));
+        UEFI_LVVV(("capability->capability.deviceSpecificModeSupported   = %u",     capability->capability.deviceSpecificModeSupported));
+        UEFI_LVVV(("capability->capability.extendedTphRequesterSupported = %u",     capability->capability.extendedTphRequesterSupported));
+        UEFI_LVVV(("capability->capability.stTableLocation               = %s",     enumToFullString((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation)));
+        UEFI_LVVV(("capability->capability.stTableSize                   = %u",     capability->capability.stTableSizeReal()));
+        UEFI_LVVV(("capability->capability.value32                       = 0x%08X", capability->capability.value32));
+        UEFI_LVVV(("capability->control.stModeSelect                     = %s",     enumToFullString((PciExpressTphRequesterStModeSelect)capability->control.stModeSelect)));
+        UEFI_LVVV(("capability->control.tphRequesterEnable               = %s",     enumToFullString((PciExpressTphRequesterTphRequesterEnable)capability->control.tphRequesterEnable)));
+        UEFI_LVVV(("capability->control.value32                          = 0x%08X", capability->control.value32));
+
+        if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
+        {
+            for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+            {
+                UEFI_LVVV(("capability->stTableEntries[%d].stLowerEntry = 0x%04X", i, capability->stTableEntries[i].stLowerEntry));
+                UEFI_LVVV(("capability->stTableEntries[%d].stUpperEntry = 0x%04X", i, capability->stTableEntries[i].stUpperEntry));
+            }
+        }
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability",                                   mprintf("0x%08X", capability->capability.value32),                                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: No ST mode supported",             capability->capability.noStModeSupported             ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Interrupt vector mode supported",  capability->capability.interruptVectorModeSupported  ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Device specific mode supported",   capability->capability.deviceSpecificModeSupported   ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Extended TPH requester supported", capability->capability.extendedTphRequesterSupported ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: ST table location",                strdup(enumToFullString((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: ST table size",                    mprintf("%u",     capability->capability.stTableSizeReal()),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control",                                      mprintf("0x%08X", capability->control.value32),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control: ST mode select",                      strdup(enumToFullString((PciExpressTphRequesterStModeSelect)capability->control.stModeSelect)),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control: TPH requester enable",                strdup(enumToFullString((PciExpressTphRequesterTphRequesterEnable)capability->control.tphRequesterEnable)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+
+        if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
+        {
+            for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("TPHR - ST table entry #%d: ST lower entry", i), mprintf("0x%04X", capability->stTableEntries[i].stLowerEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("TPHR - ST table entry #%d: ST upper entry", i), mprintf("0x%04X", capability->stTableEntries[i].stUpperEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            }
+        }
+        // Ignore CppAlignmentVerifier [END]
+    }
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+{
+    UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
+
+    UEFI_ASSERT(capability         != nullptr, "capability is null",           NgosStatus::ASSERTION);
+    UEFI_ASSERT(capabilityVersion  == 1,       "capabilityVersion is invalid", NgosStatus::ASSERTION);
+    UEFI_ASSERT(deviceManagerEntry != nullptr, "deviceManagerEntry is null",   NgosStatus::ASSERTION);
+
+
+
+    AVOID_UNUSED(capabilityVersion);
+
+
+
+    // Validation
+    {
+        UEFI_LVVV(("capability->maxSnoopLatency.latencyValue   = %u",     capability->maxSnoopLatency.latencyValue));
+        UEFI_LVVV(("capability->maxSnoopLatency.latencyScale   = %s",     enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxSnoopLatency.latencyScale)));
+        UEFI_LVVV(("capability->maxSnoopLatency.value16        = 0x%04X", capability->maxSnoopLatency.value16));
+        UEFI_LVVV(("capability->maxNoSnoopLatency.latencyValue = %u",     capability->maxNoSnoopLatency.latencyValue));
+        UEFI_LVVV(("capability->maxNoSnoopLatency.latencyScale = %s",     enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxNoSnoopLatency.latencyScale)));
+        UEFI_LVVV(("capability->maxNoSnoopLatency.value16      = 0x%04X", capability->maxNoSnoopLatency.value16));
+    }
+
+
+
+    // Fill Device Manager entry
+    {
+        // Ignore CppAlignmentVerifier [BEGIN]
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency",                   mprintf("0x%04X", capability->maxSnoopLatency.value16),                                                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency: Latency value",    mprintf("%u",     capability->maxSnoopLatency.latencyValue),                                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency: Latency scale",    strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxSnoopLatency.latencyScale)),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency",                mprintf("0x%04X", capability->maxNoSnoopLatency.value16),                                                              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency: Latency value", mprintf("%u",     capability->maxNoSnoopLatency.latencyValue),                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency: Latency scale", strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxNoSnoopLatency.latencyScale)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
         // Ignore CppAlignmentVerifier [END]
     }
 

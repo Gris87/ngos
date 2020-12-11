@@ -27,8 +27,8 @@ enum class PciExtendedCapabilityType: u16
     MULTICAST                                         = 18,
     RESIZABLE_BAR                                     = 21,
     DYNAMIC_POWER_ALLOCATION                          = 22,
-    TPH                                               = 23,
-    LATENCE_TOLERANCE_REPORTING                       = 24,
+    TPH_REQUESTER                                     = 23,
+    LATENCY_TOLERANCE_REPORTING                       = 24,
     SECONDARY_PCIE                                    = 25,
     L1_PM_SUBSTATES                                   = 30,
     PHYSICAL_LAYER_16_0                               = 38,
@@ -62,8 +62,8 @@ inline const char8* enumToString(PciExtendedCapabilityType type) // TEST: NO
         case PciExtendedCapabilityType::MULTICAST:                                         return "MULTICAST";
         case PciExtendedCapabilityType::RESIZABLE_BAR:                                     return "RESIZABLE_BAR";
         case PciExtendedCapabilityType::DYNAMIC_POWER_ALLOCATION:                          return "DYNAMIC_POWER_ALLOCATION";
-        case PciExtendedCapabilityType::TPH:                                               return "TPH";
-        case PciExtendedCapabilityType::LATENCE_TOLERANCE_REPORTING:                       return "LATENCE_TOLERANCE_REPORTING";
+        case PciExtendedCapabilityType::TPH_REQUESTER:                                     return "TPH_REQUESTER";
+        case PciExtendedCapabilityType::LATENCY_TOLERANCE_REPORTING:                       return "LATENCY_TOLERANCE_REPORTING";
         case PciExtendedCapabilityType::SECONDARY_PCIE:                                    return "SECONDARY_PCIE";
         case PciExtendedCapabilityType::L1_PM_SUBSTATES:                                   return "L1_PM_SUBSTATES";
         case PciExtendedCapabilityType::PHYSICAL_LAYER_16_0:                               return "PHYSICAL_LAYER_16_0";

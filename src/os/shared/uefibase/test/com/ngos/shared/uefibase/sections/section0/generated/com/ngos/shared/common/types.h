@@ -40,11 +40,18 @@
 #include <com/ngos/shared/common/pci/lib/pcibuiltinselftest.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressaccesscontrolservicesacscapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressadvancederrorcapabilitiesandcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressaricapabilityregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressaricontrolregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresscapabilityregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecontrol.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressdevicecontrol2.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcapabilityregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationcontrolregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpressdynamicpowerallocationstatusregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslatencytolerancereportingmaxnosnooplatencyregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresslatencytolerancereportingmaxsnooplatencyregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcapability2.h>
 #include <com/ngos/shared/common/pci/lib/pciexpresslinkcontrol.h>
@@ -67,6 +74,8 @@
 #include <com/ngos/shared/common/pci/lib/pciexpressrootstatus.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcapability.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressslotcontrol.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresstphrequestercapabilityregister.h>
+#include <com/ngos/shared/common/pci/lib/pciexpresstphrequestercontrolregister.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvendorspecificheader.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability1.h>
 #include <com/ngos/shared/common/pci/lib/pciexpressvirtualchannelportvirtualchannelcapability2.h>
@@ -2264,6 +2273,142 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
 
 
 
+    TEST_CASE("PciExpressAriCapabilityRegister");
+    {
+        PciExpressAriCapabilityRegister temp;
+
+
+
+        // PciExpressAriCapabilityRegister:
+        //
+        // |           DDDDDDDD            |
+        // |        CCCCCC         | B | A |
+        //
+        // mfvcFunctionGroupsCapability : 1  'A'
+        // acsFunctionGroupsCapability  : 1  'B'
+        // __reserved                   : 6  'C'
+        // nextFunctionNumber           : 8  'D'
+
+
+
+        // |           01110100            |
+        // |        001001         | 0 | 0 |
+        temp.value16 = 0x7424;
+
+        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsCapability, 0);
+        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsCapability,  0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                   9);
+        TEST_ASSERT_EQUALS(temp.nextFunctionNumber,           116);
+
+
+
+        // |           01110100            |
+        // |        001001         | 0 | 1 |
+        temp.mfvcFunctionGroupsCapability = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x7425);
+
+
+
+        // |           01110100            |
+        // |        001001         | 1 | 1 |
+        temp.acsFunctionGroupsCapability = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x7427);
+
+
+
+        // |           01110100            |
+        // |        110110         | 1 | 1 |
+        temp.__reserved = 54;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x74DB);
+
+
+
+        // |           10001011            |
+        // |        110110         | 1 | 1 |
+        temp.nextFunctionNumber = 139;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8BDB);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressAriControlRegister");
+    {
+        PciExpressAriControlRegister temp;
+
+
+
+        // PciExpressAriControlRegister:
+        //
+        // |           EEEEEEEE            |
+        // | E |    DDD    |  CC   | B | A |
+        //
+        // mfvcFunctionGroupsEnable : 1  'A'
+        // acsFunctionGroupsEnable  : 1  'B'
+        // __reserved               : 2  'C'
+        // functionGroup            : 3  'D'
+        // __reserved2              : 9  'E'
+
+
+
+        // |           00000011            |
+        // | 1 |    111    |  00   | 1 | 1 |
+        temp.value16 = 0x03F3;
+
+        TEST_ASSERT_EQUALS(temp.mfvcFunctionGroupsEnable, 1);
+        TEST_ASSERT_EQUALS(temp.acsFunctionGroupsEnable,  1);
+        TEST_ASSERT_EQUALS(temp.__reserved,               0);
+        TEST_ASSERT_EQUALS(temp.functionGroup,            7);
+        TEST_ASSERT_EQUALS(temp.__reserved2,              7);
+
+
+
+        // |           00000011            |
+        // | 1 |    111    |  00   | 1 | 0 |
+        temp.mfvcFunctionGroupsEnable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x03F2);
+
+
+
+        // |           00000011            |
+        // | 1 |    111    |  00   | 0 | 0 |
+        temp.acsFunctionGroupsEnable = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x03F0);
+
+
+
+        // |           00000011            |
+        // | 1 |    111    |  11   | 0 | 0 |
+        temp.__reserved = 3;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x03FC);
+
+
+
+        // |           00000011            |
+        // | 1 |    000    |  11   | 0 | 0 |
+        temp.functionGroup = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x038C);
+
+
+
+        // |           11111100            |
+        // | 0 |    000    |  11   | 0 | 0 |
+        temp.__reserved2 = 504;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xFC0C);
+    }
+    TEST_CASE_END();
+
+
+
     TEST_CASE("PciExpressCapabilityRegister");
     {
         PciExpressCapabilityRegister temp;
@@ -3078,6 +3223,341 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.endEndTlpPrefixBlocking = 0;
 
         TEST_ASSERT_EQUALS(temp.value16, 0x358A);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressDynamicPowerAllocationCapabilityRegister");
+    {
+        PciExpressDynamicPowerAllocationCapabilityRegister temp;
+
+
+
+        // PciExpressDynamicPowerAllocationCapabilityRegister:
+        //
+        // |           HHHHHHHH            |
+        // |           GGGGGGGG            |
+        // |  FF   |  EE   |  DD   |  CC   |
+        // |    BBB    |       AAAAA       |
+        //
+        // substateMaximum         : 5  'A'
+        // __reserved              : 3  'B'
+        // transitionLatencyUnit   : 2  'C'
+        // __reserved2             : 2  'D'
+        // powerAllocationScale    : 2  'E'
+        // __reserved3             : 2  'F'
+        // transitionLatencyValue0 : 8  'G'
+        // transitionLatencyValue1 : 8  'H'
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  01   |  01   |  00   |
+        // |    000    |       00110       |
+        temp.value32 = 0x0A24D406;
+
+        TEST_ASSERT_EQUALS(temp.substateMaximum,         6);
+        TEST_ASSERT_EQUALS(temp.__reserved,              0);
+        TEST_ASSERT_EQUALS(temp.transitionLatencyUnit,   0);
+        TEST_ASSERT_EQUALS(temp.__reserved2,             1);
+        TEST_ASSERT_EQUALS(temp.powerAllocationScale,    1);
+        TEST_ASSERT_EQUALS(temp.__reserved3,             3);
+        TEST_ASSERT_EQUALS(temp.transitionLatencyValue0, 36);
+        TEST_ASSERT_EQUALS(temp.transitionLatencyValue1, 10);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  01   |  01   |  00   |
+        // |    000    |       11001       |
+        temp.substateMaximum = 25;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A24D419);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  01   |  01   |  00   |
+        // |    111    |       11001       |
+        temp.__reserved = 7;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A24D4F9);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  01   |  01   |  11   |
+        // |    111    |       11001       |
+        temp.transitionLatencyUnit = 3;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A24D7F9);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  01   |  10   |  11   |
+        // |    111    |       11001       |
+        temp.__reserved2 = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A24DBF9);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  11   |  10   |  10   |  11   |
+        // |    111    |       11001       |
+        temp.powerAllocationScale = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A24EBF9);
+
+
+
+        // |           00001010            |
+        // |           00100100            |
+        // |  00   |  10   |  10   |  11   |
+        // |    111    |       11001       |
+        temp.__reserved3 = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0A242BF9);
+
+
+
+        // |           00001010            |
+        // |           11011011            |
+        // |  00   |  10   |  10   |  11   |
+        // |    111    |       11001       |
+        temp.transitionLatencyValue0 = 219;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x0ADB2BF9);
+
+
+
+        // |           11110101            |
+        // |           11011011            |
+        // |  00   |  10   |  10   |  11   |
+        // |    111    |       11001       |
+        temp.transitionLatencyValue1 = 245;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xF5DB2BF9);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressDynamicPowerAllocationControlRegister");
+    {
+        PciExpressDynamicPowerAllocationControlRegister temp;
+
+
+
+        // PciExpressDynamicPowerAllocationControlRegister:
+        //
+        // |           BBBBBBBB            |
+        // |    BBB    |       AAAAA       |
+        //
+        // substateControl : 5  'A'
+        // __reserved      : 11 'B'
+
+
+
+        // |           11110100            |
+        // |    010    |       00110       |
+        temp.value16 = 0xF446;
+
+        TEST_ASSERT_EQUALS(temp.substateControl, 6);
+        TEST_ASSERT_EQUALS(temp.__reserved,      1954);
+
+
+
+        // |           11110100            |
+        // |    010    |       11001       |
+        temp.substateControl = 25;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xF459);
+
+
+
+        // |           00001011            |
+        // |    101    |       11001       |
+        temp.__reserved = 93;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x0BB9);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressDynamicPowerAllocationStatusRegister");
+    {
+        PciExpressDynamicPowerAllocationStatusRegister temp;
+
+
+
+        // PciExpressDynamicPowerAllocationStatusRegister:
+        //
+        // |          DDDDDDD          | C |
+        // |    BBB    |       AAAAA       |
+        //
+        // substateStatus         : 5  'A'
+        // __reserved             : 3  'B'
+        // substateControlEnabled : 1  'C'
+        // __reserved2            : 7  'D'
+
+
+
+        // |          1101100          | 1 |
+        // |    110    |       01110       |
+        temp.value16 = 0xD9CE;
+
+        TEST_ASSERT_EQUALS(temp.substateStatus,         14);
+        TEST_ASSERT_EQUALS(temp.__reserved,             6);
+        TEST_ASSERT_EQUALS(temp.substateControlEnabled, 1);
+        TEST_ASSERT_EQUALS(temp.__reserved2,            108);
+
+
+
+        // |          1101100          | 1 |
+        // |    110    |       10001       |
+        temp.substateStatus = 17;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD9D1);
+
+
+
+        // |          1101100          | 1 |
+        // |    001    |       10001       |
+        temp.__reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD931);
+
+
+
+        // |          1101100          | 0 |
+        // |    001    |       10001       |
+        temp.substateControlEnabled = 0;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xD831);
+
+
+
+        // |          0010011          | 0 |
+        // |    001    |       10001       |
+        temp.__reserved2 = 19;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x2631);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressLatencyToleranceReportingMaxNoSnoopLatencyRegister");
+    {
+        PciExpressLatencyToleranceReportingMaxNoSnoopLatencyRegister temp;
+
+
+
+        // PciExpressLatencyToleranceReportingMaxNoSnoopLatencyRegister:
+        //
+        // |    CCC    |    BBB    |  AA   |
+        // |           AAAAAAAA            |
+        //
+        // latencyValue : 10 'A'
+        // latencyScale : 3  'B'
+        // __reserved   : 3  'C'
+
+
+
+        // |    110    |    001    |  01   |
+        // |           11100110            |
+        temp.value16 = 0xC5E6;
+
+        TEST_ASSERT_EQUALS(temp.latencyValue, 486);
+        TEST_ASSERT_EQUALS(temp.latencyScale, 1);
+        TEST_ASSERT_EQUALS(temp.__reserved,   6);
+
+
+
+        // |    110    |    001    |  10   |
+        // |           00011001            |
+        temp.latencyValue = 537;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xC619);
+
+
+
+        // |    110    |    110    |  10   |
+        // |           00011001            |
+        temp.latencyScale = 6;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0xDA19);
+
+
+
+        // |    001    |    110    |  10   |
+        // |           00011001            |
+        temp.__reserved = 1;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x3A19);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressLatencyToleranceReportingMaxSnoopLatencyRegister");
+    {
+        PciExpressLatencyToleranceReportingMaxSnoopLatencyRegister temp;
+
+
+
+        // PciExpressLatencyToleranceReportingMaxSnoopLatencyRegister:
+        //
+        // |    CCC    |    BBB    |  AA   |
+        // |           AAAAAAAA            |
+        //
+        // latencyValue : 10 'A'
+        // latencyScale : 3  'B'
+        // __reserved   : 3  'C'
+
+
+
+        // |    100    |    100    |  11   |
+        // |           11000000            |
+        temp.value16 = 0x93C0;
+
+        TEST_ASSERT_EQUALS(temp.latencyValue, 960);
+        TEST_ASSERT_EQUALS(temp.latencyScale, 4);
+        TEST_ASSERT_EQUALS(temp.__reserved,   4);
+
+
+
+        // |    100    |    100    |  00   |
+        // |           00111111            |
+        temp.latencyValue = 63;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x903F);
+
+
+
+        // |    100    |    011    |  00   |
+        // |           00111111            |
+        temp.latencyScale = 3;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x8C3F);
+
+
+
+        // |    011    |    011    |  00   |
+        // |           00111111            |
+        temp.__reserved = 3;
+
+        TEST_ASSERT_EQUALS(temp.value16, 0x6C3F);
     }
     TEST_CASE_END();
 
@@ -5296,6 +5776,216 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         temp.__reserved = 6;
 
         TEST_ASSERT_EQUALS(temp.value16, 0xC6BB);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressTphRequesterCapabilityRegister");
+    {
+        PciExpressTphRequesterCapabilityRegister temp;
+
+
+
+        // PciExpressTphRequesterCapabilityRegister:
+        //
+        // |       IIIII       |    HHH    |
+        // |           HHHHHHHH            |
+        // |       GGGGG       |  FF   | E |
+        // |       DDDDD       | C | B | A |
+        //
+        // noStModeSupported             : 1  'A'
+        // interruptVectorModeSupported  : 1  'B'
+        // deviceSpecificModeSupported   : 1  'C'
+        // __reserved                    : 5  'D'
+        // extendedTphRequesterSupported : 1  'E'
+        // stTableLocation               : 2  'F'
+        // __reserved2                   : 5  'G'
+        // stTableSize                   : 11 'H'
+        // __reserved3                   : 5  'I'
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 1 |
+        // |       01011       | 0 | 1 | 1 |
+        temp.value32 = 0xED3C375B;
+
+        TEST_ASSERT_EQUALS(temp.noStModeSupported,             1);
+        TEST_ASSERT_EQUALS(temp.interruptVectorModeSupported,  1);
+        TEST_ASSERT_EQUALS(temp.deviceSpecificModeSupported,   0);
+        TEST_ASSERT_EQUALS(temp.__reserved,                    11);
+        TEST_ASSERT_EQUALS(temp.extendedTphRequesterSupported, 1);
+        TEST_ASSERT_EQUALS(temp.stTableLocation,               3);
+        TEST_ASSERT_EQUALS(temp.__reserved2,                   6);
+        TEST_ASSERT_EQUALS(temp.stTableSize,                   1340);
+        TEST_ASSERT_EQUALS(temp.__reserved3,                   29);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 1 |
+        // |       01011       | 0 | 1 | 0 |
+        temp.noStModeSupported = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C375A);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 1 |
+        // |       01011       | 0 | 0 | 0 |
+        temp.interruptVectorModeSupported = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C3758);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 1 |
+        // |       01011       | 1 | 0 | 0 |
+        temp.deviceSpecificModeSupported = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C375C);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 1 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.__reserved = 20;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C37A4);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  11   | 0 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.extendedTphRequesterSupported = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C36A4);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       00110       |  00   | 0 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.stTableLocation = 0;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3C30A4);
+
+
+
+        // |       11101       |    101    |
+        // |           00111100            |
+        // |       11001       |  00   | 0 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.__reserved2 = 25;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xED3CC8A4);
+
+
+
+        // |       11101       |    010    |
+        // |           11000011            |
+        // |       11001       |  00   | 0 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.stTableSize = 707;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xEAC3C8A4);
+
+
+
+        // |       00010       |    010    |
+        // |           11000011            |
+        // |       11001       |  00   | 0 |
+        // |       10100       | 1 | 0 | 0 |
+        temp.__reserved3 = 2;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x12C3C8A4);
+    }
+    TEST_CASE_END();
+
+
+
+    TEST_CASE("PciExpressTphRequesterControlRegister");
+    {
+        PciExpressTphRequesterControlRegister temp;
+
+
+
+        // PciExpressTphRequesterControlRegister:
+        //
+        // |           DDDDDDDD            |
+        // |           DDDDDDDD            |
+        // |        DDDDDD         |  CC   |
+        // |       BBBBB       |    AAA    |
+        //
+        // stModeSelect       : 3  'A'
+        // __reserved         : 5  'B'
+        // tphRequesterEnable : 2  'C'
+        // __reserved2        : 22 'D'
+
+
+
+        // |           11111000            |
+        // |           00100100            |
+        // |        101001         |  10   |
+        // |       00110       |    000    |
+        temp.value32 = 0xF824A630;
+
+        TEST_ASSERT_EQUALS(temp.stModeSelect,       0);
+        TEST_ASSERT_EQUALS(temp.__reserved,         6);
+        TEST_ASSERT_EQUALS(temp.tphRequesterEnable, 2);
+        TEST_ASSERT_EQUALS(temp.__reserved2,        4065577);
+
+
+
+        // |           11111000            |
+        // |           00100100            |
+        // |        101001         |  10   |
+        // |       00110       |    111    |
+        temp.stModeSelect = 7;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xF824A637);
+
+
+
+        // |           11111000            |
+        // |           00100100            |
+        // |        101001         |  10   |
+        // |       11001       |    111    |
+        temp.__reserved = 25;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xF824A6CF);
+
+
+
+        // |           11111000            |
+        // |           00100100            |
+        // |        101001         |  01   |
+        // |       11001       |    111    |
+        temp.tphRequesterEnable = 1;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0xF824A5CF);
+
+
+
+        // |           00000111            |
+        // |           11011011            |
+        // |        010110         |  01   |
+        // |       11001       |    111    |
+        temp.__reserved2 = 128726;
+
+        TEST_ASSERT_EQUALS(temp.value32, 0x07DB59CF);
     }
     TEST_CASE_END();
 
