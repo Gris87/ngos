@@ -685,7 +685,6 @@ src/os/kernel/.gitignore
 src/os/kernel/asm/arch/x86_64/com/ngos/kernel/a_early/main/setupidthandlers.S
 src/os/kernel/asm/arch/x86_64/com/ngos/kernel/main.S
 src/os/kernel/assets/glyphs/console.bin
-src/os/kernel/dueqFJ.json
 src/os/kernel/Image structure.png
 src/os/kernel/kernel.pro
 src/os/kernel/linker.ld
