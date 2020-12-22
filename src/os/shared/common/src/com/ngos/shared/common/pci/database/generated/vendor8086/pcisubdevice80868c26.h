@@ -17,6 +17,7 @@ enum class PciSubDevice80868C26: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C1998 = 0x103C1998,
     SUBDEVICE_17AA220E = 0x17AA220E,
     SUBDEVICE_17AA2210 = 0x17AA2210,
+    SUBDEVICE_17AA3098 = 0x17AA3098,
     SUBDEVICE_17AA309F = 0x17AA309F,
     SUBDEVICE_221017AA = 0x221017AA
 };
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciSubDevice80868C26 subDevice) // TEST: NO
         case PciSubDevice80868C26::SUBDEVICE_103C1998: return "SUBDEVICE_103C1998";
         case PciSubDevice80868C26::SUBDEVICE_17AA220E: return "SUBDEVICE_17AA220E";
         case PciSubDevice80868C26::SUBDEVICE_17AA2210: return "SUBDEVICE_17AA2210";
+        case PciSubDevice80868C26::SUBDEVICE_17AA3098: return "SUBDEVICE_17AA3098";
         case PciSubDevice80868C26::SUBDEVICE_17AA309F: return "SUBDEVICE_17AA309F";
         case PciSubDevice80868C26::SUBDEVICE_221017AA: return "SUBDEVICE_221017AA";
 
@@ -72,6 +74,7 @@ inline const char8* enumToHumanString(PciSubDevice80868C26 subDevice) // TEST: N
         case PciSubDevice80868C26::SUBDEVICE_103C1998: return "EliteDesk 800 G1";
         case PciSubDevice80868C26::SUBDEVICE_17AA220E: return "ThinkPad T440p";
         case PciSubDevice80868C26::SUBDEVICE_17AA2210: return "ThinkPad T540p";
+        case PciSubDevice80868C26::SUBDEVICE_17AA3098: return "ThinkCentre E73";
         case PciSubDevice80868C26::SUBDEVICE_17AA309F: return "ThinkCentre M83";
         case PciSubDevice80868C26::SUBDEVICE_221017AA: return "ThinkPad T540p";
 

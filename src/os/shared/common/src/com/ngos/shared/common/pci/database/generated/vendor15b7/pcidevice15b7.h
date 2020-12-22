@@ -81,10 +81,10 @@ inline const char8* enumToHumanString(PciDevice15B7 device) // TEST: NO
         case PciDevice15B7::DEVICE_2001: return "Skyhawk Series NVME SSD";
         case PciDevice15B7::DEVICE_5001: return "WD Black NVMe SSD";
         case PciDevice15B7::DEVICE_5002: return "WD Black 2018 / PC SN720 NVMe SSD";
-        case PciDevice15B7::DEVICE_5003: return "WD Black 2018 / PC SN520 NVMe SSD";
+        case PciDevice15B7::DEVICE_5003: return "WD Blue SN500 / PC SN520 NVMe SSD";
         case PciDevice15B7::DEVICE_5004: return "PC SN520 NVMe SSD";
         case PciDevice15B7::DEVICE_5005: return "PC SN520 NVMe SSD";
-        case PciDevice15B7::DEVICE_5006: return "WD Black 2019/PC SN750 NVMe SSD";
+        case PciDevice15B7::DEVICE_5006: return "WD Black 2019 / PC SN750 NVMe SSD";
         case PciDevice15B7::DEVICE_5009: return "WD Blue SN550 NVMe SSD";
         case PciDevice15B7::DEVICE_500B: return "PC SN530 NVMe SSD";
         case PciDevice15B7::DEVICE_500D: return "WD Ultrastar DC SN340 NVMe SSD";

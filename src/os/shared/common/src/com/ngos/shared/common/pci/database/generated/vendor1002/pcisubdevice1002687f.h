@@ -15,7 +15,8 @@ enum class PciSubDevice1002687F: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_10020B36 = 0x10020B36,
     SUBDEVICE_10026B76 = 0x10026B76,
-    SUBDEVICE_1458230C = 0x1458230C
+    SUBDEVICE_1458230C = 0x1458230C,
+    SUBDEVICE_1DA2E376 = 0x1DA2E376
 };
 
 
@@ -32,6 +33,7 @@ inline const char8* enumToString(PciSubDevice1002687F subDevice) // TEST: NO
         case PciSubDevice1002687F::SUBDEVICE_10020B36: return "SUBDEVICE_10020B36";
         case PciSubDevice1002687F::SUBDEVICE_10026B76: return "SUBDEVICE_10026B76";
         case PciSubDevice1002687F::SUBDEVICE_1458230C: return "SUBDEVICE_1458230C";
+        case PciSubDevice1002687F::SUBDEVICE_1DA2E376: return "SUBDEVICE_1DA2E376";
 
         default: return "UNKNOWN";
     }
@@ -65,6 +67,7 @@ inline const char8* enumToHumanString(PciSubDevice1002687F subDevice) // TEST: N
         case PciSubDevice1002687F::SUBDEVICE_10020B36: return "RX Vega64";
         case PciSubDevice1002687F::SUBDEVICE_10026B76: return "RX Vega64";
         case PciSubDevice1002687F::SUBDEVICE_1458230C: return "Radeon RX VEGA 56 GAMING OC 8G";
+        case PciSubDevice1002687F::SUBDEVICE_1DA2E376: return "Radeon RX VEGA 56 Pulse 8GB OC HBM2";
 
         default: return "Unknown device";
     }

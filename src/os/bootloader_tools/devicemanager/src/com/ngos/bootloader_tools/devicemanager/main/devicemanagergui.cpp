@@ -491,11 +491,26 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPci(Image *toolButtonNormalImage,
 
 
 
-    const ArrayList<DeviceManagerEntry *>& entries = DeviceManagerPci::getEntries();
+    UEFI_ASSERT_EXECUTION(fillDevicesTreeForPciChildren(pciNodeWidget, iconImage, DeviceManagerPci::getEntries(), toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+
+
+
+    return NgosStatus::OK;
+}
+
+NgosStatus DeviceManagerGUI::fillDevicesTreeForPciChildren(TreeNodeWidget *nodeWidget, Image *iconImage, const ArrayList<DeviceManagerEntryPCI *>& entries, Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage)
+{
+    UEFI_LT((" | nodeWidget = 0x%p, iconImage = 0x%p, entries = ..., toolButtonNormalImage = 0x%p, toolButtonHoverImage = 0x%p, toolButtonPressedImage = 0x%p, toolButtonNormalResizedImage = 0x%p, toolButtonHoverResizedImage = 0x%p, toolButtonPressedResizedImage = 0x%p, collapsedImage = 0x%p, expandedImage = 0x%p", nodeWidget, iconImage, toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage));
+
+
+
+    RgbaPixel blackColor(BLACK_COLOR);
+
+
 
     for (i64 i = 0; i < (i64)entries.getSize(); ++i)
     {
-        DeviceManagerEntry *entry = entries.at(i);
+        DeviceManagerEntryPCI *entry = entries.at(i);
 
 
 
@@ -503,7 +518,16 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPci(Image *toolButtonNormalImage,
 
         UEFI_ASSERT_EXECUTION(entryNodeWidget->getLabelWidget()->setColor(blackColor), NgosStatus::ASSERTION);
         UEFI_ASSERT_EXECUTION(entryNodeWidget->setUserData(entry),                     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(pciNodeWidget->addChildNode(entryNodeWidget),            NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(nodeWidget->addChildNode(entryNodeWidget),               NgosStatus::ASSERTION);
+
+
+
+        const ArrayList<DeviceManagerEntryPCI *>& children = entry->getChildren();
+
+        if (children.getSize() > 0)
+        {
+            UEFI_ASSERT_EXECUTION(fillDevicesTreeForPciChildren(entryNodeWidget, iconImage, children, toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
+        }
     }
 
 

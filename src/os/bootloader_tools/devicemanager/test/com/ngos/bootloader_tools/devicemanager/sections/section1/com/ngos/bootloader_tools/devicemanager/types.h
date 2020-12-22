@@ -8,6 +8,7 @@
 #include <com/ngos/bootloader_tools/devicemanager/main/devicemanagergui.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h>
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrypci.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h>
@@ -30,6 +31,7 @@ TEST_CASES(section1, com_ngos_bootloader_tools_devicemanager_types);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerDMI),         1);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerEntry),       48);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerEntryDMI),    56);
+        TEST_ASSERT_EQUALS(sizeof(DeviceManagerEntryPCI),    72);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerEntryRecord), 24);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerGUI),         1);
         TEST_ASSERT_EQUALS(sizeof(DeviceManagerImage),       1);

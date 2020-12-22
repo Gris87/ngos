@@ -1772,6 +1772,7 @@ enum class PciDevice10DE: u16 // Ignore CppEnumVerifier
     DEVICE_1B07 = 0x1B07,
     DEVICE_1B30 = 0x1B30,
     DEVICE_1B38 = 0x1B38,
+    DEVICE_1B39 = 0x1B39,
     DEVICE_1B70 = 0x1B70,
     DEVICE_1B78 = 0x1B78,
     DEVICE_1B80 = 0x1B80,
@@ -1970,6 +1971,7 @@ enum class PciDevice10DE: u16 // Ignore CppEnumVerifier
     DEVICE_2230 = 0x2230,
     DEVICE_2235 = 0x2235,
     DEVICE_223F = 0x223F,
+    DEVICE_228B = 0x228B,
     DEVICE_2321 = 0x2321,
     DEVICE_2482 = 0x2482,
     DEVICE_2484 = 0x2484,
@@ -1983,9 +1985,11 @@ enum class PciDevice10DE: u16 // Ignore CppEnumVerifier
     DEVICE_24DC = 0x24DC,
     DEVICE_24DD = 0x24DD,
     DEVICE_2501 = 0x2501,
+    DEVICE_2503 = 0x2503,
     DEVICE_2505 = 0x2505,
     DEVICE_2520 = 0x2520,
     DEVICE_252F = 0x252F,
+    DEVICE_2560 = 0x2560,
     DEVICE_2583 = 0x2583,
     DEVICE_25AF = 0x25AF
 };
@@ -3361,6 +3365,7 @@ inline const char8* enumToString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_1B07: return "DEVICE_1B07";
         case PciDevice10DE::DEVICE_1B30: return "DEVICE_1B30";
         case PciDevice10DE::DEVICE_1B38: return "DEVICE_1B38";
+        case PciDevice10DE::DEVICE_1B39: return "DEVICE_1B39";
         case PciDevice10DE::DEVICE_1B70: return "DEVICE_1B70";
         case PciDevice10DE::DEVICE_1B78: return "DEVICE_1B78";
         case PciDevice10DE::DEVICE_1B80: return "DEVICE_1B80";
@@ -3559,6 +3564,7 @@ inline const char8* enumToString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_2230: return "DEVICE_2230";
         case PciDevice10DE::DEVICE_2235: return "DEVICE_2235";
         case PciDevice10DE::DEVICE_223F: return "DEVICE_223F";
+        case PciDevice10DE::DEVICE_228B: return "DEVICE_228B";
         case PciDevice10DE::DEVICE_2321: return "DEVICE_2321";
         case PciDevice10DE::DEVICE_2482: return "DEVICE_2482";
         case PciDevice10DE::DEVICE_2484: return "DEVICE_2484";
@@ -3572,9 +3578,11 @@ inline const char8* enumToString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_24DC: return "DEVICE_24DC";
         case PciDevice10DE::DEVICE_24DD: return "DEVICE_24DD";
         case PciDevice10DE::DEVICE_2501: return "DEVICE_2501";
+        case PciDevice10DE::DEVICE_2503: return "DEVICE_2503";
         case PciDevice10DE::DEVICE_2505: return "DEVICE_2505";
         case PciDevice10DE::DEVICE_2520: return "DEVICE_2520";
         case PciDevice10DE::DEVICE_252F: return "DEVICE_252F";
+        case PciDevice10DE::DEVICE_2560: return "DEVICE_2560";
         case PciDevice10DE::DEVICE_2583: return "DEVICE_2583";
         case PciDevice10DE::DEVICE_25AF: return "DEVICE_25AF";
 
@@ -4967,6 +4975,7 @@ inline const char8* enumToHumanString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_1B07: return "GP102 [P102-100]";
         case PciDevice10DE::DEVICE_1B30: return "GP102GL [Quadro P6000]";
         case PciDevice10DE::DEVICE_1B38: return "GP102GL [Tesla P40]";
+        case PciDevice10DE::DEVICE_1B39: return "GP102GL [Tesla P10]";
         case PciDevice10DE::DEVICE_1B70: return "GP102GL";
         case PciDevice10DE::DEVICE_1B78: return "GP102GL";
         case PciDevice10DE::DEVICE_1B80: return "GP104 [GeForce GTX 1080]";
@@ -5165,22 +5174,25 @@ inline const char8* enumToHumanString(PciDevice10DE device) // TEST: NO
         case PciDevice10DE::DEVICE_2230: return "GA102GL [RTX A6000]";
         case PciDevice10DE::DEVICE_2235: return "GA102GL [RTX A40]";
         case PciDevice10DE::DEVICE_223F: return "GA102GL";
+        case PciDevice10DE::DEVICE_228B: return "GA104 High Definition Audio Controller";
         case PciDevice10DE::DEVICE_2321: return "GA103";
         case PciDevice10DE::DEVICE_2482: return "GA104 [GeForce RTX 3070 Ti]";
         case PciDevice10DE::DEVICE_2484: return "GA104 [GeForce RTX 3070]";
         case PciDevice10DE::DEVICE_2486: return "GA104 [GeForce RTX 3060 Ti]";
-        case PciDevice10DE::DEVICE_249C: return "GA104M [GeForce RTX 3070 Mobile / Max-Q 8GB/16GB]";
+        case PciDevice10DE::DEVICE_249C: return "GA104M [GeForce RTX 3080 Mobile / Max-Q 8GB/16GB]";
         case PciDevice10DE::DEVICE_249D: return "GA104M [GeForce RTX 3070 Mobile / Max-Q]";
         case PciDevice10DE::DEVICE_24AC: return "GA104 [GeForce RTX 30x0 Engineering Sample]";
         case PciDevice10DE::DEVICE_24AD: return "GA104 [GeForce RTX 3060 Engineering Sample]";
         case PciDevice10DE::DEVICE_24AF: return "GA104 [GeForce RTX 3070 Engineering Sample]";
         case PciDevice10DE::DEVICE_24BF: return "GA104 [GeForce RTX 3070 Engineering Sample]";
-        case PciDevice10DE::DEVICE_24DC: return "GA104M [GeForce RTX 3070 Mobile 16GB]";
+        case PciDevice10DE::DEVICE_24DC: return "GA104M [GeForce RTX 3080 Mobile / Max-Q 8GB/16GB]";
         case PciDevice10DE::DEVICE_24DD: return "GA104M [GeForce RTX 3070 Mobile / Max-Q]";
-        case PciDevice10DE::DEVICE_2501: return "GA106 [GeForce RTX 3060 6GB / 12GB]";
+        case PciDevice10DE::DEVICE_2501: return "GA106 [GeForce RTX 3060]";
+        case PciDevice10DE::DEVICE_2503: return "GA106 [GeForce RTX 3050 Ti]";
         case PciDevice10DE::DEVICE_2505: return "GA106";
         case PciDevice10DE::DEVICE_2520: return "GA106M [GeForce RTX 3060 Mobile / Max-Q]";
         case PciDevice10DE::DEVICE_252F: return "GA106 [GeForce RTX 3060 Engineering Sample]";
+        case PciDevice10DE::DEVICE_2560: return "GA106M [GeForce RTX 3060 Mobile / Max-Q]";
         case PciDevice10DE::DEVICE_2583: return "GA107 [GeForce RTX 3050]";
         case PciDevice10DE::DEVICE_25AF: return "GA107 [GeForce RTX 3050 Engineering Sample]";
 
@@ -6558,6 +6570,7 @@ inline const char8* enumToHumanString(PciDevice10DE device, u16 subsystemVendorI
         case PciDevice10DE::DEVICE_1B07: return "Unknown device";
         case PciDevice10DE::DEVICE_1B30: return "Unknown device";
         case PciDevice10DE::DEVICE_1B38: return "Unknown device";
+        case PciDevice10DE::DEVICE_1B39: return "Unknown device";
         case PciDevice10DE::DEVICE_1B70: return "Unknown device";
         case PciDevice10DE::DEVICE_1B78: return "Unknown device";
         case PciDevice10DE::DEVICE_1B80: return "Unknown device";
@@ -6756,6 +6769,7 @@ inline const char8* enumToHumanString(PciDevice10DE device, u16 subsystemVendorI
         case PciDevice10DE::DEVICE_2230: return "Unknown device";
         case PciDevice10DE::DEVICE_2235: return "Unknown device";
         case PciDevice10DE::DEVICE_223F: return "Unknown device";
+        case PciDevice10DE::DEVICE_228B: return "Unknown device";
         case PciDevice10DE::DEVICE_2321: return "Unknown device";
         case PciDevice10DE::DEVICE_2482: return "Unknown device";
         case PciDevice10DE::DEVICE_2484: return enumToHumanString((PciSubDevice10DE2484)(subsystemVendorID << 16 | subDeviceId));
@@ -6769,9 +6783,11 @@ inline const char8* enumToHumanString(PciDevice10DE device, u16 subsystemVendorI
         case PciDevice10DE::DEVICE_24DC: return "Unknown device";
         case PciDevice10DE::DEVICE_24DD: return "Unknown device";
         case PciDevice10DE::DEVICE_2501: return "Unknown device";
+        case PciDevice10DE::DEVICE_2503: return "Unknown device";
         case PciDevice10DE::DEVICE_2505: return "Unknown device";
         case PciDevice10DE::DEVICE_2520: return "Unknown device";
         case PciDevice10DE::DEVICE_252F: return "Unknown device";
+        case PciDevice10DE::DEVICE_2560: return "Unknown device";
         case PciDevice10DE::DEVICE_2583: return "Unknown device";
         case PciDevice10DE::DEVICE_25AF: return "Unknown device";
 

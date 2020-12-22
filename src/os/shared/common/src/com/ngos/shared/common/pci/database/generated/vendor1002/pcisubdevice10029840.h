@@ -13,6 +13,7 @@
 enum class PciSubDevice10029840: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10438623 = 0x10438623,
     SUBDEVICE_18499840 = 0x18499840
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciSubDevice10029840 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice10029840::NONE:               return "NONE";
+        case PciSubDevice10029840::SUBDEVICE_10438623: return "SUBDEVICE_10438623";
         case PciSubDevice10029840::SUBDEVICE_18499840: return "SUBDEVICE_18499840";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciSubDevice10029840 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice10029840::SUBDEVICE_10438623: return "AM1I-A Motherboard";
         case PciSubDevice10029840::SUBDEVICE_18499840: return "QC5000-ITX/PH";
 
         default: return "Unknown device";

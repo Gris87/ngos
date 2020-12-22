@@ -4,6 +4,8 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementdatascale.h>
+#include <com/ngos/shared/common/pci/lib/pcipowermanagementdataselect.h>
 #include <com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h>
 
 
@@ -19,8 +21,8 @@ struct PciPowerManagementControlStatus
             u16 noSoftReset:             1;
             u16 __reserved:              4;
             u16 enablePme:               1;
-            u16 dataSelect:              4;
-            u16 dataScale:               2;
+            u16 dataSelect:              4; // TODO: Use enum PciPowerManagementDataSelect
+            u16 dataScale:               2; // TODO: Use enum PciPowerManagementDataScale
             u16 pmeStatus:               1;
         };
 

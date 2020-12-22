@@ -33,6 +33,9 @@ enum class PciSubDevice10EC8168: u32 // Ignore CppEnumVerifier
     SUBDEVICE_104383A3 = 0x104383A3,
     SUBDEVICE_10438432 = 0x10438432,
     SUBDEVICE_10438505 = 0x10438505,
+    SUBDEVICE_10438554 = 0x10438554,
+    SUBDEVICE_1043859E = 0x1043859E,
+    SUBDEVICE_10438677 = 0x10438677,
     SUBDEVICE_105B0D7C = 0x105B0D7C,
     SUBDEVICE_10EC8168 = 0x10EC8168,
     SUBDEVICE_144DC652 = 0x144DC652,
@@ -44,13 +47,15 @@ enum class PciSubDevice10EC8168: u32 // Ignore CppEnumVerifier
     SUBDEVICE_14627522 = 0x14627522,
     SUBDEVICE_14627C37 = 0x14627C37,
     SUBDEVICE_177511CC = 0x177511CC,
+    SUBDEVICE_17AA3098 = 0x17AA3098,
     SUBDEVICE_17AA3814 = 0x17AA3814,
     SUBDEVICE_17AA3823 = 0x17AA3823,
     SUBDEVICE_17AA5124 = 0x17AA5124,
     SUBDEVICE_18498168 = 0x18498168,
     SUBDEVICE_74703468 = 0x74703468,
     SUBDEVICE_80862055 = 0x80862055,
-    SUBDEVICE_8086D615 = 0x8086D615
+    SUBDEVICE_8086D615 = 0x8086D615,
+    SUBDEVICE_EA50CE19 = 0xEA50CE19
 };
 
 
@@ -84,6 +89,9 @@ inline const char8* enumToString(PciSubDevice10EC8168 subDevice) // TEST: NO
         case PciSubDevice10EC8168::SUBDEVICE_104383A3: return "SUBDEVICE_104383A3";
         case PciSubDevice10EC8168::SUBDEVICE_10438432: return "SUBDEVICE_10438432";
         case PciSubDevice10EC8168::SUBDEVICE_10438505: return "SUBDEVICE_10438505";
+        case PciSubDevice10EC8168::SUBDEVICE_10438554: return "SUBDEVICE_10438554";
+        case PciSubDevice10EC8168::SUBDEVICE_1043859E: return "SUBDEVICE_1043859E";
+        case PciSubDevice10EC8168::SUBDEVICE_10438677: return "SUBDEVICE_10438677";
         case PciSubDevice10EC8168::SUBDEVICE_105B0D7C: return "SUBDEVICE_105B0D7C";
         case PciSubDevice10EC8168::SUBDEVICE_10EC8168: return "SUBDEVICE_10EC8168";
         case PciSubDevice10EC8168::SUBDEVICE_144DC652: return "SUBDEVICE_144DC652";
@@ -95,6 +103,7 @@ inline const char8* enumToString(PciSubDevice10EC8168 subDevice) // TEST: NO
         case PciSubDevice10EC8168::SUBDEVICE_14627522: return "SUBDEVICE_14627522";
         case PciSubDevice10EC8168::SUBDEVICE_14627C37: return "SUBDEVICE_14627C37";
         case PciSubDevice10EC8168::SUBDEVICE_177511CC: return "SUBDEVICE_177511CC";
+        case PciSubDevice10EC8168::SUBDEVICE_17AA3098: return "SUBDEVICE_17AA3098";
         case PciSubDevice10EC8168::SUBDEVICE_17AA3814: return "SUBDEVICE_17AA3814";
         case PciSubDevice10EC8168::SUBDEVICE_17AA3823: return "SUBDEVICE_17AA3823";
         case PciSubDevice10EC8168::SUBDEVICE_17AA5124: return "SUBDEVICE_17AA5124";
@@ -102,6 +111,7 @@ inline const char8* enumToString(PciSubDevice10EC8168 subDevice) // TEST: NO
         case PciSubDevice10EC8168::SUBDEVICE_74703468: return "SUBDEVICE_74703468";
         case PciSubDevice10EC8168::SUBDEVICE_80862055: return "SUBDEVICE_80862055";
         case PciSubDevice10EC8168::SUBDEVICE_8086D615: return "SUBDEVICE_8086D615";
+        case PciSubDevice10EC8168::SUBDEVICE_EA50CE19: return "SUBDEVICE_EA50CE19";
 
         default: return "UNKNOWN";
     }
@@ -152,6 +162,9 @@ inline const char8* enumToHumanString(PciSubDevice10EC8168 subDevice) // TEST: N
         case PciSubDevice10EC8168::SUBDEVICE_104383A3: return "M4A785/P7P55 Motherboard";
         case PciSubDevice10EC8168::SUBDEVICE_10438432: return "P8P67 and other motherboards";
         case PciSubDevice10EC8168::SUBDEVICE_10438505: return "P8 series motherboard";
+        case PciSubDevice10EC8168::SUBDEVICE_10438554: return "H81M-C Motherboard";
+        case PciSubDevice10EC8168::SUBDEVICE_1043859E: return "AM1I-A Motherboard";
+        case PciSubDevice10EC8168::SUBDEVICE_10438677: return "PRIME B450M-A Motherboard";
         case PciSubDevice10EC8168::SUBDEVICE_105B0D7C: return "D270S/D250S Motherboard";
         case PciSubDevice10EC8168::SUBDEVICE_10EC8168: return "RTL8111/8168 PCI Express Gigabit Ethernet controller";
         case PciSubDevice10EC8168::SUBDEVICE_144DC652: return "RTL8168 on a NP300E5C series laptop";
@@ -163,6 +176,7 @@ inline const char8* enumToHumanString(PciSubDevice10EC8168 subDevice) // TEST: N
         case PciSubDevice10EC8168::SUBDEVICE_14627522: return "X58 Pro-E";
         case PciSubDevice10EC8168::SUBDEVICE_14627C37: return "X570-A PRO motherboard";
         case PciSubDevice10EC8168::SUBDEVICE_177511CC: return "CC11/CL11";
+        case PciSubDevice10EC8168::SUBDEVICE_17AA3098: return "ThinkCentre E73";
         case PciSubDevice10EC8168::SUBDEVICE_17AA3814: return "Z50-75";
         case PciSubDevice10EC8168::SUBDEVICE_17AA3823: return "Lenovo V130-15IGM Laptop - Type 81HL";
         case PciSubDevice10EC8168::SUBDEVICE_17AA5124: return "ThinkPad E595";
@@ -170,6 +184,7 @@ inline const char8* enumToHumanString(PciSubDevice10EC8168 subDevice) // TEST: N
         case PciSubDevice10EC8168::SUBDEVICE_74703468: return "TG-3468 Gigabit PCI Express Network Adapter";
         case PciSubDevice10EC8168::SUBDEVICE_80862055: return "NUC Kit DN2820FYKH";
         case PciSubDevice10EC8168::SUBDEVICE_8086D615: return "Desktop Board D510MO/D525MW";
+        case PciSubDevice10EC8168::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 
         default: return "Unknown device";
     }

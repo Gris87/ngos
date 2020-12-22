@@ -315,6 +315,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029712.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029715.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029802.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029830.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029832.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029840.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10029851.h>
@@ -4420,7 +4421,7 @@ inline const char8* enumToHumanString(PciDevice1002 device, u16 subsystemVendorI
         case PciDevice1002::DEVICE_9808: return "Unknown device";
         case PciDevice1002::DEVICE_9809: return "Unknown device";
         case PciDevice1002::DEVICE_980A: return "Unknown device";
-        case PciDevice1002::DEVICE_9830: return "Unknown device";
+        case PciDevice1002::DEVICE_9830: return enumToHumanString((PciSubDevice10029830)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_9831: return "Unknown device";
         case PciDevice1002::DEVICE_9832: return enumToHumanString((PciSubDevice10029832)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1002::DEVICE_9833: return "Unknown device";

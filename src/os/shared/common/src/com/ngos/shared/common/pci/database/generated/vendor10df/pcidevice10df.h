@@ -58,6 +58,7 @@ enum class PciDevice10DF: u16 // Ignore CppEnumVerifier
     DEVICE_F112 = 0xF112,
     DEVICE_F180 = 0xF180,
     DEVICE_F400 = 0xF400,
+    DEVICE_F500 = 0xF500,
     DEVICE_F700 = 0xF700,
     DEVICE_F701 = 0xF701,
     DEVICE_F800 = 0xF800,
@@ -132,6 +133,7 @@ inline const char8* enumToString(PciDevice10DF device) // TEST: NO
         case PciDevice10DF::DEVICE_F112: return "DEVICE_F112";
         case PciDevice10DF::DEVICE_F180: return "DEVICE_F180";
         case PciDevice10DF::DEVICE_F400: return "DEVICE_F400";
+        case PciDevice10DF::DEVICE_F500: return "DEVICE_F500";
         case PciDevice10DF::DEVICE_F700: return "DEVICE_F700";
         case PciDevice10DF::DEVICE_F701: return "DEVICE_F701";
         case PciDevice10DF::DEVICE_F800: return "DEVICE_F800";
@@ -223,6 +225,7 @@ inline const char8* enumToHumanString(PciDevice10DF device) // TEST: NO
         case PciDevice10DF::DEVICE_F112: return "Saturn-X LightPulse Fibre Channel Host Adapter";
         case PciDevice10DF::DEVICE_F180: return "LPSe12002 EmulexSecure Fibre Channel Adapter";
         case PciDevice10DF::DEVICE_F400: return "LPe35000/LPe36000 Series 32Gb/64Gb Fibre Channel Adapter";
+        case PciDevice10DF::DEVICE_F500: return "LPe37000/LPe38000 Series 32Gb/64Gb Fibre Channel Adapter";
         case PciDevice10DF::DEVICE_F700: return "LP7000 Fibre Channel Host Adapter";
         case PciDevice10DF::DEVICE_F701: return "LP7000 Fibre Channel Host Adapter Alternate ID (JX1: 2-3, JX2: 1-2)";
         case PciDevice10DF::DEVICE_F800: return "LP8000 Fibre Channel Host Adapter";
@@ -299,6 +302,7 @@ inline const char8* enumToHumanString(PciDevice10DF device, u16 subsystemVendorI
         case PciDevice10DF::DEVICE_F112: return "Unknown device";
         case PciDevice10DF::DEVICE_F180: return "Unknown device";
         case PciDevice10DF::DEVICE_F400: return enumToHumanString((PciSubDevice10DFF400)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10DF::DEVICE_F500: return "Unknown device";
         case PciDevice10DF::DEVICE_F700: return "Unknown device";
         case PciDevice10DF::DEVICE_F701: return "Unknown device";
         case PciDevice10DF::DEVICE_F800: return "Unknown device";

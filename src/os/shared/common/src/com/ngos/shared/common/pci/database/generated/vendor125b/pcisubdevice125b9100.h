@@ -16,7 +16,8 @@ enum class PciSubDevice125B9100: u32 // Ignore CppEnumVerifier
     SUBDEVICE_A0001000 = 0xA0001000,
     SUBDEVICE_A0002000 = 0xA0002000,
     SUBDEVICE_A0006000 = 0xA0006000,
-    SUBDEVICE_A0007000 = 0xA0007000
+    SUBDEVICE_A0007000 = 0xA0007000,
+    SUBDEVICE_EA501C10 = 0xEA501C10
 };
 
 
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice125B9100 subDevice) // TEST: NO
         case PciSubDevice125B9100::SUBDEVICE_A0002000: return "SUBDEVICE_A0002000";
         case PciSubDevice125B9100::SUBDEVICE_A0006000: return "SUBDEVICE_A0006000";
         case PciSubDevice125B9100::SUBDEVICE_A0007000: return "SUBDEVICE_A0007000";
+        case PciSubDevice125B9100::SUBDEVICE_EA501C10: return "SUBDEVICE_EA501C10";
 
         default: return "UNKNOWN";
     }
@@ -68,6 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice125B9100 subDevice) // TEST: N
         case PciSubDevice125B9100::SUBDEVICE_A0002000: return "Parallel Port";
         case PciSubDevice125B9100::SUBDEVICE_A0006000: return "SPI";
         case PciSubDevice125B9100::SUBDEVICE_A0007000: return "Local Bus";
+        case PciSubDevice125B9100::SUBDEVICE_EA501C10: return "RXi2-BP";
 
         default: return "Unknown device";
     }

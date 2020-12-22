@@ -15,6 +15,7 @@ enum class PciSubDevice1022780B: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_103C194E = 0x103C194E,
     SUBDEVICE_103C1985 = 0x103C1985,
+    SUBDEVICE_10438623 = 0x10438623,
     SUBDEVICE_17AA3988 = 0x17AA3988,
     SUBDEVICE_1849780B = 0x1849780B
 };
@@ -32,6 +33,7 @@ inline const char8* enumToString(PciSubDevice1022780B subDevice) // TEST: NO
         case PciSubDevice1022780B::NONE:               return "NONE";
         case PciSubDevice1022780B::SUBDEVICE_103C194E: return "SUBDEVICE_103C194E";
         case PciSubDevice1022780B::SUBDEVICE_103C1985: return "SUBDEVICE_103C1985";
+        case PciSubDevice1022780B::SUBDEVICE_10438623: return "SUBDEVICE_10438623";
         case PciSubDevice1022780B::SUBDEVICE_17AA3988: return "SUBDEVICE_17AA3988";
         case PciSubDevice1022780B::SUBDEVICE_1849780B: return "SUBDEVICE_1849780B";
 
@@ -66,6 +68,7 @@ inline const char8* enumToHumanString(PciSubDevice1022780B subDevice) // TEST: N
     {
         case PciSubDevice1022780B::SUBDEVICE_103C194E: return "ProBook 455 G1 Notebook";
         case PciSubDevice1022780B::SUBDEVICE_103C1985: return "Pavilion 17-e163sg Notebook PC";
+        case PciSubDevice1022780B::SUBDEVICE_10438623: return "AM1I-A Motherboard";
         case PciSubDevice1022780B::SUBDEVICE_17AA3988: return "Z50-75";
         case PciSubDevice1022780B::SUBDEVICE_1849780B: return "QC5000-ITX/PH";
 

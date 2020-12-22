@@ -16,6 +16,8 @@ enum class PciSubDevice808615FF: u32 // Ignore CppEnumVerifier
     SUBDEVICE_11370000 = 0x11370000,
     SUBDEVICE_113702C1 = 0x113702C1,
     SUBDEVICE_113702C2 = 0x113702C2,
+    SUBDEVICE_113702D9 = 0x113702D9,
+    SUBDEVICE_113702DA = 0x113702DA,
     SUBDEVICE_80860000 = 0x80860000,
     SUBDEVICE_80860001 = 0x80860001,
     SUBDEVICE_80860002 = 0x80860002,
@@ -46,6 +48,8 @@ inline const char8* enumToString(PciSubDevice808615FF subDevice) // TEST: NO
         case PciSubDevice808615FF::SUBDEVICE_11370000: return "SUBDEVICE_11370000";
         case PciSubDevice808615FF::SUBDEVICE_113702C1: return "SUBDEVICE_113702C1";
         case PciSubDevice808615FF::SUBDEVICE_113702C2: return "SUBDEVICE_113702C2";
+        case PciSubDevice808615FF::SUBDEVICE_113702D9: return "SUBDEVICE_113702D9";
+        case PciSubDevice808615FF::SUBDEVICE_113702DA: return "SUBDEVICE_113702DA";
         case PciSubDevice808615FF::SUBDEVICE_80860000: return "SUBDEVICE_80860000";
         case PciSubDevice808615FF::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
         case PciSubDevice808615FF::SUBDEVICE_80860002: return "SUBDEVICE_80860002";
@@ -93,6 +97,8 @@ inline const char8* enumToHumanString(PciSubDevice808615FF subDevice) // TEST: N
         case PciSubDevice808615FF::SUBDEVICE_11370000: return "X710TLG GbE RJ45 PCIe NIC";
         case PciSubDevice808615FF::SUBDEVICE_113702C1: return "X710T2LG 2x10 GbE RJ45 PCIe NIC";
         case PciSubDevice808615FF::SUBDEVICE_113702C2: return "X710T4LG 4x10 GbE RJ45 PCIe NIC";
+        case PciSubDevice808615FF::SUBDEVICE_113702D9: return "Ethernet Network Adapter X710-T2L OCP 3.0";
+        case PciSubDevice808615FF::SUBDEVICE_113702DA: return "Ethernet Network Adapter X710-T4L OCP 3.0";
         case PciSubDevice808615FF::SUBDEVICE_80860000: return "Ethernet Network Adapter X710-TL";
         case PciSubDevice808615FF::SUBDEVICE_80860001: return "Ethernet Network Adapter X710-T4L";
         case PciSubDevice808615FF::SUBDEVICE_80860002: return "Ethernet Network Adapter X710-T4L";

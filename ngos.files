@@ -371,6 +371,8 @@ src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanage
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.cpp
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrydmi.h
+src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrypci.cpp
+src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrypci.h
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.cpp
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerentryrecord.h
 src/os/bootloader_tools/devicemanager/src/com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h
@@ -5054,6 +5056,8 @@ src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementauxcur
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementbridgesupportextensions.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementcapabilities.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementcontrolstatus.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementdatascale.h
+src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementdataselect.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementpowerstate.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcipowermanagementsupportpmeflags.h
 src/os/shared/common/src/com/ngos/shared/common/pci/lib/pcislotnumberingexpansionslot.h

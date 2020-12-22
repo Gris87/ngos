@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrypci.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerimage.h>
 #include <com/ngos/bootloader_tools/devicemanager/other/devicemanagermode.h>
 #include <com/ngos/shared/common/bootparams/bootparams.h>
@@ -28,6 +28,7 @@ private:
     static NgosStatus fillDevicesTree(); // TEST: NO
     static NgosStatus fillDevicesTreeForDmi(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
     static NgosStatus fillDevicesTreeForPci(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
+    static NgosStatus fillDevicesTreeForPciChildren(TreeNodeWidget *nodeWidget, Image *iconImage, const ArrayList<DeviceManagerEntryPCI *>& entries, Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
     static NgosStatus fillDevicesTreeForMemoryMap(Image *toolButtonNormalImage, Image *toolButtonHoverImage, Image *toolButtonPressedImage, Image *toolButtonNormalResizedImage, Image *toolButtonHoverResizedImage, Image *toolButtonPressedResizedImage, Image *collapsedImage, Image *expandedImage); // TEST: NO
     static NgosStatus fillDeviceInfoTableWidget(DeviceManagerEntry *entry); // TEST: NO
 

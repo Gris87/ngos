@@ -15,6 +15,7 @@ enum class PciSubDevice80869D03: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_1025115F = 0x1025115F,
     SUBDEVICE_102806DC = 0x102806DC,
+    SUBDEVICE_102806E6 = 0x102806E6,
     SUBDEVICE_102806F3 = 0x102806F3,
     SUBDEVICE_103C8079 = 0x103C8079,
     SUBDEVICE_17AA225D = 0x17AA225D,
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice80869D03 subDevice) // TEST: NO
         case PciSubDevice80869D03::NONE:               return "NONE";
         case PciSubDevice80869D03::SUBDEVICE_1025115F: return "SUBDEVICE_1025115F";
         case PciSubDevice80869D03::SUBDEVICE_102806DC: return "SUBDEVICE_102806DC";
+        case PciSubDevice80869D03::SUBDEVICE_102806E6: return "SUBDEVICE_102806E6";
         case PciSubDevice80869D03::SUBDEVICE_102806F3: return "SUBDEVICE_102806F3";
         case PciSubDevice80869D03::SUBDEVICE_103C8079: return "SUBDEVICE_103C8079";
         case PciSubDevice80869D03::SUBDEVICE_17AA225D: return "SUBDEVICE_17AA225D";
@@ -70,6 +72,7 @@ inline const char8* enumToHumanString(PciSubDevice80869D03 subDevice) // TEST: N
     {
         case PciSubDevice80869D03::SUBDEVICE_1025115F: return "Acer Aspire E5-575G";
         case PciSubDevice80869D03::SUBDEVICE_102806DC: return "Latitude E7470";
+        case PciSubDevice80869D03::SUBDEVICE_102806E6: return "Latitude 11 5175 2-in-1";
         case PciSubDevice80869D03::SUBDEVICE_102806F3: return "Latitude 3570";
         case PciSubDevice80869D03::SUBDEVICE_103C8079: return "EliteBook 840 G3";
         case PciSubDevice80869D03::SUBDEVICE_17AA225D: return "ThinkPad T480";

@@ -3,7 +3,7 @@
 
 
 
-#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentry.h>
+#include <com/ngos/bootloader_tools/devicemanager/other/devicemanagerentrypci.h>
 #include <com/ngos/shared/common/ngos/status.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressaccesscontrolservicescapability.h>
 #include <com/ngos/shared/common/pci/capability/extended/pciexpressadvancederrorreportingcapability.h>
@@ -55,7 +55,7 @@ class DeviceManagerPci
 public:
     static NgosStatus init(); // TEST: NO
 
-    static const ArrayList<DeviceManagerEntry *>& getEntries(); // TEST: NO
+    static const ArrayList<DeviceManagerEntryPCI *>& getEntries(); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -67,55 +67,55 @@ private:
     static NgosStatus initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
     static NgosStatus initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProtocol *pci, UefiAcpiAddressSpaceDescriptor *resources); // TEST: NO
     static NgosStatus initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, i64 minimumBus, i64 maximumBus); // TEST: NO
-    static NgosStatus initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciMessageSignaledInterruptsCapability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciMessageSignaledInterrupts32Capability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExtendedCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType); // TEST: NO
-    static NgosStatus initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
-    static NgosStatus initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciWithExtendedConfigurationSpace(const PciExtendedConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
-    static NgosStatus initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciMessageSignaledInterruptsCapability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciMessageSignaledInterrupts32Capability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExtendedCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType); // TEST: NO
+    static NgosStatus initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function); // TEST: NO
+    static NgosStatus initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithExtendedConfigurationSpace(const PciExtendedConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
+    static NgosStatus initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry); // TEST: NO
 
-    static ArrayList<DeviceManagerEntry *> sEntries;
+    static ArrayList<DeviceManagerEntryPCI *> sEntries;
 };
 
 

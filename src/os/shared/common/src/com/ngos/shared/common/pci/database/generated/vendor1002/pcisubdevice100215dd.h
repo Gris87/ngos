@@ -14,7 +14,9 @@ enum class PciSubDevice100215DD: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_103C83C6 = 0x103C83C6,
-    SUBDEVICE_1458D000 = 0x1458D000
+    SUBDEVICE_1043876B = 0x1043876B,
+    SUBDEVICE_1458D000 = 0x1458D000,
+    SUBDEVICE_EA50CC10 = 0xEA50CC10
 };
 
 
@@ -29,7 +31,9 @@ inline const char8* enumToString(PciSubDevice100215DD subDevice) // TEST: NO
     {
         case PciSubDevice100215DD::NONE:               return "NONE";
         case PciSubDevice100215DD::SUBDEVICE_103C83C6: return "SUBDEVICE_103C83C6";
+        case PciSubDevice100215DD::SUBDEVICE_1043876B: return "SUBDEVICE_1043876B";
         case PciSubDevice100215DD::SUBDEVICE_1458D000: return "SUBDEVICE_1458D000";
+        case PciSubDevice100215DD::SUBDEVICE_EA50CC10: return "SUBDEVICE_EA50CC10";
 
         default: return "UNKNOWN";
     }
@@ -61,7 +65,9 @@ inline const char8* enumToHumanString(PciSubDevice100215DD subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice100215DD::SUBDEVICE_103C83C6: return "Radeon Vega 8 Mobile";
+        case PciSubDevice100215DD::SUBDEVICE_1043876B: return "PRIME B450M-A Motherboard";
         case PciSubDevice100215DD::SUBDEVICE_1458D000: return "Radeon RX Vega 11";
+        case PciSubDevice100215DD::SUBDEVICE_EA50CC10: return "RXi2-BP";
 
         default: return "Unknown device";
     }

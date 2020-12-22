@@ -15,6 +15,7 @@ enum class PciSubDevice10227801: u32 // Ignore CppEnumVerifier
     NONE               = 0,
     SUBDEVICE_103C168B = 0x103C168B,
     SUBDEVICE_103C194E = 0x103C194E,
+    SUBDEVICE_10438623 = 0x10438623,
     SUBDEVICE_17AA3988 = 0x17AA3988,
     SUBDEVICE_18497801 = 0x18497801
 };
@@ -32,6 +33,7 @@ inline const char8* enumToString(PciSubDevice10227801 subDevice) // TEST: NO
         case PciSubDevice10227801::NONE:               return "NONE";
         case PciSubDevice10227801::SUBDEVICE_103C168B: return "SUBDEVICE_103C168B";
         case PciSubDevice10227801::SUBDEVICE_103C194E: return "SUBDEVICE_103C194E";
+        case PciSubDevice10227801::SUBDEVICE_10438623: return "SUBDEVICE_10438623";
         case PciSubDevice10227801::SUBDEVICE_17AA3988: return "SUBDEVICE_17AA3988";
         case PciSubDevice10227801::SUBDEVICE_18497801: return "SUBDEVICE_18497801";
 
@@ -66,6 +68,7 @@ inline const char8* enumToHumanString(PciSubDevice10227801 subDevice) // TEST: N
     {
         case PciSubDevice10227801::SUBDEVICE_103C168B: return "ProBook 4535s Notebook";
         case PciSubDevice10227801::SUBDEVICE_103C194E: return "ProBook 455 G1 Notebook";
+        case PciSubDevice10227801::SUBDEVICE_10438623: return "AM1I-A Motherboard";
         case PciSubDevice10227801::SUBDEVICE_17AA3988: return "Z50-75";
         case PciSubDevice10227801::SUBDEVICE_18497801: return "QC5000-ITX/PH";
 

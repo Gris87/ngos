@@ -47,7 +47,7 @@
 
 
 
-ArrayList<DeviceManagerEntry *> DeviceManagerPci::sEntries;
+ArrayList<DeviceManagerEntryPCI *> DeviceManagerPci::sEntries;
 
 
 
@@ -64,7 +64,7 @@ NgosStatus DeviceManagerPci::init()
     return NgosStatus::OK;
 }
 
-const ArrayList<DeviceManagerEntry *>& DeviceManagerPci::getEntries()
+const ArrayList<DeviceManagerEntryPCI *>& DeviceManagerPci::getEntries()
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -338,11 +338,11 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
 
 
-                            DeviceManagerEntry *deviceManagerEntry;
+                            DeviceManagerEntryPCI *deviceManagerEntry;
 
                             // Add Device Manager entry
                             {
-                                deviceManagerEntry = new DeviceManagerEntry(DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
+                                deviceManagerEntry = new DeviceManagerEntryPCI(nullptr, DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
 
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",  mprintf("%u", pci->segmentNumber), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
                                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",      mprintf("%u", i),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
@@ -397,7 +397,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -588,7 +588,7 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -653,7 +653,7 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -752,7 +752,7 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -861,7 +861,7 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capabilityPointer, deviceManagerEntry, headerType, pci, bus, device, function));
 
@@ -908,7 +908,7 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, headerType, pci, bus, device, function));
 
@@ -964,7 +964,7 @@ NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capabili
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciPowerManagementInterfaceCapability(PciPowerManagementInterfaceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -990,47 +990,56 @@ NgosStatus DeviceManagerPci::initPciPowerManagementInterfaceCapability(PciPowerM
         UEFI_LVVV(("capability->controlStatus.powerState                  = %s",     enumToFullString((PciPowerManagementPowerState)capability->controlStatus.powerState)));
         UEFI_LVVV(("capability->controlStatus.noSoftReset                 = %u",     capability->controlStatus.noSoftReset));
         UEFI_LVVV(("capability->controlStatus.enablePme                   = %u",     capability->controlStatus.enablePme));
-        UEFI_LVVV(("capability->controlStatus.dataSelect                  = %u",     capability->controlStatus.dataSelect));
-        UEFI_LVVV(("capability->controlStatus.dataScale                   = %u",     capability->controlStatus.dataScale));
+        UEFI_LVVV(("capability->controlStatus.dataSelect                  = %s",     enumToFullString((PciPowerManagementDataSelect)capability->controlStatus.dataSelect)));
+        UEFI_LVVV(("capability->controlStatus.dataScale                   = %s",     enumToFullString((PciPowerManagementDataScale)capability->controlStatus.dataScale)));
         UEFI_LVVV(("capability->controlStatus.pmeStatus                   = %u",     capability->controlStatus.pmeStatus));
         UEFI_LVVV(("capability->controlStatus.value16                     = 0x%04X", capability->controlStatus.value16));
         UEFI_LVVV(("capability->bridgeExtention.b2B3ForD3Hot              = %u",     capability->bridgeExtention.b2B3ForD3Hot));
         UEFI_LVVV(("capability->bridgeExtention.busPowerClockControl      = %u",     capability->bridgeExtention.busPowerClockControl));
         UEFI_LVVV(("capability->bridgeExtention.value8                    = 0x%02X", capability->bridgeExtention.value8));
+        UEFI_LVVV(("capability->data                                      = %u",     capability->data));
     }
 
 
 
     // Fill Device Manager entry
     {
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Power management interface");
+
+
+
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities",                                 mprintf("0x%04X", capability->capabilities.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: Version",                        mprintf("%u",     capability->capabilities.version),                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: PME clock",                      capability->capabilities.pmeClock                     ? "Yes" : "No",                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: Device specific initialization", capability->capabilities.deviceSpecificInitialization ? "Yes" : "No",                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: AUX current",                    strdup(enumToFullString((PciPowerManagementAuxCurrent)capability->capabilities.auxCurrent)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: Support D1",                     capability->capabilities.supportD1                    ? "Yes" : "No",                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Capabilities: Support D2",                     capability->capabilities.supportD2                    ? "Yes" : "No",                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities",                                 mprintf("0x%04X", capability->capabilities.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: Version",                        mprintf("%u",     capability->capabilities.version),                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: PME clock",                      capability->capabilities.pmeClock                     ? "Yes" : "No",                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: Device specific initialization", capability->capabilities.deviceSpecificInitialization ? "Yes" : "No",                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: AUX current",                    strdup(enumToFullString((PciPowerManagementAuxCurrent)capability->capabilities.auxCurrent)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: Support D1",                     capability->capabilities.supportD1                    ? "Yes" : "No",                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities: Support D2",                     capability->capabilities.supportD2                    ? "Yes" : "No",                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PMI - Capabilities: PME support", supportPme, "0x%02X", PciPowerManagementSupportPmeFlag, DeviceManagerMode::EXPERT);
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Capabilities: PME support", supportPme, "0x%02X", PciPowerManagementSupportPmeFlag, DeviceManagerMode::EXPERT);
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status",                mprintf("0x%04X", capability->controlStatus.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: Power state",   strdup(enumToFullString((PciPowerManagementPowerState)capability->controlStatus.powerState)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: No soft reset", capability->controlStatus.noSoftReset ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: Enable PME",    capability->controlStatus.enablePme   ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: Data select",   mprintf("%u", capability->controlStatus.dataSelect),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: Data scale",    mprintf("%u", capability->controlStatus.dataScale),                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Control/Status: PME status",    capability->controlStatus.pmeStatus   ? "Yes" : "No",                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status",                mprintf("0x%04X", capability->controlStatus.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: Power state",   strdup(enumToFullString((PciPowerManagementPowerState)capability->controlStatus.powerState)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: No soft reset", capability->controlStatus.noSoftReset ? "Yes" : "No",                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: Enable PME",    capability->controlStatus.enablePme   ? "Yes" : "No",                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: Data select",   strdup(enumToFullString((PciPowerManagementDataSelect)capability->controlStatus.dataSelect)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: Data scale",    strdup(enumToFullString((PciPowerManagementDataScale)capability->controlStatus.dataScale)),   DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control/Status: PME status",    capability->controlStatus.pmeStatus   ? "Yes" : "No",                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Bridge extention",                                             mprintf("0x%02X", capability->bridgeExtention.value8),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Bridge extention: Switch secondary bus power state on D3 HOT", capability->bridgeExtention.b2B3ForD3Hot         ? "B2"  : "B3", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PMI - Bridge extention: Enable bus power/clock control",             capability->bridgeExtention.busPowerClockControl ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bridge extention",                                             mprintf("0x%02X", capability->bridgeExtention.value8),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bridge extention: Switch secondary bus power state on D3 HOT", capability->bridgeExtention.b2B3ForD3Hot         ? "B2"  : "B3", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bridge extention: Enable bus power/clock control",             capability->bridgeExtention.busPowerClockControl ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data", mprintf("%u", capability->data), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
         // Ignore CppAlignmentVerifier [END]
     }
 
@@ -1039,7 +1048,7 @@ NgosStatus DeviceManagerPci::initPciPowerManagementInterfaceCapability(PciPowerM
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPortCapability(PciAcceleratedGraphicsPortCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1102,7 +1111,7 @@ NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPortCapability(PciAcceler
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDataCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1134,7 +1143,7 @@ NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciSlotNumberingCapability(PciSlotNumberingCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1166,7 +1175,7 @@ NgosStatus DeviceManagerPci::initPciSlotNumberingCapability(PciSlotNumberingCapa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsCapability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsCapability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1211,7 +1220,7 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsCapability(PciMessa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts32Capability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts32Capability(PciMessageSignaledInterruptsCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1252,7 +1261,7 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts32Capability(PciMes
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64Capability(PciMessageSignaledInterrupts64Capability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1295,7 +1304,7 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64Capability(PciMes
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64PerVectorMaskingCapability(PciMessageSignaledInterrupts64PerVectorMaskingCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1342,7 +1351,7 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterrupts64PerVectorMaskingC
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1359,7 +1368,7 @@ NgosStatus DeviceManagerPci::initPciHotSwapCapability(PciHotSwapCapability *capa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry, PciHeaderType headerType)
+NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, headerType = %u", capability, deviceManagerEntry, headerType));
 
@@ -1391,7 +1400,7 @@ NgosStatus DeviceManagerPci::initPciExtendedCapability(PciCapabilityHeader *capa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExtendedDeviceCapability(PciExtendedDeviceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1453,7 +1462,7 @@ NgosStatus DeviceManagerPci::initPciExtendedDeviceCapability(PciExtendedDeviceCa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExtendedBridgeCapability(PciExtendedBridgeCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1523,7 +1532,7 @@ NgosStatus DeviceManagerPci::initPciExtendedBridgeCapability(PciExtendedBridgeCa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciHyperTransportCapability(PciHyperTransportCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1549,7 +1558,7 @@ NgosStatus DeviceManagerPci::initPciHyperTransportCapability(PciHyperTransportCa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciHyperTransportSlavePrimaryInterfaceBlockCapability(PciHyperTransportSlavePrimaryInterfaceBlockCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1732,7 +1741,7 @@ NgosStatus DeviceManagerPci::initPciHyperTransportSlavePrimaryInterfaceBlockCapa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciHyperTransportHostSecondaryInterfaceBlockCapability(PciHyperTransportHostSecondaryInterfaceBlockCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1859,7 +1868,7 @@ NgosStatus DeviceManagerPci::initPciHyperTransportHostSecondaryInterfaceBlockCap
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1885,7 +1894,7 @@ NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capabi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciDebugPortCapability(PciDebugPortCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1902,7 +1911,7 @@ NgosStatus DeviceManagerPci::initPciDebugPortCapability(PciDebugPortCapability *
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciCentralResourceControlCapability(PciCentralResourceControlCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1919,7 +1928,7 @@ NgosStatus DeviceManagerPci::initPciCentralResourceControlCapability(PciCentralR
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciHotPlugCapability(PciHotPlugCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1936,7 +1945,7 @@ NgosStatus DeviceManagerPci::initPciHotPlugCapability(PciHotPlugCapability *capa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPort8xCapability(PciAcceleratedGraphicsPort8xCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1953,7 +1962,7 @@ NgosStatus DeviceManagerPci::initPciAcceleratedGraphicsPort8xCapability(PciAccel
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -1970,7 +1979,7 @@ NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapabi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntry *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, pci, bus, device, function));
 
@@ -2510,7 +2519,7 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsExtendedCapability(PciMessageSignaledInterruptsExtendedCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -2547,7 +2556,7 @@ NgosStatus DeviceManagerPci::initPciMessageSignaledInterruptsExtendedCapability(
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExtendedConfigurationSpace &configurationSpace, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExtendedConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p", deviceManagerEntry));
 
@@ -2580,7 +2589,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExte
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p", capability, deviceManagerEntry));
 
@@ -2638,7 +2647,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -2752,7 +2761,7 @@ NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciE
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -2869,7 +2878,7 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -2900,7 +2909,7 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -2952,7 +2961,7 @@ NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPo
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3075,7 +3084,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3145,7 +3154,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapabil
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3176,7 +3185,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAsso
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3218,7 +3227,7 @@ NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHe
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3255,7 +3264,7 @@ NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVe
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3334,7 +3343,7 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3381,7 +3390,7 @@ NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3442,7 +3451,7 @@ NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMultica
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3493,7 +3502,7 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3558,7 +3567,7 @@ NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciE
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3627,7 +3636,7 @@ NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphR
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntry *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 

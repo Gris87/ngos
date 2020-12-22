@@ -13,7 +13,7 @@ DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, u16 handle, Devi
 {
     UEFI_LT((" | type = %u, handle = %u, image = %u, name = 0x%p", type, handle, image, name));
 
-    UEFI_ASSERT(name,  "name is null");
+    UEFI_ASSERT(name != nullptr, "name is null");
 }
 
 DeviceManagerEntryDMI::~DeviceManagerEntryDMI()

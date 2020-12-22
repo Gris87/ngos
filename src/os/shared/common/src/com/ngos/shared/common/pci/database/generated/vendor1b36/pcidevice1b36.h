@@ -31,6 +31,7 @@ enum class PciDevice1B36: u16 // Ignore CppEnumVerifier
     DEVICE_000B = 0x000B,
     DEVICE_000C = 0x000C,
     DEVICE_000D = 0x000D,
+    DEVICE_0010 = 0x0010,
     DEVICE_0100 = 0x0100
 };
 
@@ -58,6 +59,7 @@ inline const char8* enumToString(PciDevice1B36 device) // TEST: NO
         case PciDevice1B36::DEVICE_000B: return "DEVICE_000B";
         case PciDevice1B36::DEVICE_000C: return "DEVICE_000C";
         case PciDevice1B36::DEVICE_000D: return "DEVICE_000D";
+        case PciDevice1B36::DEVICE_0010: return "DEVICE_0010";
         case PciDevice1B36::DEVICE_0100: return "DEVICE_0100";
 
         default: return "UNKNOWN";
@@ -102,6 +104,7 @@ inline const char8* enumToHumanString(PciDevice1B36 device) // TEST: NO
         case PciDevice1B36::DEVICE_000B: return "QEMU PCIe Expander bridge";
         case PciDevice1B36::DEVICE_000C: return "QEMU PCIe Root port";
         case PciDevice1B36::DEVICE_000D: return "QEMU XHCI Host Controller";
+        case PciDevice1B36::DEVICE_0010: return "QEMU NVM Express Controller";
         case PciDevice1B36::DEVICE_0100: return "QXL paravirtual graphic card";
 
         default: return "Unknown device";
@@ -131,6 +134,7 @@ inline const char8* enumToHumanString(PciDevice1B36 device, u16 subsystemVendorI
         case PciDevice1B36::DEVICE_000B: return "Unknown device";
         case PciDevice1B36::DEVICE_000C: return "Unknown device";
         case PciDevice1B36::DEVICE_000D: return "Unknown device";
+        case PciDevice1B36::DEVICE_0010: return "Unknown device";
         case PciDevice1B36::DEVICE_0100: return enumToHumanString((PciSubDevice1B360100)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

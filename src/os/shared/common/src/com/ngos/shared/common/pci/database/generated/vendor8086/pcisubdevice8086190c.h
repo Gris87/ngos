@@ -13,7 +13,8 @@
 enum class PciSubDevice8086190C: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_102806D6 = 0x102806D6
+    SUBDEVICE_102806D6 = 0x102806D6,
+    SUBDEVICE_102806E6 = 0x102806E6
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice8086190C subDevice) // TEST: NO
     {
         case PciSubDevice8086190C::NONE:               return "NONE";
         case PciSubDevice8086190C::SUBDEVICE_102806D6: return "SUBDEVICE_102806D6";
+        case PciSubDevice8086190C::SUBDEVICE_102806E6: return "SUBDEVICE_102806E6";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice8086190C subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice8086190C::SUBDEVICE_102806D6: return "Latitude 7275 tablet";
+        case PciSubDevice8086190C::SUBDEVICE_102806E6: return "Latitude 11 5175 2-in-1";
 
         default: return "Unknown device";
     }

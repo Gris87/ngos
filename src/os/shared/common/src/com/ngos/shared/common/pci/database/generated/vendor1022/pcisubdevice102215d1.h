@@ -13,7 +13,9 @@
 enum class PciSubDevice102215D1: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_103C8615 = 0x103C8615
+    SUBDEVICE_103C8615 = 0x103C8615,
+    SUBDEVICE_1043876B = 0x1043876B,
+    SUBDEVICE_EA50CE19 = 0xEA50CE19
 };
 
 
@@ -28,6 +30,8 @@ inline const char8* enumToString(PciSubDevice102215D1 subDevice) // TEST: NO
     {
         case PciSubDevice102215D1::NONE:               return "NONE";
         case PciSubDevice102215D1::SUBDEVICE_103C8615: return "SUBDEVICE_103C8615";
+        case PciSubDevice102215D1::SUBDEVICE_1043876B: return "SUBDEVICE_1043876B";
+        case PciSubDevice102215D1::SUBDEVICE_EA50CE19: return "SUBDEVICE_EA50CE19";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +63,8 @@ inline const char8* enumToHumanString(PciSubDevice102215D1 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice102215D1::SUBDEVICE_103C8615: return "Pavilion Laptop 15-cw1xxx";
+        case PciSubDevice102215D1::SUBDEVICE_1043876B: return "PRIME B450M-A Motherboard";
+        case PciSubDevice102215D1::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 
         default: return "Unknown device";
     }

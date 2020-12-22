@@ -16,6 +16,7 @@ enum class PciSubDevice80868C22: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C1909 = 0x103C1909,
     SUBDEVICE_103C1998 = 0x103C1998,
     SUBDEVICE_17AA220E = 0x17AA220E,
+    SUBDEVICE_17AA3098 = 0x17AA3098,
     SUBDEVICE_17AA309F = 0x17AA309F
 };
 
@@ -33,6 +34,7 @@ inline const char8* enumToString(PciSubDevice80868C22 subDevice) // TEST: NO
         case PciSubDevice80868C22::SUBDEVICE_103C1909: return "SUBDEVICE_103C1909";
         case PciSubDevice80868C22::SUBDEVICE_103C1998: return "SUBDEVICE_103C1998";
         case PciSubDevice80868C22::SUBDEVICE_17AA220E: return "SUBDEVICE_17AA220E";
+        case PciSubDevice80868C22::SUBDEVICE_17AA3098: return "SUBDEVICE_17AA3098";
         case PciSubDevice80868C22::SUBDEVICE_17AA309F: return "SUBDEVICE_17AA309F";
 
         default: return "UNKNOWN";
@@ -67,6 +69,7 @@ inline const char8* enumToHumanString(PciSubDevice80868C22 subDevice) // TEST: N
         case PciSubDevice80868C22::SUBDEVICE_103C1909: return "ZBook 15";
         case PciSubDevice80868C22::SUBDEVICE_103C1998: return "EliteDesk 800 G1";
         case PciSubDevice80868C22::SUBDEVICE_17AA220E: return "ThinkPad T440p";
+        case PciSubDevice80868C22::SUBDEVICE_17AA3098: return "ThinkCentre E73";
         case PciSubDevice80868C22::SUBDEVICE_17AA309F: return "ThinkCentre M83";
 
         default: return "Unknown device";
