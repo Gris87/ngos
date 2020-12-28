@@ -344,10 +344,15 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
                             {
                                 deviceManagerEntry = new DeviceManagerEntryPCI(nullptr, DeviceManagerImage::PCI, mprintf("PCI(%d/%d/%d)", i, j, k));
 
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",  mprintf("%u", pci->segmentNumber), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",      mprintf("%u", i),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",   mprintf("%u", j),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-                                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function", mprintf("%u", k),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+                                // Segment / Bus / Device / Function
+                                {
+                                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Segment",  mprintf("%u", pci->segmentNumber), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Bus",      mprintf("%u", i),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device",   mprintf("%u", j),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Function", mprintf("%u", k),                  DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                                }
 
 
 
@@ -531,13 +536,16 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",  baseClass,                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",    subClass,                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",   interface,                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",      enumToHumanString(configurationSpace.header.vendorId),                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name", enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor ID",   mprintf("0x%04X", configurationSpace.header.vendorId),                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device ID",   mprintf("0x%04X", configurationSpace.header.deviceId),                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Classes, interface, vendor and device name
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base class",  baseClass,                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subclass",    subClass,                                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interface",   interface,                                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",      enumToHumanString(configurationSpace.header.vendorId),                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name", enumToHumanString(configurationSpace.header.vendorId, configurationSpace.header.deviceId), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor ID",   mprintf("0x%04X", configurationSpace.header.vendorId),                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device ID",   mprintf("0x%04X", configurationSpace.header.deviceId),                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
 
 
 
@@ -545,32 +553,41 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                            mprintf("0x%04X", configurationSpace.header.status.value16),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Interrupt status",          configurationSpace.header.status.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Capabilities list",         configurationSpace.header.status.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: 66 MHz capable",            configurationSpace.header.status.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Fast back-to-back capable", configurationSpace.header.status.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Master data parity error",  configurationSpace.header.status.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.header.status.deviceSelectTiming)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Signaled target abort",     configurationSpace.header.status.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Received target abort",     configurationSpace.header.status.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Received master abort",     configurationSpace.header.status.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Signaled system error",     configurationSpace.header.status.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Detected parity error",     configurationSpace.header.status.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Status
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                            mprintf("0x%04X", configurationSpace.header.status.value16),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Interrupt status",          configurationSpace.header.status.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Capabilities list",         configurationSpace.header.status.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: 66 MHz capable",            configurationSpace.header.status.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Fast back-to-back capable", configurationSpace.header.status.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Master data parity error",  configurationSpace.header.status.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.header.status.deviceSelectTiming)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Signaled target abort",     configurationSpace.header.status.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Received target abort",     configurationSpace.header.status.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Received master abort",     configurationSpace.header.status.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Signaled system error",     configurationSpace.header.status.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Detected parity error",     configurationSpace.header.status.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision ID",     mprintf("%u",                     configurationSpace.header.revisionId),                                                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Class codes",     mprintf("0x%02X, 0x%02X, 0x%02X", configurationSpace.header.classCode[2], configurationSpace.header.classCode[1], configurationSpace.header.classCode[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache line size", mprintf("%u",                     configurationSpace.header.cacheLineSize),                                                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency timer",   mprintf("%u",                     configurationSpace.header.latencyTimer),                                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header type",     strdup(enumToFullString((PciHeaderType)configurationSpace.header.headerType.type)),                                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Revision ID",     mprintf("%u",                     configurationSpace.header.revisionId),                                                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Class codes",     mprintf("0x%02X, 0x%02X, 0x%02X", configurationSpace.header.classCode[2], configurationSpace.header.classCode[1], configurationSpace.header.classCode[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Cache line size", mprintf("%u",                     configurationSpace.header.cacheLineSize),                                                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency timer",   mprintf("%u",                     configurationSpace.header.latencyTimer),                                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header type",     strdup(enumToFullString((PciHeaderType)configurationSpace.header.headerType.type)),                                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test",         mprintf("0x%02X", configurationSpace.header.builtInSelfTest.value8),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test capable", configurationSpace.header.builtInSelfTest.capable ? "Yes" : "No",        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test result",  mprintf("%u", configurationSpace.header.builtInSelfTest.completionCode), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Built-in self test
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test",         mprintf("0x%02X", configurationSpace.header.builtInSelfTest.value8),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test capable", configurationSpace.header.builtInSelfTest.capable ? "Yes" : "No",        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Built-in self test result",  mprintf("%u", configurationSpace.header.builtInSelfTest.completionCode), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
         // Ignore CppAlignmentVerifier [END]
     }
 
@@ -632,24 +649,30 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #0", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #1", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #2", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #3", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #4", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[4]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #5", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[5]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Base address register
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #0", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #1", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #2", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #3", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #4", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[4]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #5", mprintf("0x%08X", configurationSpace.device.baseAddressRegisters[5]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card information structure pointer", mprintf("0x%08X", configurationSpace.device.cardInformationStructurePointer), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID",                subsystemVendorID,                                                            DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",                       subsystemID,                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion ROM base address",         mprintf("0x%08X", configurationSpace.device.expansionRomBaseAddress),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer",               mprintf("0x%02X", configurationSpace.device.capabilitiesPointer),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",                     mprintf("%u",     configurationSpace.device.interruptLine),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",                      mprintf("%u",     configurationSpace.device.interruptPin),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum grant",                      mprintf("%u",     configurationSpace.device.minGrant),                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum latency",                    mprintf("%u",     configurationSpace.device.maxLatency),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card information structure pointer", mprintf("0x%08X", configurationSpace.device.cardInformationStructurePointer), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID",                subsystemVendorID,                                                            DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",                       subsystemID,                                                                  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion ROM base address",         mprintf("0x%08X", configurationSpace.device.expansionRomBaseAddress),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer",               mprintf("0x%02X", configurationSpace.device.capabilitiesPointer),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",                     mprintf("%u",     configurationSpace.device.interruptLine),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",                      mprintf("%u",     configurationSpace.device.interruptPin),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Minimum grant",                      mprintf("%u",     configurationSpace.device.minGrant),                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Maximum latency",                    mprintf("%u",     configurationSpace.device.maxLatency),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
         // Ignore CppAlignmentVerifier [END]
     }
 
@@ -713,47 +736,59 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #0", mprintf("0x%08X", configurationSpace.bridge.baseAddressRegisters[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #1", mprintf("0x%08X", configurationSpace.bridge.baseAddressRegisters[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Base address register
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #0", mprintf("0x%08X", configurationSpace.bridge.baseAddressRegisters[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address register #1", mprintf("0x%08X", configurationSpace.bridge.baseAddressRegisters[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Primary bus",             mprintf("%u",     configurationSpace.bridge.primaryBus),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary bus",           mprintf("%u",     configurationSpace.bridge.secondaryBus),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subordinate bus",         mprintf("%u",     configurationSpace.bridge.subordinateBus),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary latency timer", mprintf("%u",     configurationSpace.bridge.secondaryLatencyTimer), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base",                 mprintf("0x%02X", configurationSpace.bridge.ioBase),                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit",                mprintf("0x%02X", configurationSpace.bridge.ioLimit),               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Primary bus",             mprintf("%u",     configurationSpace.bridge.primaryBus),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary bus",           mprintf("%u",     configurationSpace.bridge.secondaryBus),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subordinate bus",         mprintf("%u",     configurationSpace.bridge.subordinateBus),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary latency timer", mprintf("%u",     configurationSpace.bridge.secondaryLatencyTimer), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base",                 mprintf("0x%02X", configurationSpace.bridge.ioBase),                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit",                mprintf("0x%02X", configurationSpace.bridge.ioLimit),               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status",                            mprintf("0x%04X", configurationSpace.bridge.secondaryStatus.value16),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Interrupt status",          configurationSpace.bridge.secondaryStatus.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Capabilities list",         configurationSpace.bridge.secondaryStatus.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: 66 MHz capable",            configurationSpace.bridge.secondaryStatus.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Fast back-to-back capable", configurationSpace.bridge.secondaryStatus.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Master data parity error",  configurationSpace.bridge.secondaryStatus.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.bridge.secondaryStatus.deviceSelectTiming)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled target abort",     configurationSpace.bridge.secondaryStatus.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received target abort",     configurationSpace.bridge.secondaryStatus.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received master abort",     configurationSpace.bridge.secondaryStatus.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled system error",     configurationSpace.bridge.secondaryStatus.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Detected parity error",     configurationSpace.bridge.secondaryStatus.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Secondary status
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status",                            mprintf("0x%04X", configurationSpace.bridge.secondaryStatus.value16),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Interrupt status",          configurationSpace.bridge.secondaryStatus.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Capabilities list",         configurationSpace.bridge.secondaryStatus.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: 66 MHz capable",            configurationSpace.bridge.secondaryStatus.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Fast back-to-back capable", configurationSpace.bridge.secondaryStatus.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Master data parity error",  configurationSpace.bridge.secondaryStatus.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.bridge.secondaryStatus.deviceSelectTiming)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled target abort",     configurationSpace.bridge.secondaryStatus.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received target abort",     configurationSpace.bridge.secondaryStatus.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received master abort",     configurationSpace.bridge.secondaryStatus.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled system error",     configurationSpace.bridge.secondaryStatus.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Detected parity error",     configurationSpace.bridge.secondaryStatus.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base",                 mprintf("0x%04X", configurationSpace.bridge.memoryBase),               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit",                mprintf("0x%04X", configurationSpace.bridge.memoryLimit),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable memory base",    mprintf("0x%04X", configurationSpace.bridge.prefetchableMemoryBase),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable memory limit",   mprintf("0x%04X", configurationSpace.bridge.prefetchableMemoryLimit),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable base upper 32",  mprintf("0x%08X", configurationSpace.bridge.prefetchableBaseUpper32),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable limit upper 32", mprintf("0x%08X", configurationSpace.bridge.prefetchableLimitUpper32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base upper 16",            mprintf("0x%04X", configurationSpace.bridge.ioBaseUpper16),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit upper 16",           mprintf("0x%04X", configurationSpace.bridge.ioLimitUpper16),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer",        mprintf("0x%02X", configurationSpace.bridge.capabilitiesPointer),      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion ROM base address",  mprintf("0x%08X", configurationSpace.bridge.expansionRomBaseAddress),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",              mprintf("%u",     configurationSpace.bridge.interruptLine),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",               mprintf("%u",     configurationSpace.bridge.interruptPin),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base",                 mprintf("0x%04X", configurationSpace.bridge.memoryBase),               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit",                mprintf("0x%04X", configurationSpace.bridge.memoryLimit),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable memory base",    mprintf("0x%04X", configurationSpace.bridge.prefetchableMemoryBase),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable memory limit",   mprintf("0x%04X", configurationSpace.bridge.prefetchableMemoryLimit),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable base upper 32",  mprintf("0x%08X", configurationSpace.bridge.prefetchableBaseUpper32),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Prefetchable limit upper 32", mprintf("0x%08X", configurationSpace.bridge.prefetchableLimitUpper32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base upper 16",            mprintf("0x%04X", configurationSpace.bridge.ioBaseUpper16),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit upper 16",           mprintf("0x%04X", configurationSpace.bridge.ioLimitUpper16),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer",        mprintf("0x%02X", configurationSpace.bridge.capabilitiesPointer),      DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion ROM base address",  mprintf("0x%08X", configurationSpace.bridge.expansionRomBaseAddress),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",              mprintf("%u",     configurationSpace.bridge.interruptLine),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",               mprintf("%u",     configurationSpace.bridge.interruptPin),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
@@ -829,40 +864,49 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus socket",      mprintf("0x%08X", configurationSpace.cardBus.cardBusSocket),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer", mprintf("0x%02X", configurationSpace.cardBus.capabilitiesPointer),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status",     mprintf("0x%04X", configurationSpace.cardBus.secondaryStatus.value16), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus socket",      mprintf("0x%08X", configurationSpace.cardBus.cardBusSocket),       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capabilities pointer", mprintf("0x%02X", configurationSpace.cardBus.capabilitiesPointer), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Interrupt status",          configurationSpace.cardBus.secondaryStatus.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Capabilities list",         configurationSpace.cardBus.secondaryStatus.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: 66 MHz capable",            configurationSpace.cardBus.secondaryStatus.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Fast back-to-back capable", configurationSpace.cardBus.secondaryStatus.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Master data parity error",  configurationSpace.cardBus.secondaryStatus.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.cardBus.secondaryStatus.deviceSelectTiming)), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled target abort",     configurationSpace.cardBus.secondaryStatus.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received target abort",     configurationSpace.cardBus.secondaryStatus.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received master abort",     configurationSpace.cardBus.secondaryStatus.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled system error",     configurationSpace.cardBus.secondaryStatus.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Detected parity error",     configurationSpace.cardBus.secondaryStatus.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        // Secondary status
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status",                            mprintf("0x%04X", configurationSpace.cardBus.secondaryStatus.value16),                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Interrupt status",          configurationSpace.cardBus.secondaryStatus.interruptStatus       ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Capabilities list",         configurationSpace.cardBus.secondaryStatus.capabilitiesList      ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: 66 MHz capable",            configurationSpace.cardBus.secondaryStatus.support64MHz          ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Fast back-to-back capable", configurationSpace.cardBus.secondaryStatus.fastBackToBackCapable ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Master data parity error",  configurationSpace.cardBus.secondaryStatus.masterDataParityError ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Device select timing",      strdup(enumToFullString((PciDeviceSelectTiming)configurationSpace.cardBus.secondaryStatus.deviceSelectTiming)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled target abort",     configurationSpace.cardBus.secondaryStatus.signaledTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received target abort",     configurationSpace.cardBus.secondaryStatus.receivedTargetAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Received master abort",     configurationSpace.cardBus.secondaryStatus.receivedMasterAbort   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Signaled system error",     configurationSpace.cardBus.secondaryStatus.signaledSystemError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Secondary status: Detected parity error",     configurationSpace.cardBus.secondaryStatus.detectedParityError   ? "Yes" : "No",                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI bus number",         mprintf("%u",     configurationSpace.cardBus.pciBusNumber),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus number",        mprintf("%u",     configurationSpace.cardBus.cardBusBusNumber),     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subordinate bus number", mprintf("%u",     configurationSpace.cardBus.subordinateBusNumber), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus latency timer", mprintf("%u",     configurationSpace.cardBus.cardBusLatencyTimer),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base0",           mprintf("0x%08X", configurationSpace.cardBus.memoryBase0),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit0",          mprintf("0x%08X", configurationSpace.cardBus.memoryLimit0),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base1",           mprintf("0x%08X", configurationSpace.cardBus.memoryBase1),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit1",          mprintf("0x%08X", configurationSpace.cardBus.memoryLimit1),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base0",               mprintf("0x%08X", configurationSpace.cardBus.ioBase0),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit0",              mprintf("0x%08X", configurationSpace.cardBus.ioLimit0),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base1",               mprintf("0x%08X", configurationSpace.cardBus.ioBase1),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit1",              mprintf("0x%08X", configurationSpace.cardBus.ioLimit1),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",         mprintf("%u",     configurationSpace.cardBus.interruptLine),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",          mprintf("%u",     configurationSpace.cardBus.interruptPin),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PCI bus number",         mprintf("%u",     configurationSpace.cardBus.pciBusNumber),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus number",        mprintf("%u",     configurationSpace.cardBus.cardBusBusNumber),     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subordinate bus number", mprintf("%u",     configurationSpace.cardBus.subordinateBusNumber), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Card bus latency timer", mprintf("%u",     configurationSpace.cardBus.cardBusLatencyTimer),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base0",           mprintf("0x%08X", configurationSpace.cardBus.memoryBase0),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit0",          mprintf("0x%08X", configurationSpace.cardBus.memoryLimit0),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory base1",           mprintf("0x%08X", configurationSpace.cardBus.memoryBase1),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Memory limit1",          mprintf("0x%08X", configurationSpace.cardBus.memoryLimit1),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base0",               mprintf("0x%08X", configurationSpace.cardBus.ioBase0),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit0",              mprintf("0x%08X", configurationSpace.cardBus.ioLimit0),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO base1",               mprintf("0x%08X", configurationSpace.cardBus.ioBase1),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("IO limit1",              mprintf("0x%08X", configurationSpace.cardBus.ioLimit1),             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt line",         mprintf("%u",     configurationSpace.cardBus.interruptLine),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Interrupt pin",          mprintf("%u",     configurationSpace.cardBus.interruptPin),         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
@@ -870,9 +914,12 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID", subsystemVendorID,                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",        subsystemID,                                DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Legacy base",         mprintf("0x%08X", cardBusData->legacyBase), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem vendor ID", subsystemVendorID,                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Subsystem ID",        subsystemID,                                DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Legacy base",         mprintf("0x%08X", cardBusData->legacyBase), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
         // Ignore CppAlignmentVerifier [END]
     }
 
@@ -1159,6 +1206,10 @@ NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDa
 
 
 
+    // TODO: Need to decode VPD data
+
+
+
     // Validation
     {
         UEFI_LVVV(("capability->address.value    = 0x%04X", capability->address.value));
@@ -1171,10 +1222,17 @@ NgosStatus DeviceManagerPci::initPciVitalProductDataCapability(PciVitalProductDa
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address union", mprintf("0x%04X", capability->address.value16), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Address",       mprintf("0x%04X", capability->address.value),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Finished",      capability->address.finished ? "Yes" : "No",    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VPD - Data",          mprintf("0x%08X", capability->data),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Vital product data");
+
+
+
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address union", mprintf("0x%04X", capability->address.value16), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Address",       mprintf("0x%04X", capability->address.value),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Finished",      capability->address.finished ? "Yes" : "No",    DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data",          mprintf("0x%08X", capability->data),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -1196,17 +1254,27 @@ NgosStatus DeviceManagerPci::initPciSlotNumberingCapability(PciSlotNumberingCapa
         UEFI_LVVV(("capability->expansionSlot.expansionSlotsProvided = 0x%02X", capability->expansionSlot.expansionSlotsProvided));
         UEFI_LVVV(("capability->expansionSlot.firstInChassis         = %u",     capability->expansionSlot.firstInChassis));
         UEFI_LVVV(("capability->expansionSlot.value8                 = 0x%02X", capability->expansionSlot.value8));
-        UEFI_LVVV(("capability->chassisNumber                        = 0x%02X", capability->chassisNumber));
+        UEFI_LVVV(("capability->chassisNumber                        = %u",     capability->chassisNumber));
     }
 
 
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Expansion slot",           mprintf("0x%02X", capability->expansionSlot.value8),                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Expansion slots provided", mprintf("0x%02X", capability->expansionSlot.expansionSlotsProvided), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - First in chassis",         capability->expansionSlot.firstInChassis ? "Yes" : "No",             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("SLOT ID - Chassis number",           mprintf("0x%02X", capability->chassisNumber),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Slot ID");
+
+
+
+        // Expansion slot
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion slot",           mprintf("0x%02X", capability->expansionSlot.value8),                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Expansion slots provided", mprintf("0x%02X", capability->expansionSlot.expansionSlotsProvided), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("First in chassis",         capability->expansionSlot.firstInChassis ? "Yes" : "No",             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Chassis number", mprintf("%u", capability->chassisNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }
 
 
