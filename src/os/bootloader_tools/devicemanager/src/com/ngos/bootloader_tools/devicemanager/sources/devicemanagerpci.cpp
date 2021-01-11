@@ -2132,7 +2132,11 @@ NgosStatus DeviceManagerPci::initPciVendorCapability(PciVendorCapability *capabi
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor - Length", mprintf("%u", capability->length), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Vendor specific");
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Length", mprintf("%u", capability->length), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }
 
 
