@@ -282,6 +282,7 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_1805 = 0x1805,
     DEVICE_1806 = 0x1806,
     DEVICE_1807 = 0x1807,
+    DEVICE_2711 = 0x2711,
     DEVICE_3352 = 0x3352,
     DEVICE_3360 = 0x3360,
     DEVICE_4210 = 0x4210,
@@ -618,6 +619,7 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_1805: return "DEVICE_1805";
         case PciDevice14E4::DEVICE_1806: return "DEVICE_1806";
         case PciDevice14E4::DEVICE_1807: return "DEVICE_1807";
+        case PciDevice14E4::DEVICE_2711: return "DEVICE_2711";
         case PciDevice14E4::DEVICE_3352: return "DEVICE_3352";
         case PciDevice14E4::DEVICE_3360: return "DEVICE_3360";
         case PciDevice14E4::DEVICE_4210: return "DEVICE_4210";
@@ -971,6 +973,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_1805: return "BCM57508 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_1806: return "BCM5750X NetXtreme-E Ethernet Virtual Function";
         case PciDevice14E4::DEVICE_1807: return "BCM5750X NetXtreme-E RDMA Virtual Function";
+        case PciDevice14E4::DEVICE_2711: return "BCM2711 PCIe Bridge";
         case PciDevice14E4::DEVICE_3352: return "BCM3352";
         case PciDevice14E4::DEVICE_3360: return "BCM3360";
         case PciDevice14E4::DEVICE_4210: return "BCM4210 iLine10 HomePNA 2.0";
@@ -1309,6 +1312,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_1805: return "Unknown device";
         case PciDevice14E4::DEVICE_1806: return "Unknown device";
         case PciDevice14E4::DEVICE_1807: return "Unknown device";
+        case PciDevice14E4::DEVICE_2711: return "Unknown device";
         case PciDevice14E4::DEVICE_3352: return "Unknown device";
         case PciDevice14E4::DEVICE_3360: return "Unknown device";
         case PciDevice14E4::DEVICE_4210: return "Unknown device";

@@ -23,7 +23,8 @@ enum class PciSubDevice10330035: u32 // Ignore CppEnumVerifier
     SUBDEVICE_17990001 = 0x17990001,
     SUBDEVICE_1931000A = 0x1931000A,
     SUBDEVICE_1931000B = 0x1931000B,
-    SUBDEVICE_807D0035 = 0x807D0035
+    SUBDEVICE_807D0035 = 0x807D0035,
+    SUBDEVICE_80864D44 = 0x80864D44
 };
 
 
@@ -48,6 +49,7 @@ inline const char8* enumToString(PciSubDevice10330035 subDevice) // TEST: NO
         case PciSubDevice10330035::SUBDEVICE_1931000A: return "SUBDEVICE_1931000A";
         case PciSubDevice10330035::SUBDEVICE_1931000B: return "SUBDEVICE_1931000B";
         case PciSubDevice10330035::SUBDEVICE_807D0035: return "SUBDEVICE_807D0035";
+        case PciSubDevice10330035::SUBDEVICE_80864D44: return "SUBDEVICE_80864D44";
 
         default: return "UNKNOWN";
     }
@@ -89,6 +91,7 @@ inline const char8* enumToHumanString(PciSubDevice10330035 subDevice) // TEST: N
         case PciSubDevice10330035::SUBDEVICE_1931000A: return "GlobeTrotter Fusion Quad Lite (PPP data)";
         case PciSubDevice10330035::SUBDEVICE_1931000B: return "GlobeTrotter Fusion Quad Lite (GSM data)";
         case PciSubDevice10330035::SUBDEVICE_807D0035: return "PCI-USB2 (OHCI subsystem)";
+        case PciSubDevice10330035::SUBDEVICE_80864D44: return "D850EMV2 motherboard";
 
         default: return "Unknown device";
     }

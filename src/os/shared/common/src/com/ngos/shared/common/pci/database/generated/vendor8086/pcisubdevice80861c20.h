@@ -22,6 +22,7 @@ enum class PciSubDevice80861C20: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1043841B = 0x1043841B,
     SUBDEVICE_17AA21CF = 0x17AA21CF,
     SUBDEVICE_80862008 = 0x80862008,
+    SUBDEVICE_8086200D = 0x8086200D,
     SUBDEVICE_80867270 = 0x80867270
 };
 
@@ -45,6 +46,7 @@ inline const char8* enumToString(PciSubDevice80861C20 subDevice) // TEST: NO
         case PciSubDevice80861C20::SUBDEVICE_1043841B: return "SUBDEVICE_1043841B";
         case PciSubDevice80861C20::SUBDEVICE_17AA21CF: return "SUBDEVICE_17AA21CF";
         case PciSubDevice80861C20::SUBDEVICE_80862008: return "SUBDEVICE_80862008";
+        case PciSubDevice80861C20::SUBDEVICE_8086200D: return "SUBDEVICE_8086200D";
         case PciSubDevice80861C20::SUBDEVICE_80867270: return "SUBDEVICE_80867270";
 
         default: return "UNKNOWN";
@@ -85,6 +87,7 @@ inline const char8* enumToHumanString(PciSubDevice80861C20 subDevice) // TEST: N
         case PciSubDevice80861C20::SUBDEVICE_1043841B: return "P8H67 Series Motherboard";
         case PciSubDevice80861C20::SUBDEVICE_17AA21CF: return "ThinkPad T520";
         case PciSubDevice80861C20::SUBDEVICE_80862008: return "DQ67SW board";
+        case PciSubDevice80861C20::SUBDEVICE_8086200D: return "DH61CR motherboard";
         case PciSubDevice80861C20::SUBDEVICE_80867270: return "Apple MacBookPro8, 2 [Core i7, 15\", 2011]";
 
         default: return "Unknown device";

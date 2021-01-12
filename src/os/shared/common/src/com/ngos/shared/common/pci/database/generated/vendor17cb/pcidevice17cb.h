@@ -24,7 +24,8 @@ enum class PciDevice17CB: u16 // Ignore CppEnumVerifier
     DEVICE_0302 = 0x0302,
     DEVICE_0400 = 0x0400,
     DEVICE_0401 = 0x0401,
-    DEVICE_1000 = 0x1000
+    DEVICE_1000 = 0x1000,
+    DEVICE_1101 = 0x1101
 };
 
 
@@ -48,6 +49,7 @@ inline const char8* enumToString(PciDevice17CB device) // TEST: NO
         case PciDevice17CB::DEVICE_0400: return "DEVICE_0400";
         case PciDevice17CB::DEVICE_0401: return "DEVICE_0401";
         case PciDevice17CB::DEVICE_1000: return "DEVICE_1000";
+        case PciDevice17CB::DEVICE_1101: return "DEVICE_1101";
 
         default: return "UNKNOWN";
     }
@@ -88,6 +90,7 @@ inline const char8* enumToHumanString(PciDevice17CB device) // TEST: NO
         case PciDevice17CB::DEVICE_0400: return "Datacenter Technologies QDF2432 PCI Express Root Port";
         case PciDevice17CB::DEVICE_0401: return "Datacenter Technologies QDF2400 PCI Express Root Port";
         case PciDevice17CB::DEVICE_1000: return "QCS405 PCIe Root Complex";
+        case PciDevice17CB::DEVICE_1101: return "QCA6390 Wireless Network Adapter [AX500-DBS (2x2)]";
 
         default: return "Unknown device";
     }
@@ -113,6 +116,7 @@ inline const char8* enumToHumanString(PciDevice17CB device, u16 subsystemVendorI
         case PciDevice17CB::DEVICE_0400: return "Unknown device";
         case PciDevice17CB::DEVICE_0401: return "Unknown device";
         case PciDevice17CB::DEVICE_1000: return "Unknown device";
+        case PciDevice17CB::DEVICE_1101: return "Unknown device";
 
         default: return "Unknown device";
     }

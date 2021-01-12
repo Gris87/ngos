@@ -21,6 +21,7 @@ enum class PciDevice1B96: u16 // Ignore CppEnumVerifier
     DEVICE_2402 = 0x2402,
     DEVICE_2404 = 0x2404,
     DEVICE_2500 = 0x2500,
+    DEVICE_2600 = 0x2600,
     DEVICE_3714 = 0x3714,
     DEVICE_3734 = 0x3734
 };
@@ -44,6 +45,7 @@ inline const char8* enumToString(PciDevice1B96 device) // TEST: NO
         case PciDevice1B96::DEVICE_2402: return "DEVICE_2402";
         case PciDevice1B96::DEVICE_2404: return "DEVICE_2404";
         case PciDevice1B96::DEVICE_2500: return "DEVICE_2500";
+        case PciDevice1B96::DEVICE_2600: return "DEVICE_2600";
         case PciDevice1B96::DEVICE_3714: return "DEVICE_3714";
         case PciDevice1B96::DEVICE_3734: return "DEVICE_3734";
 
@@ -84,6 +86,7 @@ inline const char8* enumToHumanString(PciDevice1B96 device) // TEST: NO
         case PciDevice1B96::DEVICE_2402: return "Ultrastar DC SN640 NVMe SSD";
         case PciDevice1B96::DEVICE_2404: return "Ultrastar DC SN640 NVMe SSD";
         case PciDevice1B96::DEVICE_2500: return "Ultrastar DC SN840 NVMe SSD";
+        case PciDevice1B96::DEVICE_2600: return "Ultrastar DC ZN540 ZNS NVMe SSD";
         case PciDevice1B96::DEVICE_3714: return "PC SN730 NVMe SSD";
         case PciDevice1B96::DEVICE_3734: return "PC SN730 NVMe SSD";
 

@@ -65,7 +65,7 @@ inline const char8* enumToHumanString(PciSubDevice100215DD subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice100215DD::SUBDEVICE_103C83C6: return "Radeon Vega 8 Mobile";
-        case PciSubDevice100215DD::SUBDEVICE_1043876B: return "PRIME B450M-A Motherboard";
+        case PciSubDevice100215DD::SUBDEVICE_1043876B: return "PRIME Motherboard";
         case PciSubDevice100215DD::SUBDEVICE_1458D000: return "Radeon RX Vega 11";
         case PciSubDevice100215DD::SUBDEVICE_EA50CC10: return "RXi2-BP";
 

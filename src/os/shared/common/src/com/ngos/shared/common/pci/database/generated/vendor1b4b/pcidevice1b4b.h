@@ -31,6 +31,7 @@ enum class PciDevice1B4B: u16 // Ignore CppEnumVerifier
     DEVICE_9192 = 0x9192,
     DEVICE_91A0 = 0x91A0,
     DEVICE_91A4 = 0x91A4,
+    DEVICE_9215 = 0x9215,
     DEVICE_9220 = 0x9220,
     DEVICE_9230 = 0x9230,
     DEVICE_9235 = 0x9235,
@@ -64,6 +65,7 @@ inline const char8* enumToString(PciDevice1B4B device) // TEST: NO
         case PciDevice1B4B::DEVICE_9192: return "DEVICE_9192";
         case PciDevice1B4B::DEVICE_91A0: return "DEVICE_91A0";
         case PciDevice1B4B::DEVICE_91A4: return "DEVICE_91A4";
+        case PciDevice1B4B::DEVICE_9215: return "DEVICE_9215";
         case PciDevice1B4B::DEVICE_9220: return "DEVICE_9220";
         case PciDevice1B4B::DEVICE_9230: return "DEVICE_9230";
         case PciDevice1B4B::DEVICE_9235: return "DEVICE_9235";
@@ -114,8 +116,9 @@ inline const char8* enumToHumanString(PciDevice1B4B device) // TEST: NO
         case PciDevice1B4B::DEVICE_9192: return "88SE9172 SATA III 6Gb/s RAID Controller";
         case PciDevice1B4B::DEVICE_91A0: return "88SE912x SATA 6Gb/s Controller [IDE mode]";
         case PciDevice1B4B::DEVICE_91A4: return "88SE912x IDE Controller";
+        case PciDevice1B4B::DEVICE_9215: return "88SE9215 PCIe 2.0 x1 4-port SATA 6 Gb/s Controller";
         case PciDevice1B4B::DEVICE_9220: return "88SE9220 PCIe 2.0 x2 2-port SATA 6 Gb/s RAID Controller";
-        case PciDevice1B4B::DEVICE_9230: return "88SE9230 PCIe SATA 6Gb/s Controller";
+        case PciDevice1B4B::DEVICE_9230: return "88SE9230 PCIe 2.0 x2 4-port SATA 6 Gb/s RAID Controller";
         case PciDevice1B4B::DEVICE_9235: return "88SE9235 PCIe 2.0 x2 4-port SATA 6 Gb/s Controller";
         case PciDevice1B4B::DEVICE_9445: return "88SE9445 PCIe 2.0 x4 4-Port SAS/SATA 6 Gbps RAID Controller";
         case PciDevice1B4B::DEVICE_9480: return "88SE9480 SAS/SATA 6Gb/s RAID controller";
@@ -149,6 +152,7 @@ inline const char8* enumToHumanString(PciDevice1B4B device, u16 subsystemVendorI
         case PciDevice1B4B::DEVICE_9192: return "Unknown device";
         case PciDevice1B4B::DEVICE_91A0: return "Unknown device";
         case PciDevice1B4B::DEVICE_91A4: return "Unknown device";
+        case PciDevice1B4B::DEVICE_9215: return "Unknown device";
         case PciDevice1B4B::DEVICE_9220: return "Unknown device";
         case PciDevice1B4B::DEVICE_9230: return enumToHumanString((PciSubDevice1B4B9230)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B4B::DEVICE_9235: return "Unknown device";

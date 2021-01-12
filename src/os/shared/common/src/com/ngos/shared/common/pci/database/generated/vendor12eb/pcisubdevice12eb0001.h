@@ -13,6 +13,7 @@
 enum class PciSubDevice12EB0001: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_00000300 = 0x00000300,
     SUBDEVICE_104D8036 = 0x104D8036,
     SUBDEVICE_10922000 = 0x10922000,
     SUBDEVICE_10922100 = 0x10922100,
@@ -35,6 +36,7 @@ inline const char8* enumToString(PciSubDevice12EB0001 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice12EB0001::NONE:               return "NONE";
+        case PciSubDevice12EB0001::SUBDEVICE_00000300: return "SUBDEVICE_00000300";
         case PciSubDevice12EB0001::SUBDEVICE_104D8036: return "SUBDEVICE_104D8036";
         case PciSubDevice12EB0001::SUBDEVICE_10922000: return "SUBDEVICE_10922000";
         case PciSubDevice12EB0001::SUBDEVICE_10922100: return "SUBDEVICE_10922100";
@@ -74,12 +76,13 @@ inline const char8* enumToHumanString(PciSubDevice12EB0001 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice12EB0001::SUBDEVICE_00000300: return "Terasound A3D PCI";
         case PciSubDevice12EB0001::SUBDEVICE_104D8036: return "AU8820 Vortex Digital Audio Processor";
         case PciSubDevice12EB0001::SUBDEVICE_10922000: return "Sonic Impact A3D";
         case PciSubDevice12EB0001::SUBDEVICE_10922100: return "Sonic Impact A3D";
         case PciSubDevice12EB0001::SUBDEVICE_10922110: return "Sonic Impact A3D";
         case PciSubDevice12EB0001::SUBDEVICE_10922200: return "Sonic Impact A3D";
-        case PciSubDevice12EB0001::SUBDEVICE_122D1002: return "AU8820 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0001::SUBDEVICE_122D1002: return "SC 338-A3D";
         case PciSubDevice12EB0001::SUBDEVICE_12EB0001: return "AU8820 Vortex Digital Audio Processor";
         case PciSubDevice12EB0001::SUBDEVICE_50533355: return "Montego";
         case PciSubDevice12EB0001::SUBDEVICE_50B21111: return "XLerate";

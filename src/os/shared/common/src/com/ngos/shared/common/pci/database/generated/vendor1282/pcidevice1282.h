@@ -68,9 +68,9 @@ inline const char8* enumToHumanString(PciDevice1282 device) // TEST: NO
     switch (device)
     {
         case PciDevice1282::DEVICE_6585: return "DM562P V90 Modem";
-        case PciDevice1282::DEVICE_9009: return "Ethernet 100/10 MBit";
+        case PciDevice1282::DEVICE_9009: return "DM9009 Ethernet Controller";
         case PciDevice1282::DEVICE_9100: return "21x4x DEC-Tulip compatible 10/100 Ethernet";
-        case PciDevice1282::DEVICE_9102: return "21x4x DEC-Tulip compatible 10/100 Ethernet";
+        case PciDevice1282::DEVICE_9102: return "DM9102 Fast Ethernet Controller";
         case PciDevice1282::DEVICE_9132: return "Ethernet 100/10 MBit";
 
         default: return "Unknown device";

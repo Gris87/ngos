@@ -9,6 +9,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838211.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838212.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838213.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838892.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
 
@@ -119,7 +120,7 @@ inline const char8* enumToHumanString(PciDevice1283 device, u16 subsystemVendorI
         case PciDevice1283::DEVICE_8872: return "Unknown device";
         case PciDevice1283::DEVICE_8888: return "Unknown device";
         case PciDevice1283::DEVICE_8889: return "Unknown device";
-        case PciDevice1283::DEVICE_8892: return "Unknown device";
+        case PciDevice1283::DEVICE_8892: return enumToHumanString((PciSubDevice12838892)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1283::DEVICE_8893: return "Unknown device";
         case PciDevice1283::DEVICE_E886: return "Unknown device";
 

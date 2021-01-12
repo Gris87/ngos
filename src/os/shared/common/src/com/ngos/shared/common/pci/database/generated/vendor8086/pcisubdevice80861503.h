@@ -14,7 +14,8 @@ enum class PciSubDevice80861503: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_1043849C = 0x1043849C,
-    SUBDEVICE_10CF161C = 0x10CF161C
+    SUBDEVICE_10CF161C = 0x10CF161C,
+    SUBDEVICE_8086200D = 0x8086200D
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice80861503 subDevice) // TEST: NO
         case PciSubDevice80861503::NONE:               return "NONE";
         case PciSubDevice80861503::SUBDEVICE_1043849C: return "SUBDEVICE_1043849C";
         case PciSubDevice80861503::SUBDEVICE_10CF161C: return "SUBDEVICE_10CF161C";
+        case PciSubDevice80861503::SUBDEVICE_8086200D: return "SUBDEVICE_8086200D";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice80861503 subDevice) // TEST: N
     {
         case PciSubDevice80861503::SUBDEVICE_1043849C: return "P8P67 Deluxe Motherboard";
         case PciSubDevice80861503::SUBDEVICE_10CF161C: return "LIFEBOOK E752";
+        case PciSubDevice80861503::SUBDEVICE_8086200D: return "DH61CR motherboard";
 
         default: return "Unknown device";
     }

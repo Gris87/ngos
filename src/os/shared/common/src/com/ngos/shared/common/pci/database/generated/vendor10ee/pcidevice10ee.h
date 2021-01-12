@@ -33,6 +33,7 @@ enum class PciDevice10EE: u16 // Ignore CppEnumVerifier
     DEVICE_3FC6 = 0x3FC6,
     DEVICE_5005 = 0x5005,
     DEVICE_7038 = 0x7038,
+    DEVICE_8019 = 0x8019,
     DEVICE_8380 = 0x8380,
     DEVICE_8381 = 0x8381,
     DEVICE_D154 = 0xD154,
@@ -72,6 +73,7 @@ inline const char8* enumToString(PciDevice10EE device) // TEST: NO
         case PciDevice10EE::DEVICE_3FC6: return "DEVICE_3FC6";
         case PciDevice10EE::DEVICE_5005: return "DEVICE_5005";
         case PciDevice10EE::DEVICE_7038: return "DEVICE_7038";
+        case PciDevice10EE::DEVICE_8019: return "DEVICE_8019";
         case PciDevice10EE::DEVICE_8380: return "DEVICE_8380";
         case PciDevice10EE::DEVICE_8381: return "DEVICE_8381";
         case PciDevice10EE::DEVICE_D154: return "DEVICE_D154";
@@ -128,6 +130,7 @@ inline const char8* enumToHumanString(PciDevice10EE device) // TEST: NO
         case PciDevice10EE::DEVICE_3FC6: return "RME Hammerfall DSP MADI";
         case PciDevice10EE::DEVICE_5005: return "Alveo U250";
         case PciDevice10EE::DEVICE_7038: return "FPGA Card XC7VX690T";
+        case PciDevice10EE::DEVICE_8019: return "Memory controller";
         case PciDevice10EE::DEVICE_8380: return "Ellips ProfiXpress Profibus Master";
         case PciDevice10EE::DEVICE_8381: return "Ellips Santos Frame Grabber";
         case PciDevice10EE::DEVICE_D154: return "Copley Controls CAN card (PCI-CAN-02)";
@@ -169,6 +172,7 @@ inline const char8* enumToHumanString(PciDevice10EE device, u16 subsystemVendorI
         case PciDevice10EE::DEVICE_3FC6: return "Unknown device";
         case PciDevice10EE::DEVICE_5005: return "Unknown device";
         case PciDevice10EE::DEVICE_7038: return enumToHumanString((PciSubDevice10EE7038)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice10EE::DEVICE_8019: return "Unknown device";
         case PciDevice10EE::DEVICE_8380: return "Unknown device";
         case PciDevice10EE::DEVICE_8381: return "Unknown device";
         case PciDevice10EE::DEVICE_D154: return "Unknown device";

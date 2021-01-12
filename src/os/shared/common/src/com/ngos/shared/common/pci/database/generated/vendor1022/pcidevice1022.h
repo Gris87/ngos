@@ -211,6 +211,7 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_149A = 0x149A,
     DEVICE_149B = 0x149B,
     DEVICE_149C = 0x149C,
+    DEVICE_149D = 0x149D,
     DEVICE_1510 = 0x1510,
     DEVICE_1512 = 0x1512,
     DEVICE_1513 = 0x1513,
@@ -372,6 +373,8 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_1642 = 0x1642,
     DEVICE_1643 = 0x1643,
     DEVICE_1644 = 0x1644,
+    DEVICE_1648 = 0x1648,
+    DEVICE_1649 = 0x1649,
     DEVICE_1700 = 0x1700,
     DEVICE_1701 = 0x1701,
     DEVICE_1702 = 0x1702,
@@ -679,6 +682,7 @@ inline const char8* enumToString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_149A: return "DEVICE_149A";
         case PciDevice1022::DEVICE_149B: return "DEVICE_149B";
         case PciDevice1022::DEVICE_149C: return "DEVICE_149C";
+        case PciDevice1022::DEVICE_149D: return "DEVICE_149D";
         case PciDevice1022::DEVICE_1510: return "DEVICE_1510";
         case PciDevice1022::DEVICE_1512: return "DEVICE_1512";
         case PciDevice1022::DEVICE_1513: return "DEVICE_1513";
@@ -840,6 +844,8 @@ inline const char8* enumToString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1642: return "DEVICE_1642";
         case PciDevice1022::DEVICE_1643: return "DEVICE_1643";
         case PciDevice1022::DEVICE_1644: return "DEVICE_1644";
+        case PciDevice1022::DEVICE_1648: return "DEVICE_1648";
+        case PciDevice1022::DEVICE_1649: return "DEVICE_1649";
         case PciDevice1022::DEVICE_1700: return "DEVICE_1700";
         case PciDevice1022::DEVICE_1701: return "DEVICE_1701";
         case PciDevice1022::DEVICE_1702: return "DEVICE_1702";
@@ -1164,6 +1170,7 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_149A: return "Starship PCIe GPP Bridge [1: 0]";
         case PciDevice1022::DEVICE_149B: return "Starship Reserved SSP";
         case PciDevice1022::DEVICE_149C: return "Matisse USB 3.0 Host Controller";
+        case PciDevice1022::DEVICE_149D: return "Vangogh CVIP";
         case PciDevice1022::DEVICE_1510: return "Family 14h Processor Root Complex";
         case PciDevice1022::DEVICE_1512: return "Family 14h Processor Root Port";
         case PciDevice1022::DEVICE_1513: return "Family 14h Processor Root Port";
@@ -1325,6 +1332,8 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1642: return "Renoir WLAN";
         case PciDevice1022::DEVICE_1643: return "Renoir BT";
         case PciDevice1022::DEVICE_1644: return "Renoir I2S";
+        case PciDevice1022::DEVICE_1648: return "VanGogh Root Complex";
+        case PciDevice1022::DEVICE_1649: return "VanGogh PSP/CCP";
         case PciDevice1022::DEVICE_1700: return "Family 12h/14h Processor Function 0";
         case PciDevice1022::DEVICE_1701: return "Family 12h/14h Processor Function 1";
         case PciDevice1022::DEVICE_1702: return "Family 12h/14h Processor Function 2";
@@ -1634,6 +1643,7 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_149A: return "Unknown device";
         case PciDevice1022::DEVICE_149B: return "Unknown device";
         case PciDevice1022::DEVICE_149C: return enumToHumanString((PciSubDevice1022149C)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1022::DEVICE_149D: return "Unknown device";
         case PciDevice1022::DEVICE_1510: return enumToHumanString((PciSubDevice10221510)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_1512: return "Unknown device";
         case PciDevice1022::DEVICE_1513: return "Unknown device";
@@ -1795,6 +1805,8 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_1642: return "Unknown device";
         case PciDevice1022::DEVICE_1643: return "Unknown device";
         case PciDevice1022::DEVICE_1644: return "Unknown device";
+        case PciDevice1022::DEVICE_1648: return "Unknown device";
+        case PciDevice1022::DEVICE_1649: return "Unknown device";
         case PciDevice1022::DEVICE_1700: return "Unknown device";
         case PciDevice1022::DEVICE_1701: return "Unknown device";
         case PciDevice1022::DEVICE_1702: return "Unknown device";

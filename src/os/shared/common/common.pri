@@ -590,11 +590,13 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e2.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice100010e3.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice10001960.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1000/pcisubdevice1000c012.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1001/pcidevice1001.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcidevice1002.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10021308.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10021309.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice10021314.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice1002154c.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100215d8.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100215dd.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1002/pcisubdevice100215de.h \
@@ -1877,6 +1879,10 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8167.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8168.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8169.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec816a.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec816b.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec816c.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec816d.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8176.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8179.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor10ec/pcisubdevice10ec8180.h \
@@ -2312,6 +2318,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838211.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838212.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838213.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1283/pcisubdevice12838892.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1285/pcidevice1285.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1287/pcidevice1287.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor128d/pcidevice128d.h \
@@ -2340,6 +2347,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d4/pcidevice12d4.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d5/pcidevice12d5.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d8/pcidevice12d8.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d8/pcisubdevice12d82608.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d8/pcisubdevice12d8e110.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d9/pcidevice12d9.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor12d9/pcisubdevice12d91078.h \
@@ -2914,6 +2922,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e50211.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e50212.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e51822.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e53714.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e53754.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e5a221.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor19e7/pcidevice19e7.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor1a03/pcidevice1a03.h \
@@ -3487,6 +3497,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861c4f.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861c52.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861c56.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861c5c.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861d02.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861d10.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80861d18.h \
@@ -3877,6 +3888,7 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863e92.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863ea0.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80863ec2.h \
+    $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80864140.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80864220.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80864222.h \
     $$PWD/src/com/ngos/shared/common/pci/database/generated/vendor8086/pcisubdevice80864223.h \
