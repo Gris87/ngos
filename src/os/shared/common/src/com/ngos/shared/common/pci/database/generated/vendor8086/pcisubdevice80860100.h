@@ -14,7 +14,8 @@ enum class PciSubDevice80860100: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_102804AA = 0x102804AA,
-    SUBDEVICE_1043844D = 0x1043844D
+    SUBDEVICE_1043844D = 0x1043844D,
+    SUBDEVICE_8086200D = 0x8086200D
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice80860100 subDevice) // TEST: NO
         case PciSubDevice80860100::NONE:               return "NONE";
         case PciSubDevice80860100::SUBDEVICE_102804AA: return "SUBDEVICE_102804AA";
         case PciSubDevice80860100::SUBDEVICE_1043844D: return "SUBDEVICE_1043844D";
+        case PciSubDevice80860100::SUBDEVICE_8086200D: return "SUBDEVICE_8086200D";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice80860100 subDevice) // TEST: N
     {
         case PciSubDevice80860100::SUBDEVICE_102804AA: return "XPS 8300";
         case PciSubDevice80860100::SUBDEVICE_1043844D: return "P8P67/P8H67 Series Motherboard";
+        case PciSubDevice80860100::SUBDEVICE_8086200D: return "DH61CR motherboard";
 
         default: return "Unknown device";
     }

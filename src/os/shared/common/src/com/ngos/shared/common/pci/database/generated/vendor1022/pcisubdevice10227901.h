@@ -65,7 +65,7 @@ inline const char8* enumToHumanString(PciSubDevice10227901 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10227901::SUBDEVICE_103C8615: return "Pavilion Laptop 15-cw1xxx";
-        case PciSubDevice10227901::SUBDEVICE_1043876B: return "PRIME B450M-A Motherboard";
+        case PciSubDevice10227901::SUBDEVICE_1043876B: return "PRIME Motherboard";
         case PciSubDevice10227901::SUBDEVICE_14627C37: return "X570-A PRO motherboard";
         case PciSubDevice10227901::SUBDEVICE_EA50CE19: return "mCOM10-L1900";
 

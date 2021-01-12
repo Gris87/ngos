@@ -2972,55 +2972,85 @@ NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciE
 
     // Fill Device Manager entry
     {
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error status",   capability->uncorrectableErrorStatus,   "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error mask",     capability->uncorrectableErrorMask,     "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Uncorrectable error severity", capability->uncorrectableErrorSeverity, "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Correctable error status",     capability->correctableErrorStatus,     "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Correctable error mask",       capability->correctableErrorMask,       "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
+        // Ignore CppAlignmentVerifier [BEGIN]
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Advanced error reporting");
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control",                                    mprintf("0x%08X", capability->advancedErrorCapabilitiesAndControl.value32),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: First error pointer",               mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.firstErrorPointer),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC generation capable",           mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationCapable),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC generation enable",            mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcGenerationEnable),           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC check capable",                mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckCapable),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: ECRC check enable",                 mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.ecrcCheckEnable),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: Multiple header recording capable", mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingCapable), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: Multiple header recording enable",  mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingEnable),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Advanced error capabilities and control: TLP prefix log present",            mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.tlpPrefixLogPresent),            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #0",                                                              mprintf("0x%08X", capability->headerLog[0]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #1",                                                              mprintf("0x%08X", capability->headerLog[1]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #2",                                                              mprintf("0x%08X", capability->headerLog[2]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Header log #3",                                                              mprintf("0x%08X", capability->headerLog[3]),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-
-
-
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "AER - Root error command", capability->rootErrorCommand, "0x%04X", PciExpressRootErrorCommandFlag, DeviceManagerMode::EXPERT);
-
-
-
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status",                                          mprintf("0x%08X", capability->rootErrorStatus.value32),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: ERR_COR received",                        mprintf("%u",     capability->rootErrorStatus.errCorReceived),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Multiple ERR_COR received",               mprintf("%u",     capability->rootErrorStatus.multipleErrCorReceived),              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: ERR_FATAL/NONFATAL received",             mprintf("%u",     capability->rootErrorStatus.errFatalOrNonFatalReceived),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Multiple ERR_FATAL/NONFATAL received",    mprintf("%u",     capability->rootErrorStatus.multipleErrFatalOrNonFatalReceived),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: First uncorrectable fatal",               mprintf("%u",     capability->rootErrorStatus.firstUncorrectableFatal),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Non-Fatal error messages received",       mprintf("%u",     capability->rootErrorStatus.nonFatalErrorMessagesReceived),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Fatal error messages received",           mprintf("%u",     capability->rootErrorStatus.fatalErrorMessagesReceived),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Root error status: Advanced error interrupt message number", mprintf("%u",     capability->rootErrorStatus.advancedErrorInterruptMessageNumber), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Error source identification",                                mprintf("0x%04X", capability->errorSourceIdentification),                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - Correctable error source identification",                    mprintf("0x%04X", capability->correctableErrorSourceIdentification),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-
-
-
-        if (capabilityVersion >= 2)
+        // Uncorrectable / Correctable error
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #0", mprintf("0x%08X", capability->tlpPrefixLog[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #1", mprintf("0x%08X", capability->tlpPrefixLog[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #2", mprintf("0x%08X", capability->tlpPrefixLog[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("AER - TLP prefix log #3", mprintf("0x%08X", capability->tlpPrefixLog[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Uncorrectable error status",   capability->uncorrectableErrorStatus,   "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Uncorrectable error mask",     capability->uncorrectableErrorMask,     "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Uncorrectable error severity", capability->uncorrectableErrorSeverity, "0x%04X", PciExpressUncorrectableErrorFlag, DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Correctable error status",     capability->correctableErrorStatus,     "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Correctable error mask",       capability->correctableErrorMask,       "0x%04X", PciExpressCorrectableErrorFlag,   DeviceManagerMode::EXPERT);
         }
+
+
+
+        // Advanced error capabilities and control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control",                                    mprintf("0x%08X", capability->advancedErrorCapabilitiesAndControl.value32),                    DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: First error pointer",               mprintf("%u",     capability->advancedErrorCapabilitiesAndControl.firstErrorPointer),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: ECRC generation capable",           capability->advancedErrorCapabilitiesAndControl.ecrcGenerationCapable          ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: ECRC generation enable",            capability->advancedErrorCapabilitiesAndControl.ecrcGenerationEnable           ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: ECRC check capable",                capability->advancedErrorCapabilitiesAndControl.ecrcCheckCapable               ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: ECRC check enable",                 capability->advancedErrorCapabilitiesAndControl.ecrcCheckEnable                ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: Multiple header recording capable", capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingCapable ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: Multiple header recording enable",  capability->advancedErrorCapabilitiesAndControl.multipleHeaderRecordingEnable  ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Advanced error capabilities and control: TLP prefix log present",            capability->advancedErrorCapabilitiesAndControl.tlpPrefixLogPresent            ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Header log
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header log #0", mprintf("0x%08X", capability->headerLog[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header log #1", mprintf("0x%08X", capability->headerLog[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header log #2", mprintf("0x%08X", capability->headerLog[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header log #3", mprintf("0x%08X", capability->headerLog[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Root error command", capability->rootErrorCommand, "0x%04X", PciExpressRootErrorCommandFlag, DeviceManagerMode::EXPERT);
+
+
+
+        // Root error status
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status",                                          mprintf("0x%08X", capability->rootErrorStatus.value32),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: ERR_COR received",                        capability->rootErrorStatus.errCorReceived                     ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: Multiple ERR_COR received",               capability->rootErrorStatus.multipleErrCorReceived             ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: ERR_FATAL/NONFATAL received",             capability->rootErrorStatus.errFatalOrNonFatalReceived         ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: Multiple ERR_FATAL/NONFATAL received",    capability->rootErrorStatus.multipleErrFatalOrNonFatalReceived ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: First uncorrectable fatal",               capability->rootErrorStatus.firstUncorrectableFatal            ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: Non-Fatal error messages received",       capability->rootErrorStatus.nonFatalErrorMessagesReceived      ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: Fatal error messages received",           capability->rootErrorStatus.fatalErrorMessagesReceived         ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root error status: Advanced error interrupt message number", mprintf("%u",     capability->rootErrorStatus.advancedErrorInterruptMessageNumber), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
+
+
+
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Error source identification",             mprintf("0x%04X", capability->errorSourceIdentification),            DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Correctable error source identification", mprintf("0x%04X", capability->correctableErrorSourceIdentification), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        }
+
+
+
+        // TLP prefix log
+        {
+            if (capabilityVersion >= 2)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TLP prefix log #0", mprintf("0x%08X", capability->tlpPrefixLog[0]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TLP prefix log #1", mprintf("0x%08X", capability->tlpPrefixLog[1]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TLP prefix log #2", mprintf("0x%08X", capability->tlpPrefixLog[2]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TLP prefix log #3", mprintf("0x%08X", capability->tlpPrefixLog[3]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            }
+        }
+        // Ignore CppAlignmentVerifier [END]
     }
 
 
@@ -3087,27 +3117,42 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1",                                              mprintf("0x%08X", capability->portVirtualChannelCapability1.value32),                                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Extended virtual channel count",              mprintf("%u",     capability->portVirtualChannelCapability1.extendedVirtualChannelCount),                                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Low priority extended virtual channel count", mprintf("%u",     capability->portVirtualChannelCapability1.lowPriorityExtendedVirtualChannelCount),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Reference clock",                             strdup(enumToFullString((PciExpressVirtualChannelReferenceClock)capability->portVirtualChannelCapability1.referenceClock)),                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 1: Port arbitration table entry size",           strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationTableEntrySize)capability->portVirtualChannelCapability1.portArbitrationTableEntrySize)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 2",                                              mprintf("0x%08X", capability->portVirtualChannelCapability2.value32),                                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Virtual channel");
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "VC - Port virtual channel capability 2: Virtual channel arbitration capability", virtualChannelArbitrationCapability, "0x%02X", PciExpressVirtualChannelArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+        // Port virtual channel capability 1
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 1",                                              mprintf("0x%08X", capability->portVirtualChannelCapability1.value32),                                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 1: Extended virtual channel count",              mprintf("%u",     capability->portVirtualChannelCapability1.extendedVirtualChannelCount),                                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 1: Low priority extended virtual channel count", mprintf("%u",     capability->portVirtualChannelCapability1.lowPriorityExtendedVirtualChannelCount),                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 1: Reference clock",                             strdup(enumToFullString((PciExpressVirtualChannelReferenceClock)capability->portVirtualChannelCapability1.referenceClock)),                               DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 1: Port arbitration table entry size",           strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationTableEntrySize)capability->portVirtualChannelCapability1.portArbitrationTableEntrySize)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
 
 
 
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel capability 2: Virtual channel arbitration table offset", mprintf("%u",     capability->portVirtualChannelCapability2.virtualChannelArbitrationTableOffset),                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control",                                                mprintf("0x%04X", capability->portVirtualChannelControl.value16),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control: Load virtual channel arbitration table",        capability->portVirtualChannelControl.loadVirtualChannelArbitrationTable ? "Yes" : "No",                                                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VC - Port virtual channel control: Virtual channel arbitration select",            strdup(enumToFullString((PciExpressVirtualChannelArbitrationSelect)capability->portVirtualChannelControl.virtualChannelArbitrationSelect)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        // Port virtual channel capability 2
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 2", mprintf("0x%08X", capability->portVirtualChannelCapability2.value32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Port virtual channel capability 2: Virtual channel arbitration capability", virtualChannelArbitrationCapability, "0x%02X", PciExpressVirtualChannelArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel capability 2: Virtual channel arbitration table offset", mprintf("%u", capability->portVirtualChannelCapability2.virtualChannelArbitrationTableOffset), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        }
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "VC - Port virtual channel status", capability->portVirtualChannelStatus, "0x%04X", PciExpressVirtualChannelPortVirtualChannelStatusFlag, DeviceManagerMode::EXPERT);
+        // Port virtual channel control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel control",                                         mprintf("0x%04X", capability->portVirtualChannelControl.value16),                                                                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel control: Load virtual channel arbitration table", capability->portVirtualChannelControl.loadVirtualChannelArbitrationTable ? "Yes" : "No",                                                    DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Port virtual channel control: Virtual channel arbitration select",     strdup(enumToFullString((PciExpressVirtualChannelArbitrationSelect)capability->portVirtualChannelControl.virtualChannelArbitrationSelect)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Port virtual channel status", capability->portVirtualChannelStatus, "0x%04X", PciExpressVirtualChannelPortVirtualChannelStatusFlag, DeviceManagerMode::BASIC);
 
 
 
@@ -3115,27 +3160,34 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
         {
             PciExpressVirtualChannelPortArbitrationCapabilityFlags portArbitrationCapability(capability->capability[i].virtualChannelResourceCapability.portArbitrationCapability);
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability", i), mprintf("0x%08X", capability->capability[i].virtualChannelResourceCapability.value32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+            // Capability virtual channel resource capability
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource capability", i), mprintf("0x%08X", capability->capability[i].virtualChannelResourceCapability.value32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+                ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "Capability #%d virtual channel resource capability: Port arbitration capability", i, portArbitrationCapability, "0x%02X", PciExpressVirtualChannelPortArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource capability: Reject snoop transactions",     i), capability->capability[i].virtualChannelResourceCapability.rejectSnoopTransactions ? "Yes" : "No",    DeviceManagerMode::BASIC),  NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource capability: Maximum time slots",            i), mprintf("%u", capability->capability[i].virtualChannelResourceCapability.maximumTimeSlotsReal()),     DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource capability: Port arbitration table offset", i), mprintf("%u", capability->capability[i].virtualChannelResourceCapability.portArbitrationTableOffset), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
 
 
 
-            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "VC - capability #%d virtual channel resource capability: Port arbitration capability", i, portArbitrationCapability, "0x%02X", PciExpressVirtualChannelPortArbitrationCapabilityFlag, DeviceManagerMode::EXPERT);
+            // Capability virtual channel resource control
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control",                              i), mprintf("0x%08X", capability->capability[i].virtualChannelResourceControl.value32),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control: TC/VC map",                   i), mprintf("0x%02X", capability->capability[i].virtualChannelResourceControl.tcVcMap),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control: load port arbitration table", i), capability->capability[i].virtualChannelResourceControl.loadPortArbitrationTable ? "Yes" : "No",                                                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control: Port arbitration select",     i), strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationSelect)capability->capability[i].virtualChannelResourceControl.portArbitrationSelect)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control: Virtual channel ID",          i), mprintf("%u",     capability->capability[i].virtualChannelResourceControl.virtualChannelId),                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Capability #%d virtual channel resource control: Virtual channel enable",      i), capability->capability[i].virtualChannelResourceControl.virtualChannelEnable ? "Yes" : "No",                                                            DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            }
 
 
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Reject snoop transactions", i),     capability->capability[i].virtualChannelResourceCapability.rejectSnoopTransactions ? "Yes" : "No",                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Maximum time slots", i),            mprintf("%u",     capability->capability[i].virtualChannelResourceCapability.maximumTimeSlotsReal()),                                                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource capability: Port arbitration table offset", i), mprintf("%u",     capability->capability[i].virtualChannelResourceCapability.portArbitrationTableOffset),                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control", i),                                   mprintf("0x%08X", capability->capability[i].virtualChannelResourceControl.value32),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: TC/VC map", i),                        mprintf("0x%02X", capability->capability[i].virtualChannelResourceControl.tcVcMap),                                                                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: load port arbitration table", i),      capability->capability[i].virtualChannelResourceControl.loadPortArbitrationTable ? "Yes" : "No",                                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Port arbitration select", i),          strdup(enumToFullString((PciExpressVirtualChannelPortArbitrationSelect)capability->capability[i].virtualChannelResourceControl.portArbitrationSelect)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Virtual channel ID", i),               mprintf("%u",     capability->capability[i].virtualChannelResourceControl.virtualChannelId),                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("VC - capability %d virtual channel resource control: Virtual channel enable", i),           capability->capability[i].virtualChannelResourceControl.virtualChannelEnable ? "Yes" : "No",                                                            DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-
-
-
-            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "VC - capability #%d virtual channel resource status", i, capability->capability[i].virtualChannelResourceStatus, "0x%04X", PciExpressVirtualChannelVirtualChannelResourceStatusFlag, DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "Capability #%d virtual channel resource status", i, capability->capability[i].virtualChannelResourceStatus, "0x%04X", PciExpressVirtualChannelVirtualChannelResourceStatusFlag, DeviceManagerMode::BASIC);
         }
         // Ignore CppAlignmentVerifier [END]
     }
@@ -3168,7 +3220,11 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device Serial Number - Serial number", mprintf("%016llX", capability->serialNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Device serial number");
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Serial number", mprintf("%016llX", capability->serialNumber), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }
 
 
@@ -3208,18 +3264,28 @@ NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPo
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data select",             mprintf("%u",     capability->dataSelect),                                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data",                    mprintf("0x%08X", capability->data.value32),                                                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Base power",        mprintf("%u",     capability->data.basePower),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Data scale",        strdup(enumToFullString((PciExpressPowerScale)capability->data.dataScale)),                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: PM sub state",      strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementSubState)capability->data.pmSubState)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: PM state",          strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementState)capability->data.pmState)),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Type",              strdup(enumToFullString((PciExpressPowerBudgetingType)capability->data.type)),                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("PB - Data: Power rail",        strdup(enumToFullString((PciExpressPowerBudgetingPowerRail)capability->data.powerRail)),                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Power budgeting");
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "PB - Power budget capability", capability->powerBudgetCapability, "0x%02X", PciExpressPowerBudgetingCapabilityFlag, DeviceManagerMode::EXPERT);
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data select", mprintf("%u", capability->dataSelect), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+
+
+
+        // Data
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data",               mprintf("0x%08X", capability->data.value32),                                                            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: Base power",   mprintf("%u",     capability->data.basePower),                                                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: Data scale",   strdup(enumToFullString((PciExpressPowerScale)capability->data.dataScale)),                             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: PM sub state", strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementSubState)capability->data.pmSubState)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: PM state",     strdup(enumToFullString((PciExpressPowerBudgetingPowerManagementState)capability->data.pmState)),       DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: Type",         strdup(enumToFullString((PciExpressPowerBudgetingType)capability->data.type)),                          DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Data: Power rail",   strdup(enumToFullString((PciExpressPowerBudgetingPowerRail)capability->data.powerRail)),                DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Power budget capability", capability->powerBudgetCapability, "0x%02X", PciExpressPowerBudgetingCapabilityFlag, DeviceManagerMode::EXPERT);
         // Ignore CppAlignmentVerifier [END]
     }
 

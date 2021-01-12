@@ -24,6 +24,7 @@ enum class PciSubDevice8086244B: u32 // Ignore CppEnumVerifier
     SUBDEVICE_15D93280 = 0x15D93280,
     SUBDEVICE_80864532 = 0x80864532,
     SUBDEVICE_80864557 = 0x80864557,
+    SUBDEVICE_80864D44 = 0x80864D44,
     SUBDEVICE_80865744 = 0x80865744
 };
 
@@ -49,6 +50,7 @@ inline const char8* enumToString(PciSubDevice8086244B subDevice) // TEST: NO
         case PciSubDevice8086244B::SUBDEVICE_15D93280: return "SUBDEVICE_15D93280";
         case PciSubDevice8086244B::SUBDEVICE_80864532: return "SUBDEVICE_80864532";
         case PciSubDevice8086244B::SUBDEVICE_80864557: return "SUBDEVICE_80864557";
+        case PciSubDevice8086244B::SUBDEVICE_80864D44: return "SUBDEVICE_80864D44";
         case PciSubDevice8086244B::SUBDEVICE_80865744: return "SUBDEVICE_80865744";
 
         default: return "UNKNOWN";
@@ -91,6 +93,7 @@ inline const char8* enumToHumanString(PciSubDevice8086244B subDevice) // TEST: N
         case PciSubDevice8086244B::SUBDEVICE_15D93280: return "Supermicro P4SBE Mainboard";
         case PciSubDevice8086244B::SUBDEVICE_80864532: return "Desktop Board D815EEA2/D815EFV";
         case PciSubDevice8086244B::SUBDEVICE_80864557: return "D815EGEW Mainboard";
+        case PciSubDevice8086244B::SUBDEVICE_80864D44: return "D850EMV2 motherboard";
         case PciSubDevice8086244B::SUBDEVICE_80865744: return "S845WD1-E mainboard";
 
         default: return "Unknown device";

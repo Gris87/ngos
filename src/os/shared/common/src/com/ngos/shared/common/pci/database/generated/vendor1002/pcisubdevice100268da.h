@@ -13,6 +13,7 @@
 enum class PciSubDevice100268DA: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_14628071 = 0x14628071,
     SUBDEVICE_148C3000 = 0x148C3000,
     SUBDEVICE_148C3001 = 0x148C3001,
     SUBDEVICE_15457570 = 0x15457570,
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciSubDevice100268DA subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice100268DA::NONE:               return "NONE";
+        case PciSubDevice100268DA::SUBDEVICE_14628071: return "SUBDEVICE_14628071";
         case PciSubDevice100268DA::SUBDEVICE_148C3000: return "SUBDEVICE_148C3000";
         case PciSubDevice100268DA::SUBDEVICE_148C3001: return "SUBDEVICE_148C3001";
         case PciSubDevice100268DA::SUBDEVICE_15457570: return "SUBDEVICE_15457570";
@@ -76,6 +78,7 @@ inline const char8* enumToHumanString(PciSubDevice100268DA subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice100268DA::SUBDEVICE_14628071: return "VR5550-MD1G (Radeon HD 5550)";
         case PciSubDevice100268DA::SUBDEVICE_148C3000: return "Radeon HD 6390";
         case PciSubDevice100268DA::SUBDEVICE_148C3001: return "Radeon HD 6490";
         case PciSubDevice100268DA::SUBDEVICE_15457570: return "Radeon HD 7570";

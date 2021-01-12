@@ -25,6 +25,7 @@ enum class PciSubDevice80862442: u32 // Ignore CppEnumVerifier
     SUBDEVICE_147B0507 = 0x147B0507,
     SUBDEVICE_80864532 = 0x80864532,
     SUBDEVICE_80864557 = 0x80864557,
+    SUBDEVICE_80864D44 = 0x80864D44,
     SUBDEVICE_80865744 = 0x80865744
 };
 
@@ -51,6 +52,7 @@ inline const char8* enumToString(PciSubDevice80862442 subDevice) // TEST: NO
         case PciSubDevice80862442::SUBDEVICE_147B0507: return "SUBDEVICE_147B0507";
         case PciSubDevice80862442::SUBDEVICE_80864532: return "SUBDEVICE_80864532";
         case PciSubDevice80862442::SUBDEVICE_80864557: return "SUBDEVICE_80864557";
+        case PciSubDevice80862442::SUBDEVICE_80864D44: return "SUBDEVICE_80864D44";
         case PciSubDevice80862442::SUBDEVICE_80865744: return "SUBDEVICE_80865744";
 
         default: return "UNKNOWN";
@@ -94,6 +96,7 @@ inline const char8* enumToHumanString(PciSubDevice80862442 subDevice) // TEST: N
         case PciSubDevice80862442::SUBDEVICE_147B0507: return "TH7II-RAID";
         case PciSubDevice80862442::SUBDEVICE_80864532: return "Desktop Board D815EEA2/D815EFV";
         case PciSubDevice80862442::SUBDEVICE_80864557: return "D815EGEW Mainboard";
+        case PciSubDevice80862442::SUBDEVICE_80864D44: return "D850EMV2 motherboard";
         case PciSubDevice80862442::SUBDEVICE_80865744: return "S845WD1-E mainboard";
 
         default: return "Unknown device";

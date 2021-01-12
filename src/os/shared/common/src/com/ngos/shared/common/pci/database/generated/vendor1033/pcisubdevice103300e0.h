@@ -17,7 +17,8 @@ enum class PciSubDevice103300E0: u32 // Ignore CppEnumVerifier
     SUBDEVICE_12EE7001 = 0x12EE7001,
     SUBDEVICE_14C20205 = 0x14C20205,
     SUBDEVICE_17990002 = 0x17990002,
-    SUBDEVICE_807D1043 = 0x807D1043
+    SUBDEVICE_807D1043 = 0x807D1043,
+    SUBDEVICE_80864D44 = 0x80864D44
 };
 
 
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciSubDevice103300E0 subDevice) // TEST: NO
         case PciSubDevice103300E0::SUBDEVICE_14C20205: return "SUBDEVICE_14C20205";
         case PciSubDevice103300E0::SUBDEVICE_17990002: return "SUBDEVICE_17990002";
         case PciSubDevice103300E0::SUBDEVICE_807D1043: return "SUBDEVICE_807D1043";
+        case PciSubDevice103300E0::SUBDEVICE_80864D44: return "SUBDEVICE_80864D44";
 
         default: return "UNKNOWN";
     }
@@ -71,6 +73,7 @@ inline const char8* enumToHumanString(PciSubDevice103300E0 subDevice) // TEST: N
         case PciSubDevice103300E0::SUBDEVICE_14C20205: return "PTI-205N USB 2.0 Host Controller";
         case PciSubDevice103300E0::SUBDEVICE_17990002: return "Root Hub";
         case PciSubDevice103300E0::SUBDEVICE_807D1043: return "PCI-USB2 (EHCI subsystem)";
+        case PciSubDevice103300E0::SUBDEVICE_80864D44: return "D850EMV2 motherboard";
 
         default: return "Unknown device";
     }

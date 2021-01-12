@@ -72,7 +72,7 @@ inline const char8* enumToHumanString(PciSubDevice10025D44 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10025D44::SUBDEVICE_14584019: return "Radeon 9200 SE (Secondary)";
+        case PciSubDevice10025D44::SUBDEVICE_14584019: return "R92S128T (Radeon 9200 SE 128MB Secondary)";
         case PciSubDevice10025D44::SUBDEVICE_14584032: return "Radeon 9200 SE 128MB";
         case PciSubDevice10025D44::SUBDEVICE_147B6190: return "R9200SE-DT (Secondary)";
         case PciSubDevice10025D44::SUBDEVICE_174B7C12: return "Radeon 9200 SE (Secondary)";

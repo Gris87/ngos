@@ -14,7 +14,8 @@ enum class PciDevice1172: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_00A7 = 0x00A7,
-    DEVICE_0530 = 0x0530
+    DEVICE_0530 = 0x0530,
+    DEVICE_646C = 0x646C
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciDevice1172 device) // TEST: NO
         case PciDevice1172::NONE:        return "NONE";
         case PciDevice1172::DEVICE_00A7: return "DEVICE_00A7";
         case PciDevice1172::DEVICE_0530: return "DEVICE_0530";
+        case PciDevice1172::DEVICE_646C: return "DEVICE_646C";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciDevice1172 device) // TEST: NO
     {
         case PciDevice1172::DEVICE_00A7: return "Stratix V";
         case PciDevice1172::DEVICE_0530: return "Stratix IV";
+        case PciDevice1172::DEVICE_646C: return "KT-500/KT-521 board";
 
         default: return "Unknown device";
     }

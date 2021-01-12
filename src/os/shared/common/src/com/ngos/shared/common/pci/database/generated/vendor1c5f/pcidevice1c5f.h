@@ -15,8 +15,7 @@ enum class PciDevice1C5F: u16 // Ignore CppEnumVerifier
     NONE        = 0,
     DEVICE_000D = 0x000D,
     DEVICE_003D = 0x003D,
-    DEVICE_010D = 0x010D,
-    DEVICE_013D = 0x013D,
+    DEVICE_003E = 0x003E,
     DEVICE_0540 = 0x0540,
     DEVICE_0550 = 0x0550,
     DEVICE_0555 = 0x0555,
@@ -36,8 +35,7 @@ inline const char8* enumToString(PciDevice1C5F device) // TEST: NO
         case PciDevice1C5F::NONE:        return "NONE";
         case PciDevice1C5F::DEVICE_000D: return "DEVICE_000D";
         case PciDevice1C5F::DEVICE_003D: return "DEVICE_003D";
-        case PciDevice1C5F::DEVICE_010D: return "DEVICE_010D";
-        case PciDevice1C5F::DEVICE_013D: return "DEVICE_013D";
+        case PciDevice1C5F::DEVICE_003E: return "DEVICE_003E";
         case PciDevice1C5F::DEVICE_0540: return "DEVICE_0540";
         case PciDevice1C5F::DEVICE_0550: return "DEVICE_0550";
         case PciDevice1C5F::DEVICE_0555: return "DEVICE_0555";
@@ -72,10 +70,9 @@ inline const char8* enumToHumanString(PciDevice1C5F device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice1C5F::DEVICE_000D: return "PBlaze5 520/526 AIC";
-        case PciDevice1C5F::DEVICE_003D: return "PBlaze5 920/926 AIC";
-        case PciDevice1C5F::DEVICE_010D: return "PBlaze5 520/526 U.2";
-        case PciDevice1C5F::DEVICE_013D: return "PBlaze5 920/926 U.2";
+        case PciDevice1C5F::DEVICE_000D: return "PBlaze5 520/526";
+        case PciDevice1C5F::DEVICE_003D: return "PBlaze5 920/926";
+        case PciDevice1C5F::DEVICE_003E: return "PBlaze6 6920";
         case PciDevice1C5F::DEVICE_0540: return "PBlaze4 NVMe SSD";
         case PciDevice1C5F::DEVICE_0550: return "PBlaze5 700/900";
         case PciDevice1C5F::DEVICE_0555: return "PBlaze5 510/516";

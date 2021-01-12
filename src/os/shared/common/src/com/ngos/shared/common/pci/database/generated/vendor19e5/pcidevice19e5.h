@@ -16,6 +16,8 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e50211.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e50212.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e51822.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e53714.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e53754.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor19e5/pcisubdevice19e5a221.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -36,7 +38,9 @@ enum class PciDevice19E5: u16 // Ignore CppEnumVerifier
     DEVICE_1710 = 0x1710,
     DEVICE_1711 = 0x1711,
     DEVICE_1822 = 0x1822,
+    DEVICE_3714 = 0x3714,
     DEVICE_371E = 0x371E,
+    DEVICE_3754 = 0x3754,
     DEVICE_375E = 0x375E,
     DEVICE_379E = 0x379E,
     DEVICE_A120 = 0xA120,
@@ -94,7 +98,9 @@ inline const char8* enumToString(PciDevice19E5 device) // TEST: NO
         case PciDevice19E5::DEVICE_1710: return "DEVICE_1710";
         case PciDevice19E5::DEVICE_1711: return "DEVICE_1711";
         case PciDevice19E5::DEVICE_1822: return "DEVICE_1822";
+        case PciDevice19E5::DEVICE_3714: return "DEVICE_3714";
         case PciDevice19E5::DEVICE_371E: return "DEVICE_371E";
+        case PciDevice19E5::DEVICE_3754: return "DEVICE_3754";
         case PciDevice19E5::DEVICE_375E: return "DEVICE_375E";
         case PciDevice19E5::DEVICE_379E: return "DEVICE_379E";
         case PciDevice19E5::DEVICE_A120: return "DEVICE_A120";
@@ -169,7 +175,9 @@ inline const char8* enumToHumanString(PciDevice19E5 device) // TEST: NO
         case PciDevice19E5::DEVICE_1710: return "iBMA Virtual Network Adapter";
         case PciDevice19E5::DEVICE_1711: return "Hi171x Series [iBMC Intelligent Management system chip w/VGA support]";
         case PciDevice19E5::DEVICE_1822: return "Hi1822 Family (4*25GE)";
+        case PciDevice19E5::DEVICE_3714: return "ES3000 V5 NVMe PCIe SSD";
         case PciDevice19E5::DEVICE_371E: return "Hi1822 Family Virtual Bridge";
+        case PciDevice19E5::DEVICE_3754: return "ES3000 V6 NVMe PCIe SSD";
         case PciDevice19E5::DEVICE_375E: return "Hi1822 Family Virtual Function";
         case PciDevice19E5::DEVICE_379E: return "Hi1822 Family Virtual Function";
         case PciDevice19E5::DEVICE_A120: return "HiSilicon PCIe Root Port with Gen4";
@@ -229,7 +237,9 @@ inline const char8* enumToHumanString(PciDevice19E5 device, u16 subsystemVendorI
         case PciDevice19E5::DEVICE_1710: return "Unknown device";
         case PciDevice19E5::DEVICE_1711: return "Unknown device";
         case PciDevice19E5::DEVICE_1822: return enumToHumanString((PciSubDevice19E51822)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice19E5::DEVICE_3714: return enumToHumanString((PciSubDevice19E53714)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice19E5::DEVICE_371E: return "Unknown device";
+        case PciDevice19E5::DEVICE_3754: return enumToHumanString((PciSubDevice19E53754)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice19E5::DEVICE_375E: return "Unknown device";
         case PciDevice19E5::DEVICE_379E: return "Unknown device";
         case PciDevice19E5::DEVICE_A120: return "Unknown device";

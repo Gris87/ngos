@@ -80,7 +80,7 @@ inline const char8* enumToHumanString(PciSubDevice10025964 subDevice) // TEST: N
     {
         case PciSubDevice10025964::SUBDEVICE_10025964: return "Radeon 9200 SE, 64-bit 128MB DDR, 200/166MHz";
         case PciSubDevice10025964::SUBDEVICE_1043C006: return "Radeon 9200 SE / TD / 128M";
-        case PciSubDevice10025964::SUBDEVICE_14584018: return "Radeon 9200 SE";
+        case PciSubDevice10025964::SUBDEVICE_14584018: return "R92S128T (Radeon 9200 SE 128MB)";
         case PciSubDevice10025964::SUBDEVICE_14584032: return "Radeon 9200 SE 128MB";
         case PciSubDevice10025964::SUBDEVICE_147B6191: return "R9200SE-DT";
         case PciSubDevice10025964::SUBDEVICE_148C2073: return "CN-AG92E";
