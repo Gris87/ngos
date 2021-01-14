@@ -3363,50 +3363,63 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCLD - Element self description",                         mprintf("0x%08X", capability->elementSelfDescription.value32),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCLD - Element self description: Element type",           strdup(enumToFullString((PciExpressRootComplexLinkDeclarationElementType)capability->elementSelfDescription.elementType)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCLD - Element self description: Number of link entries", mprintf("%u",     capability->elementSelfDescription.numberOfLinkEntries),                                                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCLD - Element self description: Component ID",           mprintf("%u",     capability->elementSelfDescription.componentId),                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCLD - Element self description: Port number",            mprintf("%u",     capability->elementSelfDescription.portNumber),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Root complex link declaration");
+
+
+
+        // Element self description
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Element self description",                         mprintf("0x%08X", capability->elementSelfDescription.value32),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Element self description: Element type",           strdup(enumToFullString((PciExpressRootComplexLinkDeclarationElementType)capability->elementSelfDescription.elementType)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Element self description: Number of link entries", mprintf("%u",     capability->elementSelfDescription.numberOfLinkEntries),                                                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Element self description: Component ID",           mprintf("%u",     capability->elementSelfDescription.componentId),                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Element self description: Port number",            mprintf("%u",     capability->elementSelfDescription.portNumber),                                                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
 
 
 
         for (i64 i = 0; i < capability->elementSelfDescription.numberOfLinkEntries; ++i)
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description",                        i), mprintf("0x%08X", capability->linkEntry[i].linkDescription.value32),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description: Link valid",            i), capability->linkEntry[i].linkDescription.linkValid ? "Yes" : "No",                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description: Link type",             i), strdup(enumToFullString((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description: Associate RCRB header", i), capability->linkEntry[i].linkDescription.associateRcrbHeader ? "Yes" : "No",                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description: Target component ID",   i), mprintf("%u",     capability->linkEntry[i].linkDescription.targetComponentId),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link description: Target port number",    i), mprintf("%u",     capability->linkEntry[i].linkDescription.targetPortNumber),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-
-
-
-            switch ((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)
+            // Link entry link description
             {
-                case PciExpressRootComplexLinkDeclarationLinkType::LINK_TO_MEMORY_MAPPED_SPACE:
-                {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Lower 32 bits", i), mprintf("0x%08X", capability->linkEntry[i].linkAddress.memoryMappedSpace.lower32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Upper 32 bits", i), mprintf("0x%08X", capability->linkEntry[i].linkAddress.memoryMappedSpace.upper32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                }
-                break;
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description",                        i), mprintf("0x%08X", capability->linkEntry[i].linkDescription.value32),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description: Link valid",            i), capability->linkEntry[i].linkDescription.linkValid ? "Yes" : "No",                                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description: Link type",             i), strdup(enumToFullString((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description: Associate RCRB header", i), capability->linkEntry[i].linkDescription.associateRcrbHeader ? "Yes" : "No",                                               DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description: Target component ID",   i), mprintf("%u",     capability->linkEntry[i].linkDescription.targetComponentId),                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link description: Target port number",    i), mprintf("%u",     capability->linkEntry[i].linkDescription.targetPortNumber),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            }
 
-                case PciExpressRootComplexLinkDeclarationLinkType::LINK_TO_CONFIGURATION_SPACE:
-                {
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address",                                    i), mprintf("0x%016llX", capability->linkEntry[i].linkAddress.configurationSpace.value64),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Encoded number of bus number bits", i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.encodedNumberOfBusNumberBitsReal()),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Function number",                   i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.functionNumber),                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Device number",                     i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.deviceNumber),                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Bus number",                        i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.busNumberReal()),                     DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RCLD - Link entry #%d link address: Configuration space base address",  i), mprintf("0x%016llX", capability->linkEntry[i].linkAddress.configurationSpace.configurationSpaceBaseAddressReal()), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                }
-                break;
 
-                default:
+
+            // Link entry link address
+            {
+                switch ((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)
                 {
-                    UEFI_LF(("Unknown Pci Express root complex link declaration link type %s", enumToFullString((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)));
+                    case PciExpressRootComplexLinkDeclarationLinkType::LINK_TO_MEMORY_MAPPED_SPACE:
+                    {
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Lower 32 bits", i), mprintf("0x%08X", capability->linkEntry[i].linkAddress.memoryMappedSpace.lower32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Upper 32 bits", i), mprintf("0x%08X", capability->linkEntry[i].linkAddress.memoryMappedSpace.upper32), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                    }
+                    break;
+
+                    case PciExpressRootComplexLinkDeclarationLinkType::LINK_TO_CONFIGURATION_SPACE:
+                    {
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address",                                    i), mprintf("0x%016llX", capability->linkEntry[i].linkAddress.configurationSpace.value64),                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Encoded number of bus number bits", i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.encodedNumberOfBusNumberBitsReal()),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Function number",                   i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.functionNumber),                      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Device number",                     i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.deviceNumber),                        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Bus number",                        i), mprintf("%u",        capability->linkEntry[i].linkAddress.configurationSpace.busNumberReal()),                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Link entry #%d link address: Configuration space base address",  i), mprintf("0x%016llX", capability->linkEntry[i].linkAddress.configurationSpace.configurationSpaceBaseAddressReal()), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                    }
+                    break;
+
+                    default:
+                    {
+                        UEFI_LF(("Unknown Pci Express root complex link declaration link type %s", enumToFullString((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)));
+                    }
+                    break;
                 }
-                break;
             }
         }
         // Ignore CppAlignmentVerifier [END]
@@ -3452,32 +3465,36 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapabil
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        // RCILC - Root complex link capabilities
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Root complex internal link control");
+
+
+
+        // Root complex link capabilities
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities",                        mprintf("0x%08X", capability->rootComplexLinkCapabilities.value32),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities: Supported link speeds", strdup(enumToFullString((PciExpressLinkSpeed)capability->rootComplexLinkCapabilities.supportedLinkSpeeds)),                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities: Maximum link width",    strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkCapabilities.maximumLinkWidth)),                    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities: ASPM support",          strdup(enumToFullString((PciExpressActiveStatePowerManagementSupport)capability->rootComplexLinkCapabilities.aspmSupport)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities: L0s exit latency",      strdup(enumToFullString((PciExpressL0sExitLatency)capability->rootComplexLinkCapabilities.l0sExitLatency)),                 DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link capabilities: L1 exit latency",       strdup(enumToFullString((PciExpressL1ExitLatency)capability->rootComplexLinkCapabilities.l1ExitLatency)),                   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities",                        mprintf("0x%08X", capability->rootComplexLinkCapabilities.value32),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities: Supported link speeds", strdup(enumToFullString((PciExpressLinkSpeed)capability->rootComplexLinkCapabilities.supportedLinkSpeeds)),                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities: Maximum link width",    strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkCapabilities.maximumLinkWidth)),                    DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities: ASPM support",          strdup(enumToFullString((PciExpressActiveStatePowerManagementSupport)capability->rootComplexLinkCapabilities.aspmSupport)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities: L0s exit latency",      strdup(enumToFullString((PciExpressL0sExitLatency)capability->rootComplexLinkCapabilities.l0sExitLatency)),                 DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link capabilities: L1 exit latency",       strdup(enumToFullString((PciExpressL1ExitLatency)capability->rootComplexLinkCapabilities.l1ExitLatency)),                   DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
         }
 
 
 
-        // RCILC - Root complex link control
+        // Root complex link control
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link control",                 mprintf("0x%04X", capability->rootComplexLinkControl.value16),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link control: ASPM control",   strdup(enumToFullString((PciExpressActiveStatePowerManagementControl)capability->rootComplexLinkControl.aspmControl)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link control: Extended synch", capability->rootComplexLinkControl.extendedSynch ? "Yes" : "No",                                                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link control",                 mprintf("0x%04X", capability->rootComplexLinkControl.value16),                                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link control: ASPM control",   strdup(enumToFullString((PciExpressActiveStatePowerManagementControl)capability->rootComplexLinkControl.aspmControl)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link control: Extended synch", capability->rootComplexLinkControl.extendedSynch ? "Yes" : "No",                                                       DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
         }
 
 
 
-        // RCILC - Root complex link status
+        // Root complex link status
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status",                        mprintf("0x%04X", capability->rootComplexLinkStatus.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status: Current link speed",    strdup(enumToFullString((PciExpressLinkSpeed)capability->rootComplexLinkStatus.currentLinkSpeed)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCILC - Root complex link status: Negotiated link width", strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkStatus.negotiatedLinkWidth)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link status",                        mprintf("0x%04X", capability->rootComplexLinkStatus.value16),                                         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link status: Current link speed",    strdup(enumToFullString((PciExpressLinkSpeed)capability->rootComplexLinkStatus.currentLinkSpeed)),    DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Root complex link status: Negotiated link width", strdup(enumToFullString((PciExpressLinkWidth)capability->rootComplexLinkStatus.negotiatedLinkWidth)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
         }
         // Ignore CppAlignmentVerifier [END]
     }
@@ -3510,7 +3527,11 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAsso
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCECEA - Association bitmap for root complex integrated devices", mprintf("0x%08X", capability->associationBitmapForRootComplexIntegratedDevices), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Root complex event collector endpoint association");
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Association bitmap for root complex integrated devices", mprintf("0x%08X", capability->associationBitmapForRootComplexIntegratedDevices), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }
 
 
@@ -3544,15 +3565,20 @@ NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHe
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Vendor",      enumToHumanString(capability->vendorId),                       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Device name", enumToHumanString(capability->vendorId, capability->deviceId), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Vendor ID",   mprintf("0x%04X", capability->vendorId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RCRB - Device ID",   mprintf("0x%04X", capability->deviceId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "RCRB");
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "RCRB - Capabilities", capability->capabilities, "0x%08X", PciExpressRcrbHeaderCapabilitiesFlag, DeviceManagerMode::EXPERT);
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "RCRB - Control",      capability->control,      "0x%08X", PciExpressRcrbHeaderControlFlag,      DeviceManagerMode::EXPERT);
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor",      enumToHumanString(capability->vendorId),                       DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device name", enumToHumanString(capability->vendorId, capability->deviceId), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Vendor ID",   mprintf("0x%04X", capability->vendorId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Device ID",   mprintf("0x%04X", capability->deviceId),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Capabilities", capability->capabilities, "0x%08X", PciExpressRcrbHeaderCapabilitiesFlag, DeviceManagerMode::BASIC);
+            ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Control",      capability->control,      "0x%08X", PciExpressRcrbHeaderControlFlag,      DeviceManagerMode::BASIC);
+        }
     }
 
 
@@ -3586,10 +3612,17 @@ NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVe
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header",           mprintf("0x%08X", capability->vendorSpecificHeader.value32),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: ID",       mprintf("%u",     capability->vendorSpecificHeader.id),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: Revision", mprintf("%u",     capability->vendorSpecificHeader.revision), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("VS - Header: Length",   mprintf("%u",     capability->vendorSpecificHeader.length),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Vendor specific");
+
+
+
+        // Header
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header",           mprintf("0x%08X", capability->vendorSpecificHeader.value32),  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header: ID",       mprintf("%u",     capability->vendorSpecificHeader.id),       DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header: Revision", mprintf("%u",     capability->vendorSpecificHeader.revision), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Header: Length",   mprintf("%u",     capability->vendorSpecificHeader.length),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
     }
 
 
@@ -3645,27 +3678,37 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability",                              mprintf("0x%04X", capability->capability.value16),                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS source validation",       capability->capability.acsSourceValidation      ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS translation blocking",    capability->capability.acsTranslationBlocking   ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P request redirect",    capability->capability.acsP2pRequestRedirect    ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P completion redirect", capability->capability.acsP2pCompletionRedirect ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS upstream forwarding",     capability->capability.acsUpstreamForwarding    ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS P2P egress control",      capability->capability.acsP2pEgressControl      ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: ACS direct translated P2P",   capability->capability.acsDirectTranslatedP2p   ? "Yes" : "No",      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ACS - Capability: Egress control vector size ", mprintf("%u", capability->capability.egressControlVectorSizeReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Access control services");
 
 
 
-        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "ACS - Control", capability->control, "0x%04X", PciExpressAccessControlServicesAcsControlFlag, DeviceManagerMode::EXPERT);
-
-
-
-        if (capability->capability.acsP2pEgressControl)
+        // Capability
         {
-            for (i64 i = 0; i < numberOfWords; ++i)
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability",                              mprintf("0x%04X", capability->capability.value16),                   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS source validation",       capability->capability.acsSourceValidation      ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS translation blocking",    capability->capability.acsTranslationBlocking   ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS P2P request redirect",    capability->capability.acsP2pRequestRedirect    ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS P2P completion redirect", capability->capability.acsP2pCompletionRedirect ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS upstream forwarding",     capability->capability.acsUpstreamForwarding    ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS P2P egress control",      capability->capability.acsP2pEgressControl      ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS direct translated P2P",   capability->capability.acsDirectTranslatedP2p   ? "Yes" : "No",      DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Egress control vector size ", mprintf("%u", capability->capability.egressControlVectorSizeReal()), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
+
+
+
+        ADD_RECORDS_FOR_FLAGS(deviceManagerEntry, "Control", capability->control, "0x%04X", PciExpressAccessControlServicesAcsControlFlag, DeviceManagerMode::EXPERT);
+
+
+
+        // Egress control vector
+        {
+            if (capability->capability.acsP2pEgressControl)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ACS - Egress control vector #%d", i), mprintf("0x%08X", capability->egressControlVector[i]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                for (i64 i = 0; i < numberOfWords; ++i)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Egress control vector #%d", i), mprintf("0x%08X", capability->egressControlVector[i]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                }
             }
         }
         // Ignore CppAlignmentVerifier [END]
@@ -3707,14 +3750,27 @@ NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability",                                  mprintf("0x%04X", capability->capability.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: MFVC function groups capability", capability->capability.mfvcFunctionGroupsCapability ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: ACS function groups capability",  capability->capability.acsFunctionGroupsCapability  ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Capability: Next function number",            mprintf("%u",     capability->capability.nextFunctionNumber),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control",                                     mprintf("0x%04X", capability->control.value16),                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: MFVC function groups enable",        capability->control.mfvcFunctionGroupsEnable        ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: ACS function groups enable",         capability->control.acsFunctionGroupsEnable         ? "Yes" : "No", DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("ARI - Control: Function group",                     mprintf("%u",     capability->control.functionGroup),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "ARI");
+
+
+
+        // Capability
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability",                                  mprintf("0x%04X", capability->capability.value16),                  DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: MFVC function groups capability", capability->capability.mfvcFunctionGroupsCapability ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ACS function groups capability",  capability->capability.acsFunctionGroupsCapability  ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Next function number",            mprintf("%u",     capability->capability.nextFunctionNumber),       DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
+
+
+
+        // Control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control",                              mprintf("0x%04X", capability->control.value16),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: MFVC function groups enable", capability->control.mfvcFunctionGroupsEnable ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: ACS function groups enable",  capability->control.acsFunctionGroupsEnable  ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: Function group",              mprintf("%u",     capability->control.functionGroup),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
         // Ignore CppAlignmentVerifier [END]
     }
 
@@ -3761,22 +3817,55 @@ NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMultica
 
     // Fill Device Manager entry
     {
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Capability",                              mprintf("0x%04X",    capability->capability.value16),                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Capability: Maximum number of groups",    mprintf("%u",        capability->capability.mcMaxGroupReal()),               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Capability: Window size requested",       mprintf("%u",        capability->capability.mcWindowSizeRequested),          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Capability: ECRC regeneration supported", mprintf("%u",        capability->capability.mcEcrcRegenerationSupported),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Control",                                 mprintf("0x%04X",    capability->control.value16),                           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Control: Number of groups",               mprintf("%u",        capability->control.mcNumGroupReal()),                  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Control: Enable",                         mprintf("%u",        capability->control.mcEnable),                          DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Base address",                            mprintf("0x%016llX", capability->mcBaseAddress.value64),                     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Base address: Index position",            mprintf("%u",        capability->mcBaseAddress.mcIndexPosition),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Base address: Address",                   mprintf("0x%016llX", capability->mcBaseAddress.mcBaseAddress),               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Receive",                                 mprintf("0x%016llX", capability->mcReceive),                                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Block all",                               mprintf("0x%016llX", capability->mcBlockAll),                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Block untranslated",                      mprintf("0x%016llX", capability->mcBlockUntranslated),                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Overlay base address",                    mprintf("0x%016llX", capability->mcOverlayBaseAddress.value64),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Overlay base address: Size",              mprintf("%u",        capability->mcOverlayBaseAddress.mcOverlaySize),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("MC - Overlay base address: Address",           mprintf("0x%016llX", capability->mcOverlayBaseAddress.mcOverlayBaseAddress), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        // Ignore CppAlignmentVerifier [BEGIN]
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Multicast");
+
+
+
+        // Capability
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability",                              mprintf("0x%04X", capability->capability.value16),                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Maximum number of groups",    mprintf("%u",     capability->capability.mcMaxGroupReal()),        DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Window size requested",       mprintf("%u",     capability->capability.mcWindowSizeRequested),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ECRC regeneration supported", capability->capability.mcEcrcRegenerationSupported ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control",                   mprintf("0x%04X", capability->control.value16),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: Number of groups", mprintf("%u",     capability->control.mcNumGroupReal()), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: Enable",           capability->control.mcEnable ? "Yes" : "No",             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Base address
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address",                 mprintf("0x%016llX", capability->mcBaseAddress.value64),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address: Index position", mprintf("%u",        capability->mcBaseAddress.mcIndexPosition), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Base address: Address",        mprintf("0x%016llX", capability->mcBaseAddress.mcBaseAddress),   DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+
+
+
+        // Common info
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Receive",            mprintf("0x%016llX", capability->mcReceive),           DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Block all",          mprintf("0x%016llX", capability->mcBlockAll),          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Block untranslated", mprintf("0x%016llX", capability->mcBlockUntranslated), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+
+
+
+        // Overlay base address
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Overlay base address",          mprintf("0x%016llX", capability->mcOverlayBaseAddress.value64),              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Overlay base address: Size",    mprintf("%u",        capability->mcOverlayBaseAddress.mcOverlaySize),        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Overlay base address: Address", mprintf("0x%016llX", capability->mcOverlayBaseAddress.mcOverlayBaseAddress), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+        // Ignore CppAlignmentVerifier [END]
     }
 
 
@@ -3815,17 +3904,24 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("RBAR - Number of resizable BARs", mprintf("%u", capability->capabilityAndControl[0].control.numberOfResizableBars), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Resizable base address");
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of resizable BARs", mprintf("%u", capability->capabilityAndControl[0].control.numberOfResizableBars), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
         for (i64 i = 0; i < capability->capabilityAndControl[0].control.numberOfResizableBars; ++i)
         {
-            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "RBAR - Capability #%d", i, capability->capabilityAndControl[i].capability, "0x%08X", PciExpressResizableBaseAddressCapabilityFlag, DeviceManagerMode::EXPERT);
+            ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "Capability #%d", i, capability->capabilityAndControl[i].capability, "0x%08X", PciExpressResizableBaseAddressCapabilityFlag, DeviceManagerMode::EXPERT);
 
 
 
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RBAR - Control #%d",            i), mprintf("0x%08X", capability->capabilityAndControl[i].control.value32),                                               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RBAR - Control #%d: BAR index", i), mprintf("%u",     capability->capabilityAndControl[i].control.barIndex),                                              DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("RBAR - Control #%d: BAR size",  i), strdup(enumToFullString((PciExpressResizableBaseAddressBarSize)capability->capabilityAndControl[i].control.barSize)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            // Control
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Control #%d",            i), mprintf("0x%08X", capability->capabilityAndControl[i].control.value32),                                               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Control #%d: BAR index", i), mprintf("%u",     capability->capabilityAndControl[i].control.barIndex),                                              DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Control #%d: BAR size",  i), strdup(enumToFullString((PciExpressResizableBaseAddressBarSize)capability->capabilityAndControl[i].control.barSize)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            }
         }
         // Ignore CppAlignmentVerifier [END]
     }
@@ -3875,22 +3971,49 @@ NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciE
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability",                              mprintf("0x%08X", capability->capability.value32),                                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Substate maximum",            mprintf("%u",     capability->capability.substateMaximumReal()),                                                               DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency unit",     strdup(enumToFullString((PciExpressDynamicPowerAllocationTransitionLatencyUnit)capability->capability.transitionLatencyUnit)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Power allocation scale",      strdup(enumToFullString((PciExpressDynamicPowerAllocationPowerAllocationScale)capability->capability.transitionLatencyUnit)),  DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency value #0", mprintf("%u",     capability->capability.transitionLatencyValue0),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Capability: Transition latency value #1", mprintf("%u",     capability->capability.transitionLatencyValue1),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Latency indicator",                       mprintf("0x%08X", capability->latencyIndicator),                                                                               DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status",                                  mprintf("0x%04X", capability->status.value16),                                                                                 DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status: Substate status",                 mprintf("0x%02X", capability->status.substateStatus),                                                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Status: Substate control enabled",        capability->status.substateControlEnabled ? "Yes" : "No",                                                                      DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Control",                                 mprintf("0x%04X", capability->control.value16),                                                                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("DPA - Control: Substate control",               mprintf("0x%02X", capability->control.substateControl),                                                                        DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Dynamic power allocation");
 
-        for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+
+
+        // Capability
         {
-            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("DPA - Substate power allocation #%d", i), mprintf("%u", capability->substatePowerAllocation[i]), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability",                              mprintf("0x%08X", capability->capability.value32),                                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Substate maximum",            mprintf("%u",     capability->capability.substateMaximumReal()),                                                               DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Transition latency unit",     strdup(enumToFullString((PciExpressDynamicPowerAllocationTransitionLatencyUnit)capability->capability.transitionLatencyUnit)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Power allocation scale",      strdup(enumToFullString((PciExpressDynamicPowerAllocationPowerAllocationScale)capability->capability.transitionLatencyUnit)),  DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Transition latency value #0", mprintf("%u",     capability->capability.transitionLatencyValue0),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Transition latency value #1", mprintf("%u",     capability->capability.transitionLatencyValue1),                                                             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        }
+
+
+
+        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Latency indicator", mprintf("0x%08X", capability->latencyIndicator), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+
+
+
+        // Status
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status",                           mprintf("0x%04X", capability->status.value16),            DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Substate status",          mprintf("0x%02X", capability->status.substateStatus),     DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Status: Substate control enabled", capability->status.substateControlEnabled ? "Yes" : "No", DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control",                   mprintf("0x%04X", capability->control.value16),         DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: Substate control", mprintf("0x%02X", capability->control.substateControl), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+        }
+
+
+
+        // Substate power allocation
+        {
+            for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+            {
+                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Substate power allocation #%d", i), mprintf("%u", capability->substatePowerAllocation[i]), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
+            }
         }
         // Ignore CppAlignmentVerifier [END]
     }
@@ -3942,23 +4065,41 @@ NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphR
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability",                                   mprintf("0x%08X", capability->capability.value32),                                                          DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: No ST mode supported",             capability->capability.noStModeSupported             ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Interrupt vector mode supported",  capability->capability.interruptVectorModeSupported  ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Device specific mode supported",   capability->capability.deviceSpecificModeSupported   ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: Extended TPH requester supported", capability->capability.extendedTphRequesterSupported ? "Yes" : "No",                                        DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: ST table location",                strdup(enumToFullString((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation)),    DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Capability: ST table size",                    mprintf("%u",     capability->capability.stTableSizeReal()),                                                DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control",                                      mprintf("0x%08X", capability->control.value32),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control: ST mode select",                      strdup(enumToFullString((PciExpressTphRequesterStModeSelect)capability->control.stModeSelect)),             DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("TPHR - Control: TPH requester enable",                strdup(enumToFullString((PciExpressTphRequesterTphRequesterEnable)capability->control.tphRequesterEnable)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "TPH requester");
 
-        if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
+
+
+        // Capability
         {
-            for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability",                                   mprintf("0x%08X", capability->capability.value32),                                                       DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: No ST mode supported",             capability->capability.noStModeSupported             ? "Yes" : "No",                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Interrupt vector mode supported",  capability->capability.interruptVectorModeSupported  ? "Yes" : "No",                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Device specific mode supported",   capability->capability.deviceSpecificModeSupported   ? "Yes" : "No",                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: Extended TPH requester supported", capability->capability.extendedTphRequesterSupported ? "Yes" : "No",                                     DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ST table location",                strdup(enumToFullString((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Capability: ST table size",                    mprintf("%u",     capability->capability.stTableSizeReal()),                                             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Control
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control",                       mprintf("0x%08X", capability->control.value32),                                                             DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: ST mode select",       strdup(enumToFullString((PciExpressTphRequesterStModeSelect)capability->control.stModeSelect)),             DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Control: TPH requester enable", strdup(enumToFullString((PciExpressTphRequesterTphRequesterEnable)capability->control.tphRequesterEnable)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // ST table entry
+        {
+            if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
             {
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("TPHR - ST table entry #%d: ST lower entry", i), mprintf("0x%04X", capability->stTableEntries[i].stLowerEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-                UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("TPHR - ST table entry #%d: ST upper entry", i), mprintf("0x%04X", capability->stTableEntries[i].stUpperEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+                {
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ST table entry #%d: ST lower entry", i), mprintf("0x%04X", capability->stTableEntries[i].stLowerEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                    UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ST table entry #%d: ST upper entry", i), mprintf("0x%04X", capability->stTableEntries[i].stUpperEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+                }
             }
         }
         // Ignore CppAlignmentVerifier [END]
@@ -3998,12 +4139,25 @@ NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(P
     // Fill Device Manager entry
     {
         // Ignore CppAlignmentVerifier [BEGIN]
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency",                   mprintf("0x%04X", capability->maxSnoopLatency.value16),                                                                DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency: Latency value",    mprintf("%u",     capability->maxSnoopLatency.latencyValue),                                                           DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max snoop latency: Latency scale",    strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxSnoopLatency.latencyScale)),   DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency",                mprintf("0x%04X", capability->maxNoSnoopLatency.value16),                                                              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency: Latency value", mprintf("%u",     capability->maxNoSnoopLatency.latencyValue),                                                         DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("LTR - Max no-snoop latency: Latency scale", strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxNoSnoopLatency.latencyScale)), DeviceManagerMode::EXPERT),    NgosStatus::ASSERTION);
+        deviceManagerEntry = new DeviceManagerEntryPCI(deviceManagerEntry, DeviceManagerImage::PCI, "Latency tolerance reporting");
+
+
+
+        // Max snoop latency
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max snoop latency",                mprintf("0x%04X", capability->maxSnoopLatency.value16),                                                              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max snoop latency: Latency value", mprintf("%u",     capability->maxSnoopLatency.latencyValue),                                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max snoop latency: Latency scale", strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxSnoopLatency.latencyScale)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
+
+
+
+        // Max no-snoop latency
+        {
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max no-snoop latency",                mprintf("0x%04X", capability->maxNoSnoopLatency.value16),                                                              DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max no-snoop latency: Latency value", mprintf("%u",     capability->maxNoSnoopLatency.latencyValue),                                                         DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Max no-snoop latency: Latency scale", strdup(enumToFullString((PciExpressLatencyToleranceReportingLatencyScale)capability->maxNoSnoopLatency.latencyScale)), DeviceManagerMode::BASIC),     NgosStatus::ASSERTION);
+        }
         // Ignore CppAlignmentVerifier [END]
     }
 
