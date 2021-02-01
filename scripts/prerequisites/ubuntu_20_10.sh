@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to install prerequisites on Ubuntu 16.04
+# This script helps to install prerequisites on Ubuntu 20.10
 # Author: Maxim Shvecov
-# Usage: sudo ./ubuntu_16_04.sh
+# Usage: sudo ./ubuntu_20_10.sh
 
 
 
@@ -13,10 +13,10 @@
 
 
 CURRENT_PATH=`pwd`
-BINUTILS_VERSION=2.34
-GCC_VERSION=10.1.0
+BINUTILS_VERSION=2.36
+GCC_VERSION=10.2.0
 VIRTUALBOX_VERSION=6.1
-QT_VERSION=5.15.0
+QT_VERSION=6.0.0
 
 
 
@@ -34,8 +34,8 @@ fi
 
 
 
-if [[ `lsb_release -rs` != 16.04 ]]; then
-    echo "This script should be called on Ubuntu 16.04"
+if [[ `lsb_release -rs` != 20.10 ]]; then
+    echo "This script should be called on Ubuntu 20.10"
 
     exit 1
 fi

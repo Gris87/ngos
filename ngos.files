@@ -4,12 +4,12 @@
 3rd_party/Makefile
 docs/.spelling
 docs/0. Intro/1. Project structure/README.md
-docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 20.04/README.md
-docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 19.10/README.md
-docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 19.04/README.md
-docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 18.10/README.md
-docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 18.04/README.md
-docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 16.04/README.md
+docs/0. Intro/2. Getting started/1. Install prerequisites on Ubuntu 20.10/README.md
+docs/0. Intro/2. Getting started/2. Install prerequisites on Ubuntu 20.04/README.md
+docs/0. Intro/2. Getting started/3. Install prerequisites on Ubuntu 19.10/README.md
+docs/0. Intro/2. Getting started/4. Install prerequisites on Ubuntu 19.04/README.md
+docs/0. Intro/2. Getting started/5. Install prerequisites on Ubuntu 18.10/README.md
+docs/0. Intro/2. Getting started/6. Install prerequisites on Ubuntu 18.04/README.md
 docs/0. Intro/2. Getting started/7. Install prerequisites on CentOS 8.2/README.md
 docs/0. Intro/2. Getting started/8. Install prerequisites on CentOS 7.6/README.md
 docs/0. Intro/2. Getting started/Configuring Qt Creator 01.png
@@ -96,12 +96,12 @@ scripts/generate_secure_boot_keys.sh
 scripts/prerequisites/centos_7_6.sh
 scripts/prerequisites/centos_8_2.sh
 scripts/prerequisites/install.sh
-scripts/prerequisites/ubuntu_16_04.sh
 scripts/prerequisites/ubuntu_18_04.sh
 scripts/prerequisites/ubuntu_18_10.sh
 scripts/prerequisites/ubuntu_19_04.sh
 scripts/prerequisites/ubuntu_19_10.sh
 scripts/prerequisites/ubuntu_20_04.sh
+scripts/prerequisites/ubuntu_20_10.sh
 scripts/pull.sh
 scripts/push.sh
 scripts/sign_uefi_application.sh

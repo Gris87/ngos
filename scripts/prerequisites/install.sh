@@ -30,7 +30,9 @@ yum install -y redhat-lsb 2> /dev/null
 
 
 
-if [[ `lsb_release -rs` == 20.04 ]]; then
+if [[ `lsb_release -rs` == 20.10 ]]; then
+    ./ubuntu_20_10.sh
+elif [[ `lsb_release -rs` == 20.04 ]]; then
     ./ubuntu_20_04.sh
 elif [[ `lsb_release -rs` == 19.10 ]]; then
     ./ubuntu_19_10.sh

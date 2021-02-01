@@ -1,7 +1,7 @@
 NGOS
 ====
 
-0.2.4. Install prerequisites on Ubuntu 18.10
+0.2.6. Install prerequisites on Ubuntu 18.04
 --------------------------------------------
 
 Please follow instructions below in order to obtain the required software
@@ -60,5 +60,5 @@ rm qt-unified-linux-x64-online.run
 ```
 
 Please choose following items during Qt installation:
-* Qt -> Qt 5.15.0 -> Desktop gcc 64 bit
-* Qt -> Qt 5.15.0 -> Sources
+* Qt -> Qt 6.0.0 -> Desktop gcc 64 bit
+* Qt -> Qt 6.0.0 -> Sources
