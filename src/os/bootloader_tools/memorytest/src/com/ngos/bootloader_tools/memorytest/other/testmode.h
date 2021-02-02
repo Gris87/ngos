@@ -10,7 +10,7 @@
 
 
 
-enum class TestMode: u8
+enum class TestMode: bad_uint8
 {
     QUICK_TEST,
     FULL_TEST,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(TestMode mode) // TEST: NO
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (u8)mode, enumToString(mode));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)mode, enumToString(mode));
 
     return res;
 }

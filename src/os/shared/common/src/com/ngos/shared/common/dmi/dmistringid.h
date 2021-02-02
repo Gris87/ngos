@@ -44,7 +44,7 @@ struct DmiStringId
 
 
 
-    u8 id;
+    bad_uint8 id;
 } __attribute__((packed));
 
 

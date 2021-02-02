@@ -82,7 +82,7 @@ NgosStatus TabWidget::invalidate()
 
     if (mTabButtons.getSize() > 0)
     {
-        u64 tabButtonHeight = mTabButtons.first()->getHeight();
+        bad_uint64 tabButtonHeight = mTabButtons.first()->getHeight();
 
         COMMON_TEST_ASSERT(tabButtonHeight < mHeight, NgosStatus::ASSERTION);
 
@@ -130,8 +130,8 @@ NgosStatus TabWidget::repaint()
 
     NinePatch *patch = mPanelImage->getNinePatch();
 
-    u16 paddingLeft;
-    u16 paddingRight;
+    bad_uint16 paddingLeft;
+    bad_uint16 paddingRight;
 
     AVOID_UNUSED(paddingRight);
 
@@ -148,9 +148,9 @@ NgosStatus TabWidget::repaint()
 
 
 
-    u64 buttonPositionX = paddingLeft;
+    bad_uint64 buttonPositionX = paddingLeft;
 
-    for (i64 i = 0; i < (i64)mTabButtons.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)mTabButtons.getSize(); ++i)
     {
         TabButton *tabButton = mTabButtons.at(i);
 
@@ -188,7 +188,7 @@ NgosStatus TabWidget::repaint()
     return NgosStatus::OK;
 }
 
-NgosStatus TabWidget::setSize(u64 width, u64 height)
+NgosStatus TabWidget::setSize(bad_uint64 width, bad_uint64 height)
 {
     COMMON_LT((" | width = %u, height = %u", width, height));
 
@@ -206,10 +206,10 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
 
         NinePatch *patch = mPanelImage->getNinePatch();
 
-        u16 paddingLeft;
-        u16 paddingTop;
-        u16 paddingRight;
-        u16 paddingBottom;
+        bad_uint16 paddingLeft;
+        bad_uint16 paddingTop;
+        bad_uint16 paddingRight;
+        bad_uint16 paddingBottom;
 
         paddingTop = mTabButtons.first()->getHeight();
 
@@ -229,7 +229,7 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
 
 
 
-        for (i64 i = 0; i < (i64)mTabPages.getSize(); ++i)
+        for (bad_int64 i = 0; i < (bad_int64)mTabPages.getSize(); ++i)
         {
             TabPageWidget *page = mTabPages.at(i);
 
@@ -253,11 +253,11 @@ NgosStatus TabWidget::setSize(u64 width, u64 height)
     return NgosStatus::OK;
 }
 
-NgosStatus TabWidget::setCurrentPage(i64 page)
+NgosStatus TabWidget::setCurrentPage(bad_int64 page)
 {
     COMMON_LT((" | page = %d", page));
 
-    COMMON_ASSERT(page >= 0 && page < (i64)mTabPages.getSize(), "page is invalid",      NgosStatus::ASSERTION);
+    COMMON_ASSERT(page >= 0 && page < (bad_int64)mTabPages.getSize(), "page is invalid",      NgosStatus::ASSERTION);
     COMMON_ASSERT(mTabPages.getSize() == mTabButtons.getSize(), "mTabPages is invalid", NgosStatus::ASSERTION);
 
 
@@ -294,7 +294,7 @@ NgosStatus TabWidget::setCurrentPage(i64 page)
     return NgosStatus::OK;
 }
 
-i64 TabWidget::getCurrentPage()
+bad_int64 TabWidget::getCurrentPage()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

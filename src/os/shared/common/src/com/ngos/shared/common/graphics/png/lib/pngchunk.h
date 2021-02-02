@@ -10,9 +10,9 @@
 
 struct PngChunk
 {
-    u32          length;
+    bad_uint32          length;
     PngChunkType type;
-    u8           data[0];
+    bad_uint8           data[0];
 } __attribute__((packed));
 
 

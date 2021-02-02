@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice80862562: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice80862562: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_0E1100B9 = 0x0E1100B9,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(PciSubDevice80862562 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -70,7 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice80862562 subDevice) // TEST: N
         case PciSubDevice80862562::SUBDEVICE_10140267: return "NetVista A30p";
         case PciSubDevice80862562::SUBDEVICE_10280160: return "Dimension 2400";
         case PciSubDevice80862562::SUBDEVICE_17341003: return "D1521 Mainboard (Fujitsu-Siemens)";
-        case PciSubDevice80862562::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, i845GV)";
+        case PciSubDevice80862562::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, bad_int845GV)";
 
         default: return "Unknown device";
     }

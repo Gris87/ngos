@@ -84,7 +84,7 @@ NgosStatus NinePatch::addStretchRangeY(const StretchRange &range)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingLeft(u16 padding)
+NgosStatus NinePatch::setPaddingLeft(bad_uint16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -97,7 +97,7 @@ NgosStatus NinePatch::setPaddingLeft(u16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingTop(u16 padding)
+NgosStatus NinePatch::setPaddingTop(bad_uint16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -110,7 +110,7 @@ NgosStatus NinePatch::setPaddingTop(u16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingRight(u16 padding)
+NgosStatus NinePatch::setPaddingRight(bad_uint16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -123,7 +123,7 @@ NgosStatus NinePatch::setPaddingRight(u16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingBottom(u16 padding)
+NgosStatus NinePatch::setPaddingBottom(bad_uint16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -154,7 +154,7 @@ const List<StretchRange>& NinePatch::getStretchRangesY() const
     return mStretchRangesY;
 }
 
-u16 NinePatch::getPaddingLeft() const
+bad_uint16 NinePatch::getPaddingLeft() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -163,7 +163,7 @@ u16 NinePatch::getPaddingLeft() const
     return mPaddingLeft;
 }
 
-u16 NinePatch::getPaddingTop() const
+bad_uint16 NinePatch::getPaddingTop() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -172,7 +172,7 @@ u16 NinePatch::getPaddingTop() const
     return mPaddingTop;
 }
 
-u16 NinePatch::getPaddingRight() const
+bad_uint16 NinePatch::getPaddingRight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -181,7 +181,7 @@ u16 NinePatch::getPaddingRight() const
     return mPaddingRight;
 }
 
-u16 NinePatch::getPaddingBottom() const
+bad_uint16 NinePatch::getPaddingBottom() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiMemoryDeviceFormFactor: u8
+enum class DmiMemoryDeviceFormFactor: bad_uint8
 {
     NONE             = 0,
     OTHER            = 1,
@@ -73,7 +73,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceFormFactor factor) // TEST: 
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (u8)factor, enumToString(factor));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)factor, enumToString(factor));
 
     return res;
 }

@@ -8,7 +8,7 @@
 
 
 
-enum class UefiAcpiDescriptor: u8
+enum class UefiAcpiDescriptor: bad_uint8
 {
     NONE                       = 0,
     IRQ_NOFLAG                 = 0x22,
@@ -71,7 +71,7 @@ inline const char8* enumToFullString(UefiAcpiDescriptor descriptor) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%02X (%s)", (u8)descriptor, enumToString(descriptor));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)descriptor, enumToString(descriptor));
 
     return res;
 }

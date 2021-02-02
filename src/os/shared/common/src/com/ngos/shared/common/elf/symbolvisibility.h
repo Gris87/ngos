@@ -8,7 +8,7 @@
 
 
 
-enum class ElfSymbolVisibility: u8
+enum class ElfSymbolVisibility: bad_uint8
 {
     DEFAULT   = 0,
     INTERNAL  = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(ElfSymbolVisibility visibility) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (u8)visibility, enumToString(visibility));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)visibility, enumToString(visibility));
 
     return res;
 }

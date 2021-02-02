@@ -15,10 +15,10 @@
 struct DmiMemoryDevice
 {
     DmiMemoryDeviceType  memoryType;
-    u32                  speed;
-    u64                  size;
-    u64                  start;
-    u64                  end;
+    bad_uint32                  speed;
+    bad_uint64                  size;
+    bad_uint64                  start;
+    bad_uint64                  end;
     const char8         *deviceLocator;
     const char8         *manufacturer;
     const char8         *serialNumber;

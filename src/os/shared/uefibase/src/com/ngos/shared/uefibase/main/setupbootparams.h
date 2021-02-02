@@ -8,7 +8,7 @@
 
 
 
-NgosStatus setupBootParams(BootParams *params, u64 kernelLocation); // TEST: NO
+NgosStatus setupBootParams(BootParams *params, bad_uint64 kernelLocation); // TEST: NO
 
 
 

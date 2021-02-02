@@ -8,7 +8,7 @@
 
 
 
-enum class ElfOsAbi: u8
+enum class ElfOsAbi: bad_uint8
 {
     SYSTEM_V         = 0,
     HP_UX            = 0x01,
@@ -19,7 +19,7 @@ enum class ElfOsAbi: u8
     AIX              = 0x07,
     IRIX             = 0x08,
     FREEBSD          = 0x09,
-    TRU64            = 0x0A,
+    TRbad_uint64            = 0x0A,
     NOVELL_MODESTO   = 0x0B,
     OPENBSD          = 0x0C,
     OPENVMS          = 0x0D,
@@ -49,7 +49,7 @@ inline const char8* enumToString(ElfOsAbi abi) // TEST: NO
         case ElfOsAbi::AIX:            return "AIX";
         case ElfOsAbi::IRIX:           return "IRIX";
         case ElfOsAbi::FREEBSD:        return "FREEBSD";
-        case ElfOsAbi::TRU64:          return "TRU64";
+        case ElfOsAbi::TRbad_uint64:          return "TRbad_uint64";
         case ElfOsAbi::NOVELL_MODESTO: return "NOVELL_MODESTO";
         case ElfOsAbi::OPENBSD:        return "OPENBSD";
         case ElfOsAbi::OPENVMS:        return "OPENVMS";
@@ -73,7 +73,7 @@ inline const char8* enumToFullString(ElfOsAbi abi) // TEST: NO
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", (u8)abi, enumToString(abi));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)abi, enumToString(abi));
 
     return res;
 }

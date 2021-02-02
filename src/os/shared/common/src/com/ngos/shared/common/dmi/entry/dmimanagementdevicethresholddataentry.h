@@ -19,12 +19,12 @@
 struct DmiManagementDeviceThresholdDataEntry
 {
     DmiEntryHeader header;
-    u16            lowerThresholdNonCritical;
-    u16            upperThresholdNonCritical;
-    u16            lowerThresholdCritical;
-    u16            upperThresholdCritical;
-    u16            lowerThresholdNonRecoverable;
-    u16            upperThresholdNonRecoverable;
+    bad_uint16            lowerThresholdNonCritical;
+    bad_uint16            upperThresholdNonCritical;
+    bad_uint16            lowerThresholdCritical;
+    bad_uint16            upperThresholdCritical;
+    bad_uint16            lowerThresholdNonRecoverable;
+    bad_uint16            upperThresholdNonRecoverable;
 } __attribute__((packed));
 
 

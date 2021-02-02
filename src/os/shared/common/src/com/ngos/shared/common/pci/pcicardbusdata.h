@@ -11,8 +11,8 @@
 struct PciCardBusData
 {
     PciVendor subsystemVendorID;
-    u16       subsystemID;
-    u32       legacyBase;
+    bad_uint16       subsystemID;
+    bad_uint32       legacyBase;
 };
 
 

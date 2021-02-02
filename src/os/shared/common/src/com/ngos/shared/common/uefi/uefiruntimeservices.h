@@ -25,19 +25,19 @@ struct UefiRuntimeServices
     UefiStatus (UEFI_API *getWakeupTime)(bool *enabled, bool *pending, UefiTime *time); // TEST: NO
     UefiStatus (UEFI_API *setWakeupTime)(bool enable, UefiTime *time); // TEST: NO
 
-    UefiStatus (UEFI_API *setVirtualAddressMap)(u64 memoryMapSize, u64 descriptorSize, u32 descriptorVersion, UefiMemoryDescriptor *virtualMap); // TEST: NO
-    UefiStatus (UEFI_API *convertPointer)(u64 debugDisposition, void **address); // TEST: NO
+    UefiStatus (UEFI_API *setVirtualAddressMap)(bad_uint64 memoryMapSize, bad_uint64 descriptorSize, bad_uint32 descriptorVersion, UefiMemoryDescriptor *virtualMap); // TEST: NO
+    UefiStatus (UEFI_API *convertPointer)(bad_uint64 debugDisposition, void **address); // TEST: NO
 
-    UefiStatus (UEFI_API *getVariable)(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data); // TEST: NO
-    UefiStatus (UEFI_API *getNextVariableName)(u64 *variableNameSize, const char16 *variableName, Guid *vendorGuid); // TEST: NO
-    UefiStatus (UEFI_API *setVariable)(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, u64 dataSize, u8 *data); // TEST: NO
+    UefiStatus (UEFI_API *getVariable)(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, bad_uint64 *dataSize, bad_uint8 *data); // TEST: NO
+    UefiStatus (UEFI_API *getNextVariableName)(bad_uint64 *variableNameSize, const char16 *variableName, Guid *vendorGuid); // TEST: NO
+    UefiStatus (UEFI_API *setVariable)(const char16 *variableName, Guid *vendorGuid, uefi_variable_attribute_flags attributes, bad_uint64 dataSize, bad_uint8 *data); // TEST: NO
 
-    UefiStatus (UEFI_API *getNextHighMonotonicCount)(u32 *highCount); // TEST: NO
-    UefiStatus (UEFI_API *resetSystem)(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO
+    UefiStatus (UEFI_API *getNextHighMonotonicCount)(bad_uint32 *highCount); // TEST: NO
+    UefiStatus (UEFI_API *resetSystem)(UefiResetType resetType, UefiStatus resetStatus, bad_uint64 dataSize, char16 *resetData); // TEST: NO
 
-    UefiStatus (UEFI_API *updateCapsule)(UefiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, u64 scatterGatherList); // TEST: NO
-    UefiStatus (UEFI_API *queryCapsuleCapabilities)(UefiCapsuleHeader **capsuleHeaderArray, u64 capsuleCount, u64 *maximumCapsuleSize, UefiResetType *resetType); // TEST: NO
-    UefiStatus (UEFI_API *queryVariableInfo)(uefi_variable_attribute_flags attributes, u64 *maximumVariableStorageSize, u64 *remainingVariableStorageSize, u64 *maximumVariableSize); // TEST: NO
+    UefiStatus (UEFI_API *updateCapsule)(UefiCapsuleHeader **capsuleHeaderArray, bad_uint64 capsuleCount, bad_uint64 scatterGatherList); // TEST: NO
+    UefiStatus (UEFI_API *queryCapsuleCapabilities)(UefiCapsuleHeader **capsuleHeaderArray, bad_uint64 capsuleCount, bad_uint64 *maximumCapsuleSize, UefiResetType *resetType); // TEST: NO
+    UefiStatus (UEFI_API *queryVariableInfo)(uefi_variable_attribute_flags attributes, bad_uint64 *maximumVariableStorageSize, bad_uint64 *remainingVariableStorageSize, bad_uint64 *maximumVariableSize); // TEST: NO
 };
 
 

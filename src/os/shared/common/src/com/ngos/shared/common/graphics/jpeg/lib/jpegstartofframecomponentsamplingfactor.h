@@ -13,11 +13,11 @@ struct JpegStartOfFrameComponentSamplingFactor
     {
         struct
         {
-            u8 y: 4;
-            u8 x: 4;
+            bad_uint8 y: 4;
+            bad_uint8 x: 4;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

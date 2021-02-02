@@ -10,7 +10,7 @@
 
 
 
-enum class KvmFeature: u8
+enum class KvmFeature: bad_uint8
 {
     CLOCKSOURCE        = 0,
     NOP_IO_DELAY       = 1,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(KvmFeature feature) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", (u8)feature, enumToString(feature));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)feature, enumToString(feature));
 
     return res;
 }

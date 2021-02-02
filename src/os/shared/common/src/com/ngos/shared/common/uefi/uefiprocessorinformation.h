@@ -11,7 +11,7 @@
 
 struct UefiProcessorInformation
 {
-    u64                                 processorId;
+    bad_uint64                                 processorId;
     UefiProcessorInformationStatusFlags status;
     UefiCpuPhysicalLocation             location;
 };

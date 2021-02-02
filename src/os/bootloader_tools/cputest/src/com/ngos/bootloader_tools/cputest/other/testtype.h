@@ -10,7 +10,7 @@
 
 
 
-enum class TestType: u8
+enum class TestType: bad_uint8
 {
     INTEGER,
     BITWISE,
@@ -79,7 +79,7 @@ inline const char8* enumToFullString(TestType type) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice808624C7: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice808624C7: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140267 = 0x10140267,
@@ -87,7 +87,7 @@ inline const char8* enumToFullString(PciSubDevice808624C7 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -119,7 +119,7 @@ inline const char8* enumToHumanString(PciSubDevice808624C7 subDevice) // TEST: N
         case PciSubDevice808624C7::SUBDEVICE_144DC00C: return "P30/P35 notebook";
         case PciSubDevice808624C7::SUBDEVICE_14625800: return "845PE Max (MS-6580)";
         case PciSubDevice808624C7::SUBDEVICE_15092990: return "Averatec 5110H";
-        case PciSubDevice808624C7::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, i845GV)";
+        case PciSubDevice808624C7::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, bad_int845GV)";
         case PciSubDevice808624C7::SUBDEVICE_4C531090: return "Cx9 / Vx9 mainboard";
         case PciSubDevice808624C7::SUBDEVICE_808624C2: return "Latitude X300";
         case PciSubDevice808624C7::SUBDEVICE_80864541: return "Latitude D400/D500";

@@ -18,7 +18,7 @@ Guid generalGUID = { 0x00112233, 0x4455, 0x6677, { 0x88, 0x99, 0xAA, 0xBB, 0xCC,
 
 
 
-NgosStatus generateHardwareId(BootParams *params, i64 *length)
+NgosStatus generateHardwareId(BootParams *params, bad_int64 *length)
 {
     UEFI_LT((" | params = 0x%p, length = 0x%p", params, length));
 
@@ -43,17 +43,17 @@ NgosStatus generateHardwareId(BootParams *params, i64 *length)
 
 
 
-    i64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(manufacturer), stringToString(product), systemUuid);
+    bad_int64 len = sprintf(params->hardwareId, "%s %s %s - ", stringToString(manufacturer), stringToString(product), systemUuid);
 
     UEFI_LVVV(("len = %u", len));
 
-    UEFI_TEST_ASSERT(len < (i64)sizeof(params->hardwareId), NgosStatus::ASSERTION);
+    UEFI_TEST_ASSERT(len < (bad_int64)sizeof(params->hardwareId), NgosStatus::ASSERTION);
 
 
 
-    u64 rand = 0;
+    bad_uint64 rand = 0;
 
-    for (i64 i = len; i < (i64)sizeof(params->hardwareId) - 1; ++i)
+    for (bad_int64 i = len; i < (bad_int64)sizeof(params->hardwareId) - 1; ++i)
     {
         if (!rand)
         {
@@ -87,7 +87,7 @@ NgosStatus saveHardwareIdToNvram(BootParams *params)
 
 
 
-    if (UEFI::setVariable(u"HardwareID", &generalGUID, sizeof(params->hardwareId), (u8 *)params->hardwareId) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"HardwareID", &generalGUID, sizeof(params->hardwareId), (bad_uint8 *)params->hardwareId) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Stored HardwareID NVRAM variable: %s", params->hardwareId));
     }
@@ -109,10 +109,10 @@ NgosStatus loadHardwareIdFromNvram(BootParams *params)
 
 
 
-    u64    variableSize;
+    bad_uint64    variableSize;
     char8 *nvramHardwareId;
 
-    if (UEFI::getVariable(u"HardwareID", &generalGUID, &variableSize, (u8 **)&nvramHardwareId) == UefiStatus::SUCCESS)
+    if (UEFI::getVariable(u"HardwareID", &generalGUID, &variableSize, (bad_uint8 **)&nvramHardwareId) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Loaded HardwareID NVRAM variable: %s", nvramHardwareId));
 
@@ -179,7 +179,7 @@ NgosStatus saveHardwareIdToFile(BootParams *params)
         {
             UEFI_LV(("Created hardware ID file: %ls", HARDWARE_ID_PATH));
 
-            u64 size = sizeof(params->hardwareId) - 1;
+            bad_uint64 size = sizeof(params->hardwareId) - 1;
 
             if (hardwareIdFile->write(hardwareIdFile, &size, params->hardwareId) == UefiStatus::SUCCESS)
             {
@@ -264,7 +264,7 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
 
 
     char8 hardwareId[HARDWARE_ID_LENGTH];
-    u64   size = sizeof(hardwareId);
+    bad_uint64   size = sizeof(hardwareId);
 
 
 
@@ -347,7 +347,7 @@ NgosStatus loadHardwareIdFromFile(BootParams *params)
     }
     else
     {
-        i64 length;
+        bad_int64 length;
 
         UEFI_ASSERT_EXECUTION(generateHardwareId(params, &length), NgosStatus::ASSERTION);
 

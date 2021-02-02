@@ -9,9 +9,9 @@
 
 struct MemoryBlockType
 {
-    u64                count;
-    u64                max;
-    u64                totalSize;
+    bad_uint64                count;
+    bad_uint64                max;
+    bad_uint64                totalSize;
     MemoryBlockRegion *regions;
 };
 

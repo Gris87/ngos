@@ -16,16 +16,16 @@
 
 struct UefiSmbios3ConfigurationTable
 {
-    u8  anchor[5];
-    u8  entryPointStructureChecksum;
-    u8  entryPointLength;
-    u8  majorVersion;
-    u8  minorVersion;
-    u8  docRevision;
-    u8  entryPointRevision;
-    u8  __reserved;
-    u32 structureTableMaximumSize;
-    u64 structureTableAddress;
+    bad_uint8  anchor[5];
+    bad_uint8  entryPointStructureChecksum;
+    bad_uint8  entryPointLength;
+    bad_uint8  majorVersion;
+    bad_uint8  minorVersion;
+    bad_uint8  docRevision;
+    bad_uint8  entryPointRevision;
+    bad_uint8  __reserved;
+    bad_uint32 structureTableMaximumSize;
+    bad_uint64 structureTableAddress;
 } __attribute__((packed));
 
 

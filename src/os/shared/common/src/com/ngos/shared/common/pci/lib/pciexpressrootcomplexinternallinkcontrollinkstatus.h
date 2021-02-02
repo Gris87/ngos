@@ -14,12 +14,12 @@ struct PciExpressRootComplexInternalLinkControlLinkStatus
     {
         struct
         {
-            u16 currentLinkSpeed    : 4; // TODO: Use enum PciExpressLinkSpeed
-            u16 negotiatedLinkWidth : 6; // TODO: Use enum PciExpressLinkWidth
-            u16 __reserved          : 6;
+            bad_uint16 currentLinkSpeed    : 4; // TODO: Use enum PciExpressLinkSpeed
+            bad_uint16 negotiatedLinkWidth : 6; // TODO: Use enum PciExpressLinkWidth
+            bad_uint16 __reserved          : 6;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

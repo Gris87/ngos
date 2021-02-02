@@ -8,7 +8,7 @@
 
 
 
-enum class PciHyperTransportRevision: u8
+enum class PciHyperTransportRevision: bad_uint8
 {
     NONE   = 0,
     _1_00  = 0x20,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(PciHyperTransportRevision revision) // TEST
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)revision, enumToString(revision));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)revision, enumToString(revision));
 
     return res;
 }

@@ -9,35 +9,35 @@
 
 struct UefiNetworkStatistics
 {
-    u64 rxTotalFrames;
-    u64 rxGoodFrames;
-    u64 rxUndersizeFrames;
-    u64 rxOversizeFrames;
-    u64 rxDroppedFrames;
-    u64 rxUnicastFrames;
-    u64 rxBroadcastFrames;
-    u64 rxMulticastFrames;
-    u64 rxCrcErrorFrames;
-    u64 rxTotalBytes;
+    bad_uint64 rxTotalFrames;
+    bad_uint64 rxGoodFrames;
+    bad_uint64 rxUndersizeFrames;
+    bad_uint64 rxOversizeFrames;
+    bad_uint64 rxDroppedFrames;
+    bad_uint64 rxUnicastFrames;
+    bad_uint64 rxBroadcastFrames;
+    bad_uint64 rxMulticastFrames;
+    bad_uint64 rxCrcErrorFrames;
+    bad_uint64 rxTotalBytes;
 
-    u64 txTotalFrames;
-    u64 txGoodFrames;
-    u64 txUndersizeFrames;
-    u64 txOversizeFrames;
-    u64 txDroppedFrames;
-    u64 txUnicastFrames;
-    u64 txBroadcastFrames;
-    u64 txMulticastFrames;
-    u64 txCrcErrorFrames;
-    u64 txTotalBytes;
+    bad_uint64 txTotalFrames;
+    bad_uint64 txGoodFrames;
+    bad_uint64 txUndersizeFrames;
+    bad_uint64 txOversizeFrames;
+    bad_uint64 txDroppedFrames;
+    bad_uint64 txUnicastFrames;
+    bad_uint64 txBroadcastFrames;
+    bad_uint64 txMulticastFrames;
+    bad_uint64 txCrcErrorFrames;
+    bad_uint64 txTotalBytes;
 
-    u64 collisions;
-    u64 unsupportedProtocol;
+    bad_uint64 collisions;
+    bad_uint64 unsupportedProtocol;
 
-    u64 rxDuplicatedFrames;
-    u64 rxDecryptErrorFrames;
-    u64 txErrorFrames;
-    u64 txRetryFrames;
+    bad_uint64 rxDuplicatedFrames;
+    bad_uint64 rxDecryptErrorFrames;
+    bad_uint64 txErrorFrames;
+    bad_uint64 txRetryFrames;
 };
 
 

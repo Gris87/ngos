@@ -37,7 +37,7 @@ struct DmiCacheEntry
 
 struct DmiCacheEntryV21: public DmiCacheEntry
 {
-    u8                          cacheSpeed;
+    bad_uint8                          cacheSpeed;
     DmiCacheErrorCorrectionType errorCorrectionType;
     DmiCacheType                systemCacheType;
     DmiCacheAssociativity       associativity;

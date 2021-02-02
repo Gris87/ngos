@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice808624CD: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice808624CD: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140267 = 0x10140267,
@@ -101,7 +101,7 @@ inline const char8* enumToFullString(PciSubDevice808624CD subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -139,7 +139,7 @@ inline const char8* enumToHumanString(PciSubDevice808624CD subDevice) // TEST: N
         case PciSubDevice808624CD::SUBDEVICE_144DC00C: return "P30/P35 notebook";
         case PciSubDevice808624CD::SUBDEVICE_14623981: return "845PE Max (MS-6580)";
         case PciSubDevice808624CD::SUBDEVICE_15091968: return "Averatec 5110H";
-        case PciSubDevice808624CD::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, i845GV)";
+        case PciSubDevice808624CD::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, bad_int845GV)";
         case PciSubDevice808624CD::SUBDEVICE_17341055: return "Amilo M1420";
         case PciSubDevice808624CD::SUBDEVICE_1AF41100: return "QEMU Virtual Machine";
         case PciSubDevice808624CD::SUBDEVICE_4C531090: return "Cx9 / Vx9 mainboard";

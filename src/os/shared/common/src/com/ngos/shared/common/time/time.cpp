@@ -34,7 +34,7 @@
 
 
 
-u8 Time::sDaysInMonth[12] =
+bad_uint8 Time::sDaysInMonth[12] =
 {
     DAYS_IN_JANUARY,
     DAYS_IN_FEBRUARY,
@@ -50,7 +50,7 @@ u8 Time::sDaysInMonth[12] =
     DAYS_IN_DECEMBER
 };
 
-u16 Time::sDaysFromStartOfYear[12] =
+bad_uint16 Time::sDaysFromStartOfYear[12] =
 {
     0,
     DAYS_IN_JANUARY,
@@ -68,7 +68,7 @@ u16 Time::sDaysFromStartOfYear[12] =
 
 
 
-i64 Time::currentTimestampInMilliseconds()
+bad_int64 Time::currentTimestampInMilliseconds()
 {
     COMMON_LT((""));
 
@@ -93,7 +93,7 @@ i64 Time::currentTimestampInMilliseconds()
 #endif
 }
 
-i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 minute, u8 second, u32 nanosecond)
+bad_int64 Time::timeToTimestampInMilliseconds(bad_int64 year, bad_uint8 month, bad_uint8 day, bad_uint8 hour, bad_uint8 minute, bad_uint8 second, bad_uint32 nanosecond)
 {
     COMMON_LT((" | year = %d, month = %u, day = %u, hour = %u, minute = %u, second = %u, nanosecond = %u", year, month, day, hour, minute, second, nanosecond));
 
@@ -108,31 +108,31 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
 
 
 
-    i64 yearsFrom1970 = year - 1970;
-    i64 amountOfLeapYears;
+    bad_int64 yearsFrom1970 = year - 1970;
+    bad_int64 amountOfLeapYears;
 
     if (year > 0)
     {
-        i64 yearBefore = year - 1;
+        bad_int64 yearBefore = year - 1;
 
-        i64 amountOfYearsDiv4   = yearBefore / 4;
-        i64 amountOfYearsDiv100 = yearBefore / 100;
-        i64 amountOfYearsDiv400 = yearBefore / 400;
+        bad_int64 amountOfYearsDiv4   = yearBefore / 4;
+        bad_int64 amountOfYearsDiv100 = yearBefore / 100;
+        bad_int64 amountOfYearsDiv400 = yearBefore / 400;
 
         amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - NUMBER_OF_LEAP_YEARS_FROM_0_TO_1970;
     }
     else
     {
-        i64 amountOfYearsDiv4   = year / 4;
-        i64 amountOfYearsDiv100 = year / 100;
-        i64 amountOfYearsDiv400 = year / 400;
+        bad_int64 amountOfYearsDiv4   = year / 4;
+        bad_int64 amountOfYearsDiv100 = year / 100;
+        bad_int64 amountOfYearsDiv400 = year / 400;
 
         amountOfLeapYears = amountOfYearsDiv4 - amountOfYearsDiv100 + amountOfYearsDiv400 - NUMBER_OF_LEAP_YEARS_FROM_0_TO_1970 - 1; // 1 = special case for year 0
     }
 
 
 
-    i64 days = yearsFrom1970 * TOTAL_DAYS + amountOfLeapYears;
+    bad_int64 days = yearsFrom1970 * TOTAL_DAYS + amountOfLeapYears;
 
     days += sDaysFromStartOfYear[month - 1];
 
@@ -149,7 +149,7 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
 
 
 
-    i64 res;
+    bad_int64 res;
 
     res =  days * 24;
     res =  (res + hour) * 60;
@@ -160,7 +160,7 @@ i64 Time::timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 
     return res;
 }
 
-u8 Time::daysInMonth(i64 year, u8 month)
+bad_uint8 Time::daysInMonth(bad_int64 year, bad_uint8 month)
 {
     COMMON_LT((" | year = %d, month = %u", year, month));
 
@@ -176,7 +176,7 @@ u8 Time::daysInMonth(i64 year, u8 month)
     return sDaysInMonth[month - 1];
 }
 
-bool Time::isLeapYear(i64 year)
+bool Time::isLeapYear(bad_int64 year)
 {
     COMMON_LT((" | year = %d", year));
 

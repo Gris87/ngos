@@ -9,7 +9,7 @@
 
 struct UefiIpV6Address
 {
-    u8 address[16];
+    bad_uint8 address[16];
 };
 
 

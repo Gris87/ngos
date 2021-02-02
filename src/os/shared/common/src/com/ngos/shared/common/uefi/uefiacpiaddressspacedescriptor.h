@@ -12,15 +12,15 @@
 struct UefiAcpiAddressSpaceDescriptor
 {
     UefiAcpiDescriptor   descriptor;
-    u16                  length;
+    bad_uint16                  length;
     UefiAcpiResourceType resourceType;
-    u8                   genFlag;
-    u8                   specificFlag;
-    u64                  addressSpaceGranularity;
-    u64                  addressRangeMinimum;
-    u64                  addressRangeMaximum;
-    u64                  addressTranslationOffset;
-    u64                  addressLength;
+    bad_uint8                   genFlag;
+    bad_uint8                   specificFlag;
+    bad_uint64                  addressSpaceGranularity;
+    bad_uint64                  addressRangeMinimum;
+    bad_uint64                  addressRangeMaximum;
+    bad_uint64                  addressTranslationOffset;
+    bad_uint64                  addressLength;
 } __attribute__((packed));
 
 

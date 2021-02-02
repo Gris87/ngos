@@ -13,13 +13,13 @@ struct PciExpressLinkCapability2
     {
         struct
         {
-            u32 __reserved       : 1;
-            u32 linkSpeedsVector : 7;
-            u32 crosslink        : 1;
-            u32 __reserved2      : 23;
+            bad_uint32 __reserved       : 1;
+            bad_uint32 linkSpeedsVector : 7;
+            bad_uint32 crosslink        : 1;
+            bad_uint32 __reserved2      : 23;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

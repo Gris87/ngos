@@ -17,19 +17,19 @@
 
 
 
-u32                                            DMI::sVersion;
-u16                                            DMI::sNumberOfSmbiosStructures;
-u64                                            DMI::sStructureTableAddress;
-u32                                            DMI::sStructureTableLength;
-u16                                            DMI::sSystemPhysicalMemoryArrayHandle;
-u64                                            DMI::sSystemPhysicalMemoryArrayCapacity;
-u64                                            DMI::sTotalAmountOfMemory;
-u64                                            DMI::sNumberOfInstalledMemoryDevices;
+bad_uint32                                            DMI::sVersion;
+bad_uint16                                            DMI::sNumberOfSmbiosStructures;
+bad_uint64                                            DMI::sStructureTableAddress;
+bad_uint32                                            DMI::sStructureTableLength;
+bad_uint16                                            DMI::sSystemPhysicalMemoryArrayHandle;
+bad_uint64                                            DMI::sSystemPhysicalMemoryArrayCapacity;
+bad_uint64                                            DMI::sTotalAmountOfMemory;
+bad_uint64                                            DMI::sNumberOfInstalledMemoryDevices;
 ArrayList<DmiMemoryDeviceEntry *>              DMI::sMemoryDeviceEntries;
 ArrayList<DmiMemoryDeviceMappedAddressEntry *> DMI::sMemoryDeviceMappedAddressEntries;
 ArrayList<DmiMemoryDevice>                     DMI::sMemoryDevices;
-const char8*                                   DMI::sIdentities[(u64)DmiIdentity::MAXIMUM];
-Uuid*                                          DMI::sUuids[(u64)DmiStoredUuid::MAXIMUM];
+const char8*                                   DMI::sIdentities[(bad_uint64)DmiIdentity::MAXIMUM];
+Uuid*                                          DMI::sUuids[(bad_uint64)DmiStoredUuid::MAXIMUM];
 
 
 
@@ -48,9 +48,9 @@ NgosStatus DMI::init()
 #else
         UefiSmbios3ConfigurationTable *smbios3Mapped;
 
-        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios3, sizeof(UefiSmbios3ConfigurationTable), (void **)&smbios3Mapped), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((bad_uint64)smbios3, sizeof(UefiSmbios3ConfigurationTable), (void **)&smbios3Mapped), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(initFromSmbios3(smbios3Mapped),                                                                         NgosStatus::ASSERTION);
-        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbios3Mapped, sizeof(UefiSmbios3ConfigurationTable)),                 NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((bad_uint64)smbios3Mapped, sizeof(UefiSmbios3ConfigurationTable)),                 NgosStatus::ASSERTION);
 #endif
     }
     else
@@ -64,9 +64,9 @@ NgosStatus DMI::init()
 #else
             UefiSmbiosConfigurationTable *smbiosMapped;
 
-            COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)smbios, sizeof(UefiSmbiosConfigurationTable), (void **)&smbiosMapped), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((bad_uint64)smbios, sizeof(UefiSmbiosConfigurationTable), (void **)&smbiosMapped), NgosStatus::ASSERTION);
             COMMON_ASSERT_EXECUTION(initFromSmbios(smbiosMapped),                                                                        NgosStatus::ASSERTION);
-            COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)smbiosMapped, sizeof(UefiSmbiosConfigurationTable)),                NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((bad_uint64)smbiosMapped, sizeof(UefiSmbiosConfigurationTable)),                NgosStatus::ASSERTION);
 #endif
         }
         else
@@ -80,21 +80,21 @@ NgosStatus DMI::init()
 
 
 #ifdef UEFI_APPLICATION // Defined in pro file
-    COMMON_ASSERT_EXECUTION(iterateDmiEntries((u8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(iterateDmiEntries((bad_uint8 *)sStructureTableAddress, decodeDmiEntry), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                         NgosStatus::ASSERTION);
 #else
-    u8 *buf;
+    bad_uint8 *buf;
 
     COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping(sStructureTableAddress, sStructureTableLength, (void **)&buf), NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(iterateDmiEntries(buf, decodeDmiEntry),                                                 NgosStatus::ASSERTION);
     COMMON_ASSERT_EXECUTION(storeDmiMemoryDevices(),                                                                NgosStatus::ASSERTION);
-    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(IORemap::removeFixedMapping((bad_uint64)buf, sStructureTableLength),                           NgosStatus::ASSERTION);
 #endif
 
 
 
     COMMON_LV(("SMBIOS version is %u.%u", sVersion >> 16, (sVersion >> 8) & 0xFF));
-    COMMON_LV(("DMI: %s %s, BIOS %s %s %s", sIdentities[(u64)DmiIdentity::SYSTEM_MANUFACTURER], sIdentities[(u64)DmiIdentity::SYSTEM_PRODUCT_NAME], sIdentities[(u64)DmiIdentity::BIOS_VENDOR], sIdentities[(u64)DmiIdentity::BIOS_VERSION], sIdentities[(u64)DmiIdentity::BIOS_RELEASE_DATE]));
+    COMMON_LV(("DMI: %s %s, BIOS %s %s %s", sIdentities[(bad_uint64)DmiIdentity::SYSTEM_MANUFACTURER], sIdentities[(bad_uint64)DmiIdentity::SYSTEM_PRODUCT_NAME], sIdentities[(bad_uint64)DmiIdentity::BIOS_VENDOR], sIdentities[(bad_uint64)DmiIdentity::BIOS_VERSION], sIdentities[(bad_uint64)DmiIdentity::BIOS_RELEASE_DATE]));
 
 
 
@@ -117,7 +117,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sMemoryDeviceEntries.getSize(); ++i)
             {
                 DmiMemoryDeviceEntry *device = sMemoryDeviceEntries.at(i);
 
@@ -136,7 +136,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDeviceMappedAddressEntries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sMemoryDeviceMappedAddressEntries.getSize(); ++i)
             {
                 DmiMemoryDeviceMappedAddressEntry *device = sMemoryDeviceMappedAddressEntries.at(i);
 
@@ -155,7 +155,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sMemoryDevices:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sMemoryDevices.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sMemoryDevices.getSize(); ++i)
             {
                 const DmiMemoryDevice &device = sMemoryDevices.at(i);
 
@@ -184,7 +184,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sIdentities:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiIdentity::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)DmiIdentity::MAXIMUM; ++i)
             {
                 if (sIdentities[i])
                 {
@@ -208,7 +208,7 @@ NgosStatus DMI::init()
             COMMON_LVVV(("sUuids:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)DmiStoredUuid::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)DmiStoredUuid::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("%-11s: %s", enumToFullString((DmiStoredUuid)i), uuidToString(sUuids[i])));
             }
@@ -236,7 +236,7 @@ NgosStatus DMI::init()
         // COMMON_TEST_ASSERT(sMemoryDevices.at(0).manufacturer           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices.at(0).serialNumber           != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryDevices.at(0).partNumber             != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiIdentity::MAXIMUM                      == 7,          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((bad_uint64)DmiIdentity::MAXIMUM                      == 7,          NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[0]                                 != nullptr,    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[1]                                 != nullptr,    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sIdentities[2]                                 != nullptr,    NgosStatus::ASSERTION);
@@ -244,7 +244,7 @@ NgosStatus DMI::init()
         COMMON_TEST_ASSERT(sIdentities[4]                                 != nullptr,    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sIdentities[5]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sIdentities[6]                              != nullptr,    NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)DmiStoredUuid::MAXIMUM                    == 1,          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((bad_uint64)DmiStoredUuid::MAXIMUM                    == 1,          NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(sUuids[0]                                      != nullptr,    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sUuids[0]->data1                            == 0x9FAE0773, NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sUuids[0]->data2                            == 0xF53F,     NgosStatus::ASSERTION); // Commented due to value variation
@@ -264,7 +264,7 @@ NgosStatus DMI::init()
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
+NgosStatus DMI::iterateDmiEntries(bad_uint8 *buf, process_dmi_entry processDmiEntry)
 {
     COMMON_LT((" | buf = 0x%p, processDmiEntry = 0x%p", buf, processDmiEntry));
 
@@ -273,8 +273,8 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
 
 
 
-    i64  i   = 0;
-    u8  *cur = buf;
+    bad_int64  i   = 0;
+    bad_uint8  *cur = buf;
 
     while (
            sNumberOfSmbiosStructures == 0
@@ -334,7 +334,7 @@ NgosStatus DMI::iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry)
     return NgosStatus::OK;
 }
 
-u32 DMI::getVersion()
+bad_uint32 DMI::getVersion()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -343,7 +343,7 @@ u32 DMI::getVersion()
     return sVersion;
 }
 
-u64 DMI::getStructureTableAddress()
+bad_uint64 DMI::getStructureTableAddress()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -352,7 +352,7 @@ u64 DMI::getStructureTableAddress()
     return sStructureTableAddress;
 }
 
-u64 DMI::getSystemPhysicalMemoryArrayCapacity()
+bad_uint64 DMI::getSystemPhysicalMemoryArrayCapacity()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -361,7 +361,7 @@ u64 DMI::getSystemPhysicalMemoryArrayCapacity()
     return sSystemPhysicalMemoryArrayCapacity;
 }
 
-u64 DMI::getTotalAmountOfMemory()
+bad_uint64 DMI::getTotalAmountOfMemory()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -370,7 +370,7 @@ u64 DMI::getTotalAmountOfMemory()
     return sTotalAmountOfMemory;
 }
 
-u64 DMI::getNumberOfInstalledMemoryDevices()
+bad_uint64 DMI::getNumberOfInstalledMemoryDevices()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -394,7 +394,7 @@ const char8* DMI::getIdentity(DmiIdentity id)
 
 
 
-    return sIdentities[(u64)id];
+    return sIdentities[(bad_uint64)id];
 }
 
 Uuid* DMI::getUuid(DmiStoredUuid id)
@@ -403,7 +403,7 @@ Uuid* DMI::getUuid(DmiStoredUuid id)
 
 
 
-    return sUuids[(u64)id];
+    return sUuids[(bad_uint64)id];
 }
 
 NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
@@ -428,8 +428,8 @@ NgosStatus DMI::initFromSmbios3(UefiSmbios3ConfigurationTable *smbios3)
 
 
 
-        COMMON_TEST_ASSERT((*(u64 *)smbios3->anchor & 0x000000FFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                          NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum           == checksum((u8 *)smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((*(bad_uint64 *)smbios3->anchor & 0x000000FFFFFFFFFF) == SMBIOS_3_ANCHOR,                                                                          NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios3->entryPointStructureChecksum           == checksum((bad_uint8 *)smbios3, smbios3->entryPointLength, smbios3->entryPointStructureChecksum), NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios3->entryPointLength                      == 24,                                                                                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios3->majorVersion                          == 3,                                                                                        NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios3->minorVersion                       == 3,                                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -482,7 +482,7 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
 
 
         COMMON_TEST_ASSERT(smbios->anchor                                            == SMBIOS_ANCHOR,                                                                         NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->entryPointStructureChecksum                       == checksum((u8 *)smbios, smbios->entryPointLength, smbios->entryPointStructureChecksum), NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios->entryPointStructureChecksum                       == checksum((bad_uint8 *)smbios, smbios->entryPointLength, smbios->entryPointStructureChecksum), NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->entryPointLength                                  == 31,                                                                                    NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->majorVersion                                      == 2,                                                                                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->minorVersion                                   == 8,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
@@ -493,8 +493,8 @@ NgosStatus DMI::initFromSmbios(UefiSmbiosConfigurationTable *smbios)
         COMMON_TEST_ASSERT(smbios->formattedArea[2]                                  == 0,                                                                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->formattedArea[3]                                  == 0,                                                                                     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(smbios->formattedArea[4]                                  == 0,                                                                                     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT((*(u64 *)smbios->intermediateAnchor & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                            NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(smbios->intermediateChecksum                              == checksum((u8 *)&smbios->intermediateAnchor, 15, smbios->intermediateChecksum),         NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((*(bad_uint64 *)smbios->intermediateAnchor & 0x000000FFFFFFFFFF) == SMBIOS_INTERMEDIATE_ANCHOR,                                                            NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(smbios->intermediateChecksum                              == checksum((bad_uint8 *)&smbios->intermediateAnchor, 15, smbios->intermediateChecksum),         NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->structureTableLength                           == 395,                                                                                   NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(smbios->structureTableAddress                             != 0,                                                                                     NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(smbios->numberOfSmbiosStructures                       == 9,                                                                                     NgosStatus::ASSERTION); // Commented due to value variation
@@ -748,8 +748,8 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -934,8 +934,8 @@ NgosStatus DMI::saveDmiSystemEntry(DmiSystemEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -982,7 +982,7 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
                 COMMON_LVVV(("entry->containedObjectHandles:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
+                for (bad_int64 i = 0; i < entry->numberOfContainedObjectHandles; ++i)
                 {
                     COMMON_LVVV(("#%-3d: 0x%04X", i, entry->containedObjectHandles[i]));
                 }
@@ -1099,8 +1099,8 @@ NgosStatus DMI::saveDmiBaseboardEntry(DmiBaseboardEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1158,7 +1158,7 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
                         COMMON_LVVV(("entryV23->containedElements:"));
                         COMMON_LVVV(("-------------------------------------"));
 
-                        for (i64 i = 0; i < entryV23->containedElementCount; ++i)
+                        for (bad_int64 i = 0; i < entryV23->containedElementCount; ++i)
                         {
                             DmiChassisContainedElement *containedElement = DMI_CHASSIS_CONTAINED_ELEMENT(entryV23, i);
 
@@ -1339,8 +1339,8 @@ NgosStatus DMI::saveDmiChassisEntry(DmiChassisEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1653,8 +1653,8 @@ NgosStatus DMI::saveDmiProcessorEntry(DmiProcessorEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1817,8 +1817,8 @@ NgosStatus DMI::saveDmiCacheEntry(DmiCacheEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1917,8 +1917,8 @@ NgosStatus DMI::saveDmiPortConnectorEntry(DmiPortConnectorEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -1973,7 +1973,7 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
                         COMMON_LVVV(("entryV32->peerGroups:"));
                         COMMON_LVVV(("-------------------------------------"));
 
-                        for (i64 i = 0; i < entryV32->peerGroupingCount; ++i)
+                        for (bad_int64 i = 0; i < entryV32->peerGroupingCount; ++i)
                         {
                             COMMON_LVVV(("entryV32->peerGroups[%d].segmentGroupNumber                           = %u",     i, entryV32->peerGroups[i].segmentGroupNumber));
                             COMMON_LVVV(("entryV32->peerGroups[%d].busNumber                                    = %u",     i, entryV32->peerGroups[i].busNumber));
@@ -2083,8 +2083,8 @@ NgosStatus DMI::saveDmiSystemSlotsEntry(DmiSystemSlotsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2101,7 +2101,7 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
 
 
 
-    u8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->devices[0]);
+    bad_uint8 count = (entry->header.length - sizeof(entry->header)) / sizeof(entry->devices[0]);
 
     // Validation
     {
@@ -2115,7 +2115,7 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
                 COMMON_LVVV(("entry->devices:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < count; ++i)
+                for (bad_int64 i = 0; i < count; ++i)
                 {
                     COMMON_LVVV(("entry->devices[%d].deviceTypeAndEnabled.deviceType = %s",     i, enumToFullString((DmiOnboardDevicesDeviceType)entry->devices[i].deviceTypeAndEnabled.deviceType)));
                     COMMON_LVVV(("entry->devices[%d].deviceTypeAndEnabled.enabled    = %u",     i, entry->devices[i].deviceTypeAndEnabled.enabled));
@@ -2187,8 +2187,8 @@ NgosStatus DMI::saveDmiOnboardDevicesEntry(DmiOnboardDevicesEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2267,8 +2267,8 @@ NgosStatus DMI::saveDmiOemStringsEntry(DmiOemStringsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2347,8 +2347,8 @@ NgosStatus DMI::saveDmiSystemConfigurationEntry(DmiSystemConfigurationEntry *ent
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2431,8 +2431,8 @@ NgosStatus DMI::saveDmiBiosLanguageEntry(DmiBiosLanguageEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2449,7 +2449,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
 
 
 
-    u8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupName)) / sizeof(entry->items[0]);
+    bad_uint8 count = (entry->header.length - sizeof(entry->header) - sizeof(entry->groupName)) / sizeof(entry->items[0]);
 
     // Validation
     {
@@ -2464,7 +2464,7 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
                 COMMON_LVVV(("entry->items:"));
                 COMMON_LVVV(("-------------------------------------"));
 
-                for (i64 i = 0; i < count; ++i)
+                for (bad_int64 i = 0; i < count; ++i)
                 {
                     COMMON_LVVV(("entry->items[%d].type   = %s",     i, enumToFullString(entry->items[i].type)));
                     COMMON_LVVV(("entry->items[%d].handle = 0x%04X", i, entry->items[i].handle));
@@ -2536,8 +2536,8 @@ NgosStatus DMI::saveDmiGroupAssociationsEntry(DmiGroupAssociationsEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2602,8 +2602,8 @@ NgosStatus DMI::saveDmiPhysicalMemoryArrayEntry(DmiPhysicalMemoryArrayEntry *ent
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -2940,8 +2940,8 @@ NgosStatus DMI::saveDmiMemoryDeviceEntry(DmiMemoryDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -2997,8 +2997,8 @@ NgosStatus DMI::saveDmiBits32MemoryErrorInformationEntry(DmiBits32MemoryErrorInf
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3060,8 +3060,8 @@ NgosStatus DMI::saveDmiMemoryArrayMappedAddressEntry(DmiMemoryArrayMappedAddress
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3129,8 +3129,8 @@ NgosStatus DMI::saveDmiMemoryDeviceMappedAddressEntry(DmiMemoryDeviceMappedAddre
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3318,8 +3318,8 @@ NgosStatus DMI::saveDmiPortableBatteryEntry(DmiPortableBatteryEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3375,8 +3375,8 @@ NgosStatus DMI::saveDmiSystemResetEntry(DmiSystemResetEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3422,8 +3422,8 @@ NgosStatus DMI::saveDmiHardwareSecurityEntry(DmiHardwareSecurityEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -3523,8 +3523,8 @@ NgosStatus DMI::saveDmiVoltageProbeEntry(DmiVoltageProbeEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3645,8 +3645,8 @@ NgosStatus DMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3748,8 +3748,8 @@ NgosStatus DMI::saveDmiTemperatureProbeEntry(DmiTemperatureProbeEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3851,8 +3851,8 @@ NgosStatus DMI::saveDmiElectricalCurrentProbeEntry(DmiElectricalCurrentProbeEntr
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3936,8 +3936,8 @@ NgosStatus DMI::saveDmiOutOfBandRemoteAccessEntry(DmiOutOfBandRemoteAccessEntry 
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -3977,8 +3977,8 @@ NgosStatus DMI::saveDmiSystemBootEntry(DmiSystemBootEntry *entry)
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4028,8 +4028,8 @@ NgosStatus DMI::saveDmiBits64MemoryErrorInformationEntry(DmiBits64MemoryErrorInf
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4115,8 +4115,8 @@ NgosStatus DMI::saveDmiManagementDeviceEntry(DmiManagementDeviceEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4204,8 +4204,8 @@ NgosStatus DMI::saveDmiManagementDeviceComponentEntry(DmiManagementDeviceCompone
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4255,8 +4255,8 @@ NgosStatus DMI::saveDmiManagementDeviceThresholdDataEntry(DmiManagementDeviceThr
 
 
 
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
 
 
 
@@ -4416,8 +4416,8 @@ NgosStatus DMI::saveDmiSystemPowerSupplyEntry(DmiSystemPowerSupplyEntry *entry)
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4450,7 +4450,7 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
 
                 DmiAdditionalInformation *curInfo = &entry->additionalInformationEntries[0];
 
-                for (i64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
+                for (bad_int64 i = 0; i < entry->numberOfAdditionalInformationEntries; ++i)
                 {
                     COMMON_LVVV(("curInfo->entryLength      = %u",     curInfo->entryLength));
                     COMMON_LVVV(("curInfo->referencedHandle = 0x%04X", curInfo->referencedHandle));
@@ -4458,7 +4458,7 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
                     COMMON_LVVV(("curInfo->string.id        = %u",     curInfo->string.id));
                     COMMON_LVVV(("curInfo->value[0]         = 0x%02X", curInfo->value[0]));
 
-                    curInfo = (DmiAdditionalInformation *)((u64)curInfo + curInfo->entryLength);
+                    curInfo = (DmiAdditionalInformation *)((bad_uint64)curInfo + curInfo->entryLength);
                 }
 
                 COMMON_LVVV(("-------------------------------------"));
@@ -4522,8 +4522,8 @@ NgosStatus DMI::saveDmiAdditionalInformationEntry(DmiAdditionalInformationEntry 
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4623,8 +4623,8 @@ NgosStatus DMI::saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntr
         }
         else
         {
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-            COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
         }
     }
 
@@ -4665,9 +4665,9 @@ NgosStatus DMI::saveDmiInactiveEntry(DmiInactiveEntry *entry)
     // Get strings
     {
         if (
-            ((u8 *)entry)[entry->header.length]     != 0
+            ((bad_uint8 *)entry)[entry->header.length]     != 0
             ||
-            ((u8 *)entry)[entry->header.length + 1] != 0
+            ((bad_uint8 *)entry)[entry->header.length + 1] != 0
            )
         {
             char8 *cur   = (char8 *)entry + entry->header.length;
@@ -4716,11 +4716,11 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-    u64 position = 0;
+    bad_uint64 position = 0;
 
 
 
-    for (i64 i = 0; i < (i64)sMemoryDeviceEntries.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)sMemoryDeviceEntries.getSize(); ++i)
     {
         DmiMemoryDeviceEntry *entry = sMemoryDeviceEntries.at(i);
 
@@ -4814,10 +4814,10 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
                 // Set range
                 {
-                    u64 start = 0xFFFFFFFFFFFFFFFF;
-                    u64 end   = 0;
+                    bad_uint64 start = 0xFFFFFFFFFFFFFFFF;
+                    bad_uint64 end   = 0;
 
-                    for (i64 j = 0; j < (i64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
+                    for (bad_int64 j = 0; j < (bad_int64)sMemoryDeviceMappedAddressEntries.getSize(); ++j)
                     {
                         DmiMemoryDeviceMappedAddressEntry *deviceMappedAddress = sMemoryDeviceMappedAddressEntries.at(j);
 
@@ -4827,8 +4827,8 @@ NgosStatus DMI::storeDmiMemoryDevices()
 
 
 
-                            u64 newStart;
-                            u64 newEnd;
+                            bad_uint64 newStart;
+                            bad_uint64 newEnd;
 
                             if (
                                 deviceMappedAddress->startingAddress.value == DMI_MEMORY_DEVICE_MAPPED_ADDRESS_STARTING_ADDRESS_NEED_TO_EXTEND
@@ -5007,8 +5007,8 @@ NgosStatus DMI::storeDmiMemoryDevices()
                 }
                 else
                 {
-                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
-                    COMMON_TEST_ASSERT(((u8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length]     == 0, NgosStatus::ASSERTION);
+                    COMMON_TEST_ASSERT(((bad_uint8 *)entry)[entry->header.length + 1] == 0, NgosStatus::ASSERTION);
                 }
             }
 
@@ -5041,7 +5041,7 @@ NgosStatus DMI::storeDmiMemoryDevices()
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::storeIdentity(DmiIdentity id, const char8 *address, u64 size)
+NgosStatus DMI::storeIdentity(DmiIdentity id, const char8 *address, bad_uint64 size)
 {
     COMMON_LT((" | id = %u, address = 0x%p, size = %u", id, address, size));
 
@@ -5050,9 +5050,9 @@ NgosStatus DMI::storeIdentity(DmiIdentity id, const char8 *address, u64 size)
 
 
 
-    COMMON_TEST_ASSERT(sIdentities[(u64)id] == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sIdentities[(bad_uint64)id] == nullptr, NgosStatus::ASSERTION);
 
-    COMMON_ASSERT_EXECUTION(storeString(address, size, &sIdentities[(u64)id]), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(storeString(address, size, &sIdentities[(bad_uint64)id]), NgosStatus::ASSERTION);
 
 
 
@@ -5065,21 +5065,21 @@ NgosStatus DMI::storeUuid(DmiStoredUuid id, Uuid *uuid)
 
 
 
-    COMMON_TEST_ASSERT(sUuids[(u64)id] == nullptr, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sUuids[(bad_uint64)id] == nullptr, NgosStatus::ASSERTION);
     COMMON_TEST_ASSERT(sizeof(Uuid)    == 16,      NgosStatus::ASSERTION);
 
 
 
 #ifdef UEFI_APPLICATION // Defined in pro file
-    sUuids[(u64)id] = uuid;
+    sUuids[(bad_uint64)id] = uuid;
 #else
-    u8 *brkAddress;
+    bad_uint8 *brkAddress;
 
     COMMON_ASSERT_EXECUTION(BRK::allocate(sizeof(Uuid), 1, &brkAddress), NgosStatus::ASSERTION);
-    ((u64 *)brkAddress)[0] = ((u64 *)uuid)[0];
-    ((u64 *)brkAddress)[1] = ((u64 *)uuid)[1];
+    ((bad_uint64 *)brkAddress)[0] = ((bad_uint64 *)uuid)[0];
+    ((bad_uint64 *)brkAddress)[1] = ((bad_uint64 *)uuid)[1];
 
-    sUuids[(u64)id] = (Uuid *)brkAddress;
+    sUuids[(bad_uint64)id] = (Uuid *)brkAddress;
 #endif
 
 
@@ -5087,7 +5087,7 @@ NgosStatus DMI::storeUuid(DmiStoredUuid id, Uuid *uuid)
     return NgosStatus::OK;
 }
 
-NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destination)
+NgosStatus DMI::storeString(const char8 *address, bad_uint64 size, const char8 **destination)
 {
     COMMON_LT((" | address = 0x%p, size = %u, destination = 0x%p", address, size, destination));
 
@@ -5102,7 +5102,7 @@ NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destin
 
     AVOID_UNUSED(size);
 #else
-    COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, (u8 **)destination), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BRK::allocate(size, 1, (bad_uint8 **)destination), NgosStatus::ASSERTION);
     memcpy((char8 *)*destination, address, size);
 #endif
 
@@ -5111,7 +5111,7 @@ NgosStatus DMI::storeString(const char8 *address, u64 size, const char8 **destin
     return NgosStatus::OK;
 }
 
-u8 DMI::checksum(u8 *address, u64 size, u8 checksumValue)
+bad_uint8 DMI::checksum(bad_uint8 *address, bad_uint64 size, bad_uint8 checksumValue)
 {
     COMMON_LT((" | address = 0x%p, size = %u, checksumValue = %u", address, size, checksumValue));
 
@@ -5120,7 +5120,7 @@ u8 DMI::checksum(u8 *address, u64 size, u8 checksumValue)
 
 
 
-    u8 res = checksumValue;
+    bad_uint8 res = checksumValue;
 
     while (size > 0)
     {

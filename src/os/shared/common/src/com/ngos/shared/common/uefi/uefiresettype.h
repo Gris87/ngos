@@ -8,7 +8,7 @@
 
 
 
-enum class UefiResetType: u32
+enum class UefiResetType: bad_uint32
 {
     COLD     = 0,
     WARM     = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiResetType type) // TEST: NO
 
     static char8 res[22];
 
-    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
 
     return res;
 }

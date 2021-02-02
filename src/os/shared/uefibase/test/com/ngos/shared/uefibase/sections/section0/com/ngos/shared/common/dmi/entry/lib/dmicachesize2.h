@@ -22,56 +22,56 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmicachesize2);
 
 
         temp.value       = 1;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), KB);
 
 
 
         temp.value       = 64;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * KB);
 
 
 
         temp.value       = 32767;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 32767 * KB);
 
 
 
         temp.value       = 2147483647;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 2147483647 * KB);
 
 
 
         temp.value       = 1;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * KB);
 
 
 
         temp.value       = 64;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * 64 * KB);
 
 
 
         temp.value       = 32767;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 32767 * 64 * KB);
 
 
 
         temp.value       = 2147483647;
-        temp.granularity = (u32)DmiCacheSizeGranularity::_64_KILOBYTES;
+        temp.granularity = (bad_uint32)DmiCacheSizeGranularity::_64_KILOBYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 2147483647ULL * 64 * KB);
     }

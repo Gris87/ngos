@@ -14,11 +14,11 @@
 
 struct Mbr
 {
-    u8           code[440];
-    u32          diskSignature;
-    u16          __pad;
+    bad_uint8           code[440];
+    bad_uint32          diskSignature;
+    bad_uint16          __pad;
     MbrPartition partitions[4];
-    u16          bootSignature;
+    bad_uint16          bootSignature;
 } __attribute__((packed));
 
 

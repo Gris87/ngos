@@ -14,7 +14,7 @@
 
 struct E820Table
 {
-    u64            count;
+    bad_uint64            count;
     MemoryMapEntry entries[E820_TABLE_SIZE];
 };
 

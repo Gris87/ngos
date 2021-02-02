@@ -13,7 +13,7 @@ struct PciExpressVirtualChannel
 {
     PciExpressVirtualChannelVirtualChannelResourceCapability  virtualChannelResourceCapability;
     PciExpressVirtualChannelVirtualChannelResourceControl     virtualChannelResourceControl;
-    u16                                                       __reserved;
+    bad_uint16                                                       __reserved;
     PciExpressVirtualChannelVirtualChannelResourceStatusFlags virtualChannelResourceStatus;
 };
 

@@ -13,14 +13,14 @@
 
 struct MemoryBlockRegion
 {
-    u64                         start;
-    u64                         size;
+    bad_uint64                         start;
+    bad_uint64                         size;
     MemoryBlockRegionFlags      flags;
     memory_block_region_node_id nodeId; // TODO: encapsulate into a struct
 
 
 
-    inline u64 end()
+    inline bad_uint64 end()
     {
         COMMON_LT((""));
 

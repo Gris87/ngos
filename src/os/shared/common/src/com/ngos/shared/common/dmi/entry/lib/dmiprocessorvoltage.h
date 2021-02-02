@@ -15,18 +15,18 @@ struct DmiProcessorVoltage
         // DmiProcessorVoltageModeType::LEGACY_MODE
         struct
         {
-            u8 flags:    7; // TODO: Use enum DmiProcessorVoltageFlags
-            u8 modeType: 1; // TODO: Use enum DmiProcessorVoltageModeType
+            bad_uint8 flags:    7; // TODO: Use enum DmiProcessorVoltageFlags
+            bad_uint8 modeType: 1; // TODO: Use enum DmiProcessorVoltageModeType
         };
 
         // DmiProcessorVoltageModeType::CURRENT_VOLTAGE_MODE
         struct
         {
-            u8 value: 7;
-            u8 __pad: 1; // Ignore this field. The same as modeType
+            bad_uint8 value: 7;
+            bad_uint8 __pad: 1; // Ignore this field. The same as modeType
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

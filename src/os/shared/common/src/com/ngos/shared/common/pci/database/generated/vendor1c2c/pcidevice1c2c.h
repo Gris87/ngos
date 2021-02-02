@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice1C2C: u16 // Ignore CppEnumVerifier
+enum class PciDevice1C2C: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_000A = 0x000A,
@@ -103,7 +103,7 @@ inline const char8* enumToFullString(PciDevice1C2C device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }

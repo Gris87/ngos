@@ -14,11 +14,11 @@ struct DmiCoolingDeviceTypeAndStatus
     {
         struct
         {
-            u8 deviceType: 5; // TODO: Use enum DmiCoolingDeviceType
-            u8 status:     3; // TODO: Use enum DmiCoolingDeviceStatus
+            bad_uint8 deviceType: 5; // TODO: Use enum DmiCoolingDeviceType
+            bad_uint8 status:     3; // TODO: Use enum DmiCoolingDeviceStatus
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

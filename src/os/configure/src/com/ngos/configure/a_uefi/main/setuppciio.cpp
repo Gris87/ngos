@@ -42,11 +42,11 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
 
 
 
-    if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (u64)PciRegister::VENDOR_ID, 1, &rom->vendorId) == UefiStatus::SUCCESS)
+    if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (bad_uint64)PciRegister::VENDOR_ID, 1, &rom->vendorId) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Successfully read PCI register Vendor ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->vendorId, pci));
 
-        if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (u64)PciRegister::DEVICE_ID, 1, &rom->deviceId) == UefiStatus::SUCCESS)
+        if (pci->pci.read(pci, UefiPciIoProtocolWidth::UINT16, (bad_uint64)PciRegister::DEVICE_ID, 1, &rom->deviceId) == UefiStatus::SUCCESS)
         {
             UEFI_LVV(("Successfully read PCI register Device ID(0x%04X) from protocol(0x%p) for UEFI_PCI_IO_PROTOCOL", rom->deviceId, pci));
 
@@ -99,7 +99,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
     return NgosStatus::FAILED;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi_handle *pciIoHandles)
+NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, bad_uint64 size, uefi_handle *pciIoHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, pciIoHandles = 0x%p", params, protocol, size, pciIoHandles));
 
@@ -114,10 +114,10 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
 
 
-    i64 count = size / sizeof(uefi_handle);
+    bad_int64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         uefi_handle        handle = pciIoHandles[i];
         UefiPciIoProtocol *pci    = 0;
@@ -244,7 +244,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
     return NgosStatus::OK;
 }
 
-NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size)
+NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, bad_uint64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -307,7 +307,7 @@ NgosStatus setupPciIo(BootParams *params)
 
 
     Guid pciIoProtocol = UEFI_PCI_IO_PROTOCOL_GUID;
-    u64  pciIoSize     = 0;
+    bad_uint64  pciIoSize     = 0;
 
 
 

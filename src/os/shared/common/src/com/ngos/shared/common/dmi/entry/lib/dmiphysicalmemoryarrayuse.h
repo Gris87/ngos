@@ -10,7 +10,7 @@
 
 
 
-enum class DmiPhysicalMemoryArrayUse: u8
+enum class DmiPhysicalMemoryArrayUse: bad_uint8
 {
     NONE             = 0,
     OTHER            = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayUse use) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (u8)use, enumToString(use));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)use, enumToString(use));
 
     return res;
 }

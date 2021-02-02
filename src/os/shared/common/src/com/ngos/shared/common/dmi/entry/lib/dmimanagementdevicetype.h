@@ -10,7 +10,7 @@
 
 
 
-enum class DmiManagementDeviceType: u8
+enum class DmiManagementDeviceType: bad_uint8
 {
     NONE                         = 0,
     OTHER                        = 1,
@@ -67,7 +67,7 @@ inline const char8* enumToFullString(DmiManagementDeviceType type) // TEST: NO
 
     static char8 res[36];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

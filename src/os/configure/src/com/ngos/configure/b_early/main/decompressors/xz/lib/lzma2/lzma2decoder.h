@@ -16,11 +16,11 @@
 struct Lzma2Decoder
 {
     // Uncompressed size of LZMA chunk (2 MiB at maximum)
-    u32 uncompressed;
+    bad_uint32 uncompressed;
 
     // Compressed size of LZMA chunk or compressed/uncompressed
     // size of uncompressed chunk (64 KiB at maximum)
-    u32 compressed;
+    bad_uint32 compressed;
 
     // Position in runXzLzma2Decoder().
     Lzma2Sequence sequence;

@@ -16,13 +16,13 @@
 
 struct ElfHeaderIdentification
 {
-    u32            signature;
+    bad_uint32            signature;
     ElfClass       fileClass;
     ElfData        fileData;
     ElfFileVersion version;
     ElfOsAbi       osAbi;
 
-    u64            __pad;
+    bad_uint64            __pad;
 } __attribute__((packed));
 
 

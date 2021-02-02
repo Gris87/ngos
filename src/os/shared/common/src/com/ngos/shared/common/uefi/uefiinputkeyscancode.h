@@ -8,7 +8,7 @@
 
 
 
-enum class UefiInputKeyScanCode: u16
+enum class UefiInputKeyScanCode: bad_uint16
 {
     NONE      = 0,
     UP        = 0x0001,
@@ -87,7 +87,7 @@ inline const char8* enumToFullString(UefiInputKeyScanCode code) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%04X (%s)", (u16)code, enumToString(code));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)code, enumToString(code));
 
     return res;
 }

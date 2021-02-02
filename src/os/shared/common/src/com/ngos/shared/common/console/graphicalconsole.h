@@ -41,10 +41,10 @@ private:
 
     static ConsoleWidget *sConsoleWidget;
     static Image         *sTextImage;
-    static u16            sPositionX;
-    static u16            sPaddingLeft;
-    static u16            sPaddingTop;
-    static u16           *sGlyphOffsets;
+    static bad_uint16            sPositionX;
+    static bad_uint16            sPaddingLeft;
+    static bad_uint16            sPaddingTop;
+    static bad_uint16           *sGlyphOffsets;
 };
 
 

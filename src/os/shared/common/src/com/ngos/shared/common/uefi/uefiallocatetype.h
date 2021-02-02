@@ -8,7 +8,7 @@
 
 
 
-enum class UefiAllocateType: u32
+enum class UefiAllocateType: bad_uint32
 {
     ALLOCATE_ANY_PAGES,
     ALLOCATE_MAX_ADDRESS,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(UefiAllocateType type) // TEST: NO
 
     static char8 res[34];
 
-    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
 
     return res;
 }

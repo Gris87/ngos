@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressPowerControllerControl: u8
+enum class PciExpressPowerControllerControl: bad_uint8
 {
     ON  = 0,
     OFF = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExpressPowerControllerControl control) /
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)control, enumToString(control));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)control, enumToString(control));
 
     return res;
 }

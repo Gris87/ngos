@@ -10,7 +10,7 @@
 
 
 
-enum class PciRegister: u8
+enum class PciRegister: bad_uint8
 {
     VENDOR_ID                  = 0x00,
     DEVICE_ID                  = 0x02,
@@ -79,7 +79,7 @@ inline const char8* enumToFullString(PciRegister reg) // TEST: NO
 
     static char8 res[34];
 
-    sprintf(res, "0x%02X (%s)", (u8)reg, enumToString(reg));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)reg, enumToString(reg));
 
     return res;
 }

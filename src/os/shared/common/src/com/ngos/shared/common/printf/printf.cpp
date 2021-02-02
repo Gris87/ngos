@@ -24,7 +24,7 @@ char8 printfBuffer[1024];
 
 
 
-i64 parseDigits(const char8 **str)
+bad_int64 parseDigits(const char8 **str)
 {
     // COMMON_LT((" | str = 0x%p", str)); // Commented to avoid bad looking logs
 
@@ -32,7 +32,7 @@ i64 parseDigits(const char8 **str)
 
 
 
-    i64 res = 0;
+    bad_int64 res = 0;
 
     while (**str >= '0' && **str <= '9')
     {
@@ -44,7 +44,7 @@ i64 parseDigits(const char8 **str)
     return res;
 }
 
-char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
+char8* number(char8 *str, bad_int64 value, bad_uint8 base, bad_int64 size, bad_int64 precision, bad_uint8 flags)
 {
     // COMMON_LT((" | str = 0x%p, value = %d, base = %u, size = %d, precision = %d, flags = %u", str, value, base, size, precision, flags)); // Commented to avoid infinite loop
 
@@ -139,7 +139,7 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 
     char8 temp[66];
 
-    i64 i = 0;
+    bad_int64 i = 0;
 
     if (value == 0)
     {
@@ -148,14 +148,14 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
     }
     else
     {
-        i64 index;
+        bad_int64 index;
 
         if (base == 16 && value < 0)
         {
-            temp[i] = digits[(u64)value & 0x0F];
+            temp[i] = digits[(bad_uint64)value & 0x0F];
             ++i;
 
-            value = (u64)value >> 4;
+            value = (bad_uint64)value >> 4;
         }
 
         while (value != 0)
@@ -268,7 +268,7 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
     return str;
 }
 
-i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
+bad_int64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 {
     // COMMON_LT((" | buffer = 0x%p, format = 0x%p, args = ...", buffer, format)); // Commented to avoid infinite loop
 
@@ -291,7 +291,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 
 
-        u8 flags = FLAG_NONE;
+        bad_uint8 flags = FLAG_NONE;
 
         do
         {
@@ -351,7 +351,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 
 
-        i64 fieldWidth = -1;
+        bad_int64 fieldWidth = -1;
 
         if (*format >= '0' && *format <= '9')
         {
@@ -363,7 +363,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
             ++format;
 
             // Take fieldWidth from the arguments
-            fieldWidth = va_arg(args, i32);
+            fieldWidth = va_arg(args, bad_int32);
 
             if (fieldWidth < 0)
             {
@@ -374,7 +374,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 
 
-        i64 precision = -1;
+        bad_int64 precision = -1;
 
         if (*format == '.')
         {
@@ -390,7 +390,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                 ++format;
 
                 // Take precision from the arguments
-                precision = va_arg(args, i32);
+                precision = va_arg(args, bad_int32);
 
                 if (precision < 0)
                 {
@@ -416,7 +416,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 
 
-        u8 base = 10;
+        bad_uint8 base = 10;
 
         switch (*format)
         {
@@ -437,11 +437,11 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
                 if (qualifier == 'l')
                 {
-                    *str = (char16)va_arg(args, i32);
+                    *str = (char16)va_arg(args, bad_int32);
                 }
                 else
                 {
-                    *str = (char8)va_arg(args, i32);
+                    *str = (char8)va_arg(args, bad_int32);
                 }
 
                 ++str;
@@ -463,7 +463,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                 if (qualifier == 'l')
                 {
                     const char16 *str2   = va_arg(args, char16 *);
-                    i64           length = strnlen(str2, precision);
+                    bad_int64           length = strnlen(str2, precision);
 
                     if (!(flags & FLAG_LEFT))
                     {
@@ -476,7 +476,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                         }
                     }
 
-                    for (i64 i = 0; i < length; ++i)
+                    for (bad_int64 i = 0; i < length; ++i)
                     {
                         *str = *str2;
                         ++str;
@@ -494,7 +494,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                 else
                 {
                     const char8 *str2   = va_arg(args, char8 *);
-                    i64          length = strnlen(str2, precision);
+                    bad_int64          length = strnlen(str2, precision);
 
                     if (!(flags & FLAG_LEFT))
                     {
@@ -507,7 +507,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                         }
                     }
 
-                    for (i64 i = 0; i < length; ++i)
+                    for (bad_int64 i = 0; i < length; ++i)
                     {
                         *str = *str2;
                         ++str;
@@ -535,7 +535,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
                     flags      |= FLAG_ZEROPAD;
                 }
 
-                str = number(str, (u64)va_arg(args, void *), 16, fieldWidth, precision, flags);
+                str = number(str, (bad_uint64)va_arg(args, void *), 16, fieldWidth, precision, flags);
 
                 continue;
             }
@@ -605,31 +605,31 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
 
 
 
-        i64 value;
+        bad_int64 value;
 
         if (qualifier == 'l')
         {
-            value = va_arg(args, u64);
+            value = va_arg(args, bad_uint64);
         }
         else
         if (qualifier == 'h')
         {
-            value = (u16)va_arg(args, i32);
+            value = (bad_uint16)va_arg(args, bad_int32);
 
             if (flags & FLAG_SIGN)
             {
-                value = (i16)value;
+                value = (bad_int16)value;
             }
         }
         else
         {
             if (flags & FLAG_SIGN)
             {
-                value = va_arg(args, i32);
+                value = va_arg(args, bad_int32);
             }
             else
             {
-                value = va_arg(args, u32);
+                value = va_arg(args, bad_uint32);
             }
         }
 
@@ -643,7 +643,7 @@ i64 vsprintf(char8 *buffer, const char8 *format, va_list args)
     return str - buffer;
 }
 
-i64 sprintf(char8 *buffer, const char8 *format, ...)
+bad_int64 sprintf(char8 *buffer, const char8 *format, ...)
 {
     // COMMON_LT((" | buffer = 0x%p, format = 0x%p", buffer, format)); // Commented to avoid too frequent logs
 
@@ -655,7 +655,7 @@ i64 sprintf(char8 *buffer, const char8 *format, ...)
     va_list args;
 
     va_start(args, format);
-    i64 res = vsprintf(buffer, format, args);
+    bad_int64 res = vsprintf(buffer, format, args);
     va_end(args);
 
     return res;
@@ -673,13 +673,13 @@ char8* vmprintf(const char8 *format, va_list args)
 
 
 
-    i64 len = vsprintf(buffer, format, args);
+    bad_int64 len = vsprintf(buffer, format, args);
 
-    COMMON_TEST_ASSERT(len < (i64)sizeof(buffer), nullptr);
+    COMMON_TEST_ASSERT(len < (bad_int64)sizeof(buffer), nullptr);
 
 
 
-    u64 size = (len + 1) * sizeof(char8);
+    bad_uint64 size = (len + 1) * sizeof(char8);
 
     char8 *res = (char8 *)malloc(size);
     COMMON_TEST_ASSERT(res != nullptr, nullptr);

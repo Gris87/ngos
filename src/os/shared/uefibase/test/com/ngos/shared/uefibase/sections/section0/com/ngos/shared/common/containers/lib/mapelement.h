@@ -17,8 +17,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_mapelement);
 {
     TEST_CASE("MapElement()");
     {
-        MapElement<u8, u32> temp(5,   123456);
-        MapElement<u8, u32> temp2(10, 654321);
+        MapElement<bad_uint8, bad_uint32> temp(5,   123456);
+        MapElement<bad_uint8, bad_uint32> temp2(10, 654321);
 
         TEST_ASSERT_EQUALS(temp.mKey,   5);
         TEST_ASSERT_EQUALS(temp.mValue, 123456);
@@ -32,7 +32,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_mapelement);
 
     TEST_CASE("getKey()/setKey()");
     {
-        MapElement<u8, u32> temp(3, 77777);
+        MapElement<bad_uint8, bad_uint32> temp(3, 77777);
 
         TEST_ASSERT_EQUALS(temp.mKey,     3);
         TEST_ASSERT_EQUALS(temp.getKey(), 3);
@@ -48,7 +48,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_mapelement);
 
     TEST_CASE("getValue()/setValue()");
     {
-        MapElement<u8, u32> temp(3, 77777);
+        MapElement<bad_uint8, bad_uint32> temp(3, 77777);
 
         TEST_ASSERT_EQUALS(temp.mValue,     77777);
         TEST_ASSERT_EQUALS(temp.getValue(), 77777);

@@ -9,7 +9,7 @@
 
 struct PciExpressResizableBaseAddressControl
 {
-    u8 barOffset()
+    bad_uint8 barOffset()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,14 +24,14 @@ struct PciExpressResizableBaseAddressControl
     {
         struct
         {
-            u32 barIndex              : 3;
-            u32 __reserved            : 2;
-            u32 numberOfResizableBars : 3;
-            u32 barSize               : 5; // TODO: Use enum PciExpressResizableBaseAddressBarSize
-            u32 __reserved2           : 19;
+            bad_uint32 barIndex              : 3;
+            bad_uint32 __reserved            : 2;
+            bad_uint32 numberOfResizableBars : 3;
+            bad_uint32 barSize               : 5; // TODO: Use enum PciExpressResizableBaseAddressBarSize
+            bad_uint32 __reserved2           : 19;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

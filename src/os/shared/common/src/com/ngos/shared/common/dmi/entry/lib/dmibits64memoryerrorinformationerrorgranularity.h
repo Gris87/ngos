@@ -10,7 +10,7 @@
 
 
 
-enum class DmiBits64MemoryErrorInformationErrorGranularity: u8
+enum class DmiBits64MemoryErrorInformationErrorGranularity: bad_uint8
 {
     NONE                   = 0,
     OTHER                  = 1,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(DmiBits64MemoryErrorInformationErrorGranula
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)granularity, enumToString(granularity));
 
     return res;
 }

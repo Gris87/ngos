@@ -13,7 +13,7 @@
 
 
 
-NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expectedCompressedSize, u64 expectedDecompressedSize)
+NgosStatus ZLib::decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 expectedCompressedSize, bad_uint64 expectedDecompressedSize)
 {
     COMMON_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, expectedCompressedSize = %u, expectedDecompressedSize = %u", compressedAddress, decompressedAddress, expectedCompressedSize, expectedDecompressedSize));
 
@@ -27,7 +27,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
     if (
         expectedCompressedSize < sizeof(ZLibHeader) + 4 // + 4 for Adler32 checksum
         ||
-        ntohs(*(u16 *)compressedAddress) % 31 // ntohs(*(u16 *)compressedAddress) % 31 != 0
+        ntohs(*(bad_uint16 *)compressedAddress) % 31 // ntohs(*(bad_uint16 *)compressedAddress) % 31 != 0
        )
     {
         COMMON_LE(("Data is not a zlib archive"));
@@ -41,7 +41,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
     ZLibCompressionMethod compressionMethod = (ZLibCompressionMethod)zlibHeader->compressionMethod;
     ZLibCompressionInfo   compressionInfo   = (ZLibCompressionInfo)zlibHeader->compressionInfo;
-    u8                    presetDictionary  = zlibHeader->presetDictionary;
+    bad_uint8                    presetDictionary  = zlibHeader->presetDictionary;
     ZLibCompressionLevel  compressionLevel  = (ZLibCompressionLevel)zlibHeader->compressionLevel;
 
     AVOID_UNUSED(compressionLevel);
@@ -63,7 +63,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
-    if ((u64)compressionInfo > (u64)ZLibCompressionInfo::WINDOW_32K)
+    if ((bad_uint64)compressionInfo > (bad_uint64)ZLibCompressionInfo::WINDOW_32K)
     {
         COMMON_LE(("zlib supports inflate with sliding window up to 32KB only"));
 
@@ -81,9 +81,9 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
-    u8  *currentPointer   = compressedAddress + sizeof(ZLibHeader);
-    u64  compressedSize   = 0;
-    u64  uncompressedSize = 0;
+    bad_uint8  *currentPointer   = compressedAddress + sizeof(ZLibHeader);
+    bad_uint64  compressedSize   = 0;
+    bad_uint64  uncompressedSize = 0;
 
     NgosStatus status = inflate(currentPointer, decompressedAddress, &compressedSize, &uncompressedSize);
 
@@ -114,7 +114,7 @@ NgosStatus ZLib::decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 
 
 
 
-    u32 adler32Checksum = ntohl(*(u32 *)((u64)currentPointer + compressedSize));
+    bad_uint32 adler32Checksum = ntohl(*(bad_uint32 *)((bad_uint64)currentPointer + compressedSize));
     AVOID_UNUSED(adler32Checksum);
 
     COMMON_LVVV(("adler32Checksum = 0x%08X", adler32Checksum));

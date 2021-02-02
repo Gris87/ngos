@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressActiveStatePowerManagementControl: u8
+enum class PciExpressActiveStatePowerManagementControl: bad_uint8
 {
     DISABLED           = 0,
     L0S_ENTRY_ENABLED  = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressActiveStatePowerManagementControl
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", (u8)control, enumToString(control));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)control, enumToString(control));
 
     return res;
 }

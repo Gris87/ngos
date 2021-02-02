@@ -8,7 +8,7 @@
 
 
 
-enum class UefiAcpiResourceType: u8
+enum class UefiAcpiResourceType: bad_uint8
 {
     MEMORY = 0,
     IO     = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiAcpiResourceType type) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

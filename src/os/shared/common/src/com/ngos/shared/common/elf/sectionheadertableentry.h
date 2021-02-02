@@ -10,16 +10,16 @@
 
 struct ElfSectionHeaderTableEntry
 {
-    u32             nameOffset;
+    bad_uint32             nameOffset;
     ElfSectionType  type;
     ElfSectionFlags flags;
-    u64             virtualAddress;
-    u64             offset;
-    u64             size;
-    u32             link;
-    u32             info;
-    u64             align;
-    u64             entrySize;
+    bad_uint64             virtualAddress;
+    bad_uint64             offset;
+    bad_uint64             size;
+    bad_uint32             link;
+    bad_uint32             info;
+    bad_uint64             align;
+    bad_uint64             entrySize;
 };
 
 

@@ -10,7 +10,7 @@
 
 
 
-enum class XFeature: u8
+enum class XFeature: bad_uint8
 {
     FPU,
     SSE,
@@ -61,7 +61,7 @@ inline const char8* enumToFullString(XFeature feature) // TEST: NO
 
     static char8 res[45];
 
-    sprintf(res, "0x%02X (%s)", (u8)feature, enumToString(feature));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)feature, enumToString(feature));
 
     return res;
 }

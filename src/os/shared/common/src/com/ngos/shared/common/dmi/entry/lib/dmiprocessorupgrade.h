@@ -10,7 +10,7 @@
 
 
 
-enum class DmiProcessorUpgrade: u8
+enum class DmiProcessorUpgrade: bad_uint8
 {
     NULL                   = 0,
     OTHER                  = 0x01,
@@ -161,7 +161,7 @@ inline const char8* enumToFullString(DmiProcessorUpgrade upgrade) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", (u8)upgrade, enumToString(upgrade));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)upgrade, enumToString(upgrade));
 
     return res;
 }

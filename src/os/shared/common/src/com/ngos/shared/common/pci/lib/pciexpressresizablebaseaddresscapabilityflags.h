@@ -11,7 +11,7 @@
 
 
 
-typedef u32 pci_express_resizable_base_address_capability_flags;
+typedef bad_uint32 pci_express_resizable_base_address_capability_flags;
 
 enum class PciExpressResizableBaseAddressCapabilityFlag: pci_express_resizable_base_address_capability_flags
 {

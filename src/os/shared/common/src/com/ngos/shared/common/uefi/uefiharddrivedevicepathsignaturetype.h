@@ -8,7 +8,7 @@
 
 
 
-enum class UefiHardDriveDevicePathSignatureType: u8
+enum class UefiHardDriveDevicePathSignatureType: bad_uint8
 {
     NONE = 0,
     MBR  = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiHardDriveDevicePathSignatureType type) 
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

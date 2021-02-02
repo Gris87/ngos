@@ -226,9 +226,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
-            u8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
-            u8 c[16];
+            bad_uint8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
+            bad_uint8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
+            bad_uint8 c[16];
 
             testSse2Paddb(a, b, c);
 
@@ -296,9 +296,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
-            u16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
-            u16 c[8];
+            bad_uint16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
+            bad_uint16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
+            bad_uint16 c[8];
 
             testSse2Paddw(a, b, c);
 
@@ -342,9 +342,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u32 a[4] = { 100, 30, 64, 13 };
-            u32 b[4] = { 200, 98, 97, 32 };
-            u32 c[4];
+            bad_uint32 a[4] = { 100, 30, 64, 13 };
+            bad_uint32 b[4] = { 200, 98, 97, 32 };
+            bad_uint32 c[4];
 
             testSse2Paddd(a, b, c);
 
@@ -376,9 +376,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u64 a[2] = { 100, 30 };
-            u64 b[2] = { 200, 98 };
-            u64 c[2];
+            bad_uint64 a[2] = { 100, 30 };
+            bad_uint64 b[2] = { 200, 98 };
+            bad_uint64 c[2];
 
             testSse2Paddq(a, b, c);
 
@@ -404,9 +404,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
-            u8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
-            u8 c[16];
+            bad_uint8 a[16] = { 100, 30, 64, 13, 32, 97, 24, 68, 21, 64, 20, 74, 23, 19, 3, 7 };
+            bad_uint8 b[16] = { 200, 98, 97, 32, 14, 95, 13, 47, 13, 10, 47, 64, 12, 74, 1, 8 };
+            bad_uint8 c[16];
 
             testSse2Psubb(a, b, c);
 
@@ -474,9 +474,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
-            u16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
-            u16 c[8];
+            bad_uint16 a[8] = { 100, 30, 64, 13, 32, 97, 24, 68 };
+            bad_uint16 b[8] = { 200, 98, 97, 32, 14, 95, 13, 47 };
+            bad_uint16 c[8];
 
             testSse2Psubw(a, b, c);
 
@@ -520,9 +520,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u32 a[4] = { 100, 30, 64, 13 };
-            u32 b[4] = { 200, 98, 97, 32 };
-            u32 c[4];
+            bad_uint32 a[4] = { 100, 30, 64, 13 };
+            bad_uint32 b[4] = { 200, 98, 97, 32 };
+            bad_uint32 c[4];
 
             testSse2Psubd(a, b, c);
 
@@ -554,9 +554,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse2_sse2);
     {
         if (CPU::hasFlag(X86Feature::XMM2))
         {
-            u64 a[2] = { 100, 30 };
-            u64 b[2] = { 200, 98 };
-            u64 c[2];
+            bad_uint64 a[2] = { 100, 30 };
+            bad_uint64 b[2] = { 200, 98 };
+            bad_uint64 c[2];
 
             testSse2Psubq(a, b, c);
 

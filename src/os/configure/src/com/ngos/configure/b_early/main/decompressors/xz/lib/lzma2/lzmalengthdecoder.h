@@ -17,19 +17,19 @@
 struct LzmaLengthDecoder
 {
     // Probability of match length being at least 10
-    u16 choice;
+    bad_uint16 choice;
 
     // Probability of match length being at least 18
-    u16 choice2;
+    bad_uint16 choice2;
 
     // Probabilities for match lengths 2-9
-    u16 low[POS_STATES_MAX][LEN_LOW_SYMBOLS];
+    bad_uint16 low[POS_STATES_MAX][LEN_LOW_SYMBOLS];
 
     // Probabilities for match lengths 10-17
-    u16 mid[POS_STATES_MAX][LEN_MID_SYMBOLS];
+    bad_uint16 mid[POS_STATES_MAX][LEN_MID_SYMBOLS];
 
     // Probabilities for match lengths 18-273
-    u16 high[LEN_HIGH_SYMBOLS];
+    bad_uint16 high[LEN_HIGH_SYMBOLS];
 };
 
 

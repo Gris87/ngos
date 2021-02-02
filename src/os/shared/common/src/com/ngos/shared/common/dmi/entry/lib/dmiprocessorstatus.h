@@ -10,7 +10,7 @@
 
 
 
-enum class DmiProcessorStatus: u8
+enum class DmiProcessorStatus: bad_uint8
 {
     UNKNOWN          = 0,
     ENABLED          = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiProcessorStatus status) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)status, enumToString(status));
 
     return res;
 }

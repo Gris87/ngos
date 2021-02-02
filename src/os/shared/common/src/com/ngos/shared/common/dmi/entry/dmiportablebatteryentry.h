@@ -25,21 +25,21 @@ struct DmiPortableBatteryEntry
     DmiStringId                       serialNumber;
     DmiStringId                       deviceName;
     DmiPortableBatteryDeviceChemistry deviceChemistry;
-    u16                               designCapacity;
-    u16                               designVoltage;
+    bad_uint16                               designCapacity;
+    bad_uint16                               designVoltage;
     DmiStringId                       sbdsVersionNumber;
-    u8                                maximumErrorInBatteryData;
+    bad_uint8                                maximumErrorInBatteryData;
 } __attribute__((packed));
 
 
 
 struct DmiPortableBatteryEntryV22: public DmiPortableBatteryEntry
 {
-    u16                               sbdsSerialNumber;
+    bad_uint16                               sbdsSerialNumber;
     DmiPortableBatteryManufactureDate sbdsManufactureDate;
     DmiStringId                       sbdsDeviceChemistry;
-    u8                                designCapacityMultiplier;
-    u32                               oemSpecific;
+    bad_uint8                                designCapacityMultiplier;
+    bad_uint32                               oemSpecific;
 } __attribute__((packed));
 
 

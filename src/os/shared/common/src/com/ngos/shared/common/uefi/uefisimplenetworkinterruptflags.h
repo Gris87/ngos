@@ -11,7 +11,7 @@
 
 
 
-typedef u32 uefi_simple_network_interrupt_flags;
+typedef bad_uint32 uefi_simple_network_interrupt_flags;
 
 enum class UefiSimpleNetworkInterruptFlag: uefi_simple_network_interrupt_flags
 {

@@ -22,42 +22,42 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmibiosextendedromsize
 
 
         temp.value = 1;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), MB);
 
 
 
         temp.value = 64;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * MB);
 
 
 
         temp.value = 16383;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::MEGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 16383 * MB);
 
 
 
         temp.value = 1;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), GB);
 
 
 
         temp.value = 64;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * GB);
 
 
 
         temp.value = 16383;
-        temp.unit  = (u16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
+        temp.unit  = (bad_uint16)DmiBiosExtendedRomSizeUnit::GIGABYTES;
 
         TEST_ASSERT_EQUALS(temp.size(), 16383 * GB);
     }

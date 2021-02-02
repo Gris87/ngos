@@ -14,10 +14,10 @@ struct PciExpressRcrbHeaderCapability
 {
     PciExtendedCapabilityHeader           header;
     PciVendor                             vendorId;
-    u16                                   deviceId;
+    bad_uint16                                   deviceId;
     PciExpressRcrbHeaderCapabilitiesFlags capabilities;
     PciExpressRcrbHeaderControlFlags      control;
-    u32                                   __reserved;
+    bad_uint32                                   __reserved;
 } __attribute__((packed));
 
 

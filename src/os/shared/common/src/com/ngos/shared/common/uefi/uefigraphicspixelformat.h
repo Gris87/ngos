@@ -8,7 +8,7 @@
 
 
 
-enum class UefiGraphicsPixelFormat: u32
+enum class UefiGraphicsPixelFormat: bad_uint32
 {
     RGB_8_BIT_PER_COLOR,
     BGR_8_BIT_PER_COLOR,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(UefiGraphicsPixelFormat format) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%08X (%s)", (u32)format, enumToString(format));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)format, enumToString(format));
 
     return res;
 }

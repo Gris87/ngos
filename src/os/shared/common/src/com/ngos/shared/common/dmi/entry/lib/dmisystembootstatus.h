@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemBootStatus: u8
+enum class DmiSystemBootStatus: bad_uint8
 {
     NO_ERROR                  = 0,
     NO_BOOTABLE_MEDIA         = 1,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(DmiSystemBootStatus status) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)status, enumToString(status));
 
     return res;
 }

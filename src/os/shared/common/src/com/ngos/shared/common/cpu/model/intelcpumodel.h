@@ -12,7 +12,7 @@
 
 
 // Taken from https://en.wikichip.org/wiki/intel/cpuid
-enum class IntelCpuModel: u8 // Ignore CppEnumVerifier
+enum class IntelCpuModel: bad_uint8 // Ignore CppEnumVerifier
 {
     NONE                              = 0,
     FAMILY_6_HASWELL_S                = 60,
@@ -128,7 +128,7 @@ inline const char8* enumToFullString(CpuFamily family, IntelCpuModel model) // T
 
     static char8 res[41];
 
-    sprintf(res, "0x%02X (%s)", (u8)model, enumToString(family, model));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)model, enumToString(family, model));
 
     return res;
 }

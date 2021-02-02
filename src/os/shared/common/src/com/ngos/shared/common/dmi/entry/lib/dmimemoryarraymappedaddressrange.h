@@ -10,18 +10,18 @@
 
 struct DmiMemoryArrayMappedAddressRange
 {
-    u64 address(u64 offset = 0)
+    bad_uint64 address(bad_uint64 offset = 0)
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        return ((u64)value + offset) * KB;
+        return ((bad_uint64)value + offset) * KB;
     }
 
 
 
-    u32 value;
+    bad_uint32 value;
 } __attribute__((packed));
 
 

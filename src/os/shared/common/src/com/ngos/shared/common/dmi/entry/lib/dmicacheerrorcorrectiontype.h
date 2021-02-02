@@ -10,7 +10,7 @@
 
 
 
-enum class DmiCacheErrorCorrectionType: u8
+enum class DmiCacheErrorCorrectionType: bad_uint8
 {
     NULL       = 0,
     OTHER      = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiCacheErrorCorrectionType type) // TEST: 
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

@@ -13,11 +13,11 @@ struct PciExpressMulticastOverlayBaseAddressRegister
     {
         struct
         {
-            u64 mcOverlaySize        : 6;
-            u64 mcOverlayBaseAddress : 58;
+            bad_uint64 mcOverlaySize        : 6;
+            bad_uint64 mcOverlayBaseAddress : 58;
         };
 
-        u64 value64;
+        bad_uint64 value64;
     };
 };
 

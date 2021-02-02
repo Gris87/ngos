@@ -10,7 +10,7 @@
 
 
 
-enum class PngUnitSpecifier: u8
+enum class PngUnitSpecifier: bad_uint8
 {
     UNKNOWN = 0,
     METER   = 1
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PngUnitSpecifier specifier) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)specifier, enumToString(specifier));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)specifier, enumToString(specifier));
 
     return res;
 }

@@ -19,16 +19,16 @@ TEST_CASES(section2, com_ngos_kernel_other_task_utils);
     TEST_CASE("putTaskStackEndMagic()");
     {
         Task task;
-        u8   taskStack[100];
+        bad_uint8   taskStack[100];
 
         task.stack = taskStack;
         memzero(taskStack, sizeof(taskStack));
 
 
 
-        TEST_ASSERT_EQUALS(*(u64 *)taskStack,           0);
+        TEST_ASSERT_EQUALS(*(bad_uint64 *)taskStack,           0);
         TEST_ASSERT_EQUALS(putTaskStackEndMagic(&task), NgosStatus::OK);
-        TEST_ASSERT_EQUALS(*(u64 *)taskStack,           0x444E454B43415453);
+        TEST_ASSERT_EQUALS(*(bad_uint64 *)taskStack,           0x444E454B43415453);
     }
     TEST_CASE_END();
 }

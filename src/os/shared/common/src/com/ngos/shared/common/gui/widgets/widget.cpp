@@ -56,7 +56,7 @@ NgosStatus Widget::update()
     return update(0, 0, mWidth, mHeight);
 }
 
-NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+NgosStatus Widget::update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height)
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
@@ -105,10 +105,10 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
 
                 if (widget->hasIntersection(positionX, positionY, width, height))
                 {
-                    i64 left   = positionX - widget->getPositionX();
-                    i64 right  = left + (i64)width;
-                    i64 top    = positionY - widget->getPositionY();
-                    i64 bottom = top + (i64)height;
+                    bad_int64 left   = positionX - widget->getPositionX();
+                    bad_int64 right  = left + (bad_int64)width;
+                    bad_int64 top    = positionY - widget->getPositionY();
+                    bad_int64 bottom = top + (bad_int64)height;
 
                     if (left < 0)
                     {
@@ -120,12 +120,12 @@ NgosStatus Widget::update(i64 positionX, i64 positionY, u64 width, u64 height)
                         top = 0;
                     }
 
-                    if (right > (i64)widget->getResultImage()->getWidth())
+                    if (right > (bad_int64)widget->getResultImage()->getWidth())
                     {
                         right = widget->getResultImage()->getWidth();
                     }
 
-                    if (bottom > (i64)widget->getResultImage()->getHeight())
+                    if (bottom > (bad_int64)widget->getResultImage()->getHeight())
                     {
                         bottom = widget->getResultImage()->getHeight();
                     }
@@ -178,7 +178,7 @@ NgosStatus Widget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus Widget::onMouseScrollEvent(i32 delta)
+NgosStatus Widget::onMouseScrollEvent(bad_int32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
@@ -193,7 +193,7 @@ NgosStatus Widget::onMouseScrollEvent(i32 delta)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
+NgosStatus Widget::drawWidget(Widget *widget, bad_int64 positionX, bad_int64 positionY)
 {
     // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d", widget, positionX, positionY)); // Commented to avoid too frequent logs
 
@@ -204,7 +204,7 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY)
     return drawWidget(widget, positionX, positionY, 0, 0, widget->getResultImage()->getWidth(), widget->getResultImage()->getHeight());
 }
 
-NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
+NgosStatus Widget::drawWidget(Widget *widget, bad_int64 positionX, bad_int64 positionY, bad_int64 left, bad_int64 top, bad_int64 right, bad_int64 bottom)
 {
     // COMMON_LT((" | widget = 0x%p, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", widget, positionX, positionY, left, top, right, bottom)); // Commented to avoid too frequent logs
 
@@ -212,8 +212,8 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 
     COMMON_ASSERT(widget->getResultImage(),                             "widget->getResultImage() is null", NgosStatus::ASSERTION);
     COMMON_ASSERT(left >= 0,                                            "left is invalid",                  NgosStatus::ASSERTION);
     COMMON_ASSERT(top >= 0,                                             "top is invalid",                   NgosStatus::ASSERTION);
-    COMMON_ASSERT(right <= (i64)widget->getResultImage()->getWidth(),   "right is invalid",                 NgosStatus::ASSERTION);
-    COMMON_ASSERT(bottom <= (i64)widget->getResultImage()->getHeight(), "bottom is invalid",                NgosStatus::ASSERTION);
+    COMMON_ASSERT(right <= (bad_int64)widget->getResultImage()->getWidth(),   "right is invalid",                 NgosStatus::ASSERTION);
+    COMMON_ASSERT(bottom <= (bad_int64)widget->getResultImage()->getHeight(), "bottom is invalid",                NgosStatus::ASSERTION);
 
 
 
@@ -245,7 +245,7 @@ NgosStatus Widget::drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 
     return NgosStatus::OK;
 }
 
-Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
+Widget* Widget::detectHoveredWidget(bad_int64 positionX, bad_int64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
 
@@ -256,9 +256,9 @@ Widget* Widget::detectHoveredWidget(i64 positionX, i64 positionY)
         &&
         positionY >= 0
         &&
-        positionX < (i64)mWidth
+        positionX < (bad_int64)mWidth
         &&
-        positionY < (i64)mHeight
+        positionY < (bad_int64)mHeight
         &&
         isVisible()
        )
@@ -312,7 +312,7 @@ bool Widget::hasIntersection(Widget *anotherWidget)
     return hasIntersection(anotherWidget->mPositionX, anotherWidget->mPositionY, anotherWidget->mWidth, anotherWidget->mHeight);
 }
 
-bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height)
+bool Widget::hasIntersection(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height)
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid too frequent logs
 
@@ -321,13 +321,13 @@ bool Widget::hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height
 
 
 
-    return (i64)(positionX)           < (i64)(mPositionX + mWidth)
+    return (bad_int64)(positionX)           < (bad_int64)(mPositionX + mWidth)
             &&
-            (i64)(positionX + width)  > (i64)(mPositionX)
+            (bad_int64)(positionX + width)  > (bad_int64)(mPositionX)
             &&
-            (i64)(positionY)          < (i64)(mPositionY + mHeight)
+            (bad_int64)(positionY)          < (bad_int64)(mPositionY + mHeight)
             &&
-            (i64)(positionY + height) > (i64)(mPositionY);
+            (bad_int64)(positionY + height) > (bad_int64)(mPositionY);
 }
 
 NgosStatus Widget::lockUpdates()
@@ -528,7 +528,7 @@ List<Widget *>& Widget::getChildren()
     return mChildren;
 }
 
-NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
+NgosStatus Widget::setPosition(bad_int64 positionX, bad_int64 positionY)
 {
     COMMON_LT((" | positionX = %d, positionY = %d", positionX, positionY));
 
@@ -552,8 +552,8 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
             mHeight > 0
            )
         {
-            i64 oldPositionX = mPositionX;
-            i64 oldPositionY = mPositionY;
+            bad_int64 oldPositionX = mPositionX;
+            bad_int64 oldPositionY = mPositionY;
 
             mPositionX = positionX;
             mPositionY = positionY;
@@ -577,7 +577,7 @@ NgosStatus Widget::setPosition(i64 positionX, i64 positionY)
     return NgosStatus::OK;
 }
 
-i64 Widget::getPositionX() const
+bad_int64 Widget::getPositionX() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -586,7 +586,7 @@ i64 Widget::getPositionX() const
     return mPositionX;
 }
 
-i64 Widget::getPositionY() const
+bad_int64 Widget::getPositionY() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -595,7 +595,7 @@ i64 Widget::getPositionY() const
     return mPositionY;
 }
 
-i64 Widget::getGlobalPositionX() const
+bad_int64 Widget::getGlobalPositionX() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -611,7 +611,7 @@ i64 Widget::getGlobalPositionX() const
     }
 }
 
-i64 Widget::getGlobalPositionY() const
+bad_int64 Widget::getGlobalPositionY() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -627,7 +627,7 @@ i64 Widget::getGlobalPositionY() const
     }
 }
 
-NgosStatus Widget::setSize(u64 width, u64 height)
+NgosStatus Widget::setSize(bad_uint64 width, bad_uint64 height)
 {
     COMMON_LT((" | width = %u, height = %u", width, height));
 
@@ -642,8 +642,8 @@ NgosStatus Widget::setSize(u64 width, u64 height)
         mHeight != height
        )
     {
-        u64 oldWidth  = mWidth;
-        u64 oldHeight = mHeight;
+        bad_uint64 oldWidth  = mWidth;
+        bad_uint64 oldHeight = mHeight;
 
         mWidth  = width;
         mHeight = height;
@@ -664,7 +664,7 @@ NgosStatus Widget::setSize(u64 width, u64 height)
     return NgosStatus::OK;
 }
 
-u64 Widget::getWidth() const
+bad_uint64 Widget::getWidth() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -673,7 +673,7 @@ u64 Widget::getWidth() const
     return mWidth;
 }
 
-u64 Widget::getHeight() const
+bad_uint64 Widget::getHeight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

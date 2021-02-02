@@ -11,7 +11,7 @@
 
 union UefiIpAddress
 {
-    u32             address[4];
+    bad_uint32             address[4];
     UefiIpV4Address v4;
     UefiIpV6Address v6;
 };

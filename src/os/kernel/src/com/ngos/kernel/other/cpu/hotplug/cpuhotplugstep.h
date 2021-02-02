@@ -8,7 +8,7 @@
 
 
 
-typedef NgosStatus (*cpu_up_down_action) (u64 cpu);
+typedef NgosStatus (*cpu_up_down_action) (bad_uint64 cpu);
 
 
 

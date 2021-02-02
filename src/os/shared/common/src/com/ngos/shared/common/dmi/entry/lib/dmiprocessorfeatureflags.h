@@ -11,7 +11,7 @@
 
 
 
-typedef u32 dmi_processor_feature_flags;
+typedef bad_uint32 dmi_processor_feature_flags;
 
 enum class DmiProcessorFeatureFlag: dmi_processor_feature_flags
 {

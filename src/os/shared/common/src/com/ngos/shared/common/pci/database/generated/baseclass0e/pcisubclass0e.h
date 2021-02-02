@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubClass0E: u8 // Ignore CppEnumVerifier
+enum class PciSubClass0E: bad_uint8 // Ignore CppEnumVerifier
 {
     SUB_CLASS_00 = 0x00
 };
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciSubClass0E subClass) // TEST: NO
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)subClass, enumToString(subClass));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)subClass, enumToString(subClass));
 
     return res;
 }

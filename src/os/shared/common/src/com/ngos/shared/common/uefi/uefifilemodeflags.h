@@ -11,7 +11,7 @@
 
 
 
-typedef u64 uefi_file_mode_flags;
+typedef bad_uint64 uefi_file_mode_flags;
 
 enum class UefiFileModeFlag: uefi_file_mode_flags
 {

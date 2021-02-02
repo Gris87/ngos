@@ -8,7 +8,7 @@
 
 
 
-enum class UefiInterfaceType: u32
+enum class UefiInterfaceType: bad_uint32
 {
     NATIVE_INTERFACE = 0,
     PCODE_INTERFACE  = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(UefiInterfaceType type) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
 
     return res;
 }

@@ -15,7 +15,7 @@
 
 
 
-enum class JpegMarkerType: u8
+enum class JpegMarkerType: bad_uint8
 {
     NONE                      = 0,
     START_OF_IMAGE            = 0xD8,
@@ -110,7 +110,7 @@ inline const char8* enumToFullString(JpegMarkerType type) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

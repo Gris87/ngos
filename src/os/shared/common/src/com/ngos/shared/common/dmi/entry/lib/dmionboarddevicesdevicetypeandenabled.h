@@ -13,11 +13,11 @@ struct DmiOnboardDevicesDeviceTypeAndEnabled
     {
         struct
         {
-            u8 deviceType: 7; // TODO: Use enum DmiOnboardDevicesDeviceType
-            u8 enabled:    1;
+            bad_uint8 deviceType: 7; // TODO: Use enum DmiOnboardDevicesDeviceType
+            bad_uint8 enabled:    1;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

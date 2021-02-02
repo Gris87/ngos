@@ -10,7 +10,7 @@
 
 
 
-enum class PngColorType: u8
+enum class PngColorType: bad_uint8
 {
     GREYSCALE           = 0,
     RGB                 = 2,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PngColorType type) // TEST: NO
 
     static char8 res[27];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

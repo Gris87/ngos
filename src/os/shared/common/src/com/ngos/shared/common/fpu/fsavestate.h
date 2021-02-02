@@ -10,16 +10,16 @@
 // The legacy x87 FPU state format, as saved by FSAVE and restored by the FRSTOR instructions
 struct FSaveState
 {
-    u32 cwd;    // FPU Control Word
-    u32 swd;    // FPU Status Word
-    u32 twd;    // FPU Tag Word
-    u32 fip;    // FPU IP Offset
-    u32 fcs;    // FPU IP Selector
-    u32 foo;    // FPU Operand Pointer Offset
-    u32 fos;    // FPU Operand Pointer Selector
+    bad_uint32 cwd;    // FPU Control Word
+    bad_uint32 swd;    // FPU Status Word
+    bad_uint32 twd;    // FPU Tag Word
+    bad_uint32 fip;    // FPU IP Offset
+    bad_uint32 fcs;    // FPU IP Selector
+    bad_uint32 foo;    // FPU Operand Pointer Offset
+    bad_uint32 fos;    // FPU Operand Pointer Selector
 
     // 10 * 8 bytes for each FPU register = 80 bytes
-    u64 stack[10];
+    bad_uint64 stack[10];
 };
 
 

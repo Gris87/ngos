@@ -39,17 +39,17 @@ private:
     static bool hasFlag(XFeatureTypeFlag flag);
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
-    static u32 expectedStateSize(); // TEST: NO
+    static bad_uint32 expectedStateSize(); // TEST: NO
 #endif
 
     static FpuState          sState;
-    static u32               sStateKernelSize;
-    static u32               sStateUserSize;
-    static u32               sMxcsrMask;
+    static bad_uint32               sStateKernelSize;
+    static bad_uint32               sStateUserSize;
+    static bad_uint32               sMxcsrMask;
     static XFeatureTypeFlags sXFeatures;
-    static u32               sXFeaturesOffsets[(u64)XFeature::MAXIMUM];
-    static u32               sXFeaturesCompactedOffsets[(u64)XFeature::MAXIMUM];
-    static u32               sXFeaturesSizes[(u64)XFeature::MAXIMUM];
+    static bad_uint32               sXFeaturesOffsets[(bad_uint64)XFeature::MAXIMUM];
+    static bad_uint32               sXFeaturesCompactedOffsets[(bad_uint64)XFeature::MAXIMUM];
+    static bad_uint32               sXFeaturesSizes[(bad_uint64)XFeature::MAXIMUM];
 };
 
 

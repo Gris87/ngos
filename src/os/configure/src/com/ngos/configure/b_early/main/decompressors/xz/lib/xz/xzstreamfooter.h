@@ -19,10 +19,10 @@
 
 struct XzStreamFooter
 {
-    u32           crc32;
-    u32           backwardSize;
+    bad_uint32           crc32;
+    bad_uint32           backwardSize;
     XzStreamFlags streamFlags;
-    u16           signature;
+    bad_uint16           signature;
 } __attribute__((packed));
 
 

@@ -14,7 +14,7 @@
 class Console
 {
 public:
-    static NgosStatus init(BootParams *params, RgbaPixel *doubleBuffer, u64 doubleBufferSize); // TEST: NO
+    static NgosStatus init(BootParams *params, RgbaPixel *doubleBuffer, bad_uint64 doubleBufferSize); // TEST: NO
     static NgosStatus init(); // TEST: NO
 
     static NgosStatus print(char8 ch); // TEST: NO
@@ -33,9 +33,9 @@ private:
     static UefiGraphicsOutputProtocol *sScreenGop;
     static RgbaPixel                  *sDoubleBuffer;
     static RgbaPixel                  *sLastLineBuffer;
-    static u64                         sLastLineBufferSize;
-    static u16                         sScreenPosX;
-    static u16                        *sGlyphOffsets;
+    static bad_uint64                         sLastLineBufferSize;
+    static bad_uint16                         sScreenPosX;
+    static bad_uint16                        *sGlyphOffsets;
 };
 
 

@@ -28,15 +28,15 @@ public:
     static void println(); // TEST: NO
     static void println(char8 ch); // TEST: NO
     static void println(const char8 *str); // TEST: NO
-    static i64 printf(const char8 *format, ...); // TEST: NO
+    static bad_int64 printf(const char8 *format, ...); // TEST: NO
 
     static NgosStatus noMorePrint(); // TEST: NO
     static bool canPrint(); // TEST: NO
 
-    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, u8 **data); // TEST: NO
-    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data); // TEST: NO
-    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, u8 *data); // TEST: NO
-    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, u64 dataSize, u8 *data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, bad_uint64 *dataSize, bad_uint8 **data); // TEST: NO
+    static UefiStatus getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, bad_uint64 *dataSize, bad_uint8 *data); // TEST: NO
+    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, bad_uint64 dataSize, bad_uint8 *data); // TEST: NO
+    static UefiStatus setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, bad_uint64 dataSize, bad_uint8 *data); // TEST: NO
 
     static UefiFileProtocol* openVolume(uefi_handle handle); // TEST: NO
     static bool fileExists(UefiFileProtocol *parentDirectory, const char16 *path); // TEST: NO
@@ -48,36 +48,36 @@ public:
     static UefiDevicePath* nextDevicePathNode(UefiDevicePath *path);
     static NgosStatus setDevicePathEndNode(UefiDevicePath *path);
     static bool isDevicePathEndType(UefiDevicePath *path);
-    static u64 getDevicePathSize(UefiDevicePath *path);
+    static bad_uint64 getDevicePathSize(UefiDevicePath *path);
 
     static UefiStatus getTime(UefiTime *time, UefiTimeCapabilities *capabilities); // TEST: NO
     static NgosStatus currentTimestampToString(char8 *buffer); // TEST: NO
 
     static UefiStatus createEvent(UefiEventType type, UefiTpl notifyTpl, uefi_event_notify notifyFunction, void *notifyContext, uefi_event *event); // TEST: NO
-    static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime); // TEST: NO
-    static UefiStatus waitForEvent(u64 numberOfEvents, uefi_event *event, u64 *index); // TEST: NO
+    static UefiStatus setTimer(uefi_event event, UefiTimerDelay type, bad_uint64 triggerTime); // TEST: NO
+    static UefiStatus waitForEvent(bad_uint64 numberOfEvents, uefi_event *event, bad_uint64 *index); // TEST: NO
     static UefiStatus closeEvent(uefi_event event); // TEST: NO
-    static UefiStatus stall(u64 microseconds); // TEST: NO
+    static UefiStatus stall(bad_uint64 microseconds); // TEST: NO
 
     static UefiStatus handleProtocol(uefi_handle handle, Guid *protocol, void **interface); // TEST: NO
     static UefiStatus locateProtocol(Guid *protocol, void *registration, void **interface); // TEST: NO
-    static UefiStatus locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer); // TEST: NO
+    static UefiStatus locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, bad_uint64 *bufferSize, uefi_handle *buffer); // TEST: NO
     static UefiStatus locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, uefi_handle *device); // TEST: NO
 
-    static UefiStatus allocatePool(UefiMemoryType poolType, u64 size, void **buffer); // TEST: NO
+    static UefiStatus allocatePool(UefiMemoryType poolType, bad_uint64 size, void **buffer); // TEST: NO
     static UefiStatus freePool(void *buffer); // TEST: NO
 
-    static bool memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descriptorSize);
-    static UefiStatus allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, u64 *memory); // TEST: NO
-    static UefiStatus getMemoryMap(u64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, u64 *mapKey, u64 *descriptorSize, u32 *descriptorVersion); // TEST: NO
+    static bool memoryMapHasHeadroom(bad_uint64 bufferSize, bad_uint64 memoryMapSize, bad_uint64 descriptorSize);
+    static UefiStatus allocatePages(UefiAllocateType type, UefiMemoryType memoryType, bad_uint64 noPages, bad_uint64 *memory); // TEST: NO
+    static UefiStatus getMemoryMap(bad_uint64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, bad_uint64 *mapKey, bad_uint64 *descriptorSize, bad_uint32 *descriptorVersion); // TEST: NO
     static UefiStatus getMemoryMap(UefiBootMemoryMap *map); // TEST: NO
-    static UefiStatus lowAlloc(u64 size, u64 align, void **address); // TEST: NO
+    static UefiStatus lowAlloc(bad_uint64 size, bad_uint64 align, void **address); // TEST: NO
 
-    static UefiStatus loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle); // TEST: NO
-    static UefiStatus startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData); // TEST: NO
+    static UefiStatus loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, bad_uint64 sourceSize, uefi_handle *imageHandle); // TEST: NO
+    static UefiStatus startImage(uefi_handle imageHandle, bad_uint64 *exitDataSize, char16 **exitData); // TEST: NO
 
-    static UefiStatus resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData); // TEST: NO
-    static UefiStatus exitBootServices(u64 mapKey); // TEST: NO
+    static UefiStatus resetSystem(UefiResetType resetType, UefiStatus resetStatus, bad_uint64 dataSize, char16 *resetData); // TEST: NO
+    static UefiStatus exitBootServices(bad_uint64 mapKey); // TEST: NO
 
     static UefiSmbios3ConfigurationTable* getSmbios3Config(); // TEST: NO
     static UefiSmbiosConfigurationTable* getSmbiosConfig(); // TEST: NO

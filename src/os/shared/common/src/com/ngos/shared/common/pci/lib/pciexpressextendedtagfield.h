@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressExtendedTagField: u8
+enum class PciExpressExtendedTagField: bad_uint8
 {
     _5_BIT_FIELD = 0,
     _8_BIT_FIELD = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExpressExtendedTagField field) // TEST: 
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", (u8)field, enumToString(field));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)field, enumToString(field));
 
     return res;
 }

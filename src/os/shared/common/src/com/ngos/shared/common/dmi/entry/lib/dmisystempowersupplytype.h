@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemPowerSupplyType: u8
+enum class DmiSystemPowerSupplyType: bad_uint8
 {
     NONE      = 0,
     OTHER     = 1,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(DmiSystemPowerSupplyType type) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

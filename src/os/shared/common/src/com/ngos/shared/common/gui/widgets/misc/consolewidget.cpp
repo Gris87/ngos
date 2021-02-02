@@ -33,7 +33,7 @@ ConsoleWidget::~ConsoleWidget()
     }
 }
 
-NgosStatus ConsoleWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+NgosStatus ConsoleWidget::update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height)
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid infinite loop
 

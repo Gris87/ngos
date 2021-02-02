@@ -13,7 +13,7 @@
 
 
 
-typedef u32 thread_info_flags;
+typedef bad_uint32 thread_info_flags;
 
 enum class ThreadInfoFlag: thread_info_flags
 {

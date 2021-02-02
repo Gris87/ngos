@@ -14,11 +14,11 @@ struct ElfSymbolInfo
     {
         struct
         {
-            u8 bind: 4; // TODO: Use enum ElfSymbolBind
-            u8 type: 4; // TODO: Use enum ElfSymbolType
+            bad_uint8 bind: 4; // TODO: Use enum ElfSymbolBind
+            bad_uint8 type: 4; // TODO: Use enum ElfSymbolType
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

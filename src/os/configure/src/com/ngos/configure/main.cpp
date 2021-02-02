@@ -20,7 +20,7 @@
 
 
 CPP_EXTERN_C
-BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 kernelLocation)
+BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, bad_uint64 kernelLocation)
 { // Ignore CppNgosTraceVerifier
     // We can't output at the moment
     // UEFI_LT((" | imageHandle = 0x%p, systemTable = 0x%p, kernelLocation = 0x%p", imageHandle, systemTable, kernelLocation)); // Commented to avoid error because UEFI is uninitialized

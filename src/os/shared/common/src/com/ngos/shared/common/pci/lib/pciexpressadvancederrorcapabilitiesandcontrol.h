@@ -13,18 +13,18 @@ struct PciExpressAdvancedErrorCapabilitiesAndControl
     {
         struct
         {
-            u32 firstErrorPointer              : 5;
-            u32 ecrcGenerationCapable          : 1;
-            u32 ecrcGenerationEnable           : 1;
-            u32 ecrcCheckCapable               : 1;
-            u32 ecrcCheckEnable                : 1;
-            u32 multipleHeaderRecordingCapable : 1;
-            u32 multipleHeaderRecordingEnable  : 1;
-            u32 tlpPrefixLogPresent            : 1;
-            u32 __reserved                     : 20;
+            bad_uint32 firstErrorPointer              : 5;
+            bad_uint32 ecrcGenerationCapable          : 1;
+            bad_uint32 ecrcGenerationEnable           : 1;
+            bad_uint32 ecrcCheckCapable               : 1;
+            bad_uint32 ecrcCheckEnable                : 1;
+            bad_uint32 multipleHeaderRecordingCapable : 1;
+            bad_uint32 multipleHeaderRecordingEnable  : 1;
+            bad_uint32 tlpPrefixLogPresent            : 1;
+            bad_uint32 __reserved                     : 20;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

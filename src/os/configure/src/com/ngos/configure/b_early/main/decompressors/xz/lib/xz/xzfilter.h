@@ -14,9 +14,9 @@
 
 struct XzFilter
 {
-    u64  id;
-    u64  sizeOfProperties;
-    u8  *properties;
+    bad_uint64  id;
+    bad_uint64  sizeOfProperties;
+    bad_uint8  *properties;
 };
 
 

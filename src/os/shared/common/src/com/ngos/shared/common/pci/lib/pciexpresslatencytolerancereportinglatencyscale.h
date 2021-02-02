@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressLatencyToleranceReportingLatencyScale: u8
+enum class PciExpressLatencyToleranceReportingLatencyScale: bad_uint8
 {
     _1_NS        = 0,
     _32_NS       = 1,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciExpressLatencyToleranceReportingLatencyS
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", (u8)scale, enumToString(scale));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)scale, enumToString(scale));
 
     return res;
 }

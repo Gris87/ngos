@@ -10,7 +10,7 @@
 
 struct DmiCacheConfiguration
 {
-    u16 levelReal()
+    bad_uint16 levelReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -25,16 +25,16 @@ struct DmiCacheConfiguration
     {
         struct
         {
-            u16 level:           3;
-            u16 socketed:        1;
-            u16 __reserved:      1;
-            u16 location:        2; // TODO: Use enum DmiCacheLocation
-            u16 enabled:         1;
-            u16 operationalMode: 2; // TODO: Use enum DmiCacheOperationalMode
-            u16 __reserved2:     6;
+            bad_uint16 level:           3;
+            bad_uint16 socketed:        1;
+            bad_uint16 __reserved:      1;
+            bad_uint16 location:        2; // TODO: Use enum DmiCacheLocation
+            bad_uint16 enabled:         1;
+            bad_uint16 operationalMode: 2; // TODO: Use enum DmiCacheOperationalMode
+            bad_uint16 __reserved2:     6;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 } __attribute__((packed));
 

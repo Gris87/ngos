@@ -11,18 +11,18 @@
 class Time
 {
 public:
-    static i64 currentTimestampInMilliseconds(); // TEST: NO
-    static i64 timeToTimestampInMilliseconds(i64 year, u8 month, u8 day, u8 hour, u8 minute, u8 second, u32 nanosecond); // TEST: NO
-    static u8 daysInMonth(i64 year, u8 month); // TEST: NO
-    static bool isLeapYear(i64 year);
+    static bad_int64 currentTimestampInMilliseconds(); // TEST: NO
+    static bad_int64 timeToTimestampInMilliseconds(bad_int64 year, bad_uint8 month, bad_uint8 day, bad_uint8 hour, bad_uint8 minute, bad_uint8 second, bad_uint32 nanosecond); // TEST: NO
+    static bad_uint8 daysInMonth(bad_int64 year, bad_uint8 month); // TEST: NO
+    static bool isLeapYear(bad_int64 year);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static u8  sDaysInMonth[12];
-    static u16 sDaysFromStartOfYear[12];
+    static bad_uint8  sDaysInMonth[12];
+    static bad_uint16 sDaysFromStartOfYear[12];
 };
 
 

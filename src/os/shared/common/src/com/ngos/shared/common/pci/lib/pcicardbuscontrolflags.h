@@ -11,7 +11,7 @@
 
 
 
-typedef u16 pci_card_bus_control_flags;
+typedef bad_uint16 pci_card_bus_control_flags;
 
 enum class PciCardBusControlFlag: pci_card_bus_control_flags
 {

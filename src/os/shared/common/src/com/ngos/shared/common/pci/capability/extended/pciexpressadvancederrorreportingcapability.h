@@ -21,12 +21,12 @@ struct PciExpressAdvancedErrorReportingCapability
     PciExpressCorrectableErrorFlags               correctableErrorStatus;
     PciExpressCorrectableErrorFlags               correctableErrorMask;
     PciExpressAdvancedErrorCapabilitiesAndControl advancedErrorCapabilitiesAndControl;
-    u32                                           headerLog[4];
+    bad_uint32                                           headerLog[4];
     PciExpressRootErrorCommandFlags               rootErrorCommand;
     PciExpressRootErrorStatus                     rootErrorStatus;
-    u16                                           errorSourceIdentification;
-    u16                                           correctableErrorSourceIdentification;
-    u32                                           tlpPrefixLog[4];
+    bad_uint16                                           errorSourceIdentification;
+    bad_uint16                                           correctableErrorSourceIdentification;
+    bad_uint32                                           tlpPrefixLog[4];
 };
 
 

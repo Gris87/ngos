@@ -11,7 +11,7 @@
 
 
 
-typedef u64 uefi_file_attribute_flags;
+typedef bad_uint64 uefi_file_attribute_flags;
 
 enum class UefiFileAttributeFlag: uefi_file_attribute_flags
 {

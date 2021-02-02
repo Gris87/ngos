@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressPowerBudgetingType: u8
+enum class PciExpressPowerBudgetingType: bad_uint8
 {
     PME_AUXILIARY = 0,
     AUXILIARY     = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressPowerBudgetingType type) // TEST:
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

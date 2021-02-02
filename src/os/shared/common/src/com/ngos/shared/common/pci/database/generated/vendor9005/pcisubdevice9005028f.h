@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice9005028F: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice9005028F: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_103C0600 = 0x103C0600,
@@ -195,7 +195,7 @@ inline const char8* enumToFullString(PciSubDevice9005028F subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -277,14 +277,14 @@ inline const char8* enumToHumanString(PciSubDevice9005028F subDevice) // TEST: N
         case PciSubDevice9005028F::SUBDEVICE_90050908: return "SmartHBA 2100";
         case PciSubDevice9005028F::SUBDEVICE_9005090A: return "SmartHBA 2100A-8i";
         case PciSubDevice9005028F::SUBDEVICE_90051200: return "SmartRAID 3154-24i";
-        case PciSubDevice9005028F::SUBDEVICE_90051201: return "SmartRAID 3154-8i16e";
-        case PciSubDevice9005028F::SUBDEVICE_90051202: return "SmartRAID 3154-8i8e";
+        case PciSubDevice9005028F::SUBDEVICE_90051201: return "SmartRAID 3154-8bad_int16e";
+        case PciSubDevice9005028F::SUBDEVICE_90051202: return "SmartRAID 3154-8bad_int8e";
         case PciSubDevice9005028F::SUBDEVICE_90051280: return "HBA 1100-16i";
         case PciSubDevice9005028F::SUBDEVICE_90051281: return "HBA 1100-16e";
         case PciSubDevice9005028F::SUBDEVICE_90051282: return "SmartHBA 2100-16i";
-        case PciSubDevice9005028F::SUBDEVICE_90051300: return "HBA 1100-8i8e";
+        case PciSubDevice9005028F::SUBDEVICE_90051300: return "HBA 1100-8bad_int8e";
         case PciSubDevice9005028F::SUBDEVICE_90051301: return "HBA 1100-24i";
-        case PciSubDevice9005028F::SUBDEVICE_90051302: return "SmartHBA 2100-8i8e";
+        case PciSubDevice9005028F::SUBDEVICE_90051302: return "SmartHBA 2100-8bad_int8e";
         case PciSubDevice9005028F::SUBDEVICE_90051303: return "SmartHBA 2100-24i";
         case PciSubDevice9005028F::SUBDEVICE_90051380: return "SmartRAID 3154-16i";
 

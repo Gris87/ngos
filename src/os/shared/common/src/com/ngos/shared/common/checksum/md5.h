@@ -18,9 +18,9 @@ public:
     MD5();
     ~MD5(); // TEST: NO
 
-    static Md5Hash md5(u8 *data, u64 length);
+    static Md5Hash md5(bad_uint8 *data, bad_uint64 length);
 
-    NgosStatus update(u8 *data, u64 length);
+    NgosStatus update(bad_uint8 *data, bad_uint64 length);
     NgosStatus finish();
 
     Md5Hash getResult() const;
@@ -30,11 +30,11 @@ public:
 #else
 private:
 #endif
-    NgosStatus transform(u8 *block);
+    NgosStatus transform(bad_uint8 *block);
 
     bool    mFinished;
-    u8      mBuffer[MD5_BLOCK_SIZE];
-    u64     mCount;
+    bad_uint8      mBuffer[MD5_BLOCK_SIZE];
+    bad_uint64     mCount;
     Md5Hash mResult;
 };
 

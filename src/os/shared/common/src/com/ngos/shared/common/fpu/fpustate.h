@@ -22,7 +22,7 @@ union FpuState
     FSaveState  fsave;
     FXSaveState fxsave;
     XSaveState  xsave;
-    u8          __pad[PAGE_SIZE];
+    bad_uint8          __pad[PAGE_SIZE];
 };
 
 

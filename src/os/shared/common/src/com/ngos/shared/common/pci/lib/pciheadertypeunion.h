@@ -14,11 +14,11 @@ struct PciHeaderTypeUnion
     {
         struct
         {
-            u8 type:            7; // TODO: Use enum PciHeaderType
-            u8 isMultiFunction: 1;
+            bad_uint8 type:            7; // TODO: Use enum PciHeaderType
+            bad_uint8 isMultiFunction: 1;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 };
 

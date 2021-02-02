@@ -26,7 +26,7 @@ struct DmiBiosEntry
     DmiEntryHeader              header;
     DmiStringId                 vendor;
     DmiStringId                 biosVersion;
-    u16                         biosStartingAddressSegment;
+    bad_uint16                         biosStartingAddressSegment;
     DmiStringId                 biosReleaseDate;
     DmiBiosRomSize              biosRomSize;
     DmiBiosCharacteristicsFlags biosCharacteristics;
@@ -50,10 +50,10 @@ struct DmiBiosEntryV23: public DmiBiosEntryV21
 
 struct DmiBiosEntryV24: public DmiBiosEntryV23
 {
-    u8 systemBiosMajorRelease;
-    u8 systemBiosMinorRelease;
-    u8 embeddedControllerFirmwareMajorRelease;
-    u8 embeddedControllerFirmwareMinorRelease;
+    bad_uint8 systemBiosMajorRelease;
+    bad_uint8 systemBiosMinorRelease;
+    bad_uint8 embeddedControllerFirmwareMajorRelease;
+    bad_uint8 embeddedControllerFirmwareMinorRelease;
 } __attribute__((packed));
 
 

@@ -9,9 +9,9 @@
 
 struct UefiSimplePointerMode
 {
-    u64  resolutionX;
-    u64  resolutionY;
-    u64  resolutionZ;
+    bad_uint64  resolutionX;
+    bad_uint64  resolutionY;
+    bad_uint64  resolutionZ;
     bool leftButton;
     bool rightButton;
 };

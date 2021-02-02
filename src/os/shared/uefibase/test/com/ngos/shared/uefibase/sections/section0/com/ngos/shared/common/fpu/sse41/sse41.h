@@ -29,9 +29,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i32 a[4] = { 1981965841, -1987077212, 2003838066, -2103715301 };
-            i32 b[4] = { 1987132191, 1271329132, -1321971178, -1219321901 };
-            i32 c[4];
+            bad_int32 a[4] = { 1981965841, -1987077212, 2003838066, -2103715301 };
+            bad_int32 b[4] = { 1987132191, 1271329132, -1321971178, -1219321901 };
+            bad_int32 c[4];
 
             testSse41Pmulld(a, b, c);
 
@@ -63,9 +63,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i32 a[4] = { 1981965841, -1987077212, 2003838066, -2103715301 };
-            i32 b[4] = { 1987132191, 1271329132, -1321971178, -1219321901 };
-            i64 c[2];
+            bad_int32 a[4] = { 1981965841, -1987077212, 2003838066, -2103715301 };
+            bad_int32 b[4] = { 1987132191, 1271329132, -1321971178, -1219321901 };
+            bad_int64 c[2];
 
             testSse41Pmuldq(a, b, c);
 
@@ -95,9 +95,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
-            i8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
-            i8 c[16];
+            bad_int8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
+            bad_int8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
+            bad_int8 c[16];
 
             testSse41Pminsb(a, b, c);
 
@@ -165,9 +165,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
-            i8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
-            i8 c[16];
+            bad_int8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
+            bad_int8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
+            bad_int8 c[16];
 
             testSse41Pmaxsb(a, b, c);
 
@@ -235,9 +235,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i32 a[4] = { 10, 64, 32, -46 };
-            i32 b[4] = { 31, 13, 92, -16 };
-            i32 c[4];
+            bad_int32 a[4] = { 10, 64, 32, -46 };
+            bad_int32 b[4] = { 31, 13, 92, -16 };
+            bad_int32 c[4];
 
             testSse41Pminsd(a, b, c);
 
@@ -269,9 +269,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            i32 a[4] = { 10, 64, 32, -46 };
-            i32 b[4] = { 31, 13, 92, -16 };
-            i32 c[4];
+            bad_int32 a[4] = { 10, 64, 32, -46 };
+            bad_int32 b[4] = { 31, 13, 92, -16 };
+            bad_int32 c[4];
 
             testSse41Pmaxsd(a, b, c);
 
@@ -303,9 +303,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            u32 a[4] = { 10, 64, 32, 46 };
-            u32 b[4] = { 31, 13, 92, 16 };
-            u32 c[4];
+            bad_uint32 a[4] = { 10, 64, 32, 46 };
+            bad_uint32 b[4] = { 31, 13, 92, 16 };
+            bad_uint32 c[4];
 
             testSse41Pminud(a, b, c);
 
@@ -337,9 +337,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            u32 a[4] = { 10, 64, 32, 46 };
-            u32 b[4] = { 31, 13, 92, 16 };
-            u32 c[4];
+            bad_uint32 a[4] = { 10, 64, 32, 46 };
+            bad_uint32 b[4] = { 31, 13, 92, 16 };
+            bad_uint32 c[4];
 
             testSse41Pmaxud(a, b, c);
 
@@ -371,9 +371,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            u16 a[8] = { 10, 64, 32, 46, 34, 32, 97, 21 };
-            u16 b[8] = { 31, 13, 92, 16, 35, 97, 32, 26 };
-            u16 c[8];
+            bad_uint16 a[8] = { 10, 64, 32, 46, 34, 32, 97, 21 };
+            bad_uint16 b[8] = { 31, 13, 92, 16, 35, 97, 32, 26 };
+            bad_uint16 c[8];
 
             testSse41Pminuw(a, b, c);
 
@@ -417,9 +417,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse41_sse41);
     {
         if (CPU::hasFlag(X86Feature::XMM4_1))
         {
-            u16 a[8] = { 10, 64, 32, 46, 34, 32, 97, 21 };
-            u16 b[8] = { 31, 13, 92, 16, 35, 97, 32, 26 };
-            u16 c[8];
+            bad_uint16 a[8] = { 10, 64, 32, 46, 34, 32, 97, 21 };
+            bad_uint16 b[8] = { 31, 13, 92, 16, 35, 97, 32, 26 };
+            bad_uint16 c[8];
 
             testSse41Pmaxuw(a, b, c);
 

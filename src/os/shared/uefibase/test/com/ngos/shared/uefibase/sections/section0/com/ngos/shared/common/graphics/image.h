@@ -86,12 +86,12 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
 
 
 
-        for (i64 i = 0; i < (i64)temp.mBufferSize; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)temp.mBufferSize; ++i)
         {
             TEST_ASSERT_EQUALS(temp.mBuffer[i], (i % 4) + 1);
         }
 
-        for (i64 i = 0; i < (i64)temp2.mBufferSize; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)temp2.mBufferSize; ++i)
         {
             TEST_ASSERT_EQUALS(temp2.mBuffer[i], (i % 3) + 1);
         }
@@ -261,7 +261,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
         Image temp(10, 20, false, true);
 
         TEST_ASSERT_NOT_EQUALS(temp.getRgbBuffer(), 0);
-        TEST_ASSERT_EQUALS((u8 *)temp.getRgbBuffer(), temp.getBuffer());
+        TEST_ASSERT_EQUALS((bad_uint8 *)temp.getRgbBuffer(), temp.getBuffer());
     }
     TEST_CASE_END();
 
@@ -272,7 +272,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
         Image temp(10, 20, true, true);
 
         TEST_ASSERT_NOT_EQUALS(temp.getRgbaBuffer(), 0);
-        TEST_ASSERT_EQUALS((u8 *)temp.getRgbaBuffer(), temp.getBuffer());
+        TEST_ASSERT_EQUALS((bad_uint8 *)temp.getRgbaBuffer(), temp.getBuffer());
     }
     TEST_CASE_END();
 }

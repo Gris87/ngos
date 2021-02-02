@@ -9,11 +9,11 @@
 
 struct UefiSimpleTextOutputMode
 {
-    i32  maxMode;
-    i32  mode;
-    i32  attribute;
-    i32  cursorColumn;
-    i32  cursorRow;
+    bad_int32  maxMode;
+    bad_int32  mode;
+    bad_int32  attribute;
+    bad_int32  cursorColumn;
+    bad_int32  cursorRow;
     bool cursorVisible;
 };
 

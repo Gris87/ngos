@@ -11,7 +11,7 @@
 
 
 
-typedef u32 uefi_processor_information_status_flags;
+typedef bad_uint32 uefi_processor_information_status_flags;
 
 enum class UefiProcessorInformationStatusFlag: uefi_processor_information_status_flags
 {

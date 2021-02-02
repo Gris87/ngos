@@ -17,21 +17,21 @@ struct PciExpressDeviceCapability
     {
         struct
         {
-            u32 maximumPayloadSizeSupported  : 3; // TODO: Use enum PciExpressPayloadSize
-            u32 phantomFunctionsSupported    : 2;
-            u32 extendedTagFieldSupported    : 1; // TODO: Use enum PciExpressExtendedTagField
-            u32 endpointL0sAcceptableLatency : 3; // TODO: Use enum PciExpressEndpointL0sAcceptableLatency
-            u32 endpointL1AcceptableLatency  : 3; // TODO: Use enum PciExpressEndpointL1AcceptableLatency
-            u32 undefined                    : 3;
-            u32 roleBasedErrorReporting      : 1;
-            u32 __reserved                   : 2;
-            u32 capturedSlotPowerLimitValue  : 8;
-            u32 capturedSlotPowerLimitScale  : 2; // TODO: Use enum PciExpressPowerScale
-            u32 functionLevelResetCapability : 1;
-            u32 __reserved2                  : 3;
+            bad_uint32 maximumPayloadSizeSupported  : 3; // TODO: Use enum PciExpressPayloadSize
+            bad_uint32 phantomFunctionsSupported    : 2;
+            bad_uint32 extendedTagFieldSupported    : 1; // TODO: Use enum PciExpressExtendedTagField
+            bad_uint32 endpointL0sAcceptableLatency : 3; // TODO: Use enum PciExpressEndpointL0sAcceptableLatency
+            bad_uint32 endpointL1AcceptableLatency  : 3; // TODO: Use enum PciExpressEndpointL1AcceptableLatency
+            bad_uint32 undefined                    : 3;
+            bad_uint32 roleBasedErrorReporting      : 1;
+            bad_uint32 __reserved                   : 2;
+            bad_uint32 capturedSlotPowerLimitValue  : 8;
+            bad_uint32 capturedSlotPowerLimitScale  : 2; // TODO: Use enum PciExpressPowerScale
+            bad_uint32 functionLevelResetCapability : 1;
+            bad_uint32 __reserved2                  : 3;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

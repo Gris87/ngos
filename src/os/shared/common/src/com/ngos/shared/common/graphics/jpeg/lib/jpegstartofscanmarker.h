@@ -11,7 +11,7 @@
 struct JpegStartOfScanMarker
 {
     JpegMarkerHeader         header;
-    u8                       numberOfComponents;
+    bad_uint8                       numberOfComponents;
     JpegStartOfScanComponent components[0];
 } __attribute__((packed));
 

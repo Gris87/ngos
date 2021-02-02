@@ -2,7 +2,7 @@
 
 
 
-NgosStatus MSR::setBit(u32 msr, u8 bit)
+NgosStatus MSR::setBit(bad_uint32 msr, bad_uint8 bit)
 {
     COMMON_LT((" | msr = %u, bit = %u", msr, bit));
 
@@ -14,7 +14,7 @@ NgosStatus MSR::setBit(u32 msr, u8 bit)
     return setMsrBit(msr, bit, true);
 }
 
-NgosStatus MSR::clearBit(u32 msr, u8 bit)
+NgosStatus MSR::clearBit(bad_uint32 msr, bad_uint8 bit)
 {
     COMMON_LT((" | msr = %u, bit = %u", msr, bit));
 
@@ -26,7 +26,7 @@ NgosStatus MSR::clearBit(u32 msr, u8 bit)
     return setMsrBit(msr, bit, false);
 }
 
-NgosStatus MSR::setMsrBit(u32 msr, u8 bit, bool enabled)
+NgosStatus MSR::setMsrBit(bad_uint32 msr, bad_uint8 bit, bool enabled)
 {
     COMMON_LT((" | msr = %u, bit = %u, enabled = %u", msr, bit, enabled));
 
@@ -35,8 +35,8 @@ NgosStatus MSR::setMsrBit(u32 msr, u8 bit, bool enabled)
 
 
 
-    u64 value     = read(msr);
-    u64 valueOrig = value;
+    bad_uint64 value     = read(msr);
+    bad_uint64 valueOrig = value;
 
     if (enabled)
     {

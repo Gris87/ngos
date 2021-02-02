@@ -14,14 +14,14 @@ struct Task
 {
     ThreadInfo  threadInfo;
     TaskState   state;
-    u8         *stack;
-    u64         stackCanary;
+    bad_uint8         *stack;
+    bad_uint64         stackCanary;
 };
 
 
 
 extern Task initTask;               // initTask declared in task.cpp file
-extern u8   initStack[THREAD_SIZE]; // initStack declared in task.cpp file
+extern bad_uint8   initStack[THREAD_SIZE]; // initStack declared in task.cpp file
 
 
 

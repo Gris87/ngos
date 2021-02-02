@@ -11,7 +11,7 @@
 
 
 
-typedef u32 pci_express_root_error_command_flags;
+typedef bad_uint32 pci_express_root_error_command_flags;
 
 enum class PciExpressRootErrorCommandFlag: pci_express_root_error_command_flags
 {

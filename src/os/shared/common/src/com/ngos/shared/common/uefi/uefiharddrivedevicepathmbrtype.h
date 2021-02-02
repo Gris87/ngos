@@ -8,7 +8,7 @@
 
 
 
-enum class UefiHardDriveDevicePathMbrType: u8
+enum class UefiHardDriveDevicePathMbrType: bad_uint8
 {
     NONE                        = 0,
     PCAT                        = 0x01,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiHardDriveDevicePathMbrType type) // TES
 
     static char8 res[35];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

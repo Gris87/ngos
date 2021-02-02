@@ -10,7 +10,7 @@
 class PERCPU
 {
 public:
-    static u64 cr4;
+    static bad_uint64 cr4;
 };
 
 

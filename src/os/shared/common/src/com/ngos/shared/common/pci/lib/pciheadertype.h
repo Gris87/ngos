@@ -8,7 +8,7 @@
 
 
 
-enum class PciHeaderType: u8
+enum class PciHeaderType: bad_uint8
 {
     DEVICE            = 0,
     PCI_TO_PCI_BRIDGE = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciHeaderType type) // TEST: NO
 
     static char8 res[25];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

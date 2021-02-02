@@ -11,7 +11,7 @@
 
 
 
-typedef u16 pci_express_slot_status_flags;
+typedef bad_uint16 pci_express_slot_status_flags;
 
 enum class PciExpressSlotStatusFlag: pci_express_slot_status_flags
 {

@@ -11,7 +11,7 @@
 
 
 
-typedef u16 dmi_cache_sram_type_flags;
+typedef bad_uint16 dmi_cache_sram_type_flags;
 
 enum class DmiCacheSramTypeFlag: dmi_cache_sram_type_flags
 {

@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice1014028C: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice1014028C: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_1014028D = 0x1014028D,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciSubDevice1014028C subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -65,8 +65,8 @@ inline const char8* enumToHumanString(PciSubDevice1014028C subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1014028C::SUBDEVICE_1014028D: return "Dual Channel PCI-X DDR SAS RAID Adapter (572E)";
-        case PciSubDevice1014028C::SUBDEVICE_101402BE: return "Dual Channel PCI-X DDR U320 SCSI RAID Adapter (571B)";
-        case PciSubDevice1014028C::SUBDEVICE_101402C0: return "Dual Channel PCI-X DDR U320 SCSI Adapter (571A)";
+        case PciSubDevice1014028C::SUBDEVICE_101402BE: return "Dual Channel PCI-X DDR bad_uint320 SCSI RAID Adapter (571B)";
+        case PciSubDevice1014028C::SUBDEVICE_101402C0: return "Dual Channel PCI-X DDR bad_uint320 SCSI Adapter (571A)";
         case PciSubDevice1014028C::SUBDEVICE_1014030D: return "PCI-X DDR Auxiliary Cache Adapter (575B)";
 
         default: return "Unknown device";

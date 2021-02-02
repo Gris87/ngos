@@ -10,7 +10,7 @@
 
 struct PciExpressDynamicPowerAllocationCapabilityRegister
 {
-    u8 substateMaximumReal()
+    bad_uint8 substateMaximumReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -25,17 +25,17 @@ struct PciExpressDynamicPowerAllocationCapabilityRegister
     {
         struct
         {
-            u32 substateMaximum         : 5;
-            u32 __reserved              : 3;
-            u32 transitionLatencyUnit   : 2; // TODO: Use enum PciExpressDynamicPowerAllocationTransitionLatencyUnit
-            u32 __reserved2             : 2;
-            u32 powerAllocationScale    : 2; // TODO: Use enum PciExpressDynamicPowerAllocationPowerAllocationScale
-            u32 __reserved3             : 2;
-            u32 transitionLatencyValue0 : 8;
-            u32 transitionLatencyValue1 : 8;
+            bad_uint32 substateMaximum         : 5;
+            bad_uint32 __reserved              : 3;
+            bad_uint32 transitionLatencyUnit   : 2; // TODO: Use enum PciExpressDynamicPowerAllocationTransitionLatencyUnit
+            bad_uint32 __reserved2             : 2;
+            bad_uint32 powerAllocationScale    : 2; // TODO: Use enum PciExpressDynamicPowerAllocationPowerAllocationScale
+            bad_uint32 __reserved3             : 2;
+            bad_uint32 transitionLatencyValue0 : 8;
+            bad_uint32 transitionLatencyValue1 : 8;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

@@ -15,30 +15,30 @@ struct PciExpressDeviceCapability2
     {
         struct
         {
-            u32 completionTimeoutRangesSupported              : 4; // TODO: Use flags PciExpressCompletionTimeoutRangeFlags
-            u32 completionTimeoutDisableSupported             : 1;
-            u32 ariForwardingSupported                        : 1;
-            u32 atomicOpRoutingSupported                      : 1;
-            u32 atomicOp32CompleterSupported                  : 1;
-            u32 atomicOp64CompleterSupported                  : 1;
-            u32 cas128CompleterSupported                      : 1;
-            u32 noRoEnabledPrPrPassing                        : 1;
-            u32 ltrMechanismSupported                         : 1;
-            u32 tphCompleterSupported                         : 2; // TODO: Use flags PciExpressTphCompleterFlags
-            u32 lnSystemCls                                   : 2;
-            u32 tenBitTagCompleterSupported                   : 1;
-            u32 tenBitTagRequesterSupported                   : 1;
-            u32 obff                                          : 2;
-            u32 extendedFmtFieldSupported                     : 1;
-            u32 endEndTlpPrefixSupported                      : 1;
-            u32 maxEndEndTlpPrefixes                          : 2;
-            u32 emergencyPowerReductionSupported              : 2;
-            u32 emergencyPowerReductionInitializationRequired : 1;
-            u32 __reserved                                    : 4;
-            u32 frsSupported                                  : 1;
+            bad_uint32 completionTimeoutRangesSupported              : 4; // TODO: Use flags PciExpressCompletionTimeoutRangeFlags
+            bad_uint32 completionTimeoutDisableSupported             : 1;
+            bad_uint32 ariForwardingSupported                        : 1;
+            bad_uint32 atomicOpRoutingSupported                      : 1;
+            bad_uint32 atomicOp32CompleterSupported                  : 1;
+            bad_uint32 atomicOp64CompleterSupported                  : 1;
+            bad_uint32 cas128CompleterSupported                      : 1;
+            bad_uint32 noRoEnabledPrPrPassing                        : 1;
+            bad_uint32 ltrMechanismSupported                         : 1;
+            bad_uint32 tphCompleterSupported                         : 2; // TODO: Use flags PciExpressTphCompleterFlags
+            bad_uint32 lnSystemCls                                   : 2;
+            bad_uint32 tenBitTagCompleterSupported                   : 1;
+            bad_uint32 tenBitTagRequesterSupported                   : 1;
+            bad_uint32 obff                                          : 2;
+            bad_uint32 extendedFmtFieldSupported                     : 1;
+            bad_uint32 endEndTlpPrefixSupported                      : 1;
+            bad_uint32 maxEndEndTlpPrefixes                          : 2;
+            bad_uint32 emergencyPowerReductionSupported              : 2;
+            bad_uint32 emergencyPowerReductionInitializationRequired : 1;
+            bad_uint32 __reserved                                    : 4;
+            bad_uint32 frsSupported                                  : 1;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

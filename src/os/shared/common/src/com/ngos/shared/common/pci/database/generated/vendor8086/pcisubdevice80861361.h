@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice80861361: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice80861361: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_80861361 = 0x80861361,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice80861361 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice80861361 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice80861361::SUBDEVICE_80861361: return "82806AA PCI64 Hub Controller (HRes)";
-        case PciSubDevice80861361::SUBDEVICE_80868000: return "82806AA PCI64 Hub Controller (HRes)";
+        case PciSubDevice80861361::SUBDEVICE_80861361: return "82806AA PCbad_int64 Hub Controller (HRes)";
+        case PciSubDevice80861361::SUBDEVICE_80868000: return "82806AA PCbad_int64 Hub Controller (HRes)";
 
         default: return "Unknown device";
     }

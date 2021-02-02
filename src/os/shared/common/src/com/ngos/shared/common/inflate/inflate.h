@@ -8,7 +8,7 @@
 
 
 
-NgosStatus inflate(u8 *compressedAddress, u8 *decompressedAddress, u64 *compressedSize, u64 *uncompressedSize); // TEST: NO
+NgosStatus inflate(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 *compressedSize, bad_uint64 *uncompressedSize); // TEST: NO
 
 
 

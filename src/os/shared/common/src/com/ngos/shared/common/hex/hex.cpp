@@ -7,7 +7,7 @@
 
 
 
-NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool ellipsis)
+NgosStatus Hex::toString(bad_uint8 *data, bad_int64 size, char8 *buffer, bad_int64 bufferSize, bool ellipsis)
 {
     COMMON_LT((" | data = 0x%p, size = %d, buffer = 0x%p, bufferSize = %d, ellipsis = %u", data, size, buffer, bufferSize, ellipsis));
 
@@ -23,7 +23,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
 
 
 
-    i64 neededBufferSize = size * 2 + 1;
+    bad_int64 neededBufferSize = size * 2 + 1;
 
     if (neededBufferSize > bufferSize)
     {
@@ -41,11 +41,11 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
 
 
 
-    u16 *cur = (u16 *)buffer;
+    bad_uint16 *cur = (bad_uint16 *)buffer;
 
-    for (i64 i = 0; i < size; ++i)
+    for (bad_int64 i = 0; i < size; ++i)
     {
-        u8 ch = *data;
+        bad_uint8 ch = *data;
 
         *cur = sHexChars[ch];
 
@@ -74,7 +74,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool
     return NgosStatus::OK;
 }
 
-NgosStatus Hex::toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, bool ellipsis)
+NgosStatus Hex::toString(bad_uint8 *data, bad_int64 size, char8 **buffer, bad_int64 maxBufferSize, bool ellipsis)
 {
     COMMON_LT((" | data = 0x%p, size = %d, buffer = 0x%p, maxBufferSize = %d, ellipsis = %u", data, size, buffer, maxBufferSize, ellipsis));
 
@@ -85,7 +85,7 @@ NgosStatus Hex::toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, 
 
 
 
-    i64 bufferSize = size * 2 + 1;
+    bad_int64 bufferSize = size * 2 + 1;
 
     if (bufferSize > maxBufferSize)
     {

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressActiveStatePowerManagementSupport: u8
+enum class PciExpressActiveStatePowerManagementSupport: bad_uint8
 {
     NONE                 = 0,
     L0S_ENTRY_SUPPORTED  = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressActiveStatePowerManagementSupport
 
     static char8 res[28];
 
-    sprintf(res, "0x%02X (%s)", (u8)support, enumToString(support));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)support, enumToString(support));
 
     return res;
 }

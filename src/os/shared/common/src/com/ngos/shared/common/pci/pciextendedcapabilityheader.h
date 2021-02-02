@@ -13,12 +13,12 @@ struct PciExtendedCapabilityHeader
     {
         struct
         {
-            u32 capabilityId         : 16; // TODO: Use enum PciExtendedCapabilityType
-            u32 capabilityVersion    : 4;
-            u32 nextCapabilityOffset : 12;
+            bad_uint32 capabilityId         : 16; // TODO: Use enum PciExtendedCapabilityType
+            bad_uint32 capabilityVersion    : 4;
+            bad_uint32 nextCapabilityOffset : 12;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

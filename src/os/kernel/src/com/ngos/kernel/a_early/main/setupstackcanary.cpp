@@ -14,7 +14,7 @@ NgosStatus setupStackCanary()
 
 
 
-    u64 canary = simpleRandom();
+    bad_uint64 canary = simpleRandom();
 
     irqStack.stackCanary = canary;
     initTask.stackCanary = canary;

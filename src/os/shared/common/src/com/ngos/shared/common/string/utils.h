@@ -14,7 +14,7 @@
 
 
 
-inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
+inline NgosStatus bytesToString(bad_uint64 bytes, char8 *buffer, bad_int64 size)
 {
     // COMMON_LT((" | bytes = %u, buffer = 0x%p, size = %d", bytes, buffer, size)); // Commented to avoid bad looking logs
 
@@ -27,8 +27,8 @@ inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
 
 
 
-    u8  level = 0;
-    u16 tail  = 0;
+    bad_uint8  level = 0;
+    bad_uint16 tail  = 0;
 
     while (bytes >= 1024)
     {
@@ -59,7 +59,7 @@ inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
 
 
 
-    i64 length;
+    bad_int64 length;
 
     switch (level)
     {
@@ -81,7 +81,7 @@ inline NgosStatus bytesToString(u64 bytes, char8 *buffer, i64 size)
     return NgosStatus::OK;
 }
 
-inline const char8* bytesToString(u64 bytes)
+inline const char8* bytesToString(bad_uint64 bytes)
 {
     // COMMON_LT((" | bytes = %u", bytes)); // Commented to avoid bad looking logs
 
@@ -96,14 +96,14 @@ inline const char8* bytesToString(u64 bytes)
     return res;
 }
 
-inline const char8* hertzToString(u64 hertz)
+inline const char8* hertzToString(bad_uint64 hertz)
 {
     // COMMON_LT((" | hertz = %u", hertz)); // Commented to avoid bad looking logs
 
 
 
-    u8  level = 0;
-    u16 tail  = 0;
+    bad_uint8  level = 0;
+    bad_uint16 tail  = 0;
 
     while (hertz >= 1000)
     {
@@ -135,7 +135,7 @@ inline const char8* hertzToString(u64 hertz)
 
 
     static char8 res[11];
-    i64          length;
+    bad_int64          length;
 
     AVOID_UNUSED(length);
 
@@ -152,7 +152,7 @@ inline const char8* hertzToString(u64 hertz)
         default: return "UNKNOWN";
     }
 
-    COMMON_TEST_ASSERT(length < (i64)sizeof(res), nullptr);
+    COMMON_TEST_ASSERT(length < (bad_int64)sizeof(res), nullptr);
 
 
 

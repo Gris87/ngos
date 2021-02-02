@@ -10,7 +10,7 @@
 
 
 
-enum class DmiMemoryDeviceTechnology: u8
+enum class DmiMemoryDeviceTechnology: bad_uint8
 {
     NONE                    = 0,
     OTHER                   = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceTechnology technology) // TE
 
     static char8 res[31];
 
-    sprintf(res, "0x%02X (%s)", (u8)technology, enumToString(technology));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)technology, enumToString(technology));
 
     return res;
 }

@@ -13,12 +13,12 @@ struct JpegHuffmanTableIdAndType
     {
         struct
         {
-            u8 id:         4;
-            u8 type:       1; // TODO: Use enum JpegHuffmanTableType
-            u8 __reserved: 3;
+            bad_uint8 id:         4;
+            bad_uint8 type:       1; // TODO: Use enum JpegHuffmanTableType
+            bad_uint8 __reserved: 3;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

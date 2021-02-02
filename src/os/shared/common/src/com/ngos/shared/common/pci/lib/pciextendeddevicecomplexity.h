@@ -8,7 +8,7 @@
 
 
 
-enum class PciExtendedDeviceComplexity: u8
+enum class PciExtendedDeviceComplexity: bad_uint8
 {
     SIMPLE_DEVICE = 0,
     BRIDGE_DEVICE = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExtendedDeviceComplexity complexity) // 
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (u8)complexity, enumToString(complexity));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)complexity, enumToString(complexity));
 
     return res;
 }

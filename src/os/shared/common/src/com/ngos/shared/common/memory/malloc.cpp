@@ -11,7 +11,7 @@
 
 
 
-void* malloc(u64 size)
+void* malloc(bad_uint64 size)
 {
     // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
 
@@ -67,7 +67,7 @@ NgosStatus free(void *address)
     return NgosStatus::OK;
 }
 
-void* realloc(void* address, u64 oldSize, u64 newSize)
+void* realloc(void* address, bad_uint64 oldSize, bad_uint64 newSize)
 {
     // COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize)); // Commented to avoid too frequent logs
 

@@ -13,10 +13,10 @@ public:
     TestRandomWrite(); // TEST: NO
     ~TestRandomWrite(); // TEST: NO
 
-    u8* getBuffer() const; // TEST: NO
+    bad_uint8* getBuffer() const; // TEST: NO
 
 private:
-    u8 *mBuffer;
+    bad_uint8 *mBuffer;
 };
 
 

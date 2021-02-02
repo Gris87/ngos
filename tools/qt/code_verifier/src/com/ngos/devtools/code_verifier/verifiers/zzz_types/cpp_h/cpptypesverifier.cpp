@@ -50,7 +50,7 @@ void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, con
             }
             else
             {
-                worker->addWarning(path, i, "Please use more formal data type: u8/i8/u16/i16/u32/i32/u64/i64/char8/char16");
+                worker->addWarning(path, i, "Please use more formal data type: bad_uint8/bad_int8/bad_uint16/bad_int16/bad_uint32/bad_int32/bad_uint64/bad_int64/char8/char16");
             }
         }
     }

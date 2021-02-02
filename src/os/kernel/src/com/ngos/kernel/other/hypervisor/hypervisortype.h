@@ -10,7 +10,7 @@
 
 
 
-enum class HypervisorType: u8
+enum class HypervisorType: bad_uint8
 {
     NONE = 0,
     KVM  = 1
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(HypervisorType type) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

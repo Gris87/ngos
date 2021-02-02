@@ -10,7 +10,7 @@
 struct PciExpressDeviceSerialNumberCapability
 {
     PciExtendedCapabilityHeader header;
-    u64                         serialNumber;
+    bad_uint64                         serialNumber;
 } __attribute__((packed));
 
 

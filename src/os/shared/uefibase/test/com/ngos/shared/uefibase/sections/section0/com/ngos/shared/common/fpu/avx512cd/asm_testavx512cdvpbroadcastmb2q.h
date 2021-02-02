@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512cdVpbroadcastmb2q(u64 *a, u8 mask);
+void testAvx512cdVpbroadcastmb2q(bad_uint64 *a, bad_uint8 mask);
 
 
 

@@ -47,7 +47,7 @@ NgosStatus TableCellWidget::invalidate()
 
 
 
-    for (i64 i = 0; i < (i64)mHeight; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)mHeight; ++i)
     {
         RgbaPixel *pixel1 = &mOwnResultImage->getRgbaBuffer()[i * mWidth + 0];
         RgbaPixel *pixel2 = &mOwnResultImage->getRgbaBuffer()[i * mWidth + mWidth - 1];
@@ -56,7 +56,7 @@ NgosStatus TableCellWidget::invalidate()
         pixel2->alpha = 0xFF;
     }
 
-    for (i64 i = 1; i < (i64)mWidth - 1; ++i)
+    for (bad_int64 i = 1; i < (bad_int64)mWidth - 1; ++i)
     {
         RgbaPixel *pixel1 = &mOwnResultImage->getRgbaBuffer()[i];
         RgbaPixel *pixel2 = &mOwnResultImage->getRgbaBuffer()[(mHeight - 1) * mWidth + i];

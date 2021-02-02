@@ -57,13 +57,13 @@ private:
     static TreeWidget        *sDevicesTreeWidget;
     static TableWidget       *sDeviceInfoTableWidget;
     static Button            *sModeButton;
-    static u16                sWaitEventsCount;
+    static bad_uint16                sWaitEventsCount;
     static uefi_event        *sWaitEvents;
     static DeviceManagerMode  sMode;
-    static Image*             sImages[(u64)DeviceManagerImage::MAXIMUM];
-    static Image*             sModeImages[(u64)DeviceManagerMode::MAXIMUM];
-    static const char8*       sImagesPath[(u64)DeviceManagerImage::MAXIMUM];
-    static const char8*       sModeImagesPath[(u64)DeviceManagerMode::MAXIMUM];
+    static Image*             sImages[(bad_uint64)DeviceManagerImage::MAXIMUM];
+    static Image*             sModeImages[(bad_uint64)DeviceManagerMode::MAXIMUM];
+    static const char8*       sImagesPath[(bad_uint64)DeviceManagerImage::MAXIMUM];
+    static const char8*       sModeImagesPath[(bad_uint64)DeviceManagerMode::MAXIMUM];
 };
 
 

@@ -22,42 +22,42 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_entry_lib_dmimemorydevicesize);
 
 
         temp.value       = 1;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), MB);
 
 
 
         temp.value       = 64;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 * MB);
 
 
 
         temp.value       = 32767;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_MEGABYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 32767 * MB);
 
 
 
         temp.value       = 1;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), KB);
 
 
 
         temp.value       = 64;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 64 *  KB);
 
 
 
         temp.value       = 32767;
-        temp.granularity = (u16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
+        temp.granularity = (bad_uint16)DmiMemoryDeviceSizeGranularity::_1_KILOBYTE;
 
         TEST_ASSERT_EQUALS(temp.size(), 32767 * KB);
     }

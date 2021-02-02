@@ -9,7 +9,7 @@
 
 
 
-enum class X86Feature: u16 // Ignore CppEnumVerifier
+enum class X86Feature: bad_uint16 // Ignore CppEnumVerifier
 {
     //
     // Intel-defined CPU features, CPUID level 0x00000001 (ECX), word 0

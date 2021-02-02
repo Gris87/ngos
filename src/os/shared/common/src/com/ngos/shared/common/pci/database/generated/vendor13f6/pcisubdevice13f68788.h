@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice13F68788: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice13F68788: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10438269 = 0x10438269,
@@ -97,7 +97,7 @@ inline const char8* enumToFullString(PciSubDevice13F68788 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -123,12 +123,12 @@ inline const char8* enumToHumanString(PciSubDevice13F68788 subDevice) // TEST: N
         case PciSubDevice13F68788::SUBDEVICE_1043835E: return "Virtuoso 200 (Xonar HDAV1.3 Slim)";
         case PciSubDevice13F68788::SUBDEVICE_1043838E: return "Virtuoso 66 (Xonar DS)";
         case PciSubDevice13F68788::SUBDEVICE_10438428: return "Virtuoso 100 (Xonar Xense)";
-        case PciSubDevice13F68788::SUBDEVICE_10438467: return "CMI8786 (Xonar DG)";
-        case PciSubDevice13F68788::SUBDEVICE_10438521: return "CMI8786 (Xonar DGX)";
+        case PciSubDevice13F68788::SUBDEVICE_10438467: return "CMbad_int8786 (Xonar DG)";
+        case PciSubDevice13F68788::SUBDEVICE_10438521: return "CMbad_int8786 (Xonar DGX)";
         case PciSubDevice13F68788::SUBDEVICE_10438522: return "Xonar DSX";
         case PciSubDevice13F68788::SUBDEVICE_104385F4: return "Virtuoso 100 (Xonar Essence STX II)";
         case PciSubDevice13F68788::SUBDEVICE_13F68782: return "PCI 2.0 HD Audio";
-        case PciSubDevice13F68788::SUBDEVICE_13F6FFFF: return "CMI8787-HG2PCI";
+        case PciSubDevice13F68788::SUBDEVICE_13F6FFFF: return "CMbad_int8787-HG2PCI";
         case PciSubDevice13F68788::SUBDEVICE_14C31710: return "HiFier Fantasia";
         case PciSubDevice13F68788::SUBDEVICE_14C31711: return "HiFier Serenade";
         case PciSubDevice13F68788::SUBDEVICE_14C31713: return "HiFier Serenade III";

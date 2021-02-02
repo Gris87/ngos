@@ -9,7 +9,7 @@
 
 
 CPP_EXTERN_C
-void* memzero(void *dest, u64 length); // TEST: MODULE=memory.h
+void* memzero(void *dest, bad_uint64 length); // TEST: MODULE=memory.h
 
 
 

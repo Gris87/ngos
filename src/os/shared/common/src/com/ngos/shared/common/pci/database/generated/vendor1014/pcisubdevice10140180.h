@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice10140180: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice10140180: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140241 = 0x10140241,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice10140180 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice10140180 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10140180::SUBDEVICE_10140241: return "iSeries 2757 DASD IOA";
-        case PciSubDevice10140180::SUBDEVICE_10140264: return "Quad Channel PCI-X U320 SCSI RAID Adapter (2780)";
+        case PciSubDevice10140180::SUBDEVICE_10140264: return "Quad Channel PCI-X bad_uint320 SCSI RAID Adapter (2780)";
 
         default: return "Unknown device";
     }

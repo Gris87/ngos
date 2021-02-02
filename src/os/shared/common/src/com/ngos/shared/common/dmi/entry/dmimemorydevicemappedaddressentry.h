@@ -23,19 +23,19 @@ struct DmiMemoryDeviceMappedAddressEntry
     DmiEntryHeader                    header;
     DmiMemoryDeviceMappedAddressRange startingAddress;
     DmiMemoryDeviceMappedAddressRange endingAddress;
-    u16                               memoryDeviceHandle;
-    u16                               memoryArrayMappedAddressHandle;
-    u8                                partitionRowPosition;
-    u8                                interleavePosition;
-    u8                                interleavedDataDepth;
+    bad_uint16                               memoryDeviceHandle;
+    bad_uint16                               memoryArrayMappedAddressHandle;
+    bad_uint8                                partitionRowPosition;
+    bad_uint8                                interleavePosition;
+    bad_uint8                                interleavedDataDepth;
 } __attribute__((packed));
 
 
 
 struct DmiMemoryDeviceMappedAddressEntryV27: public DmiMemoryDeviceMappedAddressEntry
 {
-    u64 extendedStartingAddress;
-    u64 extendedEndingAddress;
+    bad_uint64 extendedStartingAddress;
+    bad_uint64 extendedEndingAddress;
 } __attribute__((packed));
 
 

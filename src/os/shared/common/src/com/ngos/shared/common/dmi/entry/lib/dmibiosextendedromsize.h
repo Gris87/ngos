@@ -11,7 +11,7 @@
 
 struct DmiBiosExtendedRomSize
 {
-    u64 size()
+    bad_uint64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -19,8 +19,8 @@ struct DmiBiosExtendedRomSize
 
         switch ((DmiBiosExtendedRomSizeUnit)unit)
         {
-            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (u64)value * MB;
-            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (u64)value * GB;
+            case DmiBiosExtendedRomSizeUnit::MEGABYTES: return (bad_uint64)value * MB;
+            case DmiBiosExtendedRomSizeUnit::GIGABYTES: return (bad_uint64)value * GB;
 
             default:
             {
@@ -42,11 +42,11 @@ struct DmiBiosExtendedRomSize
     {
         struct
         {
-            u16 value: 14;
-            u16 unit:  2;    // TODO: Use enum DmiBiosExtendedRomSizeUnit
+            bad_uint16 value: 14;
+            bad_uint16 unit:  2;    // TODO: Use enum DmiBiosExtendedRomSizeUnit
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 } __attribute__((packed));
 

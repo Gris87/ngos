@@ -11,7 +11,7 @@
 
 
 
-typedef u8 pci_hyper_transport_link_error_flags;
+typedef bad_uint8 pci_hyper_transport_link_error_flags;
 
 enum class PciHyperTransportLinkErrorFlag: pci_hyper_transport_link_error_flags
 {

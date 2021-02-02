@@ -18,12 +18,12 @@ NgosStatus setupBootParams(BootParams *params)
 
 
 
-    EARLY_ASSERT_EXECUTION(addDynamicIdentityMap((u64)params, (u64)params + sizeof(BootParams)), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addDynamicIdentityMap((bad_uint64)params, (bad_uint64)params + sizeof(BootParams)), NgosStatus::ASSERTION);
 
     memcpy(&bootParams, params, sizeof(BootParams));
     memzero(params, sizeof(BootParams)); // Do not let anyone to get something from this structure
 
-    EARLY_ASSERT_EXECUTION(clearDynamicIdentityMap((u64)params, (u64)params + sizeof(BootParams)), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(clearDynamicIdentityMap((bad_uint64)params, (bad_uint64)params + sizeof(BootParams)), NgosStatus::ASSERTION);
 
 
 

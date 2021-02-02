@@ -7,7 +7,7 @@
 
 
 
-NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
+NgosStatus setupBootParams(BootParams **params, bad_uint64 kernelLocation)
 {
     UEFI_LT((" | params = 0x%p, kernelLocation = 0x%p", params, kernelLocation));
 
@@ -16,7 +16,7 @@ NgosStatus setupBootParams(BootParams **params, u64 kernelLocation)
 
 
 
-    u64 size = sizeof(BootParams);
+    bad_uint64 size = sizeof(BootParams);
 
 
 

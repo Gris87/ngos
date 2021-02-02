@@ -88,26 +88,26 @@ Image               *BootloaderGUI::sPartitionWizardImage;
 Image               *BootloaderGUI::sRebootImage;
 Image               *BootloaderGUI::sShutdownImage;
 Image               *BootloaderGUI::sCursorImage;
-Image*               BootloaderGUI::sOsImages[(u64)OsType::MAXIMUM];
-Image*               BootloaderGUI::sVolumeImages[(u64)VolumeType::MAXIMUM];
+Image*               BootloaderGUI::sOsImages[(bad_uint64)OsType::MAXIMUM];
+Image*               BootloaderGUI::sVolumeImages[(bad_uint64)VolumeType::MAXIMUM];
 Button              *BootloaderGUI::sRebootButton;
 Button              *BootloaderGUI::sShutdownButton;
 ArrayList<Button *>  BootloaderGUI::sOsButtons;
-u64                  BootloaderGUI::sOsButtonLeft;
-u64                  BootloaderGUI::sOsButtonRight;
-u64                  BootloaderGUI::sOsButtonSelected;
+bad_uint64                  BootloaderGUI::sOsButtonLeft;
+bad_uint64                  BootloaderGUI::sOsButtonRight;
+bad_uint64                  BootloaderGUI::sOsButtonSelected;
 Button              *BootloaderGUI::sLeftButton;
 Button              *BootloaderGUI::sRightButton;
 PanelWidget         *BootloaderGUI::sTimeoutPanelWidget;
 LabelWidget         *BootloaderGUI::sTimeoutLabelWidget;
-u8                   BootloaderGUI::sTimeoutTick;
+bad_uint8                   BootloaderGUI::sTimeoutTick;
 Button              *BootloaderGUI::sDeviceManagerButton;
 Button              *BootloaderGUI::sCpuTestButton;
 Button              *BootloaderGUI::sMemoryTestButton;
 Button              *BootloaderGUI::sNetworkTestButton;
 Button              *BootloaderGUI::sHddTestButton;
 Button              *BootloaderGUI::sPartitionWizardButton;
-u16                  BootloaderGUI::sWaitEventsCount;
+bad_uint16                  BootloaderGUI::sWaitEventsCount;
 uefi_event          *BootloaderGUI::sWaitEvents;
 uefi_event           BootloaderGUI::sTimerEvent;
 
@@ -156,8 +156,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -193,10 +193,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -232,11 +232,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
     const ArrayList<OsInfo>& oses    = Bootloader::getOSes();
-    u64                      osCount = oses.getSize();
+    bad_uint64                      osCount = oses.getSize();
 
     if (osCount > 0)
     {
-        u64 osButtonSize = screenWidth * OS_BUTTON_SIZE_PERCENT / 100;
+        bad_uint64 osButtonSize = screenWidth * OS_BUTTON_SIZE_PERCENT / 100;
 
 
 
@@ -248,14 +248,14 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        for (i64 i = 0; i < (i64)osCount; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)osCount; ++i)
         {
             const OsInfo &os = oses.at(i);
 
 
 
             UEFI_TEST_ASSERT(os.type < OsType::MAXIMUM, NgosStatus::ASSERTION);
-            Image *osImage = sOsImages[(u64)os.type];
+            Image *osImage = sOsImages[(bad_uint64)os.type];
 
             if (!osImage)
             {
@@ -286,13 +286,13 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                 }
 
                 UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &osImage), NgosStatus::ASSERTION);
-                sOsImages[(u64)os.type] = osImage;
+                sOsImages[(bad_uint64)os.type] = osImage;
             }
 
 
 
             UEFI_TEST_ASSERT(os.volume->type < VolumeType::MAXIMUM, NgosStatus::ASSERTION);
-            Image *volumeImage = sVolumeImages[(u64)os.volume->type];
+            Image *volumeImage = sVolumeImages[(bad_uint64)os.volume->type];
 
             if (!volumeImage)
             {
@@ -323,7 +323,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                 }
 
                 UEFI_ASSERT_EXECUTION(Bootloader::loadImageFromDiskOrAssets(pathToImage, &volumeImage), NgosStatus::ASSERTION);
-                sVolumeImages[(u64)os.volume->type] = volumeImage;
+                sVolumeImages[(bad_uint64)os.volume->type] = volumeImage;
             }
 
 
@@ -350,7 +350,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-            u64 arrowButtonSize = screenWidth * ARROW_BUTTON_SIZE_PERCENT / 100;
+            bad_uint64 arrowButtonSize = screenWidth * ARROW_BUTTON_SIZE_PERCENT / 100;
 
 
 
@@ -382,8 +382,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        i64 osButtonPositionX;
-        i64 osButtonStep;
+        bad_int64 osButtonPositionX;
+        bad_int64 osButtonStep;
 
         if (osCount == 1)
         {
@@ -402,11 +402,11 @@ NgosStatus BootloaderGUI::init(BootParams *params)
             osButtonStep      = screenWidth * (OS_REGION_RIGHT_PERCENT - OS_REGION_LEFT_PERCENT - OS_BUTTON_SIZE_PERCENT) / 100 / (osCount - 1);
         }
 
-        i64 osButtonPositionY = screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (osButtonSize >> 1);
+        bad_int64 osButtonPositionY = screenHeight * OS_REGION_VERTICAL_CENTER_PERCENT / 100 - (osButtonSize >> 1);
 
 
 
-        for (i64 i = 0; i < (i64)osCount; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)osCount; ++i)
         {
             Button *button = sOsButtons.at(i);
 
@@ -416,7 +416,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
             osButtonPositionX += osButtonStep;
         }
 
-        for (i64 i = osCount; i < (i64)sOsButtons.getSize(); ++i)
+        for (bad_int64 i = osCount; i < (bad_int64)sOsButtons.getSize(); ++i)
         {
             Button *button = sOsButtons.at(i);
 
@@ -430,10 +430,10 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-        u64   variableSize;
+        bad_uint64   variableSize;
         Guid *lastOsVolumeGuid;
 
-        if (UEFI::getVariable(u"LastOsVolumeGuid", &bootloaderGUID, &variableSize, (u8 **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
+        if (UEFI::getVariable(u"LastOsVolumeGuid", &bootloaderGUID, &variableSize, (bad_uint8 **)&lastOsVolumeGuid) == UefiStatus::SUCCESS)
         {
             UEFI_LV(("Loaded LastOsVolumeGuid NVRAM variable: %s", guidToString(lastOsVolumeGuid)));
 
@@ -443,7 +443,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
             char16 *lastOsPath;
 
-            if (UEFI::getVariable(u"LastOsPath", &bootloaderGUID, &variableSize, (u8 **)&lastOsPath) == UefiStatus::SUCCESS)
+            if (UEFI::getVariable(u"LastOsPath", &bootloaderGUID, &variableSize, (bad_uint8 **)&lastOsPath) == UefiStatus::SUCCESS)
             {
                 UEFI_LV(("Loaded LastOsPath NVRAM variable: %ls", lastOsPath));
 
@@ -453,7 +453,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
                 osCount = oses.getSize();
 
-                for (i64 i = 0; i < (i64)osCount; ++i)
+                for (bad_int64 i = 0; i < (bad_int64)osCount; ++i)
                 {
                     const OsInfo &os = oses.at(i);
 
@@ -463,7 +463,7 @@ NgosStatus BootloaderGUI::init(BootParams *params)
                         !strcmpi(os.path, lastOsPath) // os.path == lastOsPath
                        )
                     {
-                        while ((i64)sOsButtonRight <= i)
+                        while ((bad_int64)sOsButtonRight <= i)
                         {
                             UEFI_ASSERT_EXECUTION(onRightButtonPressed(), NgosStatus::ASSERTION);
                         }
@@ -505,12 +505,12 @@ NgosStatus BootloaderGUI::init(BootParams *params)
         char8 *timeoutText = (char8 *)malloc(TIMEOUT_TEXT_LENGTH);
         UEFI_TEST_ASSERT(timeoutText != nullptr, NgosStatus::ASSERTION);
 
-        UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), bad_int64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
 
 
 
-        u64 timeoutPanelWidth  = screenWidth  * TIMEOUT_PANEL_WIDTH_PERCENT  / 100;
-        u64 timeoutPanelHeight = screenHeight * TIMEOUT_PANEL_HEIGHT_PERCENT / 100;
+        bad_uint64 timeoutPanelWidth  = screenWidth  * TIMEOUT_PANEL_WIDTH_PERCENT  / 100;
+        bad_uint64 timeoutPanelHeight = screenHeight * TIMEOUT_PANEL_HEIGHT_PERCENT / 100;
 
 
 
@@ -529,8 +529,8 @@ NgosStatus BootloaderGUI::init(BootParams *params)
 
 
 
-    u64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
-    u64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
+    bad_uint64 toolButtonWidth  = screenWidth  * TOOL_BUTTON_WIDTH_PERCENT  / 100;
+    bad_uint64 toolButtonHeight = screenHeight * TOOL_BUTTON_HEIGHT_PERCENT / 100;
 
 
 
@@ -695,7 +695,7 @@ NgosStatus BootloaderGUI::cleanUp()
 
 
 
-    for (i64 i = 0; i < (i64)OsType::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)OsType::MAXIMUM; ++i)
     {
         if (sOsImages[i])
         {
@@ -703,7 +703,7 @@ NgosStatus BootloaderGUI::cleanUp()
         }
     }
 
-    for (i64 i = 0; i < (i64)VolumeType::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)VolumeType::MAXIMUM; ++i)
     {
         if (sVolumeImages[i])
         {
@@ -756,7 +756,7 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
 
         UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        for (i64 i = 0; i < OS_VISIBLE_COUNT; ++i)
+        for (bad_int64 i = 0; i < OS_VISIBLE_COUNT; ++i)
         {
             Button *button        = sOsButtons.at(i);
             Button *visibleButton = sOsButtons.at(sOsButtonLeft + i);
@@ -765,7 +765,7 @@ NgosStatus BootloaderGUI::focusFirstOsButton()
             button->setVisible(true);
         }
 
-        for (i64 i = OS_VISIBLE_COUNT; i < (i64)sOsButtons.getSize(); ++i)
+        for (bad_int64 i = OS_VISIBLE_COUNT; i < (bad_int64)sOsButtons.getSize(); ++i)
         {
             sOsButtons.at(i)->setVisible(false);
         }
@@ -837,7 +837,7 @@ NgosStatus BootloaderGUI::focusPreviousOsButton()
 
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-            for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
+            for (bad_int64 i = sOsButtonLeft; i < (bad_int64)sOsButtonRight; ++i)
             {
                 Button *button        = sOsButtons.at(i - 1);
                 Button *visibleButton = sOsButtons.at(i);
@@ -894,7 +894,7 @@ NgosStatus BootloaderGUI::focusNextOsButton()
 
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-            for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+            for (bad_int64 i = sOsButtonRight; i > (bad_int64)sOsButtonLeft; --i)
             {
                 Button *button        = sOsButtons.at(i);
                 Button *visibleButton = sOsButtons.at(i - 1);
@@ -966,7 +966,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
         ++sWaitEventsCount;
     }
 
-    u64 size = sWaitEventsCount * sizeof(uefi_event);
+    bad_uint64 size = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -982,11 +982,11 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    u16 eventId    = 1;
+    bad_uint16 eventId    = 1;
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -995,7 +995,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -1030,7 +1030,7 @@ NgosStatus BootloaderGUI::waitForEvent()
 
 
 
-    u64 eventIndex;
+    bad_uint64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1202,11 +1202,11 @@ NgosStatus BootloaderGUI::processTimerEvent()
 
         if (sTimeoutTick > 1)
         {
-            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), i64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in %u seconds", sTimeoutTick), bad_int64, TIMEOUT_TEXT_LENGTH - 1, NgosStatus::ASSERTION);
         }
         else
         {
-            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in 1 second"), i64, TIMEOUT_TEXT_LENGTH - 2, NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(sprintf(timeoutText, "Automatic boot in 1 second"), bad_int64, TIMEOUT_TEXT_LENGTH - 2, NgosStatus::ASSERTION);
         }
 
         UEFI_ASSERT_EXECUTION(sTimeoutLabelWidget->setText(timeoutText), NgosStatus::ASSERTION);
@@ -1684,7 +1684,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
 
     const OsInfo &os = Bootloader::getOSes().at(sOsButtonSelected);
 
-    if (UEFI::setVariable(u"LastOsVolumeGuid", &bootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), (u8 *)os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsVolumeGuid", &bootloaderGUID, sizeof(*os.volume->partitionUniqueGuid), (bad_uint8 *)os.volume->partitionUniqueGuid) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Stored LastOsVolumeGuid NVRAM variable: %s", guidToString(os.volume->partitionUniqueGuid)));
     }
@@ -1693,7 +1693,7 @@ NgosStatus BootloaderGUI::onOsButtonPressed()
         UEFI_LE(("Failed to store LastOsVolumeGuid NVRAM variable"));
     }
 
-    if (UEFI::setVariable(u"LastOsPath", &bootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), (u8 *)os.path) == UefiStatus::SUCCESS)
+    if (UEFI::setVariable(u"LastOsPath", &bootloaderGUID, (strlen(os.path) + 1) * sizeof(char16), (bad_uint8 *)os.path) == UefiStatus::SUCCESS)
     {
         UEFI_LV(("Stored LastOsPath NVRAM variable: %ls", os.path));
     }
@@ -1723,7 +1723,7 @@ NgosStatus BootloaderGUI::onLeftButtonPressed()
 
     UEFI_TEST_ASSERT(sOsButtonLeft > 0, NgosStatus::ASSERTION);
 
-    for (i64 i = sOsButtonLeft; i < (i64)sOsButtonRight; ++i)
+    for (bad_int64 i = sOsButtonLeft; i < (bad_int64)sOsButtonRight; ++i)
     {
         Button *button        = sOsButtons.at(i - 1);
         Button *visibleButton = sOsButtons.at(i);
@@ -1770,7 +1770,7 @@ NgosStatus BootloaderGUI::onRightButtonPressed()
 
     UEFI_TEST_ASSERT(sOsButtonRight < sOsButtons.getSize(), NgosStatus::ASSERTION);
 
-    for (i64 i = sOsButtonRight; i > (i64)sOsButtonLeft; --i)
+    for (bad_int64 i = sOsButtonRight; i > (bad_int64)sOsButtonLeft; --i)
     {
         Button *button        = sOsButtons.at(i);
         Button *visibleButton = sOsButtons.at(i - 1);

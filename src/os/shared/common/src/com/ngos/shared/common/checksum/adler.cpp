@@ -5,7 +5,7 @@
 
 
 
-u32 Adler::adler32(u8 *data, u64 length)
+bad_uint32 Adler::adler32(bad_uint8 *data, bad_uint64 length)
 {
     COMMON_LT((" | data = 0x%p, length = %u", data, length));
 
@@ -14,14 +14,14 @@ u32 Adler::adler32(u8 *data, u64 length)
 
 
 
-    u64 s1 = 1;
-    u64 s2 = 0;
+    bad_uint64 s1 = 1;
+    bad_uint64 s2 = 0;
 
     while (length)
     {
         // at least 380368439 sums can be done before the sums overflow, saving a lot of module divisions
         //
-        u64 count =  length > 380368439 ? 380368439 : length;
+        bad_uint64 count =  length > 380368439 ? 380368439 : length;
         length    -= count;
 
         while (count)

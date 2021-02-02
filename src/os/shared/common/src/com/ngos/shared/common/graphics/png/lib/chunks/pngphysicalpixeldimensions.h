@@ -10,8 +10,8 @@
 
 struct PngPhysicalPixelDimensions
 {
-    u32              pixelsPerUnitX;
-    u32              pixelsPerUnitY;
+    bad_uint32              pixelsPerUnitX;
+    bad_uint32              pixelsPerUnitY;
     PngUnitSpecifier unitSpecifier;
 } __attribute__((packed));
 

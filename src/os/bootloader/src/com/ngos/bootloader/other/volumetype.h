@@ -10,7 +10,7 @@
 
 
 
-enum class VolumeType: u8
+enum class VolumeType: bad_uint8
 {
     INTERNAL,
     EXTERNAL,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(VolumeType type) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

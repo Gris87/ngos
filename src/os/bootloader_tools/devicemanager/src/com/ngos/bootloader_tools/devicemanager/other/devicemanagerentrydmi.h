@@ -12,7 +12,7 @@
 class DeviceManagerEntryDMI: public DeviceManagerEntry
 {
 public:
-    DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name); // TEST: NO
+    DeviceManagerEntryDMI(DmiEntryType type, bad_uint16 handle, DeviceManagerImage image, const char8 *name); // TEST: NO
     ~DeviceManagerEntryDMI(); // TEST: NO
 
     bool operator<(const DeviceManagerEntryDMI &another) const; // TEST: NO
@@ -20,8 +20,8 @@ public:
     NgosStatus setType(DmiEntryType type); // TEST: NO
     DmiEntryType getType() const; // TEST: NO
 
-    NgosStatus setHandle(u16 handle); // TEST: NO
-    u16 getHandle() const; // TEST: NO
+    NgosStatus setHandle(bad_uint16 handle); // TEST: NO
+    bad_uint16 getHandle() const; // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -29,7 +29,7 @@ public:
 private:
 #endif
     DmiEntryType mType;
-    u16          mHandle;
+    bad_uint16          mHandle;
 };
 
 

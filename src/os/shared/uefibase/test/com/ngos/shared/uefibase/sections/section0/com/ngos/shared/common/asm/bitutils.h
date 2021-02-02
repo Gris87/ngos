@@ -17,30 +17,30 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 {
     TEST_CASE("CONST_BIT_ADDRESS()");
     {
-        u64 buffer = 0x65198732AADCBF97;
+        bad_uint64 buffer = 0x65198732AADCBF97;
 
-        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 0),  (u8 *)((u64)&buffer));
-        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 3),  (u8 *)((u64)&buffer));
-        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 8),  (u8 *)((u64)&buffer + 1));
-        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 13), (u8 *)((u64)&buffer + 1));
-        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 17), (u8 *)((u64)&buffer + 2));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 0),  (bad_uint8 *)((bad_uint64)&buffer));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 3),  (bad_uint8 *)((bad_uint64)&buffer));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 8),  (bad_uint8 *)((bad_uint64)&buffer + 1));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 13), (bad_uint8 *)((bad_uint64)&buffer + 1));
+        TEST_ASSERT_EQUALS(CONST_BIT_ADDRESS(&buffer, 17), (bad_uint8 *)((bad_uint64)&buffer + 2));
     }
     TEST_CASE_END();
 
 
 
-    TEST_CASE("CONST_BIT_IN_U8()");
+    TEST_CASE("CONST_BIT_IN_bad_uint8()");
     {
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(0), 1);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(1), 2);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(2), 4);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(3), 8);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(4), 16);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(5), 32);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(6), 64);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(7), 128);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(8), 1);
-        TEST_ASSERT_EQUALS(CONST_BIT_IN_U8(9), 2);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(0), 1);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(1), 2);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(2), 4);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(3), 8);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(4), 16);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(5), 32);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(6), 64);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(7), 128);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(8), 1);
+        TEST_ASSERT_EQUALS(CONST_BIT_IN_bad_uint8(9), 2);
     }
     TEST_CASE_END();
 
@@ -48,32 +48,32 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("test()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 100), true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 87),  false);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 37),  true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 13),  true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 204), false);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 123), true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 67),  false);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 0),   true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 255), true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 256), true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 300), false);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, 301), true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 100), true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 87),  false);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 37),  true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 13),  true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 204), false);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 123), true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 67),  false);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 0),   true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 255), true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 256), true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 300), false);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, 301), true);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, temp),              true);
-        TEST_ASSERT_EQUALS(BitUtils::test((u8 *)buffer, (temp + 4) & 0xFF), false);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, temp),              true);
+        TEST_ASSERT_EQUALS(BitUtils::test((bad_uint8 *)buffer, (temp + 4) & 0xFF), false);
     }
     TEST_CASE_END();
 
@@ -81,30 +81,30 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("set()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, 87),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::set((bad_uint8 *)buffer, 87),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA31913);
 
-        TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, 204), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::set((bad_uint8 *)buffer, 204), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                        0xEADFACEB00AFDDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, 67),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::set((bad_uint8 *)buffer, 67),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                        0x984ADBFACEA3191B);
 
-        TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, 300), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::set((bad_uint8 *)buffer, 300), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                        0x98313ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::set((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::set((bad_uint8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                                      0x65198732AADCBF9F);
     }
     TEST_CASE_END();
@@ -113,30 +113,30 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("setSafe()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, 87),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::setSafe((bad_uint8 *)buffer, 87),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA31913);
 
-        TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, 204), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::setSafe((bad_uint8 *)buffer, 204), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                            0xEADFACEB00AFDDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, 67),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::setSafe((bad_uint8 *)buffer, 67),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                            0x984ADBFACEA3191B);
 
-        TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, 300), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::setSafe((bad_uint8 *)buffer, 300), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                            0x98313ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::setSafe((u8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::setSafe((bad_uint8 *)buffer, (temp + 4) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                                          0x65198732AADCBF9F);
     }
     TEST_CASE_END();
@@ -145,30 +145,30 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("clear()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clear((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                          0x984ADBEACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clear((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                          0x65198712AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clear((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                          0x6ADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clear((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                          0x98310ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::clear((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clear((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                        0x2ADFACEB00AFCDE7);
     }
     TEST_CASE_END();
@@ -177,30 +177,30 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("clearSafe()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clearSafe((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                              0x984ADBEACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clearSafe((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                              0x65198712AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clearSafe((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                              0x6ADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clearSafe((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                              0x98310ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::clearSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::clearSafe((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                            0x2ADFACEB00AFCDE7);
     }
     TEST_CASE_END();
@@ -209,45 +209,45 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("invert()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                           0x984ADBEACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                           0x984ADBFACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                           0x65198712AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                           0x65198732AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                           0x6ADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                           0xEADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                           0x98310ADADADADA19);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                           0x98312ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                         0xAADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invert((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invert((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                         0xEADFACEB00AFCDE7);
     }
     TEST_CASE_END();
@@ -256,45 +256,45 @@ TEST_CASES(section0, com_ngos_shared_common_asm_bitutils);
 
     TEST_CASE("invertSafe()");
     {
-        u64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
+        bad_uint64 buffer[] = { 0x65198732AADCBF97, 0x984ADBFACE231913, 0xBADBADBADBAD0019, 0xEADFACEB00AFCDE7, 0x98312ADADADADA19 };
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                               0x984ADBEACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 100), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 100), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[1],                               0x984ADBFACE231913);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                               0x65198712AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 37),  NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 37),  NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[0],                               0x65198732AADCBF97);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                               0x6ADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 255), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 255), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                               0xEADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                               0x98310ADADADADA19);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, 301), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, 301), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[4],                               0x98312ADADADADA19);
 
 
 
-        u8 temp = 0;
+        bad_uint8 temp = 0;
 
-        for (i64 i = 0; i < 100; ++i)
+        for (bad_int64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                             0xAADFACEB00AFCDE7);
 
-        TEST_ASSERT_EQUALS(BitUtils::invertSafe((u8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(BitUtils::invertSafe((bad_uint8 *)buffer, (temp - 1) & 0xFF), NgosStatus::OK);
         TEST_ASSERT_EQUALS(buffer[3],                                             0xEADFACEB00AFCDE7);
     }
     TEST_CASE_END();

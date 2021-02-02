@@ -11,7 +11,7 @@
 struct DmiAdditionalInformationEntry
 {
     DmiEntryHeader           header;
-    u8                       numberOfAdditionalInformationEntries;
+    bad_uint8                       numberOfAdditionalInformationEntries;
     DmiAdditionalInformation additionalInformationEntries[0];
 } __attribute__((packed));
 

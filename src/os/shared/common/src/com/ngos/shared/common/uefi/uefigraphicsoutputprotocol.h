@@ -19,9 +19,9 @@
 
 struct UefiGraphicsOutputProtocol
 {
-    UefiStatus (UEFI_API *queryMode)(UefiGraphicsOutputProtocol *obj, u32 modeNumber, u64 *sizeOfInfo, UefiGraphicsOutputModeInformation **info); // TEST: NO
-    UefiStatus (UEFI_API *setMode)(UefiGraphicsOutputProtocol *obj, u32 modeNumber); // TEST: NO
-    UefiStatus (UEFI_API *blt)(UefiGraphicsOutputProtocol *obj, UefiGraphicsOutputBltPixel *bltBuffer, UefiGraphicsOutputBltOperation bltOperation, u64 sourceX, u64 sourceY, u64 destinationX, u64 destinationY, u64 width, u64 height, u64 delta); // TEST: NO
+    UefiStatus (UEFI_API *queryMode)(UefiGraphicsOutputProtocol *obj, bad_uint32 modeNumber, bad_uint64 *sizeOfInfo, UefiGraphicsOutputModeInformation **info); // TEST: NO
+    UefiStatus (UEFI_API *setMode)(UefiGraphicsOutputProtocol *obj, bad_uint32 modeNumber); // TEST: NO
+    UefiStatus (UEFI_API *blt)(UefiGraphicsOutputProtocol *obj, UefiGraphicsOutputBltPixel *bltBuffer, UefiGraphicsOutputBltOperation bltOperation, bad_uint64 sourceX, bad_uint64 sourceY, bad_uint64 destinationX, bad_uint64 destinationY, bad_uint64 width, bad_uint64 height, bad_uint64 delta); // TEST: NO
 
     UefiGraphicsOutputProtocolMode *mode;
 };

@@ -38,9 +38,9 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
 
 
 
-        u64 startTime = rdtsc();
+        bad_uint64 startTime = rdtsc();
 
-        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -103,7 +103,7 @@ void UEFI_API testAvx512DqProcedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        u64 endTime = rdtsc();
+        bad_uint64 endTime = rdtsc();
 
 
 

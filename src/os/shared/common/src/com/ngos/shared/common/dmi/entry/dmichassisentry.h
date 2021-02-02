@@ -12,7 +12,7 @@
 
 
 
-#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) (DmiChassisContainedElement *)((u64)(entry)->containedElements + (i) * (entry)->containedElementRecordLength)
+#define DMI_CHASSIS_CONTAINED_ELEMENT(entry, i) (DmiChassisContainedElement *)((bad_uint64)(entry)->containedElements + (i) * (entry)->containedElementRecordLength)
 
 
 
@@ -47,11 +47,11 @@ struct DmiChassisEntryV21: public DmiChassisEntry
 
 struct DmiChassisEntryV23: public DmiChassisEntryV21
 {
-    u32                        oemDefined;
-    u8                         height;
-    u8                         numberOfPowerCords;
-    u8                         containedElementCount;
-    u8                         containedElementRecordLength;
+    bad_uint32                        oemDefined;
+    bad_uint8                         height;
+    bad_uint8                         numberOfPowerCords;
+    bad_uint8                         containedElementCount;
+    bad_uint8                         containedElementRecordLength;
     DmiChassisContainedElement containedElements[0];
 } __attribute__((packed));
 

@@ -63,13 +63,13 @@ class DMI
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus iterateDmiEntries(u8 *buf, process_dmi_entry processDmiEntry);
+    static NgosStatus iterateDmiEntries(bad_uint8 *buf, process_dmi_entry processDmiEntry);
 
-    static u32 getVersion(); // TEST: NO
-    static u64 getStructureTableAddress(); // TEST: NO
-    static u64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO
-    static u64 getTotalAmountOfMemory(); // TEST: NO
-    static u64 getNumberOfInstalledMemoryDevices(); // TEST: NO
+    static bad_uint32 getVersion(); // TEST: NO
+    static bad_uint64 getStructureTableAddress(); // TEST: NO
+    static bad_uint64 getSystemPhysicalMemoryArrayCapacity(); // TEST: NO
+    static bad_uint64 getTotalAmountOfMemory(); // TEST: NO
+    static bad_uint64 getNumberOfInstalledMemoryDevices(); // TEST: NO
     static const ArrayList<DmiMemoryDevice>& getMemoryDevices(); // TEST: NO
     static const char8* getIdentity(DmiIdentity id); // TEST: NO
     static Uuid* getUuid(DmiStoredUuid id); // TEST: NO
@@ -118,24 +118,24 @@ private:
     static NgosStatus saveDmiOnboardDevicesExtendedEntry(DmiOnboardDevicesExtendedEntry *entry); // TEST: NO
     static NgosStatus saveDmiInactiveEntry(DmiInactiveEntry *entry); // TEST: NO
     static NgosStatus storeDmiMemoryDevices(); // TEST: NO
-    static NgosStatus storeIdentity(DmiIdentity id, const char8 *address, u64 size); // TEST: NO
+    static NgosStatus storeIdentity(DmiIdentity id, const char8 *address, bad_uint64 size); // TEST: NO
     static NgosStatus storeUuid(DmiStoredUuid id, Uuid *uuid); // TEST: NO
-    static NgosStatus storeString(const char8 *address, u64 size, const char8 **destination); // TEST: NO
-    static u8 checksum(u8 *address, u64 size, u8 checksumValue);
+    static NgosStatus storeString(const char8 *address, bad_uint64 size, const char8 **destination); // TEST: NO
+    static bad_uint8 checksum(bad_uint8 *address, bad_uint64 size, bad_uint8 checksumValue);
 
-    static u32                                            sVersion;
-    static u16                                            sNumberOfSmbiosStructures;
-    static u64                                            sStructureTableAddress;
-    static u32                                            sStructureTableLength;
-    static u16                                            sSystemPhysicalMemoryArrayHandle;
-    static u64                                            sSystemPhysicalMemoryArrayCapacity;
-    static u64                                            sTotalAmountOfMemory;
-    static u64                                            sNumberOfInstalledMemoryDevices;
+    static bad_uint32                                            sVersion;
+    static bad_uint16                                            sNumberOfSmbiosStructures;
+    static bad_uint64                                            sStructureTableAddress;
+    static bad_uint32                                            sStructureTableLength;
+    static bad_uint16                                            sSystemPhysicalMemoryArrayHandle;
+    static bad_uint64                                            sSystemPhysicalMemoryArrayCapacity;
+    static bad_uint64                                            sTotalAmountOfMemory;
+    static bad_uint64                                            sNumberOfInstalledMemoryDevices;
     static ArrayList<DmiMemoryDeviceEntry *>              sMemoryDeviceEntries;
     static ArrayList<DmiMemoryDeviceMappedAddressEntry *> sMemoryDeviceMappedAddressEntries;
     static ArrayList<DmiMemoryDevice>                     sMemoryDevices;
-    static const char8*                                   sIdentities[(u64)DmiIdentity::MAXIMUM];
-    static Uuid*                                          sUuids[(u64)DmiStoredUuid::MAXIMUM];
+    static const char8*                                   sIdentities[(bad_uint64)DmiIdentity::MAXIMUM];
+    static Uuid*                                          sUuids[(bad_uint64)DmiStoredUuid::MAXIMUM];
 };
 
 

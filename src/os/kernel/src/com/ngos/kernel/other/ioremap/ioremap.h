@@ -15,20 +15,20 @@ class IORemap
 public:
     static NgosStatus init();
     static NgosStatus addPmdForFixmap(); // TEST: NO
-    static NgosStatus addFixedMapping(u64 address, u64 size, void **res);
-    static NgosStatus removeFixedMapping(u64 address, u64 size);
+    static NgosStatus addFixedMapping(bad_uint64 address, bad_uint64 size, void **res);
+    static NgosStatus removeFixedMapping(bad_uint64 address, bad_uint64 size);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static u64 sSlotsAddresses[FIX_BITMAP_SLOTS];
-    static u64 sSlotsSizes[FIX_BITMAP_SLOTS];
-    static u8  sPoolOfSlots[FIX_BITMAP_SLOTS];
-    static u8  sLastUsedSlot;
-    static u8  sLastReleasedSlot;
-    static u8  sSlotsAvailable;
+    static bad_uint64 sSlotsAddresses[FIX_BITMAP_SLOTS];
+    static bad_uint64 sSlotsSizes[FIX_BITMAP_SLOTS];
+    static bad_uint8  sPoolOfSlots[FIX_BITMAP_SLOTS];
+    static bad_uint8  sLastUsedSlot;
+    static bad_uint8  sLastReleasedSlot;
+    static bad_uint8  sSlotsAvailable;
     static PTE sFixmapPage[PTRS_PER_PTE];
 };
 

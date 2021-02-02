@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512bwVpbroadcastb(u8 *a, u8 value);
+void testAvx512bwVpbroadcastb(bad_uint8 *a, bad_uint8 value);
 
 
 

@@ -12,7 +12,7 @@ extern void *_rela_end;   // _rela_end declared in linker.ld file   // Ignore Cp
 
 
 
-NgosStatus setupDynamicRelocation(u64 kernelLocation)
+NgosStatus setupDynamicRelocation(bad_uint64 kernelLocation)
 {
     UEFI_LT((" | kernelLocation = 0x%p", kernelLocation));
 
@@ -22,10 +22,10 @@ NgosStatus setupDynamicRelocation(u64 kernelLocation)
 
     ElfRela *relas = (ElfRela *)&_rela_begin;
 
-    i64 count = ((u64)&_rela_end - (u64)&_rela_begin) / sizeof(ElfRela);
+    bad_int64 count = ((bad_uint64)&_rela_end - (bad_uint64)&_rela_begin) / sizeof(ElfRela);
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         ElfRela &rela = relas[i];
 
@@ -38,11 +38,11 @@ NgosStatus setupDynamicRelocation(u64 kernelLocation)
 
 
 
-        u64 relaAddress = kernelLocation + rela.offset;
+        bad_uint64 relaAddress = kernelLocation + rela.offset;
 
-        UEFI_LVV(("Handling RELA entry(ElfRelaType::RELATIVE) at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(u64 *)relaAddress, kernelLocation + rela.addend));
+        UEFI_LVV(("Handling RELA entry(ElfRelaType::RELATIVE) at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(bad_uint64 *)relaAddress, kernelLocation + rela.addend));
 
-        *(u64 *)relaAddress = kernelLocation + rela.addend;
+        *(bad_uint64 *)relaAddress = kernelLocation + rela.addend;
     }
 
 

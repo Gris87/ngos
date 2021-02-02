@@ -15,16 +15,16 @@ struct DmiSystemPowerSupplyCharacteristics
     {
         struct
         {
-            u16 hotReplaceable:          1;
-            u16 present:                 1;
-            u16 unplugged:               1;
-            u16 inputVoltageRangeSwitch: 4; // TODO: Use enum DmiSystemPowerSupplyInputVoltageRangeSwitch
-            u16 status:                  3; // TODO: Use enum DmiSystemPowerSupplyStatus
-            u16 type:                    4; // TODO: Use enum DmiSystemPowerSupplyType
-            u16 __reserved:              2;
+            bad_uint16 hotReplaceable:          1;
+            bad_uint16 present:                 1;
+            bad_uint16 unplugged:               1;
+            bad_uint16 inputVoltageRangeSwitch: 4; // TODO: Use enum DmiSystemPowerSupplyInputVoltageRangeSwitch
+            bad_uint16 status:                  3; // TODO: Use enum DmiSystemPowerSupplyStatus
+            bad_uint16 type:                    4; // TODO: Use enum DmiSystemPowerSupplyType
+            bad_uint16 __reserved:              2;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 } __attribute__((packed));
 

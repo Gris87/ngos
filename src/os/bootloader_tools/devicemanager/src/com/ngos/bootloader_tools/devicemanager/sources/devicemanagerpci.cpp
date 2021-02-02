@@ -17,9 +17,9 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(name, mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
+        for (bad_int64 _ = 0; _ < (bad_int64)(sizeof(flagsVar) * 8); ++_) \
         { \
-            u64 flag = (1ULL << _); \
+            bad_uint64 flag = (1ULL << _); \
             \
             if (flagsVar.flags & flag) \
             { \
@@ -34,9 +34,9 @@
     { \
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf(name, i), mprintf(format, flagsVar.flags), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION); \
         \
-        for (i64 _ = 0; _ < (i64)(sizeof(flagsVar) * 8); ++_) \
+        for (bad_int64 _ = 0; _ < (bad_int64)(sizeof(flagsVar) * 8); ++_) \
         { \
-            u64 flag = (1ULL << _); \
+            bad_uint64 flag = (1ULL << _); \
             \
             if (flagsVar.flags & flag) \
             { \
@@ -80,7 +80,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols()
 
 
     Guid protocol = UEFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID;
-    u64  size     = 0;
+    bad_uint64  size     = 0;
 
 
 
@@ -107,7 +107,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols()
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 size)
+NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, bad_uint64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -160,7 +160,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
     return status;
 }
 
-NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 size, uefi_handle *handles)
+NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, bad_uint64 size, uefi_handle *handles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, handles = 0x%p", protocol, size, handles));
 
@@ -170,12 +170,12 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocols(Guid *protocol, u64 si
 
 
 
-    i64 count = size / sizeof(uefi_handle);
+    bad_int64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
 
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         uefi_handle                  handle = handles[i];
         UefiPciRootBridgeIoProtocol *pci;
@@ -302,7 +302,7 @@ NgosStatus DeviceManagerPci::initPciRootBridgeIoProtocol(UefiPciRootBridgeIoProt
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, i64 minimumBus, i64 maximumBus)
+NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci, bad_int64 minimumBus, bad_int64 maximumBus)
 {
     UEFI_LT((" | pci = 0x%p, minimumBus = %d, maximumBus = %d", pci, minimumBus, maximumBus));
 
@@ -313,14 +313,14 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
 
 
-    for (i64 i = minimumBus; i <= maximumBus; ++i)
+    for (bad_int64 i = minimumBus; i <= maximumBus; ++i)
     {
-        for (i64 j = 0; j <= PCI_MAXIMUM_DEVICE; ++j)
+        for (bad_int64 j = 0; j <= PCI_MAXIMUM_DEVICE; ++j)
         {
-            for (i64 k = 0; k <= PCI_MAXIMUM_FUNCTION; ++k)
+            for (bad_int64 k = 0; k <= PCI_MAXIMUM_FUNCTION; ++k)
             {
                 PciVendor vendorId;
-                u64       address = UEFI_PCI_ADDRESS(i, j, k, (u64)PciRegister::VENDOR_ID);
+                bad_uint64       address = UEFI_PCI_ADDRESS(i, j, k, (bad_uint64)PciRegister::VENDOR_ID);
 
                 if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT16, address, 1, &vendorId) == UefiStatus::SUCCESS)
                 {
@@ -332,7 +332,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
 
                         PciConfigurationSpace configurationSpace;
 
-                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
+                        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(bad_uint32), &configurationSpace) == UefiStatus::SUCCESS)
                         {
                             UEFI_LVV(("Successfully read PCI configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, i, j, k));
 
@@ -402,7 +402,7 @@ NgosStatus DeviceManagerPci::initPcisInBusRange(UefiPciRootBridgeIoProtocol *pci
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -611,7 +611,7 @@ NgosStatus DeviceManagerPci::initPciWithConfigurationSpace(const PciConfiguratio
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -685,7 +685,7 @@ NgosStatus DeviceManagerPci::initPciWithDeviceConfigurationSpace(const PciConfig
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -805,7 +805,7 @@ NgosStatus DeviceManagerPci::initPciWithBridgeConfigurationSpace(const PciConfig
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfigurationSpace &configurationSpace, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | configurationSpace = ..., deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", deviceManagerEntry, pci, bus, device, function));
 
@@ -932,7 +932,7 @@ NgosStatus DeviceManagerPci::initPciWithCardBusConfigurationSpace(const PciConfi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, u8 capabilityPointer, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurationSpace &configurationSpace, bad_uint8 capabilityPointer, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | configurationSpace = ..., capabilityPointer = 0x%02X, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capabilityPointer, deviceManagerEntry, headerType, pci, bus, device, function));
 
@@ -958,7 +958,7 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
            IS_ALIGNED(capabilityPointer, 4)
           )
     {
-        PciCapabilityHeader *capability = (PciCapabilityHeader *)((u64)&configurationSpace + capabilityPointer);
+        PciCapabilityHeader *capability = (PciCapabilityHeader *)((bad_uint64)&configurationSpace + capabilityPointer);
 
 
 
@@ -979,7 +979,7 @@ NgosStatus DeviceManagerPci::initPciWithCapabilitiesPointer(const PciConfigurati
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciWithCapability(PciCapabilityHeader *capability, DeviceManagerEntryPCI *deviceManagerEntry, PciHeaderType headerType, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, headerType = %u, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, headerType, pci, bus, device, function));
 
@@ -2229,7 +2229,7 @@ NgosStatus DeviceManagerPci::initPciSecureDeviceCapability(PciSecureDeviceCapabi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, i64 bus, i64 device, i64 function)
+NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capability, DeviceManagerEntryPCI *deviceManagerEntry, UefiPciRootBridgeIoProtocol *pci, bad_int64 bus, bad_int64 device, bad_int64 function)
 {
     UEFI_LT((" | capability = 0x%p, deviceManagerEntry = 0x%p, pci = 0x%p, bus = %d, device = %d, function = %d", capability, deviceManagerEntry, pci, bus, device, function));
 
@@ -2748,13 +2748,13 @@ NgosStatus DeviceManagerPci::initPciExpressCapability(PciExpressCapability *capa
 
     // Read and parse PCI extended configuration space
     {
-        u64 address = UEFI_PCI_ADDRESS(bus, device, function, sizeof(PciConfigurationSpace));
+        bad_uint64 address = UEFI_PCI_ADDRESS(bus, device, function, sizeof(PciConfigurationSpace));
 
 
 
         PciExtendedConfigurationSpace configurationSpace;
 
-        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(u32), &configurationSpace) == UefiStatus::SUCCESS)
+        if (pci->pci.read(pci, UefiPciRootBridgeIoProtocolWidth::UINT32, address, sizeof(configurationSpace) / sizeof(bad_uint32), &configurationSpace) == UefiStatus::SUCCESS)
         {
             UEFI_LVV(("Successfully read PCI extended configuration space from protocol(0x%p) for PCI(%d/%d/%d)", pci, bus, device, function));
 
@@ -2848,7 +2848,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedConfigurationSpace(const PciExte
             break;
         }
 
-        capability = (PciExtendedCapabilityHeader *)((u64)&configurationSpace + capability->nextCapabilityOffset - sizeof(PciConfigurationSpace));
+        capability = (PciExtendedCapabilityHeader *)((bad_uint64)&configurationSpace + capability->nextCapabilityOffset - sizeof(PciConfigurationSpace));
     }
 
 
@@ -2914,7 +2914,7 @@ NgosStatus DeviceManagerPci::initPciWithExtendedCapability(PciExtendedCapability
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciExpressAdvancedErrorReportingCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3058,7 +3058,7 @@ NgosStatus DeviceManagerPci::initPciExpressAdvancedErrorReportingCapability(PciE
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVirtualChannelCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3093,7 +3093,7 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
 
 
 
-        for (i64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
+        for (bad_int64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
         {
             PciExpressVirtualChannelPortArbitrationCapabilityFlags portArbitrationCapability(capability->capability[i].virtualChannelResourceCapability.portArbitrationCapability);
 
@@ -3156,7 +3156,7 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
 
 
 
-        for (i64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
+        for (bad_int64 i = 0; i < capability->portVirtualChannelCapability1.extendedVirtualChannelCount; ++i)
         {
             PciExpressVirtualChannelPortArbitrationCapabilityFlags portArbitrationCapability(capability->capability[i].virtualChannelResourceCapability.portArbitrationCapability);
 
@@ -3197,7 +3197,7 @@ NgosStatus DeviceManagerPci::initPciExpressVirtualChannelCapability(PciExpressVi
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpressDeviceSerialNumberCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3232,7 +3232,7 @@ NgosStatus DeviceManagerPci::initPciExpressDeviceSerialNumberCapability(PciExpre
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPowerBudgetingCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3294,7 +3294,7 @@ NgosStatus DeviceManagerPci::initPciExpressPowerBudgetingCapability(PciExpressPo
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(PciExpressRootComplexLinkDeclarationCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3318,7 +3318,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(
 
 
 
-        for (i64 i = 0; i < capability->elementSelfDescription.numberOfLinkEntries; ++i)
+        for (bad_int64 i = 0; i < capability->elementSelfDescription.numberOfLinkEntries; ++i)
         {
             UEFI_LVVV(("capability->linkEntry[%d].linkDescription.linkValid           = %u",     i, capability->linkEntry[i].linkDescription.linkValid));
             UEFI_LVVV(("capability->linkEntry[%d].linkDescription.linkType            = %s",     i, enumToFullString((PciExpressRootComplexLinkDeclarationLinkType)capability->linkEntry[i].linkDescription.linkType)));
@@ -3378,7 +3378,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(
 
 
 
-        for (i64 i = 0; i < capability->elementSelfDescription.numberOfLinkEntries; ++i)
+        for (bad_int64 i = 0; i < capability->elementSelfDescription.numberOfLinkEntries; ++i)
         {
             // Link entry link description
             {
@@ -3430,7 +3430,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexLinkDeclarationCapability(
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapability(PciExpressRootComplexInternalLinkControlCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3504,7 +3504,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexInternalLinkControlCapabil
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAssociationCapability(PciExpressRootComplexEventCollectorEndpointAssociationCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3539,7 +3539,7 @@ NgosStatus DeviceManagerPci::initPciExpressRootComplexEventCollectorEndpointAsso
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHeaderCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3586,7 +3586,7 @@ NgosStatus DeviceManagerPci::initPciExpressRcrbHeaderCapability(PciExpressRcrbHe
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVendorSpecificCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3630,7 +3630,7 @@ NgosStatus DeviceManagerPci::initPciExpressVendorSpecificCapability(PciExpressVe
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciExpressAccessControlServicesCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3644,7 +3644,7 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
 
 
 
-    u8 numberOfWords = capability->capability.egressControlVectorSizeNumberOfWords();
+    bad_uint8 numberOfWords = capability->capability.egressControlVectorSizeNumberOfWords();
 
 
 
@@ -3666,7 +3666,7 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
 
         if (capability->capability.acsP2pEgressControl)
         {
-            for (i64 i = 0; i < numberOfWords; ++i)
+            for (bad_int64 i = 0; i < numberOfWords; ++i)
             {
                 UEFI_LVVV(("capability->egressControlVector[%d] = 0x%08X", i, capability->egressControlVector[i]));
             }
@@ -3705,7 +3705,7 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
         {
             if (capability->capability.acsP2pEgressControl)
             {
-                for (i64 i = 0; i < numberOfWords; ++i)
+                for (bad_int64 i = 0; i < numberOfWords; ++i)
                 {
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Egress control vector #%d", i), mprintf("0x%08X", capability->egressControlVector[i]), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
                 }
@@ -3719,7 +3719,7 @@ NgosStatus DeviceManagerPci::initPciExpressAccessControlServicesCapability(PciEx
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3779,7 +3779,7 @@ NgosStatus DeviceManagerPci::initPciExpressAriCapability(PciExpressAriCapability
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMulticastCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3873,7 +3873,7 @@ NgosStatus DeviceManagerPci::initPciExpressMulticastCapability(PciExpressMultica
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExpressResizableBaseAddressCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3889,7 +3889,7 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
 
     // Validation
     {
-        for (i64 i = 0; i < capability->capabilityAndControl[0].control.numberOfResizableBars; ++i)
+        for (bad_int64 i = 0; i < capability->capabilityAndControl[0].control.numberOfResizableBars; ++i)
         {
             UEFI_LVVV(("capability->capabilityAndControl[%d].capability                    = %s",     i, flagsToFullString(capability->capabilityAndControl[i].capability)));
             UEFI_LVVV(("capability->capabilityAndControl[%d].control.barIndex              = %u",     i, capability->capabilityAndControl[i].control.barIndex));
@@ -3910,7 +3910,7 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
 
         UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord("Number of resizable BARs", mprintf("%u", capability->capabilityAndControl[0].control.numberOfResizableBars), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
 
-        for (i64 i = 0; i < capability->capabilityAndControl[0].control.numberOfResizableBars; ++i)
+        for (bad_int64 i = 0; i < capability->capabilityAndControl[0].control.numberOfResizableBars; ++i)
         {
             ADD_RECORDS_FOR_FLAGS_CYCLE(deviceManagerEntry, "Capability #%d", i, capability->capabilityAndControl[i].capability, "0x%08X", PciExpressResizableBaseAddressCapabilityFlag, DeviceManagerMode::EXPERT);
 
@@ -3931,7 +3931,7 @@ NgosStatus DeviceManagerPci::initPciExpressResizableBaseAddressCapability(PciExp
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciExpressDynamicPowerAllocationCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -3960,7 +3960,7 @@ NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciE
         UEFI_LVVV(("capability->control.substateControl            = 0x%02X", capability->control.substateControl));
         UEFI_LVVV(("capability->control.value16                    = 0x%04X", capability->control.value16));
 
-        for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+        for (bad_int64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
         {
             UEFI_LVVV(("capability->substatePowerAllocation[%d] = %u", i, capability->substatePowerAllocation[i]));
         }
@@ -4010,7 +4010,7 @@ NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciE
 
         // Substate power allocation
         {
-            for (i64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
+            for (bad_int64 i = 0; i < capability->capability.substateMaximumReal(); ++i)
             {
                 UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("Substate power allocation #%d", i), mprintf("%u", capability->substatePowerAllocation[i]), DeviceManagerMode::EXPERT), NgosStatus::ASSERTION);
             }
@@ -4023,7 +4023,7 @@ NgosStatus DeviceManagerPci::initPciExpressDynamicPowerAllocationCapability(PciE
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphRequesterCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 
@@ -4052,7 +4052,7 @@ NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphR
 
         if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
         {
-            for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+            for (bad_int64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
             {
                 UEFI_LVVV(("capability->stTableEntries[%d].stLowerEntry = 0x%04X", i, capability->stTableEntries[i].stLowerEntry));
                 UEFI_LVVV(("capability->stTableEntries[%d].stUpperEntry = 0x%04X", i, capability->stTableEntries[i].stUpperEntry));
@@ -4095,7 +4095,7 @@ NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphR
         {
             if ((PciExpressTphRequesterStTableLocation)capability->capability.stTableLocation == PciExpressTphRequesterStTableLocation::TPH_REQUESTER_CAPABILITY)
             {
-                for (i64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
+                for (bad_int64 i = 0; i < capability->capability.stTableSizeReal(); ++i)
                 {
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ST table entry #%d: ST lower entry", i), mprintf("0x%04X", capability->stTableEntries[i].stLowerEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
                     UEFI_ASSERT_EXECUTION(deviceManagerEntry->addRecord(mprintf("ST table entry #%d: ST upper entry", i), mprintf("0x%04X", capability->stTableEntries[i].stUpperEntry), DeviceManagerMode::TECHNICAL), NgosStatus::ASSERTION);
@@ -4110,7 +4110,7 @@ NgosStatus DeviceManagerPci::initPciExpressTphRequesterCapability(PciExpressTphR
     return NgosStatus::OK;
 }
 
-NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, u8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
+NgosStatus DeviceManagerPci::initPciExpressLatencyToleranceReportingCapability(PciExpressLatencyToleranceReportingCapability *capability, bad_uint8 capabilityVersion, DeviceManagerEntryPCI *deviceManagerEntry)
 {
     UEFI_LT((" | capability = 0x%p, capabilityVersion = %u, deviceManagerEntry = 0x%p", capability, capabilityVersion, deviceManagerEntry));
 

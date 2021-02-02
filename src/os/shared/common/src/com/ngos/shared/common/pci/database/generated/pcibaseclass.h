@@ -29,7 +29,7 @@
 
 
 
-enum class PciBaseClass: u8
+enum class PciBaseClass: bad_uint8
 {
     BASE_CLASS_00 = 0x00,
     BASE_CLASS_01 = 0x01,
@@ -102,14 +102,14 @@ inline const char8* enumToFullString(PciBaseClass baseClass) // TEST: NO
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (u8)baseClass, enumToString(baseClass));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)baseClass, enumToString(baseClass));
 
     return res;
 }
 
 
 
-inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId) // TEST: NO
+inline const char8* enumToHumanString(PciBaseClass baseClass, bad_uint8 subClassId, bad_uint8 interfaceId) // TEST: NO
 {
     // COMMON_LT((" | baseClass = %u, subClassId = %u, interfaceId = %u", baseClass, subClassId, interfaceId)); // Commented to avoid bad looking logs
 

@@ -44,7 +44,7 @@
 
 
 
-enum class PciDevice9005: u16 // Ignore CppEnumVerifier
+enum class PciDevice9005: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0010 = 0x0010,
@@ -243,7 +243,7 @@ inline const char8* enumToFullString(PciDevice9005 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -270,17 +270,17 @@ inline const char8* enumToHumanString(PciDevice9005 device) // TEST: NO
         case PciDevice9005::DEVICE_0051: return "AHA-3950U2D";
         case PciDevice9005::DEVICE_0053: return "AIC-7896 SCSI Controller";
         case PciDevice9005::DEVICE_005F: return "AIC-7896U2/7897U2";
-        case PciDevice9005::DEVICE_0080: return "AIC-7892A U160/m";
-        case PciDevice9005::DEVICE_0081: return "AIC-7892B U160/m";
-        case PciDevice9005::DEVICE_0083: return "AIC-7892D U160/m";
-        case PciDevice9005::DEVICE_008F: return "AIC-7892P U160/m";
+        case PciDevice9005::DEVICE_0080: return "AIC-7892A bad_uint160/m";
+        case PciDevice9005::DEVICE_0081: return "AIC-7892B bad_uint160/m";
+        case PciDevice9005::DEVICE_0083: return "AIC-7892D bad_uint160/m";
+        case PciDevice9005::DEVICE_008F: return "AIC-7892P bad_uint160/m";
         case PciDevice9005::DEVICE_0092: return "AVC-2010 [VideoH!]";
         case PciDevice9005::DEVICE_0093: return "AVC-2410 [VideoH!]";
-        case PciDevice9005::DEVICE_00C0: return "AHA-3960D / AIC-7899A U160/m";
-        case PciDevice9005::DEVICE_00C1: return "AIC-7899B U160/m";
-        case PciDevice9005::DEVICE_00C3: return "AIC-7899D U160/m";
+        case PciDevice9005::DEVICE_00C0: return "AHA-3960D / AIC-7899A bad_uint160/m";
+        case PciDevice9005::DEVICE_00C1: return "AIC-7899B bad_uint160/m";
+        case PciDevice9005::DEVICE_00C3: return "AIC-7899D bad_uint160/m";
         case PciDevice9005::DEVICE_00C5: return "RAID subsystem HBA";
-        case PciDevice9005::DEVICE_00CF: return "AIC-7899P U160/m";
+        case PciDevice9005::DEVICE_00CF: return "AIC-7899P bad_uint160/m";
         case PciDevice9005::DEVICE_0241: return "Serial ATA II RAID 1420SA";
         case PciDevice9005::DEVICE_0242: return "Serial ATA II RAID 1220SA";
         case PciDevice9005::DEVICE_0243: return "Serial ATA II RAID 1430SA";
@@ -311,37 +311,37 @@ inline const char8* enumToHumanString(PciDevice9005 device) // TEST: NO
         case PciDevice9005::DEVICE_0503: return "Scamp chipset SCSI controller";
         case PciDevice9005::DEVICE_0910: return "AUA-3100B";
         case PciDevice9005::DEVICE_091E: return "AUA-3100B";
-        case PciDevice9005::DEVICE_8000: return "ASC-29320A U320";
-        case PciDevice9005::DEVICE_800F: return "AIC-7901 U320";
-        case PciDevice9005::DEVICE_8010: return "ASC-39320 U320";
+        case PciDevice9005::DEVICE_8000: return "ASC-29320A bad_uint320";
+        case PciDevice9005::DEVICE_800F: return "AIC-7901 bad_uint320";
+        case PciDevice9005::DEVICE_8010: return "ASC-39320 bad_uint320";
         case PciDevice9005::DEVICE_8011: return "ASC-39320D";
-        case PciDevice9005::DEVICE_8012: return "ASC-29320 U320";
-        case PciDevice9005::DEVICE_8013: return "ASC-29320B U320";
-        case PciDevice9005::DEVICE_8014: return "ASC-29320LP U320";
-        case PciDevice9005::DEVICE_8015: return "ASC-39320B U320";
-        case PciDevice9005::DEVICE_8016: return "ASC-39320A U320";
-        case PciDevice9005::DEVICE_8017: return "ASC-29320ALP U320";
-        case PciDevice9005::DEVICE_801C: return "ASC-39320D U320";
-        case PciDevice9005::DEVICE_801D: return "AIC-7902B U320";
-        case PciDevice9005::DEVICE_801E: return "AIC-7901A U320";
-        case PciDevice9005::DEVICE_801F: return "AIC-7902 U320";
-        case PciDevice9005::DEVICE_8080: return "ASC-29320A U320 w/HostRAID";
+        case PciDevice9005::DEVICE_8012: return "ASC-29320 bad_uint320";
+        case PciDevice9005::DEVICE_8013: return "ASC-29320B bad_uint320";
+        case PciDevice9005::DEVICE_8014: return "ASC-29320LP bad_uint320";
+        case PciDevice9005::DEVICE_8015: return "ASC-39320B bad_uint320";
+        case PciDevice9005::DEVICE_8016: return "ASC-39320A bad_uint320";
+        case PciDevice9005::DEVICE_8017: return "ASC-29320ALP bad_uint320";
+        case PciDevice9005::DEVICE_801C: return "ASC-39320D bad_uint320";
+        case PciDevice9005::DEVICE_801D: return "AIC-7902B bad_uint320";
+        case PciDevice9005::DEVICE_801E: return "AIC-7901A bad_uint320";
+        case PciDevice9005::DEVICE_801F: return "AIC-7902 bad_uint320";
+        case PciDevice9005::DEVICE_8080: return "ASC-29320A bad_uint320 w/HostRAID";
         case PciDevice9005::DEVICE_8081: return "PMC-Sierra PM8001 SAS HBA [Series 6H]";
         case PciDevice9005::DEVICE_8088: return "PMC-Sierra PM8018 SAS HBA [Series 7H]";
         case PciDevice9005::DEVICE_8089: return "PMC-Sierra PM8019 SAS encryption HBA [Series 7He]";
-        case PciDevice9005::DEVICE_808F: return "AIC-7901 U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8090: return "ASC-39320 U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8091: return "ASC-39320D U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8092: return "ASC-29320 U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8093: return "ASC-29320B U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8094: return "ASC-29320LP U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8095: return "ASC-39320(B) U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8096: return "ASC-39320A U320 w/HostRAID";
-        case PciDevice9005::DEVICE_8097: return "ASC-29320ALP U320 w/HostRAID";
-        case PciDevice9005::DEVICE_809C: return "ASC-39320D(B) U320 w/HostRAID";
-        case PciDevice9005::DEVICE_809D: return "AIC-7902(B) U320 w/HostRAID";
-        case PciDevice9005::DEVICE_809E: return "AIC-7901A U320 w/HostRAID";
-        case PciDevice9005::DEVICE_809F: return "AIC-7902 U320 w/HostRAID";
+        case PciDevice9005::DEVICE_808F: return "AIC-7901 bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8090: return "ASC-39320 bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8091: return "ASC-39320D bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8092: return "ASC-29320 bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8093: return "ASC-29320B bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8094: return "ASC-29320LP bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8095: return "ASC-39320(B) bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8096: return "ASC-39320A bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_8097: return "ASC-29320ALP bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_809C: return "ASC-39320D(B) bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_809D: return "AIC-7902(B) bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_809E: return "AIC-7901A bad_uint320 w/HostRAID";
+        case PciDevice9005::DEVICE_809F: return "AIC-7902 bad_uint320 w/HostRAID";
 
         default: return "Unknown device";
     }
@@ -349,7 +349,7 @@ inline const char8* enumToHumanString(PciDevice9005 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice9005 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice9005 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

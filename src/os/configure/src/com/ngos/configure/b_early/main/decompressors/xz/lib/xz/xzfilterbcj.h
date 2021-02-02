@@ -19,7 +19,7 @@
 
 
 
-NgosStatus filterBCJ(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfProperties, u8 *filterProperties, u64 uncompressedSize); // TEST: NO
+NgosStatus filterBCJ(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 sizeOfProperties, bad_uint8 *filterProperties, bad_uint64 uncompressedSize); // TEST: NO
 
 
 

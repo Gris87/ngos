@@ -10,7 +10,7 @@
 class Adler
 {
 public:
-    static u32 adler32(u8 *data, u64 length);
+    static bad_uint32 adler32(bad_uint8 *data, bad_uint64 length);
 };
 
 

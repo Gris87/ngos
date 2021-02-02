@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressPowerBudgetingPowerRail: u8
+enum class PciExpressPowerBudgetingPowerRail: bad_uint8
 {
     POWER_12V  = 0,
     POWER_3_3V = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressPowerBudgetingPowerRail rail) // 
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (u8)rail, enumToString(rail));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)rail, enumToString(rail));
 
     return res;
 }

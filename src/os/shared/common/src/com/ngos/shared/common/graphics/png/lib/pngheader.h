@@ -14,7 +14,7 @@
 
 struct PngHeader
 {
-    u64      signature;
+    bad_uint64      signature;
     PngChunk imageHeaderChunk;
 } __attribute__((packed));
 

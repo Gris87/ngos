@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice100000AB: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice100000AB: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10003040 = 0x10003040,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice100000AB subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -60,7 +60,7 @@ inline const char8* enumToHumanString(PciSubDevice100000AB subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice100000AB::SUBDEVICE_10003040: return "HBA 9400-8i8e";
+        case PciSubDevice100000AB::SUBDEVICE_10003040: return "HBA 9400-8bad_int8e";
         case PciSubDevice100000AB::SUBDEVICE_80863530: return "Integrated RAID Module RMSP3JD160J";
 
         default: return "Unknown device";

@@ -9,17 +9,17 @@
 
 struct UefiTime
 {
-    u16 year;       // 1998 - 20XX
-    u8  month;      // 1 - 12
-    u8  day;        // 1 - 31
-    u8  hour;       // 0 - 23
-    u8  minute;     // 0 - 59
-    u8  second;     // 0 - 59
-    u8  __pad1;
-    u32 nanosecond; // 0 - 999999999
-    i16 timeZone;   // -1440 to 1440 or 2047
-    u8  daylight;
-    u8  __pad2;
+    bad_uint16 year;       // 1998 - 20XX
+    bad_uint8  month;      // 1 - 12
+    bad_uint8  day;        // 1 - 31
+    bad_uint8  hour;       // 0 - 23
+    bad_uint8  minute;     // 0 - 59
+    bad_uint8  second;     // 0 - 59
+    bad_uint8  __pad1;
+    bad_uint32 nanosecond; // 0 - 999999999
+    bad_int16 timeZone;   // -1440 to 1440 or 2047
+    bad_uint8  daylight;
+    bad_uint8  __pad2;
 };
 
 

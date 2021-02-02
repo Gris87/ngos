@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse3Phsubd(u32 *a, u32 *b, u32 *c);
+void testSse3Phsubd(bad_uint32 *a, bad_uint32 *b, bad_uint32 *c);
 
 
 

@@ -21,17 +21,17 @@
 
 struct JpegDecoder
 {
-    u8                      *data;
-    u64                      size;
+    bad_uint8                      *data;
+    bad_uint64                      size;
     Image                  **image;
     JpegStartOfFrameMarker  *startOfFrameMarker;
     JpegStartOfScanMarker   *startOfScanMarker;
-    u16                      restartInterval;
-    u16                      mcuBlockCountX;
-    u16                      mcuBlockCountY;
-    u64                      bitBuffer;
-    u8                       bitsAvailable;
-    u16                      quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT][JPEG_QUANTIZATION_TABLE_SIZE];
+    bad_uint16                      restartInterval;
+    bad_uint16                      mcuBlockCountX;
+    bad_uint16                      mcuBlockCountY;
+    bad_uint64                      bitBuffer;
+    bad_uint8                       bitsAvailable;
+    bad_uint16                      quantizationTables[JPEG_QUANTIZATION_TABLE_COUNT][JPEG_QUANTIZATION_TABLE_SIZE];
     JpegVlcCode*             vlcDcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegVlcCode*             vlcAcTables[JPEG_HUFFMAN_TABLE_COUNT];
     JpegComponent            components[JPEG_NUMBER_OF_COMPONENTS];

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressPowerBudgetingPowerManagementState: u8
+enum class PciExpressPowerBudgetingPowerManagementState: bad_uint8
 {
     D0 = 0,
     D1 = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressPowerBudgetingPowerManagementStat
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)state, enumToString(state));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)state, enumToString(state));
 
     return res;
 }

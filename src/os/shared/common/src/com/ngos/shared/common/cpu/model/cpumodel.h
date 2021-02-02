@@ -11,7 +11,7 @@
 
 
 
-inline const char8* enumToString(CpuVendor vendor, CpuFamily family, u8 model) // TEST: NO
+inline const char8* enumToString(CpuVendor vendor, CpuFamily family, bad_uint8 model) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u, family = %u, model = %u", vendor, family, model)); // Commented to avoid bad looking logs
 
@@ -28,7 +28,7 @@ inline const char8* enumToString(CpuVendor vendor, CpuFamily family, u8 model) /
 
 
 
-inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family, u8 model) // TEST: NO
+inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family, bad_uint8 model) // TEST: NO
 {
     // COMMON_LT((" | vendor = %u, family = %u, model = %u", vendor, family, model)); // Commented to avoid bad looking logs
 

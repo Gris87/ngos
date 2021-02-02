@@ -15,20 +15,20 @@
 
 struct GptHeader
 {
-    u64  signature;
-    u32  revision;
-    u32  headerSize;
-    u32  headerCrc32;
-    u32  __reserved;
-    u64  currentLba;
-    u64  backupLba;
-    u64  firstUsableLba;
-    u64  lastUsableLba;
+    bad_uint64  signature;
+    bad_uint32  revision;
+    bad_uint32  headerSize;
+    bad_uint32  headerCrc32;
+    bad_uint32  __reserved;
+    bad_uint64  currentLba;
+    bad_uint64  backupLba;
+    bad_uint64  firstUsableLba;
+    bad_uint64  lastUsableLba;
     Guid diskGuid;
-    u64  entryLba;
-    u32  entryCount;
-    u32  entrySize;
-    u32  entryCrc32;
+    bad_uint64  entryLba;
+    bad_uint32  entryCount;
+    bad_uint32  entrySize;
+    bad_uint32  entryCrc32;
 };
 
 

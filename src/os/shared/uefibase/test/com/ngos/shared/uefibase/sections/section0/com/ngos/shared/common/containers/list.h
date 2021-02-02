@@ -17,7 +17,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 {
     TEST_CASE("List()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mTail, nullptr);
@@ -28,7 +28,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("append()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mTail, nullptr);
@@ -84,7 +84,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("prepend()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mTail, nullptr);
@@ -140,7 +140,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("remove()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mTail, nullptr);
@@ -155,11 +155,11 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
 
 
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
+        ListElement<bad_uint8> *el1 = temp.mHead;
+        ListElement<bad_uint8> *el2 = el1->mNext;
+        ListElement<bad_uint8> *el3 = el2->mNext;
+        ListElement<bad_uint8> *el4 = el3->mNext;
+        ListElement<bad_uint8> *el5 = el4->mNext;
 
         TEST_ASSERT_EQUALS(el1,            temp.mHead);
         TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
@@ -270,7 +270,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("clear()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mTail, nullptr);
@@ -301,7 +301,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("moveToEnd()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -311,11 +311,11 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
 
 
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
+        ListElement<bad_uint8> *el1 = temp.mHead;
+        ListElement<bad_uint8> *el2 = el1->mNext;
+        ListElement<bad_uint8> *el3 = el2->mNext;
+        ListElement<bad_uint8> *el4 = el3->mNext;
+        ListElement<bad_uint8> *el5 = el4->mNext;
 
         TEST_ASSERT_EQUALS(el1,            temp.mHead);
         TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
@@ -429,7 +429,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("sort()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -439,11 +439,11 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
 
 
-        ListElement<u8> *el1 = temp.mHead;
-        ListElement<u8> *el2 = el1->mNext;
-        ListElement<u8> *el3 = el2->mNext;
-        ListElement<u8> *el4 = el3->mNext;
-        ListElement<u8> *el5 = el4->mNext;
+        ListElement<bad_uint8> *el1 = temp.mHead;
+        ListElement<bad_uint8> *el2 = el1->mNext;
+        ListElement<bad_uint8> *el3 = el2->mNext;
+        ListElement<bad_uint8> *el4 = el3->mNext;
+        ListElement<bad_uint8> *el5 = el4->mNext;
 
         TEST_ASSERT_EQUALS(el1,            temp.mHead);
         TEST_ASSERT_EQUALS(el1->mPrevious, nullptr);
@@ -473,11 +473,11 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
 
 
-        ListElement<u8> *newEl1 = temp.mHead;
-        ListElement<u8> *newEl2 = newEl1->mNext;
-        ListElement<u8> *newEl3 = newEl2->mNext;
-        ListElement<u8> *newEl4 = newEl3->mNext;
-        ListElement<u8> *newEl5 = newEl4->mNext;
+        ListElement<bad_uint8> *newEl1 = temp.mHead;
+        ListElement<bad_uint8> *newEl2 = newEl1->mNext;
+        ListElement<bad_uint8> *newEl3 = newEl2->mNext;
+        ListElement<bad_uint8> *newEl4 = newEl3->mNext;
+        ListElement<bad_uint8> *newEl5 = newEl4->mNext;
 
         TEST_ASSERT_EQUALS(newEl1,            temp.mHead);
         TEST_ASSERT_EQUALS(newEl1->mPrevious, nullptr);
@@ -508,7 +508,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
 
 
-        TEST_ASSERT_EQUALS(temp.sort([](const u8 &first, const u8 &second)
+        TEST_ASSERT_EQUALS(temp.sort([](const bad_uint8 &first, const bad_uint8 &second)
         {
             UEFI_LT((" | first = %u, second = %u", first, second));
 
@@ -558,7 +558,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("isEmpty()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.isEmpty(), true);
 
@@ -576,7 +576,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_list);
 
     TEST_CASE("getHead()/getTail()");
     {
-        List<u8> temp;
+        List<bad_uint8> temp;
 
         TEST_ASSERT_EQUALS(temp.getHead(), nullptr);
         TEST_ASSERT_EQUALS(temp.getTail(), nullptr);

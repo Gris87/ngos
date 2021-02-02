@@ -10,7 +10,7 @@
 
 
 
-enum class WidgetState: u8
+enum class WidgetState: bad_uint8
 {
     NONE             = 0,
     NORMAL           = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(WidgetState state) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (u8)state, enumToString(state));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)state, enumToString(state));
 
     return res;
 }

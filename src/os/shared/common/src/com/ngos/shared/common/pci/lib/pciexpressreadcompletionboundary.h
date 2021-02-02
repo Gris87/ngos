@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressReadCompletionBoundary: u8
+enum class PciExpressReadCompletionBoundary: bad_uint8
 {
     _64_BYTES  = 0,
     _128_BYTES = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExpressReadCompletionBoundary boundary) 
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (u8)boundary, enumToString(boundary));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)boundary, enumToString(boundary));
 
     return res;
 }

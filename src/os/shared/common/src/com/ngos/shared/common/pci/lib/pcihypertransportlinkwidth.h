@@ -8,7 +8,7 @@
 
 
 
-enum class PciHyperTransportLinkWidth: u8
+enum class PciHyperTransportLinkWidth: bad_uint8
 {
     _8_BITS       = 0,
     _16_BITS      = 1,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciHyperTransportLinkWidth width) // TEST: 
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (u8)width, enumToString(width));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)width, enumToString(width));
 
     return res;
 }

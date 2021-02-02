@@ -57,15 +57,15 @@ Button            *DeviceManagerGUI::sShutdownButton;
 TreeWidget        *DeviceManagerGUI::sDevicesTreeWidget;
 TableWidget       *DeviceManagerGUI::sDeviceInfoTableWidget;
 Button            *DeviceManagerGUI::sModeButton;
-u16                DeviceManagerGUI::sWaitEventsCount;
+bad_uint16                DeviceManagerGUI::sWaitEventsCount;
 uefi_event        *DeviceManagerGUI::sWaitEvents;
 DeviceManagerMode  DeviceManagerGUI::sMode;
-Image*             DeviceManagerGUI::sImages[(u64)DeviceManagerImage::MAXIMUM];
-Image*             DeviceManagerGUI::sModeImages[(u64)DeviceManagerMode::MAXIMUM];
+Image*             DeviceManagerGUI::sImages[(bad_uint64)DeviceManagerImage::MAXIMUM];
+Image*             DeviceManagerGUI::sModeImages[(bad_uint64)DeviceManagerMode::MAXIMUM];
 
 
 
-const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
+const char8* DeviceManagerGUI::sImagesPath[(bad_uint64)DeviceManagerImage::MAXIMUM] =
 {
     "images/additional.png",                        // DeviceManagerImage::ADDITIONAL
     "images/baseboard.png",                         // DeviceManagerImage::BASEBOARD
@@ -124,7 +124,7 @@ const char8* DeviceManagerGUI::sImagesPath[(u64)DeviceManagerImage::MAXIMUM] =
 
 
 
-const char8* DeviceManagerGUI::sModeImagesPath[(u64)DeviceManagerMode::MAXIMUM] =
+const char8* DeviceManagerGUI::sModeImagesPath[(bad_uint64)DeviceManagerMode::MAXIMUM] =
 {
     "images/basic.png",    // DeviceManagerMode::BASIC
     "images/expert.png",   // DeviceManagerMode::EXPERT
@@ -178,7 +178,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/shutdown.png",               &shutdownImage),           NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/cursor.png",                 &cursorImage),             NgosStatus::ASSERTION);
 
-    for (i64 i = 0; i < (i64)DeviceManagerMode::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)DeviceManagerMode::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
     }
@@ -187,8 +187,8 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -206,10 +206,10 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -244,10 +244,10 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
 
 
-    u64 devicesTreeWidth      = screenWidth  * DEVICES_TREEWIDGET_WIDTH_PERCENT       / 100;
-    u64 devicesTreeHeight     = screenHeight * DEVICES_TREEWIDGET_HEIGHT_PERCENT      / 100;
-    u64 deviceInfoTableWidth  = screenWidth  * DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    u64 deviceInfoTableHeight = screenHeight * DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    bad_uint64 devicesTreeWidth      = screenWidth  * DEVICES_TREEWIDGET_WIDTH_PERCENT       / 100;
+    bad_uint64 devicesTreeHeight     = screenHeight * DEVICES_TREEWIDGET_HEIGHT_PERCENT      / 100;
+    bad_uint64 deviceInfoTableWidth  = screenWidth  * DEVICE_INFO_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    bad_uint64 deviceInfoTableHeight = screenHeight * DEVICE_INFO_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -291,7 +291,7 @@ NgosStatus DeviceManagerGUI::init(BootParams *params)
 
     sMode = DeviceManagerMode::BASIC;
 
-    sModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(u64)sMode], nullptr, enumToHumanString(sMode), rootWidget);
+    sModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(bad_uint64)sMode], nullptr, enumToHumanString(sMode), rootWidget);
 
     UEFI_ASSERT_EXECUTION(sModeButton->setPosition(screenWidth * MODE_BUTTON_POSITION_X_PERCENT / 100, screenHeight * MODE_BUTTON_POSITION_Y_PERCENT / 100), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sModeButton->setSize(screenWidth * MODE_BUTTON_WIDTH_PERCENT / 100, sRebootButton->getPositionY() - sModeButton->getPositionY()),  NgosStatus::ASSERTION);
@@ -364,7 +364,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTree()
 
 
 
-    u64 expandButtonSize = sDevicesTreeWidget->getRowHeight();
+    bad_uint64 expandButtonSize = sDevicesTreeWidget->getRowHeight();
 
 
 
@@ -414,7 +414,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
     const ArrayList<DeviceManagerEntryDMI *>& entries = DeviceManagerDMI::getEntries();
 
-    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)entries.getSize(); ++i)
     {
         DeviceManagerEntryDMI *entry = entries.at(i);
 
@@ -423,7 +423,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
         TreeNodeWidget *parentNodeWidget = dmiNodeWidget;
 
         if (
-            i < (i64)entries.getSize() - 1
+            i < (bad_int64)entries.getSize() - 1
             &&
             entries.at(i + 1)->getType() == entry->getType()
            )
@@ -438,7 +438,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForDmi(Image *toolButtonNormalImage,
 
 
             while (
-                   i < (i64)entries.getSize() - 1
+                   i < (bad_int64)entries.getSize() - 1
                    &&
                    entries.at(i + 1)->getType() == entry->getType()
                   )
@@ -508,7 +508,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPciChildren(TreeNodeWidget *nodeW
 
 
 
-    for (i64 i = 0; i < (i64)entries.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)entries.getSize(); ++i)
     {
         DeviceManagerEntryPCI *entry = entries.at(i);
 
@@ -583,9 +583,9 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
 
         // Calculate amount of rows
         {
-            u64 count = 0;
+            bad_uint64 count = 0;
 
-            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)records.getSize(); ++i)
             {
                 DeviceManagerEntryRecord *record = records.at(i);
 
@@ -606,9 +606,9 @@ NgosStatus DeviceManagerGUI::fillDeviceInfoTableWidget(DeviceManagerEntry *entry
 
         // Fill table
         {
-            u64 row = 0;
+            bad_uint64 row = 0;
 
-            for (i64 i = 0; i < (i64)records.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)records.getSize(); ++i)
             {
                 DeviceManagerEntryRecord *record = records.at(i);
 
@@ -680,7 +680,7 @@ NgosStatus DeviceManagerGUI::generateWaitEventList()
 
 
     sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
-    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+    bad_uint64 size         = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -696,11 +696,11 @@ NgosStatus DeviceManagerGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    u16 eventId    = 1;
+    bad_uint16 eventId    = 1;
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -709,7 +709,7 @@ NgosStatus DeviceManagerGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -727,7 +727,7 @@ NgosStatus DeviceManagerGUI::waitForEvent()
 
 
 
-    u64 eventIndex;
+    bad_uint64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1046,9 +1046,9 @@ NgosStatus DeviceManagerGUI::onModeButtonPressed()
 
 
 
-    sMode = (DeviceManagerMode)((u64)sMode + 1);
+    sMode = (DeviceManagerMode)((bad_uint64)sMode + 1);
 
-    if ((u64)sMode >= (u64)DeviceManagerMode::MAXIMUM)
+    if ((bad_uint64)sMode >= (bad_uint64)DeviceManagerMode::MAXIMUM)
     {
         sMode = DeviceManagerMode::BASIC;
     }
@@ -1059,7 +1059,7 @@ NgosStatus DeviceManagerGUI::onModeButtonPressed()
 
 
 
-    UEFI_ASSERT_EXECUTION(sModeButton->setContentImage(sModeImages[(u64)sMode]), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sModeButton->setContentImage(sModeImages[(bad_uint64)sMode]), NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(sModeButton->setText(enumToHumanString(sMode)),        NgosStatus::ASSERTION);
 
     UEFI_ASSERT_EXECUTION(onDevicesTreeWidgetNodeSelected(sDevicesTreeWidget->getSelectedTreeNodeWidget()), NgosStatus::ASSERTION);
@@ -1094,13 +1094,13 @@ Image* DeviceManagerGUI::getImage(DeviceManagerImage image)
 
 
 
-    Image *res = sImages[(u64)image];
+    Image *res = sImages[(bad_uint64)image];
 
     if (!res)
     {
-        UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sImagesPath[(u64)image], &res), nullptr);
+        UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sImagesPath[(bad_uint64)image], &res), nullptr);
 
-        sImages[(u64)image] = res;
+        sImages[(bad_uint64)image] = res;
     }
 
 

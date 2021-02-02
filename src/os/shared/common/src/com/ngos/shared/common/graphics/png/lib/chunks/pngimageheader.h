@@ -13,9 +13,9 @@
 
 struct PngImageHeader
 {
-    u32                  width;
-    u32                  height;
-    u8                   bitDepth;
+    bad_uint32                  width;
+    bad_uint32                  height;
+    bad_uint8                   bitDepth;
     PngColorType         colorType;
     PngCompressionMethod compressionMethod;
     PngFilterMethod      filterMethod;

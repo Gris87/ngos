@@ -10,7 +10,7 @@
 
 
 
-enum class DmiIdentity: u8
+enum class DmiIdentity: bad_uint8
 {
     BIOS_VENDOR,
     BIOS_VERSION,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiIdentity identity) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", (u8)identity, enumToString(identity));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)identity, enumToString(identity));
 
     return res;
 }

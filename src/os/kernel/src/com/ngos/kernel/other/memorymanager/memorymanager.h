@@ -18,19 +18,19 @@ class MemoryManager
 public:
     static NgosStatus init();
 
-    static NgosStatus add(u64 start, u64 size);
-    static NgosStatus reserve(u64 start, u64 size);
+    static NgosStatus add(bad_uint64 start, bad_uint64 size);
+    static NgosStatus reserve(bad_uint64 start, bad_uint64 size);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static NgosStatus insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId);
-    static NgosStatus removeRegion(MemoryBlockType *type, u64 index);
-    static NgosStatus removeRegions(MemoryBlockType *type, u64 index, u64 count);
+    static NgosStatus insertRegion(MemoryBlockType *type, bad_uint64 index, bad_uint64 start, bad_uint64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId);
+    static NgosStatus removeRegion(MemoryBlockType *type, bad_uint64 index);
+    static NgosStatus removeRegions(MemoryBlockType *type, bad_uint64 index, bad_uint64 count);
     static NgosStatus mergeRegions(MemoryBlockType *type);
-    static NgosStatus addRange(MemoryBlockType *type, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId);
+    static NgosStatus addRange(MemoryBlockType *type, bad_uint64 start, bad_uint64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId);
 
     static MemoryBlock       sMemoryBlock;
     static MemoryBlockRegion sMemoryRegions[INIT_MEMORYBLOCK_REGIONS];

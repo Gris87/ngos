@@ -9,7 +9,7 @@
 
 struct PciExpressSlotCapability2
 {
-    u32 value32;
+    bad_uint32 value32;
 };
 
 

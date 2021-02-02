@@ -17,7 +17,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 {
     TEST_CASE("Map()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.isEmpty(), true);
     }
@@ -27,7 +27,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("insert()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.getSize(), 0);
 
@@ -197,7 +197,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("remove()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.getSize(), 0);
 
@@ -347,7 +347,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("clear()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.getSize(), 0);
 
@@ -387,7 +387,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("contains()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.getSize(), 0);
 
@@ -430,7 +430,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("value()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.mPairs.getSize(), 0);
 
@@ -473,7 +473,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("getSize()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.getSize(), 0);
 
@@ -555,7 +555,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("isEmpty()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.isEmpty(), true);
 
@@ -599,7 +599,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_map);
 
     TEST_CASE("getPairs()");
     {
-        Map<u8, u32> temp;
+        Map<bad_uint8, bad_uint32> temp;
 
         TEST_ASSERT_EQUALS(temp.getPairs().getSize(), 0);
 

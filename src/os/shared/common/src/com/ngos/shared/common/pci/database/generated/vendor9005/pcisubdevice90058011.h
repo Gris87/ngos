@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice90058011: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice90058011: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_0E1100AC = 0x0E1100AC,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice90058011 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice90058011 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice90058011::SUBDEVICE_0E1100AC: return "ASC-39320D U320";
-        case PciSubDevice90058011::SUBDEVICE_90050041: return "ASC-39320D U320";
+        case PciSubDevice90058011::SUBDEVICE_0E1100AC: return "ASC-39320D bad_uint320";
+        case PciSubDevice90058011::SUBDEVICE_90050041: return "ASC-39320D bad_uint320";
 
         default: return "Unknown device";
     }

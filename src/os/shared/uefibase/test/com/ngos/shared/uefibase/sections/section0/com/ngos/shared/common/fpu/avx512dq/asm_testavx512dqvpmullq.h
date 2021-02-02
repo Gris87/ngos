@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512dqVpmullq(u64 *a, u64 *b, u64 *c);
+void testAvx512dqVpmullq(bad_uint64 *a, bad_uint64 *b, bad_uint64 *c);
 
 
 

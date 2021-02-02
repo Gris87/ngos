@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressCompletionTimeout: u8
+enum class PciExpressCompletionTimeout: bad_uint8
 {
     FROM_50_MICROSECONDS_TO_50_MILLISECONDS   = 0,
     FROM_50_MICROSECONDS_TO_100_MICROSECONDS  = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(PciExpressCompletionTimeout timeout) // TES
 
     static char8 res[49];
 
-    sprintf(res, "0x%02X (%s)", (u8)timeout, enumToString(timeout));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)timeout, enumToString(timeout));
 
     return res;
 }

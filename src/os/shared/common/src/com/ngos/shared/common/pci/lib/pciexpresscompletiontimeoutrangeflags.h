@@ -11,7 +11,7 @@
 
 
 
-typedef u8 pci_express_completion_timeout_range_flags;
+typedef bad_uint8 pci_express_completion_timeout_range_flags;
 
 enum class PciExpressCompletionTimeoutRangeFlag: pci_express_completion_timeout_range_flags
 {

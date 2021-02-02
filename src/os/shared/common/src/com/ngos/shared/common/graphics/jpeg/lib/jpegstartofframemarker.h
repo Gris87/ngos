@@ -15,10 +15,10 @@
 struct JpegStartOfFrameMarker
 {
     JpegMarkerHeader          header;
-    u8                        dataPrecision;
-    u16                       height;
-    u16                       width;
-    u8                        numberOfComponents;
+    bad_uint8                        dataPrecision;
+    bad_uint16                       height;
+    bad_uint16                       width;
+    bad_uint8                        numberOfComponents;
     JpegStartOfFrameComponent components[0];
 } __attribute__((packed));
 

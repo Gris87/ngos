@@ -32,21 +32,21 @@ void UEFI_API testSequentialWriteProcedure(void *buffer)
 
 
 
-    i64  testSize    = test->getTestSize();
-    u8  *blockBuffer = test->getBuffer();
+    bad_int64  testSize    = test->getTestSize();
+    bad_uint8  *blockBuffer = test->getBuffer();
 
 
 
-    u64 startTime = rdtsc();
+    bad_uint64 startTime = rdtsc();
 
-    for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+    for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
     {
         test->setProgress(i);
 
-        writeMemoryBlock(blockBuffer, (u8 *)i);
+        writeMemoryBlock(blockBuffer, (bad_uint8 *)i);
     }
 
-    u64 endTime = rdtsc();
+    bad_uint64 endTime = rdtsc();
 
 
 
@@ -64,7 +64,7 @@ TestSequentialWrite::TestSequentialWrite()
 
 
 
-    mBuffer = (u8 *)malloc(TEST_BLOCK_SIZE);
+    mBuffer = (bad_uint8 *)malloc(TEST_BLOCK_SIZE);
     UEFI_TEST_ASSERT(mBuffer != nullptr);
 }
 
@@ -73,7 +73,7 @@ TestSequentialWrite::~TestSequentialWrite()
     UEFI_LT((""));
 }
 
-u8* TestSequentialWrite::getBuffer() const
+bad_uint8* TestSequentialWrite::getBuffer() const
 {
     // UEFI_LT(("")); // Commented to avoid bad looking logs
 

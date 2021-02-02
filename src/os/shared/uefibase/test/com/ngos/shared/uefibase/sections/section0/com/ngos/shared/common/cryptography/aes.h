@@ -59,9 +59,9 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            u8 key16[16] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1 };
-            u8 key24[24] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4 };
-            u8 key32[32] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4, 3, 4, 7, 8, 9, 2, 3, 4 };
+            bad_uint8 key16[16] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1 };
+            bad_uint8 key24[24] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4 };
+            bad_uint8 key32[32] = { 3, 1, 9, 4, 6, 8, 9, 2, 3, 7, 9, 1, 6, 7, 9, 1, 3, 4, 7, 8, 9, 2, 3, 4, 3, 4, 7, 8, 9, 2, 3, 4 };
 
 
 
@@ -183,10 +183,10 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            u8  in[16] __attribute__((aligned(16)));
-            u64 inSize;
-            u8  out[16] __attribute__((aligned(16)));
-            u64 outSize;
+            bad_uint8  in[16] __attribute__((aligned(16)));
+            bad_uint64 inSize;
+            bad_uint8  out[16] __attribute__((aligned(16)));
+            bad_uint64 outSize;
 
 
 
@@ -200,7 +200,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 11 * 16), 0x5C545A98);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     11 * 16), 0xE5F76028);
@@ -236,7 +236,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 13 * 16), 0xA9345D34);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     13 * 16), 0xA6ABF5AF);
@@ -272,7 +272,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key32, strlen(key32)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 15 * 16), 0x629D6DB5);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     15 * 16), 0xD9A5C95B);
@@ -331,16 +331,16 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            u8 in1[16] __attribute__((aligned(16))) = { 0x88, 0x10, 0x31, 0x80, 0xE2, 0x9E, 0xCD, 0x89, 0x28, 0x33, 0x85, 0xC6, 0xDC, 0xC0, 0xB8, 0xB0 };
-            u8 in2[16] __attribute__((aligned(16))) = { 0x2F, 0xD0, 0x6A, 0x96, 0xEA, 0x2A, 0xF4, 0xAE, 0x34, 0xCC, 0x59, 0x69, 0x4B, 0x50, 0xAC, 0xB0 };
-            u8 in3[16] __attribute__((aligned(16))) = { 0x93, 0xAB, 0x63, 0x70, 0xC5, 0x68, 0x33, 0x81, 0x71, 0x7B, 0x90, 0x63, 0x64, 0xFF, 0x11, 0x27 };
+            bad_uint8 in1[16] __attribute__((aligned(16))) = { 0x88, 0x10, 0x31, 0x80, 0xE2, 0x9E, 0xCD, 0x89, 0x28, 0x33, 0x85, 0xC6, 0xDC, 0xC0, 0xB8, 0xB0 };
+            bad_uint8 in2[16] __attribute__((aligned(16))) = { 0x2F, 0xD0, 0x6A, 0x96, 0xEA, 0x2A, 0xF4, 0xAE, 0x34, 0xCC, 0x59, 0x69, 0x4B, 0x50, 0xAC, 0xB0 };
+            bad_uint8 in3[16] __attribute__((aligned(16))) = { 0x93, 0xAB, 0x63, 0x70, 0xC5, 0x68, 0x33, 0x81, 0x71, 0x7B, 0x90, 0x63, 0x64, 0xFF, 0x11, 0x27 };
 
-            u8  out[16] __attribute__((aligned(16)));
-            u64 outSize;
+            bad_uint8  out[16] __attribute__((aligned(16)));
+            bad_uint64 outSize;
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 11 * 16), 0x5C545A98);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     11 * 16), 0xE5F76028);
@@ -376,7 +376,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 13 * 16), 0xA9345D34);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     13 * 16), 0xA6ABF5AF);
@@ -412,7 +412,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key32, strlen(key32)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 15 * 16), 0x629D6DB5);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     15 * 16), 0xD9A5C95B);
@@ -471,17 +471,17 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            u8 in1[1024] __attribute__((aligned(16)));
-            u8 in2[1021] __attribute__((aligned(16)));
+            bad_uint8 in1[1024] __attribute__((aligned(16)));
+            bad_uint8 in2[1021] __attribute__((aligned(16)));
 
-            u8  out[1024] __attribute__((aligned(16)));
-            u64 outSize;
+            bad_uint8  out[1024] __attribute__((aligned(16)));
+            bad_uint64 outSize;
 
 
 
             memzero(in1, sizeof(in1));
 
-            for (i64 i = 0; i < (i64)sizeof(in2); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sizeof(in2); ++i)
             {
                 in2[i] = i;
             }
@@ -498,7 +498,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key16, strlen(key16)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key16, strlen(key16)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 11 * 16), 0x83F04CEB);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     11 * 16), 0xAA4FEC5B);
@@ -556,7 +556,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key24, strlen(key24)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key24, strlen(key24)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 13 * 16), 0xD48767CA);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     13 * 16), 0x59253515);
@@ -614,7 +614,7 @@ TEST_CASES(section0, com_ngos_shared_common_cryptography_aes);
 
 
 
-            TEST_ASSERT_EQUALS(aes.setKey((u8 *)key32, strlen(key32)), NgosStatus::OK);
+            TEST_ASSERT_EQUALS(aes.setKey((bad_uint8 *)key32, strlen(key32)), NgosStatus::OK);
 
             TEST_ASSERT_EQUALS(Adler::adler32(aes.mEncodeKey, 15 * 16), 0xCECE76DC);
             TEST_ASSERT_EQUALS(Crc::crc32(aes.mEncodeKey,     15 * 16), 0x9D3D1B5B);

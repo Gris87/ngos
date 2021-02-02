@@ -10,18 +10,18 @@
 
 struct DmiPhysicalMemoryArrayMaximumCapacity
 {
-    u64 size()
+    bad_uint64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        return (u64)value * KB;
+        return (bad_uint64)value * KB;
     }
 
 
 
-    u32 value;
+    bad_uint32 value;
 } __attribute__((packed));
 
 

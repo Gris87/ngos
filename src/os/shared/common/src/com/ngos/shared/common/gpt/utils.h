@@ -59,10 +59,10 @@ inline bool isGptValid(const GptData &data) // TEST: NO
 
 
 
-    u32 crc                  = data.header->headerCrc32;
+    bad_uint32 crc                  = data.header->headerCrc32;
     data.header->headerCrc32 = 0;
 
-    u32 calculatedCrc        = Crc::crc32((u8 *)data.header, data.header->headerSize);
+    bad_uint32 calculatedCrc        = Crc::crc32((bad_uint8 *)data.header, data.header->headerSize);
     data.header->headerCrc32 = crc;
 
 

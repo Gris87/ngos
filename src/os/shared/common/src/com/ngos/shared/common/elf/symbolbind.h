@@ -15,7 +15,7 @@
 
 
 
-enum class ElfSymbolBind: u8
+enum class ElfSymbolBind: bad_uint8
 {
     LOCAL  = 0,
     GLOBAL = 1,
@@ -50,7 +50,7 @@ inline const char8* enumToFullString(ElfSymbolBind bind) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)bind, enumToString(bind));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)bind, enumToString(bind));
 
     return res;
 }

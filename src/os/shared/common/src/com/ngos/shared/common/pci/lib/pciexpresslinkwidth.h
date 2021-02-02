@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressLinkWidth: u8
+enum class PciExpressLinkWidth: bad_uint8
 {
     NONE = 0,
     X1   = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(PciExpressLinkWidth width) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)width, enumToString(width));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)width, enumToString(width));
 
     return res;
 }

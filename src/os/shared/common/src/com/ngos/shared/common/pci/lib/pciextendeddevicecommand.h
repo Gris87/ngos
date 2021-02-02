@@ -9,7 +9,7 @@
 
 struct PciExtendedDeviceCommand
 {
-    u16 maximumMemoryReadByteCountReal()
+    bad_uint16 maximumMemoryReadByteCountReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -18,7 +18,7 @@ struct PciExtendedDeviceCommand
         return 512ULL << maximumMemoryReadByteCount;
     }
 
-    u8 maximumOutstandingSplitTransactionsReal()
+    bad_uint8 maximumOutstandingSplitTransactionsReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -43,14 +43,14 @@ struct PciExtendedDeviceCommand
     {
         struct
         {
-            u16 enableDataParityErrorRecovery:       1;
-            u16 enableRelaxedOrdering:               1;
-            u16 maximumMemoryReadByteCount:          2;
-            u16 maximumOutstandingSplitTransactions: 3;
-            u16 __reserved:                          9;
+            bad_uint16 enableDataParityErrorRecovery:       1;
+            bad_uint16 enableRelaxedOrdering:               1;
+            bad_uint16 maximumMemoryReadByteCount:          2;
+            bad_uint16 maximumOutstandingSplitTransactions: 3;
+            bad_uint16 __reserved:                          9;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

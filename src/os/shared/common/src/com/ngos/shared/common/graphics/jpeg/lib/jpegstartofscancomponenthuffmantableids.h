@@ -13,11 +13,11 @@ struct JpegStartOfScanComponentHuffmanTableIds
     {
         struct
         {
-            u8 ac: 4;
-            u8 dc: 4;
+            bad_uint8 ac: 4;
+            bad_uint8 dc: 4;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

@@ -20,14 +20,14 @@
 
 struct PngPrimaryChromaticities
 {
-    u32 whitePointX;
-    u32 whitePointY;
-    u32 redX;
-    u32 redY;
-    u32 greenX;
-    u32 greenY;
-    u32 blueX;
-    u32 blueY;
+    bad_uint32 whitePointX;
+    bad_uint32 whitePointY;
+    bad_uint32 redX;
+    bad_uint32 redY;
+    bad_uint32 greenX;
+    bad_uint32 greenY;
+    bad_uint32 blueX;
+    bad_uint32 blueY;
 } __attribute__((packed));
 
 

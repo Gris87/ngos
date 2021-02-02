@@ -135,7 +135,7 @@ void UEFI::print(const char8 *str)
         ++str;
     }
 
-    UEFI_TEST_ASSERT((u64)(cur - buffer) < sizeof(buffer));
+    UEFI_TEST_ASSERT((bad_uint64)(cur - buffer) < sizeof(buffer));
     *cur = 0;
 
 
@@ -177,7 +177,7 @@ void UEFI::println(const char8 *str)
     print(nl);
 }
 
-i64 UEFI::printf(const char8 *format, ...)
+bad_int64 UEFI::printf(const char8 *format, ...)
 {
     // UEFI_LT((" | format = 0x%p", format)); // Commented to avoid infinite loop
 
@@ -188,10 +188,10 @@ i64 UEFI::printf(const char8 *format, ...)
     va_list args;
 
     va_start(args, format);
-    i64 res = vsprintf(printfBuffer, format, args);
+    bad_int64 res = vsprintf(printfBuffer, format, args);
     va_end(args);
 
-    UEFI_TEST_ASSERT(res < (i64)sizeof(printfBuffer), 0);
+    UEFI_TEST_ASSERT(res < (bad_int64)sizeof(printfBuffer), 0);
 
 
 
@@ -226,7 +226,7 @@ bool UEFI::canPrint()
     return sTextOutput;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *dataSize, u8 **data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, bad_uint64 *dataSize, bad_uint8 **data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
@@ -237,8 +237,8 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
 
 
 
-    u64  size = UEFI_MAXIMUM_VARIABLE_SIZE;
-    u8  *res;
+    bad_uint64  size = UEFI_MAXIMUM_VARIABLE_SIZE;
+    bad_uint8  *res;
 
     if (allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&res) != UefiStatus::SUCCESS)
     {
@@ -279,7 +279,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, u64 *
     return UefiStatus::SUCCESS;
 }
 
-UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, u64 *dataSize, u8 *data)
+UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, UefiVariableAttributeFlags *attributes, bad_uint64 *dataSize, bad_uint8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = 0x%p, dataSize = 0x%p, data = 0x%p", variableName, vendorGuid, attributes, dataSize, data));
 
@@ -294,7 +294,7 @@ UefiStatus UEFI::getVariable(const char16 *variableName, Guid *vendorGuid, UefiV
     return sSystemTable->runtimeServices->getVariable(variableName, vendorGuid, attributes, dataSize, data);
 }
 
-UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 dataSize, u8 *data)
+UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, bad_uint64 dataSize, bad_uint8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, dataSize = %u, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
@@ -312,7 +312,7 @@ UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, u64 d
                         data);
 }
 
-UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, u64 dataSize, u8 *data)
+UefiStatus UEFI::setVariable(const char16 *variableName, Guid *vendorGuid, const UefiVariableAttributeFlags &attributes, bad_uint64 dataSize, bad_uint8 *data)
 {
     UEFI_LT((" | variableName = 0x%p, vendorGuid = 0x%p, attributes = ..., dataSize = %u, data = 0x%p", variableName, vendorGuid, dataSize, data));
 
@@ -392,14 +392,14 @@ char16* UEFI::parentDirectory(const char16 *path)
 
 
 
-    u64           size = 0;
+    bad_uint64           size = 0;
     const char16 *str  = path;
 
     while (*str)
     {
         if (*str == u'\\')
         {
-            size = (u64)str;
+            size = (bad_uint64)str;
         }
 
         ++str;
@@ -407,7 +407,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 
     UEFI_TEST_ASSERT(size > 0, 0);
 
-    size = size - (u64)path + sizeof(char16);
+    size = size - (bad_uint64)path + sizeof(char16);
 
 
 
@@ -507,14 +507,14 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
     UefiDevicePath *parentDevicePath = devicePathFromHandle(device);
     UEFI_TEST_ASSERT(parentDevicePath != 0, 0);
 
-    u64 parentDevicePathSize = getDevicePathSize(parentDevicePath);
+    bad_uint64 parentDevicePathSize = getDevicePathSize(parentDevicePath);
     UEFI_TEST_ASSERT(parentDevicePathSize > 0, 0);
 
 
 
-    u64 fileNameSize = strlen(fileName) + 1;
-    u64 filePathSize = sizeof(UefiFilePath) + fileNameSize * sizeof(char16);
-    u64 size         = parentDevicePathSize + filePathSize + sizeof(UefiDevicePath);
+    bad_uint64 fileNameSize = strlen(fileName) + 1;
+    bad_uint64 filePathSize = sizeof(UefiFilePath) + fileNameSize * sizeof(char16);
+    bad_uint64 size         = parentDevicePathSize + filePathSize + sizeof(UefiDevicePath);
 
 
 
@@ -535,20 +535,20 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
 
 
 
-    UefiFilePath *filePath = (UefiFilePath *)((u64)res + parentDevicePathSize);
+    UefiFilePath *filePath = (UefiFilePath *)((bad_uint64)res + parentDevicePathSize);
 
     filePath->header.type    = UefiDevicePathType::MEDIA_DEVICE_PATH;
     filePath->header.subType = UefiDevicePathSubType::MEDIA_FILEPATH_DP;
     filePath->header.length  = filePathSize;
 
-    for (i64 i = 0; i < (i64)fileNameSize; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)fileNameSize; ++i)
     {
         filePath->pathName[i] = fileName[i];
     }
 
 
 
-    UEFI_ASSERT_EXECUTION(setDevicePathEndNode((UefiDevicePath *)((u64)res + size - sizeof(UefiDevicePath))), 0);
+    UEFI_ASSERT_EXECUTION(setDevicePathEndNode((UefiDevicePath *)((bad_uint64)res + size - sizeof(UefiDevicePath))), 0);
 
 
 
@@ -563,7 +563,7 @@ UefiDevicePath* UEFI::nextDevicePathNode(UefiDevicePath *path)
 
 
 
-    return (UefiDevicePath *)((u64)path + path->length);
+    return (UefiDevicePath *)((bad_uint64)path + path->length);
 }
 
 NgosStatus UEFI::setDevicePathEndNode(UefiDevicePath *path)
@@ -594,7 +594,7 @@ bool UEFI::isDevicePathEndType(UefiDevicePath *path)
     return path->type == UefiDevicePathType::END_DEVICE_PATH_TYPE;
 }
 
-u64 UEFI::getDevicePathSize(UefiDevicePath *path)
+bad_uint64 UEFI::getDevicePathSize(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
@@ -611,7 +611,7 @@ u64 UEFI::getDevicePathSize(UefiDevicePath *path)
 
 
 
-    return (u64)currentDevicePath - (u64)path;
+    return (bad_uint64)currentDevicePath - (bad_uint64)path;
 }
 
 UefiStatus UEFI::getTime(UefiTime *time, UefiTimeCapabilities *capabilities)
@@ -659,7 +659,7 @@ UefiStatus UEFI::createEvent(UefiEventType type, UefiTpl notifyTpl, uefi_event_n
     return sBootServices->createEvent(type, notifyTpl, notifyFunction, notifyContext, event);
 }
 
-UefiStatus UEFI::setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime)
+UefiStatus UEFI::setTimer(uefi_event event, UefiTimerDelay type, bad_uint64 triggerTime)
 {
     UEFI_LT((" | event = 0x%p, type = %d, triggerTime = %u", event, type, triggerTime));
 
@@ -670,7 +670,7 @@ UefiStatus UEFI::setTimer(uefi_event event, UefiTimerDelay type, u64 triggerTime
     return sBootServices->setTimer(event, type, triggerTime);
 }
 
-UefiStatus UEFI::waitForEvent(u64 numberOfEvents, uefi_event *event, u64 *index)
+UefiStatus UEFI::waitForEvent(bad_uint64 numberOfEvents, uefi_event *event, bad_uint64 *index)
 {
     UEFI_LT((" | numberOfEvents = %u, event = 0x%p, index = 0x%p", numberOfEvents, event, index));
 
@@ -694,7 +694,7 @@ UefiStatus UEFI::closeEvent(uefi_event event)
     return sBootServices->closeEvent(event);
 }
 
-UefiStatus UEFI::stall(u64 microseconds)
+UefiStatus UEFI::stall(bad_uint64 microseconds)
 {
     UEFI_LT((" | microseconds = %u", microseconds));
 
@@ -730,7 +730,7 @@ UefiStatus UEFI::locateProtocol(Guid *protocol, void *registration, void **inter
     return sBootServices->locateProtocol(protocol, registration, interface);
 }
 
-UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, u64 *bufferSize, uefi_handle *buffer)
+UefiStatus UEFI::locateHandle(UefiLocateSearchType searchType, Guid *protocol, void *searchKey, bad_uint64 *bufferSize, uefi_handle *buffer)
 {
     UEFI_LT((" | searchType = %d, protocol = 0x%p, searchKey = 0x%p, bufferSize = 0x%p, buffer = 0x%p", searchType, protocol, searchKey, bufferSize, buffer));
 
@@ -770,7 +770,7 @@ UefiStatus UEFI::locateDevicePath(Guid *protocol, UefiDevicePath **devicePath, u
     return sBootServices->locateDevicePath(protocol, devicePath, device);
 }
 
-UefiStatus UEFI::allocatePool(UefiMemoryType poolType, u64 size, void **buffer)
+UefiStatus UEFI::allocatePool(UefiMemoryType poolType, bad_uint64 size, void **buffer)
 {
     // UEFI_LT((" | poolType = %d, size = %u, buffer = 0x%p", poolType, size, buffer)); // Commented to avoid too frequent logs
 
@@ -793,7 +793,7 @@ UefiStatus UEFI::freePool(void *buffer)
     return sBootServices->freePool(buffer);
 }
 
-bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descriptorSize)
+bool UEFI::memoryMapHasHeadroom(bad_uint64 bufferSize, bad_uint64 memoryMapSize, bad_uint64 descriptorSize)
 {
     UEFI_LT((" | bufferSize = %u, memoryMapSize = %u, descriptorSize = %u", bufferSize, memoryMapSize, descriptorSize));
 
@@ -803,12 +803,12 @@ bool UEFI::memoryMapHasHeadroom(u64 bufferSize, u64 memoryMapSize, u64 descripto
 
 
 
-    i64 slack = bufferSize - memoryMapSize;
+    bad_int64 slack = bufferSize - memoryMapSize;
 
-    return slack / (i64)descriptorSize >= UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
+    return slack / (bad_int64)descriptorSize >= UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
 }
 
-UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, u64 *memory)
+UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType, bad_uint64 noPages, bad_uint64 *memory)
 {
     UEFI_LT((" | type = %d, memoryType = %d, noPages = %u, memory = 0x%p", type, memoryType, noPages, memory));
 
@@ -820,7 +820,7 @@ UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType,
     return sBootServices->allocatePages(type, memoryType, noPages, memory);
 }
 
-UefiStatus UEFI::getMemoryMap(u64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, u64 *mapKey, u64 *descriptorSize, u32 *descriptorVersion)
+UefiStatus UEFI::getMemoryMap(bad_uint64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, bad_uint64 *mapKey, bad_uint64 *descriptorSize, bad_uint32 *descriptorVersion)
 {
     UEFI_LT((" | memoryMapSize = 0x%p, memoryMap = 0x%p, mapKey = 0x%p, descriptorSize = 0x%p, descriptorVersion = 0x%p", memoryMapSize, memoryMap, mapKey, descriptorSize, descriptorVersion));
 
@@ -869,8 +869,8 @@ UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
         *map->descriptorSize = 0;
 
-        u64 mapKey            = 0;
-        u32 descriptorVersion = 0;
+        bad_uint64 mapKey            = 0;
+        bad_uint32 descriptorVersion = 0;
 
 
 
@@ -948,7 +948,7 @@ UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
     } while(true);
 }
 
-UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
+UefiStatus UEFI::lowAlloc(bad_uint64 size, bad_uint64 align, void **address)
 {
     UEFI_LT((" | size = %u, align = %u, address = 0x%p", size, align, address));
 
@@ -960,9 +960,9 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
     UefiMemoryDescriptor *memoryMap      = 0;
-    u64                   memoryMapSize  = 0;
-    u64                   descriptorSize = 0;
-    u64                   bufferSize     = 0;
+    bad_uint64                   memoryMapSize  = 0;
+    bad_uint64                   descriptorSize = 0;
+    bad_uint64                   bufferSize     = 0;
 
 
 
@@ -1011,7 +1011,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
     size = ROUND_UP(size, PAGE_SIZE);
 
-    u64 numberOfPages = size / PAGE_SIZE;
+    bad_uint64 numberOfPages = size / PAGE_SIZE;
 
 
 
@@ -1024,12 +1024,12 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    i64 count = memoryMapSize / descriptorSize;
+    bad_int64 count = memoryMapSize / descriptorSize;
     UEFI_LVVV(("count = %d", count));
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
-        UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((u64)memoryMap + (i * descriptorSize));
+        UefiMemoryDescriptor *memoryDescriptor = (UefiMemoryDescriptor *)((bad_uint64)memoryMap + (i * descriptorSize));
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
 
         UEFI_TEST_ASSERT(memoryDescriptor, UefiStatus::ABORTED);
@@ -1060,8 +1060,8 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-        u64 start = memoryDescriptor->physicalStart;
-        u64 end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
+        bad_uint64 start = memoryDescriptor->physicalStart;
+        bad_uint64 end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
 
         if (start == 0)
         {
@@ -1135,7 +1135,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     return UefiStatus::SUCCESS;
 }
 
-UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, u64 sourceSize, uefi_handle *imageHandle)
+UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiDevicePath *filePath, void *sourceBuffer, bad_uint64 sourceSize, uefi_handle *imageHandle)
 {
     UEFI_LT((" | bootPolicy = %u, parentImageHandle = 0x%p, filePath = 0x%p, sourceBuffer = 0x%p, sourceSize = %u, imageHandle = 0x%p", bootPolicy, parentImageHandle, filePath, sourceBuffer, sourceSize, imageHandle));
 
@@ -1148,7 +1148,7 @@ UefiStatus UEFI::loadImage(bool bootPolicy, uefi_handle parentImageHandle, UefiD
     return sBootServices->loadImage(bootPolicy, parentImageHandle, filePath, sourceBuffer, sourceSize, imageHandle);
 }
 
-UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 **exitData)
+UefiStatus UEFI::startImage(uefi_handle imageHandle, bad_uint64 *exitDataSize, char16 **exitData)
 {
     UEFI_LT((" | imageHandle = 0x%p, exitDataSize = 0x%p, exitData = 0x%p", imageHandle, exitDataSize, exitData));
 
@@ -1159,7 +1159,7 @@ UefiStatus UEFI::startImage(uefi_handle imageHandle, u64 *exitDataSize, char16 *
     return sBootServices->startImage(imageHandle, exitDataSize, exitData);
 }
 
-UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u64 dataSize, char16 *resetData)
+UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, bad_uint64 dataSize, char16 *resetData)
 {
     UEFI_LT((" | resetType = %u, resetStatus = 0x%016llX, dataSize = %u, resetData = 0x%p", resetType, resetStatus, dataSize, resetData));
 
@@ -1168,7 +1168,7 @@ UefiStatus UEFI::resetSystem(UefiResetType resetType, UefiStatus resetStatus, u6
     return sSystemTable->runtimeServices->resetSystem(resetType, resetStatus, dataSize, resetData);
 }
 
-UefiStatus UEFI::exitBootServices(u64 mapKey)
+UefiStatus UEFI::exitBootServices(bad_uint64 mapKey)
 {
     UEFI_LT((" | mapKey = %u", mapKey));
 
@@ -1183,7 +1183,7 @@ UefiSmbios3ConfigurationTable* UEFI::getSmbios3Config()
 
 
 
-    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)sSystemTable->numberOfConfigurationTables; ++i)
     {
         UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
 
@@ -1210,7 +1210,7 @@ UefiSmbiosConfigurationTable* UEFI::getSmbiosConfig()
 
 
 
-    for (i64 i = 0; i < (i64)sSystemTable->numberOfConfigurationTables; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)sSystemTable->numberOfConfigurationTables; ++i)
     {
         UefiConfigurationTable *configurationTable = &sSystemTable->configurationTables[i];
 
@@ -1270,13 +1270,13 @@ NgosStatus UEFI::maximizeConsole(UefiSimpleTextOutputInterface *textOutput)
 
 
 
-    u64 maximumBuffer = 0;
-    i32 foundMode     = 0;
+    bad_uint64 maximumBuffer = 0;
+    bad_int32 foundMode     = 0;
 
-    for (i64 i = 0; i < textOutput->mode->maxMode; ++i)
+    for (bad_int64 i = 0; i < textOutput->mode->maxMode; ++i)
     {
-        u64 columns;
-        u64 rows;
+        bad_uint64 columns;
+        bad_uint64 rows;
 
         if (textOutput->queryMode(textOutput, i, &columns, &rows) != UefiStatus::SUCCESS)
         {
@@ -1289,7 +1289,7 @@ NgosStatus UEFI::maximizeConsole(UefiSimpleTextOutputInterface *textOutput)
 
 
 
-        u64 screenSize = columns * rows;
+        bad_uint64 screenSize = columns * rows;
 
         UEFI_LVVV(("columns    = %u", columns));
         UEFI_LVVV(("rows       = %u", rows));

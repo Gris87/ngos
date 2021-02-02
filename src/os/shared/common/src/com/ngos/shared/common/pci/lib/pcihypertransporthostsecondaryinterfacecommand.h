@@ -14,19 +14,19 @@ struct PciHyperTransportHostSecondaryInterfaceCommand
     {
         struct
         {
-            u16 warmReset:                  1;
-            u16 doubleEnded:                1;
-            u16 deviceNumber:               5;
-            u16 chainSide:                  1;
-            u16 hostHide:                   1;
-            u16 __reserved:                 1;
-            u16 actAsSlave:                 1;
-            u16 hostInboundEndOfChainError: 1;
-            u16 dropOnUninit:               1;
-            u16 capabilityType:             3; // TODO: Use enum PciHyperTransportCapabilityType
+            bad_uint16 warmReset:                  1;
+            bad_uint16 doubleEnded:                1;
+            bad_uint16 deviceNumber:               5;
+            bad_uint16 chainSide:                  1;
+            bad_uint16 hostHide:                   1;
+            bad_uint16 __reserved:                 1;
+            bad_uint16 actAsSlave:                 1;
+            bad_uint16 hostInboundEndOfChainError: 1;
+            bad_uint16 dropOnUninit:               1;
+            bad_uint16 capabilityType:             3; // TODO: Use enum PciHyperTransportCapabilityType
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

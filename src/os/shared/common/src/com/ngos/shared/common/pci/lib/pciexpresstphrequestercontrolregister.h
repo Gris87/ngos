@@ -14,13 +14,13 @@ struct PciExpressTphRequesterControlRegister
     {
         struct
         {
-            u32 stModeSelect       : 3; // TODO: Use enum PciExpressTphRequesterStModeSelect
-            u32 __reserved         : 5;
-            u32 tphRequesterEnable : 2; // TODO: Use enum PciExpressTphRequesterTphRequesterEnable
-            u32 __reserved2        : 22;
+            bad_uint32 stModeSelect       : 3; // TODO: Use enum PciExpressTphRequesterStModeSelect
+            bad_uint32 __reserved         : 5;
+            bad_uint32 tphRequesterEnable : 2; // TODO: Use enum PciExpressTphRequesterTphRequesterEnable
+            bad_uint32 __reserved2        : 22;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

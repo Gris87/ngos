@@ -14,23 +14,23 @@
 
 
 
-typedef u32 kvm_feature_type_flags;
+typedef bad_uint32 kvm_feature_type_flags;
 
 enum class KvmFeatureTypeFlag: kvm_feature_type_flags
 {
     NONE               = 0,
-    CLOCKSOURCE        = (1ULL << (u64)KvmFeature::CLOCKSOURCE),
-    NOP_IO_DELAY       = (1ULL << (u64)KvmFeature::NOP_IO_DELAY),
-    MMU_OP             = (1ULL << (u64)KvmFeature::MMU_OP),
-    CLOCKSOURCE2       = (1ULL << (u64)KvmFeature::CLOCKSOURCE2),
-    ASYNC_PF           = (1ULL << (u64)KvmFeature::ASYNC_PF),
-    STEAL_TIME         = (1ULL << (u64)KvmFeature::STEAL_TIME),
-    PV_EOI             = (1ULL << (u64)KvmFeature::PV_EOI),
-    PV_UNHALT          = (1ULL << (u64)KvmFeature::PV_UNHALT),
-    PV_TLB_FLUSH       = (1ULL << (u64)KvmFeature::PV_TLB_FLUSH),
-    ASYNC_PF_VMEXIT    = (1ULL << (u64)KvmFeature::ASYNC_PF_VMEXIT),
-    PV_SEND_IPI        = (1ULL << (u64)KvmFeature::PV_SEND_IPI),
-    CLOCKSOURCE_STABLE = (1ULL << (u64)KvmFeature::CLOCKSOURCE_STABLE)
+    CLOCKSOURCE        = (1ULL << (bad_uint64)KvmFeature::CLOCKSOURCE),
+    NOP_IO_DELAY       = (1ULL << (bad_uint64)KvmFeature::NOP_IO_DELAY),
+    MMU_OP             = (1ULL << (bad_uint64)KvmFeature::MMU_OP),
+    CLOCKSOURCE2       = (1ULL << (bad_uint64)KvmFeature::CLOCKSOURCE2),
+    ASYNC_PF           = (1ULL << (bad_uint64)KvmFeature::ASYNC_PF),
+    STEAL_TIME         = (1ULL << (bad_uint64)KvmFeature::STEAL_TIME),
+    PV_EOI             = (1ULL << (bad_uint64)KvmFeature::PV_EOI),
+    PV_UNHALT          = (1ULL << (bad_uint64)KvmFeature::PV_UNHALT),
+    PV_TLB_FLUSH       = (1ULL << (bad_uint64)KvmFeature::PV_TLB_FLUSH),
+    ASYNC_PF_VMEXIT    = (1ULL << (bad_uint64)KvmFeature::ASYNC_PF_VMEXIT),
+    PV_SEND_IPI        = (1ULL << (bad_uint64)KvmFeature::PV_SEND_IPI),
+    CLOCKSOURCE_STABLE = (1ULL << (bad_uint64)KvmFeature::CLOCKSOURCE_STABLE)
 };
 
 DEFINE_FLAGS(KvmFeatureTypeFlags, kvm_feature_type_flags); // TEST: NO

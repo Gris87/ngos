@@ -10,7 +10,7 @@
 
 
 
-enum class PngCompressionMethod: u8
+enum class PngCompressionMethod: bad_uint8
 {
     DEFLATE = 0
 };
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PngCompressionMethod method) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)method, enumToString(method));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)method, enumToString(method));
 
     return res;
 }

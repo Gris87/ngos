@@ -14,13 +14,13 @@
 
 struct XzBuffer
 {
-    u8 *in;
-    u64 inPosition;
-    u64 inSize;
+    bad_uint8 *in;
+    bad_uint64 inPosition;
+    bad_uint64 inSize;
 
-    u8 *out;
-    u64 outPosition;
-    u64 outSize;
+    bad_uint8 *out;
+    bad_uint64 outPosition;
+    bad_uint64 outSize;
 };
 
 

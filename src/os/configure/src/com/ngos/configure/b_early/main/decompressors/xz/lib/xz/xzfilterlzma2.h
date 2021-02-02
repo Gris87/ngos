@@ -17,7 +17,7 @@
 
 
 
-NgosStatus filterLZMA2(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfProperties, u8 *filterProperties, u64 *compressedSize, u64 *uncompressedSize); // TEST: NO
+NgosStatus filterLZMA2(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 sizeOfProperties, bad_uint8 *filterProperties, bad_uint64 *compressedSize, bad_uint64 *uncompressedSize); // TEST: NO
 
 
 

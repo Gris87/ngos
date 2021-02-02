@@ -17,7 +17,7 @@ extern void *_start; // _start declared in main.S file // Ignore CppEqualAlignme
 class AddressConversion
 {
 public:
-    static inline u64 physicalAddress(u64 address)
+    static inline bad_uint64 physicalAddress(bad_uint64 address)
     {
         COMMON_LT((" | address = 0x%p", address));
 
@@ -26,7 +26,7 @@ public:
         return address + sPhysicalDelta;
     }
 
-    static inline u64 virtualAddress(u64 address)
+    static inline bad_uint64 virtualAddress(bad_uint64 address)
     {
         COMMON_LT((" | address = 0x%p", address));
 
@@ -35,7 +35,7 @@ public:
         return address - sPhysicalDelta;
     }
 
-    static inline NgosStatus setPhysicalDeltaBaseOnLocation(u64 location)
+    static inline NgosStatus setPhysicalDeltaBaseOnLocation(bad_uint64 location)
     {
         COMMON_LT((" | location = 0x%016llX", location));
 
@@ -43,7 +43,7 @@ public:
 
 
 
-        sPhysicalDelta = location - (u64)&_start;
+        sPhysicalDelta = location - (bad_uint64)&_start;
 
 
 
@@ -55,7 +55,7 @@ public:
 #else
 private:
 #endif
-    static u64 sPhysicalDelta; // Special delta value that let you convert virtual address to physical address
+    static bad_uint64 sPhysicalDelta; // Special delta value that let you convert virtual address to physical address
 };
 
 

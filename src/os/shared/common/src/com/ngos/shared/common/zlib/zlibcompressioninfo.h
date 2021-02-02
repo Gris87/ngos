@@ -10,7 +10,7 @@
 
 
 
-enum class ZLibCompressionInfo: u8
+enum class ZLibCompressionInfo: bad_uint8
 {
     NONE       = 0,
     WINDOW_1K  = 2,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(ZLibCompressionInfo info) // TEST: NO
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (u8)info, enumToString(info));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)info, enumToString(info));
 
     return res;
 }

@@ -11,8 +11,8 @@ struct UefiOpenProtocolInformationEntry
 {
     uefi_handle agentHandle;
     uefi_handle controllerHandle;
-    u32         attributes;
-    u32         openCount;
+    bad_uint32         attributes;
+    bad_uint32         openCount;
 };
 
 

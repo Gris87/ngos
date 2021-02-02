@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemSlotsLength: u8
+enum class DmiSystemSlotsLength: bad_uint8
 {
     NONE                   = 0,
     OTHER                  = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiSystemSlotsLength length) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%02X (%s)", (u8)length, enumToString(length));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)length, enumToString(length));
 
     return res;
 }

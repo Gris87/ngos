@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressResizableBaseAddressBarSize: u8
+enum class PciExpressResizableBaseAddressBarSize: bad_uint8
 {
     _1_MB   = 0,
     _2_MB   = 1,
@@ -77,7 +77,7 @@ inline const char8* enumToFullString(PciExpressResizableBaseAddressBarSize size)
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)size, enumToString(size));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)size, enumToString(size));
 
     return res;
 }

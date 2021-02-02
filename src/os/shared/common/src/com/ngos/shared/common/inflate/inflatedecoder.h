@@ -9,16 +9,16 @@
 
 struct InflateDecoder
 {
-    u8  *in;
-    u64  inPosition;
+    bad_uint8  *in;
+    bad_uint64  inPosition;
 
-    u8  *out;
-    u64  outPosition;
+    bad_uint8  *out;
+    bad_uint64  outPosition;
 
     struct
     {
-        u32 bitBuffer;
-        u8  bitsAvailable;
+        bad_uint32 bitBuffer;
+        bad_uint8  bitsAvailable;
     } temp;
 };
 

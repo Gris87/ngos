@@ -11,7 +11,7 @@
 struct PciExpressRootComplexLinkDeclarationLinkEntry
 {
     PciExpressRootComplexLinkDeclarationLinkDescription linkDescription;
-    u32                                                 __reserved;
+    bad_uint32                                                 __reserved;
     PciExpressRootComplexLinkDeclarationLinkAndress     linkAddress;
 };
 

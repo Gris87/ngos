@@ -10,7 +10,7 @@
 
 
 
-enum class PngRenderingIntent: u8
+enum class PngRenderingIntent: bad_uint8
 {
     PERCEPTUAL            = 0,
     RELATIVE_COLORIMETRIC = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(PngRenderingIntent intent) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%02X (%s)", (u8)intent, enumToString(intent));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)intent, enumToString(intent));
 
     return res;
 }

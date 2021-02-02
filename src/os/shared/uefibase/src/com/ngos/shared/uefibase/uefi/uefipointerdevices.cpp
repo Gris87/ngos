@@ -6,9 +6,9 @@
 
 
 
-u8                            UefiPointerDevices::sAbsolutePointersCount;
+bad_uint8                            UefiPointerDevices::sAbsolutePointersCount;
 UefiAbsolutePointerProtocol **UefiPointerDevices::sAbsolutePointers;
-u8                            UefiPointerDevices::sSimplePointersCount;
+bad_uint8                            UefiPointerDevices::sSimplePointersCount;
 UefiSimplePointerProtocol   **UefiPointerDevices::sSimplePointers;
 
 
@@ -62,7 +62,7 @@ NgosStatus UefiPointerDevices::cleanUp()
     return NgosStatus::OK;
 }
 
-u8 UefiPointerDevices::getAbsolutePointersCount()
+bad_uint8 UefiPointerDevices::getAbsolutePointersCount()
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -71,7 +71,7 @@ u8 UefiPointerDevices::getAbsolutePointersCount()
     return sAbsolutePointersCount;
 }
 
-UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
+UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(bad_uint8 index)
 {
     // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
@@ -82,7 +82,7 @@ UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
     return sAbsolutePointers[index];
 }
 
-u8 UefiPointerDevices::getSimplePointersCount()
+bad_uint8 UefiPointerDevices::getSimplePointersCount()
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -91,7 +91,7 @@ u8 UefiPointerDevices::getSimplePointersCount()
     return sSimplePointersCount;
 }
 
-UefiSimplePointerProtocol* UefiPointerDevices::getSimplePointer(u8 index)
+UefiSimplePointerProtocol* UefiPointerDevices::getSimplePointer(bad_uint8 index)
 {
     // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
@@ -109,7 +109,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
     Guid pointersProtocol = UEFI_ABSOLUTE_POINTER_PROTOCOL_GUID;
-    u64  pointersSize     = 0;
+    bad_uint64  pointersSize     = 0;
 
 
 
@@ -142,7 +142,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
             UEFI_LVVV(("sAbsolutePointers:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sAbsolutePointersCount; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sAbsolutePointersCount; ++i)
             {
                 UEFI_LVVV(("sAbsolutePointers[%d]->waitForInput       = 0x%p", i, sAbsolutePointers[i]->waitForInput));
                 UEFI_LVVV(("sAbsolutePointers[%d]->mode->absoluteMinX = %u",   i, sAbsolutePointers[i]->mode->absoluteMinX));
@@ -176,7 +176,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
     return NgosStatus::OK;
 }
 
-NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 size)
+NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, bad_uint64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -229,7 +229,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
     return status;
 }
 
-NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 size, uefi_handle *pointersHandles)
+NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, bad_uint64 size, uefi_handle *pointersHandles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, pointersHandles = 0x%p", protocol, size, pointersHandles));
 
@@ -239,12 +239,12 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
 
 
-    i64 count = size / sizeof(uefi_handle);
+    bad_int64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
 
 
-    u64 pointersSize = count * sizeof(UefiAbsolutePointerProtocol *);
+    bad_uint64 pointersSize = count * sizeof(UefiAbsolutePointerProtocol *);
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, pointersSize, (void **)&sAbsolutePointers) != UefiStatus::SUCCESS)
     {
@@ -259,7 +259,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
     sAbsolutePointersCount = 0;
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         uefi_handle                  handle = pointersHandles[i];
         UefiAbsolutePointerProtocol *pointer;
@@ -315,7 +315,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
 
 
     Guid pointersProtocol = UEFI_SIMPLE_POINTER_PROTOCOL_GUID;
-    u64  pointersSize     = 0;
+    bad_uint64  pointersSize     = 0;
 
 
 
@@ -348,7 +348,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
             UEFI_LVVV(("sSimplePointers:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)sSimplePointersCount; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)sSimplePointersCount; ++i)
             {
                 UEFI_LVVV(("sSimplePointers[%d]->waitForInput      = 0x%p", i, sSimplePointers[i]->waitForInput));
                 UEFI_LVVV(("sSimplePointers[%d]->mode->resolutionX = %u",   i, sSimplePointers[i]->mode->resolutionX));
@@ -378,7 +378,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
     return NgosStatus::OK;
 }
 
-NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size)
+NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, bad_uint64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -431,7 +431,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
     return status;
 }
 
-NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size, uefi_handle *pointersHandles)
+NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, bad_uint64 size, uefi_handle *pointersHandles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, pointersHandles = 0x%p", protocol, size, pointersHandles));
 
@@ -441,12 +441,12 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
 
 
 
-    i64 count = size / sizeof(uefi_handle);
+    bad_int64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
 
 
-    u64 pointersSize = count * sizeof(UefiSimplePointerProtocol *);
+    bad_uint64 pointersSize = count * sizeof(UefiSimplePointerProtocol *);
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, pointersSize, (void **)&sSimplePointers) != UefiStatus::SUCCESS)
     {
@@ -461,7 +461,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
 
     sSimplePointersCount = 0;
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         uefi_handle                handle = pointersHandles[i];
         UefiSimplePointerProtocol *pointer;

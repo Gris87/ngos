@@ -10,7 +10,7 @@
 // XFeatureAvx512OpmaskState is used for the 8 * 64-bit opmask registers (k0-k7)
 struct XFeatureAvx512OpmaskState
 {
-    u64 opmaskRegisters[8];
+    bad_uint64 opmaskRegisters[8];
 };
 
 

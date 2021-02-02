@@ -13,14 +13,14 @@ struct DmiSystemResetCapabilities
     {
         struct
         {
-            u8 enabled:           1;
-            u8 bootOption:        2; // TODO: Use enum DmiSystemResetBootOption
-            u8 bootOptionOnLimit: 2; // TODO: Use enum DmiSystemResetBootOption
-            u8 watchdogEnabled:   1;
-            u8 __reserved:        2;
+            bad_uint8 enabled:           1;
+            bad_uint8 bootOption:        2; // TODO: Use enum DmiSystemResetBootOption
+            bad_uint8 bootOptionOnLimit: 2; // TODO: Use enum DmiSystemResetBootOption
+            bad_uint8 watchdogEnabled:   1;
+            bad_uint8 __reserved:        2;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

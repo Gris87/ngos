@@ -42,9 +42,9 @@ void UEFI_API testDoubleProcedure(void *buffer)
 
 
 
-    u64 startTime = rdtsc();
+    bad_uint64 startTime = rdtsc();
 
-    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+    for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         temp1 += 3.123;
         temp2 -= 5.987;
@@ -55,7 +55,7 @@ void UEFI_API testDoubleProcedure(void *buffer)
         --temp6;
     }
 
-    u64 endTime = rdtsc();
+    bad_uint64 endTime = rdtsc();
 
 
 

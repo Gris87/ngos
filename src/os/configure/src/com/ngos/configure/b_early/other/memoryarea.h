@@ -9,8 +9,8 @@
 
 struct MemoryArea
 {
-    u64 start;
-    u64 end;
+    bad_uint64 start;
+    bad_uint64 end;
 };
 
 

@@ -31,11 +31,11 @@ public:
     VerticalAlignment getVerticalAlignment() const; // TEST: NO
 
 private:
-    i64 applyHorizontalAlignment(i64 fullWidth, i64 targetWidth); // TEST: NO
-    i64 applyVerticalAlignment(i64 fullHeight, i64 targetHeight); // TEST: NO
+    bad_int64 applyHorizontalAlignment(bad_int64 fullWidth, bad_int64 targetWidth); // TEST: NO
+    bad_int64 applyVerticalAlignment(bad_int64 fullHeight, bad_int64 targetHeight); // TEST: NO
 
     const char8         *mText;
-    u16                 *mGlyphOffsets;
+    bad_uint16                 *mGlyphOffsets;
     RgbaPixel            mColor;
     HorizontalAlignment  mHorizontalAlignment;
     VerticalAlignment    mVerticalAlignment;

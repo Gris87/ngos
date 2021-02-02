@@ -12,7 +12,7 @@ struct PciExpressVendorSpecificCapability
 {
     PciExtendedCapabilityHeader    header;
     PciExpressVendorSpecificHeader vendorSpecificHeader;
-    u8                             vendorSpecificRegisters[0];
+    bad_uint8                             vendorSpecificRegisters[0];
 } __attribute__((packed));
 
 

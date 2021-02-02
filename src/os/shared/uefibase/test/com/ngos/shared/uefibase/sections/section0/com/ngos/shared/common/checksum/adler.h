@@ -19,18 +19,18 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_adler);
     {
         const char8 *str = "Hello";
 
-        u8 temp1[256];
-        u8 temp2[256];
-        u8 temp3[256];
+        bad_uint8 temp1[256];
+        bad_uint8 temp2[256];
+        bad_uint8 temp3[256];
 
-        for (i64 i = 0; i < 256; ++i)
+        for (bad_int64 i = 0; i < 256; ++i)
         {
             temp1[i] = i * 37;
             temp2[i] = i * 13;
             temp3[i] = i * 19;
         }
 
-        TEST_ASSERT_EQUALS(Adler::adler32((u8 *)str, strlen(str)),   0x058C01F5);
+        TEST_ASSERT_EQUALS(Adler::adler32((bad_uint8 *)str, strlen(str)),   0x058C01F5);
         TEST_ASSERT_EQUALS(Adler::adler32(temp1,     sizeof(temp1)), 0xB3227F81);
         TEST_ASSERT_EQUALS(Adler::adler32(temp2,     sizeof(temp2)), 0x73227F81);
         TEST_ASSERT_EQUALS(Adler::adler32(temp3,     sizeof(temp3)), 0x56227F81);

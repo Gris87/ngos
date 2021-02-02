@@ -14,7 +14,7 @@ struct PciExpressAccessControlServicesCapability
     PciExtendedCapabilityHeader                    header;
     PciExpressAccessControlServicesAcsCapability   capability;
     PciExpressAccessControlServicesAcsControlFlags control;
-    u32                                            egressControlVector[0];
+    bad_uint32                                            egressControlVector[0];
 } __attribute__((packed));
 
 

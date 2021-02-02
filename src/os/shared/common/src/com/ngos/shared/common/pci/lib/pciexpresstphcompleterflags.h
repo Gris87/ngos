@@ -11,7 +11,7 @@
 
 
 
-typedef u8 pci_express_tph_completer_flags;
+typedef bad_uint8 pci_express_tph_completer_flags;
 
 enum class PciExpressTphCompleterFlag: pci_express_tph_completer_flags
 {

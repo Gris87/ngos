@@ -8,8 +8,8 @@
 
 
 
-NgosStatus initializeIdentityMaps(u8 *pageTable); // TEST: NO
-NgosStatus addIdentityMap(u64 start, u64 end); // TEST: NO
+NgosStatus initializeIdentityMaps(bad_uint8 *pageTable); // TEST: NO
+NgosStatus addIdentityMap(bad_uint64 start, bad_uint64 end); // TEST: NO
 NgosStatus finalizeIdentityMaps(); // TEST: NO
 
 

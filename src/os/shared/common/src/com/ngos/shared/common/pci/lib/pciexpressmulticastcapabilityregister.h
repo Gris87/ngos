@@ -9,7 +9,7 @@
 
 struct PciExpressMulticastCapabilityRegister
 {
-    u8 mcMaxGroupReal()
+    bad_uint8 mcMaxGroupReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,14 +24,14 @@ struct PciExpressMulticastCapabilityRegister
     {
         struct
         {
-            u16 mcMaxGroup                  : 6;
-            u16 __reserved                  : 2;
-            u16 mcWindowSizeRequested       : 6;
-            u16 __reserved2                 : 1;
-            u16 mcEcrcRegenerationSupported : 1;
+            bad_uint16 mcMaxGroup                  : 6;
+            bad_uint16 __reserved                  : 2;
+            bad_uint16 mcWindowSizeRequested       : 6;
+            bad_uint16 __reserved2                 : 1;
+            bad_uint16 mcEcrcRegenerationSupported : 1;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

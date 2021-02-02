@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressEndpointL0sAcceptableLatency: u8
+enum class PciExpressEndpointL0sAcceptableLatency: bad_uint8
 {
     MAXIMUM_OF_64_NANOSECONDS  = 0,
     MAXIMUM_OF_128_NANOSECONDS = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(PciExpressEndpointL0sAcceptableLatency late
 
     static char8 res[34];
 
-    sprintf(res, "0x%02X (%s)", (u8)latency, enumToString(latency));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)latency, enumToString(latency));
 
     return res;
 }

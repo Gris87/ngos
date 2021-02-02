@@ -8,8 +8,8 @@
 
 
 
-u32 KvmClock::sWallClockMsr;
-u32 KvmClock::sSystemTimeMsr;
+bad_uint32 KvmClock::sWallClockMsr;
+bad_uint32 KvmClock::sSystemTimeMsr;
 
 
 
@@ -56,7 +56,7 @@ NgosStatus KvmClock::init()
             COMMON_LVVV(("CpuHotplug::sSteps:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (i64 i = 0; i < (i64)CpuHotplugState::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)CpuHotplugState::MAXIMUM; ++i)
             {
                 if (CpuHotplug::sSteps[i].name)
                 {
@@ -70,10 +70,10 @@ NgosStatus KvmClock::init()
 
 
 
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].name              != 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].upAction          == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].downAction        == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].multipleInstances == false, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC].name              != 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC].upAction          == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC].downAction        == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC].multipleInstances == false, NgosStatus::ASSERTION);
 
 
 

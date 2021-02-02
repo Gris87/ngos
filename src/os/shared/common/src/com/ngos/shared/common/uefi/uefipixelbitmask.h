@@ -9,10 +9,10 @@
 
 struct UefiPixelBitmask
 {
-    u32 redMask;
-    u32 greenMask;
-    u32 blueMask;
-    u32 reservedMask;
+    bad_uint32 redMask;
+    bad_uint32 greenMask;
+    bad_uint32 blueMask;
+    bad_uint32 reservedMask;
 };
 
 

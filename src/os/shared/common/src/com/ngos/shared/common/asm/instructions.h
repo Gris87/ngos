@@ -12,11 +12,11 @@
 
 #define RDRAND_RETRY_LOOPS 10
 
-#define I8254_PORT_CONTROL    0x43
-#define I8254_PORT_COUNTER0   0x40
-#define I8254_CMD_READBACK    0xC0
-#define I8254_SELECT_COUNTER0 0x02
-#define I8254_STATUS_NOTREADY 0x40
+#define bad_int8254_PORT_CONTROL    0x43
+#define bad_int8254_PORT_COUNTER0   0x40
+#define bad_int8254_CMD_READBACK    0xC0
+#define bad_int8254_SELECT_COUNTER0 0x02
+#define bad_int8254_STATUS_NOTREADY 0x40
 
 
 
@@ -33,7 +33,7 @@ inline NgosStatus cpuIdle() // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus outb(u8 value, u16 port) // TEST: NO
+inline NgosStatus outb(bad_uint8 value, bad_uint16 port) // TEST: NO
 {
     COMMON_LT((" | value = 0x%02X, port = 0x%04X", value, port));
 
@@ -54,13 +54,13 @@ inline NgosStatus outb(u8 value, u16 port) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline u8 inb(u16 port) // TEST: NO
+inline bad_uint8 inb(bad_uint16 port) // TEST: NO
 {
     COMMON_LT((" | port = 0x%04X", port));
 
 
 
-    u8 value;
+    bad_uint8 value;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -77,14 +77,14 @@ inline u8 inb(u16 port) // TEST: NO
     return value;
 }
 
-inline NgosStatus rdrand(u64 *value)
+inline NgosStatus rdrand(bad_uint64 *value)
 {
     COMMON_LT((" | value = 0x%p", value));
 
 
 
     bool ok;
-    u8   retry = RDRAND_RETRY_LOOPS;
+    bad_uint8   retry = RDRAND_RETRY_LOOPS;
 
 
 
@@ -117,14 +117,14 @@ inline NgosStatus rdrand(u64 *value)
     return NgosStatus::FAILED;
 }
 
-inline u64 rdtsc()
+inline bad_uint64 rdtsc()
 {
     COMMON_LT((""));
 
 
 
-    u32 eax;
-    u32 edx;
+    bad_uint32 eax;
+    bad_uint32 edx;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -137,10 +137,10 @@ inline u64 rdtsc()
 
 
 
-    return ((u64)edx << 32) | eax;
+    return ((bad_uint64)edx << 32) | eax;
 }
 
-inline NgosStatus writeCr3(u64 value) // TEST: NO
+inline NgosStatus writeCr3(bad_uint64 value) // TEST: NO
 {
     COMMON_LT((" | value = 0x%016llX", value));
 
@@ -160,13 +160,13 @@ inline NgosStatus writeCr3(u64 value) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline u64 readCr4() // TEST: NO
+inline bad_uint64 readCr4() // TEST: NO
 {
     COMMON_LT((""));
 
 
 
-    u64 value;
+    bad_uint64 value;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -181,7 +181,7 @@ inline u64 readCr4() // TEST: NO
     return value;
 }
 
-inline NgosStatus writeCr4(u64 value) // TEST: NO
+inline NgosStatus writeCr4(bad_uint64 value) // TEST: NO
 {
     COMMON_LT((" | value = 0x%016llX", value));
 
@@ -201,7 +201,7 @@ inline NgosStatus writeCr4(u64 value) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline bool bt(u8 *address, u64 bit)
+inline bool bt(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -228,7 +228,7 @@ inline bool bt(u8 *address, u64 bit)
     return res;
 }
 
-inline bool bts(u8 *address, u64 bit)
+inline bool bts(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -257,7 +257,7 @@ inline bool bts(u8 *address, u64 bit)
     return res;
 }
 
-inline bool btsSafe(u8 *address, u64 bit)
+inline bool btsSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -286,7 +286,7 @@ inline bool btsSafe(u8 *address, u64 bit)
     return res;
 }
 
-inline NgosStatus btsPure(u8 *address, u64 bit)
+inline NgosStatus btsPure(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -311,7 +311,7 @@ inline NgosStatus btsPure(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline NgosStatus btsPureSafe(u8 *address, u64 bit)
+inline NgosStatus btsPureSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -336,7 +336,7 @@ inline NgosStatus btsPureSafe(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline bool btr(u8 *address, u64 bit)
+inline bool btr(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -365,7 +365,7 @@ inline bool btr(u8 *address, u64 bit)
     return res;
 }
 
-inline bool btrSafe(u8 *address, u64 bit)
+inline bool btrSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -394,7 +394,7 @@ inline bool btrSafe(u8 *address, u64 bit)
     return res;
 }
 
-inline NgosStatus btrPure(u8 *address, u64 bit)
+inline NgosStatus btrPure(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -419,7 +419,7 @@ inline NgosStatus btrPure(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline NgosStatus btrPureSafe(u8 *address, u64 bit)
+inline NgosStatus btrPureSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -444,7 +444,7 @@ inline NgosStatus btrPureSafe(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline bool btc(u8 *address, u64 bit)
+inline bool btc(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -473,7 +473,7 @@ inline bool btc(u8 *address, u64 bit)
     return res;
 }
 
-inline bool btcSafe(u8 *address, u64 bit)
+inline bool btcSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -502,7 +502,7 @@ inline bool btcSafe(u8 *address, u64 bit)
     return res;
 }
 
-inline NgosStatus btcPure(u8 *address, u64 bit)
+inline NgosStatus btcPure(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -527,7 +527,7 @@ inline NgosStatus btcPure(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline NgosStatus btcPureSafe(u8 *address, u64 bit)
+inline NgosStatus btcPureSafe(bad_uint8 *address, bad_uint64 bit)
 {
     COMMON_LT((" | address = 0x%p, bit = 0x%016llX", address, bit));
 
@@ -552,14 +552,14 @@ inline NgosStatus btcPureSafe(u8 *address, u64 bit)
     return NgosStatus::OK;
 }
 
-inline u64 rdmsr(u32 msr) // TEST: NO
+inline bad_uint64 rdmsr(bad_uint32 msr) // TEST: NO
 {
     COMMON_LT((" | msr = 0x%08X", msr));
 
 
 
-    u32 eax;
-    u32 edx;
+    bad_uint32 eax;
+    bad_uint32 edx;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -574,17 +574,17 @@ inline u64 rdmsr(u32 msr) // TEST: NO
 
 
 
-    return ((u64)edx << 32) | eax;
+    return ((bad_uint64)edx << 32) | eax;
 }
 
-inline NgosStatus wrmsr(u32 msr, u64 value) // TEST: NO
+inline NgosStatus wrmsr(bad_uint32 msr, bad_uint64 value) // TEST: NO
 {
     COMMON_LT((" | msr = 0x%08X, value = 0x%016llX", msr, value));
 
 
 
-    u32 eax = value & 0xFFFFFFFF;
-    u32 edx = value >> 32;
+    bad_uint32 eax = value & 0xFFFFFFFF;
+    bad_uint32 edx = value >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -641,14 +641,14 @@ inline NgosStatus fninit() // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
+inline NgosStatus xsetbv(bad_uint32 index, bad_uint64 value) // TEST: NO
 {
     COMMON_LT((" | index = 0x%08X, value = 0x%016llX", index, value));
 
 
 
-    u32 eax = value;
-    u32 edx = value >> 32;
+    bad_uint32 eax = value;
+    bad_uint32 edx = value >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -666,7 +666,7 @@ inline NgosStatus xsetbv(u32 index, u64 value) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus fxsave(u8 *address) // TEST: NO
+inline NgosStatus fxsave(bad_uint8 *address) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p", address));
 
@@ -687,7 +687,7 @@ inline NgosStatus fxsave(u8 *address) // TEST: NO
     return NgosStatus::OK;
 }
 
-inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+inline NgosStatus xsave64(bad_uint8 *address, bad_uint64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
@@ -696,8 +696,8 @@ inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: N
 
 
 
-    u32 eax = mask;
-    u32 edx = mask >> 32;
+    bad_uint32 eax = mask;
+    bad_uint32 edx = mask >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -715,7 +715,7 @@ inline NgosStatus xsave64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: N
     return NgosStatus::OK;
 }
 
-inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+inline NgosStatus xsaves64(bad_uint8 *address, bad_uint64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
@@ -724,8 +724,8 @@ inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
 
 
 
-    u32 eax = mask;
-    u32 edx = mask >> 32;
+    bad_uint32 eax = mask;
+    bad_uint32 edx = mask >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -743,7 +743,7 @@ inline NgosStatus xsaves64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
     return NgosStatus::OK;
 }
 
-inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+inline NgosStatus xrstor64(bad_uint8 *address, bad_uint64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
@@ -752,8 +752,8 @@ inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
 
 
 
-    u32 eax = mask;
-    u32 edx = mask >> 32;
+    bad_uint32 eax = mask;
+    bad_uint32 edx = mask >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -771,7 +771,7 @@ inline NgosStatus xrstor64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: 
     return NgosStatus::OK;
 }
 
-inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
+inline NgosStatus xrstors64(bad_uint8 *address, bad_uint64 mask = 0xFFFFFFFFFFFFFFFF) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p, mask = 0x%016llX", address, mask));
 
@@ -780,8 +780,8 @@ inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST:
 
 
 
-    u32 eax = mask;
-    u32 edx = mask >> 32;
+    bad_uint32 eax = mask;
+    bad_uint32 edx = mask >> 32;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -799,7 +799,7 @@ inline NgosStatus xrstors64(u8 *address, u64 mask = 0xFFFFFFFFFFFFFFFF) // TEST:
     return NgosStatus::OK;
 }
 
-inline NgosStatus invlpg(u8 *address) // TEST: NO
+inline NgosStatus invlpg(bad_uint8 *address) // TEST: NO
 {
     COMMON_LT((" | address = 0x%p", address));
 

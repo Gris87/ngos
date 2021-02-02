@@ -10,7 +10,7 @@
 
 
 
-enum class DmiChassisSecurityStatus: u8
+enum class DmiChassisSecurityStatus: bad_uint8
 {
     NULL                              = 0,
     OTHER                             = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiChassisSecurityStatus status) // TEST: N
 
     static char8 res[41];
 
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)status, enumToString(status));
 
     return res;
 }

@@ -87,10 +87,10 @@ NgosStatus TableHeaderWidget::repaint()
     {
         NinePatch *patch = mImage->getNinePatch();
 
-        u16 paddingLeft;
-        u16 paddingTop;
-        u64 allowedWidth;
-        u64 allowedHeight;
+        bad_uint16 paddingLeft;
+        bad_uint16 paddingTop;
+        bad_uint64 allowedWidth;
+        bad_uint64 allowedHeight;
 
         if (patch)
         {

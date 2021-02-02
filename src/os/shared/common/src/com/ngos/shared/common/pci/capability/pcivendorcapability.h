@@ -10,8 +10,8 @@
 struct PciVendorCapability
 {
     PciCapabilityHeader header;
-    u8                  length;
-    u8                  __reserved;
+    bad_uint8                  length;
+    bad_uint8                  __reserved;
 };
 
 

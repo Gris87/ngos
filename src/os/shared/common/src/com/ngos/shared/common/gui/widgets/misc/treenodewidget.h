@@ -33,8 +33,8 @@ public:
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 
-    NgosStatus setRowHeight(u64 height); // TEST: NO
-    u64 getRowHeight() const; // TEST: NO
+    NgosStatus setRowHeight(bad_uint64 height); // TEST: NO
+    bad_uint64 getRowHeight() const; // TEST: NO
 
     NgosStatus setExpanded(bool expanded); // TEST: NO
     bool isExpanded() const; // TEST: NO
@@ -42,7 +42,7 @@ public:
     NgosStatus setParentNode(TreeNodeWidget *node); // TEST: NO
     TreeNodeWidget* getParentNode() const; // TEST: NO
 
-    i64 getNodeIndexInParent() const; // TEST: NO
+    bad_int64 getNodeIndexInParent() const; // TEST: NO
 
     NgosStatus addChildNode(TreeNodeWidget *node); // TEST: NO
 
@@ -54,7 +54,7 @@ public:
 private:
     NgosStatus doExpand(); // TEST: NO
     NgosStatus doCollapse(); // TEST: NO
-    NgosStatus invalidatePositionY(i64 &positionY); // TEST: NO
+    NgosStatus invalidatePositionY(bad_int64 &positionY); // TEST: NO
 
     Image                       *mCollapsedImage;
     Image                       *mExpandedImage;
@@ -63,10 +63,10 @@ private:
     ImageWidget                 *mImageWidget;
     LabelWidget                 *mLabelWidget;
     WidgetState                  mState;
-    u64                          mRowHeight;
+    bad_uint64                          mRowHeight;
     bool                         mExpanded;
     TreeNodeWidget              *mParentNode;
-    i64                          mNodeIndexInParent;
+    bad_int64                          mNodeIndexInParent;
     ArrayList<TreeNodeWidget *>  mChildrenNodes;
     void                        *mUserData;
 };

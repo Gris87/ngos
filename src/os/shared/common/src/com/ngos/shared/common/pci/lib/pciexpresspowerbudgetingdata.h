@@ -17,16 +17,16 @@ struct PciExpressPowerBudgetingData
     {
         struct
         {
-            u32 basePower  : 8;
-            u32 dataScale  : 2; // TODO: Use enum PciExpressPowerScale
-            u32 pmSubState : 3; // TODO: Use enum PciExpressPowerBudgetingPowerManagementSubState
-            u32 pmState    : 2; // TODO: Use enum PciExpressPowerBudgetingPowerManagementState
-            u32 type       : 3; // TODO: Use enum PciExpressPowerBudgetingType
-            u32 powerRail  : 3; // TODO: Use enum PciExpressPowerBudgetingPowerRail
-            u32 __reserved : 11;
+            bad_uint32 basePower  : 8;
+            bad_uint32 dataScale  : 2; // TODO: Use enum PciExpressPowerScale
+            bad_uint32 pmSubState : 3; // TODO: Use enum PciExpressPowerBudgetingPowerManagementSubState
+            bad_uint32 pmState    : 2; // TODO: Use enum PciExpressPowerBudgetingPowerManagementState
+            bad_uint32 type       : 3; // TODO: Use enum PciExpressPowerBudgetingType
+            bad_uint32 powerRail  : 3; // TODO: Use enum PciExpressPowerBudgetingPowerRail
+            bad_uint32 __reserved : 11;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

@@ -25,7 +25,7 @@ public:
     bool contains(const Key &key) const;
     const Value& value(const Key &key, const Value &defaultValue) const;
 
-    u64 getSize() const;
+    bad_uint64 getSize() const;
     bool isEmpty() const;
 
     const ArrayList<MapElement<Key, Value>>& getPairs() const;
@@ -117,14 +117,14 @@ NgosStatus Map<Key, Value>::insert(const Key &key, const Value &value)
 
 
 
-    u64 left  = 0;
-    u64 right = mPairs.getSize();
+    bad_uint64 left  = 0;
+    bad_uint64 right = mPairs.getSize();
 
     // Binary search for the element or for position for insertion
     {
         while (left < right)
         {
-            u64 middle = (left + right) / 2;
+            bad_uint64 middle = (left + right) / 2;
 
             if (key <= mPairs.at(middle).getKey())
             {
@@ -226,14 +226,14 @@ NgosStatus Map<Key, Value>::remove(const Key &key)
 
 
 
-    u64 left  = 0;
-    u64 right = mPairs.getSize();
+    bad_uint64 left  = 0;
+    bad_uint64 right = mPairs.getSize();
 
     // Binary search for the element
     {
         while (left < right)
         {
-            u64 middle = (left + right) / 2;
+            bad_uint64 middle = (left + right) / 2;
 
             if (key <= mPairs.at(middle).getKey())
             {
@@ -341,14 +341,14 @@ bool Map<Key, Value>::contains(const Key &key) const
 
 
 
-    u64 left  = 0;
-    u64 right = mPairs.getSize();
+    bad_uint64 left  = 0;
+    bad_uint64 right = mPairs.getSize();
 
     // Binary search for the element
     {
         while (left < right)
         {
-            u64 middle = (left + right) / 2;
+            bad_uint64 middle = (left + right) / 2;
 
             if (key <= mPairs.at(middle).getKey())
             {
@@ -430,14 +430,14 @@ const Value& Map<Key, Value>::value(const Key &key, const Value &defaultValue) c
 
 
 
-    u64 left  = 0;
-    u64 right = mPairs.getSize();
+    bad_uint64 left  = 0;
+    bad_uint64 right = mPairs.getSize();
 
     // Binary search for the element
     {
         while (left < right)
         {
-            u64 middle = (left + right) / 2;
+            bad_uint64 middle = (left + right) / 2;
 
             if (key <= mPairs.at(middle).getKey())
             {
@@ -476,7 +476,7 @@ const Value& Map<Key, Value>::value(const Key &key, const Value &defaultValue) c
 }
 
 template <typename Key, typename Value>
-u64 Map<Key, Value>::getSize() const
+bad_uint64 Map<Key, Value>::getSize() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

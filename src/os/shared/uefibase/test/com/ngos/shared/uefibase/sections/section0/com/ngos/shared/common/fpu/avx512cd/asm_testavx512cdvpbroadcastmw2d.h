@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512cdVpbroadcastmw2d(u32 *a, u16 mask);
+void testAvx512cdVpbroadcastmw2d(bad_uint32 *a, bad_uint16 mask);
 
 
 

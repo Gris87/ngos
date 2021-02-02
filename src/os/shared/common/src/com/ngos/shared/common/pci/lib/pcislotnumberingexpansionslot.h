@@ -13,12 +13,12 @@ struct PciSlotNumberingExpansionSlot
     {
         struct
         {
-            u8 expansionSlotsProvided: 5;
-            u8 firstInChassis:         1;
-            u8 __reserved:             2;
+            bad_uint8 expansionSlotsProvided: 5;
+            bad_uint8 firstInChassis:         1;
+            bad_uint8 __reserved:             2;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 };
 

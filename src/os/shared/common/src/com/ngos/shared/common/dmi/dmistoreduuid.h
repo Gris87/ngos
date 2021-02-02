@@ -10,7 +10,7 @@
 
 
 
-enum class DmiStoredUuid: u8
+enum class DmiStoredUuid: bad_uint8
 {
     SYSTEM_UUID,
     MAXIMUM
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiStoredUuid uuid) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", (u8)uuid, enumToString(uuid));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)uuid, enumToString(uuid));
 
     return res;
 }

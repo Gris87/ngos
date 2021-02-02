@@ -20,13 +20,13 @@
 UefiGraphicsOutputProtocol *Console::sScreenGop;
 RgbaPixel                  *Console::sDoubleBuffer;
 RgbaPixel                  *Console::sLastLineBuffer;
-u64                         Console::sLastLineBufferSize;
-u16                         Console::sScreenPosX;
-u16                        *Console::sGlyphOffsets;
+bad_uint64                         Console::sLastLineBufferSize;
+bad_uint16                         Console::sScreenPosX;
+bad_uint16                        *Console::sGlyphOffsets;
 
 
 
-NgosStatus Console::init(BootParams *params, RgbaPixel *doubleBuffer, u64 doubleBufferSize)
+NgosStatus Console::init(BootParams *params, RgbaPixel *doubleBuffer, bad_uint64 doubleBufferSize)
 {
     COMMON_LT((" | params = 0x%p, doubleBuffer = 0x%p, doubleBufferSize = %u", params, doubleBuffer, doubleBufferSize));
 
@@ -46,9 +46,9 @@ NgosStatus Console::init(BootParams *params, RgbaPixel *doubleBuffer, u64 double
     sScreenGop          = params->screens[0];
     sDoubleBuffer       = doubleBuffer;
     sLastLineBufferSize = sScreenGop->mode->info->horizontalResolution * (CHAR_HEIGHT + BOTTOM_MARGIN) * sizeof(RgbaPixel);
-    sLastLineBuffer     = (RgbaPixel *)((u64)sDoubleBuffer + doubleBufferSize - sLastLineBufferSize);
+    sLastLineBuffer     = (RgbaPixel *)((bad_uint64)sDoubleBuffer + doubleBufferSize - sLastLineBufferSize);
     sScreenPosX         = SIDE_MARGIN;
-    sGlyphOffsets       = (u16 *)asset->content;
+    sGlyphOffsets       = (bad_uint16 *)asset->content;
 
 
 
@@ -87,7 +87,7 @@ NgosStatus Console::init()
     AssetEntry *asset = Assets::getAssetEntry("glyphs/console.bin");
     COMMON_TEST_ASSERT(asset, NgosStatus::ASSERTION);
 
-    sGlyphOffsets = (u16 *)asset->content;
+    sGlyphOffsets = (bad_uint16 *)asset->content;
 
 
 
@@ -114,7 +114,7 @@ NgosStatus Console::print(char8 ch)
     else
     if (ch >= 0x20 && ch < 0x7F)
     {
-        GlyphData *glyphData = (GlyphData *)((u64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
+        GlyphData *glyphData = (GlyphData *)((bad_uint64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
 
 
 
@@ -125,31 +125,31 @@ NgosStatus Console::print(char8 ch)
 
 
 
-        i16  charPosX   = sScreenPosX + glyphData->bitmapLeft;
-        i16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
-        u8  *bitmapByte = glyphData->bitmap;
+        bad_int16  charPosX   = sScreenPosX + glyphData->bitmapLeft;
+        bad_int16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
+        bad_uint8  *bitmapByte = glyphData->bitmap;
 
         COMMON_TEST_ASSERT(charPosX                           >= 0,                                                 NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= (i64)sScreenGop->mode->info->horizontalResolution, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= (bad_int64)sScreenGop->mode->info->horizontalResolution, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(charPosY                           >= 0,                                                 NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(charPosY + glyphData->bitmapHeight <= CHAR_HEIGHT + BOTTOM_MARGIN,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(glyphData->bitmapHeight            <= CHAR_HEIGHT,                                       NgosStatus::ASSERTION);
 
 
 
-        for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
+        for (bad_int64 i = 0; i < glyphData->bitmapHeight; ++i)
         {
-            for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
+            for (bad_int64 j = 0; j < glyphData->bitmapWidth; ++j)
             {
                 RgbaPixel *pixel = &sLastLineBuffer[(charPosY + i) * sScreenGop->mode->info->horizontalResolution + charPosX + j];
 
-                COMMON_TEST_ASSERT((u64)pixel >= (u64)sLastLineBuffer
+                COMMON_TEST_ASSERT((bad_uint64)pixel >= (bad_uint64)sLastLineBuffer
                                     &&
-                                    (u64)pixel <= (u64)sLastLineBuffer + sLastLineBufferSize - sizeof(RgbaPixel), NgosStatus::ASSERTION);
+                                    (bad_uint64)pixel <= (bad_uint64)sLastLineBuffer + sLastLineBufferSize - sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
 
 
-                u8 greyColor = *bitmapByte;
+                bad_uint8 greyColor = *bitmapByte;
 
                 pixel->red   = greyColor;
                 pixel->green = greyColor;
@@ -164,7 +164,7 @@ NgosStatus Console::print(char8 ch)
     }
     else
     {
-        COMMON_LW(("Non-printable character found: 0x%02X", (u8)ch));
+        COMMON_LW(("Non-printable character found: 0x%02X", (bad_uint8)ch));
 
         return NgosStatus::UNEXPECTED_BEHAVIOUR;
     }

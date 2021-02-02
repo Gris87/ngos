@@ -190,7 +190,7 @@ AES::~AES()
     }
 }
 
-NgosStatus AES::setKey(u8 *key, u8 size)
+NgosStatus AES::setKey(bad_uint8 *key, bad_uint8 size)
 {
     // COMMON_LT((" | key = 0x%p, size = %u", key, size)); // Commented to avoid bad looking logs
 
@@ -208,14 +208,14 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeBlockFunction = &AES::encodeBlock128;
             mDecodeBlockFunction = &AES::decodeBlock128;
 
-            mEncodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
+            mEncodeKeyAllocated = (bad_uint8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (bad_uint8 *)malloc(12 * 16); // Key should contains of 11 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
 
-            mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+            mEncodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
+            mDecodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
 
             COMMON_ASSERT_EXECUTION(expandKey128(key), NgosStatus::ASSERTION);
         }
@@ -226,14 +226,14 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeBlockFunction = &AES::encodeBlock192;
             mDecodeBlockFunction = &AES::decodeBlock192;
 
-            mEncodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
+            mEncodeKeyAllocated = (bad_uint8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (bad_uint8 *)malloc(14 * 16); // Key should contains of 13 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
 
-            mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+            mEncodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
+            mDecodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
 
             COMMON_ASSERT_EXECUTION(expandKey192(key), NgosStatus::ASSERTION);
         }
@@ -244,14 +244,14 @@ NgosStatus AES::setKey(u8 *key, u8 size)
             mEncodeBlockFunction = &AES::encodeBlock256;
             mDecodeBlockFunction = &AES::decodeBlock256;
 
-            mEncodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
-            mDecodeKeyAllocated = (u8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
+            mEncodeKeyAllocated = (bad_uint8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mEncodeKey be aligned // Ignore CppShiftVerifier
+            mDecodeKeyAllocated = (bad_uint8 *)malloc(16 * 16); // Key should contains of 15 x 16-byte blocks. But we are allocating one more block to let mDecodeKey be aligned // Ignore CppShiftVerifier
 
             COMMON_TEST_ASSERT(mEncodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
             COMMON_TEST_ASSERT(mDecodeKeyAllocated != nullptr, NgosStatus::ASSERTION);
 
-            mEncodeKey = (u8 *)(ROUND_UP((u64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
-            mDecodeKey = (u8 *)(ROUND_UP((u64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
+            mEncodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mEncodeKeyAllocated, 16)); // Align mEncodeKey to make AES work faster
+            mDecodeKey = (bad_uint8 *)(ROUND_UP((bad_uint64)mDecodeKeyAllocated, 16)); // Align mDecodeKey to make AES work faster
 
             COMMON_ASSERT_EXECUTION(expandKey256(key), NgosStatus::ASSERTION);
         }
@@ -307,7 +307,7 @@ NgosStatus AES::releaseKey()
     return NgosStatus::OK;
 }
 
-NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
+NgosStatus AES::encode(bad_uint8 *in, bad_uint64 inSize, bad_uint8 *out, bad_uint64 outSize, bad_uint64 *resultSize)
 {
     // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
 
@@ -325,8 +325,8 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    u8  padding = inSize & 0x0F;
-    u64 size;
+    bad_uint8  padding = inSize & 0x0F;
+    bad_uint64 size;
 
     if (padding)
     {
@@ -349,9 +349,9 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    i64 blocksCount = inSize / 16;
+    bad_int64 blocksCount = inSize / 16;
 
-    for (i64 i = 0; i < blocksCount; ++i)
+    for (bad_int64 i = 0; i < blocksCount; ++i)
     {
         COMMON_ASSERT_EXECUTION((this->*mEncodeBlockFunction)(in, out), NgosStatus::ASSERTION);
 
@@ -363,7 +363,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
     if (padding)
     {
-        u8 paddingBlock[16] __attribute__((aligned(16)));
+        bad_uint8 paddingBlock[16] __attribute__((aligned(16)));
 
         memcpy(paddingBlock, in, 16 - padding);
         memzero(&paddingBlock[16 - padding], padding);
@@ -376,7 +376,7 @@ NgosStatus AES::encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
     return NgosStatus::OK;
 }
 
-NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize)
+NgosStatus AES::decode(bad_uint8 *in, bad_uint64 inSize, bad_uint8 *out, bad_uint64 outSize, bad_uint64 *resultSize)
 {
     // COMMON_LT((" | in = 0x%p, inSize = %u, out = 0x%p, outSize = %u, resultSize = 0x%p", in, inSize, out, outSize, resultSize)); // Commented to avoid bad looking logs
 
@@ -395,7 +395,7 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    u64 size = inSize;
+    bad_uint64 size = inSize;
 
     if (outSize < size)
     {
@@ -406,9 +406,9 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
 
 
 
-    i64 blocksCount = inSize / 16;
+    bad_int64 blocksCount = inSize / 16;
 
-    for (i64 i = 0; i < blocksCount; ++i)
+    for (bad_int64 i = 0; i < blocksCount; ++i)
     {
         COMMON_ASSERT_EXECUTION((this->*mDecodeBlockFunction)(in, out), NgosStatus::ASSERTION);
 
@@ -421,7 +421,7 @@ NgosStatus AES::decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize
     return NgosStatus::OK;
 }
 
-NgosStatus AES::expandKey128(u8 *key)
+NgosStatus AES::expandKey128(bad_uint8 *key)
 {
     // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
@@ -461,7 +461,7 @@ NgosStatus AES::expandKey128(u8 *key)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::expandKey192(u8 *key)
+NgosStatus AES::expandKey192(bad_uint8 *key)
 {
     // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
@@ -519,7 +519,7 @@ NgosStatus AES::expandKey192(u8 *key)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::expandKey256(u8 *key)
+NgosStatus AES::expandKey256(bad_uint8 *key)
 {
     // COMMON_LT((" | key = 0x%p", key)); // Commented to avoid bad looking logs
 
@@ -563,7 +563,7 @@ NgosStatus AES::expandKey256(u8 *key)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::encodeBlock128(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
@@ -604,7 +604,7 @@ NgosStatus AES::encodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::encodeBlock192(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
@@ -647,7 +647,7 @@ NgosStatus AES::encodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::encodeBlock256(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
@@ -692,7 +692,7 @@ NgosStatus AES::encodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::decodeBlock128(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
@@ -733,7 +733,7 @@ NgosStatus AES::decodeBlock128(u8 *sourceAddress, u8 *destinationAddress)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::decodeBlock192(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 
@@ -776,7 +776,7 @@ NgosStatus AES::decodeBlock192(u8 *sourceAddress, u8 *destinationAddress)
     return NgosStatus::OK;
 }
 
-NgosStatus AES::decodeBlock256(u8 *sourceAddress, u8 *destinationAddress)
+NgosStatus AES::decodeBlock256(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress)
 {
     // COMMON_LT((" | sourceAddress = 0x%p, destinationAddress = 0x%p", sourceAddress, destinationAddress)); // Commented to avoid bad looking logs
 

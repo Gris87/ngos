@@ -9,7 +9,7 @@
 
 struct PciExpressDeviceStatus2
 {
-    u16 value16;
+    bad_uint16 value16;
 };
 
 

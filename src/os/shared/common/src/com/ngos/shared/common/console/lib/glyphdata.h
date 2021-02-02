@@ -9,12 +9,12 @@
 
 struct GlyphData
 {
-    u8 width;
-    i8 bitmapLeft;
-    i8 bitmapTop;
-    u8 bitmapWidth;
-    u8 bitmapHeight;
-    u8 bitmap[0];
+    bad_uint8 width;
+    bad_int8 bitmapLeft;
+    bad_int8 bitmapTop;
+    bad_uint8 bitmapWidth;
+    bad_uint8 bitmapHeight;
+    bad_uint8 bitmap[0];
 } __attribute__((packed));
 
 

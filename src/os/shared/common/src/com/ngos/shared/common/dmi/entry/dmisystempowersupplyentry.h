@@ -20,7 +20,7 @@
 struct DmiSystemPowerSupplyEntry
 {
     DmiEntryHeader                      header;
-    u8                                  powerUnitGroup;
+    bad_uint8                                  powerUnitGroup;
     DmiStringId                         location;
     DmiStringId                         deviceName;
     DmiStringId                         manufacturer;
@@ -28,11 +28,11 @@ struct DmiSystemPowerSupplyEntry
     DmiStringId                         assetTagNumber;
     DmiStringId                         modelPartNumber;
     DmiStringId                         revisionLevel;
-    u16                                 maxPowerCapacity;
+    bad_uint16                                 maxPowerCapacity;
     DmiSystemPowerSupplyCharacteristics powerSupplyCharacteristics;
-    u16                                 inputVoltageProbeHandle;
-    u16                                 coolingDeviceHandle;
-    u16                                 inputCurrentProbeHandle;
+    bad_uint16                                 inputVoltageProbeHandle;
+    bad_uint16                                 coolingDeviceHandle;
+    bad_uint16                                 inputCurrentProbeHandle;
 } __attribute__((packed));
 
 

@@ -20,7 +20,7 @@ public:
     static AssetEntry* getAssetEntry(const char8 *fileName); // TEST: NO
 
 private:
-    static u8         sEntriesCount;
+    static bad_uint8         sEntriesCount;
     static AssetEntry sEntries[ASSET_ENTRIES_COUNT];
 };
 

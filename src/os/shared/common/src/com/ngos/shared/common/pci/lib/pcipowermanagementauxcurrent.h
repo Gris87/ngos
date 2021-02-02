@@ -8,7 +8,7 @@
 
 
 
-enum class PciPowerManagementAuxCurrent: u8
+enum class PciPowerManagementAuxCurrent: bad_uint8
 {
     SELF_POWERED = 0,
     _55_MA       = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(PciPowerManagementAuxCurrent current) // TE
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)current, enumToString(current));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)current, enumToString(current));
 
     return res;
 }

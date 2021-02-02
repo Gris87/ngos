@@ -13,21 +13,21 @@ struct PciExpressSlotCapability
     {
         struct
         {
-            u32 attentionButtonPresent            : 1;
-            u32 powerControllerPresent            : 1;
-            u32 mrlSensorPresent                  : 1;
-            u32 attentionIndicatorPresent         : 1;
-            u32 powerIndicatorPresent             : 1;
-            u32 hotPlugSurprise                   : 1;
-            u32 hotPlugCapable                    : 1;
-            u32 slotPowerLimitValue               : 8;
-            u32 slotPowerLimitScale               : 2; // TODO: Use enum PciExpressPowerScale
-            u32 electromechanicalInterlockPresent : 1;
-            u32 noCommandCompletedSupport         : 1;
-            u32 physicalSlotNumber                : 13;
+            bad_uint32 attentionButtonPresent            : 1;
+            bad_uint32 powerControllerPresent            : 1;
+            bad_uint32 mrlSensorPresent                  : 1;
+            bad_uint32 attentionIndicatorPresent         : 1;
+            bad_uint32 powerIndicatorPresent             : 1;
+            bad_uint32 hotPlugSurprise                   : 1;
+            bad_uint32 hotPlugCapable                    : 1;
+            bad_uint32 slotPowerLimitValue               : 8;
+            bad_uint32 slotPowerLimitScale               : 2; // TODO: Use enum PciExpressPowerScale
+            bad_uint32 electromechanicalInterlockPresent : 1;
+            bad_uint32 noCommandCompletedSupport         : 1;
+            bad_uint32 physicalSlotNumber                : 13;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

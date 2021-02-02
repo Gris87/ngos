@@ -39,7 +39,7 @@ NgosStatus dictionaryReset(LzmaDictionary *dictionary, XzBuffer *buffer)
 }
 
 // Set dictionary write limit
-NgosStatus dictionaryLimit(LzmaDictionary *dictionary, u64 outMax)
+NgosStatus dictionaryLimit(LzmaDictionary *dictionary, bad_uint64 outMax)
 {
     // EARLY_LT((" | dictionary = 0x%p, outMax = %u", dictionary, outMax)); // Commented to avoid too frequent logs
 
@@ -78,7 +78,7 @@ inline bool dictionaryHasSpace(const LzmaDictionary *dictionary)
 // assumed to valid, or as a special case, zero when the dictionary is
 // still empty. This special case is needed for single-call decoding to
 // avoid writing a '\0' to the end of the destination buffer.
-inline u32 dictionaryGet(const LzmaDictionary *dictionary, u32 distance)
+inline bad_uint32 dictionaryGet(const LzmaDictionary *dictionary, bad_uint32 distance)
 {
     // EARLY_LT((" | dictionary = 0x%p, distance = %u", dictionary, distance)); // Commented to avoid too frequent logs
 
@@ -86,7 +86,7 @@ inline u32 dictionaryGet(const LzmaDictionary *dictionary, u32 distance)
 
 
 
-    u64 offset = dictionary->position - distance - 1;
+    bad_uint64 offset = dictionary->position - distance - 1;
 
     if (distance >= dictionary->position)
     {
@@ -97,7 +97,7 @@ inline u32 dictionaryGet(const LzmaDictionary *dictionary, u32 distance)
 }
 
 // Put one byte into the dictionary. It is assumed that there is space for it.
-inline NgosStatus dictionaryPut(LzmaDictionary *dictionary, u8 byte)
+inline NgosStatus dictionaryPut(LzmaDictionary *dictionary, bad_uint8 byte)
 {
     // EARLY_LT((" | dictionary = 0x%p, byte = %u", dictionary, byte)); // Commented to avoid too frequent logs
 
@@ -120,7 +120,7 @@ inline NgosStatus dictionaryPut(LzmaDictionary *dictionary, u8 byte)
 // Repeat given number of bytes from the given distance. If the distance is
 // invalid, NgosStatus::INVALID_DATA is returned. On success, NgosStatus::OK is returned and *length is
 // updated to indicate how many bytes were left to be repeated.
-NgosStatus dictionaryRepeat(LzmaDictionary *dictionary, u32 *length, u32 distance)
+NgosStatus dictionaryRepeat(LzmaDictionary *dictionary, bad_uint32 *length, bad_uint32 distance)
 {
     // EARLY_LT((" | dictionary = 0x%p, length = 0x%p, distance = %u", dictionary, length, distance)); // Commented to avoid too frequent logs
 
@@ -136,8 +136,8 @@ NgosStatus dictionaryRepeat(LzmaDictionary *dictionary, u32 *length, u32 distanc
 
 
 
-    u32 left = MIN_TYPED(u64, dictionary->limit - dictionary->position, *length);
-    u64 back = dictionary->position - distance - 1;
+    bad_uint32 left = MIN_TYPED(bad_uint64, dictionary->limit - dictionary->position, *length);
+    bad_uint64 back = dictionary->position - distance - 1;
 
     *length -= left;
 
@@ -173,7 +173,7 @@ NgosStatus dictionaryRepeat(LzmaDictionary *dictionary, u32 *length, u32 distanc
 }
 
 // Copy uncompressed data as is from input to dictionary and output buffers.
-NgosStatus dictionaryUncompressed(LzmaDictionary *dictionary, XzBuffer *buffer, u32 *left)
+NgosStatus dictionaryUncompressed(LzmaDictionary *dictionary, XzBuffer *buffer, bad_uint32 *left)
 {
     // EARLY_LT((" | dictionary = 0x%p, buffer = 0x%p, left = 0x%p", dictionary, buffer, left)); // Commented to avoid too frequent logs
 
@@ -183,7 +183,7 @@ NgosStatus dictionaryUncompressed(LzmaDictionary *dictionary, XzBuffer *buffer, 
 
 
 
-    u64 copySize;
+    bad_uint64 copySize;
 
     while (
            *left > 0
@@ -240,7 +240,7 @@ NgosStatus dictionaryUncompressed(LzmaDictionary *dictionary, XzBuffer *buffer, 
 // Flush pending data from dictionary to buffer->out. It is assumed that there is
 // enough space in buffer->out. This is guaranteed because caller uses dictionaryLimit()
 // before decoding data into the dictionary.
-u32 dictionaryFlush(LzmaDictionary *dictionary, XzBuffer *buffer)
+bad_uint32 dictionaryFlush(LzmaDictionary *dictionary, XzBuffer *buffer)
 {
     // EARLY_LT((" | dictionary = 0x%p, buffer = 0x%p", dictionary, buffer)); // Commented to avoid too frequent logs
 
@@ -249,7 +249,7 @@ u32 dictionaryFlush(LzmaDictionary *dictionary, XzBuffer *buffer)
 
 
 
-    u64 copySize = dictionary->position - dictionary->start;
+    bad_uint64 copySize = dictionary->position - dictionary->start;
 
     if (LZMA_DECODER_IS_MULTI(dictionary->mode))
     {
@@ -282,7 +282,7 @@ NgosStatus rcReset(LzmaRcDecoder *rc)
 
 
 
-    rc->range            = (u32)-1;
+    rc->range            = (bad_uint32)-1;
     rc->code             = 0;
     rc->initialBytesLeft = RC_INIT_BYTES;
 
@@ -362,7 +362,7 @@ inline NgosStatus rcNormalize(LzmaRcDecoder *rc)
 }
 
 // Decode one bit.
-inline bool rcDecodeBit(LzmaRcDecoder *rc, u16 *prob)
+inline bool rcDecodeBit(LzmaRcDecoder *rc, bad_uint16 *prob)
 {
     // EARLY_LT((" | rc = 0x%p, prob = 0x%p", rc, prob)); // Commented to avoid too frequent logs
 
@@ -373,7 +373,7 @@ inline bool rcDecodeBit(LzmaRcDecoder *rc, u16 *prob)
 
     EARLY_ASSERT_EXECUTION(rcNormalize(rc), false);
 
-    u32 bound = (rc->range >> RC_BIT_MODEL_TOTAL_BITS) * *prob;
+    bad_uint32 bound = (rc->range >> RC_BIT_MODEL_TOTAL_BITS) * *prob;
 
     if (rc->code < bound)
     {
@@ -395,7 +395,7 @@ inline bool rcDecodeBit(LzmaRcDecoder *rc, u16 *prob)
 }
 
 // Decode a bittree starting from the most significant bit.
-inline u32 rcDecodeBitTree(LzmaRcDecoder *rc, u16 *probs, u32 limit)
+inline bad_uint32 rcDecodeBitTree(LzmaRcDecoder *rc, bad_uint16 *probs, bad_uint32 limit)
 {
     // EARLY_LT((" | rc = 0x%p, probs = 0x%p, limit = %u", rc, probs, limit)); // Commented to avoid too frequent logs
 
@@ -404,7 +404,7 @@ inline u32 rcDecodeBitTree(LzmaRcDecoder *rc, u16 *probs, u32 limit)
 
 
 
-    u32 symbol = 1;
+    bad_uint32 symbol = 1;
 
     do
     {
@@ -422,7 +422,7 @@ inline u32 rcDecodeBitTree(LzmaRcDecoder *rc, u16 *probs, u32 limit)
 }
 
 // Decode a bittree starting from the least significant bit.
-inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, u16 *probs, u32 *dest, u32 limit)
+inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, bad_uint16 *probs, bad_uint32 *dest, bad_uint32 limit)
 {
     // EARLY_LT((" | rc = 0x%p, probs = 0x%p, dest = 0x%p, limit = %u", rc, probs, dest, limit)); // Commented to avoid too frequent logs
 
@@ -432,8 +432,8 @@ inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, u16 *probs, u32 *des
 
 
 
-    u32 symbol = 1;
-    u32 i      = 0;
+    bad_uint32 symbol = 1;
+    bad_uint32 i      = 0;
 
     do
     {
@@ -454,7 +454,7 @@ inline NgosStatus rcDecodeBitTreeReverse(LzmaRcDecoder *rc, u16 *probs, u32 *des
 }
 
 // Decode direct bits (fixed fifty-fifty probability)
-inline NgosStatus rcDecodeDirectBits(LzmaRcDecoder *rc, u32 *dest, u32 limit)
+inline NgosStatus rcDecodeDirectBits(LzmaRcDecoder *rc, bad_uint32 *dest, bad_uint32 limit)
 {
     // EARLY_LT((" | rc = 0x%p, dest = 0x%p, limit = %u", rc, dest, limit)); // Commented to avoid too frequent logs
 
@@ -470,7 +470,7 @@ inline NgosStatus rcDecodeDirectBits(LzmaRcDecoder *rc, u32 *dest, u32 limit)
         rc->range >>= 1;
         rc->code  -=  rc->range;
 
-        u32 mask = (u32)0 - (rc->code >> 31);
+        bad_uint32 mask = (bad_uint32)0 - (rc->code >> 31);
 
         rc->code += rc->range & mask;
         *dest    =  (*dest << 1) + (mask + 1);
@@ -501,11 +501,11 @@ inline NgosStatus lzmaSetStateLiteral(LzmaState *state)
     else
     if (*state <= LzmaState::LITERAL_SHORTREPEAT)
     {
-        *state = (LzmaState)((u8)(*state) - 3);
+        *state = (LzmaState)((bad_uint8)(*state) - 3);
     }
     else
     {
-        *state = (LzmaState)((u8)(*state) - 6);
+        *state = (LzmaState)((bad_uint8)(*state) - 6);
     }
 
     // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
@@ -524,7 +524,7 @@ inline NgosStatus lzmaSetStateMatch(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_MATCH : LzmaState::NONLITERAL_MATCH;
+    *state = (bad_uint8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_MATCH : LzmaState::NONLITERAL_MATCH;
 
     // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
@@ -542,7 +542,7 @@ inline NgosStatus lzmaSetStateLongRepeat(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_LONGREPEAT : LzmaState::NONLITERAL_REPEAT;
+    *state = (bad_uint8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_LONGREPEAT : LzmaState::NONLITERAL_REPEAT;
 
     // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
@@ -560,7 +560,7 @@ inline NgosStatus lzmaSetStateShortRepeat(LzmaState *state)
 
 
 
-    *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_SHORTREPEAT : LzmaState::NONLITERAL_REPEAT;
+    *state = (bad_uint8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_SHORTREPEAT : LzmaState::NONLITERAL_REPEAT;
 
     // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
 
@@ -576,12 +576,12 @@ inline bool lzmaIsLiteralState(LzmaState state)
 
 
 
-    return (u8)state < LITERAL_STATES;
+    return (bad_uint8)state < LITERAL_STATES;
 }
 
 // Get the index of the appropriate probability array for decoding
 // the distance slot.
-inline u32 lzmaGetDistanceState(u32 length)
+inline bad_uint32 lzmaGetDistanceState(bad_uint32 length)
 {
     // EARLY_LT((" | length = %u", length)); // Commented to avoid too frequent logs
 
@@ -589,7 +589,7 @@ inline u32 lzmaGetDistanceState(u32 length)
 }
 
 // Get pointer to Literal coder probability array.
-u16 *lzmaLiteralProbs(XzLzma2Decoder *decoder)
+bad_uint16 *lzmaLiteralProbs(XzLzma2Decoder *decoder)
 {
     // EARLY_LT((" | decoder = 0x%p", decoder)); // Commented to avoid too frequent logs
 
@@ -597,10 +597,10 @@ u16 *lzmaLiteralProbs(XzLzma2Decoder *decoder)
 
 
 
-    u32 previousByte = dictionaryGet(&decoder->dictionary, 0);
+    bad_uint32 previousByte = dictionaryGet(&decoder->dictionary, 0);
 
-    u32 low  = previousByte >> (8 - decoder->lzma.lc);
-    u32 high = (decoder->dictionary.position & decoder->lzma.literalPositionMask) << decoder->lzma.lc;
+    bad_uint32 low  = previousByte >> (8 - decoder->lzma.lc);
+    bad_uint32 high = (decoder->dictionary.position & decoder->lzma.literalPositionMask) << decoder->lzma.lc;
 
     return decoder->lzma.literal[low + high];
 }
@@ -614,12 +614,12 @@ NgosStatus lzmaDecodeLiteral(XzLzma2Decoder *decoder)
 
 
 
-    u16 *probs;
-    u32  symbol;
-    u32  matchByte;
-    u32  matchBit;
-    u32  offset;
-    u32  i;
+    bad_uint16 *probs;
+    bad_uint32  symbol;
+    bad_uint32  matchByte;
+    bad_uint32  matchBit;
+    bad_uint32  offset;
+    bad_uint32  i;
 
 
 
@@ -657,7 +657,7 @@ NgosStatus lzmaDecodeLiteral(XzLzma2Decoder *decoder)
 
 
 
-    EARLY_ASSERT_EXECUTION(dictionaryPut(&decoder->dictionary, (u8)symbol), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(dictionaryPut(&decoder->dictionary, (bad_uint8)symbol), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(lzmaSetStateLiteral(&decoder->lzma.state),       NgosStatus::ASSERTION);
 
 
@@ -666,7 +666,7 @@ NgosStatus lzmaDecodeLiteral(XzLzma2Decoder *decoder)
 }
 
 // Decode the length of the Match into decoder->lzma.length.
-NgosStatus lzmaDecodeLength(XzLzma2Decoder *decoder, LzmaLengthDecoder *lengthDecoder, u32 positionState)
+NgosStatus lzmaDecodeLength(XzLzma2Decoder *decoder, LzmaLengthDecoder *lengthDecoder, bad_uint32 positionState)
 {
     // EARLY_LT((" | decoder = 0x%p, lengthDecoder = 0x%p, positionState = %u", decoder, lengthDecoder, positionState)); // Commented to avoid too frequent logs
 
@@ -675,8 +675,8 @@ NgosStatus lzmaDecodeLength(XzLzma2Decoder *decoder, LzmaLengthDecoder *lengthDe
 
 
 
-    u16 *probs;
-    u32  limit;
+    bad_uint16 *probs;
+    bad_uint32  limit;
 
     if (!rcDecodeBit(&decoder->rc, &lengthDecoder->choice))
     {
@@ -708,7 +708,7 @@ NgosStatus lzmaDecodeLength(XzLzma2Decoder *decoder, LzmaLengthDecoder *lengthDe
 }
 
 // Decode a Match. The distance will be stored in decoder->lzma.repeat0.
-NgosStatus lzmaDecodeMatch(XzLzma2Decoder *decoder, u32 positionState)
+NgosStatus lzmaDecodeMatch(XzLzma2Decoder *decoder, bad_uint32 positionState)
 {
     // EARLY_LT((" | decoder = 0x%p, positionState = %u", decoder, positionState)); // Commented to avoid too frequent logs
 
@@ -716,9 +716,9 @@ NgosStatus lzmaDecodeMatch(XzLzma2Decoder *decoder, u32 positionState)
 
 
 
-    u16 *probs;
-    u32  distanceSlot;
-    u32  limit;
+    bad_uint16 *probs;
+    bad_uint32  distanceSlot;
+    bad_uint32  limit;
 
     EARLY_ASSERT_EXECUTION(lzmaSetStateMatch(&decoder->lzma.state), NgosStatus::ASSERTION);
 
@@ -765,7 +765,7 @@ NgosStatus lzmaDecodeMatch(XzLzma2Decoder *decoder, u32 positionState)
 
 // Decode a repeated Match. The distance is one of the four most recently
 // seen Matches. The distance will be stored in decoder->lzma.repeat0.
-NgosStatus lzmaDecodeRepeatedMatch(XzLzma2Decoder *decoder, u32 positionState)
+NgosStatus lzmaDecodeRepeatedMatch(XzLzma2Decoder *decoder, bad_uint32 positionState)
 {
     // EARLY_LT((" | decoder = 0x%p, positionState = %u", decoder, positionState)); // Commented to avoid too frequent logs
 
@@ -773,9 +773,9 @@ NgosStatus lzmaDecodeRepeatedMatch(XzLzma2Decoder *decoder, u32 positionState)
 
 
 
-    if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat0[(u8)(decoder->lzma.state)]))
+    if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat0[(bad_uint8)(decoder->lzma.state)]))
     {
-        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat0Long[(u8)(decoder->lzma.state)][positionState]))
+        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat0Long[(bad_uint8)(decoder->lzma.state)][positionState]))
         {
             EARLY_ASSERT_EXECUTION(lzmaSetStateShortRepeat(&decoder->lzma.state), NgosStatus::ASSERTION);
 
@@ -786,15 +786,15 @@ NgosStatus lzmaDecodeRepeatedMatch(XzLzma2Decoder *decoder, u32 positionState)
     }
     else
     {
-        u32 temp;
+        bad_uint32 temp;
 
-        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat1[(u8)(decoder->lzma.state)]))
+        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat1[(bad_uint8)(decoder->lzma.state)]))
         {
             temp = decoder->lzma.repeat1;
         }
         else
         {
-            if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat2[(u8)(decoder->lzma.state)]))
+            if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat2[(bad_uint8)(decoder->lzma.state)]))
             {
                 temp = decoder->lzma.repeat2;
             }
@@ -843,15 +843,15 @@ NgosStatus lzmaMain(XzLzma2Decoder *decoder)
     // LZMA_IN_REQUIRED - 1 bytes.
     while (dictionaryHasSpace(&decoder->dictionary) && !rcLimitExceeded(&decoder->rc))
     {
-        u32 positionState = decoder->dictionary.position & decoder->lzma.positionMask;
+        bad_uint32 positionState = decoder->dictionary.position & decoder->lzma.positionMask;
 
-        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isMatch[(u8)(decoder->lzma.state)][positionState]))
+        if (!rcDecodeBit(&decoder->rc, &decoder->lzma.isMatch[(bad_uint8)(decoder->lzma.state)][positionState]))
         {
             EARLY_ASSERT_EXECUTION(lzmaDecodeLiteral(decoder), NgosStatus::ASSERTION);
         }
         else
         {
-            if (rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat[(u8)(decoder->lzma.state)]))
+            if (rcDecodeBit(&decoder->rc, &decoder->lzma.isRepeat[(bad_uint8)(decoder->lzma.state)]))
             {
                 EARLY_ASSERT_EXECUTION(lzmaDecodeRepeatedMatch(decoder, positionState), NgosStatus::ASSERTION);
             }
@@ -903,9 +903,9 @@ NgosStatus lzmaReset(XzLzma2Decoder *decoder)
     // This could be optimized so that only that part of Literal
     // probabilities that are actually required. In the common case
     // we would write 12 KiB less.
-    u16 *probs = decoder->lzma.isMatch[0];
+    bad_uint16 *probs = decoder->lzma.isMatch[0];
 
-    for (i64 i = 0; i < (i64)PROBS_TOTAL; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)PROBS_TOTAL; ++i)
     {
         probs[i] = RC_BIT_MODEL_TOTAL / 2;
     }
@@ -922,7 +922,7 @@ NgosStatus lzmaReset(XzLzma2Decoder *decoder)
 // Decode and validate LZMA properties (lc/lp/pb) and calculate the bit masks
 // from the decoded lp and pb values. On success, the LZMA decoder state is
 // reset and NgosStatus::OK is returned.
-NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, u8 properties)
+NgosStatus lzmaDecodeProperties(XzLzma2Decoder *decoder, bad_uint8 properties)
 {
     EARLY_LT((" | decoder = 0x%p, properties = %u", decoder, properties));
 
@@ -999,11 +999,11 @@ NgosStatus lzma2DecodeLzma(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
 
 
-    u64 bytesAvailable = buffer->inSize - buffer->inPosition;
+    bad_uint64 bytesAvailable = buffer->inSize - buffer->inPosition;
 
     if (decoder->temp.size > 0 || decoder->lzma2.compressed == 0)
     {
-        u32 temp = 2 * LZMA_IN_REQUIRED - decoder->temp.size;
+        bad_uint32 temp = 2 * LZMA_IN_REQUIRED - decoder->temp.size;
 
         if (temp > decoder->lzma2.compressed - decoder->temp.size)
         {
@@ -1152,7 +1152,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
 
 
-    u32 temp;
+    bad_uint32 temp;
 
     while (buffer->inPosition < buffer->inSize || decoder->lzma2.sequence == Lzma2Sequence::SEQ_LZMA_RUN)
     {
@@ -1264,28 +1264,28 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
 
             case Lzma2Sequence::SEQ_UNCOMPRESSED_1:
             {
-                decoder->lzma2.uncompressed += (u32)buffer->in[buffer->inPosition++] << 8;
+                decoder->lzma2.uncompressed += (bad_uint32)buffer->in[buffer->inPosition++] << 8;
                 decoder->lzma2.sequence     =  Lzma2Sequence::SEQ_UNCOMPRESSED_2;
             }
             break;
 
             case Lzma2Sequence::SEQ_UNCOMPRESSED_2:
             {
-                decoder->lzma2.uncompressed += (u32)buffer->in[buffer->inPosition++] + 1;
+                decoder->lzma2.uncompressed += (bad_uint32)buffer->in[buffer->inPosition++] + 1;
                 decoder->lzma2.sequence     =  Lzma2Sequence::SEQ_COMPRESSED_0;
             }
             break;
 
             case Lzma2Sequence::SEQ_COMPRESSED_0:
             {
-                decoder->lzma2.compressed = (u32)buffer->in[buffer->inPosition++] << 8;
+                decoder->lzma2.compressed = (bad_uint32)buffer->in[buffer->inPosition++] << 8;
                 decoder->lzma2.sequence   = Lzma2Sequence::SEQ_COMPRESSED_1;
             }
             break;
 
             case Lzma2Sequence::SEQ_COMPRESSED_1:
             {
-                decoder->lzma2.compressed += (u32)buffer->in[buffer->inPosition++] + 1;
+                decoder->lzma2.compressed += (bad_uint32)buffer->in[buffer->inPosition++] + 1;
                 decoder->lzma2.sequence   =  decoder->lzma2.nextSequence;
             }
             break;
@@ -1328,7 +1328,7 @@ NgosStatus runXzLzma2Decoder(XzLzma2Decoder *decoder, XzBuffer *buffer)
                 // the output buffer yet, we may run this loop
                 // multiple times without changing decoder->lzma2.sequence.
 
-                EARLY_ASSERT_EXECUTION(dictionaryLimit(&decoder->dictionary, MIN_TYPED(u64, buffer->outSize - buffer->outPosition, decoder->lzma2.uncompressed)), NgosStatus::ASSERTION);
+                EARLY_ASSERT_EXECUTION(dictionaryLimit(&decoder->dictionary, MIN_TYPED(bad_uint64, buffer->outSize - buffer->outPosition, decoder->lzma2.uncompressed)), NgosStatus::ASSERTION);
 
                 if (lzma2DecodeLzma(decoder, buffer) != NgosStatus::OK)
                 {

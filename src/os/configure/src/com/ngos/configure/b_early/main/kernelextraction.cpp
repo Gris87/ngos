@@ -13,7 +13,7 @@
 
 
 CPP_EXTERN_C
-u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *decompressedAddress, u8 *pageTable)
+bad_uint64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, bad_uint8 *decompressedAddress, bad_uint8 *pageTable)
 {
     EARLY_LT((" | kernelDescriptor = 0x%p, params = 0x%p, decompressedAddress = 0x%p, pageTable = 0x%p", kernelDescriptor, params, decompressedAddress, pageTable));
 
@@ -52,14 +52,14 @@ u64 extractKernel(KernelDescriptor *kernelDescriptor, BootParams *params, u8 *de
 
 
 
-    u64 elfMemorySize = getElfMemorySize(elfHeader);
+    bad_uint64 elfMemorySize = getElfMemorySize(elfHeader);
     EARLY_LVVV(("elfMemorySize = %u", elfMemorySize));
     EARLY_TEST_ASSERT(elfMemorySize > 0, 0);
 
 
 
-    u64 physicalAddress = 0;
-    u64 virtualAddress  = 0;
+    bad_uint64 physicalAddress = 0;
+    bad_uint64 virtualAddress  = 0;
 
     if (getRandomLocation(params, pageTable, elfMemorySize, &physicalAddress, &virtualAddress) != NgosStatus::OK)
     {

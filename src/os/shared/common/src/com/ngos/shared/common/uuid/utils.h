@@ -16,9 +16,9 @@ inline bool isUuidEquals(const Uuid &uuid1, const Uuid &uuid2)
 
 
 
-    return ((u64 *)&uuid1)[0] == ((u64 *)&uuid2)[0]
+    return ((bad_uint64 *)&uuid1)[0] == ((bad_uint64 *)&uuid2)[0]
             &&
-            ((u64 *)&uuid1)[1] == ((u64 *)&uuid2)[1];
+            ((bad_uint64 *)&uuid1)[1] == ((bad_uint64 *)&uuid2)[1];
 }
 
 inline const char8* uuidToString(const Uuid &uuid) // TEST: NO

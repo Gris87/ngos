@@ -64,7 +64,7 @@ NgosStatus RootWidget::applyUpdates()
     return NgosStatus::OK;
 }
 
-NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 height)
+NgosStatus RootWidget::update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height)
 {
     // COMMON_LT((" | positionX = %d, positionY = %d, width = %u, height = %u", positionX, positionY, width, height)); // Commented to avoid infinite loop
 
@@ -81,10 +81,10 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
         if (screenWidget->hasIntersection(positionX, positionY, width, height))
         {
-            i64 left   = positionX - screenWidget->getPositionX();
-            i64 right  = left + (i64)width;
-            i64 top    = positionY - screenWidget->getPositionY();
-            i64 bottom = top + (i64)height;
+            bad_int64 left   = positionX - screenWidget->getPositionX();
+            bad_int64 right  = left + (bad_int64)width;
+            bad_int64 top    = positionY - screenWidget->getPositionY();
+            bad_int64 bottom = top + (bad_int64)height;
 
             if (left < 0)
             {
@@ -96,12 +96,12 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
                 top = 0;
             }
 
-            if (right > (i64)screenWidget->getWidth())
+            if (right > (bad_int64)screenWidget->getWidth())
             {
                 right = screenWidget->getWidth();
             }
 
-            if (bottom > (i64)screenWidget->getHeight())
+            if (bottom > (bad_int64)screenWidget->getHeight())
             {
                 bottom = screenWidget->getHeight();
             }
@@ -122,10 +122,10 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
 
         if (widget->hasIntersection(positionX, positionY, width, height))
         {
-            i64 left   = positionX - widget->getPositionX();
-            i64 right  = left + (i64)width;
-            i64 top    = positionY - widget->getPositionY();
-            i64 bottom = top + (i64)height;
+            bad_int64 left   = positionX - widget->getPositionX();
+            bad_int64 right  = left + (bad_int64)width;
+            bad_int64 top    = positionY - widget->getPositionY();
+            bad_int64 bottom = top + (bad_int64)height;
 
             if (left < 0)
             {
@@ -137,12 +137,12 @@ NgosStatus RootWidget::update(i64 positionX, i64 positionY, u64 width, u64 heigh
                 top = 0;
             }
 
-            if (right > (i64)widget->getResultImage()->getWidth())
+            if (right > (bad_int64)widget->getResultImage()->getWidth())
             {
                 right = widget->getResultImage()->getWidth();
             }
 
-            if (bottom > (i64)widget->getResultImage()->getHeight())
+            if (bottom > (bad_int64)widget->getResultImage()->getHeight())
             {
                 bottom = widget->getResultImage()->getHeight();
             }

@@ -13,11 +13,11 @@ struct PciMessageSignaledInterruptsMessageAddress
     {
         struct
         {
-            u32 __reserved: 2;
-            u32 value:      30;
+            bad_uint32 __reserved: 2;
+            bad_uint32 value:      30;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

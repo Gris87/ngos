@@ -24,7 +24,7 @@
 
 Button     *InstallerGUI::sRebootButton;
 Button     *InstallerGUI::sShutdownButton;
-u16         InstallerGUI::sWaitEventsCount;
+bad_uint16         InstallerGUI::sWaitEventsCount;
 uefi_event *InstallerGUI::sWaitEvents;
 
 
@@ -72,8 +72,8 @@ NgosStatus InstallerGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -91,10 +91,10 @@ NgosStatus InstallerGUI::init(BootParams *params)
 
 
 
-    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -175,7 +175,7 @@ NgosStatus InstallerGUI::generateWaitEventList()
 
 
     sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
-    u64 size         = sWaitEventsCount * sizeof(uefi_event);
+    bad_uint64 size         = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -191,11 +191,11 @@ NgosStatus InstallerGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    u16 eventId    = 1;
+    bad_uint16 eventId    = 1;
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -204,7 +204,7 @@ NgosStatus InstallerGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -222,7 +222,7 @@ NgosStatus InstallerGUI::waitForEvent()
 
 
 
-    u64 eventIndex;
+    bad_uint64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 

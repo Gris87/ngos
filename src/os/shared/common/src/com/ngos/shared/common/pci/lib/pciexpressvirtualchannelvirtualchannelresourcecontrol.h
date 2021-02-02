@@ -13,17 +13,17 @@ struct PciExpressVirtualChannelVirtualChannelResourceControl
     {
         struct
         {
-            u32 tcVcMap:                  8;
-            u32 __reserved:               8;
-            u32 loadPortArbitrationTable: 1;
-            u32 portArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelPortArbitrationSelect
-            u32 __reserved2:              4;
-            u32 virtualChannelId:         3;
-            u32 __reserved3:              4;
-            u32 virtualChannelEnable:     1;
+            bad_uint32 tcVcMap:                  8;
+            bad_uint32 __reserved:               8;
+            bad_uint32 loadPortArbitrationTable: 1;
+            bad_uint32 portArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelPortArbitrationSelect
+            bad_uint32 __reserved2:              4;
+            bad_uint32 virtualChannelId:         3;
+            bad_uint32 __reserved3:              4;
+            bad_uint32 virtualChannelEnable:     1;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

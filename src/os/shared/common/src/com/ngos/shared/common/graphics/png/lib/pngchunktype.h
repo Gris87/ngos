@@ -10,7 +10,7 @@
 
 
 
-enum class PngChunkType: u32 // Ignore CppEnumVerifier
+enum class PngChunkType: bad_uint32 // Ignore CppEnumVerifier
 {
     IHDR = 0x52444849,  // "IHDR"
     CHRM = 0x4D524863,  // "cHRM"
@@ -42,7 +42,7 @@ inline const char8* enumToString(PngChunkType type) // TEST: NO
 
     static char8 res[5];
 
-    *(u32 *)res = (u32)type;
+    *(bad_uint32 *)res = (bad_uint32)type;
     COMMON_TEST_ASSERT(res[4] == 0, 0);
 
     return res;
@@ -58,7 +58,7 @@ inline const char8* enumToFullString(PngChunkType type) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
 
     return res;
 }

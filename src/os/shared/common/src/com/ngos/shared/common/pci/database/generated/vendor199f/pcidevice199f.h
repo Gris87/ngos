@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice199F: u16 // Ignore CppEnumVerifier
+enum class PciDevice199F: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_8501 = 0x8501,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciDevice199F device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciDevice199F device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice199F::DEVICE_8501: return "AU85X1 PCI REV1.1";
-        case PciDevice199F::DEVICE_8521: return "AU8521 TV card";
+        case PciDevice199F::DEVICE_8501: return "Abad_uint85X1 PCI REV1.1";
+        case PciDevice199F::DEVICE_8521: return "Abad_uint8521 TV card";
 
         default: return "Unknown device";
     }

@@ -9,7 +9,7 @@
 
 struct IdtRegister
 {
-    u16   size;
+    bad_uint16   size;
     void *address;
 } __attribute__((packed));
 

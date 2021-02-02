@@ -8,7 +8,7 @@
 
 
 
-enum class UefiLocateSearchType: u32
+enum class UefiLocateSearchType: bad_uint32
 {
     ALL_HANDLES        = 0,
     BY_REGISTER_NOTIFY = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(UefiLocateSearchType type) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
 
     return res;
 }

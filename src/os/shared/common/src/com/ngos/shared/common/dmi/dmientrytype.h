@@ -10,7 +10,7 @@
 
 
 
-enum class DmiEntryType: u8
+enum class DmiEntryType: bad_uint8
 {
     BIOS                                 = 0,
     SYSTEM                               = 1,
@@ -131,7 +131,7 @@ inline const char8* enumToFullString(DmiEntryType type) // TEST: NO
 
     static char8 res[44];
 
-    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
 
     return res;
 }

@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice100000D0: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice100000D0: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10003050 = 0x10003050,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice100000D0 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice100000D0 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice100000D0::SUBDEVICE_10003050: return "HBA 9405W-16i";
-        case PciSubDevice100000D0::SUBDEVICE_10003070: return "HBA 9405W-8i8e";
+        case PciSubDevice100000D0::SUBDEVICE_10003070: return "HBA 9405W-8bad_int8e";
 
         default: return "Unknown device";
     }

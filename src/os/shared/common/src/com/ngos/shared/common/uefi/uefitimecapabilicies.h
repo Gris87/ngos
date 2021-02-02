@@ -9,8 +9,8 @@
 
 struct UefiTimeCapabilities
 {
-    u32  resolution; // 1e-6 parts per million
-    u32  accuracy;   // hertz
+    bad_uint32  resolution; // 1e-6 parts per million
+    bad_uint32  accuracy;   // hertz
     bool setsToZero; // Set clears sub-second time
 };
 

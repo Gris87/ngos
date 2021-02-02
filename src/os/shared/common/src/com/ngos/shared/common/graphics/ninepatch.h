@@ -20,18 +20,18 @@ public:
     NgosStatus addStretchRangeX(const StretchRange &range);
     NgosStatus addStretchRangeY(const StretchRange &range);
 
-    NgosStatus setPaddingLeft(u16 padding);
-    NgosStatus setPaddingTop(u16 padding);
-    NgosStatus setPaddingRight(u16 padding);
-    NgosStatus setPaddingBottom(u16 padding);
+    NgosStatus setPaddingLeft(bad_uint16 padding);
+    NgosStatus setPaddingTop(bad_uint16 padding);
+    NgosStatus setPaddingRight(bad_uint16 padding);
+    NgosStatus setPaddingBottom(bad_uint16 padding);
 
     const List<StretchRange>& getStretchRangesX() const;
     const List<StretchRange>& getStretchRangesY() const;
 
-    u16 getPaddingLeft() const;
-    u16 getPaddingTop() const;
-    u16 getPaddingRight() const;
-    u16 getPaddingBottom() const;
+    bad_uint16 getPaddingLeft() const;
+    bad_uint16 getPaddingTop() const;
+    bad_uint16 getPaddingRight() const;
+    bad_uint16 getPaddingBottom() const;
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -40,10 +40,10 @@ private:
 #endif
     List<StretchRange> mStretchRangesX;
     List<StretchRange> mStretchRangesY;
-    u16                mPaddingLeft;
-    u16                mPaddingTop;
-    u16                mPaddingRight;
-    u16                mPaddingBottom;
+    bad_uint16                mPaddingLeft;
+    bad_uint16                mPaddingTop;
+    bad_uint16                mPaddingRight;
+    bad_uint16                mPaddingBottom;
 };
 
 

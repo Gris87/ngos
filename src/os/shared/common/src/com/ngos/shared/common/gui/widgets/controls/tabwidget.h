@@ -23,16 +23,16 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
-    NgosStatus setSize(u64 width, u64 height) override; // TEST: NO
+    NgosStatus setSize(bad_uint64 width, bad_uint64 height) override; // TEST: NO
 
-    NgosStatus setCurrentPage(i64 page); // TEST: NO
-    i64 getCurrentPage(); // TEST: NO
+    NgosStatus setCurrentPage(bad_int64 page); // TEST: NO
+    bad_int64 getCurrentPage(); // TEST: NO
 
 private:
     Image                      *mPanelImage;
     ArrayList<TabButton *>      mTabButtons;
     ArrayList<TabPageWidget *>  mTabPages;
-    i64                         mCurrentPage;
+    bad_int64                         mCurrentPage;
 };
 
 

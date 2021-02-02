@@ -11,7 +11,7 @@
 
 
 
-typedef u16 pci_express_virtual_channel_virtual_channel_resource_status_flags;
+typedef bad_uint16 pci_express_virtual_channel_virtual_channel_resource_status_flags;
 
 enum class PciExpressVirtualChannelVirtualChannelResourceStatusFlag: pci_express_virtual_channel_virtual_channel_resource_status_flags
 {

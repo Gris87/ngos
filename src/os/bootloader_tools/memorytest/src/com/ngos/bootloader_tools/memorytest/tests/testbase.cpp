@@ -5,7 +5,7 @@
 
 
 
-TestBase* memoryTests[(u64)TestType::MAXIMUM];
+TestBase* memoryTests[(bad_uint64)TestType::MAXIMUM];
 
 
 
@@ -29,11 +29,11 @@ TestBase::TestBase(TestType type, uefi_ap_procedure procedure)
 
 
 
-    UEFI_TEST_ASSERT(memoryTests[(u64)type] == nullptr);
+    UEFI_TEST_ASSERT(memoryTests[(bad_uint64)type] == nullptr);
 
 
 
-    memoryTests[(u64)type] = this;
+    memoryTests[(bad_uint64)type] = this;
 }
 
 TestBase::~TestBase()
@@ -41,7 +41,7 @@ TestBase::~TestBase()
     UEFI_LT((""));
 }
 
-NgosStatus TestBase::reset(u64 start, u64 end, i64 testSize)
+NgosStatus TestBase::reset(bad_uint64 start, bad_uint64 end, bad_int64 testSize)
 {
     UEFI_LT((" | start = %u, end = %u, testSize = %u", start, end, testSize));
 
@@ -76,7 +76,7 @@ uefi_ap_procedure TestBase::getProcedure() const
     return mProcedure;
 }
 
-NgosStatus TestBase::setScore(u64 score)
+NgosStatus TestBase::setScore(bad_uint64 score)
 {
     // UEFI_LT((" | score = %u", score)); // Commented to avoid bad looking logs
 
@@ -89,7 +89,7 @@ NgosStatus TestBase::setScore(u64 score)
     return NgosStatus::OK;
 }
 
-u64 TestBase::getScore() const
+bad_uint64 TestBase::getScore() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -98,7 +98,7 @@ u64 TestBase::getScore() const
     return mScore;
 }
 
-NgosStatus TestBase::setAverageSpeed(u64 speed)
+NgosStatus TestBase::setAverageSpeed(bad_uint64 speed)
 {
     // UEFI_LT((" | speed = %u", speed)); // Commented to avoid bad looking logs
 
@@ -111,7 +111,7 @@ NgosStatus TestBase::setAverageSpeed(u64 speed)
     return NgosStatus::OK;
 }
 
-u64 TestBase::getAverageSpeed() const
+bad_uint64 TestBase::getAverageSpeed() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -129,7 +129,7 @@ bool TestBase::isCompleted() const
     return mScore != 0;
 }
 
-u64 TestBase::getRegionStart() const
+bad_uint64 TestBase::getRegionStart() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -138,7 +138,7 @@ u64 TestBase::getRegionStart() const
     return mRegionStart;
 }
 
-u64 TestBase::getRegionEnd() const
+bad_uint64 TestBase::getRegionEnd() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -147,7 +147,7 @@ u64 TestBase::getRegionEnd() const
     return mRegionEnd;
 }
 
-i64 TestBase::getTestSize() const
+bad_int64 TestBase::getTestSize() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -156,7 +156,7 @@ i64 TestBase::getTestSize() const
     return mTestSize;
 }
 
-i64 TestBase::getProgress() const
+bad_int64 TestBase::getProgress() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -165,7 +165,7 @@ i64 TestBase::getProgress() const
     return mProgress;
 }
 
-NgosStatus TestBase::setHandledProgress(i64 progress)
+NgosStatus TestBase::setHandledProgress(bad_int64 progress)
 {
     // UEFI_LT((" | progress = %d", progress)); // Commented to avoid bad looking logs
 
@@ -178,7 +178,7 @@ NgosStatus TestBase::setHandledProgress(i64 progress)
     return NgosStatus::OK;
 }
 
-i64 TestBase::getHandledProgress() const
+bad_int64 TestBase::getHandledProgress() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -187,7 +187,7 @@ i64 TestBase::getHandledProgress() const
     return mHandledProgress;
 }
 
-NgosStatus TestBase::setMaximumSpeed(u64 speed)
+NgosStatus TestBase::setMaximumSpeed(bad_uint64 speed)
 {
     // UEFI_LT((" | speed = %u", speed)); // Commented to avoid bad looking logs
 
@@ -200,7 +200,7 @@ NgosStatus TestBase::setMaximumSpeed(u64 speed)
     return NgosStatus::OK;
 }
 
-u64 TestBase::getMaximumSpeed() const
+bad_uint64 TestBase::getMaximumSpeed() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -209,7 +209,7 @@ u64 TestBase::getMaximumSpeed() const
     return mMaximumSpeed;
 }
 
-NgosStatus TestBase::setStartTsc(u64 tsc)
+NgosStatus TestBase::setStartTsc(bad_uint64 tsc)
 {
     // UEFI_LT((" | tsc = %u", tsc)); // Commented to avoid bad looking logs
 
@@ -223,7 +223,7 @@ NgosStatus TestBase::setStartTsc(u64 tsc)
     return NgosStatus::OK;
 }
 
-u64 TestBase::getStartTsc() const
+bad_uint64 TestBase::getStartTsc() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -232,7 +232,7 @@ u64 TestBase::getStartTsc() const
     return mStartTsc;
 }
 
-NgosStatus TestBase::setIntermediateTsc(u64 tsc)
+NgosStatus TestBase::setIntermediateTsc(bad_uint64 tsc)
 {
     // UEFI_LT((" | tsc = %u", tsc)); // Commented to avoid bad looking logs
 
@@ -245,7 +245,7 @@ NgosStatus TestBase::setIntermediateTsc(u64 tsc)
     return NgosStatus::OK;
 }
 
-u64 TestBase::getIntermediateTsc() const
+bad_uint64 TestBase::getIntermediateTsc() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 

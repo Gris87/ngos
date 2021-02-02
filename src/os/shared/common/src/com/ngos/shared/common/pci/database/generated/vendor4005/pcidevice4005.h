@@ -11,7 +11,7 @@
 
 
 
-enum class PciDevice4005: u16 // Ignore CppEnumVerifier
+enum class PciDevice4005: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0300 = 0x0300,
@@ -70,7 +70,7 @@ inline const char8* enumToFullString(PciDevice4005 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -106,7 +106,7 @@ inline const char8* enumToHumanString(PciDevice4005 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice4005 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice4005 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

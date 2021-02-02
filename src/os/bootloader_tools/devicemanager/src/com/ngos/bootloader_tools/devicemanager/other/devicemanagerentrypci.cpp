@@ -26,7 +26,7 @@ DeviceManagerEntryPCI::~DeviceManagerEntryPCI()
 
 
 
-    for (i64 i = 0; i < (i64)mChildren.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)mChildren.getSize(); ++i)
     {
         delete mChildren.at(i);
     }

@@ -15,9 +15,9 @@
 
 struct UefiFileInfo
 {
-    u64                    size;
-    u64                    fileSize;
-    u64                    physicalSize;
+    bad_uint64                    size;
+    bad_uint64                    fileSize;
+    bad_uint64                    physicalSize;
     UefiTime               createTime;
     UefiTime               lastAccessTime;
     UefiTime               modificationTime;

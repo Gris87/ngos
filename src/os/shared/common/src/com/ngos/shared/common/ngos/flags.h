@@ -116,7 +116,7 @@
 
 #define FLAGS(...) (PP_JOIN(__FLAGS_, PP_NARG(__VA_ARGS__))((__VA_ARGS__)))
 
-#define __FLAG(name) (u64)(name) // TEST: NO
+#define __FLAG(name) (bad_uint64)(name) // TEST: NO
 
 #define __FLAGS_1(a)   __FLAG(PP_0 a)                      // TEST: NO
 #define __FLAGS_2(a)   __FLAG(PP_0 a) | __FLAGS_1(PP_X a)  // TEST: NO
@@ -199,11 +199,11 @@
         \
         \
         \
-        u8 unknownCount = 0; \
+        bad_uint8 unknownCount = 0; \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
+        for (bad_int64 i = 0; i < (bad_int64)(sizeof(flags) * 8); ++i) \
         { \
-            u64 flag = (1ULL << i); \
+            bad_uint64 flag = (1ULL << i); \
             \
             if (flags & flag) \
             { \
@@ -268,11 +268,11 @@
         \
         \
         \
-        u8 unknownCount = 0; \
+        bad_uint8 unknownCount = 0; \
         \
-        for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
+        for (bad_int64 i = 0; i < (bad_int64)(sizeof(flags) * 8); ++i) \
         { \
-            u64 flag = (1ULL << i); \
+            bad_uint64 flag = (1ULL << i); \
             \
             if (flags & flag) \
             { \

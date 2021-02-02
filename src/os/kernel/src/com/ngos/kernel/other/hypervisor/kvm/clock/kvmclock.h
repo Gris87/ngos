@@ -17,8 +17,8 @@ public:
 #else
 private:
 #endif
-    static u32 sWallClockMsr;
-    static u32 sSystemTimeMsr;
+    static bad_uint32 sWallClockMsr;
+    static bad_uint32 sSystemTimeMsr;
 };
 
 

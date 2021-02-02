@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice10B59050: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice10B59050: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10B51067 = 0x10B51067,
@@ -137,7 +137,7 @@ inline const char8* enumToFullString(PciSubDevice10B59050 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -152,8 +152,8 @@ inline const char8* enumToHumanString(PciSubDevice10B59050 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10B59050::SUBDEVICE_10B51067: return "IXXAT CAN i165";
-        case PciSubDevice10B59050::SUBDEVICE_10B5114E: return "Wasco WITIO PCI168extended";
+        case PciSubDevice10B59050::SUBDEVICE_10B51067: return "IXXAT CAN bad_int165";
+        case PciSubDevice10B59050::SUBDEVICE_10B5114E: return "Wasco WITIO PCbad_int168extended";
         case PciSubDevice10B59050::SUBDEVICE_10B51169: return "Wasco OPTOIO32standard 32 digital in, 32 digital out";
         case PciSubDevice10B59050::SUBDEVICE_10B51172: return "IK220 (Heidenhain)";
         case PciSubDevice10B59050::SUBDEVICE_10B52036: return "SatPak GPS";

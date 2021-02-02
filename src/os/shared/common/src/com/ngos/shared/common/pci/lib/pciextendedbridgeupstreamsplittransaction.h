@@ -9,8 +9,8 @@
 
 struct PciExtendedBridgeUpstreamSplitTransaction
 {
-    u16 splitTransactionCommitmentLimit;
-    u16 splitTransactionCapacity;
+    bad_uint16 splitTransactionCommitmentLimit;
+    bad_uint16 splitTransactionCapacity;
 };
 
 

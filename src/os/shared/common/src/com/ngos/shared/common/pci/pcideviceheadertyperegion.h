@@ -10,18 +10,18 @@
 
 struct PciDeviceHeaderTypeRegion
 {
-    u32       baseAddressRegisters[6];
-    u32       cardInformationStructurePointer;
+    bad_uint32       baseAddressRegisters[6];
+    bad_uint32       cardInformationStructurePointer;
     PciVendor subsystemVendorID;
-    u16       subsystemID;
-    u32       expansionRomBaseAddress;
-    u8        capabilitiesPointer;
-    u8        __reserved[3];
-    u32       __reserved2;
-    u8        interruptLine;
-    u8        interruptPin;
-    u8        minGrant;
-    u8        maxLatency;
+    bad_uint16       subsystemID;
+    bad_uint32       expansionRomBaseAddress;
+    bad_uint8        capabilitiesPointer;
+    bad_uint8        __reserved[3];
+    bad_uint32       __reserved2;
+    bad_uint8        interruptLine;
+    bad_uint8        interruptPin;
+    bad_uint8        minGrant;
+    bad_uint8        maxLatency;
 };
 
 

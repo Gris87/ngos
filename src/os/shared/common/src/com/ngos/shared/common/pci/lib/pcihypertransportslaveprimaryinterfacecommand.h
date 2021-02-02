@@ -14,15 +14,15 @@ struct PciHyperTransportSlavePrimaryInterfaceCommand
     {
         struct
         {
-            u16 baseUnitId:       5;
-            u16 unitCount:        5;
-            u16 masterHost:       1;
-            u16 defaultDirection: 1;
-            u16 dropOnUninit:     1;
-            u16 capabilityType:   3; // TODO: Use enum PciHyperTransportCapabilityType
+            bad_uint16 baseUnitId:       5;
+            bad_uint16 unitCount:        5;
+            bad_uint16 masterHost:       1;
+            bad_uint16 defaultDirection: 1;
+            bad_uint16 dropOnUninit:     1;
+            bad_uint16 capabilityType:   3; // TODO: Use enum PciHyperTransportCapabilityType
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

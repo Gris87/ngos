@@ -11,7 +11,7 @@
 
 
 
-typedef u8 dmi_out_of_band_remote_access_connection_flags;
+typedef bad_uint8 dmi_out_of_band_remote_access_connection_flags;
 
 enum class DmiOutOfBandRemoteAccessConnectionFlag: dmi_out_of_band_remote_access_connection_flags
 {

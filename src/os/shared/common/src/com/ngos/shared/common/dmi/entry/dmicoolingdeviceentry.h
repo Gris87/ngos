@@ -18,11 +18,11 @@
 struct DmiCoolingDeviceEntry
 {
     DmiEntryHeader                header;
-    u16                           temperatureProbeHandle;
+    bad_uint16                           temperatureProbeHandle;
     DmiCoolingDeviceTypeAndStatus deviceTypeAndStatus;
-    u8                            coolingUnitGroup;
-    u32                           oemDefined;
-    u16                           nominalSpeed;
+    bad_uint8                            coolingUnitGroup;
+    bad_uint32                           oemDefined;
+    bad_uint16                           nominalSpeed;
 } __attribute__((packed));
 
 

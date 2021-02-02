@@ -10,7 +10,7 @@
 
 
 
-enum class DmiBits32MemoryErrorInformationErrorOperation: u8
+enum class DmiBits32MemoryErrorInformationErrorOperation: bad_uint8
 {
     NONE          = 0,
     OTHER         = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiBits32MemoryErrorInformationErrorOperati
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (u8)operation, enumToString(operation));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)operation, enumToString(operation));
 
     return res;
 }

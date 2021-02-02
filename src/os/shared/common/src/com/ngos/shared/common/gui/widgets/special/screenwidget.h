@@ -20,10 +20,10 @@ public:
     ScreenWidget(Image *backgroundImage, UefiGraphicsOutputProtocol *screenGop, RootWidget *rootWidget); // TEST: NO
     ~ScreenWidget(); // TEST: NO
 
-    NgosStatus updateRegion(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
+    NgosStatus updateRegion(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height); // TEST: NO
     NgosStatus applyUpdates(); // TEST: NO
 
-    NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height) override; // TEST: NO
+    NgosStatus update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height) override; // TEST: NO
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 
@@ -33,10 +33,10 @@ private:
     Image                      *mBackgroundImage;
     UefiGraphicsOutputProtocol *mScreenGop;
     RootWidget                 *mRootWidget;
-    i64                         mUpdateLeft;
-    i64                         mUpdateTop;
-    i64                         mUpdateRight;
-    i64                         mUpdateBottom;
+    bad_int64                         mUpdateLeft;
+    bad_int64                         mUpdateTop;
+    bad_int64                         mUpdateRight;
+    bad_int64                         mUpdateBottom;
 };
 
 

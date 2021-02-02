@@ -14,21 +14,21 @@ struct PciExpressDeviceControl2
     {
         struct
         {
-            u16 completionTimeoutValue         : 4; // TODO: Use enum PciExpressCompletionTimeout
-            u16 completionTimeoutDisable       : 1;
-            u16 ariForwardingEnable            : 1;
-            u16 atomicOpRequesterEnable        : 1;
-            u16 atomicOpEgressBlocking         : 1;
-            u16 idoRequestEnable               : 1;
-            u16 idoCompletionEnable            : 1;
-            u16 ltrMechanismEnable             : 1;
-            u16 emergencyPowerReductionRequest : 1;
-            u16 tenBitTagRequesterEnable       : 1;
-            u16 obff                           : 2;
-            u16 endEndTlpPrefixBlocking        : 1;
+            bad_uint16 completionTimeoutValue         : 4; // TODO: Use enum PciExpressCompletionTimeout
+            bad_uint16 completionTimeoutDisable       : 1;
+            bad_uint16 ariForwardingEnable            : 1;
+            bad_uint16 atomicOpRequesterEnable        : 1;
+            bad_uint16 atomicOpEgressBlocking         : 1;
+            bad_uint16 idoRequestEnable               : 1;
+            bad_uint16 idoCompletionEnable            : 1;
+            bad_uint16 ltrMechanismEnable             : 1;
+            bad_uint16 emergencyPowerReductionRequest : 1;
+            bad_uint16 tenBitTagRequesterEnable       : 1;
+            bad_uint16 obff                           : 2;
+            bad_uint16 endEndTlpPrefixBlocking        : 1;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

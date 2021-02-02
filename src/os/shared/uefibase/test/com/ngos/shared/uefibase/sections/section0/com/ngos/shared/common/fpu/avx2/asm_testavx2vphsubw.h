@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx2Vphsubw(u16 *a, u16 *b, u16 *c);
+void testAvx2Vphsubw(bad_uint16 *a, bad_uint16 *b, bad_uint16 *c);
 
 
 

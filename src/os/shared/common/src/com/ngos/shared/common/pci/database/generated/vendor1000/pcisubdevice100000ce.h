@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice100000CE: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice100000CE: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10009371 = 0x10009371,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice100000CE subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice100000CE subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice100000CE::SUBDEVICE_10009371: return "MegaRAID SAS 9361-16i";
-        case PciSubDevice100000CE::SUBDEVICE_10009390: return "MegaRAID SAS 9380-8i8e";
+        case PciSubDevice100000CE::SUBDEVICE_10009390: return "MegaRAID SAS 9380-8bad_int8e";
 
         default: return "Unknown device";
     }

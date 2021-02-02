@@ -15,10 +15,10 @@
 
 struct UefiMemoryAttributesConfigurationTable
 {
-    u32                  version;
-    u32                  numberOfEntries;
-    u32                  descriptorSize;
-    u32                  __reserved;
+    bad_uint32                  version;
+    bad_uint32                  numberOfEntries;
+    bad_uint32                  descriptorSize;
+    bad_uint32                  __reserved;
     UefiMemoryDescriptor entries[0];
 };
 

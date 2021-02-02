@@ -11,7 +11,7 @@
 
 
 
-typedef u32 elf_program_flags;
+typedef bad_uint32 elf_program_flags;
 
 enum class ElfProgramFlag: elf_program_flags
 {

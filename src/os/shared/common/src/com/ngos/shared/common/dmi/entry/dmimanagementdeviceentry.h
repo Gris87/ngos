@@ -15,7 +15,7 @@ struct DmiManagementDeviceEntry
     DmiEntryHeader                 header;
     DmiStringId                    description;
     DmiManagementDeviceType        type;
-    u32                            address;
+    bad_uint32                            address;
     DmiManagementDeviceAddressType addressType;
 } __attribute__((packed));
 

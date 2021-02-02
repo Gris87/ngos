@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressDynamicPowerAllocationTransitionLatencyUnit: u8
+enum class PciExpressDynamicPowerAllocationTransitionLatencyUnit: bad_uint8
 {
     _1_MS   = 0,
     _10_MS  = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciExpressDynamicPowerAllocationTransitionL
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)unit, enumToString(unit));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)unit, enumToString(unit));
 
     return res;
 }

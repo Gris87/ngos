@@ -16,9 +16,9 @@ struct DmiManagementDeviceComponentEntry
 {
     DmiEntryHeader header;
     DmiStringId    description;
-    u16            managementDeviceHandle;
-    u16            componentHandle;
-    u16            thresholdHandle;
+    bad_uint16            managementDeviceHandle;
+    bad_uint16            componentHandle;
+    bad_uint16            thresholdHandle;
 } __attribute__((packed));
 
 

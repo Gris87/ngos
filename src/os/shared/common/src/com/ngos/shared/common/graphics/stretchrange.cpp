@@ -5,7 +5,7 @@
 
 
 
-StretchRange::StretchRange(u16 from, u16 to)
+StretchRange::StretchRange(bad_uint16 from, bad_uint16 to)
     : mFrom(from)
     , mTo(to)
 {
@@ -19,7 +19,7 @@ StretchRange::~StretchRange()
     COMMON_LT((""));
 }
 
-u16 StretchRange::getSize() const
+bad_uint16 StretchRange::getSize() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -28,7 +28,7 @@ u16 StretchRange::getSize() const
     return mTo - mFrom;
 }
 
-u16 StretchRange::getFrom() const
+bad_uint16 StretchRange::getFrom() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -37,7 +37,7 @@ u16 StretchRange::getFrom() const
     return mFrom;
 }
 
-u16 StretchRange::getTo() const
+bad_uint16 StretchRange::getTo() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

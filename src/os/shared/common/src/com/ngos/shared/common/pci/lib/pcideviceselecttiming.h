@@ -8,7 +8,7 @@
 
 
 
-enum class PciDeviceSelectTiming: u8
+enum class PciDeviceSelectTiming: bad_uint8
 {
     FAST   = 0,
     MEDIUM = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciDeviceSelectTiming timing) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)timing, enumToString(timing));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)timing, enumToString(timing));
 
     return res;
 }

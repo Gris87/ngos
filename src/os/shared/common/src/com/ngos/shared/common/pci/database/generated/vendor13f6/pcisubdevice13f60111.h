@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice13F60111: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice13F60111: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10190970 = 0x10190970,
@@ -81,7 +81,7 @@ inline const char8* enumToFullString(PciSubDevice13F60111 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -98,9 +98,9 @@ inline const char8* enumToHumanString(PciSubDevice13F60111 subDevice) // TEST: N
     {
         case PciSubDevice13F60111::SUBDEVICE_10190970: return "P6STP-FL motherboard";
         case PciSubDevice13F60111::SUBDEVICE_10438035: return "CUSI-FX motherboard";
-        case PciSubDevice13F60111::SUBDEVICE_10438077: return "CMI8738 6-channel audio controller";
-        case PciSubDevice13F60111::SUBDEVICE_104380E2: return "CMI8738 6ch-MX";
-        case PciSubDevice13F60111::SUBDEVICE_13F60111: return "CMI8738/C3DX PCI Audio Device";
+        case PciSubDevice13F60111::SUBDEVICE_10438077: return "CMbad_int8738 6-channel audio controller";
+        case PciSubDevice13F60111::SUBDEVICE_104380E2: return "CMbad_int8738 6ch-MX";
+        case PciSubDevice13F60111::SUBDEVICE_13F60111: return "CMbad_int8738/C3DX PCI Audio Device";
         case PciSubDevice13F60111::SUBDEVICE_13F69761: return "Theatron Agrippa";
         case PciSubDevice13F60111::SUBDEVICE_153B1144: return "Aureon 5.1";
         case PciSubDevice13F60111::SUBDEVICE_153B1170: return "Aureon 7.1";

@@ -12,7 +12,7 @@ struct PciSlotNumberingCapability
 {
     PciCapabilityHeader           header;
     PciSlotNumberingExpansionSlot expansionSlot;
-    u8                            chassisNumber;
+    bad_uint8                            chassisNumber;
 };
 
 

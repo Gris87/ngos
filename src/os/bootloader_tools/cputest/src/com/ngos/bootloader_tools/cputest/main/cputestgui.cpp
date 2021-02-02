@@ -209,14 +209,14 @@ LabelWidget            *CpuTestGUI::sTestTotalLabelWidget;
 TableWidget            *CpuTestGUI::sTestTableWidget;
 LabelWidget            *CpuTestGUI::sSummaryTotalLabelWidget;
 TableWidget            *CpuTestGUI::sSummaryTableWidget;
-u64                     CpuTestGUI::sSummaryTotal;
+bad_uint64                     CpuTestGUI::sSummaryTotal;
 UefiMpServicesProtocol *CpuTestGUI::sMpServices;
-u16                     CpuTestGUI::sWaitEventsCount;
+bad_uint16                     CpuTestGUI::sWaitEventsCount;
 uefi_event             *CpuTestGUI::sWaitEvents;
-u16                     CpuTestGUI::sFirstProcessorEventIndex;
+bad_uint16                     CpuTestGUI::sFirstProcessorEventIndex;
 TestType                CpuTestGUI::sCurrentTest;
 TestType                CpuTestGUI::sDisplayedTest;
-u64                     CpuTestGUI::sNumberOfRunningProcessors;
+bad_uint64                     CpuTestGUI::sNumberOfRunningProcessors;
 bool                    CpuTestGUI::sTerminated;
 
 X86Feature testedFeatures[] =
@@ -247,7 +247,7 @@ X86Feature testedFeatures[] =
     , X86Feature::VMX
 };
 
-u64 testedFeaturesScores[] =
+bad_uint64 testedFeaturesScores[] =
 {
     100     // X86Feature::NX
     , 50    // X86Feature::LA57
@@ -375,8 +375,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -394,10 +394,10 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -433,14 +433,14 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
-    u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
-    u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
+    bad_uint64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    bad_uint64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    bad_uint64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
     // Ignore CppAlignmentVerifier [END]
 
 
 
-    u64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
+    bad_uint64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
 
     if (tabPageWidth > screenWidth)
     {
@@ -451,8 +451,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 tabWidgetWidth = tabPageWidth;
-    u64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
+    bad_uint64 tabWidgetWidth = tabPageWidth;
+    bad_uint64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
 
     NinePatch *patch = tabWidgetPanelImage->getNinePatch();
 
@@ -523,7 +523,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuImageSize = tabPageHeight * CPU_IMAGE_SIZE_PERCENT / 100;
+    bad_uint64 cpuImageSize = tabPageHeight * CPU_IMAGE_SIZE_PERCENT / 100;
 
 
 
@@ -548,8 +548,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuInfoWidth  = tabPageWidth - cpuImageSize;
-    u64 cpuInfoHeight = cpuImageSize;
+    bad_uint64 cpuInfoWidth  = tabPageWidth - cpuImageSize;
+    bad_uint64 cpuInfoHeight = cpuImageSize;
 
 
 
@@ -609,21 +609,21 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 featurePanelLeft      = tabPageWidth  * FEATURE_PANEL_POSITION_X_PERCENT / 100;
-    u64 featurePanelPositionY = cpuImageSize;
-    u64 featurePanelWidth     = tabPageWidth  * FEATURE_PANEL_WIDTH_PERCENT      / 100;
-    u64 featurePanelHeight    = tabPageHeight * FEATURE_PANEL_HEIGHT_PERCENT     / 100;
+    bad_uint64 featurePanelLeft      = tabPageWidth  * FEATURE_PANEL_POSITION_X_PERCENT / 100;
+    bad_uint64 featurePanelPositionY = cpuImageSize;
+    bad_uint64 featurePanelWidth     = tabPageWidth  * FEATURE_PANEL_WIDTH_PERCENT      / 100;
+    bad_uint64 featurePanelHeight    = tabPageHeight * FEATURE_PANEL_HEIGHT_PERCENT     / 100;
 
-    u64 featurePanelPositionX = featurePanelLeft;
+    bad_uint64 featurePanelPositionX = featurePanelLeft;
 
     UEFI_ASSERT_EXECUTION(Graphics::resizeImage(featurePanelImage, featurePanelWidth, featurePanelHeight, &featurePanelResizedImage), NgosStatus::ASSERTION);
 
 
 
-    i64 flagsCount = ARRAY_COUNT(testedFeatures);
+    bad_int64 flagsCount = ARRAY_COUNT(testedFeatures);
     UEFI_LVVV(("flagsCount = %d", flagsCount));
 
-    for (i64 i = 0; i < flagsCount; ++i)
+    for (bad_int64 i = 0; i < flagsCount; ++i)
     {
         if (featurePanelPositionX + featurePanelWidth > tabPageWidth)
         {
@@ -638,13 +638,13 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuPanelPositionY = featurePanelPositionY + featurePanelHeight;
-    u64 cpuPanelHeight    = tabPageHeight - cpuPanelPositionY;
+    bad_uint64 cpuPanelPositionY = featurePanelPositionY + featurePanelHeight;
+    bad_uint64 cpuPanelHeight    = tabPageHeight - cpuPanelPositionY;
 
 
 
-    u64 cpuClocksWidth  = tabPageWidth * CPU_CLOCKS_PANEL_WIDTH_PERCENT / 100;
-    u64 cpuClocksHeight = cpuPanelHeight;
+    bad_uint64 cpuClocksWidth  = tabPageWidth * CPU_CLOCKS_PANEL_WIDTH_PERCENT / 100;
+    bad_uint64 cpuClocksHeight = cpuPanelHeight;
 
     PanelWidget *cpuClocksPanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
@@ -671,8 +671,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 cpuCacheWidth  = tabPageWidth * CPU_CACHE_PANEL_WIDTH_PERCENT / 100;
-    u64 cpuCacheHeight = cpuPanelHeight;
+    bad_uint64 cpuCacheWidth  = tabPageWidth * CPU_CACHE_PANEL_WIDTH_PERCENT / 100;
+    bad_uint64 cpuCacheHeight = cpuPanelHeight;
 
     PanelWidget *cpuCachePanelWidget = new PanelWidget(infoPanelImage, systemInformationTabPageWidget);
 
@@ -731,8 +731,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    u64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    bad_uint64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    bad_uint64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -793,8 +793,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 testTableWidth  = tabPageWidth  * TEST_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    u64 testTableHeight = tabPageHeight * TEST_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    bad_uint64 testTableWidth  = tabPageWidth  * TEST_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    bad_uint64 testTableHeight = tabPageHeight * TEST_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -827,8 +827,8 @@ NgosStatus CpuTestGUI::init(BootParams *params)
 
 
 
-    u64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    u64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    bad_uint64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    bad_uint64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -858,7 +858,7 @@ NgosStatus CpuTestGUI::init(BootParams *params)
     char8 *summaryTotalText = (char8 *)malloc(SUMMARY_TOTAL_TEXT_LENGTH);
     UEFI_TEST_ASSERT(summaryTotalText != nullptr, NgosStatus::ASSERTION);
 
-    i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
+    bad_int64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
     AVOID_UNUSED(summaryTotalTextLength);
 
     UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -930,7 +930,7 @@ NgosStatus CpuTestGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 width, u64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
+NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget)
 {
     UEFI_LT((" | flag = %u, posX = %u, posY = %u, width = %u, height = %u, featurePanelImage = 0x%p, featurePanelResizedImage = 0x%p, tabPageWidget = 0x%p", flag, posX, posY, width, height, featurePanelImage, featurePanelResizedImage, tabPageWidget));
 
@@ -942,7 +942,7 @@ NgosStatus CpuTestGUI::addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 
 
 
 
-    const char8 *flagText = x86FeaturesNames[(u64)flag];
+    const char8 *flagText = x86FeaturesNames[(bad_uint64)flag];
     UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);
 
 
@@ -1000,7 +1000,7 @@ NgosStatus CpuTestGUI::addIssueEntry(Image *icon, const char8 *description)
 
 
 
-    u64 row = sIssuesTableWidget->getRowCount();
+    bad_uint64 row = sIssuesTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
 
@@ -1191,7 +1191,7 @@ NgosStatus CpuTestGUI::addTestEntry(const char8 *name, const char8 *score)
 
 
 
-    u64 row = sTestTableWidget->getRowCount();
+    bad_uint64 row = sTestTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sTestTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
 
@@ -1221,7 +1221,7 @@ NgosStatus CpuTestGUI::addTestEntry()
 
     UEFI_TEST_ASSERT(sDisplayedTest < TestType::MAXIMUM, NgosStatus::ASSERTION);
 
-    TestBase *test = cpuTests[(u64)sDisplayedTest];
+    TestBase *test = cpuTests[(bad_uint64)sDisplayedTest];
 
 
 
@@ -1254,7 +1254,7 @@ NgosStatus CpuTestGUI::putTestScore()
 
     UEFI_TEST_ASSERT(sDisplayedTest < TestType::MAXIMUM, NgosStatus::ASSERTION);
 
-    TestBase *test = cpuTests[(u64)sDisplayedTest];
+    TestBase *test = cpuTests[(bad_uint64)sDisplayedTest];
 
 
 
@@ -1272,7 +1272,7 @@ NgosStatus CpuTestGUI::putTestScore()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
+NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, bad_uint64 score)
 {
     UEFI_LT((" | name = 0x%p, score = %u", name, score));
 
@@ -1284,7 +1284,7 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
 
 
 
-    u64 row = sSummaryTableWidget->getRowCount();
+    bad_uint64 row = sSummaryTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
 
@@ -1310,7 +1310,7 @@ NgosStatus CpuTestGUI::addSummaryEntry(const char8 *name, u64 score)
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
+NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, bad_uint64 score)
 {
     UEFI_LT((" | flag = %u, score = %u", flag, score));
 
@@ -1318,7 +1318,7 @@ NgosStatus CpuTestGUI::addSummaryFeature(X86Feature flag, u64 score)
 
     if (CPU::hasFlag(flag))
     {
-        const char8 *flagText = x86FeaturesNames[(u64)flag];
+        const char8 *flagText = x86FeaturesNames[(bad_uint64)flag];
         UEFI_TEST_ASSERT(flagText != nullptr && flagText[0] != 0, NgosStatus::ASSERTION);
 
         UEFI_ASSERT_EXECUTION(addSummaryEntry(mprintf("Support feature: %s", flagText), score), NgosStatus::ASSERTION);
@@ -1349,19 +1349,19 @@ NgosStatus CpuTestGUI::fillSummaryTable()
     UEFI_ASSERT_EXECUTION(addSummaryEntry("Previous test results",      0),                                                                                                                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuThreads,            CPU::getNumberOfThreads() * SCORE_PER_THREAD),                                                                        NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuSpeed,              (CpuTest::getCpuSpeed() / 100000000) * SCORE_PER_100_MHZ),                                                            NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        CPU::getNumberOfCores() * (u64)CpuTest::getLevel1DataCache().size * SCORE_L1_DATA_CACHE_PER_1_KB / KB),               NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, CPU::getNumberOfCores() * (u64)CpuTest::getLevel1InstructionCache().size * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB / KB), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            CPU::getNumberOfCores() * (u64)CpuTest::getLevel2Cache().size * SCORE_L2_CACHE_PER_1_MB / MB),                        NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            (u64)CpuTest::getLevel3Cache().size * SCORE_L3_CACHE_PER_1_MB / MB),                                                  NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1DataCache,        CPU::getNumberOfCores() * (bad_uint64)CpuTest::getLevel1DataCache().size * SCORE_L1_DATA_CACHE_PER_1_KB / KB),               NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL1InstructionCache, CPU::getNumberOfCores() * (bad_uint64)CpuTest::getLevel1InstructionCache().size * SCORE_L1_INSTRUCTION_CACHE_PER_1_KB / KB), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL2Cache,            CPU::getNumberOfCores() * (bad_uint64)CpuTest::getLevel2Cache().size * SCORE_L2_CACHE_PER_1_MB / MB),                        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(addSummaryEntry(summaryCpuL3Cache,            (bad_uint64)CpuTest::getLevel3Cache().size * SCORE_L3_CACHE_PER_1_MB / MB),                                                  NgosStatus::ASSERTION);
 
 
 
-    i64 flagsCount = ARRAY_COUNT(testedFeatures);
+    bad_int64 flagsCount = ARRAY_COUNT(testedFeatures);
     UEFI_LVVV(("flagsCount = %d", flagsCount));
 
     UEFI_TEST_ASSERT(flagsCount == ARRAY_COUNT(testedFeaturesScores), NgosStatus::ASSERTION);
 
-    for (i64 i = 0; i < flagsCount; ++i)
+    for (bad_int64 i = 0; i < flagsCount; ++i)
     {
         UEFI_ASSERT_EXECUTION(addSummaryFeature(testedFeatures[i], testedFeaturesScores[i]), NgosStatus::ASSERTION);
     }
@@ -1438,8 +1438,8 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
     if (sMpServices)
     {
-        u64 numberOfProcessors;
-        u64 numberOfEnabledProcessors;
+        bad_uint64 numberOfProcessors;
+        bad_uint64 numberOfEnabledProcessors;
 
         UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1461,7 +1461,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
 
-    u64 size = sWaitEventsCount * sizeof(uefi_event);
+    bad_uint64 size = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -1477,11 +1477,11 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    u16 eventId    = 1;
+    bad_uint16 eventId    = 1;
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -1490,7 +1490,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
 
-    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -1499,7 +1499,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
 
 
-    for (i64 i = eventId; i < sWaitEventsCount; ++i)
+    for (bad_int64 i = eventId; i < sWaitEventsCount; ++i)
     {
         UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
@@ -1516,7 +1516,7 @@ NgosStatus CpuTestGUI::waitForEvent()
 
 
 
-    u64 eventIndex;
+    bad_uint64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1567,7 +1567,7 @@ NgosStatus CpuTestGUI::terminateAndWaitForApplicationProcessors()
 
         while (sNumberOfRunningProcessors > 0)
         {
-            u64 eventIndex;
+            bad_uint64 eventIndex;
 
             UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1684,7 +1684,7 @@ NgosStatus CpuTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtocol *
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
+NgosStatus CpuTestGUI::processApplicationProcessorEvent(bad_uint64 processorId)
 {
     UEFI_LT((" | processorId = %u", processorId));
 
@@ -1699,7 +1699,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
         if (
             sDisplayedTest < TestType::MAXIMUM
             &&
-            cpuTests[(u64)sDisplayedTest]->isCompleted()
+            cpuTests[(bad_uint64)sDisplayedTest]->isCompleted()
            )
         {
             UEFI_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
@@ -1708,19 +1708,19 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             UEFI_ASSERT_EXECUTION(putTestScore(), NgosStatus::ASSERTION);
 
-            sDisplayedTest = (TestType)((u64)sDisplayedTest + 1);
+            sDisplayedTest = (TestType)((bad_uint64)sDisplayedTest + 1);
 
 
 
             while (
                    sDisplayedTest < sCurrentTest
                    &&
-                   cpuTests[(u64)sDisplayedTest]->isCompleted()
+                   cpuTests[(bad_uint64)sDisplayedTest]->isCompleted()
                   )
             {
                 UEFI_ASSERT_EXECUTION(addTestEntry(), NgosStatus::ASSERTION);
 
-                sDisplayedTest = (TestType)((u64)sDisplayedTest + 1);
+                sDisplayedTest = (TestType)((bad_uint64)sDisplayedTest + 1);
             }
 
 
@@ -1739,7 +1739,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
         if (sCurrentTest < TestType::MAXIMUM)
         {
-            TestBase *test = cpuTests[(u64)sCurrentTest];
+            TestBase *test = cpuTests[(bad_uint64)sCurrentTest];
 
             if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
             {
@@ -1747,7 +1747,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
 
 
-                sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+                sCurrentTest = (TestType)((bad_uint64)sCurrentTest + 1);
             }
             else
             {
@@ -1783,9 +1783,9 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
         if (!sTerminated)
         {
-            u64 testTotal = 0;
+            bad_uint64 testTotal = 0;
 
-            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)TestType::MAXIMUM; ++i)
             {
                 testTotal += cpuTests[i]->getScore();
             }
@@ -1794,7 +1794,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             char8 *testTotalText = (char8 *)sTestTotalLabelWidget->getText();
 
-            i64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
+            bad_int64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
             AVOID_UNUSED(testTotalTextLength);
 
             UEFI_TEST_ASSERT(testTotalTextLength < TEST_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -1808,7 +1808,7 @@ NgosStatus CpuTestGUI::processApplicationProcessorEvent(u64 processorId)
 
             char8 *summaryTotalText = (char8 *)sSummaryTotalLabelWidget->getText();
 
-            i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
+            bad_int64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
             AVOID_UNUSED(summaryTotalTextLength);
 
             UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -2282,8 +2282,8 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
     {
         if (sNumberOfRunningProcessors == 0)
         {
-            u64 numberOfProcessors;
-            u64 numberOfEnabledProcessors;
+            bad_uint64 numberOfProcessors;
+            bad_uint64 numberOfEnabledProcessors;
 
             UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -2308,7 +2308,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
                     UEFI_LVVV(("Processors:"));
                     UEFI_LVVV(("-------------------------------------"));
 
-                    for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                    for (bad_int64 i = 0; i < (bad_int64)numberOfProcessors; ++i)
                     {
                         UefiProcessorInformation info;
 
@@ -2324,7 +2324,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                        if (i < (i64)numberOfProcessors - 1)
+                        if (i < (bad_int64)numberOfProcessors - 1)
                         {
                             UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
                         }
@@ -2336,7 +2336,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
+                for (bad_int64 i = 0; i < (bad_int64)TestType::MAXIMUM; ++i)
                 {
                     UEFI_ASSERT_EXECUTION(cpuTests[i]->reset(), NgosStatus::ASSERTION);
                 }
@@ -2351,7 +2351,7 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
                 TestBase *test = cpuTests[0];
 
-                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
+                for (bad_int64 i = 0; i < (bad_int64)numberOfProcessors; ++i)
                 {
                     if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                     {
@@ -2361,14 +2361,14 @@ NgosStatus CpuTestGUI::onStartButtonPressed()
 
 
 
-                        sCurrentTest = (TestType)((u64)sCurrentTest + 1);
+                        sCurrentTest = (TestType)((bad_uint64)sCurrentTest + 1);
 
                         if (sCurrentTest >= TestType::MAXIMUM)
                         {
                             break;
                         }
 
-                        test = cpuTests[(u64)sCurrentTest];
+                        test = cpuTests[(bad_uint64)sCurrentTest];
                     }
                 }
 

@@ -11,7 +11,7 @@
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
 CPP_EXTERN_C
-void switchToFiveLevelPaging(u8 *topLevelPaging); // TEST: NO
+void switchToFiveLevelPaging(bad_uint8 *topLevelPaging); // TEST: NO
 #endif
 
 

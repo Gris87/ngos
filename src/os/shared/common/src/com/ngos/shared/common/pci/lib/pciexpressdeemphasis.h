@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressDeemphasis: u8
+enum class PciExpressDeemphasis: bad_uint8
 {
     MINUS_6_DB   = 0,
     MINUS_3_5_DB = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExpressDeemphasis deemphasis) // TEST: N
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)deemphasis, enumToString(deemphasis));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)deemphasis, enumToString(deemphasis));
 
     return res;
 }

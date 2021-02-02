@@ -14,11 +14,11 @@ struct DmiTemperatureProbeLocationAndStatus
     {
         struct
         {
-            u8 location: 5; // TODO: Use enum DmiTemperatureProbeLocation
-            u8 status:   3; // TODO: Use enum DmiTemperatureProbeStatus
+            bad_uint8 location: 5; // TODO: Use enum DmiTemperatureProbeLocation
+            bad_uint8 status:   3; // TODO: Use enum DmiTemperatureProbeStatus
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

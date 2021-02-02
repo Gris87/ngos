@@ -400,12 +400,12 @@ NgosStatus TabButton::repaint()
 
     NinePatch *patch = image->getNinePatch();
 
-    u16 paddingLeft;
-    u16 paddingTop;
-    u16 paddingRight;
-    u16 paddingBottom;
-    u64 allowedWidth;
-    u64 allowedHeight;
+    bad_uint16 paddingLeft;
+    bad_uint16 paddingTop;
+    bad_uint16 paddingRight;
+    bad_uint16 paddingBottom;
+    bad_uint64 allowedWidth;
+    bad_uint64 allowedHeight;
 
     if (patch)
     {
@@ -442,8 +442,8 @@ NgosStatus TabButton::repaint()
 
     float scale = MIN(scaleX, scaleY);
 
-    u16 imageWidth  = mImageWidget->getImage()->getWidth()  * scale;
-    u16 imageHeight = mImageWidget->getImage()->getHeight() * scale;
+    bad_uint16 imageWidth  = mImageWidget->getImage()->getWidth()  * scale;
+    bad_uint16 imageHeight = mImageWidget->getImage()->getHeight() * scale;
 
     COMMON_LVVV(("imageWidth  = %u", imageWidth));
     COMMON_LVVV(("imageHeight = %u", imageHeight));

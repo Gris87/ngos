@@ -11,7 +11,7 @@
 
 
 
-typedef u8 dmi_processor_voltage_flags;
+typedef bad_uint8 dmi_processor_voltage_flags;
 
 enum class DmiProcessorVoltageFlag: dmi_processor_voltage_flags
 {

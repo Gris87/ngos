@@ -10,7 +10,7 @@
 
 
 
-enum class HorizontalAlignment: u8
+enum class HorizontalAlignment: bad_uint8
 {
     NONE            = 0,
     LEFT_JUSTIFIED  = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(HorizontalAlignment alignment) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", (u8)alignment, enumToString(alignment));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)alignment, enumToString(alignment));
 
     return res;
 }

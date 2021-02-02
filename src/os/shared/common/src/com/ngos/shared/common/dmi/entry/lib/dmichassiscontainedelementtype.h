@@ -16,18 +16,18 @@ struct DmiChassisContainedElementType
         // DmiChassisContainedElementTypeSelect::BASEBOARD_TYPE
         struct
         {
-            u8 baseboardType: 7; // TODO: Use enum DmiBaseboardType
-            u8 typeSelect:    1; // TODO: Use enum DmiChassisContainedElementTypeSelect
+            bad_uint8 baseboardType: 7; // TODO: Use enum DmiBaseboardType
+            bad_uint8 typeSelect:    1; // TODO: Use enum DmiChassisContainedElementTypeSelect
         };
 
         // DmiChassisContainedElementTypeSelect::DMI_ENTRY_TYPE
         struct
         {
-            u8 dmiEntryType: 7; // TODO: Use enum DmiEntryType
-            u8 __pad:        1; // Ignore this field. The same as typeSelect
+            bad_uint8 dmiEntryType: 7; // TODO: Use enum DmiEntryType
+            bad_uint8 __pad:        1; // Ignore this field. The same as typeSelect
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

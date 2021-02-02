@@ -11,7 +11,7 @@
 
 
 
-typedef u16 dmi_system_slots_characteristics_flags;
+typedef bad_uint16 dmi_system_slots_characteristics_flags;
 
 enum class DmiSystemSlotsCharacteristicsFlag: dmi_system_slots_characteristics_flags
 {

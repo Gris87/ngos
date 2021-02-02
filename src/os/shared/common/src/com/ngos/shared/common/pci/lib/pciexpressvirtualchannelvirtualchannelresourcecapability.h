@@ -9,7 +9,7 @@
 
 struct PciExpressVirtualChannelVirtualChannelResourceCapability
 {
-    u8 maximumTimeSlotsReal()
+    bad_uint8 maximumTimeSlotsReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,16 +24,16 @@ struct PciExpressVirtualChannelVirtualChannelResourceCapability
     {
         struct
         {
-            u32 portArbitrationCapability:  8; // TODO: Use flags PciExpressVirtualChannelPortArbitrationCapabilityFlags
-            u32 __reserved:                 6;
-            u32 undefined:                  1;
-            u32 rejectSnoopTransactions:    1;
-            u32 maximumTimeSlots:           7;
-            u32 __reserved2:                1;
-            u32 portArbitrationTableOffset: 8;
+            bad_uint32 portArbitrationCapability:  8; // TODO: Use flags PciExpressVirtualChannelPortArbitrationCapabilityFlags
+            bad_uint32 __reserved:                 6;
+            bad_uint32 undefined:                  1;
+            bad_uint32 rejectSnoopTransactions:    1;
+            bad_uint32 maximumTimeSlots:           7;
+            bad_uint32 __reserved2:                1;
+            bad_uint32 portArbitrationTableOffset: 8;
         };
 
-        u32 value32;
+        bad_uint32 value32;
     };
 };
 

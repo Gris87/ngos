@@ -16,8 +16,8 @@ public:
 
 private:
     static NgosStatus initSimpleNetworkProtocols(); // TEST: NO
-    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, u64 size); // TEST: NO
-    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, u64 size, uefi_handle *handles); // TEST: NO
+    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, bad_uint64 size); // TEST: NO
+    static NgosStatus initSimpleNetworkProtocols(Guid *protocol, bad_uint64 size, uefi_handle *handles); // TEST: NO
 };
 
 

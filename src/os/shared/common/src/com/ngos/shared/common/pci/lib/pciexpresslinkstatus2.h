@@ -14,16 +14,16 @@ struct PciExpressLinkStatus2
     {
         struct
         {
-            u16 currentDeemphasisLevel       : 1; // TODO: Use enum PciExpressDeemphasis
-            u16 equalizationComplete         : 1;
-            u16 equalizationPhase1Successful : 1;
-            u16 equalizationPhase2Successful : 1;
-            u16 equalizationPhase3Successful : 1;
-            u16 linkEqualizationRequest      : 1;
-            u16 __reserved                   : 10;
+            bad_uint16 currentDeemphasisLevel       : 1; // TODO: Use enum PciExpressDeemphasis
+            bad_uint16 equalizationComplete         : 1;
+            bad_uint16 equalizationPhase1Successful : 1;
+            bad_uint16 equalizationPhase2Successful : 1;
+            bad_uint16 equalizationPhase3Successful : 1;
+            bad_uint16 linkEqualizationRequest      : 1;
+            bad_uint16 __reserved                   : 10;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

@@ -24,21 +24,21 @@
 
 struct UefiSimpleNetworkProtocol // TODO: is it needed?
 {
-    u64 revision;
+    bad_uint64 revision;
 
     UefiStatus (UEFI_API *start)(UefiSimpleNetworkProtocol *obj); // TEST: NO
     UefiStatus (UEFI_API *stop)(UefiSimpleNetworkProtocol *obj); // TEST: NO
-    UefiStatus (UEFI_API *initialize)(UefiSimpleNetworkProtocol *obj, u64 extraRxBufferSize, u64 extraTxBufferSize); // TEST: NO
+    UefiStatus (UEFI_API *initialize)(UefiSimpleNetworkProtocol *obj, bad_uint64 extraRxBufferSize, bad_uint64 extraTxBufferSize); // TEST: NO
     UefiStatus (UEFI_API *reset)(UefiSimpleNetworkProtocol *obj, bool extendedVerification); // TEST: NO
     UefiStatus (UEFI_API *shutdown)(UefiSimpleNetworkProtocol *obj); // TEST: NO
-    UefiStatus (UEFI_API *receiveFilters)(UefiSimpleNetworkProtocol *obj, UefiSimpleNetworkReceiveFilterFlags enable, UefiSimpleNetworkReceiveFilterFlags disable, bool resetMulticastFilter, u64 multicastFilterCount, UefiMacAddress *multicastFilter); // TEST: NO
+    UefiStatus (UEFI_API *receiveFilters)(UefiSimpleNetworkProtocol *obj, UefiSimpleNetworkReceiveFilterFlags enable, UefiSimpleNetworkReceiveFilterFlags disable, bool resetMulticastFilter, bad_uint64 multicastFilterCount, UefiMacAddress *multicastFilter); // TEST: NO
     UefiStatus (UEFI_API *stationAddress)(UefiSimpleNetworkProtocol *obj, bool reset, UefiMacAddress *newAddress); // TEST: NO
-    UefiStatus (UEFI_API *statistics)(UefiSimpleNetworkProtocol *obj, bool reset, u64 *statisticsSize, UefiNetworkStatistics *statisticsTable); // TEST: NO
+    UefiStatus (UEFI_API *statistics)(UefiSimpleNetworkProtocol *obj, bool reset, bad_uint64 *statisticsSize, UefiNetworkStatistics *statisticsTable); // TEST: NO
     UefiStatus (UEFI_API *multicastIpToMac)(UefiSimpleNetworkProtocol *obj, bool isIpV6, UefiIpAddress *ip, UefiMacAddress *mac); // TEST: NO
-    UefiStatus (UEFI_API *nvData)(UefiSimpleNetworkProtocol *obj, bool isReadOperation, u64 offset, u64 bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *nvData)(UefiSimpleNetworkProtocol *obj, bool isReadOperation, bad_uint64 offset, bad_uint64 bufferSize, void *buffer); // TEST: NO
     UefiStatus (UEFI_API *getStatus)(UefiSimpleNetworkProtocol *obj, UefiSimpleNetworkInterruptFlags *interruptStatus, void **txBuffer); // TEST: NO
-    UefiStatus (UEFI_API *transmit)(UefiSimpleNetworkProtocol *obj, u64 headerSize, u64 bufferSize, void *buffer, UefiMacAddress *sourceAddress, UefiMacAddress *destinationAddress, u16 *protocol); // TEST: NO
-    UefiStatus (UEFI_API *receive)(UefiSimpleNetworkProtocol *obj, u64 *headerSize, u64 *bufferSize, void *buffer, UefiMacAddress *sourceAddress, UefiMacAddress *destinationAddress, u16 *protocol); // TEST: NO
+    UefiStatus (UEFI_API *transmit)(UefiSimpleNetworkProtocol *obj, bad_uint64 headerSize, bad_uint64 bufferSize, void *buffer, UefiMacAddress *sourceAddress, UefiMacAddress *destinationAddress, bad_uint16 *protocol); // TEST: NO
+    UefiStatus (UEFI_API *receive)(UefiSimpleNetworkProtocol *obj, bad_uint64 *headerSize, bad_uint64 *bufferSize, void *buffer, UefiMacAddress *sourceAddress, UefiMacAddress *destinationAddress, bad_uint16 *protocol); // TEST: NO
 
     uefi_event             waitForPacket;
     UefiSimpleNetworkMode *mode;

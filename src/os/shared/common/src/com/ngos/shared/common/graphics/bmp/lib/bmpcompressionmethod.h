@@ -10,7 +10,7 @@
 
 
 
-enum class BmpCompressionMethod: u32
+enum class BmpCompressionMethod: bad_uint32
 {
     RGB              = 0,
     RLE8             = 1,
@@ -59,7 +59,7 @@ inline const char8* enumToFullString(BmpCompressionMethod method) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%08X (%s)", (u32)method, enumToString(method));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)method, enumToString(method));
 
     return res;
 }

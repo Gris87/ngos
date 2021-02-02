@@ -18,7 +18,7 @@ TEST_CASES(section0, com_ngos_shared_uefibase_other_uefibootmemorymap);
     TEST_CASE("MEMORY_MAP_DESCRIPTOR()");
     {
         UefiMemoryDescriptor  descriptors[5];
-        u64                   descriptorSize = sizeof(UefiMemoryDescriptor);
+        bad_uint64                   descriptorSize = sizeof(UefiMemoryDescriptor);
         UefiMemoryDescriptor *memoryMap      = &descriptors[0];
 
 

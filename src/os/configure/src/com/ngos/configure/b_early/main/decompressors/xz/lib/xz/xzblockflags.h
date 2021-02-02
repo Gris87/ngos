@@ -22,7 +22,7 @@
 
 
 
-typedef u8 xz_block_flags;
+typedef bad_uint8 xz_block_flags;
 
 enum class XzBlockFlag: xz_block_flags // Ignore CppEnumVerifier // TODO: remove ignore after fixing union
 {
@@ -61,7 +61,7 @@ inline const char8* flagToFullString(XzBlockFlag flag) // TEST: NO
 
     static char8 res[33];
 
-    sprintf(res, "0x%02X (%s)", (u8)flag, flagToString(flag));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)flag, flagToString(flag));
 
     return res;
 }

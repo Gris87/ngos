@@ -10,17 +10,17 @@
 
 struct BmpInformationHeader
 {
-    u32                  headerSize;
-    u32                  width;
-    u32                  height;
-    u16                  numberOfPlanes;
-    u16                  bitsPerPixel;
+    bad_uint32                  headerSize;
+    bad_uint32                  width;
+    bad_uint32                  height;
+    bad_uint16                  numberOfPlanes;
+    bad_uint16                  bitsPerPixel;
     BmpCompressionMethod compressionMethod;
-    u32                  imageSize;         // The size of decompressed image
-    u32                  xPixelsPerMeter;
-    u32                  yPixelsPerMeter;
-    u32                  numberOfColors;
-    u32                  importantColors;
+    bad_uint32                  imageSize;         // The size of decompressed image
+    bad_uint32                  xPixelsPerMeter;
+    bad_uint32                  yPixelsPerMeter;
+    bad_uint32                  numberOfColors;
+    bad_uint32                  importantColors;
 } __attribute__((packed));
 
 

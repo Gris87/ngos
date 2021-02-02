@@ -10,7 +10,7 @@
 
 struct PciExpressAccessControlServicesAcsCapability
 {
-    u16 egressControlVectorSizeReal()
+    bad_uint16 egressControlVectorSizeReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -19,13 +19,13 @@ struct PciExpressAccessControlServicesAcsCapability
         return egressControlVectorSize == 0 ? 256 : egressControlVectorSize;
     }
 
-    u16 egressControlVectorSizeNumberOfWords()
+    bad_uint16 egressControlVectorSizeNumberOfWords()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        return DIV_UP(egressControlVectorSizeReal(), sizeof(u32) * 8);
+        return DIV_UP(egressControlVectorSizeReal(), sizeof(bad_uint32) * 8);
     }
 
 
@@ -34,18 +34,18 @@ struct PciExpressAccessControlServicesAcsCapability
     {
         struct
         {
-            u16 acsSourceValidation      : 1;
-            u16 acsTranslationBlocking   : 1;
-            u16 acsP2pRequestRedirect    : 1;
-            u16 acsP2pCompletionRedirect : 1;
-            u16 acsUpstreamForwarding    : 1;
-            u16 acsP2pEgressControl      : 1;
-            u16 acsDirectTranslatedP2p   : 1;
-            u16 __reserved               : 1;
-            u16 egressControlVectorSize  : 8;
+            bad_uint16 acsSourceValidation      : 1;
+            bad_uint16 acsTranslationBlocking   : 1;
+            bad_uint16 acsP2pRequestRedirect    : 1;
+            bad_uint16 acsP2pCompletionRedirect : 1;
+            bad_uint16 acsUpstreamForwarding    : 1;
+            bad_uint16 acsP2pEgressControl      : 1;
+            bad_uint16 acsDirectTranslatedP2p   : 1;
+            bad_uint16 __reserved               : 1;
+            bad_uint16 egressControlVectorSize  : 8;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

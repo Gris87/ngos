@@ -19,9 +19,9 @@
 
 struct XzStreamHeader
 {
-    u8            signature[6];
+    bad_uint8            signature[6];
     XzStreamFlags streamFlags;
-    u32           crc32;
+    bad_uint32           crc32;
 } __attribute__((packed));
 
 

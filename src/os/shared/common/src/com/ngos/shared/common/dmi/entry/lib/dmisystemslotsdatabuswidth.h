@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemSlotsDataBusWidth: u8
+enum class DmiSystemSlotsDataBusWidth: bad_uint8
 {
     NONE     = 0,
     OTHER    = 1,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(DmiSystemSlotsDataBusWidth width) // TEST: 
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (u8)width, enumToString(width));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)width, enumToString(width));
 
     return res;
 }

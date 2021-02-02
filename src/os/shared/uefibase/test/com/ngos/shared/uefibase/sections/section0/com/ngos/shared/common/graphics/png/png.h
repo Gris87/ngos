@@ -18,9 +18,9 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 {
     TEST_CASE("unfilterLine()");
     {
-        u8 temp1[] = { 13, 97, 32, 14, 65, 24, 21, 97 };
-        u8 temp2[] = { 32, 13, 17, 31, 73, 72, 13, 48 };
-        u8 res[8];
+        bad_uint8 temp1[] = { 13, 97, 32, 14, 65, 24, 21, 97 };
+        bad_uint8 temp2[] = { 32, 13, 17, 31, 73, 72, 13, 48 };
+        bad_uint8 res[8];
 
         memzero(res, sizeof(res));
 
@@ -290,8 +290,8 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
     TEST_CASE("removePaddingBits()");
     {
-        u8 temp1[] = { 13, 64, 67, 21, 34, 69, 10, 53 };
-        u8 res[8];
+        bad_uint8 temp1[] = { 13, 64, 67, 21, 34, 69, 10, 53 };
+        bad_uint8 res[8];
 
         memzero(res, sizeof(res));
 
@@ -370,8 +370,8 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
     TEST_CASE("readBitFromReversedStream()");
     {
-        u8  temp1[]    = { 13, 47 };
-        i64 bitPointer = 0;
+        bad_uint8  temp1[]    = { 13, 47 };
+        bad_int64 bitPointer = 0;
 
         TEST_ASSERT_EQUALS(Png::readBitFromReversedStream(&bitPointer, temp1), 0);
         TEST_ASSERT_EQUALS(bitPointer,                                         1);
@@ -427,8 +427,8 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
     TEST_CASE("setBitOfReversedStream()");
     {
-        u8  res[]      = { 0, 0 };
-        i64 bitPointer = 0;
+        bad_uint8  res[]      = { 0, 0 };
+        bad_int64 bitPointer = 0;
 
         TEST_ASSERT_EQUALS(Png::setBitOfReversedStream(&bitPointer, res, 1), NgosStatus::OK);
         TEST_ASSERT_EQUALS(bitPointer,                                       1);

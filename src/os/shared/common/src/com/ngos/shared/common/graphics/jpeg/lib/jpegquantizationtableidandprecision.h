@@ -13,11 +13,11 @@ struct JpegQuantizationTableIdAndPrecision
     {
         struct
         {
-            u8 id:        4;
-            u8 precision: 4;
+            bad_uint8 id:        4;
+            bad_uint8 precision: 4;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

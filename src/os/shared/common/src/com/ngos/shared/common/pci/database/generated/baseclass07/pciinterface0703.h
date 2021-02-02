@@ -10,7 +10,7 @@
 
 
 
-enum class PciInterface0703: u8 // Ignore CppEnumVerifier
+enum class PciInterface0703: bad_uint8 // Ignore CppEnumVerifier
 {
     INTERFACE_00 = 0x00,
     INTERFACE_01 = 0x01,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciInterface0703 interface) // TEST: NO
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)interface, enumToString(interface));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)interface, enumToString(interface));
 
     return res;
 }

@@ -26,7 +26,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols()
 
 
     Guid protocol = UEFI_SIMPLE_NETWORK_PROTOCOL_GUID;
-    u64  size     = 0;
+    bad_uint64  size     = 0;
 
 
 
@@ -53,7 +53,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols()
     return NgosStatus::OK;
 }
 
-NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size)
+NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, bad_uint64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -106,7 +106,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size)
     return status;
 }
 
-NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size, uefi_handle *handles)
+NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, bad_uint64 size, uefi_handle *handles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, handles = 0x%p", protocol, size, handles));
 
@@ -116,12 +116,12 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size, uef
 
 
 
-    i64 count = size / sizeof(uefi_handle);
+    bad_int64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
 
 
-    for (i64 i = 0; i < count; ++i)
+    for (bad_int64 i = 0; i < count; ++i)
     {
         uefi_handle                handle = handles[i];
         UefiSimpleNetworkProtocol *network;

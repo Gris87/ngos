@@ -10,7 +10,7 @@
 
 
 
-u64 getElfMemorySize(ElfHeader *header)
+bad_uint64 getElfMemorySize(ElfHeader *header)
 {
     EARLY_LT((" | header = 0x%p", header));
 
@@ -64,11 +64,11 @@ u64 getElfMemorySize(ElfHeader *header)
 
 
 
-    u64 res = 0;
+    bad_uint64 res = 0;
 
-    for (i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
+    for (bad_int64 i = 0; i < header->programHeaderTableEntryCount; ++i)
     {
-        ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
+        ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((bad_uint64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
         EARLY_LVVV(("programHeader[%d]->type            = %s",        i, enumToFullString(programHeader->type)));
         EARLY_LVVV(("programHeader[%d]->flags           = %s",        i, flagsToFullString(programHeader->flags)));
@@ -85,7 +85,7 @@ u64 getElfMemorySize(ElfHeader *header)
     return res;
 }
 
-NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
+NgosStatus loadElfToAddress(ElfHeader *header, bad_uint64 address)
 {
     EARLY_LT((" | header = 0x%p, address = 0x%p", header, address));
 
@@ -94,13 +94,13 @@ NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
 
 
 
-    for (i64 i = 0; i < header->programHeaderTableEntryCount; ++i)
+    for (bad_int64 i = 0; i < header->programHeaderTableEntryCount; ++i)
     {
-        ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((u64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
+        ElfProgramHeaderTableEntry *programHeader = (ElfProgramHeaderTableEntry *)((bad_uint64)header + header->programHeaderTableOffset + i * header->programHeaderTableEntrySize);
 
         if (programHeader->type == ElfProgramType::LOAD)
         {
-            memcpy((void *)(address + programHeader->physicalAddress), (void *)((u64)header + programHeader->offset), programHeader->fileSize);
+            memcpy((void *)(address + programHeader->physicalAddress), (void *)((bad_uint64)header + programHeader->offset), programHeader->fileSize);
         }
         else
         {
@@ -113,7 +113,7 @@ NgosStatus loadElfToAddress(ElfHeader *header, u64 address)
     return NgosStatus::OK;
 }
 
-NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtualAddress)
+NgosStatus handleRelocations(ElfHeader *header, bad_uint64 physicalAddress, bad_uint64 virtualAddress)
 {
     EARLY_LT((" | header = 0x%p, physicalAddress = 0x%p, virtualAddress = 0x%p", header, physicalAddress, virtualAddress));
 
@@ -126,7 +126,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
     // Kernel image compiled to be loaded at 0xFFFFFFFF80000000 virtual address
     // But we are choosing random virtual address in range 0xFFFFFFFF80000000 - 0xFFFFFFFFC0000000
     // We should iterate all RELA entries in order to make them valid for the chosen virtual address
-    u64 delta = virtualAddress - 0xFFFFFFFF80000000;
+    bad_uint64 delta = virtualAddress - 0xFFFFFFFF80000000;
 
     EARLY_LVVV(("delta = 0x%016llX", delta));
 
@@ -138,9 +138,9 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
 
 
-    for (i64 i = 0; i < header->sectionHeaderTableEntryCount; ++i)
+    for (bad_int64 i = 0; i < header->sectionHeaderTableEntryCount; ++i)
     {
-        ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((u64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
+        ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((bad_uint64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
 
         // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",    i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
         // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",   i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
@@ -157,12 +157,12 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
         if (sectionHeader->type == ElfSectionType::RELA)
         {
-            ElfRela *relas = (ElfRela *)((u64)header + sectionHeader->offset);
+            ElfRela *relas = (ElfRela *)((bad_uint64)header + sectionHeader->offset);
 
-            i64 count = sectionHeader->size / sizeof(ElfRela);
+            bad_int64 count = sectionHeader->size / sizeof(ElfRela);
             // EARLY_LVVV(("count = %d", count)); // Commented to avoid too frequent logs
 
-            for (i64 j = 0; j < count; ++j)
+            for (bad_int64 j = 0; j < count; ++j)
             {
                 ElfRela &rela = relas[j];
 
@@ -177,31 +177,31 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
                     {
                         case ElfRelaType::D32:
                         {
-                            u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
+                            bad_uint64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(bad_uint32 *)relaAddress, *(bad_uint32 *)relaAddress + delta));
 
-                            *(u32 *)relaAddress += delta;
+                            *(bad_uint32 *)relaAddress += delta;
                         }
                         break;
 
                         case ElfRelaType::D32S:
                         {
-                            u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
+                            bad_uint64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(bad_uint32 *)relaAddress, *(bad_uint32 *)relaAddress + delta));
 
-                            *(u32 *)relaAddress += delta;
+                            *(bad_uint32 *)relaAddress += delta;
                         }
                         break;
 
                         case ElfRelaType::D64:
                         {
-                            u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
+                            bad_uint64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(bad_uint64 *)relaAddress, *(bad_uint64 *)relaAddress + delta));
 
-                            *(u64 *)relaAddress += delta;
+                            *(bad_uint64 *)relaAddress += delta;
                         }
                         break;
 

@@ -15,7 +15,7 @@
 
 
 
-enum class PciDevice13F6: u16 // Ignore CppEnumVerifier
+enum class PciDevice13F6: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0011 = 0x0011,
@@ -60,7 +60,7 @@ inline const char8* enumToFullString(PciDevice13F6 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -75,13 +75,13 @@ inline const char8* enumToHumanString(PciDevice13F6 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice13F6::DEVICE_0011: return "CMI8738";
+        case PciDevice13F6::DEVICE_0011: return "CMbad_int8738";
         case PciDevice13F6::DEVICE_0100: return "CM8338A";
         case PciDevice13F6::DEVICE_0101: return "CM8338B";
-        case PciDevice13F6::DEVICE_0111: return "CMI8738/CMI8768 PCI Audio";
+        case PciDevice13F6::DEVICE_0111: return "CMbad_int8738/CMbad_int8768 PCI Audio";
         case PciDevice13F6::DEVICE_0211: return "CM8738";
         case PciDevice13F6::DEVICE_5011: return "CM8888 [Oxygen Express]";
-        case PciDevice13F6::DEVICE_8788: return "CMI8788 [Oxygen HD Audio]";
+        case PciDevice13F6::DEVICE_8788: return "CMbad_int8788 [Oxygen HD Audio]";
 
         default: return "Unknown device";
     }
@@ -89,7 +89,7 @@ inline const char8* enumToHumanString(PciDevice13F6 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice13F6 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice13F6 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

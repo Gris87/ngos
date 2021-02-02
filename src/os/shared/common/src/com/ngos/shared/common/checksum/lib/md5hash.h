@@ -23,7 +23,7 @@ struct Md5Hash
         quads[1] = 0;
     }
 
-    Md5Hash(u64 quad1, u64 quad2)
+    Md5Hash(bad_uint64 quad1, bad_uint64 quad2)
     {
         COMMON_LT((" | quad1 = %u, quad2 = %u", quad1, quad2));
 
@@ -33,7 +33,7 @@ struct Md5Hash
         quads[1] = quad2;
     }
 
-    Md5Hash(u8 data[16])
+    Md5Hash(bad_uint8 data[16])
     {
         COMMON_LT((" | data = ..."));
 
@@ -57,9 +57,9 @@ struct Md5Hash
 
     union
     {
-        u8  bytes[16];
-        u32 dwords[4];
-        u64 quads[2];
+        bad_uint8  bytes[16];
+        bad_uint32 dwords[4];
+        bad_uint64 quads[2];
     };
 };
 
@@ -73,7 +73,7 @@ inline const char8* md5HashToString(const Md5Hash &hash) // TEST: NO
 
     static char8 res[33];
 
-    i64 length = sprintf(res, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
+    bad_int64 length = sprintf(res, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"
                             , hash.bytes[0]
                             , hash.bytes[1]
                             , hash.bytes[2]
@@ -112,7 +112,7 @@ inline const char8* md5HashToStringAsConstructor(const Md5Hash &hash) // TEST: N
 
     static char8 res[48];
 
-    i64 length = sprintf(res, "Md5Hash(0x%016llX, 0x%016llX)", hash.quads[0], hash.quads[1]);
+    bad_int64 length = sprintf(res, "Md5Hash(0x%016llX, 0x%016llX)", hash.quads[0], hash.quads[1]);
 
     AVOID_UNUSED(length);
 

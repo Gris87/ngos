@@ -11,7 +11,7 @@
 
 
 
-typedef u16 pci_hyper_transport_link_frequency_capability_flags;
+typedef bad_uint16 pci_hyper_transport_link_frequency_capability_flags;
 
 enum class PciHyperTransportLinkFrequencyCapabilityFlag: pci_hyper_transport_link_frequency_capability_flags
 {

@@ -18,12 +18,12 @@ struct UefiSimpleTextOutputInterface
     UefiStatus (UEFI_API *outputString)(UefiSimpleTextOutputInterface *obj, const char16 *string); // TEST: NO
     UefiStatus (UEFI_API *testString)(UefiSimpleTextOutputInterface *obj, const char16 *string); // TEST: NO
 
-    UefiStatus (UEFI_API *queryMode)(UefiSimpleTextOutputInterface *obj, u64 modeNumber, u64 *columns, u64 *rows); // TEST: NO
-    UefiStatus (UEFI_API *setMode)(UefiSimpleTextOutputInterface *obj, u64 modeNumber); // TEST: NO
-    UefiStatus (UEFI_API *setAttribute)(UefiSimpleTextOutputInterface *obj, u64 attribute); // TEST: NO
+    UefiStatus (UEFI_API *queryMode)(UefiSimpleTextOutputInterface *obj, bad_uint64 modeNumber, bad_uint64 *columns, bad_uint64 *rows); // TEST: NO
+    UefiStatus (UEFI_API *setMode)(UefiSimpleTextOutputInterface *obj, bad_uint64 modeNumber); // TEST: NO
+    UefiStatus (UEFI_API *setAttribute)(UefiSimpleTextOutputInterface *obj, bad_uint64 attribute); // TEST: NO
 
     UefiStatus (UEFI_API *clearScreen)(UefiSimpleTextOutputInterface *obj); // TEST: NO
-    UefiStatus (UEFI_API *setCursorPosition)(UefiSimpleTextOutputInterface *obj, u64 column, u64 row); // TEST: NO
+    UefiStatus (UEFI_API *setCursorPosition)(UefiSimpleTextOutputInterface *obj, bad_uint64 column, bad_uint64 row); // TEST: NO
     UefiStatus (UEFI_API *enableCursor)(UefiSimpleTextOutputInterface *obj, bool enable); // TEST: NO
 
     UefiSimpleTextOutputMode *mode;

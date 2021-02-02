@@ -11,7 +11,7 @@
 
 
 
-typedef u16 pci_express_access_control_services_acs_control_flags;
+typedef bad_uint16 pci_express_access_control_services_acs_control_flags;
 
 enum class PciExpressAccessControlServicesAcsControlFlag: pci_express_access_control_services_acs_control_flags
 {

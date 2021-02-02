@@ -5,7 +5,7 @@
 
 
 
-i8 memcmp(const void *str1, const void *str2, i64 length)
+bad_int8 memcmp(const void *str1, const void *str2, bad_int64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -21,13 +21,13 @@ i8 memcmp(const void *str1, const void *str2, i64 length)
 
 
 
-    u8 *s1 = (u8 *)str1;
-    u8 *s2 = (u8 *)str2;
+    bad_uint8 *s1 = (bad_uint8 *)str1;
+    bad_uint8 *s2 = (bad_uint8 *)str2;
 
     while (length > 0)
     {
-        u8 c1 = *s1;
-        u8 c2 = *s2;
+        bad_uint8 c1 = *s1;
+        bad_uint8 c2 = *s2;
 
         if (c1 != c2)
         {
@@ -42,7 +42,7 @@ i8 memcmp(const void *str1, const void *str2, i64 length)
     return 0;
 }
 
-bool memempty(const void *src, i64 length)
+bool memempty(const void *src, bad_int64 length)
 {
     COMMON_LT((" | src = 0x%p, length = %d", src, length));
 
@@ -50,7 +50,7 @@ bool memempty(const void *src, i64 length)
 
 
 
-    u8 *s = (u8 *)src;
+    bad_uint8 *s = (bad_uint8 *)src;
 
     while (length > 0)
     {
@@ -65,7 +65,7 @@ bool memempty(const void *src, i64 length)
     return true;
 }
 
-void* memmove(void *dest, const void *src, i64 length)
+void* memmove(void *dest, const void *src, bad_int64 length)
 {
     COMMON_LT((" | dest = 0x%p, src = 0x%p, length = %d", dest, src, length));
 
@@ -81,8 +81,8 @@ void* memmove(void *dest, const void *src, i64 length)
 
 
 
-    u8 *d = (u8 *)dest;
-    u8 *s = (u8 *)src;
+    bad_uint8 *d = (bad_uint8 *)dest;
+    bad_uint8 *s = (bad_uint8 *)src;
 
     if (d <= s || d - s >= length)
     {

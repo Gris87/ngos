@@ -14,21 +14,21 @@ struct PciExpressLinkControl
     {
         struct
         {
-            u16 aspmControl                            : 2; // TODO: Use enum PciExpressActiveStatePowerManagementControl
-            u16 __reserved                             : 1;
-            u16 readCompletionBoundary                 : 1; // TODO: Use enum PciExpressReadCompletionBoundary
-            u16 linkDisable                            : 1;
-            u16 retrainLink                            : 1;
-            u16 commonClockConfiguration               : 1;
-            u16 extendedSynch                          : 1;
-            u16 enableClockPowerManagement             : 1;
-            u16 hardwareAutonomousWidthDisable         : 1;
-            u16 linkBandwidthManagementInterruptEnable : 1;
-            u16 linkAutonomousBandwidthInterruptEnable : 1;
-            u16 __reserved2                            : 4;
+            bad_uint16 aspmControl                            : 2; // TODO: Use enum PciExpressActiveStatePowerManagementControl
+            bad_uint16 __reserved                             : 1;
+            bad_uint16 readCompletionBoundary                 : 1; // TODO: Use enum PciExpressReadCompletionBoundary
+            bad_uint16 linkDisable                            : 1;
+            bad_uint16 retrainLink                            : 1;
+            bad_uint16 commonClockConfiguration               : 1;
+            bad_uint16 extendedSynch                          : 1;
+            bad_uint16 enableClockPowerManagement             : 1;
+            bad_uint16 hardwareAutonomousWidthDisable         : 1;
+            bad_uint16 linkBandwidthManagementInterruptEnable : 1;
+            bad_uint16 linkAutonomousBandwidthInterruptEnable : 1;
+            bad_uint16 __reserved2                            : 4;
         };
 
-        u16 value16;
+        bad_uint16 value16;
     };
 };
 

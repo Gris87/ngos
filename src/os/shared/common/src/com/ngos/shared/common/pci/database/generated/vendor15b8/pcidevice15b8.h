@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice15B8: u16 // Ignore CppEnumVerifier
+enum class PciDevice15B8: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_1001 = 0x1001,
@@ -61,7 +61,7 @@ inline const char8* enumToFullString(PciDevice15B8 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -81,7 +81,7 @@ inline const char8* enumToHumanString(PciDevice15B8 device) // TEST: NO
         case PciDevice15B8::DEVICE_1004: return "APCI2032 SP controller (32 digi outputs)";
         case PciDevice15B8::DEVICE_1005: return "APCI2200 SP controller (8/16 digi outputs (relay))";
         case PciDevice15B8::DEVICE_1006: return "APCI1564 SP controller (32 digi ins, 32 digi outs)";
-        case PciDevice15B8::DEVICE_100A: return "APCI1696 SP controller (96 TTL I/Os)";
+        case PciDevice15B8::DEVICE_100A: return "APCbad_int1696 SP controller (96 TTL I/Os)";
         case PciDevice15B8::DEVICE_3001: return "APCI3501 SP controller (analog output board)";
         case PciDevice15B8::DEVICE_300F: return "APCI3600 Noise and vibration measurement board";
         case PciDevice15B8::DEVICE_7001: return "APCI7420 2-port Serial Controller";

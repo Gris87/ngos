@@ -738,7 +738,7 @@ void MainWindow::downloadReplyFinished()
     {
         ++mCurrentApplication;
 
-        if ((i64)mCurrentApplication >= applications.length())
+        if ((bad_int64)mCurrentApplication >= applications.length())
         {
             switchToState(UsbBootMakerState::BURNING);
         }

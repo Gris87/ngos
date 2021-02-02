@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemSlotsUsage: u8
+enum class DmiSystemSlotsUsage: bad_uint8
 {
     NONE        = 0,
     OTHER       = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiSystemSlotsUsage usage) // TEST: NO
 
     static char8 res[19];
 
-    sprintf(res, "0x%02X (%s)", (u8)usage, enumToString(usage));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)usage, enumToString(usage));
 
     return res;
 }

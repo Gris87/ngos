@@ -16,7 +16,7 @@
 
 
 
-NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
+NgosStatus Png::loadImage(bad_uint8 *data, bad_uint64 size, bool withNinePatch, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
@@ -24,7 +24,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*(u64 *)&data[0] == PNG_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(bad_uint64 *)&data[0] == PNG_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -58,12 +58,12 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 
 
     NgosStatus  status = decodeImageHeader(&decoder, &pngHeader->imageHeaderChunk, ntohl(pngHeader->imageHeaderChunk.length));
-    PngChunk   *chunk  = (PngChunk *)((u64)pngHeader + sizeof(PngHeader) + sizeof(PngImageHeader) + 4); // 4 == size of CRC
+    PngChunk   *chunk  = (PngChunk *)((bad_uint64)pngHeader + sizeof(PngHeader) + sizeof(PngImageHeader) + 4); // 4 == size of CRC
 
     while (status == NgosStatus::OK && size >= sizeof(PngChunk) + 4) // 4 == size of CRC
     {
-        u32 chunkLength      = ntohl(chunk->length);
-        u64 totalChunkLength = sizeof(PngChunk) + chunkLength + 4; // 4 == size of CRC
+        bad_uint32 chunkLength      = ntohl(chunk->length);
+        bad_uint64 totalChunkLength = sizeof(PngChunk) + chunkLength + 4; // 4 == size of CRC
 
         COMMON_LVVV(("chunkLength      = %u", chunkLength));
         COMMON_LVVV(("chunk->type      = %s", enumToFullString(chunk->type)));
@@ -87,7 +87,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 
 
 
-        chunk =  (PngChunk *)((u64)chunk + totalChunkLength);
+        chunk =  (PngChunk *)((bad_uint64)chunk + totalChunkLength);
         size  -= totalChunkLength;
     }
 
@@ -205,7 +205,7 @@ NgosStatus Png::releaseDecoder(PngDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -214,12 +214,12 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
 
 
 
-    u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+    bad_uint32 crc32Checksum = ntohl(*(bad_uint32 *)((bad_uint64)&chunk->data + chunkLength));
     AVOID_UNUSED(crc32Checksum);
 
     COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
 
-    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((u8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((bad_uint8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
 
 
 
@@ -271,7 +271,7 @@ NgosStatus Png::decodeChunk(PngDecoder *decoder, PngChunk *chunk, u32 chunkLengt
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -289,19 +289,19 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
 
 
-    u32 crc32Checksum = ntohl(*(u32 *)((u64)&chunk->data + chunkLength));
+    bad_uint32 crc32Checksum = ntohl(*(bad_uint32 *)((bad_uint64)&chunk->data + chunkLength));
     AVOID_UNUSED(crc32Checksum);
 
     COMMON_LVVV(("crc32Checksum = 0x%08X", crc32Checksum));
 
-    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((u8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(crc32Checksum == Crc::crc32((bad_uint8 *)&chunk->type, sizeof(chunk->type) + chunkLength), NgosStatus::ASSERTION);
 
 
 
     PngImageHeader *imageHeader = (PngImageHeader *)&chunk->data;
 
-    u32 width  = ntohl(imageHeader->width);
-    u32 height = ntohl(imageHeader->height);
+    bad_uint32 width  = ntohl(imageHeader->width);
+    bad_uint32 height = ntohl(imageHeader->height);
 
     COMMON_LVVV(("width                          = %u", width));
     COMMON_LVVV(("height                         = %u", height));
@@ -412,7 +412,7 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -466,7 +466,7 @@ NgosStatus Png::decodePrimaryChromaticities(PngDecoder *decoder, PngChunk *chunk
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -506,7 +506,7 @@ NgosStatus Png::decodeImageGamma(PngDecoder *decoder, PngChunk *chunk, u32 chunk
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -528,9 +528,9 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
 
 
 
-    i64 len = strnlen(embeddedIccProfile->profileName, sizeof(embeddedIccProfile->profileName));
+    bad_int64 len = strnlen(embeddedIccProfile->profileName, sizeof(embeddedIccProfile->profileName));
 
-    if (len >= (i64)sizeof(embeddedIccProfile->profileName))
+    if (len >= (bad_int64)sizeof(embeddedIccProfile->profileName))
     {
         COMMON_LE(("Invalid %s chunk", enumToString(chunk->type)));
 
@@ -562,7 +562,7 @@ NgosStatus Png::decodeEmbeddedIccProfile(PngDecoder *decoder, PngChunk *chunk, u
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -613,7 +613,7 @@ NgosStatus Png::decodeSignificantBits(PngDecoder *decoder, PngChunk *chunk, u32 
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -651,7 +651,7 @@ NgosStatus Png::decodeStandardRgbColorSpace(PngDecoder *decoder, PngChunk *chunk
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -691,7 +691,7 @@ NgosStatus Png::decodePhysicalPixelDimensions(PngDecoder *decoder, PngChunk *chu
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -734,7 +734,7 @@ NgosStatus Png::decodeImageLastModificationTime(PngDecoder *decoder, PngChunk *c
     return NgosStatus::OK;
 }
 
-NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, u32 chunkLength)
+NgosStatus Png::decodeImageData(PngDecoder *decoder, PngChunk *chunk, bad_uint32 chunkLength)
 {
     COMMON_LT((" | decoder = 0x%p, chunk = 0x%p, chunkLength = %u", decoder, chunk, chunkLength));
 
@@ -783,14 +783,14 @@ NgosStatus Png::decompressImageData(PngDecoder *decoder)
 
 
 
-    u64 decompressedSize;
+    bad_uint64 decompressedSize;
     COMMON_ASSERT_EXECUTION(getImageDataDecompressedSize(decoder, &decompressedSize), NgosStatus::ASSERTION);
 
     COMMON_LVVV(("decompressedSize = %u", decompressedSize));
 
 
 
-    u8 *buffer = (u8 *)malloc(decompressedSize);
+    bad_uint8 *buffer = (bad_uint8 *)malloc(decompressedSize);
 
     if (!buffer)
     {
@@ -841,14 +841,14 @@ NgosStatus Png::convertImageDataToImage(PngDecoder *decoder)
     }
     else
     {
-        u64 rawImageSize;
+        bad_uint64 rawImageSize;
         COMMON_ASSERT_EXECUTION(getRawImageSize(decoder, &rawImageSize), NgosStatus::ASSERTION);
 
         COMMON_LVVV(("rawImageSize = %u", rawImageSize));
 
 
 
-        u8 *buffer = (u8 *)malloc(rawImageSize);
+        bad_uint8 *buffer = (bad_uint8 *)malloc(rawImageSize);
 
         if (!buffer)
         {
@@ -905,9 +905,9 @@ NgosStatus Png::processImageWithoutInterlace(PngDecoder *decoder)
 
 
 
-    u16 width        = (*decoder->image)->getWidth();
-    u16 height       = (*decoder->image)->getHeight();
-    u8  bitsPerPixel = decoder->bitsPerPixel;
+    bad_uint16 width        = (*decoder->image)->getWidth();
+    bad_uint16 height       = (*decoder->image)->getHeight();
+    bad_uint8  bitsPerPixel = decoder->bitsPerPixel;
 
 
 
@@ -969,7 +969,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
 
 
     Image *image      = *decoder->image;
-    i64    resolution = image->getWidth() * image->getHeight();
+    bad_int64    resolution = image->getWidth() * image->getHeight();
 
 
 
@@ -977,7 +977,7 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
     {
         RgbaPixel *pixel = image->getRgbaBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (bad_int64 i = 0; i < resolution; ++i)
         {
             if (pixel->alpha != 0xFF)
             {
@@ -993,9 +993,9 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
 
         pixel = image->getRgbaBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (bad_int64 i = 0; i < resolution; ++i)
         {
-            u8 temp     = pixel->red;
+            bad_uint8 temp     = pixel->red;
             pixel->red  = pixel->blue;
             pixel->blue = temp;
 
@@ -1006,9 +1006,9 @@ NgosStatus Png::imagePostprocess(PngDecoder *decoder, bool withNinePatch)
     {
         RgbPixel *pixel = image->getRgbBuffer();
 
-        for (i64 i = 0; i < resolution; ++i)
+        for (bad_int64 i = 0; i < resolution; ++i)
         {
-            u8 temp     = pixel->red;
+            bad_uint8 temp     = pixel->red;
             pixel->red  = pixel->blue;
             pixel->blue = temp;
 
@@ -1044,12 +1044,12 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
 
 
-        u16 from = 0;
-        u16 to   = 0;
+        bad_uint16 from = 0;
+        bad_uint16 to   = 0;
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i];
 
@@ -1076,7 +1076,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[i];
 
@@ -1120,7 +1120,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[i * image->getWidth()];
 
@@ -1147,7 +1147,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[i * image->getWidth()];
 
@@ -1186,11 +1186,11 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
 
 
-        u64 lastPosY = (image->getHeight() - 1) * image->getWidth();
+        bad_uint64 lastPosY = (image->getHeight() - 1) * image->getWidth();
 
         if (image->isRgba())
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
@@ -1202,7 +1202,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            for (bad_int64 i = image->getWidth() - 2; i >= 1; --i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[lastPosY + i];
 
@@ -1214,7 +1214,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1226,7 +1226,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            for (bad_int64 i = image->getHeight() - 2; i >= 1 ; --i)
             {
                 RgbaPixel *pixel = &image->getRgbaBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1240,7 +1240,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
         }
         else
         {
-            for (i64 i = 1; i < image->getWidth() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getWidth() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
@@ -1258,7 +1258,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getWidth() - 2; i >= 1; --i)
+            for (bad_int64 i = image->getWidth() - 2; i >= 1; --i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[lastPosY + i];
 
@@ -1276,7 +1276,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = 1; i < image->getHeight() - 1; ++i)
+            for (bad_int64 i = 1; i < image->getHeight() - 1; ++i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1294,7 +1294,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
                 }
             }
 
-            for (i64 i = image->getHeight() - 2; i >= 1 ; --i)
+            for (bad_int64 i = image->getHeight() - 2; i >= 1 ; --i)
             {
                 RgbPixel *pixel = &image->getRgbBuffer()[(i + 1) * image->getWidth() - 1];
 
@@ -1350,7 +1350,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 height)
+NgosStatus Png::unfilter(PngDecoder *decoder, bad_uint8 *in, bad_uint8 *out, bad_uint16 width, bad_uint16 height)
 {
     COMMON_LT((" | decoder = 0x%p, in = 0x%p, out = 0x%p, width = %u, height = %u", decoder, in, out, width, height));
 
@@ -1362,15 +1362,15 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
 
 
 
-    u8   bitsPerPixel = decoder->bitsPerPixel;
-    u8   byteWidth    = DIV_UP(bitsPerPixel, 8);
-    u32  bytesPerLine = DIV_UP(width * bitsPerPixel, 8);
-    u8  *previousLine = 0;
+    bad_uint8   bitsPerPixel = decoder->bitsPerPixel;
+    bad_uint8   byteWidth    = DIV_UP(bitsPerPixel, 8);
+    bad_uint32  bytesPerLine = DIV_UP(width * bitsPerPixel, 8);
+    bad_uint8  *previousLine = 0;
 
-    for (i64 i = 0; i < height; ++i)
+    for (bad_int64 i = 0; i < height; ++i)
     {
-        u8 *inLine  = &in[i * (bytesPerLine + 1)]; // +1 because each line starts with filterType byte
-        u8 *outLine = &out[i * bytesPerLine];
+        bad_uint8 *inLine  = &in[i * (bytesPerLine + 1)]; // +1 because each line starts with filterType byte
+        bad_uint8 *outLine = &out[i * bytesPerLine];
 
         PngFilterType filterType = (PngFilterType)*inLine;
         ++inLine;
@@ -1394,7 +1394,7 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
     return NgosStatus::OK;
 }
 
-NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilterType filterType, u8 byteWidth, u32 bytesPerLine)
+NgosStatus Png::unfilterLine(bad_uint8 *inLine, bad_uint8 *outLine, bad_uint8 *previousLine, PngFilterType filterType, bad_uint8 byteWidth, bad_uint32 bytesPerLine)
 {
     // COMMON_LT((" | inLine = 0x%p, outLine = 0x%p, previousLine = 0x%p, filterType = %u, byteWidth = %u, bytesPerLine = %u", inLine, outLine, previousLine, filterType, byteWidth, bytesPerLine)); // Commented to avoid too frequent logs
 
@@ -1421,7 +1421,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             memcpy(outLine, inLine, byteWidth);
 
-            for (i64 i = byteWidth; i < bytesPerLine; ++i)
+            for (bad_int64 i = byteWidth; i < bytesPerLine; ++i)
             {
                 outLine[i] = inLine[i] + outLine[i - byteWidth];
             }
@@ -1432,7 +1432,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < bytesPerLine; ++i)
+                for (bad_int64 i = 0; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + previousLine[i];
                 }
@@ -1448,12 +1448,12 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < byteWidth; ++i)
+                for (bad_int64 i = 0; i < byteWidth; ++i)
                 {
                     outLine[i] = inLine[i] + (previousLine[i] >> 1);
                 }
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (bad_int64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + ((outLine[i - byteWidth] + previousLine[i]) >> 1);
                 }
@@ -1462,7 +1462,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 memcpy(outLine, inLine, byteWidth);
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (bad_int64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = inLine[i] + (outLine[i - byteWidth] >> 1);
                 }
@@ -1474,12 +1474,12 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
         {
             if (previousLine)
             {
-                for (i64 i = 0; i < byteWidth; ++i)
+                for (bad_int64 i = 0; i < byteWidth; ++i)
                 {
                     outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(0, previousLine[i], 0) is always previousLine[i]
                 }
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (bad_int64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     outLine[i] = (inLine[i] + paethPredictor(outLine[i - byteWidth], previousLine[i], previousLine[i - byteWidth]));
                 }
@@ -1488,7 +1488,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 memcpy(outLine, inLine, byteWidth);
 
-                for (i64 i = byteWidth; i < bytesPerLine; ++i)
+                for (bad_int64 i = byteWidth; i < bytesPerLine; ++i)
                 {
                     // paethPredictor(outLine[i - byteWidth], 0, 0) is always outLine[i - byteWidth]
                     outLine[i] = (inLine[i] + outLine[i - byteWidth]);
@@ -1511,7 +1511,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
     return NgosStatus::OK;
 }
 
-NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBits, u16 height)
+NgosStatus Png::removePaddingBits(bad_uint8 *in, bad_uint8 *out, bad_int64 inLineBits, bad_int64 outLineBits, bad_uint16 height)
 {
     COMMON_LT((" | in = 0x%p, out = 0x%p, inLineBits = %d, outLineBits = %d, height = %u", in, out, inLineBits, outLineBits, height));
 
@@ -1523,17 +1523,17 @@ NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBi
 
 
 
-    i64 diff          = inLineBits - outLineBits;
-    i64 inBitPointer  = 0;
-    i64 outBitPointer = 0;
+    bad_int64 diff          = inLineBits - outLineBits;
+    bad_int64 inBitPointer  = 0;
+    bad_int64 outBitPointer = 0;
 
 
 
-    for (i64 i = 0; i < height; ++i)
+    for (bad_int64 i = 0; i < height; ++i)
     {
-        for (i64 j = 0; j < outLineBits; ++j)
+        for (bad_int64 j = 0; j < outLineBits; ++j)
         {
-            u8 bit = readBitFromReversedStream(&inBitPointer, in);
+            bad_uint8 bit = readBitFromReversedStream(&inBitPointer, in);
 
             COMMON_ASSERT_EXECUTION(setBitOfReversedStream(&outBitPointer, out, bit), NgosStatus::ASSERTION);
         }
@@ -1546,7 +1546,7 @@ NgosStatus Png::removePaddingBits(u8 *in, u8 *out, i64 inLineBits, i64 outLineBi
     return NgosStatus::OK;
 }
 
-NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
+NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, bad_uint8 bitDepth)
 {
     COMMON_LT((" | colorType = %u, bitDepth = %u", colorType, bitDepth));
 
@@ -1613,7 +1613,7 @@ NgosStatus Png::checkColorTypeAndBitDepth(PngColorType colorType, u8 bitDepth)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
+NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, bad_uint8 *data, bad_uint64 count)
 {
     COMMON_LT((" | decoder = 0x%p, data = 0x%p, count = %u", decoder, data, count));
 
@@ -1623,15 +1623,15 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
 
 
 
-    u64 oldSize          = decoder->imageDataSize;
-    u64 newSize          = oldSize + count;
-    u64 oldAllocatedSize = decoder->imageDataAllocatedSize;
+    bad_uint64 oldSize          = decoder->imageDataSize;
+    bad_uint64 newSize          = oldSize + count;
+    bad_uint64 oldAllocatedSize = decoder->imageDataAllocatedSize;
 
 
 
     if (newSize > oldAllocatedSize)
     {
-        u64 newAllocatedSize;
+        bad_uint64 newAllocatedSize;
 
         if (oldAllocatedSize != 0)
         {
@@ -1649,7 +1649,7 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
 
 
 
-        u8 *buffer = (u8 *)malloc(newAllocatedSize);
+        bad_uint8 *buffer = (bad_uint8 *)malloc(newAllocatedSize);
 
         if (!buffer)
         {
@@ -1684,7 +1684,7 @@ NgosStatus Png::addImageDataToBuffer(PngDecoder *decoder, u8 *data, u64 count)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
+NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, bad_uint64 *size)
 {
     COMMON_LT((" | decoder = 0x%p, size = 0x%p", decoder, size));
 
@@ -1695,8 +1695,8 @@ NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
 
     *size = 0;
 
-    u16 width  = (*decoder->image)->getWidth();
-    u16 height = (*decoder->image)->getHeight();
+    bad_uint16 width  = (*decoder->image)->getWidth();
+    bad_uint16 height = (*decoder->image)->getHeight();
 
 
 
@@ -1746,7 +1746,7 @@ NgosStatus Png::getImageDataDecompressedSize(PngDecoder *decoder, u64 *size)
     return NgosStatus::OK;
 }
 
-NgosStatus Png::getImageDataDecompressedSizeForBlock(PngDecoder *decoder, u16 width, u16 height, u64 *size)
+NgosStatus Png::getImageDataDecompressedSizeForBlock(PngDecoder *decoder, bad_uint16 width, bad_uint16 height, bad_uint64 *size)
 {
     COMMON_LT((" | decoder = 0x%p, width = %u, height = %u, size = 0x%p", decoder, width, height, size));
 
@@ -1757,7 +1757,7 @@ NgosStatus Png::getImageDataDecompressedSizeForBlock(PngDecoder *decoder, u16 wi
 
 
 
-    u8 bitsPerPixel = decoder->bitsPerPixel;
+    bad_uint8 bitsPerPixel = decoder->bitsPerPixel;
 
     *size += (((width >> 3) * bitsPerPixel) + DIV_UP((width & 7) * bitsPerPixel, 8) + 1) * height;
 
@@ -1766,7 +1766,7 @@ NgosStatus Png::getImageDataDecompressedSizeForBlock(PngDecoder *decoder, u16 wi
     return NgosStatus::OK;
 }
 
-NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
+NgosStatus Png::getRawImageSize(PngDecoder *decoder, bad_uint64 *size)
 {
     COMMON_LT((" | decoder = 0x%p, size = 0x%p", decoder, size));
 
@@ -1775,10 +1775,10 @@ NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
 
 
 
-    u16 width          = (*decoder->image)->getWidth();
-    u16 height         = (*decoder->image)->getHeight();
-    u32 numberOfPixels = width * height;
-    u8  bitsPerPixel   = decoder->bitsPerPixel;
+    bad_uint16 width          = (*decoder->image)->getWidth();
+    bad_uint16 height         = (*decoder->image)->getHeight();
+    bad_uint32 numberOfPixels = width * height;
+    bad_uint8  bitsPerPixel   = decoder->bitsPerPixel;
 
 
 
@@ -1789,17 +1789,17 @@ NgosStatus Png::getRawImageSize(PngDecoder *decoder, u64 *size)
     return NgosStatus::OK;
 }
 
-u8 Png::paethPredictor(u8 a, u8 b, u8 c)
+bad_uint8 Png::paethPredictor(bad_uint8 a, bad_uint8 b, bad_uint8 c)
 {
     // COMMON_LT((" | a = %u, b = %u, c = %u", a, b, c)); // Commented to avoid too frequent logs
 
 
 
-    i16 p = a + b - c;
+    bad_int16 p = a + b - c;
 
-    u16 pa = ABS(p - a);
-    u16 pb = ABS(p - b);
-    u16 pc = ABS(p - c);
+    bad_uint16 pa = ABS(p - a);
+    bad_uint16 pb = ABS(p - b);
+    bad_uint16 pc = ABS(p - c);
 
 
 
@@ -1816,7 +1816,7 @@ u8 Png::paethPredictor(u8 a, u8 b, u8 c)
     return a;
 }
 
-u8 Png::readBitFromReversedStream(i64 *bitPointer, u8 *bitStream)
+bad_uint8 Png::readBitFromReversedStream(bad_int64 *bitPointer, bad_uint8 *bitStream)
 {
     COMMON_LT((" | bitPointer = 0x%p, bitStream = 0x%p", bitPointer, bitStream));
 
@@ -1825,7 +1825,7 @@ u8 Png::readBitFromReversedStream(i64 *bitPointer, u8 *bitStream)
 
 
 
-    u8 res = (u8)((bitStream[(*bitPointer) >> 3] >> (7 - ((*bitPointer) & 7))) & 1);
+    bad_uint8 res = (bad_uint8)((bitStream[(*bitPointer) >> 3] >> (7 - ((*bitPointer) & 7))) & 1);
 
     ++(*bitPointer);
 
@@ -1834,7 +1834,7 @@ u8 Png::readBitFromReversedStream(i64 *bitPointer, u8 *bitStream)
     return res;
 }
 
-NgosStatus Png::setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit)
+NgosStatus Png::setBitOfReversedStream(bad_int64 *bitPointer, bad_uint8 *bitStream, bad_uint8 bit)
 {
     COMMON_LT((" | bitPointer = 0x%p, bitStream = 0x%p, bit = %u", bitPointer, bitStream, bit));
 
@@ -1850,7 +1850,7 @@ NgosStatus Png::setBitOfReversedStream(i64 *bitPointer, u8 *bitStream, u8 bit)
     }
     else
     {
-        bitStream[(*bitPointer) >> 3] &= (u8)(~(1ULL << (7 - ((*bitPointer) & 7))));
+        bitStream[(*bitPointer) >> 3] &= (bad_uint8)(~(1ULL << (7 - ((*bitPointer) & 7))));
     }
 
     ++(*bitPointer);

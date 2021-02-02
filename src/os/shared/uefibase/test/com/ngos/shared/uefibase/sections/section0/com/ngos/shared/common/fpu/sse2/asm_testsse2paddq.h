@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse2Paddq(u64 *a, u64 *b, u64 *c);
+void testSse2Paddq(bad_uint64 *a, bad_uint64 *b, bad_uint64 *c);
 
 
 

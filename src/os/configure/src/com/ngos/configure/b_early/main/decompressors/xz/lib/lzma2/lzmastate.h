@@ -26,7 +26,7 @@
 //
 // The symbol names are in form: oldest_older_previous. REPEAT means
 // either Short or Long repeated match, and NONLITERAL means any non-literal.
-enum class LzmaState: u8
+enum class LzmaState: bad_uint8
 {
     LITERAL_LITERAL             = 0,
     MATCH_LITERAL_LITERAL       = 1,
@@ -79,7 +79,7 @@ inline const char8* enumToFullString(LzmaState state) // TEST: NO
 
     static char8 res[35];
 
-    sprintf(res, "0x%02X (%s)", (u8)state, enumToString(state));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)state, enumToString(state));
 
     return res;
 }

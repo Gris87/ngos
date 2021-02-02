@@ -10,10 +10,10 @@
 
 struct DmiSystemSlotsPeerGroup
 {
-    u16                              segmentGroupNumber;
-    u8                               busNumber;
+    bad_uint16                              segmentGroupNumber;
+    bad_uint8                               busNumber;
     DmiFunctionNumberAndDeviceNumber functionNumberAndDeviceNumber;
-    u8                               dataBusWidth;
+    bad_uint8                               dataBusWidth;
 } __attribute__((packed));
 
 

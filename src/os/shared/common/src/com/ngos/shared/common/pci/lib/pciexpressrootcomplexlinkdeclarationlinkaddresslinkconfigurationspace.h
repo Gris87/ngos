@@ -9,7 +9,7 @@
 
 struct PciExpressRootComplexLinkDeclarationLinkAndressConfigurationSpace
 {
-    u8 encodedNumberOfBusNumberBitsReal()
+    bad_uint8 encodedNumberOfBusNumberBitsReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -18,24 +18,24 @@ struct PciExpressRootComplexLinkDeclarationLinkAndressConfigurationSpace
         return encodedNumberOfBusNumberBits == 0 ? 8 : encodedNumberOfBusNumberBits;
     }
 
-    u8 busNumberReal()
+    bad_uint8 busNumberReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        u8 numberOfBits = encodedNumberOfBusNumberBitsReal();
+        bad_uint8 numberOfBits = encodedNumberOfBusNumberBitsReal();
 
         return (value64 >> 20) & ((1ULL << numberOfBits) - 1);
     }
 
-    u64 configurationSpaceBaseAddressReal()
+    bad_uint64 configurationSpaceBaseAddressReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        u8 numberOfBits = encodedNumberOfBusNumberBitsReal();
+        bad_uint8 numberOfBits = encodedNumberOfBusNumberBitsReal();
 
         return value64 >> (20 + numberOfBits);
     }
@@ -46,15 +46,15 @@ struct PciExpressRootComplexLinkDeclarationLinkAndressConfigurationSpace
     {
         struct
         {
-            u64 encodedNumberOfBusNumberBits  : 3;
-            u64 __reserved                    : 9;
-            u64 functionNumber                : 3;
-            u64 deviceNumber                  : 5;
-            u64 busNumber                     : 8;
-            u64 configurationSpaceBaseAddress : 36;
+            bad_uint64 encodedNumberOfBusNumberBits  : 3;
+            bad_uint64 __reserved                    : 9;
+            bad_uint64 functionNumber                : 3;
+            bad_uint64 deviceNumber                  : 5;
+            bad_uint64 busNumber                     : 8;
+            bad_uint64 configurationSpaceBaseAddress : 36;
         };
 
-        u64 value64;
+        bad_uint64 value64;
     };
 };
 

@@ -25,11 +25,11 @@
 #define VENDOR_AMD_2   0x69746E65   // enti
 #define VENDOR_AMD_3   0x444D4163   // cAMD
 
-#define INTEL_MINIMAL_FAMILY (u16)CpuFamily::INTEL_FAMILY_6
-#define INTEL_MINIMAL_MODEL  (u8)IntelCpuModel::FAMILY_6_HASWELL_S
+#define INTEL_MINIMAL_FAMILY (bad_uint16)CpuFamily::INTEL_FAMILY_6
+#define INTEL_MINIMAL_MODEL  (bad_uint8)IntelCpuModel::FAMILY_6_HASWELL_S
 
-#define AMD_MINIMAL_FAMILY (u16)CpuFamily::AMD_FAMILY_23
-#define AMD_MINIMAL_MODEL  (u8)AmdCpuModel::FAMILY_23_NAPLES
+#define AMD_MINIMAL_FAMILY (bad_uint16)CpuFamily::AMD_FAMILY_23
+#define AMD_MINIMAL_MODEL  (bad_uint8)AmdCpuModel::FAMILY_23_NAPLES
 
 #define CPUID_LEVEL_LOWER_BOUND     0x00000001
 #define CPUID_LEVEL_UPPER_BOUND     0x0000FFFF
@@ -44,28 +44,28 @@
 
 
 
-u32       CPU::sVendor[3];
+bad_uint32       CPU::sVendor[3];
 CpuVendor CPU::sCpuVendor;
-u32       CPU::sModelName[12];
-u32       CPU::sCpuidLevel;
-u32       CPU::sExtendedCpuidLevel;
+bad_uint32       CPU::sModelName[12];
+bad_uint32       CPU::sCpuidLevel;
+bad_uint32       CPU::sExtendedCpuidLevel;
 CpuFamily CPU::sFamily;
-u8        CPU::sModel;
-u8        CPU::sStepping;
-u32       CPU::sMicrocodeRevision;
-u32       CPU::sNumberOfCores;
-u32       CPU::sNumberOfThreads;
-u8        CPU::sNumberOfApicIdsPerPackage;
-i8        CPU::sX86CoreIdBits;
-u16       CPU::sCacheLineFlushSize;
-u16       CPU::sCacheAlignment;
-i32       CPU::sCacheMaxRmid;
-i32       CPU::sCacheOccScale;
-u32       CPU::sPower;
-u8        CPU::sPhysicalBits;
-u8        CPU::sVirtualBits;
-u32       CPU::sFlags[(u64)x86FeatureWord::MAXIMUM];
-u32       CPU::sBugs[(u64)x86BugWord::MAXIMUM];
+bad_uint8        CPU::sModel;
+bad_uint8        CPU::sStepping;
+bad_uint32       CPU::sMicrocodeRevision;
+bad_uint32       CPU::sNumberOfCores;
+bad_uint32       CPU::sNumberOfThreads;
+bad_uint8        CPU::sNumberOfApicIdsPerPackage;
+bad_int8        CPU::sX86CoreIdBits;
+bad_uint16       CPU::sCacheLineFlushSize;
+bad_uint16       CPU::sCacheAlignment;
+bad_int32       CPU::sCacheMaxRmid;
+bad_int32       CPU::sCacheOccScale;
+bad_uint32       CPU::sPower;
+bad_uint8        CPU::sPhysicalBits;
+bad_uint8        CPU::sVirtualBits;
+bad_uint32       CPU::sFlags[(bad_uint64)x86FeatureWord::MAXIMUM];
+bad_uint32       CPU::sBugs[(bad_uint64)x86BugWord::MAXIMUM];
 
 
 
@@ -160,14 +160,14 @@ NgosStatus CPU::init()
         {
             COMMON_LVVV(("CPU flags:"));
 
-            for (i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)x86FeatureWord::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("sFlags[%-27s] = 0x%08X", enumToFullString((x86FeatureWord)i), sFlags[i]));
             }
 
             COMMON_LVVV(("CPU bugs:"));
 
-            for (i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
+            for (bad_int64 i = 0; i < (bad_int64)x86BugWord::MAXIMUM; ++i)
             {
                 COMMON_LVVV(("sBugs[%-24s] = 0x%08X", enumToFullString((x86BugWord)i), sBugs[i]));
             }
@@ -214,7 +214,7 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sPower                        == 0,                                                                                 NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sPhysicalBits                 == 40,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sVirtualBits                  == 57,                                                                                NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)x86FeatureWord::MAXIMUM     == 16,                                                                                NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((bad_uint64)x86FeatureWord::MAXIMUM     == 16,                                                                                NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sFlags[0]                     == 0x82D82203,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sFlags[1]                     == 0x178BFBFD,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sFlags[2]                     == 0x00000004,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
@@ -231,7 +231,7 @@ NgosStatus CPU::init()
         // COMMON_TEST_ASSERT(sFlags[13]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sFlags[14]                    == 0x00000000,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sFlags[15]                    == 0x0000000D,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
-        COMMON_TEST_ASSERT((u64)x86BugWord::MAXIMUM         == 1,                                                                                 NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((bad_uint64)x86BugWord::MAXIMUM         == 1,                                                                                 NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sBugs[0]                      == 0x0000003E,                                                                        NgosStatus::ASSERTION); // Commented due to value variation
         // Ignore CppAlignmentVerifier [END]
     }
@@ -241,7 +241,7 @@ NgosStatus CPU::init()
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::toString(char8 *buffer, u16 size)
+NgosStatus CPU::toString(char8 *buffer, bad_uint16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -251,7 +251,7 @@ NgosStatus CPU::toString(char8 *buffer, u16 size)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    i64 res = sprintf(buffer,
+    bad_int64 res = sprintf(buffer,
             "CPU info:\n"
             "           Vendor:                %.12s\n"
             "           CPU Family:            %u\n"
@@ -277,7 +277,7 @@ NgosStatus CPU::toString(char8 *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
+NgosStatus CPU::flagsToString(char8 *buffer, bad_uint16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -290,13 +290,13 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
 
 
 
-    u16 currentIndex = 0;
+    bad_uint16 currentIndex = 0;
 
-    for (i64 i = 0; i < (i64)x86FeatureWord::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)x86FeatureWord::MAXIMUM; ++i)
     {
-        u32 flag = sFlags[i];
+        bad_uint32 flag = sFlags[i];
 
-        for (i64 j = 0; j < 32; ++j)
+        for (bad_int64 j = 0; j < 32; ++j)
         {
             if (flag & (1ULL << j))
             {
@@ -338,7 +338,7 @@ NgosStatus CPU::flagsToString(char8 *buffer, u16 size)
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
+NgosStatus CPU::bugsToString(char8 *buffer, bad_uint16 size)
 {
     COMMON_LT((" | buffer = 0x%p, size = %u", buffer, size));
 
@@ -351,13 +351,13 @@ NgosStatus CPU::bugsToString(char8 *buffer, u16 size)
 
 
 
-    u16 currentIndex = 0;
+    bad_uint16 currentIndex = 0;
 
-    for (i64 i = 0; i < (i64)x86BugWord::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)x86BugWord::MAXIMUM; ++i)
     {
-        u32 bug = sBugs[i];
+        bad_uint32 bug = sBugs[i];
 
-        for (i64 j = 0; j < 32; ++j)
+        for (bad_int64 j = 0; j < 32; ++j)
         {
             if (bug & (1ULL << j))
             {
@@ -471,16 +471,16 @@ NgosStatus CPU::check(const char8 **wantedFlag)
 
 
 
-    i64 flagsCount = ARRAY_COUNT(flags);
+    bad_int64 flagsCount = ARRAY_COUNT(flags);
     COMMON_LVVV(("flagsCount = %d", flagsCount));
 
-    for (i64 i = 0; i < flagsCount; ++i)
+    for (bad_int64 i = 0; i < flagsCount; ++i)
     {
         X86Feature flag = flags[i];
 
         if (!hasFlag(flag))
         {
-            *wantedFlag = x86FeaturesNames[(u64)flag];
+            *wantedFlag = x86FeaturesNames[(bad_uint64)flag];
 
             return NgosStatus::NOT_SUPPORTED;
         }
@@ -509,7 +509,7 @@ bool CPU::isOutdated()
         case CpuVendor::INTEL:
         {
             if (
-                (u16)sFamily != INTEL_MINIMAL_FAMILY
+                (bad_uint16)sFamily != INTEL_MINIMAL_FAMILY
                 ||
                 sModel < INTEL_MINIMAL_MODEL
                )
@@ -522,10 +522,10 @@ bool CPU::isOutdated()
         case CpuVendor::AMD:
         {
             if (
-                (u16)sFamily < AMD_MINIMAL_FAMILY
+                (bad_uint16)sFamily < AMD_MINIMAL_FAMILY
                 ||
                 (
-                 (u16)sFamily == AMD_MINIMAL_FAMILY
+                 (bad_uint16)sFamily == AMD_MINIMAL_FAMILY
                  &&
                  sModel < AMD_MINIMAL_MODEL
                 )
@@ -586,7 +586,7 @@ CpuFamily CPU::getFamily()
     return sFamily;
 }
 
-u8 CPU::getModel()
+bad_uint8 CPU::getModel()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -595,7 +595,7 @@ u8 CPU::getModel()
     return sModel;
 }
 
-u8 CPU::getStepping()
+bad_uint8 CPU::getStepping()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -604,7 +604,7 @@ u8 CPU::getStepping()
     return sStepping;
 }
 
-u32 CPU::getMicrocodeRevision()
+bad_uint32 CPU::getMicrocodeRevision()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -613,7 +613,7 @@ u32 CPU::getMicrocodeRevision()
     return sMicrocodeRevision;
 }
 
-u32 CPU::getNumberOfCores()
+bad_uint32 CPU::getNumberOfCores()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -622,7 +622,7 @@ u32 CPU::getNumberOfCores()
     return sNumberOfCores;
 }
 
-u32 CPU::getNumberOfThreads()
+bad_uint32 CPU::getNumberOfThreads()
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -635,11 +635,11 @@ NgosStatus CPU::setFlag(X86Feature flag)
 {
     COMMON_LT((" | flag = 0x%04X", flag));
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((bad_uint64)flag / 32) < (bad_uint64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::set((bad_uint8 *)sFlags, (bad_uint64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -650,11 +650,11 @@ NgosStatus CPU::clearFlag(X86Feature flag)
 {
     COMMON_LT((" | flag = 0x%04X", flag));
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((bad_uint64)flag / 32) < (bad_uint64)x86FeatureWord::MAXIMUM, "flag is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sFlags, (u64)flag), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::clear((bad_uint8 *)sFlags, (bad_uint64)flag), NgosStatus::ASSERTION);
 
 
 
@@ -665,22 +665,22 @@ bool CPU::hasFlag(X86Feature flag)
 {
     // COMMON_LT((" | flag = 0x%04X", flag)); // Commented to avoid bad looking logs
 
-    COMMON_ASSERT(((u64)flag / 32) < (u64)x86FeatureWord::MAXIMUM, "flag is invalid", false);
+    COMMON_ASSERT(((bad_uint64)flag / 32) < (bad_uint64)x86FeatureWord::MAXIMUM, "flag is invalid", false);
 
 
 
-    return BitUtils::test((u8 *)sFlags, (u64)flag);
+    return BitUtils::test((bad_uint8 *)sFlags, (bad_uint64)flag);
 }
 
 NgosStatus CPU::setBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((bad_uint64)bug / 32) < (bad_uint64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::set((u8 *)sBugs, (u64)bug), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::set((bad_uint8 *)sBugs, (bad_uint64)bug), NgosStatus::ASSERTION);
 
 
 
@@ -691,11 +691,11 @@ NgosStatus CPU::clearBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(((bad_uint64)bug / 32) < (bad_uint64)x86BugWord::MAXIMUM, "bug is invalid", NgosStatus::ASSERTION);
 
 
 
-    COMMON_ASSERT_EXECUTION(BitUtils::clear((u8 *)sBugs, (u64)bug), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(BitUtils::clear((bad_uint8 *)sBugs, (bad_uint64)bug), NgosStatus::ASSERTION);
 
 
 
@@ -706,14 +706,14 @@ bool CPU::hasBug(X86Bug bug)
 {
     COMMON_LT((" | bug = 0x%04X", bug));
 
-    COMMON_ASSERT(((u64)bug / 32) < (u64)x86BugWord::MAXIMUM, "bug is invalid", false);
+    COMMON_ASSERT(((bad_uint64)bug / 32) < (bad_uint64)x86BugWord::MAXIMUM, "bug is invalid", false);
 
 
 
-    return BitUtils::test((u8 *)sBugs, (u64)bug);
+    return BitUtils::test((bad_uint8 *)sBugs, (bad_uint64)bug);
 }
 
-bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
+bool CPU::isCpuIdLevelSupported(bad_uint32 cpuidLevel)
 {
     // COMMON_LT((" | cpuidLevel = 0x%08X", cpuidLevel)); // Commented to avoid bad looking logs
 
@@ -724,7 +724,7 @@ bool CPU::isCpuIdLevelSupported(u32 cpuidLevel)
     return sCpuidLevel >= cpuidLevel;
 }
 
-bool CPU::hasEFlag(u64 mask)
+bool CPU::hasEFlag(bad_uint64 mask)
 {
     COMMON_LT((" | mask = 0x%016llX", mask));
 
@@ -732,8 +732,8 @@ bool CPU::hasEFlag(u64 mask)
 
 
 
-    u64 f0 = 0;
-    u64 f1 = 0;
+    bad_uint64 f0 = 0;
+    bad_uint64 f1 = 0;
 
 
 
@@ -777,7 +777,7 @@ bool CPU::hasEFlag(u64 mask)
     return (f0 ^ f1) == mask;
 }
 
-NgosStatus CPU::cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d)
+NgosStatus CPU::cpuid(bad_uint32 id, bad_uint32 count, bad_uint32 *a, bad_uint32 *b, bad_uint32 *c, bad_uint32 *d)
 {
     COMMON_LT((" | id = 0x%08X, count = %u, a = 0x%p, b = 0x%p, c = 0x%p, d = 0x%p", id, count, a, b, c, d));
 
@@ -813,7 +813,7 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-    u32 ignored;
+    bad_uint32 ignored;
 
 
 
@@ -846,17 +846,17 @@ NgosStatus CPU::initCpuFeatures()
     {
         if (sCpuidLevel >= 0x00000001)
         {
-            u32 tfms;
-            u32 misc;
+            bad_uint32 tfms;
+            bad_uint32 misc;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFlags[(u64)x86FeatureWord::CPUID_00000001_ECX], &sFlags[(u64)x86FeatureWord::CPUID_00000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &tfms, &misc, &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000001_ECX], &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000001_EDX]), NgosStatus::ASSERTION);
 
 
 
             //
             // https://en.wikipedia.org/wiki/CPUID#EAX=1:_Processor_Info_and_Feature_Bits
             //
-            u16 family = (tfms >> 8) & 0x0F;   // 11:8 - Family
+            bad_uint16 family = (tfms >> 8) & 0x0F;   // 11:8 - Family
             sModel     = (tfms >> 4) & 0x0F;   // 7:4 - Model
             sStepping  = tfms & 0x0F;          // 3:0 - Stepping
 
@@ -893,7 +893,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x00000006)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFlags[(u64)x86FeatureWord::CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000006, 0, &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000006_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
         }
         else
         {
@@ -902,7 +902,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x00000007)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_00000007_EBX], &sFlags[(u64)x86FeatureWord::CPUID_00000007_ECX], &sFlags[(u64)x86FeatureWord::CPUID_00000007_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x00000007, 0, &ignored, &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000007_EBX], &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000007_ECX], &sFlags[(bad_uint64)x86FeatureWord::CPUID_00000007_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -911,7 +911,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x0000000D)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFlags[(u64)x86FeatureWord::CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x0000000D, 1, &sFlags[(bad_uint64)x86FeatureWord::CPUID_0000000D_1_EAX], &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
         }
         else
         {
@@ -920,10 +920,10 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sCpuidLevel >= 0x0000000F)
         {
-            i32 ebx;
-            i32 ecx;
+            bad_int32 ebx;
+            bad_int32 ecx;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (u32 *)&ebx, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 0, &ignored, (bad_uint32 *)&ebx, &ignored, &sFlags[(bad_uint64)x86FeatureWord::CPUID_0000000F_0_EDX]), NgosStatus::ASSERTION);
 
             if (hasFlag(X86Feature::CQM_LLC))
             {
@@ -933,7 +933,7 @@ NgosStatus CPU::initCpuFeatures()
 
                 sCacheMaxRmid = ebx;
 
-                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (u32 *)&ebx, (u32 *)&ecx, &sFlags[(u64)x86FeatureWord::CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
+                COMMON_ASSERT_EXECUTION(cpuid(0x0000000F, 1, &ignored, (bad_uint32 *)&ebx, (bad_uint32 *)&ecx, &sFlags[(bad_uint64)x86FeatureWord::CPUID_0000000F_1_EDX]), NgosStatus::ASSERTION);
 
                 if (
                     hasFlag(X86Feature::CQM_OCCUP_LLC)
@@ -969,7 +969,7 @@ NgosStatus CPU::initCpuFeatures()
     {
         if (sExtendedCpuidLevel >= 0x80000001)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_80000001_ECX], &sFlags[(u64)x86FeatureWord::CPUID_80000001_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000001, 0, &ignored, &ignored, &sFlags[(bad_uint64)x86FeatureWord::CPUID_80000001_ECX], &sFlags[(bad_uint64)x86FeatureWord::CPUID_80000001_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -988,7 +988,7 @@ NgosStatus CPU::initCpuFeatures()
 
 
 
-            i64 length = strnlen(modelStr, sizeof(sModelName));
+            bad_int64 length = strnlen(modelStr, sizeof(sModelName));
 
             while (length > 0 && modelStr[length - 1] == ' ')
             {
@@ -1004,19 +1004,19 @@ NgosStatus CPU::initCpuFeatures()
                 modelStr[0] == ' '
                )
             {
-                i64 offset = 1;
+                bad_int64 offset = 1;
 
                 while (offset < length && modelStr[offset] == ' ')
                 {
                     ++offset;
                 }
 
-                for (i64 i = offset; i < length; ++i)
+                for (bad_int64 i = offset; i < length; ++i)
                 {
                     modelStr[i - offset] = modelStr[i];
                 }
 
-                for (i64 i = length - offset; i < length; ++i)
+                for (bad_int64 i = length - offset; i < length; ++i)
                 {
                     modelStr[i] = 0;
                 }
@@ -1029,7 +1029,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x80000007)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000007, 0, &ignored, &sFlags[(bad_uint64)x86FeatureWord::CPUID_80000007_EBX], &ignored, &sPower), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1038,9 +1038,9 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x80000008)
         {
-            u32 misc;
+            bad_uint32 misc;
 
-            COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFlags[(u64)x86FeatureWord::CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &misc, &sFlags[(bad_uint64)x86FeatureWord::CPUID_80000008_EBX], &ignored, &ignored), NgosStatus::ASSERTION);
 
             sVirtualBits  = (misc >> 8) & 0xFF;
             sPhysicalBits = misc & 0xFF;
@@ -1052,7 +1052,7 @@ NgosStatus CPU::initCpuFeatures()
 
         if (sExtendedCpuidLevel >= 0x8000000A)
         {
-            COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFlags[(u64)x86FeatureWord::CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
+            COMMON_ASSERT_EXECUTION(cpuid(0x8000000A, 0, &ignored, &ignored, &ignored, &sFlags[(bad_uint64)x86FeatureWord::CPUID_8000000A_EDX]), NgosStatus::ASSERTION);
         }
         else
         {
@@ -1143,7 +1143,7 @@ NgosStatus CPU::doIntelPreprocessing()
         COMMON_LVV(("MSR_IA32_MISC_ENABLE_LIMIT_CPUID_BIT successfully cleared"));
         COMMON_LVV(("Updating CPUID level"));
 
-        u32 ignored;
+        bad_uint32 ignored;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000000, 0, &sCpuidLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
     }
@@ -1185,8 +1185,8 @@ NgosStatus CPU::doCommonPreprocessing()
 
 
 
-        u32 ignored;
-        u32 ebx;
+        bad_uint32 ignored;
+        bad_uint32 ebx;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ebx, &ignored, &ignored), NgosStatus::ASSERTION);
 
@@ -1229,7 +1229,7 @@ NgosStatus CPU::initScatteredFeatures()
     return NgosStatus::OK;
 }
 
-NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count)
+NgosStatus CPU::setScatteredFeature(X86Feature feature, bad_uint8 registerId, bad_uint8 bit, bad_uint32 level, bad_uint32 count)
 {
     COMMON_LT((" | feature = 0x%04X, registerId = %u, bit = %u, level = %u, count = %u", feature, registerId, bit, level, count));
 
@@ -1240,9 +1240,9 @@ NgosStatus CPU::setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u
 
 
 
-    u32 ignored;
-    u32 maximumLevel;
-    u32 registers[4];
+    bad_uint32 ignored;
+    bad_uint32 maximumLevel;
+    bad_uint32 registers[4];
 
     COMMON_ASSERT_EXECUTION(cpuid(level & 0xFFFF0000, 0, &maximumLevel, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
 
@@ -1486,7 +1486,7 @@ NgosStatus CPU::doIntelPostprocessing()
 
     if (sCpuidLevel >= 0x0000000B)
     {
-        u32 ignored;
+        bad_uint32 ignored;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 0, &ignored, &sNumberOfCores,   &ignored, &ignored), NgosStatus::ASSERTION);
         COMMON_ASSERT_EXECUTION(cpuid(0x0000000B, 1, &ignored, &sNumberOfThreads, &ignored, &ignored), NgosStatus::ASSERTION);
@@ -1498,7 +1498,7 @@ NgosStatus CPU::doIntelPostprocessing()
     else
     if (sCpuidLevel >= 0x00000004)
     {
-        u32 ignored;
+        bad_uint32 ignored;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x00000004, 0, &sNumberOfCores, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
 
@@ -1525,8 +1525,8 @@ NgosStatus CPU::doAmdPostprocessing()
 
     if (sExtendedCpuidLevel >= 0x80000008)
     {
-        u32 ignored;
-        u32 ecx;
+        bad_uint32 ignored;
+        bad_uint32 ecx;
 
         COMMON_ASSERT_EXECUTION(cpuid(0x80000008, 0, &ignored, &ignored, &ecx, &ignored), NgosStatus::ASSERTION);
 
@@ -1660,7 +1660,7 @@ NgosStatus CPU::initCpuBugs()
 
 
 
-    u64 ia32Capabilities = 0;
+    bad_uint64 ia32Capabilities = 0;
 
     if (hasFlag(X86Feature::ARCH_CAPABILITIES))
     {
@@ -1744,7 +1744,7 @@ NgosStatus CPU::initIntelMicrocodeRevision()
 
 
 
-    u32 ignored;
+    bad_uint32 ignored;
 
 
 
@@ -1753,7 +1753,7 @@ NgosStatus CPU::initIntelMicrocodeRevision()
     // Call cpuid with 0x00000001 to trigger microcode revision refresh
     COMMON_ASSERT_EXECUTION(cpuid(0x00000001, 0, &ignored, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
 
-    sMicrocodeRevision = (u32)(MSR::read(MSR_IA32_MICROCODE_REV) >> 32);
+    sMicrocodeRevision = (bad_uint32)(MSR::read(MSR_IA32_MICROCODE_REV) >> 32);
 
 
 
@@ -1779,7 +1779,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
     return (
             (
-                sModel == (u8)IntelCpuModel::FAMILY_6_SKYLAKE_SERVER
+                sModel == (bad_uint8)IntelCpuModel::FAMILY_6_SKYLAKE_SERVER
                 &&
                 (
                     (
@@ -1803,7 +1803,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_Y_U
+                sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KABY_LAKE_Y_U
                 &&
                 (
                     (
@@ -1827,7 +1827,7 @@ bool CPU::isIntelBadSpectreMicrocode()
 
 
             (
-                sModel == (u8)IntelCpuModel::FAMILY_6_KABY_LAKE_DT_H_S_X
+                sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KABY_LAKE_DT_H_S_X
                 &&
                 (
                     (
@@ -1883,9 +1883,9 @@ bool CPU::isCpuNoSpecStoreBypass()
                 sFamily == CpuFamily::INTEL_FAMILY_6
                 &&
                 (
-                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
                 )
             )
         );
@@ -1904,17 +1904,17 @@ bool CPU::isCpuNoL1TF()
                 sFamily == CpuFamily::INTEL_FAMILY_6
                 &&
                 (
-                    sModel == (u8)IntelCpuModel::FAMILY_6_AIRMONT_MID
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_AIRMONT_MID
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_APOLLO_LAKE
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_APOLLO_LAKE
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_DENVERTON
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_DENVERTON
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_GEMINI_LAKE
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_GEMINI_LAKE
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KNIGHTS_LANDING
                     ||
-                    sModel == (u8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
+                    sModel == (bad_uint8)IntelCpuModel::FAMILY_6_KNIGHTS_MILL
                 )
             )
         );

@@ -13,13 +13,13 @@ struct IdtDescriptorType
     {
         struct
         {
-            u8 gateType:   4; // TODO: Use enum IdtGateType
-            u8 __reserved: 1;
-            u8 dpl:        2;
-            u8 p:          1;
+            bad_uint8 gateType:   4; // TODO: Use enum IdtGateType
+            bad_uint8 __reserved: 1;
+            bad_uint8 dpl:        2;
+            bad_uint8 p:          1;
         };
 
-        u8 value8;
+        bad_uint8 value8;
     };
 } __attribute__((packed));
 

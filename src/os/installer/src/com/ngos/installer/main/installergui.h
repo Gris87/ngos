@@ -33,7 +33,7 @@ private:
 
     static Button     *sRebootButton;
     static Button     *sShutdownButton;
-    static u16         sWaitEventsCount;
+    static bad_uint16         sWaitEventsCount;
     static uefi_event *sWaitEvents;
 };
 

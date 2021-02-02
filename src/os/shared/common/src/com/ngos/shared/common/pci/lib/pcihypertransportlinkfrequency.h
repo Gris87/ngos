@@ -8,7 +8,7 @@
 
 
 
-enum class PciHyperTransportLinkFrequency: u8
+enum class PciHyperTransportLinkFrequency: bad_uint8
 {
     _200_MHZ        = 0,
     _300_MHZ        = 1,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(PciHyperTransportLinkFrequency frequency) /
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", (u8)frequency, enumToString(frequency));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)frequency, enumToString(frequency));
 
     return res;
 }

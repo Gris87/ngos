@@ -11,7 +11,7 @@
 
 
 
-typedef u8 pci_hyper_transport_slave_primary_interface_feature_flags;
+typedef bad_uint8 pci_hyper_transport_slave_primary_interface_feature_flags;
 
 enum class PciHyperTransportSlavePrimaryInterfaceFeatureFlag: pci_hyper_transport_slave_primary_interface_feature_flags
 {

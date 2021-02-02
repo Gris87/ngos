@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512cdVplzcntq(u64 *a, u64 *b);
+void testAvx512cdVplzcntq(bad_uint64 *a, bad_uint64 *b);
 
 
 

@@ -31,7 +31,7 @@ NgosStatus printPte(PTE *pte)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PTE; ++i)
+    for (bad_int64 i = 0; i < PTRS_PER_PTE; ++i)
     {
         if (ptePresent(pte[i]))
         {
@@ -52,7 +52,7 @@ NgosStatus printPmd(PMD *pmd)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (bad_int64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {
@@ -78,7 +78,7 @@ NgosStatus printPud(PUD *pud)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PUD; ++i)
+    for (bad_int64 i = 0; i < PTRS_PER_PUD; ++i)
     {
         if (pudPresent(pud[i]))
         {
@@ -105,7 +105,7 @@ NgosStatus printP4d(P4D *p4d)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_P4D; ++i)
+    for (bad_int64 i = 0; i < PTRS_PER_P4D; ++i)
     {
         if (p4dPresent(p4d[i]))
         {
@@ -132,7 +132,7 @@ NgosStatus printPgd(PGD *pgd)
 
 
 
-    for (i64 i = 0; i < PTRS_PER_PGD; ++i)
+    for (bad_int64 i = 0; i < PTRS_PER_PGD; ++i)
     {
         if (pgdPresent(pgd[i]))
         {
@@ -155,24 +155,24 @@ NgosStatus printPgd(PGD *pgd)
 }
 #endif
 
-inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryArea areaId, u64 address, u64 size, bool addToIdentityMap)
+inline NgosStatus addUnavailableMemoryArea(MemoryArea *areas, UnavailableMemoryArea areaId, bad_uint64 address, bad_uint64 size, bool addToIdentityMap)
 {
     EARLY_LT((" | areas = 0x%p, areaId = %u, address = 0x%016llX, size = 0x%016llX, addToIdentityMap = %u", areas, areaId, address, size, addToIdentityMap));
 
     EARLY_ASSERT(areas,                                             "areas is null",     NgosStatus::ASSERTION);
-    EARLY_ASSERT((u64)areaId < (u64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);
+    EARLY_ASSERT((bad_uint64)areaId < (bad_uint64)UnavailableMemoryArea::MAXIMUM, "areaId is invalid", NgosStatus::ASSERTION);
     EARLY_ASSERT(size > 0,                                          "size is zero",      NgosStatus::ASSERTION);
 
 
 
-    areas[(u64)areaId].start = address;
-    areas[(u64)areaId].end   = size + areas[(u64)areaId].start;
+    areas[(bad_uint64)areaId].start = address;
+    areas[(bad_uint64)areaId].end   = size + areas[(bad_uint64)areaId].start;
 
 
 
     if (addToIdentityMap)
     {
-        EARLY_ASSERT_EXECUTION(addIdentityMap(areas[(u64)areaId].start, areas[(u64)areaId].end), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(addIdentityMap(areas[(bad_uint64)areaId].start, areas[(bad_uint64)areaId].end), NgosStatus::ASSERTION);
     }
 
 
@@ -190,10 +190,10 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
 
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::ZERO_PAGE,        0,                                         PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (u64)params,                               sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (bad_uint64)params,                               sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::RELOCATED_KERNEL, params->header.kernelLocation,             params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (u64)params->uefi.memoryMap.map,           params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (u64)params->memoryMapEntries,             params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (bad_uint64)params->uefi.memoryMap.map,           params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (bad_uint64)params->memoryMapEntries,             params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::VIDEO_RAM,        params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferSize,                         true),  NgosStatus::ASSERTION);
 
     // We don't need to include params->pciRomImages to areas
@@ -205,7 +205,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
         EARLY_LVVV(("Unavailable memory areas:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)UnavailableMemoryArea::MAXIMUM; ++i)
         {
             EARLY_LVVV(("%-16s: 0x%p-0x%p", enumToFullString((UnavailableMemoryArea)i), areas[i].start, areas[i].end));
         }
@@ -217,8 +217,8 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
         while (currentPci)
         {
-            i64 areaStart = (u64)currentPci;
-            i64 areaStop  = sizeof(*currentPci) + currentPci->romSize + areaStart;
+            bad_int64 areaStart = (bad_uint64)currentPci;
+            bad_int64 areaStop  = sizeof(*currentPci) + currentPci->romSize + areaStart;
 
             EARLY_LVVV(("0x%p-0x%p", areaStart, areaStop));
 
@@ -234,7 +234,7 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
     return NgosStatus::OK;
 }
 
-NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAreas, i64 start, i64 end, MemoryArea *intersectedMemoryArea)
+NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAreas, bad_int64 start, bad_int64 end, MemoryArea *intersectedMemoryArea)
 {
     EARLY_LT((" | params = 0x%p, unavailableMemoryAreas = 0x%p, start = 0x%p, end = 0x%p, intersectedMemoryArea = 0x%p", params, unavailableMemoryAreas, start, end, intersectedMemoryArea));
 
@@ -245,12 +245,12 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
 
 
 
-    for (i64 i = 0; i < (i64)UnavailableMemoryArea::MAXIMUM; ++i)
+    for (bad_int64 i = 0; i < (bad_int64)UnavailableMemoryArea::MAXIMUM; ++i)
     {
         if (
-            end > (i64)unavailableMemoryAreas[i].start
+            end > (bad_int64)unavailableMemoryAreas[i].start
             &&
-            start < (i64)unavailableMemoryAreas[i].end
+            start < (bad_int64)unavailableMemoryAreas[i].end
            )
         {
             intersectedMemoryArea->start = unavailableMemoryAreas[i].start;
@@ -266,8 +266,8 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
 
     while (currentPci)
     {
-        i64 areaStart = (u64)currentPci;
-        i64 areaStop  = sizeof(*currentPci) + currentPci->romSize + areaStart;
+        bad_int64 areaStart = (bad_uint64)currentPci;
+        bad_int64 areaStop  = sizeof(*currentPci) + currentPci->romSize + areaStart;
 
         if (
             end > areaStart
@@ -292,7 +292,7 @@ NgosStatus findIntersection(BootParams *params, MemoryArea *unavailableMemoryAre
     return NgosStatus::OK;
 }
 
-NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEntry, BootParams *params, MemoryArea *unavailableMemoryAreas, u64 imageSize, u64 *address)
+NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEntry, BootParams *params, MemoryArea *unavailableMemoryAreas, bad_uint64 imageSize, bad_uint64 *address)
 {
     EARLY_LT((" | memoryMapEntry = 0x%p, params = 0x%p, unavailableMemoryAreas = 0x%p, imageSize = %u, address = 0x%p", memoryMapEntry, params, unavailableMemoryAreas, imageSize, address));
 
@@ -313,8 +313,8 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    u64 entryAddress = memoryMapEntry->start;
-    u64 allowedSize  = memoryMapEntry->size;
+    bad_uint64 entryAddress = memoryMapEntry->start;
+    bad_uint64 allowedSize  = memoryMapEntry->size;
 
 
 
@@ -343,30 +343,30 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    u64 randomRange = allowedSize - imageSize;
+    bad_uint64 randomRange = allowedSize - imageSize;
 
-    u64 randomPosition =
+    bad_uint64 randomPosition =
             simpleRandom(
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
-                            + (u64)params->memoryMapEntries
-                            + (u64)unavailableMemoryAreas
-                            + (u64)address
-                            + (u64)params->pciRomImages
+                            (bad_uint64)params->header.kernelLocation
+                            + (bad_uint64)params->memoryMapEntries
+                            + (bad_uint64)unavailableMemoryAreas
+                            + (bad_uint64)address
+                            + (bad_uint64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
-                    * (u64)imageSize
+                    * (bad_uint64)params->header.kernelSize
+                    * (bad_uint64)params->header.allocatedKernelSize
+                    * (bad_uint64)imageSize
                     * PRIME_NUMBER_2
                 ) ^ PHYSICAL_MAGIC_MASK
             ) % randomRange; // Holy crap. Why are doing this? O_o
 
 
 
-    u64 randomAddress = entryAddress + randomPosition;
+    bad_uint64 randomAddress = entryAddress + randomPosition;
 
     randomAddress = ROUND_DOWN(randomAddress, NGOS_BUILD_KERNEL_ALIGN);
 
@@ -396,9 +396,9 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    i64 currentAddress = randomAddress;
+    bad_int64 currentAddress = randomAddress;
 
-    while (currentAddress >= (i64)entryAddress && currentAddress > 0)
+    while (currentAddress >= (bad_int64)entryAddress && currentAddress > 0)
     {
         EARLY_ASSERT_EXECUTION(findIntersection(params, unavailableMemoryAreas, currentAddress, currentAddress + imageSize, &intersectedMemoryArea), NgosStatus::ASSERTION);
 
@@ -421,7 +421,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    while ((i64)(currentAddress + imageSize) <= (i64)(entryAddress + allowedSize) && currentAddress >= 0)
+    while ((bad_int64)(currentAddress + imageSize) <= (bad_int64)(entryAddress + allowedSize) && currentAddress >= 0)
     {
         EARLY_ASSERT_EXECUTION(findIntersection(params, unavailableMemoryAreas, currentAddress, currentAddress + imageSize, &intersectedMemoryArea), NgosStatus::ASSERTION);
 
@@ -449,7 +449,7 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
     return NgosStatus::NOT_FOUND;
 }
 
-NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailableMemoryAreas, u64 imageSize, u64 *address)
+NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailableMemoryAreas, bad_uint64 imageSize, bad_uint64 *address)
 {
     EARLY_LT((" | params = 0x%p, unavailableMemoryAreas = 0x%p, imageSize = %u, address = 0x%p", params, unavailableMemoryAreas, imageSize, address));
 
@@ -467,7 +467,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
         EARLY_LVVV(("Memory Map entries:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (i64 i = 0; i < (i64)params->memoryMapEntriesCount; ++i)
+        for (bad_int64 i = 0; i < (bad_int64)params->memoryMapEntriesCount; ++i)
         {
             EARLY_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
         }
@@ -478,21 +478,21 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
 
-    u64 randomId =
+    bad_uint64 randomId =
             simpleRandom(
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
-                            + (u64)params->memoryMapEntries
-                            + (u64)unavailableMemoryAreas
-                            + (u64)address
-                            + (u64)params->pciRomImages
+                            (bad_uint64)params->header.kernelLocation
+                            + (bad_uint64)params->memoryMapEntries
+                            + (bad_uint64)unavailableMemoryAreas
+                            + (bad_uint64)address
+                            + (bad_uint64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
-                    * (u64)imageSize
+                    * (bad_uint64)params->header.kernelSize
+                    * (bad_uint64)params->header.allocatedKernelSize
+                    * (bad_uint64)imageSize
                     * PRIME_NUMBER_1
                 ) ^ PHYSICAL_MAGIC_MASK
             ) % params->memoryMapEntriesCount; // Deal with it \(J_J)/
@@ -501,7 +501,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
 
-    for (i64 i = randomId; i >= 0; --i)
+    for (bad_int64 i = randomId; i >= 0; --i)
     {
         EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 
@@ -513,7 +513,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
 
 
 
-    for (i64 i = randomId + 1; i < (i64)params->memoryMapEntriesCount; ++i)
+    for (bad_int64 i = randomId + 1; i < (bad_int64)params->memoryMapEntriesCount; ++i)
     {
         EARLY_LVV(("Processing memory map entry #%d: type = %u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
 
@@ -528,7 +528,7 @@ NgosStatus findRandomPhysicalAddress(BootParams *params, MemoryArea *unavailable
     return NgosStatus::NOT_FOUND;
 }
 
-NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableMemoryAreas, u64 imageSize, u64 *address)
+NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableMemoryAreas, bad_uint64 imageSize, bad_uint64 *address)
 {
     EARLY_LT((" | params = 0x%p, unavailableMemoryAreas = 0x%p, imageSize = %u, address = 0x%p", params, unavailableMemoryAreas, imageSize, address));
 
@@ -541,30 +541,30 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
 
 
 
-    u64 randomRange = PUD_SIZE - imageSize;
+    bad_uint64 randomRange = PUD_SIZE - imageSize;
 
-    u64 randomPosition =
+    bad_uint64 randomPosition =
             simpleRandom(
                 (
                     (
                         (
-                            (u64)params->header.kernelLocation
-                            + (u64)params->memoryMapEntries
-                            + (u64)unavailableMemoryAreas
-                            + (u64)address
-                            + (u64)params->pciRomImages
+                            (bad_uint64)params->header.kernelLocation
+                            + (bad_uint64)params->memoryMapEntries
+                            + (bad_uint64)unavailableMemoryAreas
+                            + (bad_uint64)address
+                            + (bad_uint64)params->pciRomImages
                         ) % PRIME_NUMBER_4
                     )
-                    * (u64)params->header.kernelSize
-                    * (u64)params->header.allocatedKernelSize
-                    * (u64)imageSize
+                    * (bad_uint64)params->header.kernelSize
+                    * (bad_uint64)params->header.allocatedKernelSize
+                    * (bad_uint64)imageSize
                     * PRIME_NUMBER_3
                 ) ^ VIRTUAL_MAGIC_MASK
             ) % randomRange; // Best random ever \o/_\o/
 
 
 
-    u64 randomAddress = 0xFFFFFFFF80000000 + randomPosition;
+    bad_uint64 randomAddress = 0xFFFFFFFF80000000 + randomPosition;
 
     randomAddress = ROUND_DOWN(randomAddress, NGOS_BUILD_KERNEL_ALIGN);
 
@@ -581,7 +581,7 @@ NgosStatus findRandomVirtualAddress(BootParams *params, MemoryArea *unavailableM
     return NgosStatus::OK;
 }
 
-NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u64 *physicalAddress, u64 *virtualAddress)
+NgosStatus getRandomLocation(BootParams *params, bad_uint8 *pageTable, bad_uint64 imageSize, bad_uint64 *physicalAddress, bad_uint64 *virtualAddress)
 {
     EARLY_LT((" | params = 0x%p, pageTable = 0x%p, imageSize = %u, physicalAddress = 0x%p, virtualAddress = 0x%p", params, pageTable, imageSize, physicalAddress, virtualAddress));
 
@@ -597,7 +597,7 @@ NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u
 
 
 
-    MemoryArea unavailableMemoryAreas[(u64)UnavailableMemoryArea::MAXIMUM];
+    MemoryArea unavailableMemoryAreas[(bad_uint64)UnavailableMemoryArea::MAXIMUM];
 
     EARLY_ASSERT_EXECUTION(initUnavailableMemoryAreas(params, unavailableMemoryAreas), NgosStatus::ASSERTION);
 

@@ -9,7 +9,7 @@
 
 
 
-enum class X86Bug: u16 // Ignore CppEnumVerifier
+enum class X86Bug: bad_uint16 // Ignore CppEnumVerifier
 {
     TEST                = WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 0),  // Not a bug, used for testing
     CPU_MELTDOWN        = WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1),  // CPU is affected by meltdown attack and needs kernel page table isolation

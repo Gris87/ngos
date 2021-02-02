@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice104CAC60: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice104CAC60: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_175C5100 = 0x175C5100,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(PciSubDevice104CAC60 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -75,7 +75,7 @@ inline const char8* enumToHumanString(PciSubDevice104CAC60 subDevice) // TEST: N
         case PciSubDevice104CAC60::SUBDEVICE_175C5100: return "ASI51xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_175C6100: return "ASI61xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_175C6200: return "ASI62xx Audio Adapter";
-        case PciSubDevice104CAC60::SUBDEVICE_175C8800: return "ASI88xx Audio Adapter";
+        case PciSubDevice104CAC60::SUBDEVICE_175C8800: return "ASbad_int88xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_186F3001: return "WR-G303 PCI radio receiver";
         case PciSubDevice104CAC60::SUBDEVICE_186F3005: return "WR-G305 PCI radio receiver";
         case PciSubDevice104CAC60::SUBDEVICE_186F3101: return "WR-G313 PCI radio receiver";

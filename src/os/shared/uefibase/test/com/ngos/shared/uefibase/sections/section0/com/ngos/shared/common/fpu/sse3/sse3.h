@@ -215,9 +215,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
     {
         if (CPU::hasFlag(X86Feature::SSSE3))
         {
-            u16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
-            u16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
-            u16 c[8];
+            bad_uint16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
+            bad_uint16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
+            bad_uint16 c[8];
 
             testSse3Phaddw(a, b, c);
 
@@ -261,9 +261,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
     {
         if (CPU::hasFlag(X86Feature::SSSE3))
         {
-            u32 a[4] = { 6, 3, 12, 90 };
-            u32 b[4] = { 9, 7, 67, 34 };
-            u32 c[4];
+            bad_uint32 a[4] = { 6, 3, 12, 90 };
+            bad_uint32 b[4] = { 9, 7, 67, 34 };
+            bad_uint32 c[4];
 
             testSse3Phaddd(a, b, c);
 
@@ -295,9 +295,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
     {
         if (CPU::hasFlag(X86Feature::SSSE3))
         {
-            u16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
-            u16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
-            u16 c[8];
+            bad_uint16 a[8] = { 6, 3, 12, 90, 37, 25, 19, 34 };
+            bad_uint16 b[8] = { 9, 7, 67, 34, 24, 79, 20, 74 };
+            bad_uint16 c[8];
 
             testSse3Phsubw(a, b, c);
 
@@ -341,9 +341,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse3_sse3);
     {
         if (CPU::hasFlag(X86Feature::SSSE3))
         {
-            u32 a[4] = { 6, 3, 12, 90 };
-            u32 b[4] = { 9, 7, 67, 34 };
-            u32 c[4];
+            bad_uint32 a[4] = { 6, 3, 12, 90 };
+            bad_uint32 b[4] = { 9, 7, 67, 34 };
+            bad_uint32 c[4];
 
             testSse3Phsubd(a, b, c);
 

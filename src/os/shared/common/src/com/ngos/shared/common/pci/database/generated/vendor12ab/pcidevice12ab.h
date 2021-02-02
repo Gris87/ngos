@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice12AB: u16 // Ignore CppEnumVerifier
+enum class PciDevice12AB: bad_uint16 // Ignore CppEnumVerifier
 {
     DEVICE_0000 = 0x0000,
     DEVICE_0002 = 0x0002,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(PciDevice12AB device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -71,7 +71,7 @@ inline const char8* enumToHumanString(PciDevice12AB device) // TEST: NO
     switch (device)
     {
         case PciDevice12AB::DEVICE_0000: return "MPG160/Kuroutoshikou ITVC15-STVLP";
-        case PciDevice12AB::DEVICE_0002: return "AU8830 [Vortex2] Based Sound Card With A3D Support";
+        case PciDevice12AB::DEVICE_0002: return "Abad_uint8830 [Vortex2] Based Sound Card With A3D Support";
         case PciDevice12AB::DEVICE_0003: return "T507 (DVB-T) TV tuner/capture device";
         case PciDevice12AB::DEVICE_2300: return "Club-3D Zap TV2100";
         case PciDevice12AB::DEVICE_3000: return "MPG-200C PCI DVD Decoder Card";

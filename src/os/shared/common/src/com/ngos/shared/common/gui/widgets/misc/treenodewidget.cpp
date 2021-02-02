@@ -355,7 +355,7 @@ WidgetState TreeNodeWidget::getState() const
     return mState;
 }
 
-NgosStatus TreeNodeWidget::setRowHeight(u64 height)
+NgosStatus TreeNodeWidget::setRowHeight(bad_uint64 height)
 {
     COMMON_LT((" | height = %u", height));
 
@@ -374,7 +374,7 @@ NgosStatus TreeNodeWidget::setRowHeight(u64 height)
     return NgosStatus::OK;
 }
 
-u64 TreeNodeWidget::getRowHeight() const
+bad_uint64 TreeNodeWidget::getRowHeight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -412,11 +412,11 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
 
 
-        i64 positionY = mPositionY + mRowHeight;
+        bad_int64 positionY = mPositionY + mRowHeight;
 
         if (isExpanded())
         {
-            for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+            for (bad_int64 i = 0; i < (bad_int64)mChildrenNodes.getSize(); ++i)
             {
                 COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
             }
@@ -429,7 +429,7 @@ NgosStatus TreeNodeWidget::setExpanded(bool expanded)
 
         while (parentNode)
         {
-            for (i64 i = curNode->mNodeIndexInParent + 1; i < (i64)parentNode->mChildrenNodes.getSize(); ++i)
+            for (bad_int64 i = curNode->mNodeIndexInParent + 1; i < (bad_int64)parentNode->mChildrenNodes.getSize(); ++i)
             {
                 COMMON_ASSERT_EXECUTION(parentNode->mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
             }
@@ -517,7 +517,7 @@ TreeNodeWidget* TreeNodeWidget::getParentNode() const
     return mParentNode;
 }
 
-i64 TreeNodeWidget::getNodeIndexInParent() const
+bad_int64 TreeNodeWidget::getNodeIndexInParent() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -570,7 +570,7 @@ NgosStatus TreeNodeWidget::doExpand()
 
 
 
-    for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)mChildrenNodes.getSize(); ++i)
     {
         TreeNodeWidget *node = mChildrenNodes.at(i);
 
@@ -593,7 +593,7 @@ NgosStatus TreeNodeWidget::doCollapse()
 
 
 
-    for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)mChildrenNodes.getSize(); ++i)
     {
         TreeNodeWidget *node = mChildrenNodes.at(i);
 
@@ -610,7 +610,7 @@ NgosStatus TreeNodeWidget::doCollapse()
     return NgosStatus::OK;
 }
 
-NgosStatus TreeNodeWidget::invalidatePositionY(i64 &positionY)
+NgosStatus TreeNodeWidget::invalidatePositionY(bad_int64 &positionY)
 {
     COMMON_LT((" | positionY = %d", positionY));
 
@@ -631,7 +631,7 @@ NgosStatus TreeNodeWidget::invalidatePositionY(i64 &positionY)
 
     if (isExpanded())
     {
-        for (i64 i = 0; i < (i64)mChildrenNodes.getSize(); ++i)
+        for (bad_int64 i = 0; i < (bad_int64)mChildrenNodes.getSize(); ++i)
         {
             COMMON_ASSERT_EXECUTION(mChildrenNodes.at(i)->invalidatePositionY(positionY), NgosStatus::ASSERTION);
         }

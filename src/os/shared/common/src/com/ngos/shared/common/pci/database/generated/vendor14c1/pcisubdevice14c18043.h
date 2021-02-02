@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice14C18043: u32 // Ignore CppEnumVerifier
+enum class PciSubDevice14C18043: bad_uint32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_103C1240 = 0x103C1240
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciSubDevice14C18043 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice14C18043 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice14C18043::SUBDEVICE_103C1240: return "Myrinet M2L-PCI64/2-3.0 LANai 7.4 (HP OEM)";
+        case PciSubDevice14C18043::SUBDEVICE_103C1240: return "Myrinet M2L-PCbad_int64/2-3.0 LANai 7.4 (HP OEM)";
 
         default: return "Unknown device";
     }

@@ -25,15 +25,15 @@ struct DmiPhysicalMemoryArrayEntry
     DmiPhysicalMemoryArrayUse             use;
     DmiPhysicalMemoryArrayErrorCorrection memoryErrorCorrection;
     DmiPhysicalMemoryArrayMaximumCapacity maximumCapacity;
-    u16                                   memoryErrorInformationHandle;
-    u16                                   numberOfMemoryDevices;
+    bad_uint16                                   memoryErrorInformationHandle;
+    bad_uint16                                   numberOfMemoryDevices;
 } __attribute__((packed));
 
 
 
 struct DmiPhysicalMemoryArrayEntryV27: public DmiPhysicalMemoryArrayEntry
 {
-    u64 extendedMaximumCapacity;
+    bad_uint64 extendedMaximumCapacity;
 } __attribute__((packed));
 
 

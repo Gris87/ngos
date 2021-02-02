@@ -10,7 +10,7 @@
 
 
 
-enum class DmiHardwareSecurityStatus: u8
+enum class DmiHardwareSecurityStatus: bad_uint8
 {
     DISABLED        = 0,
     ENABLED         = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiHardwareSecurityStatus status) // TEST: 
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", (u8)status, enumToString(status));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)status, enumToString(status));
 
     return res;
 }

@@ -19,7 +19,7 @@
 
 
 
-inline u64 readBits(InflateDecoder *decoder, u8 count)
+inline bad_uint64 readBits(InflateDecoder *decoder, bad_uint8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
@@ -38,7 +38,7 @@ inline u64 readBits(InflateDecoder *decoder, u8 count)
 
 
 
-    u64 res = decoder->temp.bitBuffer & ((1ULL << count) - 1);
+    bad_uint64 res = decoder->temp.bitBuffer & ((1ULL << count) - 1);
 
     decoder->temp.bitBuffer     >>= count;
     decoder->temp.bitsAvailable -=  count;
@@ -46,7 +46,7 @@ inline u64 readBits(InflateDecoder *decoder, u8 count)
     return res;
 }
 
-NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCodes, InflateCode *table, u8 *bits)
+NgosStatus buildTree(InflateCodeType codeType, bad_uint16 *lengthBuffer, bad_uint32 numberOfCodes, InflateCode *table, bad_uint8 *bits)
 {
     COMMON_LT((" | codeType = %d, lengthBuffer = 0x%p, numberOfCodes = %u, table = 0x%p, bits = 0x%p", codeType, lengthBuffer, numberOfCodes, table, bits));
 
@@ -58,28 +58,28 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
     // Length codes 257..285 base
-    static const u16 lengthCodesBase[31] =
+    static const bad_uint16 lengthCodesBase[31] =
     {
         3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35,
         43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0
     };
 
     // Length codes 257..285 extra
-    static const u16 lengthCodesExtra[31] =
+    static const bad_uint16 lengthCodesExtra[31] =
     {
         16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
         19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 201, 196
     };
 
     // Distance codes 0..29 base
-    static const u16 distanceCodesBase[32] =
+    static const bad_uint16 distanceCodesBase[32] =
     {
         1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513,
         769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577, 0, 0
     };
 
     // Distance codes 0..29 extra
-    static const u16 distanceCodesExtra[32] =
+    static const bad_uint16 distanceCodesExtra[32] =
     {
         16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
         23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 64, 64
@@ -87,11 +87,11 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u16 count[MAX_BITS + 1];
+    bad_uint16 count[MAX_BITS + 1];
 
     memzero(count, sizeof(count));
 
-    for (i64 i = 0; i < numberOfCodes; ++i)
+    for (bad_int64 i = 0; i < numberOfCodes; ++i)
     {
         ++count[lengthBuffer[i]];
     }
@@ -103,7 +103,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("count:"));
         //
-        // for (i64 i = 0; i <= MAX_BITS; ++i)
+        // for (bad_int64 i = 0; i <= MAX_BITS; ++i)
         // {
         //     COMMON_LVVV(("count[%d] = %u", i, count[i]));
         // }
@@ -112,7 +112,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u8 max = MAX_BITS;
+    bad_uint8 max = MAX_BITS;
 
     while (max >= 1 && count[max] == 0)
     {
@@ -128,7 +128,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u8 min = 1;
+    bad_uint8 min = 1;
 
     while (min < MAX_BITS && count[min] == 0)
     {
@@ -137,7 +137,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u8 root = *bits;
+    bad_uint8 root = *bits;
 
     if (root > max)
     {
@@ -159,9 +159,9 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    i32 left = 1;
+    bad_int32 left = 1;
 
-    for (i64 i = 1; i <= MAX_BITS; ++i)
+    for (bad_int64 i = 1; i <= MAX_BITS; ++i)
     {
         left <<= 1;
         left -=  count[i];
@@ -197,26 +197,26 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u16 offsets[MAX_BITS + 1];
+    bad_uint16 offsets[MAX_BITS + 1];
 
 
 
     offsets[1] = 0;
 
-    for (i64 i = 1; i < MAX_BITS; ++i)
+    for (bad_int64 i = 1; i < MAX_BITS; ++i)
     {
         offsets[i + 1] = offsets[i] + count[i];
     }
 
 
 
-    u16 work[288];
+    bad_uint16 work[288];
 
-    for (i64 i = 0; i < numberOfCodes; ++i)
+    for (bad_int64 i = 0; i < numberOfCodes; ++i)
     {
         if (lengthBuffer[i] != 0)
         {
-            u16 &offset = offsets[lengthBuffer[i]];
+            bad_uint16 &offset = offsets[lengthBuffer[i]];
 
             work[offset] = i;
             ++offset;
@@ -230,7 +230,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("offsets:"));
         //
-        // for (i64 i = 0; i <= MAX_BITS; ++i)
+        // for (bad_int64 i = 0; i <= MAX_BITS; ++i)
         // {
         //     COMMON_LVVV(("offsets[%d] = %u", i, offsets[i]));
         // }
@@ -239,9 +239,9 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    const u16 *base;
-    const u16 *extra;
-    i32        end;
+    const bad_uint16 *base;
+    const bad_uint16 *extra;
+    bad_int32        end;
 
     switch (codeType)
     {
@@ -290,13 +290,13 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
 
-    u32 huff = 0;
-    u32 sym  = 0;
-    u32 len  = min;
-    u32 curr = root;
-    u32 drop = 0;
-    u32 low  = -1;
-    u32 mask = (1ULL << root) - 1;
+    bad_uint32 huff = 0;
+    bad_uint32 sym  = 0;
+    bad_uint32 len  = min;
+    bad_uint32 curr = root;
+    bad_uint32 drop = 0;
+    bad_uint32 low  = -1;
+    bad_uint32 mask = (1ULL << root) - 1;
 
 
 
@@ -308,13 +308,13 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
         // create table entry
         currentCode.bits = len - drop;
 
-        if ((i32)work[sym] < end)
+        if ((bad_int32)work[sym] < end)
         {
             currentCode.operation = 0;
             currentCode.value     = work[sym];
         }
         else
-        if ((i32)work[sym] > end)
+        if ((bad_int32)work[sym] > end)
         {
             currentCode.operation = extra[work[sym]];
             currentCode.value     = base[work[sym]];
@@ -329,11 +329,11 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // replicate for those indices with low len bits equal to huff
-        u32 incr = (1ULL << (len - drop));
-        u32 fill = (1ULL << curr);
+        bad_uint32 incr = (1ULL << (len - drop));
+        bad_uint32 fill = (1ULL << curr);
 
         // save offset to next table
-        u32 temp = fill;
+        bad_uint32 temp = fill;
 
         do
         {
@@ -469,7 +469,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
 
 
         // backwards increment the len-bit code huff
-        u32 incr = (1ULL << (len - 1));
+        bad_uint32 incr = (1ULL << (len - 1));
 
         while (huff & incr)
         {
@@ -492,7 +492,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
     return NgosStatus::OK;
 }
 
-NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes, u8 lengthBits, InflateCode *distanceCodes, u8 distanceBits)
+NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes, bad_uint8 lengthBits, InflateCode *distanceCodes, bad_uint8 distanceBits)
 {
     COMMON_LT((" | decoder = 0x%p, lengthCodes = 0x%p, lengthBits = %u, distanceCodes = 0x%p, distanceBits = %u", decoder, lengthCodes, lengthBits, distanceCodes, distanceBits));
 
@@ -506,7 +506,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
     do
     {
-        u16         codeIndex;
+        bad_uint16         codeIndex;
         InflateCode code;
 
         do
@@ -537,7 +537,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
             do
             {
-                u8 bitsNeeded = tempCode.bits + tempCode.operation;
+                bad_uint8 bitsNeeded = tempCode.bits + tempCode.operation;
 
                 codeIndex = tempCode.value + ((decoder->temp.bitBuffer & ((1ULL << bitsNeeded) - 1)) >> tempCode.bits);
                 code      = lengthCodes[codeIndex];
@@ -589,8 +589,8 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
         }
         else
         {
-            u16 length = code.value;
-            u8  extra  = code.operation & 15;
+            bad_uint16 length = code.value;
+            bad_uint8  extra  = code.operation & 15;
 
             if (extra != 0)
             {
@@ -626,7 +626,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
                 do
                 {
-                    u8 bitsNeeded = tempCode.bits + tempCode.operation;
+                    bad_uint8 bitsNeeded = tempCode.bits + tempCode.operation;
 
                     codeIndex = tempCode.value + ((decoder->temp.bitBuffer & ((1ULL << bitsNeeded) - 1)) >> tempCode.bits);
                     code      = distanceCodes[codeIndex];
@@ -664,8 +664,8 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
 
-            u16 offset = code.value;
-            u8  extra2 = code.operation & 15;
+            bad_uint16 offset = code.value;
+            bad_uint8  extra2 = code.operation & 15;
 
             if (extra2 != 0)
             {
@@ -690,7 +690,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
             {
                 do
                 {
-                    u16 copyCount = offset < length ? offset : length;
+                    bad_uint16 copyCount = offset < length ? offset : length;
 
                     memcpy(decoder->out + decoder->outPosition, decoder->out + decoder->outPosition - offset, copyCount);
 
@@ -714,8 +714,8 @@ NgosStatus decodeNotCompressedBlock(InflateDecoder *decoder)
 
 
 
-    u16 length  = *(u16 *)(decoder->in + decoder->inPosition);
-    u16 nlength = *(u16 *)(decoder->in + decoder->inPosition + 2);
+    bad_uint16 length  = *(bad_uint16 *)(decoder->in + decoder->inPosition);
+    bad_uint16 nlength = *(bad_uint16 *)(decoder->in + decoder->inPosition + 2);
 
     // COMMON_LVVV(("length  = %u", length));  // Commented to avoid too frequent logs
     // COMMON_LVVV(("nlength = %u", nlength)); // Commented to avoid too frequent logs
@@ -783,13 +783,13 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
 
     // Permutation of code lengths
-    static const u8 order[LENGTH_CODE_COUNT] = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
+    static const bad_uint8 order[LENGTH_CODE_COUNT] = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
 
 
-    u16 numberOfLength   = 257 + readBits(decoder, 5); // 257-288
-    u8  numberOfDistance = 1   + readBits(decoder, 5); // 1-32
-    u8  numberOfCodes    = 4   + readBits(decoder, 4); // 4-19
+    bad_uint16 numberOfLength   = 257 + readBits(decoder, 5); // 257-288
+    bad_uint8  numberOfDistance = 1   + readBits(decoder, 5); // 1-32
+    bad_uint8  numberOfCodes    = 4   + readBits(decoder, 4); // 4-19
 
     // COMMON_LVVV(("numberOfLength   = %u", numberOfLength));   // Commented to avoid too frequent logs
     // COMMON_LVVV(("numberOfDistance = %u", numberOfDistance)); // Commented to avoid too frequent logs
@@ -806,11 +806,11 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
 
 
-    u16 lengthBuffer[LENGTH_BUFFER_COUNT];
+    bad_uint16 lengthBuffer[LENGTH_BUFFER_COUNT];
 
 
 
-    u16 currentCodeIndex = 0;
+    bad_uint16 currentCodeIndex = 0;
 
     while (currentCodeIndex < numberOfCodes)
     {
@@ -837,7 +837,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("lengthBuffer:"));
         //
-        // for (i64 i = 0; i < LENGTH_CODE_COUNT; ++i)
+        // for (bad_int64 i = 0; i < LENGTH_CODE_COUNT; ++i)
         // {
         //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }
@@ -848,7 +848,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     InflateCode lengthCodes[CODES_COUNT];
 
-    u8 lengthBits = 7;
+    bad_uint8 lengthBits = 7;
 
     if (buildTree(InflateCodeType::CODES, lengthBuffer, LENGTH_CODE_COUNT, lengthCodes, &lengthBits) != NgosStatus::OK)
     {
@@ -865,7 +865,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     while (currentCodeIndex < numberOfLength + numberOfDistance)
     {
-        u16         codeIndex;
+        bad_uint16         codeIndex;
         InflateCode code;
 
         do
@@ -914,8 +914,8 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
 
 
-            u16 length    = lengthBuffer[currentCodeIndex - 1];
-            u8  copyCount = 3 + readBits(decoder, 2);           // 3-6
+            bad_uint16 length    = lengthBuffer[currentCodeIndex - 1];
+            bad_uint8  copyCount = 3 + readBits(decoder, 2);           // 3-6
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
@@ -924,7 +924,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
                 return NgosStatus::INVALID_DATA;
             }
 
-            for (i64 i = 0; i < copyCount; ++i)
+            for (bad_int64 i = 0; i < copyCount; ++i)
             {
                 lengthBuffer[currentCodeIndex] = length;
 
@@ -934,7 +934,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         else
         if (code.value == 17)
         {
-            u8 copyCount = 3 + readBits(decoder, 3); // 3-10
+            bad_uint8 copyCount = 3 + readBits(decoder, 3); // 3-10
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
@@ -949,7 +949,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         else
         if (code.value == 18)
         {
-            u8 copyCount = 11 + readBits(decoder, 7); // 11-138
+            bad_uint8 copyCount = 11 + readBits(decoder, 7); // 11-138
 
             if (currentCodeIndex + copyCount > numberOfLength + numberOfDistance)
             {
@@ -982,7 +982,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
         // Commented to avoid too frequent logs
         // COMMON_LVVV(("lengthBuffer:"));
         //
-        // for (i64 i = 0; i < currentCodeIndex; ++i)
+        // for (bad_int64 i = 0; i < currentCodeIndex; ++i)
         // {
         //     COMMON_LVVV(("lengthBuffer[%d] = %u", i, lengthBuffer[i]));
         // }
@@ -1006,7 +1006,7 @@ NgosStatus decodeCompressedDynamicHuffmanBlock(InflateDecoder *decoder)
 
     InflateCode distanceCodes[CODES_COUNT];
 
-    u8 distanceBits = 6;
+    bad_uint8 distanceBits = 6;
 
     if (buildTree(InflateCodeType::DISTANCES, lengthBuffer + numberOfLength, numberOfDistance, distanceCodes, &distanceBits) != NgosStatus::OK)
     {
@@ -1106,7 +1106,7 @@ NgosStatus runInflate(InflateDecoder *decoder)
     return NgosStatus::FAILED;
 }
 
-NgosStatus inflate(u8 *compressedAddress, u8 *decompressedAddress, u64 *compressedSize, u64 *uncompressedSize)
+NgosStatus inflate(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 *compressedSize, bad_uint64 *uncompressedSize)
 {
     COMMON_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, compressedSize = 0x%p, uncompressedSize = 0x%p", compressedAddress, decompressedAddress, compressedSize, uncompressedSize));
 

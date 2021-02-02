@@ -18,7 +18,7 @@
 
 // DO NOT DELETE IT!!!
 // We are putting this variable to .noinit section in order to convert .noinit section type from NOBITS to PROGBITS
-u8 __reserved_for_bss __attribute__ ((section (".noinit")));
+bad_uint8 __reserved_for_bss __attribute__ ((section (".noinit")));
 
 
 
@@ -58,7 +58,7 @@ NgosStatus printCpuFlags()
 }
 #endif
 
-NgosStatus earlyInitialization(u64 kernelLocation)
+NgosStatus earlyInitialization(bad_uint64 kernelLocation)
 {
     UEFI_LT((" | kernelLocation = 0x%p", kernelLocation));
 

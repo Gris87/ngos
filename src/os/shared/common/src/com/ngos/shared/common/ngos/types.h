@@ -16,6 +16,9 @@ typedef unsigned long long u64;
 typedef char     char8;
 typedef char16_t char16;
 
+typedef u64 address_t;
+typedef u64 enum_t;
+
 
 
 #ifdef __GNUC__

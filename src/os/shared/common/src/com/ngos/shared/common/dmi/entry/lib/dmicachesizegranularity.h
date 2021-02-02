@@ -10,7 +10,7 @@
 
 
 
-enum class DmiCacheSizeGranularity: u8
+enum class DmiCacheSizeGranularity: bad_uint8
 {
     _1_KILOBYTE   = 0,
     _64_KILOBYTES = 1
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiCacheSizeGranularity granularity) // TES
 
     static char8 res[20];
 
-    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)granularity, enumToString(granularity));
 
     return res;
 }

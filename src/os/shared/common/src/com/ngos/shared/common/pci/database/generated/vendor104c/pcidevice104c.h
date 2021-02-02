@@ -58,7 +58,7 @@
 
 
 
-enum class PciDevice104C: u16 // Ignore CppEnumVerifier
+enum class PciDevice104C: bad_uint16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0500 = 0x0500,
@@ -291,7 +291,7 @@ inline const char8* enumToFullString(PciDevice104C device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
 
     return res;
 }
@@ -340,7 +340,7 @@ inline const char8* enumToHumanString(PciDevice104C device) // TEST: NO
         case PciDevice104C::DEVICE_803C: return "PCIxx12 SDA Standard Compliant SD Host Controller";
         case PciDevice104C::DEVICE_803D: return "PCIxx12 GemCore based SmartCard controller";
         case PciDevice104C::DEVICE_8101: return "TSB43DB42 IEEE-1394a-2000 Controller (PHY/Link)";
-        case PciDevice104C::DEVICE_8201: return "PCI1620 Firmware Loading Function";
+        case PciDevice104C::DEVICE_8201: return "PCbad_int1620 Firmware Loading Function";
         case PciDevice104C::DEVICE_8204: return "PCI7410/7510/7610 PCI Firmware Loading Function";
         case PciDevice104C::DEVICE_8231: return "XIO2000(A)/XIO2200A PCI Express-to-PCI Bridge";
         case PciDevice104C::DEVICE_8232: return "XIO3130 PCI Express Switch (Upstream)";
@@ -397,7 +397,7 @@ inline const char8* enumToHumanString(PciDevice104C device) // TEST: NO
         case PciDevice104C::DEVICE_AC51: return "PCI1420 PC card Cardbus Controller";
         case PciDevice104C::DEVICE_AC52: return "PCI1451 PC card Cardbus Controller";
         case PciDevice104C::DEVICE_AC53: return "PCI1421 PC card Cardbus Controller";
-        case PciDevice104C::DEVICE_AC54: return "PCI1620 PC Card Controller";
+        case PciDevice104C::DEVICE_AC54: return "PCbad_int1620 PC Card Controller";
         case PciDevice104C::DEVICE_AC55: return "PCI1520 PC card Cardbus Controller";
         case PciDevice104C::DEVICE_AC56: return "PCI1510 PC card Cardbus Controller";
         case PciDevice104C::DEVICE_AC60: return "PCI2040 PCI to DSP Bridge Controller";
@@ -414,7 +414,7 @@ inline const char8* enumToHumanString(PciDevice104C device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice104C device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice104C device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

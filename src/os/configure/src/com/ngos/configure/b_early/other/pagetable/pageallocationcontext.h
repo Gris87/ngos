@@ -9,9 +9,9 @@
 
 struct PageAllocationContext
 {
-    u8  *buffer;
-    u64  size;
-    u64  position;
+    bad_uint8  *buffer;
+    bad_uint64  size;
+    bad_uint64  position;
 };
 
 

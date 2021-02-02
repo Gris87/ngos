@@ -15,7 +15,7 @@
 
 
 
-enum class GzipOperatingSystem: u8
+enum class GzipOperatingSystem: bad_uint8
 {
     FAT_FILESYSTEM  = 0,
     AMIGA           = 1,
@@ -74,7 +74,7 @@ inline const char8* enumToFullString(GzipOperatingSystem system) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", (u8)system, enumToString(system));
+    sprintf(res, "0x%02X (%s)", (bad_uint8)system, enumToString(system));
 
     return res;
 }

@@ -27,7 +27,7 @@ public:
     static NgosStatus loadImageFromDiskOrAssets(const char8 *path, Image **image); // TEST: NO
 
     static NgosStatus startTool(const char8 *path); // TEST: NO
-    static NgosStatus startOs(u64 index); // TEST: NO
+    static NgosStatus startOs(bad_uint64 index); // TEST: NO
 
     static const ArrayList<OsInfo>& getOSes(); // TEST: NO
 
@@ -37,8 +37,8 @@ private:
     static NgosStatus initApplicationPath(char16 **applicationPath); // TEST: NO
     static NgosStatus initApplicationDirPath(char16 *applicationPath); // TEST: NO
     static NgosStatus initVolumes(); // TEST: NO
-    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size); // TEST: NO
-    static NgosStatus initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles); // TEST: NO
+    static NgosStatus initBlockIoProtocol(Guid *protocol, bad_uint64 size); // TEST: NO
+    static NgosStatus initBlockIoProtocol(Guid *protocol, bad_uint64 size, uefi_handle *blockIoHandles); // TEST: NO
     static NgosStatus initVolume(VolumeInfo *volume, Guid *protocol, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeDeviceHandle(VolumeInfo *volume, uefi_handle handle); // TEST: NO
     static NgosStatus initVolumeBlockIoProtocol(VolumeInfo *volume, Guid *protocol, uefi_handle handle); // TEST: NO

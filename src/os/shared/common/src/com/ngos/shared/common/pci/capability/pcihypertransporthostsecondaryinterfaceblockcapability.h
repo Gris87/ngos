@@ -25,12 +25,12 @@ struct PciHyperTransportHostSecondaryInterfaceBlockCapability
     PciHyperTransportLinkErrorAndFrequencyUnion         linkErrorAndFrequency;
     PciHyperTransportLinkFrequencyCapabilityFlags       linkFrequencyCapability;
     PciHyperTransportHostSecondaryInterfaceFeatureFlags feature;
-    u16                                                 __reserved;
-    u16                                                 enumerationScratchpad;
+    bad_uint16                                                 __reserved;
+    bad_uint16                                                 enumerationScratchpad;
     PciHyperTransportErrorHandlingFlags                 errorHandling;
-    u8                                                  memoryBaseUpper;
-    u8                                                  memoryLimitUpper;
-    u16                                                 __reserved2;
+    bad_uint8                                                  memoryBaseUpper;
+    bad_uint8                                                  memoryLimitUpper;
+    bad_uint16                                                 __reserved2;
 };
 
 

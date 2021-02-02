@@ -5,7 +5,7 @@
 
 
 
-CpuHotplugStep CpuHotplug::sSteps[(u64)CpuHotplugState::MAXIMUM];
+CpuHotplugStep CpuHotplug::sSteps[(bad_uint64)CpuHotplugState::MAXIMUM];
 
 
 
@@ -39,7 +39,7 @@ NgosStatus CpuHotplug::storeCallbacks(CpuHotplugState state, const char8 *name, 
 
 
 
-    CpuHotplugStep &step = sSteps[(u64)state];
+    CpuHotplugStep &step = sSteps[(bad_uint64)state];
 
     step.name              = name;
     step.upAction          = upAction;
@@ -62,7 +62,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
 
     if (state == CpuHotplugState::BP_PREPARE_DYNAMIC)
     {
-        for (i64 i = (i64)CpuHotplugState::BP_PREPARE_DYNAMIC; i <= (i64)CpuHotplugState::BP_PREPARE_DYNAMIC_END; ++i)
+        for (bad_int64 i = (bad_int64)CpuHotplugState::BP_PREPARE_DYNAMIC; i <= (bad_int64)CpuHotplugState::BP_PREPARE_DYNAMIC_END; ++i)
         {
             if (sSteps[i].name == 0)
             {
@@ -75,7 +75,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
     else
     if (state == CpuHotplugState::AP_ONLINE_DYNAMIC)
     {
-        for (i64 i = (i64)CpuHotplugState::AP_ONLINE_DYNAMIC; i <= (i64)CpuHotplugState::AP_ONLINE_DYNAMIC_END; ++i)
+        for (bad_int64 i = (bad_int64)CpuHotplugState::AP_ONLINE_DYNAMIC; i <= (bad_int64)CpuHotplugState::AP_ONLINE_DYNAMIC_END; ++i)
         {
             if (sSteps[i].name == 0)
             {

@@ -14,8 +14,8 @@
 
 struct GzipMemberFooter
 {
-    u32 crc32;
-    u32 inputSize;
+    bad_uint32 crc32;
+    bad_uint32 inputSize;
 } __attribute__((packed));
 
 

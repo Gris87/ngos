@@ -29,12 +29,12 @@ struct PciHyperTransportSlavePrimaryInterfaceBlockCapability
     PciHyperTransportSlavePrimaryInterfaceFeatureFlags feature;
     PciHyperTransportLinkErrorAndFrequencyUnion        linkErrorAndFrequency1;
     PciHyperTransportLinkFrequencyCapabilityFlags      linkFrequencyCapability1;
-    u16                                                enumerationScratchpad;
+    bad_uint16                                                enumerationScratchpad;
     PciHyperTransportErrorHandlingFlags                errorHandling;
-    u8                                                 memoryBaseUpper;
-    u8                                                 memoryLimitUpper;
-    u8                                                 busNumber;
-    u8                                                 __reserved;
+    bad_uint8                                                 memoryBaseUpper;
+    bad_uint8                                                 memoryLimitUpper;
+    bad_uint8                                                 busNumber;
+    bad_uint8                                                 __reserved;
 };
 
 

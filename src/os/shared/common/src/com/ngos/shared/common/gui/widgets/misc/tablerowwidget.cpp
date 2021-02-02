@@ -167,7 +167,7 @@ Widget* TableRowWidget::getOwnerWidget()
 
     const ArrayList<TableRowWidget *> &rows = tableWidget->getRows();
 
-    for (i64 i = 0; i < (i64)rows.getSize(); ++i)
+    for (bad_int64 i = 0; i < (bad_int64)rows.getSize(); ++i)
     {
         if (rows.at(i) == this)
         {
@@ -233,7 +233,7 @@ NgosStatus TableRowWidget::addCell(TableCellWidget *cell)
     return mCells.append(cell);
 }
 
-TableCellWidget* TableRowWidget::getCell(u64 column) const
+TableCellWidget* TableRowWidget::getCell(bad_uint64 column) const
 {
     // COMMON_LT((" | column = %u", column)); // Commented to avoid too frequent logs
 
