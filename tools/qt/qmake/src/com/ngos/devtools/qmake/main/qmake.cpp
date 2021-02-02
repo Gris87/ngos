@@ -926,7 +926,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
                 if (token == QXmlStreamReader::StartElement)
                 {
-                    if (xml.name() == "file")
+                    if (xml.name().toString() == "file")
                     {
                         QString asset;
 

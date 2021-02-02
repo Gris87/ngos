@@ -166,11 +166,13 @@ NgosStatus ArrayList<T>::removeAt(u64 index)
 
 
 
-    if (
-        index >= 0
-        &&
-        index < mSize
-       )
+    // TODO: Uncomment
+//    if (
+//        index >= 0
+//        &&
+//        index < mSize
+//       )
+    if (index < mSize)
     {
         if (mSize == 1)
         {

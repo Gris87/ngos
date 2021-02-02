@@ -8,16 +8,16 @@ TrackingLineEdit::TrackingLineEdit(const QString &contents, QWidget *parent)
     setMouseTracking(true);
 }
 
-void TrackingLineEdit::enterEvent(QEvent *event)
+void TrackingLineEdit::focusInEvent(QFocusEvent *event)
 {
-    QLineEdit::enterEvent(event);
+    QLineEdit::focusInEvent(event);
 
     emit entered();
 }
 
-void TrackingLineEdit::leaveEvent(QEvent *event)
+void TrackingLineEdit::focusOutEvent(QFocusEvent *event)
 {
-    QLineEdit::leaveEvent(event);
+    QLineEdit::focusOutEvent(event);
 
     emit leaved();
 }

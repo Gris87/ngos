@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QActionGroup>
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
@@ -177,20 +178,27 @@ void MainWindow::languageToggled(bool checked)
 
 
 
-        mLanguage = action->data().toString();
+        QString language = action->data().toString();
 
-        qDebug() << "Switching to language:" << mLanguage;
-
-
-
-        mTranslator->load(":/assets/translations/language_" + mLanguage); // Ignore CppPunctuationVerifier
-        QApplication::installTranslator(mTranslator);
-
-        ui->retranslateUi(this);
+        qDebug() << "Switching to language:" << language;
 
 
 
-        addLog(tr("Language switched to %1").arg(action->text()));
+        if (mTranslator->load(":/assets/translations/language_" + language)) // Ignore CppPunctuationVerifier
+        {
+            mLanguage = language;
+            QApplication::installTranslator(mTranslator);
+
+            ui->retranslateUi(this);
+
+
+
+            addLog(tr("Language switched to %1").arg(action->text()));
+        }
+        else
+        {
+            addLog(tr("Failed to switch language to %1").arg(action->text()));
+        }
     }
 }
 

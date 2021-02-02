@@ -20,7 +20,7 @@ const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");
 
 
 
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) // Ignore CppTypesVerifier
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier
 {
     return QMainWindow::nativeEvent(eventType, message, result);
 }

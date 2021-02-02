@@ -5,6 +5,8 @@
 
 #include <QWidget>
 
+#include <QHash>
+
 #include <com/ngos/devtools/build_config_gui/other/optioninfo.h>
 
 

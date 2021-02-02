@@ -8,16 +8,16 @@ TrackingGroupBox::TrackingGroupBox(const QString &title, QWidget *parent)
     setMouseTracking(true);
 }
 
-void TrackingGroupBox::enterEvent(QEvent *event)
+void TrackingGroupBox::focusInEvent(QFocusEvent *event)
 {
-    QGroupBox::enterEvent(event);
+    QGroupBox::focusInEvent(event);
 
     emit entered();
 }
 
-void TrackingGroupBox::leaveEvent(QEvent *event)
+void TrackingGroupBox::focusOutEvent(QFocusEvent *event)
 {
-    QGroupBox::leaveEvent(event);
+    QGroupBox::focusOutEvent(event);
 
     emit leaved();
 }

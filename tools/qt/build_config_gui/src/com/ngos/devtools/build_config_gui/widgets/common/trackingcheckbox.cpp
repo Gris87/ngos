@@ -8,16 +8,16 @@ TrackingCheckBox::TrackingCheckBox(const QString &text, QWidget *parent)
     setMouseTracking(true);
 }
 
-void TrackingCheckBox::enterEvent(QEvent *event)
+void TrackingCheckBox::focusInEvent(QFocusEvent *event)
 {
-    QCheckBox::enterEvent(event);
+    QCheckBox::focusInEvent(event);
 
     emit entered();
 }
 
-void TrackingCheckBox::leaveEvent(QEvent *event)
+void TrackingCheckBox::focusOutEvent(QFocusEvent *event)
 {
-    QCheckBox::leaveEvent(event);
+    QCheckBox::focusOutEvent(event);
 
     emit leaved();
 }

@@ -8,16 +8,16 @@ TrackingComboBox::TrackingComboBox(QWidget *parent)
     setMouseTracking(true);
 }
 
-void TrackingComboBox::enterEvent(QEvent *event)
+void TrackingComboBox::focusInEvent(QFocusEvent *event)
 {
-    QComboBox::enterEvent(event);
+    QComboBox::focusInEvent(event);
 
     emit entered();
 }
 
-void TrackingComboBox::leaveEvent(QEvent *event)
+void TrackingComboBox::focusOutEvent(QFocusEvent *event)
 {
-    QComboBox::leaveEvent(event);
+    QComboBox::focusOutEvent(event);
 
     emit leaved();
 }

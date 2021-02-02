@@ -15,8 +15,8 @@ public:
     explicit TrackingComboBox(QWidget *parent = 0); // TEST: NO
 
 protected:
-    void enterEvent(QEvent *event) override; // TEST: NO
-    void leaveEvent(QEvent *event) override; // TEST: NO
+    void focusInEvent(QFocusEvent *event) override; // TEST: NO
+    void focusOutEvent(QFocusEvent *event) override; // TEST: NO
 
 signals:
     void entered(); // TEST: NO
