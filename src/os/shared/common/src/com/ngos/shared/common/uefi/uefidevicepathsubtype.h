@@ -9,7 +9,7 @@
 
 
 
-enum class UefiDevicePathSubType: bad_uint8 // Ignore CppEnumVerifier
+enum class UefiDevicePathSubType: u8 // Ignore CppEnumVerifier
 {
     NONE = 0,
 
@@ -214,7 +214,7 @@ inline const char8* enumToFullString(UefiDevicePathType type, UefiDevicePathSubT
 
     static char8 res[38];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)subtype, enumToString(type, subtype));
+    sprintf(res, "0x%02X (%s)", (u8)subtype, enumToString(type, subtype));
 
     return res;
 }

@@ -49,7 +49,7 @@ NgosStatus MemoryManager::init()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryManager::add(bad_uint64 start, bad_uint64 size)
+NgosStatus MemoryManager::add(address_t start, u64 size)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 
@@ -60,7 +60,7 @@ NgosStatus MemoryManager::add(bad_uint64 start, bad_uint64 size)
     return addRange(&sMemoryBlock.memory, start, size, FLAGS(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
-NgosStatus MemoryManager::reserve(bad_uint64 start, bad_uint64 size)
+NgosStatus MemoryManager::reserve(address_t start, u64 size)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX", start, size));
 

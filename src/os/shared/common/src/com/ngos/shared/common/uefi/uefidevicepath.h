@@ -18,7 +18,7 @@ struct UefiDevicePath
 {
     UefiDevicePathType    type;
     UefiDevicePathSubType subType;
-    bad_uint16                   length;
+    u16                   length;
 };
 
 

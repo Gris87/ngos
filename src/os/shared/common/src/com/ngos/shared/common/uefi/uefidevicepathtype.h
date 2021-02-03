@@ -8,7 +8,7 @@
 
 
 
-enum class UefiDevicePathType: bad_uint8
+enum class UefiDevicePathType: u8
 {
     NONE                  = 0,
     HARDWARE_DEVICE_PATH  = 0x01,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(UefiDevicePathType type) // TEST: NO
 
     static char8 res[29];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

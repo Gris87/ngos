@@ -190,10 +190,10 @@ NgosStatus initUnavailableMemoryAreas(BootParams *params, MemoryArea *areas)
 
 
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::ZERO_PAGE,        0,                                         PMD_SIZE,                                                          false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (bad_uint64)params,                               sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::BOOT_PARAMS,      (address_t)params,                         sizeof(*params),                                                   true),  NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::RELOCATED_KERNEL, params->header.kernelLocation,             params->header.allocatedKernelSize,                                true),  NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (bad_uint64)params->uefi.memoryMap.map,           params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (bad_uint64)params->memoryMapEntries,             params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::UEFI_MEMORY_MAP,  (address_t)params->uefi.memoryMap.map,     params->uefi.memoryMap.size,                                       false), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::MEMORY_MAP,       (address_t)params->memoryMapEntries,       params->memoryMapEntriesCount * sizeof(*params->memoryMapEntries), false), NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(addUnavailableMemoryArea(areas, UnavailableMemoryArea::VIDEO_RAM,        params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferSize,                         true),  NgosStatus::ASSERTION);
 
     // We don't need to include params->pciRomImages to areas

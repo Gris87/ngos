@@ -15,8 +15,8 @@ class IORemap
 public:
     static NgosStatus init();
     static NgosStatus addPmdForFixmap(); // TEST: NO
-    static NgosStatus addFixedMapping(bad_uint64 address, bad_uint64 size, void **res);
-    static NgosStatus removeFixedMapping(bad_uint64 address, bad_uint64 size);
+    static NgosStatus addFixedMapping(address_t address, u64 size, void **res);
+    static NgosStatus removeFixedMapping(address_t address, u64 size);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

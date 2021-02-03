@@ -112,7 +112,7 @@ NgosStatus IORemap::addPmdForFixmap()
     return NgosStatus::OK;
 }
 
-NgosStatus IORemap::addFixedMapping(bad_uint64 address, bad_uint64 size, void **res)
+NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
 {
     COMMON_LT((" | address = 0x%016llX, size = %u, res = 0x%p", address, size, res));
 
@@ -191,7 +191,7 @@ NgosStatus IORemap::addFixedMapping(bad_uint64 address, bad_uint64 size, void **
     return NgosStatus::OK;
 }
 
-NgosStatus IORemap::removeFixedMapping(bad_uint64 address, bad_uint64 size)
+NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 {
     COMMON_LT((" | address = 0x%016llX, size = %u", address, size));
 

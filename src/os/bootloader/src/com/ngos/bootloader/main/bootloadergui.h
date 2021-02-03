@@ -79,8 +79,8 @@ private:
     static Image               *sRebootImage;
     static Image               *sShutdownImage;
     static Image               *sCursorImage;
-    static Image*               sOsImages[(bad_uint64)OsType::MAXIMUM];
-    static Image*               sVolumeImages[(bad_uint64)VolumeType::MAXIMUM];
+    static Image*               sOsImages[(enum_t)OsType::MAXIMUM];
+    static Image*               sVolumeImages[(enum_t)VolumeType::MAXIMUM];
     static Button              *sRebootButton;
     static Button              *sShutdownButton;
     static ArrayList<Button *>  sOsButtons;

@@ -11,9 +11,9 @@
 struct UefiMemoryMapInfo
 {
     UefiMemoryDescriptor *map;
-    bad_uint64                   size;
-    bad_uint64                   descriptorSize;
-    bad_uint32                   descriptorVersion;
+    u64                   size;
+    u64                   descriptorSize;
+    u32                   descriptorVersion;
 };
 
 

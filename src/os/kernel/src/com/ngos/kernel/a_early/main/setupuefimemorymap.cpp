@@ -21,8 +21,8 @@ NgosStatus setupUefiMemoryMap()
 
 
 
-    EARLY_ASSERT_EXECUTION(UEFI::initMemoryMap(),                                                                      NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(MemoryManager::reserve((bad_uint64)bootParams.uefi.memoryMap.map, bootParams.uefi.memoryMap.size), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(UEFI::initMemoryMap(),                                                                            NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(MemoryManager::reserve((address_t)bootParams.uefi.memoryMap.map, bootParams.uefi.memoryMap.size), NgosStatus::ASSERTION);
 
 
 

@@ -88,8 +88,8 @@ Image               *BootloaderGUI::sPartitionWizardImage;
 Image               *BootloaderGUI::sRebootImage;
 Image               *BootloaderGUI::sShutdownImage;
 Image               *BootloaderGUI::sCursorImage;
-Image*               BootloaderGUI::sOsImages[(bad_uint64)OsType::MAXIMUM];
-Image*               BootloaderGUI::sVolumeImages[(bad_uint64)VolumeType::MAXIMUM];
+Image*               BootloaderGUI::sOsImages[(enum_t)OsType::MAXIMUM];
+Image*               BootloaderGUI::sVolumeImages[(enum_t)VolumeType::MAXIMUM];
 Button              *BootloaderGUI::sRebootButton;
 Button              *BootloaderGUI::sShutdownButton;
 ArrayList<Button *>  BootloaderGUI::sOsButtons;
@@ -986,7 +986,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -995,7 +995,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 

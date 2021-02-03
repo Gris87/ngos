@@ -11,12 +11,12 @@
 
 struct UefiGraphicsOutputProtocolMode
 {
-    bad_uint32                                maxMode;
-    bad_uint32                                mode;
+    u32                                maxMode;
+    u32                                mode;
     UefiGraphicsOutputModeInformation *info;
-    bad_uint64                                sizeOfInfo;
-    bad_uint64                                frameBufferBase;
-    bad_uint64                                frameBufferSize;
+    u64                                sizeOfInfo;
+    address_t                          frameBufferBase;
+    u64                                frameBufferSize;
 };
 
 

@@ -15,11 +15,11 @@
 struct UefiBootMemoryMap
 {
     UefiMemoryDescriptor **memoryMap;
-    bad_uint64                   *memoryMapSize;
-    bad_uint64                   *descriptorSize;
-    bad_uint32                   *descriptorVersion;
-    bad_uint64                   *mapKey;
-    bad_uint64                   *bufferSize;
+    u64                   *memoryMapSize;
+    u64                   *descriptorSize;
+    u32                   *descriptorVersion;
+    u64                   *mapKey;
+    u64                   *bufferSize;
 };
 
 

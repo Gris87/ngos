@@ -336,7 +336,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint
 
 
 
-        bad_uint64 entryEnd = entry.end();
+        address_t entryEnd = entry.end();
 
 
 

@@ -18,8 +18,8 @@ class MemoryManager
 public:
     static NgosStatus init();
 
-    static NgosStatus add(bad_uint64 start, bad_uint64 size);
-    static NgosStatus reserve(bad_uint64 start, bad_uint64 size);
+    static NgosStatus add(address_t start, u64 size);
+    static NgosStatus reserve(address_t start, u64 size);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:

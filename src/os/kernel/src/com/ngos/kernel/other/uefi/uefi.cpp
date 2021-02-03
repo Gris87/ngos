@@ -43,7 +43,7 @@ NgosStatus UEFI::initMemoryMap()
 
 
 
-    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((bad_uint64)bootParams.uefi.memoryMap.map, bootParams.uefi.memoryMap.size, (void **)&sMemoryMap.map), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(IORemap::addFixedMapping((address_t)bootParams.uefi.memoryMap.map, bootParams.uefi.memoryMap.size, (void **)&sMemoryMap.map), NgosStatus::ASSERTION);
 
     sMemoryMap.size              = bootParams.uefi.memoryMap.size;
     sMemoryMap.descriptorSize    = bootParams.uefi.memoryMap.descriptorSize;
@@ -128,7 +128,7 @@ NgosStatus UEFI::initMemoryMap()
 
 
 
-        bad_int64 count = sMemoryMap.size / sMemoryMap.descriptorSize;
+        i64 count = sMemoryMap.size / sMemoryMap.descriptorSize;
         AVOID_UNUSED(count);
 
 
@@ -158,7 +158,7 @@ NgosStatus UEFI::initMemoryMap()
 
 
 
-        COMMON_TEST_ASSERT((bad_uint64)sMemoryMap.map                              == 0xFFFFFFFFFF200018,                    NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT((address_t)sMemoryMap.map                        == 0xFFFFFFFFFF200018,                    NgosStatus::ASSERTION);
         // COMMON_TEST_ASSERT(sMemoryMap.size                               == 2160,                                  NgosStatus::ASSERTION); // Commented due to value variation
         // COMMON_TEST_ASSERT(sMemoryMap.descriptorSize                     == 48,                                    NgosStatus::ASSERTION); // Commented due to value variation
         COMMON_TEST_ASSERT(sMemoryMap.descriptorVersion                     == 1,                                     NgosStatus::ASSERTION);
