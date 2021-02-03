@@ -19,7 +19,7 @@
 
 struct UefiLoadedImageProtocol
 {
-    bad_uint32              revision;
+    u32              revision;
     uefi_handle      parentHandle;
     UefiSystemTable *systemTable;
 
@@ -27,11 +27,11 @@ struct UefiLoadedImageProtocol
     UefiDevicePath  *filePath;
     void            *reserved;
 
-    bad_uint32              loadOptionsSize;
+    u32              loadOptionsSize;
     char16          *loadOptions;
 
     void            *imageBase;
-    bad_uint64              imageSize;
+    u64              imageSize;
     UefiMemoryType   imageCodeType;
     UefiMemoryType   imageDataType;
 

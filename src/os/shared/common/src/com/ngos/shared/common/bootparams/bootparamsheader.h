@@ -15,8 +15,8 @@ struct BootParamsHeader
 {
     u64       signature;           // Always equal to BOOT_PARAMS_HEADER_SIGNATURE
     address_t kernelLocation;      // Address of kernel image
-    i64       kernelSize;          // Size of kernel image (Configure part + [De]compressed Kernel part)
-    i64       allocatedKernelSize; // kernelSize aligned to page size + page table + stack ( + decompressed Kernel part if it compressed)
+    u64       kernelSize;          // Size of kernel image (Configure part + [De]compressed Kernel part)
+    u64       allocatedKernelSize; // kernelSize aligned to page size + page table + stack ( + decompressed Kernel part if it compressed)
 };
 
 

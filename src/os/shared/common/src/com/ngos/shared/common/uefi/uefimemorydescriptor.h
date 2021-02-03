@@ -11,11 +11,11 @@
 struct UefiMemoryDescriptor
 {
     UefiMemoryType type;
-    bad_uint32            __pad;
-    bad_uint64            physicalStart;
-    bad_uint64            virtualStart;
-    bad_uint64            numberOfPages;
-    bad_uint64            attribute;
+    u32            __pad;
+    address_t      physicalStart;
+    address_t      virtualStart;
+    u64            numberOfPages;
+    u64            attribute;
 };
 
 

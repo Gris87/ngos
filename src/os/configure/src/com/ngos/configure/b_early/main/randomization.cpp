@@ -313,8 +313,8 @@ NgosStatus findRandomPhysicalAddressInMemoryMapEntry(MemoryMapEntry *memoryMapEn
 
 
 
-    bad_uint64 entryAddress = memoryMapEntry->start;
-    bad_uint64 allowedSize  = memoryMapEntry->size;
+    address_t entryAddress = memoryMapEntry->start;
+    u64       allowedSize  = memoryMapEntry->size;
 
 
 

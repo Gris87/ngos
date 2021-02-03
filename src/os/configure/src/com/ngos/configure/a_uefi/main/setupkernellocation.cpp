@@ -69,13 +69,13 @@ NgosStatus setupKernelLocation(BootParams *params)
     // image->imageSize == Boot part + .reloc section + Configure part + [De]compressed Kernel part
     // params->header.kernelLocation == image->imageBase + Boot part + .reloc section
     // So imageSize will be equal to Configure part + [De]compressed Kernel part
-    bad_uint64 imageSize = image->imageSize - (params->header.kernelLocation - (bad_uint64)image->imageBase); // Remove Boot part and .reloc section
+    u64 imageSize = image->imageSize - (params->header.kernelLocation - (address_t)image->imageBase); // Remove Boot part and .reloc section
 
 
 
     // We are going to allocate space for imageSize + page table + stack ( + decompressed Kernel part if it compressed)
     //
-    bad_uint64 allocSize =
+    u64 allocSize =
             ROUND_UP(imageSize, PAGE_SIZE)  // Use ROUND_UP in order to make space for page table to be aligned
             + BOOT_PAGE_TABLE_SIZE
             + BOOT_STACK_SIZE
@@ -91,7 +91,7 @@ NgosStatus setupKernelLocation(BootParams *params)
 
 
 
-    bad_uint64 address = 0;
+    address_t address = 0;
 
     if (UEFI::lowAlloc(allocSize, NGOS_BUILD_KERNEL_ALIGN, (void **)&address) != UefiStatus::SUCCESS)
     {

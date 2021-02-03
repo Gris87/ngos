@@ -10,13 +10,13 @@
 
 struct MemoryMapEntry
 {
-    i64                start;
-    i64                size;
+    address_t          start;
+    u64                size;
     MemoryMapEntryType type;
 
 
 
-    inline i64 end()
+    inline address_t end()
     {
         return start + size;
     }
