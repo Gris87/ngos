@@ -87,7 +87,7 @@ private:
     QHash<QString, QNetworkReply *>  mReplies;
     QHash<QString, VersionInfo>      mLatestVersions;
     VersionInfo                      mSelectedVersionInfo;
-    quint64                          mCurrentApplication;
+    qint64                           mCurrentApplication;
     QList<FileInfo>                  mVersionFiles;
     QString                          mLanguage;
     QHash<QString, QAction *>        mLanguageActions;

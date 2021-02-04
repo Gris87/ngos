@@ -18,7 +18,7 @@ struct UefiSystemTable
     UefiTableHeader                header;
 
     char16                        *firmwareVendor;
-    bad_uint32                            firmwareRevision;
+    u32                            firmwareRevision;
 
     uefi_handle                    stdinHandle;
     UefiSimpleInputInterface      *stdin;
@@ -32,7 +32,7 @@ struct UefiSystemTable
     UefiRuntimeServices           *runtimeServices;
     UefiBootServices              *bootServices;
 
-    bad_uint64                            numberOfConfigurationTables;
+    u64                            numberOfConfigurationTables;
     UefiConfigurationTable        *configurationTables;
 };
 

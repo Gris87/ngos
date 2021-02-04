@@ -8,7 +8,7 @@
 
 
 
-enum class ElfData: bad_uint8
+enum class ElfData: u8
 {
     NONE                   = 0,
     LEAST_SIGNIFICANT_BYTE = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(ElfData data) // TEST: NO
 
     static char8 res[30];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)data, enumToString(data));
+    sprintf(res, "0x%02X (%s)", (u8)data, enumToString(data));
 
     return res;
 }

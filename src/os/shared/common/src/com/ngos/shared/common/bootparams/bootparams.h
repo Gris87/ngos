@@ -19,10 +19,10 @@ struct BootParams
 {
     BootParamsHeader             header;
     UefiInfo                     uefi;
-    bad_uint64                          screensCount;
+    u64                          screensCount;
     UefiGraphicsOutputProtocol **screens;
     PciRomImageWithInfo         *pciRomImages;
-    bad_uint64                          memoryMapEntriesCount;
+    u64                          memoryMapEntriesCount;
     MemoryMapEntry              *memoryMapEntries;
     char8                        hardwareId[HARDWARE_ID_LENGTH];
 };

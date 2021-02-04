@@ -10,9 +10,9 @@
 struct UefiCapsuleHeader
 {
     Guid capsuleGuid;
-    bad_uint32  headerSize;
-    bad_uint32  flags;
-    bad_uint32  capsuleImageSize;
+    u32  headerSize;
+    u32  flags;
+    u32  capsuleImageSize;
 };
 
 

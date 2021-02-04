@@ -808,12 +808,12 @@ bool UEFI::memoryMapHasHeadroom(bad_uint64 bufferSize, bad_uint64 memoryMapSize,
     return slack / (bad_int64)descriptorSize >= UEFI_MEMORY_MAP_NUMBER_OF_SLACK_SLOTS;
 }
 
-UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType, bad_uint64 noPages, bad_uint64 *memory)
+UefiStatus UEFI::allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, address_t *memory)
 {
     UEFI_LT((" | type = %d, memoryType = %d, noPages = %u, memory = 0x%p", type, memoryType, noPages, memory));
 
-    UEFI_ASSERT(noPages > 0, "noPages is zero", UefiStatus::ABORTED);
-    UEFI_ASSERT(memory,      "memory is null",  UefiStatus::ABORTED);
+    UEFI_ASSERT(noPages >  0,       "noPages is zero", UefiStatus::ABORTED);
+    UEFI_ASSERT(memory  != nullptr, "memory is null",  UefiStatus::ABORTED);
 
 
 
@@ -955,11 +955,11 @@ UefiStatus UEFI::lowAlloc(bad_uint64 size, bad_uint64 align, void **address)
     UEFI_ASSERT(size > 0,             "size is zero",            UefiStatus::ABORTED);
     UEFI_ASSERT(align > 0,            "align is zero",           UefiStatus::ABORTED);
     UEFI_ASSERT(IS_POWER_OF_2(align), "align is not power of 2", UefiStatus::ABORTED);
-    UEFI_ASSERT(address,              "address is null",         UefiStatus::ABORTED);
+    UEFI_ASSERT(address != nullptr,   "address is null",         UefiStatus::ABORTED);
 
 
 
-    UefiMemoryDescriptor *memoryMap      = 0;
+    UefiMemoryDescriptor *memoryMap      = nullptr;
     bad_uint64                   memoryMapSize  = 0;
     bad_uint64                   descriptorSize = 0;
     bad_uint64                   bufferSize     = 0;
@@ -1060,8 +1060,8 @@ UefiStatus UEFI::lowAlloc(bad_uint64 size, bad_uint64 align, void **address)
 
 
 
-        bad_uint64 start = memoryDescriptor->physicalStart;
-        bad_uint64 end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
+        address_t start = memoryDescriptor->physicalStart;
+        address_t end   = start + memoryDescriptor->numberOfPages * PAGE_SIZE;
 
         if (start == 0)
         {

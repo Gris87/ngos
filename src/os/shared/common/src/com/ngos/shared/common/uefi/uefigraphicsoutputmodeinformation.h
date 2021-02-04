@@ -11,12 +11,12 @@
 
 struct UefiGraphicsOutputModeInformation
 {
-    bad_uint32                     version;
-    bad_uint32                     horizontalResolution;
-    bad_uint32                     verticalResolution;
+    u32                     version;
+    u32                     horizontalResolution;
+    u32                     verticalResolution;
     UefiGraphicsPixelFormat pixelFormat;
     UefiPixelBitmask        pixelInformation;
-    bad_uint32                     pixelsPerScanLine;
+    u32                     pixelsPerScanLine;
 };
 
 

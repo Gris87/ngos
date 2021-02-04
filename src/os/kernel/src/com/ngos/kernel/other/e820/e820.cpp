@@ -20,7 +20,7 @@ NgosStatus E820::init()
 
 
 
-    bad_uint64 memoryMapEntriesSize = bootParams.memoryMapEntriesCount * sizeof(bootParams.memoryMapEntries[0]);
+    u64 memoryMapEntriesSize = bootParams.memoryMapEntriesCount * sizeof(bootParams.memoryMapEntries[0]);
 
 
 

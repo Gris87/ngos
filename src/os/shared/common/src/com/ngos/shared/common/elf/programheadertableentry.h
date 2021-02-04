@@ -12,12 +12,12 @@ struct ElfProgramHeaderTableEntry
 {
     ElfProgramType  type;
     ElfProgramFlags flags;
-    bad_uint64             offset;
-    bad_uint64             virtualAddress;
-    bad_uint64             physicalAddress;
-    bad_uint64             fileSize;
-    bad_uint64             memorySize;
-    bad_uint64             align;
+    u64             offset;
+    address_t       virtualAddress;
+    address_t       physicalAddress;
+    u64             fileSize;
+    u64             memorySize;
+    u64             align;
 };
 
 

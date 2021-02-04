@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 uefi_variable_attribute_flags;
+typedef u32 uefi_variable_attribute_flags;
 
 enum class UefiVariableAttributeFlag: uefi_variable_attribute_flags
 {

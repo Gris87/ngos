@@ -9,11 +9,11 @@
 
 struct UefiTableHeader
 {
-    bad_uint64 signature;
-    bad_uint32 revision;
-    bad_uint32 headerSize;
-    bad_uint32 crc32;
-    bad_uint32 __reserved;
+    u64 signature;
+    u32 revision;
+    u32 headerSize;
+    u32 crc32;
+    u32 __reserved;
 };
 
 

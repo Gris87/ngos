@@ -8,7 +8,7 @@
 
 
 
-enum class UefiTimerDelay: bad_uint32
+enum class UefiTimerDelay: u32
 {
     CANCEL,
     PERIODIC,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(UefiTimerDelay delay) // TEST: NO
 
     static char8 res[22];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)delay, enumToString(delay));
+    sprintf(res, "0x%08X (%s)", (u32)delay, enumToString(delay));
 
     return res;
 }

@@ -8,7 +8,7 @@
 
 
 
-enum class ElfMachine: bad_uint16
+enum class ElfMachine: u16
 {
     NONE             = 0,
     MACHINE_M32      = 0x0001,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(ElfMachine machine) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)machine, enumToString(machine));
+    sprintf(res, "0x%04X (%s)", (u16)machine, enumToString(machine));
 
     return res;
 }

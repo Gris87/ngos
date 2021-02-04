@@ -68,7 +68,7 @@ public:
     static UefiStatus freePool(void *buffer); // TEST: NO
 
     static bool memoryMapHasHeadroom(bad_uint64 bufferSize, bad_uint64 memoryMapSize, bad_uint64 descriptorSize);
-    static UefiStatus allocatePages(UefiAllocateType type, UefiMemoryType memoryType, bad_uint64 noPages, bad_uint64 *memory); // TEST: NO
+    static UefiStatus allocatePages(UefiAllocateType type, UefiMemoryType memoryType, u64 noPages, address_t *memory); // TEST: NO
     static UefiStatus getMemoryMap(bad_uint64 *memoryMapSize, UefiMemoryDescriptor *memoryMap, bad_uint64 *mapKey, bad_uint64 *descriptorSize, bad_uint32 *descriptorVersion); // TEST: NO
     static UefiStatus getMemoryMap(UefiBootMemoryMap *map); // TEST: NO
     static UefiStatus lowAlloc(bad_uint64 size, bad_uint64 align, void **address); // TEST: NO

@@ -8,7 +8,7 @@
 
 
 
-enum class ElfType: bad_uint16
+enum class ElfType: u16
 {
     NONE            = 0,
     RELOCATABLE     = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(ElfType type) // TEST: NO
 
     static char8 res[25];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)type, enumToString(type));
+    sprintf(res, "0x%04X (%s)", (u16)type, enumToString(type));
 
     return res;
 }

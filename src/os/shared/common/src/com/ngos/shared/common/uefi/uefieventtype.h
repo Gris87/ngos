@@ -8,7 +8,7 @@
 
 
 
-enum class UefiEventType: bad_uint32
+enum class UefiEventType: u32
 {
     NONE                          = 0,
     NOTIFY_WAIT                   = 0x00000100,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(UefiEventType type) // TEST: NO
 
     static char8 res[43];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

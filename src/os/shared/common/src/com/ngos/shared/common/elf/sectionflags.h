@@ -16,7 +16,7 @@
 
 
 
-typedef bad_uint64 elf_section_flags;
+typedef u64 elf_section_flags;
 
 enum class ElfSectionFlag: elf_section_flags
 {

@@ -11,12 +11,12 @@
 
 struct ElfSymbol
 {
-    bad_uint32            nameOffset;
+    u32            nameOffset;
     ElfSymbolInfo  info;
     ElfSymbolOther other;
-    bad_uint16            sectionIndex;
-    bad_uint64            value;
-    bad_uint64            size;
+    u16            sectionIndex;
+    u64            value;
+    u64            size;
 };
 
 

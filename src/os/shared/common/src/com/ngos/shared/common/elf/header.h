@@ -16,16 +16,16 @@ struct ElfHeader
     ElfType                 type;
     ElfMachine              machine;
     ElfVersion              version;
-    bad_uint64                     entryPoint;
-    bad_uint64                     programHeaderTableOffset;
-    bad_uint64                     sectionHeaderTableOffset;
-    bad_uint32                     flags;
-    bad_uint16                     headerSize;
-    bad_uint16                     programHeaderTableEntrySize;
-    bad_uint16                     programHeaderTableEntryCount;
-    bad_uint16                     sectionHeaderTableEntrySize;
-    bad_uint16                     sectionHeaderTableEntryCount;
-    bad_uint16                     sectionHeaderTableNamesIndex;
+    u64                     entryPoint;
+    u64                     programHeaderTableOffset;
+    u64                     sectionHeaderTableOffset;
+    u32                     flags;
+    u16                     headerSize;
+    u16                     programHeaderTableEntrySize;
+    u16                     programHeaderTableEntryCount;
+    u16                     sectionHeaderTableEntrySize;
+    u16                     sectionHeaderTableEntryCount;
+    u16                     sectionHeaderTableNamesIndex;
 };
 
 

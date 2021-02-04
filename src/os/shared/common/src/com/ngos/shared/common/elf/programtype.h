@@ -15,7 +15,7 @@
 
 
 
-enum class ElfProgramType: bad_uint32
+enum class ElfProgramType: u32
 {
     NONE       = 0,
     LOAD       = 0x00000001,
@@ -58,7 +58,7 @@ inline const char8* enumToFullString(ElfProgramType type) // TEST: NO
 
     static char8 res[21];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

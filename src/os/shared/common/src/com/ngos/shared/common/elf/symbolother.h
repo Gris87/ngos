@@ -13,11 +13,11 @@ struct ElfSymbolOther
     {
         struct
         {
-            bad_uint8 __reserved: 5;
-            bad_uint8 visibility: 3; // TODO: Use enum ElfSymbolVisibility
+            u8 __reserved: 5;
+            u8 visibility: 3; // TODO: Use enum ElfSymbolVisibility
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

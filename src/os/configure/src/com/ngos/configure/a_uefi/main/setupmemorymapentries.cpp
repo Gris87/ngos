@@ -17,7 +17,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
     MemoryMapEntry *previous              = nullptr;
-    bad_uint64             memoryMapEntriesCount = 0;
+    i64             memoryMapEntriesCount = 0;
 
 
 
@@ -150,7 +150,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
         UEFI_LVVV(("params->uefi.memoryMap.descriptorSize    = %u",   params->uefi.memoryMap.descriptorSize));
         UEFI_LVVV(("params->uefi.memoryMap.descriptorVersion = %u",   params->uefi.memoryMap.descriptorVersion));
         UEFI_LVVV(("params->uefi.systemTable                 = 0x%p", params->uefi.systemTable));
-        UEFI_LVVV(("params->memoryMapEntriesCount            = %u",   params->memoryMapEntriesCount));
+        UEFI_LVVV(("params->memoryMapEntriesCount            = %d",   params->memoryMapEntriesCount));
         UEFI_LVVV(("params->memoryMapEntries                 = 0x%p", params->memoryMapEntries));
 
 #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
@@ -173,7 +173,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             UEFI_LVVV(("Memory Map entries:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < (bad_int64)params->memoryMapEntriesCount; ++i)
+            for (i64 i = 0; i < params->memoryMapEntriesCount; ++i)
             {
                 UEFI_LVVV(("#%-3d: type = %-2u | 0x%p-0x%p", i, params->memoryMapEntries[i].type, params->memoryMapEntries[i].start, params->memoryMapEntries[i].end()));
             }
