@@ -24,26 +24,26 @@ public:
 
     NgosStatus append(const T &value);
     NgosStatus prepend(const T &value);
-    NgosStatus insert(bad_uint64 index, const T &value);
-    NgosStatus removeAt(bad_uint64 index);
+    NgosStatus insert(i64 index, const T &value);
+    NgosStatus removeAt(i64 index);
 
     NgosStatus clear();
 
     NgosStatus sort();
     NgosStatus sort(element_comparator comparator);
 
-    bad_int64 indexOf(const T &value) const;
+    i64 indexOf(const T &value) const;
 
     const T& first() const;
     const T& last() const;
-    const T& at(bad_uint64 index) const;
-    T& operator[](bad_uint64 index);
+    const T& at(i64 index) const;
+    T& operator[](i64 index);
 
-    bad_uint64 getSize() const;
+    i64 getSize() const;
     bool isEmpty() const;
 
-    NgosStatus setCapacity(bad_uint64 capacity);
-    bad_uint64 getCapacity() const;
+    NgosStatus setCapacity(i64 capacity);
+    i64 getCapacity() const;
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -51,11 +51,11 @@ public:
 private:
 #endif
     NgosStatus extendCapacity();
-    NgosStatus quickSort(bad_int64 left, bad_int64 right);
-    NgosStatus quickSort(bad_int64 left, bad_int64 right, element_comparator comparator);
+    NgosStatus quickSort(i64 left, i64 right);
+    NgosStatus quickSort(i64 left, i64 right, element_comparator comparator);
 
-    bad_uint64  mCapacity;
-    bad_uint64  mSize;
+    i64  mCapacity;
+    i64  mSize;
     T   *mValues;
 };
 
@@ -77,7 +77,7 @@ ArrayList<T>::~ArrayList()
 
 
 
-    if (mValues)
+    if (mValues != nullptr)
     {
         COMMON_ASSERT_EXECUTION(free(mValues));
     }
@@ -110,7 +110,7 @@ NgosStatus ArrayList<T>::prepend(const T &value)
 
     COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
 
-    for (bad_int64 i = mSize; i > 0; --i)
+    for (i64 i = mSize; i > 0; --i)
     {
         mValues[i] = mValues[i - 1];
     }
@@ -125,9 +125,9 @@ NgosStatus ArrayList<T>::prepend(const T &value)
 }
 
 template<typename T>
-NgosStatus ArrayList<T>::insert(bad_uint64 index, const T &value)
+NgosStatus ArrayList<T>::insert(i64 index, const T &value)
 {
-    // COMMON_LT((" | index = %u, value = ...", index)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | index = %d, value = ...", index)); // Commented to avoid too frequent logs
 
 
 
@@ -145,7 +145,7 @@ NgosStatus ArrayList<T>::insert(bad_uint64 index, const T &value)
 
     COMMON_ASSERT_EXECUTION(extendCapacity(), NgosStatus::ASSERTION);
 
-    for (bad_int64 i = mSize; i > (bad_int64)index; --i)
+    for (i64 i = mSize; i > index; --i)
     {
         mValues[i] = mValues[i - 1];
     }
@@ -160,19 +160,17 @@ NgosStatus ArrayList<T>::insert(bad_uint64 index, const T &value)
 }
 
 template<typename T>
-NgosStatus ArrayList<T>::removeAt(bad_uint64 index)
+NgosStatus ArrayList<T>::removeAt(i64 index)
 {
-    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
 
 
 
-    // TODO: Uncomment
-//    if (
-//        index >= 0
-//        &&
-//        index < mSize
-//       )
-    if (index < mSize)
+    if (
+        index >= 0
+        &&
+        index < mSize
+       )
     {
         if (mSize == 1)
         {
@@ -183,7 +181,7 @@ NgosStatus ArrayList<T>::removeAt(bad_uint64 index)
 
 
 
-        for (bad_int64 i = index + 1; i < (bad_int64)mSize; ++i)
+        for (i64 i = index + 1; i < mSize; ++i)
         {
             mValues[i - 1] = mValues[i];
         }
@@ -207,7 +205,7 @@ NgosStatus ArrayList<T>::clear()
 
 
 
-    if (mValues)
+    if (mValues != nullptr)
     {
         COMMON_TEST_ASSERT(mCapacity > 0, NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(mSize     > 0, NgosStatus::ASSERTION);
@@ -261,13 +259,13 @@ NgosStatus ArrayList<T>::sort(element_comparator comparator)
 }
 
 template<typename T>
-bad_int64 ArrayList<T>::indexOf(const T &value) const
+i64 ArrayList<T>::indexOf(const T &value) const
 {
     COMMON_LT((" | value = ..."));
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)mSize; ++i)
+    for (i64 i = 0; i < mSize; ++i)
     {
         if (mValues[i] == value)
         {
@@ -305,11 +303,11 @@ const T& ArrayList<T>::last() const
 }
 
 template<typename T>
-const T& ArrayList<T>::at(bad_uint64 index) const
+const T& ArrayList<T>::at(i64 index) const
 {
-    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(index < mSize, "index is invalid", mValues[index]);
+    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);
 
 
 
@@ -317,11 +315,11 @@ const T& ArrayList<T>::at(bad_uint64 index) const
 }
 
 template<typename T>
-T& ArrayList<T>::operator[](bad_uint64 index)
+T& ArrayList<T>::operator[](i64 index)
 {
-    // COMMON_LT((" | index = %u", index)); // Commented to avoid too frequent logs
+    // COMMON_LT((" | index = %d", index)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(index < mSize, "index is invalid", mValues[index]);
+    COMMON_ASSERT(index >= 0 && index < mSize, "index is invalid", mValues[index]);
 
 
 
@@ -329,7 +327,7 @@ T& ArrayList<T>::operator[](bad_uint64 index)
 }
 
 template<typename T>
-bad_uint64 ArrayList<T>::getSize() const
+i64 ArrayList<T>::getSize() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -349,9 +347,11 @@ bool ArrayList<T>::isEmpty() const
 }
 
 template<typename T>
-NgosStatus ArrayList<T>::setCapacity(bad_uint64 capacity)
+NgosStatus ArrayList<T>::setCapacity(i64 capacity)
 {
-    COMMON_LT((" | capacity = %u", capacity));
+    COMMON_LT((" | capacity = %d", capacity));
+
+    COMMON_ASSERT(capacity >= 0, "capacity is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -360,20 +360,20 @@ NgosStatus ArrayList<T>::setCapacity(bad_uint64 capacity)
         if (mCapacity > 0)
         {
             mValues = (T *)realloc(mValues, mCapacity * sizeof(T), capacity * sizeof(T));
-            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
         else
         {
             mValues = (T *)malloc(capacity * sizeof(T));
-            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
+
+        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
 
         mCapacity = capacity;
     }
     else
     if (capacity < mCapacity)
     {
-        mCapacity = capacity;
+        mCapacity = capacity; // TODO: Check for reducing capacity and expanding (realloc?)
 
         if (mCapacity > 0)
         {
@@ -384,7 +384,7 @@ NgosStatus ArrayList<T>::setCapacity(bad_uint64 capacity)
         }
         else
         {
-            COMMON_TEST_ASSERT(mValues, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
 
             COMMON_ASSERT_EXECUTION(free(mValues), NgosStatus::ASSERTION);
             mValues = nullptr;
@@ -399,7 +399,7 @@ NgosStatus ArrayList<T>::setCapacity(bad_uint64 capacity)
 }
 
 template<typename T>
-bad_uint64 ArrayList<T>::getCapacity() const
+i64 ArrayList<T>::getCapacity() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -419,20 +419,20 @@ NgosStatus ArrayList<T>::extendCapacity()
     {
         if (mCapacity > 0)
         {
-            bad_uint64 oldSize =   mCapacity * sizeof(T);
-            mCapacity   <<= 1;
-            bad_uint64 newSize =   mCapacity * sizeof(T);
+            u64 oldSize = mCapacity * sizeof(T);
+            mCapacity   = mCapacity * 2;
+            u64 newSize = mCapacity * sizeof(T);
 
             mValues = (T *)realloc(mValues, oldSize, newSize);
-            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
         else
         {
             mCapacity = ARRAY_LIST_DEFAULT_CAPACITY;
 
             mValues = (T *)malloc(mCapacity * sizeof(T));
-            COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
         }
+
+        COMMON_TEST_ASSERT(mValues != nullptr, NgosStatus::ASSERTION);
     }
 
 
@@ -441,13 +441,13 @@ NgosStatus ArrayList<T>::extendCapacity()
 }
 
 template<typename T>
-NgosStatus ArrayList<T>::quickSort(bad_int64 left, bad_int64 right)
+NgosStatus ArrayList<T>::quickSort(i64 left, i64 right)
 {
     COMMON_LT((" | left = %d, right = %d", left, right));
 
-    COMMON_ASSERT(left  < (bad_int64)mSize, "left is invalid",  NgosStatus::ASSERTION);
-    COMMON_ASSERT(right < (bad_int64)mSize, "right is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(left  < right,      "left is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < mSize, "left is invalid",  NgosStatus::ASSERTION);
+    COMMON_ASSERT(right < mSize, "right is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < right, "left is invalid",  NgosStatus::ASSERTION);
 
 
 
@@ -462,8 +462,8 @@ NgosStatus ArrayList<T>::quickSort(bad_int64 left, bad_int64 right)
     }
     else
     {
-        bad_int64 i = left;
-        bad_int64 j = right;
+        i64 i = left;
+        i64 j = right;
 
         T pivot = mValues[(left + right) / 2];
 
@@ -514,15 +514,15 @@ NgosStatus ArrayList<T>::quickSort(bad_int64 left, bad_int64 right)
 }
 
 template<typename T>
-NgosStatus ArrayList<T>::quickSort(bad_int64 left, bad_int64 right, element_comparator comparator)
+NgosStatus ArrayList<T>::quickSort(i64 left, i64 right, element_comparator comparator)
 {
     COMMON_LT((" | left = %d, right = %d, comparator = 0x%p", left, right, comparator));
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    COMMON_ASSERT(left  < (bad_int64)mSize, "left is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(right < (bad_int64)mSize, "right is invalid",   NgosStatus::ASSERTION);
-    COMMON_ASSERT(left  < right,      "left is invalid",    NgosStatus::ASSERTION);
-    COMMON_ASSERT(comparator,         "comparator is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < mSize,         "left is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(right < mSize,         "right is invalid",   NgosStatus::ASSERTION);
+    COMMON_ASSERT(left  < right,         "left is invalid",    NgosStatus::ASSERTION);
+    COMMON_ASSERT(comparator != nullptr, "comparator is null", NgosStatus::ASSERTION);
     // Ignore CppAlignmentVerifier [END]
 
 
@@ -538,8 +538,8 @@ NgosStatus ArrayList<T>::quickSort(bad_int64 left, bad_int64 right, element_comp
     }
     else
     {
-        bad_int64 i = left;
-        bad_int64 j = right;
+        i64 i = left;
+        i64 j = right;
 
         T pivot = mValues[(left + right) / 2];
 
