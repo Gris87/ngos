@@ -74,7 +74,7 @@ NgosStatus UefiLogFile::print(char8 ch)
 
     if (sLogFile)
     {
-        bad_uint64 size = sizeof(ch);
+        u64 size = sizeof(ch);
 
         sLogFile->write(sLogFile, &size, &ch);
     }
@@ -94,7 +94,7 @@ NgosStatus UefiLogFile::print(const char8 *str)
 
     if (sLogFile)
     {
-        bad_uint64 size = strlen(str);
+        u64 size = strlen(str);
 
         sLogFile->write(sLogFile, &size, (void *)str);
     }
@@ -113,7 +113,7 @@ NgosStatus UefiLogFile::println()
     if (sLogFile)
     {
         char8 ch   = '\n';
-        bad_uint64   size = sizeof(ch);
+        u64   size = sizeof(ch);
 
         sLogFile->write(sLogFile, &size, &ch);
         sLogFile->flush(sLogFile);
@@ -133,8 +133,8 @@ NgosStatus UefiLogFile::println(char8 ch)
     if (sLogFile)
     {
         char8 ch2   = '\n';
-        bad_uint64   size  = sizeof(ch);
-        bad_uint64   size2 = sizeof(ch2);
+        u64   size  = sizeof(ch);
+        u64   size2 = sizeof(ch2);
 
         sLogFile->write(sLogFile, &size, &ch);
         sLogFile->write(sLogFile, &size2, &ch2);
@@ -157,8 +157,8 @@ NgosStatus UefiLogFile::println(const char8 *str)
     if (sLogFile)
     {
         char8 ch    = '\n';
-        bad_uint64   size  = strlen(str);
-        bad_uint64   size2 = sizeof(ch);
+        u64   size  = strlen(str);
+        u64   size2 = sizeof(ch);
 
         sLogFile->write(sLogFile, &size, (void *)str);
         sLogFile->write(sLogFile, &size2, &ch);
@@ -228,7 +228,7 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
 
 
         char16 *logPath16;
-        bad_uint64     size = (strlen(logPath8) + 1) * sizeof(char16);
+        u64     size = (strlen(logPath8) + 1) * sizeof(char16);
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&logPath16) != UefiStatus::SUCCESS)
         {

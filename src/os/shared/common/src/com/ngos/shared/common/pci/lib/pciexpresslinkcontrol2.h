@@ -15,17 +15,17 @@ struct PciExpressLinkControl2
     {
         struct
         {
-            bad_uint16 targetLinkSpeed                : 4; // TODO: Use enum PciExpressLinkSpeed
-            bad_uint16 enterCompliance                : 1;
-            bad_uint16 hardwareAutonomousSpeedDisable : 1;
-            bad_uint16 selectableDeemphasis           : 1; // TODO: Use enum PciExpressDeemphasis
-            bad_uint16 transmitMargin                 : 3;
-            bad_uint16 enterModifiedCompliance        : 1;
-            bad_uint16 complianceSos                  : 1;
-            bad_uint16 complianceDeemphasis           : 4; // TODO: Use enum PciExpressDeemphasis
+            u16 targetLinkSpeed                : 4; // TODO: Use enum PciExpressLinkSpeed
+            u16 enterCompliance                : 1;
+            u16 hardwareAutonomousSpeedDisable : 1;
+            u16 selectableDeemphasis           : 1; // TODO: Use enum PciExpressDeemphasis
+            u16 transmitMargin                 : 3;
+            u16 enterModifiedCompliance        : 1;
+            u16 complianceSos                  : 1;
+            u16 complianceDeemphasis           : 4; // TODO: Use enum PciExpressDeemphasis
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

@@ -13,13 +13,13 @@ struct PciExpressRootComplexInternalLinkControlLinkControl
     {
         struct
         {
-            bad_uint16 aspmControl   : 2; // TODO: Use enum PciExpressActiveStatePowerManagementControl
-            bad_uint16 __reserved    : 5;
-            bad_uint16 extendedSynch : 1;
-            bad_uint16 __reserved2   : 8;
+            u16 aspmControl   : 2; // TODO: Use enum PciExpressActiveStatePowerManagementControl
+            u16 __reserved    : 5;
+            u16 extendedSynch : 1;
+            u16 __reserved2   : 8;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

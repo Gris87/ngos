@@ -34,12 +34,12 @@
 #define CF2A (139)
 #define CF2B (-11)
 
-#define CLAMP_TO_BYTE(a) clamp((bad_int64)(a), (bad_int64)0x00, (bad_int64)0xFF)
+#define CLAMP_TO_BYTE(a) clamp((i64)(a), (i64)0x00, (i64)0xFF)
 #define CHROMA_FILTER(a) CLAMP_TO_BYTE(((a) + 64) >> 7)
 
 
 
-NgosStatus Jpeg::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
+NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
 
@@ -47,8 +47,8 @@ NgosStatus Jpeg::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*(bad_uint16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
-    COMMON_ASSERT(*(bad_uint16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE,   "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE,   "data is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -56,7 +56,7 @@ NgosStatus Jpeg::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
 
 
-    if (*(bad_uint16 *)&data[0] != JPEG_START_OF_IMAGE_SIGNATURE)
+    if (*(u16 *)&data[0] != JPEG_START_OF_IMAGE_SIGNATURE)
     {
         COMMON_LE(("Data is not a JPEG image"));
 
@@ -116,7 +116,7 @@ NgosStatus Jpeg::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
     return status;
 }
 
-NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, bad_uint8 *data, bad_uint64 size, Image **image)
+NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **image)
 {
     COMMON_LT((" | decoder = 0x%p, data = 0x%p, size = %u, image = 0x%p", decoder, data, size, image));
 
@@ -156,7 +156,7 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
-    for (bad_int64 i = 0; i < JPEG_HUFFMAN_TABLE_COUNT; ++i)
+    for (i64 i = 0; i < JPEG_HUFFMAN_TABLE_COUNT; ++i)
     {
         if (decoder->vlcDcTables[i])
         {
@@ -171,7 +171,7 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
 
 
 
-    for (bad_int64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
+    for (i64 i = 0; i < JPEG_NUMBER_OF_COMPONENTS; ++i)
     {
         if (decoder->components[i].dataBuffer)
         {
@@ -184,7 +184,7 @@ NgosStatus Jpeg::releaseDecoder(JpegDecoder *decoder)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::skip(JpegDecoder *decoder, bad_uint64 count)
+NgosStatus Jpeg::skip(JpegDecoder *decoder, u64 count)
 {
     COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count));
 
@@ -338,7 +338,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    bad_uint16 length = ntohs(marker->length);
+    u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
@@ -366,7 +366,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    if (sizeof(JpegStartOfFrameMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameComponent) != (bad_uint16)(length + 2))
+    if (sizeof(JpegStartOfFrameMarker) + startOfFrameMarker->numberOfComponents * sizeof(JpegStartOfFrameComponent) != (u16)(length + 2))
     {
         COMMON_LE(("Invalid JpegMarkerType::START_OF_FRAME marker"));
 
@@ -375,8 +375,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    bad_uint16 width  = ntohs(startOfFrameMarker->width);
-    bad_uint16 height = ntohs(startOfFrameMarker->height);
+    u16 width  = ntohs(startOfFrameMarker->width);
+    u16 height = ntohs(startOfFrameMarker->height);
 
     COMMON_LVVV(("width  = %u", width));
     COMMON_LVVV(("height = %u", height));
@@ -394,7 +394,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    bad_uint8 numberOfComponents = startOfFrameMarker->numberOfComponents;
+    u8 numberOfComponents = startOfFrameMarker->numberOfComponents;
 
     COMMON_LVVV(("numberOfComponents = %u", numberOfComponents));
 
@@ -411,18 +411,18 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    bad_uint8 samplingFactorXMax = 0;
-    bad_uint8 samplingFactorYMax = 0;
+    u8 samplingFactorXMax = 0;
+    u8 samplingFactorYMax = 0;
 
-    for (bad_int64 i = 0; i < numberOfComponents; ++i)
+    for (i64 i = 0; i < numberOfComponents; ++i)
     {
         JpegStartOfFrameComponent *component        = &startOfFrameMarker->components[i];
         JpegComponent             *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId         = component->id;
-        bad_uint8              samplingFactorX     = component->samplingFactor.x;
-        bad_uint8              samplingFactorY     = component->samplingFactor.y;
-        bad_uint8              quantizationTableId = component->quantizationTableId;
+        u8              samplingFactorX     = component->samplingFactor.x;
+        u8              samplingFactorY     = component->samplingFactor.y;
+        u8              quantizationTableId = component->quantizationTableId;
 
         COMMON_LVVV(("componentId         = %s", enumToFullString(componentId)));
         COMMON_LVVV(("samplingFactorX     = %u", samplingFactorX));
@@ -430,9 +430,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         COMMON_LVVV(("quantizationTableId = %u", quantizationTableId));
 
         if (
-            (bad_uint8)componentId < (bad_uint8)JpegComponentId::Y
+            (enum_t)componentId < (enum_t)JpegComponentId::Y
             ||
-            (bad_uint8)componentId > (bad_uint8)JpegComponentId::Q
+            (enum_t)componentId > (enum_t)JpegComponentId::Q
             ||
             !samplingFactorX // samplingFactorX == 0
             ||
@@ -490,8 +490,8 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    bad_uint8 mcuBlockSizeX = samplingFactorXMax * 8;
-    bad_uint8 mcuBlockSizeY = samplingFactorYMax * 8;
+    u8 mcuBlockSizeX = samplingFactorXMax * 8;
+    u8 mcuBlockSizeY = samplingFactorYMax * 8;
 
     COMMON_LVVV(("mcuBlockSizeX = %u", mcuBlockSizeX));
     COMMON_LVVV(("mcuBlockSizeY = %u", mcuBlockSizeY));
@@ -506,7 +506,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    for (bad_int64 i = 0; i < numberOfComponents; ++i)
+    for (i64 i = 0; i < numberOfComponents; ++i)
     {
         JpegComponent *generalComponent = &decoder->components[i];
 
@@ -514,7 +514,7 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
         generalComponent->width      = DIV_UP(width  * generalComponent->samplingFactorX, samplingFactorXMax);
         generalComponent->height     = DIV_UP(height * generalComponent->samplingFactorY, samplingFactorYMax);
         generalComponent->stride     = decoder->mcuBlockCountX * generalComponent->samplingFactorX * 8;
-        generalComponent->dataBuffer = (bad_uint8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY * 8);
+        generalComponent->dataBuffer = (u8 *)malloc(generalComponent->stride * decoder->mcuBlockCountY * generalComponent->samplingFactorY * 8);
         // Ignore CppAlignmentVerifier [END]
 
 
@@ -561,7 +561,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-    bad_uint16 length = ntohs(marker->length);
+    u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
@@ -580,7 +580,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
     while (length >= 17)
     {
-        bad_uint8 tableId = table->idAndType.id;
+        u8 tableId = table->idAndType.id;
 
         COMMON_LVVV(("tableId = %u", tableId));
 
@@ -602,8 +602,8 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        bad_int64 remain = 65536;
-        bad_int64 spread = remain;
+        i64 remain = 65536;
+        i64 spread = remain;
 
         JpegVlcCode *vlc = (JpegVlcCode *)malloc(remain * sizeof(JpegVlcCode));
 
@@ -631,9 +631,9 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        bad_uint16 totalNumberOfSymbols = 0;
+        u16 totalNumberOfSymbols = 0;
 
-        for (bad_int64 i = 0; i < JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT; ++i)
+        for (i64 i = 0; i < JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT; ++i)
         {
             spread >>= 1;
 
@@ -641,7 +641,7 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-            bad_uint8 numberOfSymbols = table->numberOfSymbols[i];
+            u8 numberOfSymbols = table->numberOfSymbols[i];
 
             COMMON_LVVV(("numberOfSymbols = %u", numberOfSymbols));
 
@@ -665,13 +665,13 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-            for (bad_int64 j = 0; j < numberOfSymbols; ++j)
+            for (i64 j = 0; j < numberOfSymbols; ++j)
             {
-                bad_uint8 code = table->symbols[totalNumberOfSymbols + j];
+                u8 code = table->symbols[totalNumberOfSymbols + j];
 
                 // COMMON_LVVV(("code = 0x%02X", code)); // Commented to avoid too frequent logs
 
-                for (bad_int64 k = 0; k < spread; ++k)
+                for (i64 k = 0; k < spread; ++k)
                 {
                     vlc->bits = i + 1;
                     vlc->code = code;
@@ -700,9 +700,9 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
 
 
-        bad_uint64 tableSize = sizeof(JpegHuffmanTable) + totalNumberOfSymbols;
+        u64 tableSize = sizeof(JpegHuffmanTable) + totalNumberOfSymbols;
 
-        table  =  (JpegHuffmanTable *)((bad_uint64)table + tableSize);
+        table  =  (JpegHuffmanTable *)((address_t)table + tableSize);
         length -= tableSize;
     }
 
@@ -729,7 +729,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-    bad_uint16 length = ntohs(marker->length);
+    u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
@@ -752,8 +752,8 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
     {
         --length;
 
-        bad_uint8 tableId        = table->idAndPrecision.id;
-        bad_uint8 tablePrecision = table->idAndPrecision.precision;
+        u8 tableId        = table->idAndPrecision.id;
+        u8 tablePrecision = table->idAndPrecision.precision;
 
         COMMON_LVVV(("tableId        = %u", tableId));
         COMMON_LVVV(("tablePrecision = %u", tablePrecision));
@@ -767,17 +767,17 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
             return NgosStatus::INVALID_DATA;
         }
 
-        bad_uint16 *tableData = decoder->quantizationTables[tableId];
+        u16 *tableData = decoder->quantizationTables[tableId];
 
 
 
-        bad_uint8 count;
+        u8 count;
 
         if (tablePrecision)
         {
             if (length < JPEG_QUANTIZATION_TABLE_SIZE * 2)
             {
-                for (bad_int64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                for (i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
                 {
                     tableData[i] = 1;
                 }
@@ -793,7 +793,7 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
         {
             if (length < JPEG_QUANTIZATION_TABLE_SIZE)
             {
-                for (bad_int64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
+                for (i64 i = 0; i < JPEG_QUANTIZATION_TABLE_SIZE; ++i)
                 {
                     tableData[i] = 1;
                 }
@@ -808,16 +808,16 @@ NgosStatus Jpeg::decodeDefineQuantizationTableMarker(JpegDecoder *decoder, JpegM
 
 
 
-        for (bad_int64 i = 0; i < count; ++i)
+        for (i64 i = 0; i < count; ++i)
         {
-            tableData[i] = tablePrecision ? ntohs(((bad_uint16 *)table->data16)[i]) : ((bad_uint8 *)table->data8)[i];
+            tableData[i] = tablePrecision ? ntohs(((u16 *)table->data16)[i]) : ((u8 *)table->data8)[i];
         }
 
 
 
-        bad_uint8 tableSize = (tablePrecision ? count * 2 : count) + 1;
+        u8 tableSize = (tablePrecision ? count * 2 : count) + 1;
 
-        table  =  (JpegQuantizationTable *)((bad_uint64)table + tableSize);
+        table  =  (JpegQuantizationTable *)((address_t)table + tableSize);
         length -= tableSize - 1;
     }
 
@@ -844,7 +844,7 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
 
 
-    bad_uint16 length = ntohs(marker->length);
+    u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
@@ -872,7 +872,7 @@ NgosStatus Jpeg::decodeDefineRestartIntervalMarker(JpegDecoder *decoder, JpegMar
 
 
 
-    bad_uint16 restartInterval = restartIntervalMarker->restartInterval;
+    u16 restartInterval = restartIntervalMarker->restartInterval;
 
     COMMON_LVVV(("restartInterval = %u", restartInterval));
 
@@ -903,7 +903,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    bad_uint16 length = ntohs(marker->length);
+    u16 length = ntohs(marker->length);
 
     COMMON_LVVV(("length = %u", length));
 
@@ -931,7 +931,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    if (sizeof(JpegStartOfScanMarker) + startOfScanMarker->numberOfComponents * sizeof(JpegStartOfScanComponent) + 3 != (bad_uint16)(length + 2)) // "+ 3" because we have to ignore the last 3 bytes in JpegStartOfScanMarker
+    if (sizeof(JpegStartOfScanMarker) + startOfScanMarker->numberOfComponents * sizeof(JpegStartOfScanComponent) + 3 != (u16)(length + 2)) // "+ 3" because we have to ignore the last 3 bytes in JpegStartOfScanMarker
     {
         COMMON_LE(("Invalid JpegMarkerType::START_OF_SCAN marker"));
 
@@ -940,7 +940,7 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    bad_uint8 numberOfComponents = startOfScanMarker->numberOfComponents;
+    u8 numberOfComponents = startOfScanMarker->numberOfComponents;
 
     COMMON_LVVV(("numberOfComponents = %u", numberOfComponents));
 
@@ -959,23 +959,23 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    for (bad_int64 i = 0; i < numberOfComponents; ++i)
+    for (i64 i = 0; i < numberOfComponents; ++i)
     {
         JpegStartOfScanComponent *component        = &startOfScanMarker->components[i];
         JpegComponent            *generalComponent = &decoder->components[i];
 
         JpegComponentId componentId      = component->id;
-        bad_uint8              huffmanDcTableId = component->huffmanTableIds.dc;
-        bad_uint8              huffmanAcTableId = component->huffmanTableIds.ac;
+        u8              huffmanDcTableId = component->huffmanTableIds.dc;
+        u8              huffmanAcTableId = component->huffmanTableIds.ac;
 
         COMMON_LVVV(("componentId      = %s", enumToFullString(componentId)));
         COMMON_LVVV(("huffmanDcTableId = %u", huffmanDcTableId));
         COMMON_LVVV(("huffmanAcTableId = %u", huffmanAcTableId));
 
         if (
-            (bad_uint8)componentId < (bad_uint8)JpegComponentId::Y
+            (enum_t)componentId < (enum_t)JpegComponentId::Y
             ||
-            (bad_uint8)componentId > (bad_uint8)JpegComponentId::Q
+            (enum_t)componentId > (enum_t)JpegComponentId::Q
             ||
             componentId != generalComponent->id
             ||
@@ -1005,9 +1005,9 @@ NgosStatus Jpeg::decodeStartOfScanMarker(JpegDecoder *decoder, JpegMarkerHeader 
 
 
 
-    COMMON_TEST_ASSERT(((bad_uint8 *)startOfScanMarker)[length + 2 - 3] == 0,    NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((bad_uint8 *)startOfScanMarker)[length + 2 - 2] == 0x3F, NgosStatus::ASSERTION);
-    COMMON_TEST_ASSERT(((bad_uint8 *)startOfScanMarker)[length + 2 - 1] == 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 3] == 0,    NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 2] == 0x3F, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(((u8 *)startOfScanMarker)[length + 2 - 1] == 0,    NgosStatus::ASSERTION);
 
 
 
@@ -1030,11 +1030,11 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-    bad_uint64            mcuBlockX           = 0;
-    bad_uint64            mcuBlockY           = 0;
-    bad_uint8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
-    bad_uint16            restartInterval     = decoder->restartInterval;
-    bad_uint16            blocksBeforeRestart = restartInterval;
+    u64            mcuBlockX           = 0;
+    u64            mcuBlockY           = 0;
+    u8             numberOfComponents  = decoder->startOfScanMarker->numberOfComponents;
+    u16            restartInterval     = decoder->restartInterval;
+    u16            blocksBeforeRestart = restartInterval;
     JpegMarkerType nextRestartMarker   = JpegMarkerType::RESTART_0;
 
 
@@ -1043,7 +1043,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
     while (status == NgosStatus::OK)
     {
-        for (bad_int64 i = 0; i < numberOfComponents; ++i)
+        for (i64 i = 0; i < numberOfComponents; ++i)
         {
             status = decodeMcuBlock(decoder, &decoder->components[i], mcuBlockX, mcuBlockY);
 
@@ -1088,7 +1088,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-                for (bad_int64 i = 0; i < numberOfComponents; ++i)
+                for (i64 i = 0; i < numberOfComponents; ++i)
                 {
                     decoder->components[i].dcpred = 0;
                 }
@@ -1099,7 +1099,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
 
 
 
-                bad_uint64 markerData;
+                u64 markerData;
 
                 status = readBits(decoder, 16, &markerData);
 
@@ -1144,7 +1144,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
                 }
                 else
                 {
-                    nextRestartMarker = (JpegMarkerType)((bad_uint8)nextRestartMarker + 1);
+                    nextRestartMarker = (JpegMarkerType)((enum_t)nextRestartMarker + 1);
                 }
             }
         }
@@ -1162,7 +1162,7 @@ NgosStatus Jpeg::decodeImageData(JpegDecoder *decoder)
     return status;
 }
 
-NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, bad_uint64 mcuBlockX, bad_uint64 mcuBlockY)
+NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, u64 mcuBlockX, u64 mcuBlockY)
 {
     // COMMON_LT((" | decoder = 0x%p, component = 0x%p, mcuBlockX = %u, mcuBlockY = %u", decoder, component, mcuBlockX, mcuBlockY)); // Commented to avoid too frequent logs
 
@@ -1173,9 +1173,9 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
 
 
 
-    for (bad_int64 i = 0; i < component->samplingFactorY; ++i)
+    for (i64 i = 0; i < component->samplingFactorY; ++i)
     {
-        for (bad_int64 j = 0; j < component->samplingFactorX; ++j)
+        for (i64 j = 0; j < component->samplingFactorX; ++j)
         {
             NgosStatus status = decodeMcuBlockSample(decoder, component, component->dataBuffer + (((mcuBlockY * component->samplingFactorY + i) * component->stride + mcuBlockX * component->samplingFactorX + j) * 8));
 
@@ -1191,7 +1191,7 @@ NgosStatus Jpeg::decodeMcuBlock(JpegDecoder *decoder, JpegComponent *component, 
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, bad_uint8 *sampleDataBuffer)
+NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *component, u8 *sampleDataBuffer)
 {
     // COMMON_LT((" | decoder = 0x%p, component = 0x%p, sampleDataBuffer = 0x%p", decoder, component, sampleDataBuffer)); // Commented to avoid too frequent logs
 
@@ -1201,7 +1201,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    bad_uint8 *naturalOrder;
+    u8 *naturalOrder;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -1213,8 +1213,8 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    bad_uint8  vlcCode;
-    bad_int64 vlcValue;
+    u8  vlcCode;
+    i64 vlcValue;
 
     NgosStatus status = getVlc(decoder, component->vlcDcTable, &vlcCode, &vlcValue);
 
@@ -1228,7 +1228,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    bad_int64 block[64];
+    i64 block[64];
     memzero(&block[1], sizeof(block) - sizeof(block[0]));
 
 
@@ -1240,7 +1240,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    bad_uint16 coefficient = 0;
+    u16 coefficient = 0;
 
     do
     {
@@ -1290,14 +1290,14 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
 
 
 
-    for (bad_int64 i = 0; i < 64; i += 8)
+    for (i64 i = 0; i < 64; i += 8)
     {
         COMMON_ASSERT_EXECUTION(handleRowIDCT(&block[i]), NgosStatus::ASSERTION);
     }
 
 
 
-    for (bad_int64 i = 0; i < 8; ++i)
+    for (i64 i = 0; i < 8; ++i)
     {
         COMMON_ASSERT_EXECUTION(handleColIDCT(&block[i], &sampleDataBuffer[i], component->stride), NgosStatus::ASSERTION);
     }
@@ -1307,7 +1307,7 @@ NgosStatus Jpeg::decodeMcuBlockSample(JpegDecoder *decoder, JpegComponent *compo
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code, bad_int64 *value)
+NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, u8 *code, i64 *value)
 {
     // COMMON_LT((" | decoder = 0x%p, vlc = 0x%p, code = 0x%p, value = 0x%p", decoder, vlc, code, value)); // Commented to avoid too frequent logs
 
@@ -1318,7 +1318,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
 
 
 
-    bad_uint64 vlcId;
+    u64 vlcId;
 
     NgosStatus status = getBits(decoder, 16, &vlcId);
 
@@ -1331,7 +1331,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
 
 
 
-    bad_uint8 bits = vlc[vlcId].bits;
+    u8 bits = vlc[vlcId].bits;
 
     // COMMON_LVVV(("bits = %u", bits)); // Commented to avoid too frequent logs
 
@@ -1353,7 +1353,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
 
 
 
-    bad_int64 valueTemp = vlc[vlcId].code;
+    i64 valueTemp = vlc[vlcId].code;
     *code         = valueTemp;
 
     // COMMON_LVVV(("valueTemp = %d", valueTemp)); // Commented to avoid too frequent logs
@@ -1373,7 +1373,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
 
 
 
-    status = readBits(decoder, bits, (bad_uint64 *)&valueTemp);
+    status = readBits(decoder, bits, (u64 *)&valueTemp);
 
     if (status != NgosStatus::OK)
     {
@@ -1384,7 +1384,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
 
 
 
-    if (valueTemp < (bad_int64)(1ULL << (bits - 1)))
+    if (valueTemp < (i64)(1ULL << (bits - 1)))
     {
         valueTemp += (0xFFFFFFFFFFFFFFFF << bits) + 1;
 
@@ -1398,7 +1398,7 @@ NgosStatus Jpeg::getVlc(JpegDecoder *decoder, JpegVlcCode *vlc, bad_uint8 *code,
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::handleRowIDCT(bad_int64 *block)
+NgosStatus Jpeg::handleRowIDCT(i64 *block)
 {
     // COMMON_LT((" | block = 0x%p", block)); // Commented to avoid too frequent logs
 
@@ -1406,15 +1406,15 @@ NgosStatus Jpeg::handleRowIDCT(bad_int64 *block)
 
 
 
-    bad_int64 x0 = (block[0] << 11) + 128;
-    bad_int64 x1 = block[4] << 11;
-    bad_int64 x2 = block[6];
-    bad_int64 x3 = block[2];
-    bad_int64 x4 = block[1];
-    bad_int64 x5 = block[7];
-    bad_int64 x6 = block[5];
-    bad_int64 x7 = block[3];
-    bad_int64 x8 = W7 * (x4 + x5);
+    i64 x0 = (block[0] << 11) + 128;
+    i64 x1 = block[4] << 11;
+    i64 x2 = block[6];
+    i64 x3 = block[2];
+    i64 x4 = block[1];
+    i64 x5 = block[7];
+    i64 x6 = block[5];
+    i64 x7 = block[3];
+    i64 x8 = W7 * (x4 + x5);
 
     if (
         !x1 // x1 == 0
@@ -1484,7 +1484,7 @@ NgosStatus Jpeg::handleRowIDCT(bad_int64 *block)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::handleColIDCT(bad_int64 *block, bad_uint8 *sampleDataBuffer, bad_uint64 stride)
+NgosStatus Jpeg::handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride)
 {
     // COMMON_LT((" | block = 0x%p, sampleDataBuffer = 0x%p, stride = %u", block, sampleDataBuffer, stride)); // Commented to avoid too frequent logs
 
@@ -1494,15 +1494,15 @@ NgosStatus Jpeg::handleColIDCT(bad_int64 *block, bad_uint8 *sampleDataBuffer, ba
 
 
 
-    bad_int64 x0 = (block[0] << 8) + 8192;
-    bad_int64 x1 = block[32] << 8;            // 32 == 8 * 4
-    bad_int64 x2 = block[48];                 // 48 == 8 * 6
-    bad_int64 x3 = block[16];                 // 16 == 8 * 2
-    bad_int64 x4 = block[8];                  // 8  == 8 * 1
-    bad_int64 x5 = block[56];                 // 56 == 8 * 7
-    bad_int64 x6 = block[40];                 // 40 == 8 * 5
-    bad_int64 x7 = block[24];                 // 24 == 8 * 3
-    bad_int64 x8 = W7 * (x4 + x5) + 4;
+    i64 x0 = (block[0] << 8) + 8192;
+    i64 x1 = block[32] << 8;            // 32 == 8 * 4
+    i64 x2 = block[48];                 // 48 == 8 * 6
+    i64 x3 = block[16];                 // 16 == 8 * 2
+    i64 x4 = block[8];                  // 8  == 8 * 1
+    i64 x5 = block[56];                 // 56 == 8 * 7
+    i64 x6 = block[40];                 // 40 == 8 * 5
+    i64 x7 = block[24];                 // 24 == 8 * 3
+    i64 x8 = W7 * (x4 + x5) + 4;
 
     if (
         !x1 // x1 == 0
@@ -1522,7 +1522,7 @@ NgosStatus Jpeg::handleColIDCT(bad_int64 *block, bad_uint8 *sampleDataBuffer, ba
     {
         x0 = CLAMP_TO_BYTE(((block[0] + 32) >> 6) + 128);
 
-        for (bad_int64 i = 0; i < 8; ++i)
+        for (i64 i = 0; i < 8; ++i)
         {
             *sampleDataBuffer =  x0;
             sampleDataBuffer  += stride;
@@ -1578,14 +1578,14 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
 
 
-    bad_uint8        numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
-    bad_uint16       width              = (*decoder->image)->getWidth();
-    bad_uint16       height             = (*decoder->image)->getHeight();
+    u8        numberOfComponents = decoder->startOfScanMarker->numberOfComponents;
+    u16       width              = (*decoder->image)->getWidth();
+    u16       height             = (*decoder->image)->getHeight();
     RgbPixel *pixel              = (*decoder->image)->getRgbBuffer();
 
 
 
-    for (bad_int64 i = 0; i < numberOfComponents; ++i)
+    for (i64 i = 0; i < numberOfComponents; ++i)
     {
         JpegComponent *component = &decoder->components[i];
 
@@ -1624,17 +1624,17 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
 
     if (numberOfComponents == 3)
     {
-        bad_uint8 *pY  = decoder->components[0].dataBuffer;
-        bad_uint8 *pCb = decoder->components[1].dataBuffer;
-        bad_uint8 *pCr = decoder->components[2].dataBuffer;
+        u8 *pY  = decoder->components[0].dataBuffer;
+        u8 *pCb = decoder->components[1].dataBuffer;
+        u8 *pCr = decoder->components[2].dataBuffer;
 
-        for (bad_int64 i = 0; i < height; ++i)
+        for (i64 i = 0; i < height; ++i)
         {
-            for (bad_int64 j = 0; j < width; ++j)
+            for (i64 j = 0; j < width; ++j)
             {
-                bad_int64 y  = *pY << 8;
-                bad_int64 cb = *pCb - 128;
-                bad_int64 cr = *pCr - 128;
+                i64 y  = *pY << 8;
+                i64 cb = *pCb - 128;
+                i64 cr = *pCr - 128;
 
                 ++pY;
                 ++pCb;
@@ -1655,13 +1655,13 @@ NgosStatus Jpeg::convertToRgb(JpegDecoder *decoder)
     else
     if (numberOfComponents == 1)
     {
-        bad_uint8 *pC = decoder->components[0].dataBuffer;
+        u8 *pC = decoder->components[0].dataBuffer;
 
-        for (bad_int64 i = 0; i < height; ++i)
+        for (i64 i = 0; i < height; ++i)
         {
-            for (bad_int64 j = 0; j < width; ++j)
+            for (i64 j = 0; j < width; ++j)
             {
-                bad_uint8 c = *pC;
+                u8 c = *pC;
                 ++pC;
 
 
@@ -1694,7 +1694,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-    bad_uint8 *out = (bad_uint8 *)malloc(component->width * component->height * 2);
+    u8 *out = (u8 *)malloc(component->width * component->height * 2);
 
     if (!out)
     {
@@ -1705,18 +1705,18 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-    bad_uint8 *cin  = component->dataBuffer;
-    bad_uint8 *cout = out;
+    u8 *cin  = component->dataBuffer;
+    u8 *cout = out;
 
-    bad_uint16 width  = component->width;
-    bad_uint16 height = component->height;
-    bad_uint64 stride = component->stride;
+    u16 width  = component->width;
+    u16 height = component->height;
+    u64 stride = component->stride;
 
-    bad_uint16 width2 = width * 2;
+    u16 width2 = width * 2;
 
 
 
-    for (bad_int64 y = 0; y < height; ++y)
+    for (i64 y = 0; y < height; ++y)
     {
         cout[0] = CHROMA_FILTER(CF2A * cin[0] + CF2B * cin[1]);
         cout[1] = CHROMA_FILTER(CF3X * cin[0] + CF3Y * cin[1] + CF3Z * cin[2]);
@@ -1724,7 +1724,7 @@ NgosStatus Jpeg::upsampleX(JpegComponent *component)
 
 
 
-        for (bad_int64 x = 0; x < width - 3; ++x)
+        for (i64 x = 0; x < width - 3; ++x)
         {
             cout[(x << 1) + 3] = CHROMA_FILTER(CF4A * cin[x] + CF4B * cin[x + 1] + CF4C * cin[x + 2] + CF4D * cin[x + 3]);
             cout[(x << 1) + 4] = CHROMA_FILTER(CF4D * cin[x] + CF4C * cin[x + 1] + CF4B * cin[x + 2] + CF4A * cin[x + 3]);
@@ -1765,7 +1765,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-    bad_uint8 *out = (bad_uint8 *)malloc(component->width * component->height * 2);
+    u8 *out = (u8 *)malloc(component->width * component->height * 2);
 
     if (!out)
     {
@@ -1776,18 +1776,18 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-    bad_uint8 *cin  = component->dataBuffer;
-    bad_uint8 *cout = out;
+    u8 *cin  = component->dataBuffer;
+    u8 *cout = out;
 
-    bad_uint16 width  = component->width;
-    bad_uint16 height = component->height;
-    bad_uint64 stride = component->stride;
+    u16 width  = component->width;
+    u16 height = component->height;
+    u64 stride = component->stride;
 
-    bad_uint16 stride2 = stride * 2;
+    u16 stride2 = stride * 2;
 
 
 
-    for (bad_int64 x = 0; x < width; ++x)
+    for (i64 x = 0; x < width; ++x)
     {
         cin  = &component->dataBuffer[x];
         cout = &out[x];
@@ -1801,7 +1801,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
 
 
 
-        for (bad_int64 y = 0; y < height - 3; ++y)
+        for (i64 y = 0; y < height - 3; ++y)
         {
             *cout =  CHROMA_FILTER(CF4A * cin[-stride] + CF4B * cin[0] + CF4C * cin[stride] + CF4D * cin[stride2]);     cout += width;
             *cout =  CHROMA_FILTER(CF4D * cin[-stride] + CF4C * cin[0] + CF4B * cin[stride] + CF4A * cin[stride2]);     cout += width;
@@ -1831,7 +1831,7 @@ NgosStatus Jpeg::upsampleY(JpegComponent *component)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, bad_uint8 count)
+NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 
@@ -1852,7 +1852,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, bad_uint8 count)
 
 
 
-        bad_uint8 newByte = *decoder->data;
+        u8 newByte = *decoder->data;
 
         ++decoder->data;
         --decoder->size;
@@ -1886,7 +1886,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, bad_uint8 count)
                 newByte != 0xFF
                )
             {
-                if (newByte == (bad_uint8)JpegMarkerType::END_OF_IMAGE)
+                if (newByte == (enum_t)JpegMarkerType::END_OF_IMAGE)
                 {
                     decoder->size = 0;
                 }
@@ -1911,7 +1911,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, bad_uint8 count)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::getBits(JpegDecoder *decoder, bad_uint8 count, bad_uint64 *res)
+NgosStatus Jpeg::getBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
@@ -1937,7 +1937,7 @@ NgosStatus Jpeg::getBits(JpegDecoder *decoder, bad_uint8 count, bad_uint64 *res)
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::readBits(JpegDecoder *decoder, bad_uint8 count, bad_uint64 *res)
+NgosStatus Jpeg::readBits(JpegDecoder *decoder, u8 count, u64 *res)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u, res = 0x%p", decoder, count, res)); // Commented to avoid too frequent logs
 
@@ -1963,7 +1963,7 @@ NgosStatus Jpeg::readBits(JpegDecoder *decoder, bad_uint8 count, bad_uint64 *res
     return NgosStatus::OK;
 }
 
-NgosStatus Jpeg::skipBits(JpegDecoder *decoder, bad_uint8 count)
+NgosStatus Jpeg::skipBits(JpegDecoder *decoder, u8 count)
 {
     // COMMON_LT((" | decoder = 0x%p, count = %u", decoder, count)); // Commented to avoid too frequent logs
 

@@ -10,18 +10,18 @@
 
 struct UefiBlockIoMedia
 {
-    bad_uint32      mediaId;
+    u32      mediaId;
     bool     removableMedia;
     bool     mediaPresent;
     bool     logicalPartition;
     bool     readOnly;
     bool     writeCaching;
-    bad_uint32      blockSize;
-    bad_uint32      ioAlign;
+    u32      blockSize;
+    u32      ioAlign;
     uefi_lba lastBlock;
     uefi_lba lowestAlignedLba;
-    bad_uint32      logicalBlocksPerPhysicalBlock;
-    bad_uint32      optimalTransferLengthGranularity;
+    u32      logicalBlocksPerPhysicalBlock;
+    u32      optimalTransferLengthGranularity;
 };
 
 

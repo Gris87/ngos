@@ -27,7 +27,7 @@ public:
     WidgetState getState() const override; // TEST: NO
 
     NgosStatus addCell(TableCellWidget *cell); // TEST: NO
-    TableCellWidget* getCell(bad_uint64 column) const; // TEST: NO
+    TableCellWidget* getCell(u64 column) const; // TEST: NO
 
 private:
     ArrayList<TableCellWidget *> mCells;

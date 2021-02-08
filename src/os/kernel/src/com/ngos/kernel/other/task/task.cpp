@@ -3,4 +3,4 @@
 
 
 Task initTask;
-bad_uint8   initStack[THREAD_SIZE];
+u8   initStack[THREAD_SIZE];

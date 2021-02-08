@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressPayloadSize: bad_uint8
+enum class PciExpressPayloadSize: u8
 {
     _128_BYTES  = 0,
     _256_BYTES  = 1,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciExpressPayloadSize size) // TEST: NO
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)size, enumToString(size));
+    sprintf(res, "0x%02X (%s)", (u8)size, enumToString(size));
 
     return res;
 }

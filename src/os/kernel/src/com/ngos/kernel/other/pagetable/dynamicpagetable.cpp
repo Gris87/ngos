@@ -18,16 +18,16 @@ extern PMD   dynamic_pagetable_pages[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD]; /
 
 
 
-bad_uint8 currentDynamicPageIndex = 0;
+u8 currentDynamicPageIndex = 0;
 
-bad_uint8* allocateDynamicPage()
+u8* allocateDynamicPage()
 {
     COMMON_LT((""));
 
 
 
     COMMON_TEST_ASSERT(currentDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
-    bad_uint8 *page = (bad_uint8 *)dynamic_pagetable_pages[currentDynamicPageIndex];
+    u8 *page = (u8 *)dynamic_pagetable_pages[currentDynamicPageIndex];
     ++currentDynamicPageIndex;
 
 
@@ -35,7 +35,7 @@ bad_uint8* allocateDynamicPage()
     return page;
 }
 
-NgosStatus initializeDynamicPageIdentity(PGD *page, bad_uint64 address, bad_uint64 end, bad_uint8 level)
+NgosStatus initializeDynamicPageIdentity(PGD *page, u64 address, u64 end, u8 level)
 {
     COMMON_LT((" | page = 0x%p, address = 0x%p, end = 0x%p, level = %u", page, address, end, level));
 
@@ -45,10 +45,10 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, bad_uint64 address, bad_uint
 
 
 
-    bad_uint8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
+    u8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
 
-    bad_uint64 pageSize = (1ULL << bits);
-    bad_uint64 pageMask = ~(pageSize - 1);
+    u64 pageSize = (1ULL << bits);
+    u64 pageMask = ~(pageSize - 1);
 
 
 
@@ -58,7 +58,7 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, bad_uint64 address, bad_uint
 
 
 
-        bad_uint64 next = (address & pageMask) + pageSize;
+        u64 next = (address & pageMask) + pageSize;
 
         if (next > end)
         {
@@ -107,7 +107,7 @@ NgosStatus initializeDynamicPageIdentity(PGD *page, bad_uint64 address, bad_uint
     return NgosStatus::OK;
 }
 
-NgosStatus addDynamicIdentityMap(bad_uint64 start, bad_uint64 end)
+NgosStatus addDynamicIdentityMap(u64 start, u64 end)
 {
     COMMON_LT((" | start = 0x%p, end = 0x%p", start, end));
 
@@ -132,7 +132,7 @@ NgosStatus addDynamicIdentityMap(bad_uint64 start, bad_uint64 end)
 
     while (start < end)
     {
-        COMMON_ASSERT_EXECUTION(invlpg((bad_uint8 *)start), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
 
         start += PMD_SIZE;
     }
@@ -142,7 +142,7 @@ NgosStatus addDynamicIdentityMap(bad_uint64 start, bad_uint64 end)
     return NgosStatus::OK;
 }
 
-NgosStatus clearDynamicIdentityMap(bad_uint64 start, bad_uint64 end)
+NgosStatus clearDynamicIdentityMap(u64 start, u64 end)
 {
     COMMON_LT((" | start = 0x%p, end = 0x%p", start, end));
 
@@ -159,7 +159,7 @@ NgosStatus clearDynamicIdentityMap(bad_uint64 start, bad_uint64 end)
 
     while (start < end)
     {
-        COMMON_ASSERT_EXECUTION(invlpg((bad_uint8 *)start), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)start), NgosStatus::ASSERTION);
 
         start += PMD_SIZE;
     }

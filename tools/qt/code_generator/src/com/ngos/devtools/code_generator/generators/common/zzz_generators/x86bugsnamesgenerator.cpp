@@ -60,7 +60,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
 
 
-    lines.append("const char8* x86BugsNames[(bad_uint64)x86BugWord::MAXIMUM * 32];");
+    lines.append("const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32];");
     addThreeBlankLines(lines);
 
 

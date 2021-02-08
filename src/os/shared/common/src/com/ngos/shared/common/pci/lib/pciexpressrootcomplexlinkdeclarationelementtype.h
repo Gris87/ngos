@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressRootComplexLinkDeclarationElementType: bad_uint8
+enum class PciExpressRootComplexLinkDeclarationElementType: u8
 {
     CONFIGURATION_SPACE_ELEMENT         = 0,
     SYSTEM_EGRESS_PORT_OR_INTERNAL_SINK = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciExpressRootComplexLinkDeclarationElement
 
     static char8 res[43];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

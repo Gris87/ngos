@@ -24,7 +24,7 @@
 
 
 
-inline bad_uint32 F(bad_uint32 x, bad_uint32 y, bad_uint32 z)
+inline u32 F(u32 x, u32 y, u32 z)
 {
     // COMMON_LT((" | x = %u, y = %u, z = %u", x, y, z)); // Commented to avoid too frequent logs
 
@@ -33,7 +33,7 @@ inline bad_uint32 F(bad_uint32 x, bad_uint32 y, bad_uint32 z)
     return (x & y) | ((~x) & z);
 }
 
-inline bad_uint32 G(bad_uint32 x, bad_uint32 y, bad_uint32 z)
+inline u32 G(u32 x, u32 y, u32 z)
 {
     // COMMON_LT((" | x = %u, y = %u, z = %u", x, y, z)); // Commented to avoid too frequent logs
 
@@ -42,7 +42,7 @@ inline bad_uint32 G(bad_uint32 x, bad_uint32 y, bad_uint32 z)
     return (x & z) | (y & (~z));
 }
 
-inline bad_uint32 H(bad_uint32 x, bad_uint32 y, bad_uint32 z)
+inline u32 H(u32 x, u32 y, u32 z)
 {
     // COMMON_LT((" | x = %u, y = %u, z = %u", x, y, z)); // Commented to avoid too frequent logs
 
@@ -51,7 +51,7 @@ inline bad_uint32 H(bad_uint32 x, bad_uint32 y, bad_uint32 z)
     return x ^ y ^ z;
 }
 
-inline bad_uint32 I(bad_uint32 x, bad_uint32 y, bad_uint32 z)
+inline u32 I(u32 x, u32 y, u32 z)
 {
     // COMMON_LT((" | x = %u, y = %u, z = %u", x, y, z)); // Commented to avoid too frequent logs
 
@@ -60,7 +60,7 @@ inline bad_uint32 I(bad_uint32 x, bad_uint32 y, bad_uint32 z)
     return y ^ (x | (~z));
 }
 
-inline bad_uint32 rotateLeft(bad_uint32 x, bad_uint8 n)
+inline u32 rotateLeft(u32 x, u8 n)
 {
     // COMMON_LT((" | x = %u, n = %d", x, n)); // Commented to avoid too frequent logs
 
@@ -71,7 +71,7 @@ inline bad_uint32 rotateLeft(bad_uint32 x, bad_uint8 n)
     return (x << n) | (x >> (32 - n));
 }
 
-inline void FF(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint32 x, bad_uint32 s, bad_uint32 ac)
+inline void FF(u32 &a, u32 b, u32 c, u32 d, u32 x, u32 s, u32 ac)
 {
     // COMMON_LT((" | a = %u, b = %u, c = %u, d = %u, x = %u, s = %u, ac = %u", a, b, c, d, x, s, ac)); // Commented to avoid too frequent logs
 
@@ -80,7 +80,7 @@ inline void FF(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint
     a = rotateLeft(a + F(b, c, d) + x + ac, s) + b;
 }
 
-inline void GG(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint32 x, bad_uint32 s, bad_uint32 ac)
+inline void GG(u32 &a, u32 b, u32 c, u32 d, u32 x, u32 s, u32 ac)
 {
     // COMMON_LT((" | a = %u, b = %u, c = %u, d = %u, x = %u, s = %u, ac = %u", a, b, c, d, x, s, ac)); // Commented to avoid too frequent logs
 
@@ -89,7 +89,7 @@ inline void GG(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint
     a = rotateLeft(a + G(b, c, d) + x + ac, s) + b;
 }
 
-inline void HH(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint32 x, bad_uint32 s, bad_uint32 ac)
+inline void HH(u32 &a, u32 b, u32 c, u32 d, u32 x, u32 s, u32 ac)
 {
     // COMMON_LT((" | a = %u, b = %u, c = %u, d = %u, x = %u, s = %u, ac = %u", a, b, c, d, x, s, ac)); // Commented to avoid too frequent logs
 
@@ -98,7 +98,7 @@ inline void HH(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint
     a = rotateLeft(a + H(b, c, d) + x + ac, s) + b;
 }
 
-inline void II(bad_uint32 &a, bad_uint32 b, bad_uint32 c, bad_uint32 d, bad_uint32 x, bad_uint32 s, bad_uint32 ac)
+inline void II(u32 &a, u32 b, u32 c, u32 d, u32 x, u32 s, u32 ac)
 {
     // COMMON_LT((" | a = %u, b = %u, c = %u, d = %u, x = %u, s = %u, ac = %u", a, b, c, d, x, s, ac)); // Commented to avoid too frequent logs
 
@@ -123,7 +123,7 @@ MD5::~MD5()
     COMMON_LT((""));
 }
 
-Md5Hash MD5::md5(bad_uint8 *data, bad_uint64 length)
+Md5Hash MD5::md5(u8 *data, u64 length)
 {
     COMMON_LT((" | data = 0x%p, length = %u", data, length));
 
@@ -142,7 +142,7 @@ Md5Hash MD5::md5(bad_uint8 *data, bad_uint64 length)
     return temp.getResult();
 }
 
-NgosStatus MD5::update(bad_uint8 *data, bad_uint64 length)
+NgosStatus MD5::update(u8 *data, u64 length)
 {
     COMMON_LT((" | data = 0x%p, length = %u", data, length));
 
@@ -155,12 +155,12 @@ NgosStatus MD5::update(bad_uint8 *data, bad_uint64 length)
 
 
 
-    bad_uint8 index     = (mCount / 8) % MD5_BLOCK_SIZE;
-    bad_uint8 firstPart = MD5_BLOCK_SIZE - index;
+    u8 index     = (mCount / 8) % MD5_BLOCK_SIZE;
+    u8 firstPart = MD5_BLOCK_SIZE - index;
 
 
 
-    bad_uint64 numberOfBits =  length << 3;
+    u64 numberOfBits =  length << 3;
     mCount           += numberOfBits;
 
 
@@ -172,9 +172,9 @@ NgosStatus MD5::update(bad_uint8 *data, bad_uint64 length)
 
 
 
-        bad_int64 blockIndex = firstPart;
+        i64 blockIndex = firstPart;
 
-        while (blockIndex <= (bad_int64)length - MD5_BLOCK_SIZE)
+        while (blockIndex <= (i64)length - MD5_BLOCK_SIZE)
         {
             COMMON_ASSERT_EXECUTION(transform(&data[blockIndex]), NgosStatus::ASSERTION);
 
@@ -203,15 +203,15 @@ NgosStatus MD5::finish()
 
     if (!mFinished)
     {
-        bad_uint8 bits[8];
+        u8 bits[8];
 
         COMMON_TEST_ASSERT(sizeof(bits) == sizeof(mCount), NgosStatus::ASSERTION);
 
-        *(bad_uint64 *)bits = mCount;
+        *(u64 *)bits = mCount;
 
 
 
-        static bad_uint8 padding[MD5_BLOCK_SIZE] =
+        static u8 padding[MD5_BLOCK_SIZE] =
         {
             0x80, 0, 0, 0, 0, 0, 0, 0,
             0,    0, 0, 0, 0, 0, 0, 0,
@@ -225,8 +225,8 @@ NgosStatus MD5::finish()
 
 
 
-        bad_uint8 index         = (mCount / 8) % MD5_BLOCK_SIZE;
-        bad_uint8 paddingLength = (index < MD5_BLOCK_SIZE - 8) ? (MD5_BLOCK_SIZE - index - 8) : ((MD5_BLOCK_SIZE * 2) - index - 8);
+        u8 index         = (mCount / 8) % MD5_BLOCK_SIZE;
+        u8 paddingLength = (index < MD5_BLOCK_SIZE - 8) ? (MD5_BLOCK_SIZE - index - 8) : ((MD5_BLOCK_SIZE * 2) - index - 8);
 
         COMMON_TEST_ASSERT(paddingLength < MD5_BLOCK_SIZE, NgosStatus::ASSERTION);
 
@@ -256,7 +256,7 @@ Md5Hash MD5::getResult() const
     return mResult;
 }
 
-NgosStatus MD5::transform(bad_uint8 *block)
+NgosStatus MD5::transform(u8 *block)
 {
     // COMMON_LT((" | block = 0x%p", block)); // Commented to avoid too frequent logs
 
@@ -268,12 +268,12 @@ NgosStatus MD5::transform(bad_uint8 *block)
 
 
 
-    bad_uint32 a = mResult.dwords[0];
-    bad_uint32 b = mResult.dwords[1];
-    bad_uint32 c = mResult.dwords[2];
-    bad_uint32 d = mResult.dwords[3];
+    u32 a = mResult.dwords[0];
+    u32 b = mResult.dwords[1];
+    u32 c = mResult.dwords[2];
+    u32 d = mResult.dwords[3];
 
-    bad_uint32 *x = (bad_uint32 *)block;
+    u32 *x = (u32 *)block;
 
 
 

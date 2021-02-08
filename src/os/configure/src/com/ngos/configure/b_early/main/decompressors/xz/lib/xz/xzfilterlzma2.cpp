@@ -11,7 +11,7 @@
 
 
 
-NgosStatus filterLZMA2(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 sizeOfProperties, bad_uint8 *filterProperties, bad_uint64 *compressedSize, bad_uint64 *uncompressedSize)
+NgosStatus filterLZMA2(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfProperties, u8 *filterProperties, u64 *compressedSize, u64 *uncompressedSize)
 {
     EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, sizeOfProperties = %u, filterProperties = 0x%p, compressedSize = 0x%p, uncompressedSize = 0x%p", compressedAddress, decompressedAddress, sizeOfProperties, filterProperties, compressedSize, uncompressedSize));
 
@@ -26,7 +26,7 @@ NgosStatus filterLZMA2(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddr
 
 
 
-    bad_uint8 property = filterProperties[0] & 0x3F;
+    u8 property = filterProperties[0] & 0x3F;
 
     EARLY_LVVV(("property = %u", property));
 
@@ -39,7 +39,7 @@ NgosStatus filterLZMA2(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddr
 
 
 
-    bad_uint32 dictionarySize = 0;
+    u32 dictionarySize = 0;
 
     if (property == 40)
     {
@@ -66,10 +66,10 @@ NgosStatus filterLZMA2(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddr
 
     xzBuffer.in          = compressedAddress;
     xzBuffer.inPosition  = 0;
-    xzBuffer.inSize      = (bad_uint64)-1;
+    xzBuffer.inSize      = (u64)-1;
     xzBuffer.out         = decompressedAddress;
     xzBuffer.outPosition = 0;
-    xzBuffer.outSize     = (bad_uint64)-1;
+    xzBuffer.outSize     = (u64)-1;
 
 
 

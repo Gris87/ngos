@@ -22,7 +22,7 @@ struct BootParams
     u64                          screensCount;
     UefiGraphicsOutputProtocol **screens;
     PciRomImageWithInfo         *pciRomImages;
-    u64                          memoryMapEntriesCount;
+    i64                          memoryMapEntriesCount;
     MemoryMapEntry              *memoryMapEntries;
     char8                        hardwareId[HARDWARE_ID_LENGTH];
 };

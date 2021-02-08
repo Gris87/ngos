@@ -17,15 +17,15 @@ struct PciExpressRootComplexInternalLinkControlLinkCapabilities
     {
         struct
         {
-            bad_uint32 supportedLinkSpeeds : 4; // TODO: Use enum PciExpressLinkSpeed
-            bad_uint32 maximumLinkWidth    : 6; // TODO: Use enum PciExpressLinkWidth
-            bad_uint32 aspmSupport         : 2; // TODO: Use enum PciExpressActiveStatePowerManagementSupport
-            bad_uint32 l0sExitLatency      : 3; // TODO: Use enum PciExpressL0sExitLatency
-            bad_uint32 l1ExitLatency       : 3; // TODO: Use enum PciExpressL1ExitLatency
-            bad_uint32 __reserved          : 14;
+            u32 supportedLinkSpeeds : 4; // TODO: Use enum PciExpressLinkSpeed
+            u32 maximumLinkWidth    : 6; // TODO: Use enum PciExpressLinkWidth
+            u32 aspmSupport         : 2; // TODO: Use enum PciExpressActiveStatePowerManagementSupport
+            u32 l0sExitLatency      : 3; // TODO: Use enum PciExpressL0sExitLatency
+            u32 l1ExitLatency       : 3; // TODO: Use enum PciExpressL1ExitLatency
+            u32 __reserved          : 14;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

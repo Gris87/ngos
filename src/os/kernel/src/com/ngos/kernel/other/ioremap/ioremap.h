@@ -23,12 +23,12 @@ public:
 #else
 private:
 #endif
-    static bad_uint64 sSlotsAddresses[FIX_BITMAP_SLOTS];
-    static bad_uint64 sSlotsSizes[FIX_BITMAP_SLOTS];
-    static bad_uint8  sPoolOfSlots[FIX_BITMAP_SLOTS];
-    static bad_uint8  sLastUsedSlot;
-    static bad_uint8  sLastReleasedSlot;
-    static bad_uint8  sSlotsAvailable;
+    static u64 sSlotsAddresses[FIX_BITMAP_SLOTS];
+    static u64 sSlotsSizes[FIX_BITMAP_SLOTS];
+    static u8  sPoolOfSlots[FIX_BITMAP_SLOTS];
+    static u8  sLastUsedSlot;
+    static u8  sLastReleasedSlot;
+    static u8  sSlotsAvailable;
     static PTE sFixmapPage[PTRS_PER_PTE];
 };
 

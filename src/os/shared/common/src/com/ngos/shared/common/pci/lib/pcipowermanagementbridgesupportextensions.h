@@ -13,12 +13,12 @@ struct PciPowerManagementBridgeSupportExtensions
     {
         struct
         {
-            bad_uint8 __reserved:           6;
-            bad_uint8 b2B3ForD3Hot:         1;
-            bad_uint8 busPowerClockControl: 1;
+            u8 __reserved:           6;
+            u8 b2B3ForD3Hot:         1;
+            u8 busPowerClockControl: 1;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 };
 

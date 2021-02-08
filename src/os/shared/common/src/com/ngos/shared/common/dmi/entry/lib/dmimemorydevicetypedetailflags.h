@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 dmi_memory_device_type_detail_flags;
+typedef u16 dmi_memory_device_type_detail_flags;
 
 enum class DmiMemoryDeviceTypeDetailFlag: dmi_memory_device_type_detail_flags
 {

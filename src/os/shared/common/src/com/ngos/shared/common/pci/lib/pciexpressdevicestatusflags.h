@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_express_device_status_flags;
+typedef u16 pci_express_device_status_flags;
 
 enum class PciExpressDeviceStatusFlag: pci_express_device_status_flags
 {

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiCacheAssociativity: bad_uint8
+enum class DmiCacheAssociativity: u8
 {
     NONE          = 0,
     OTHER         = 1,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(DmiCacheAssociativity associativity) // TES
 
     static char8 res[21];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)associativity, enumToString(associativity));
+    sprintf(res, "0x%02X (%s)", (u8)associativity, enumToString(associativity));
 
     return res;
 }

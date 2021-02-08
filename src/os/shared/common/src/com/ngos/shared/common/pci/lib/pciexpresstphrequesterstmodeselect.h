@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressTphRequesterStModeSelect: bad_uint8
+enum class PciExpressTphRequesterStModeSelect: u8
 {
     NO_ST_MODE            = 0,
     INTERRUPT_VECTOR_MODE = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciExpressTphRequesterStModeSelect select) 
 
     static char8 res[29];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)select, enumToString(select));
+    sprintf(res, "0x%02X (%s)", (u8)select, enumToString(select));
 
     return res;
 }

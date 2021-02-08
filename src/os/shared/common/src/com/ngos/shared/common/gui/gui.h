@@ -48,7 +48,7 @@ private:
     static Widget       *sHoveredWidget;
     static Widget       *sPressedWidget;
     static Widget       *sFocusedWidget;
-    static bad_uint8            sUpdatesLocks;
+    static u8            sUpdatesLocks;
     static bool          sMouseLeftButton;
 };
 

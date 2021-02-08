@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 dmi_memory_device_operating_mode_capability_flags;
+typedef u16 dmi_memory_device_operating_mode_capability_flags;
 
 enum class DmiMemoryDeviceOperatingModeCapabilityFlag: dmi_memory_device_operating_mode_capability_flags
 {

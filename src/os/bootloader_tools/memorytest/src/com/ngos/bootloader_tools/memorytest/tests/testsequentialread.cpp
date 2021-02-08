@@ -32,20 +32,20 @@ void UEFI_API testSequentialReadProcedure(void *buffer)
 
 
 
-    bad_int64 testSize = test->getTestSize();
+    i64 testSize = test->getTestSize();
 
 
 
-    bad_uint64 startTime = rdtsc();
+    u64 startTime = rdtsc();
 
-    for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+    for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
     {
         test->setProgress(i);
 
-        readMemoryBlock(nullptr, (bad_uint8 *)i);
+        readMemoryBlock(nullptr, (u8 *)i);
     }
 
-    bad_uint64 endTime = rdtsc();
+    u64 endTime = rdtsc();
 
 
 

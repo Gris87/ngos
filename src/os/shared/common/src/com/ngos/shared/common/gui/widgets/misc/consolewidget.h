@@ -13,7 +13,7 @@ public:
     ConsoleWidget(Image *panelImage, Widget *parent = 0); // TEST: NO
     ~ConsoleWidget(); // TEST: NO
 
-    NgosStatus update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height) override; // TEST: NO
+    NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height) override; // TEST: NO
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
 

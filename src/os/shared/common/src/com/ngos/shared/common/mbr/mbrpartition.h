@@ -10,12 +10,12 @@
 
 struct MbrPartition
 {
-    bad_uint8               flags;
-    bad_uint8               startChs[3];
+    u8               flags;
+    u8               startChs[3];
     MbrPartitionType type;
-    bad_uint8               endChs[3];
-    bad_uint32              startLba;
-    bad_uint32              size;
+    u8               endChs[3];
+    u32              startLba;
+    u32              size;
 } __attribute__((packed));
 
 

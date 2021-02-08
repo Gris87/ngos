@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 pci_accelerated_graphics_port_rate_flags;
+typedef u8 pci_accelerated_graphics_port_rate_flags;
 
 enum class PciAcceleratedGraphicsPortRateFlag: pci_accelerated_graphics_port_rate_flags
 {

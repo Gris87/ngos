@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse2Psubb(bad_uint8 *a, bad_uint8 *b, bad_uint8 *c);
+void testSse2Psubb(u8 *a, u8 *b, u8 *c);
 
 
 

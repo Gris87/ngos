@@ -21,21 +21,21 @@ public:
 
     uefi_ap_procedure getProcedure() const; // TEST: NO
 
-    NgosStatus setScore(bad_uint64 score); // TEST: NO
-    bad_uint64 getScore() const; // TEST: NO
+    NgosStatus setScore(u64 score); // TEST: NO
+    u64 getScore() const; // TEST: NO
 
     bool isCompleted() const; // TEST: NO
 
 private:
     const char8       *mName;
     uefi_ap_procedure  mProcedure;
-    bad_uint64                mScore;
+    u64                mScore;
     bool               mCompleted;
 };
 
 
 
-extern TestBase* cpuTests[(bad_uint64)TestType::MAXIMUM]; // cpuTests declared in testbase.cpp file
+extern TestBase* cpuTests[(u64)TestType::MAXIMUM]; // cpuTests declared in testbase.cpp file
 
 
 

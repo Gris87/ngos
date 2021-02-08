@@ -13,36 +13,36 @@ public:
     AES();
     ~AES(); // TEST: NO
 
-    NgosStatus setKey(bad_uint8 *key, bad_uint8 size);
+    NgosStatus setKey(u8 *key, u8 size);
     NgosStatus releaseKey();
 
-    NgosStatus encode(bad_uint8 *in, bad_uint64 inSize, bad_uint8 *out, bad_uint64 outSize, bad_uint64 *resultSize);
-    NgosStatus decode(bad_uint8 *in, bad_uint64 inSize, bad_uint8 *out, bad_uint64 outSize, bad_uint64 *resultSize);
+    NgosStatus encode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize);
+    NgosStatus decode(u8 *in, u64 inSize, u8 *out, u64 outSize, u64 *resultSize);
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    NgosStatus expandKey128(bad_uint8 *key); // TEST: NO
-    NgosStatus expandKey192(bad_uint8 *key); // TEST: NO
-    NgosStatus expandKey256(bad_uint8 *key); // TEST: NO
-    NgosStatus encodeBlock128(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
-    NgosStatus encodeBlock192(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
-    NgosStatus encodeBlock256(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
-    NgosStatus decodeBlock128(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
-    NgosStatus decodeBlock192(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
-    NgosStatus decodeBlock256(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress); // TEST: NO
+    NgosStatus expandKey128(u8 *key); // TEST: NO
+    NgosStatus expandKey192(u8 *key); // TEST: NO
+    NgosStatus expandKey256(u8 *key); // TEST: NO
+    NgosStatus encodeBlock128(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus encodeBlock192(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus encodeBlock256(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock128(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock192(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
+    NgosStatus decodeBlock256(u8 *sourceAddress, u8 *destinationAddress); // TEST: NO
 
 
 
-    NgosStatus (AES::*mEncodeBlockFunction)(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress);
-    NgosStatus (AES::*mDecodeBlockFunction)(bad_uint8 *sourceAddress, bad_uint8 *destinationAddress);
+    NgosStatus (AES::*mEncodeBlockFunction)(u8 *sourceAddress, u8 *destinationAddress);
+    NgosStatus (AES::*mDecodeBlockFunction)(u8 *sourceAddress, u8 *destinationAddress);
 
-    bad_uint8 *mEncodeKeyAllocated;
-    bad_uint8 *mDecodeKeyAllocated;
-    bad_uint8 *mEncodeKey;
-    bad_uint8 *mDecodeKey;
+    u8 *mEncodeKeyAllocated;
+    u8 *mDecodeKeyAllocated;
+    u8 *mEncodeKey;
+    u8 *mDecodeKey;
 };
 
 

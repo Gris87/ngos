@@ -15,18 +15,18 @@
 // Range decoder
 struct LzmaRcDecoder
 {
-    bad_uint32 range;
-    bad_uint32 code;
+    u32 range;
+    u32 code;
 
     // Number of initializing bytes remaining to be read
     // by rcReadInit().
-    bad_uint32 initialBytesLeft;
+    u32 initialBytesLeft;
 
     // Buffer from which we read our input. It can be either
     // temp.buffer or the caller-provided input buffer.
-    bad_uint8 *in;
-    bad_uint64 inPosition;
-    bad_uint64 inLimit;
+    u8 *in;
+    u64 inPosition;
+    u64 inLimit;
 };
 
 

@@ -13,7 +13,7 @@ struct XSaveState
 {
     FXSaveState  fxsave;
     XStateHeader header;
-    bad_uint8           extendedStateArea[0];
+    u8           extendedStateArea[0];
 } __attribute__((packed, aligned(64)));
 
 

@@ -12,16 +12,16 @@
 struct JpegComponent
 {
     JpegComponentId  id;
-    bad_uint8               samplingFactorX;
-    bad_uint8               samplingFactorY;
-    bad_uint16              width;
-    bad_uint16              height;
-    bad_uint64              stride;
-    bad_int64              dcpred;
-    bad_uint16             *quantizationTable;
+    u8               samplingFactorX;
+    u8               samplingFactorY;
+    u16              width;
+    u16              height;
+    u64              stride;
+    i64              dcpred;
+    u16             *quantizationTable;
     JpegVlcCode     *vlcDcTable;
     JpegVlcCode     *vlcAcTable;
-    bad_uint8              *dataBuffer;
+    u8              *dataBuffer;
 };
 
 

@@ -15,8 +15,8 @@ struct UefiPciRootBridgeIoProtocol;
 
 struct UefiPciRootBridgeIoProtocolAccess
 {
-    UefiStatus (UEFI_API *read)(UefiPciRootBridgeIoProtocol *obj, UefiPciRootBridgeIoProtocolWidth width, bad_uint64 address, bad_uint64 count, void *buffer); // TEST: NO
-    UefiStatus (UEFI_API *write)(UefiPciRootBridgeIoProtocol *obj, UefiPciRootBridgeIoProtocolWidth width, bad_uint64 address, bad_uint64 count, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *read)(UefiPciRootBridgeIoProtocol *obj, UefiPciRootBridgeIoProtocolWidth width, u64 address, u64 count, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *write)(UefiPciRootBridgeIoProtocol *obj, UefiPciRootBridgeIoProtocolWidth width, u64 address, u64 count, void *buffer); // TEST: NO
 };
 
 

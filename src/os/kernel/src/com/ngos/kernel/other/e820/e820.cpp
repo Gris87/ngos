@@ -24,7 +24,7 @@ NgosStatus E820::init()
 
 
 
-    COMMON_ASSERT_EXECUTION(addDynamicIdentityMap((bad_uint64)bootParams.memoryMapEntries, (bad_uint64)bootParams.memoryMapEntries + memoryMapEntriesSize), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(addDynamicIdentityMap((u64)bootParams.memoryMapEntries, (u64)bootParams.memoryMapEntries + memoryMapEntriesSize), NgosStatus::ASSERTION);
 
     sTable.count         = bootParams.memoryMapEntriesCount;
     sTableKExec.count    = bootParams.memoryMapEntriesCount;
@@ -34,7 +34,7 @@ NgosStatus E820::init()
     memcpy(sTableKExec.entries,    bootParams.memoryMapEntries, memoryMapEntriesSize);
     memcpy(sTableFirmware.entries, bootParams.memoryMapEntries, memoryMapEntriesSize);
 
-    COMMON_ASSERT_EXECUTION(clearDynamicIdentityMap((bad_uint64)bootParams.memoryMapEntries, (bad_uint64)bootParams.memoryMapEntries + memoryMapEntriesSize), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(clearDynamicIdentityMap((u64)bootParams.memoryMapEntries, (u64)bootParams.memoryMapEntries + memoryMapEntriesSize), NgosStatus::ASSERTION);
 
 
 
@@ -49,7 +49,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTable.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < (bad_int64)sTable.count; ++i)
+            for (i64 i = 0; i < (i64)sTable.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTable.entries[i].type), sTable.entries[i].start, sTable.entries[i].end()));
             }
@@ -61,7 +61,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTableKExec.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < (bad_int64)sTableKExec.count; ++i)
+            for (i64 i = 0; i < (i64)sTableKExec.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableKExec.entries[i].type), sTableKExec.entries[i].start, sTableKExec.entries[i].end()));
             }
@@ -73,7 +73,7 @@ NgosStatus E820::init()
             COMMON_LVVV(("sTableFirmware.entries:"));
             COMMON_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < (bad_int64)sTableFirmware.count; ++i)
+            for (i64 i = 0; i < (i64)sTableFirmware.count; ++i)
             {
                 COMMON_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(sTableFirmware.entries[i].type), sTableFirmware.entries[i].start, sTableFirmware.entries[i].end()));
             }
@@ -190,7 +190,7 @@ NgosStatus E820::init()
     return NgosStatus::OK;
 }
 
-NgosStatus E820::updateRange(bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+NgosStatus E820::updateRange(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
@@ -203,7 +203,7 @@ NgosStatus E820::updateRange(bad_uint64 start, bad_uint64 size, MemoryMapEntryTy
     return updateRangeInTable(&sTable, start, size, oldType, newType);
 }
 
-NgosStatus E820::updateRangeKExec(bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+NgosStatus E820::updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
     COMMON_LT((" | start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", start, size, oldType, newType));
 
@@ -216,7 +216,7 @@ NgosStatus E820::updateRangeKExec(bad_uint64 start, bad_uint64 size, MemoryMapEn
     return updateRangeInTable(&sTableKExec, start, size, oldType, newType);
 }
 
-NgosStatus E820::insertRangeInTable(E820Table *table, bad_uint64 index, bad_uint64 start, bad_uint64 size, MemoryMapEntryType type)
+NgosStatus E820::insertRangeInTable(E820Table *table, u64 index, u64 start, u64 size, MemoryMapEntryType type)
 {
     COMMON_LT((" | table = 0x%p, index = %u, start = 0x%016llX, size = 0x%016llX, type = %u", table, index, start, size, type));
 
@@ -245,7 +245,7 @@ NgosStatus E820::insertRangeInTable(E820Table *table, bad_uint64 index, bad_uint
     return NgosStatus::OK;
 }
 
-NgosStatus E820::removeRangeInTable(E820Table *table, bad_uint64 index)
+NgosStatus E820::removeRangeInTable(E820Table *table, u64 index)
 {
     COMMON_LT((" | table = 0x%p, index = %u", table, index));
 
@@ -264,7 +264,7 @@ NgosStatus E820::removeRangeInTable(E820Table *table, bad_uint64 index)
     return NgosStatus::OK;
 }
 
-NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
+NgosStatus E820::updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType)
 {
     COMMON_LT((" | table = 0x%p, start = 0x%016llX, size = 0x%016llX, oldType = %u, newType = %u", table, start, size, oldType, newType));
 
@@ -275,18 +275,18 @@ NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint
 
 
 
-    bad_uint64 end = start + size;
+    u64 end = start + size;
 
     COMMON_LVV(("Converting memory type %s to %s for E820 range: 0x%p-0x%p", enumToFullString(oldType), enumToFullString(newType), start, end));
 
 
 
-    bad_uint64 left  = 0;
-    bad_uint64 right = table->count;
+    u64 left  = 0;
+    u64 right = table->count;
 
     while (left < right)
     {
-        bad_uint64 middle = (left + right) / 2;
+        u64 middle = (left + right) / 2;
 
         MemoryMapEntry &entry = table->entries[middle];
 
@@ -316,7 +316,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint
 
 
 
-    for (bad_int64 i = left; i < (bad_int64)table->count; ++i)
+    for (i64 i = left; i < (i64)table->count; ++i)
     {
         MemoryMapEntry &entry = table->entries[i];
 
@@ -383,7 +383,7 @@ NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint
 
 
 
-            bad_uint64 entryStartOrig = entry.start;
+            u64 entryStartOrig = entry.start;
 
             entry.start = end;
             entry.size  = entryEnd - end;
@@ -400,9 +400,9 @@ NgosStatus E820::updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint
 
 
 
-    bad_int64 index = left > 0 ? left - 1 : 0;
+    i64 index = left > 0 ? left - 1 : 0;
 
-    while (index < (bad_int64)table->count - 1)
+    while (index < (i64)table->count - 1)
     {
         MemoryMapEntry &currentEntry = table->entries[index];
         MemoryMapEntry &nextEntry    = table->entries[index + 1];

@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice12EB0003: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice12EB0003: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_104D8049 = 0x104D8049,
@@ -59,7 +59,7 @@ inline const char8* enumToFullString(PciSubDevice12EB0003 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -74,15 +74,15 @@ inline const char8* enumToHumanString(PciSubDevice12EB0003 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice12EB0003::SUBDEVICE_104D8049: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_104D8077: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_109F1000: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_12EB0003: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14626780: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42073: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42091: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42104: return "Abad_uint8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42106: return "Abad_uint8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_104D8049: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_104D8077: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_109F1000: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_12EB0003: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14626780: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42073: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42091: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42104: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42106: return "Au8810 Vortex Digital Audio Processor";
 
         default: return "Unknown device";
     }

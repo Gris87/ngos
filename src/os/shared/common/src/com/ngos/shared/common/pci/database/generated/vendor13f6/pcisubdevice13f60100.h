@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice13F60100: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice13F60100: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_13F6FFFF = 0x13F6FFFF
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciSubDevice13F60100 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice13F60100 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice13F60100::SUBDEVICE_13F6FFFF: return "CMbad_int8338/C3DX PCI Audio Device";
+        case PciSubDevice13F60100::SUBDEVICE_13F6FFFF: return "CMi8338/C3DX PCI Audio Device";
 
         default: return "Unknown device";
     }

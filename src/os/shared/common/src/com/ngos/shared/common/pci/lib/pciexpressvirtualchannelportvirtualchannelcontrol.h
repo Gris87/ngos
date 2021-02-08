@@ -13,12 +13,12 @@ struct PciExpressVirtualChannelPortVirtualChannelControl
     {
         struct
         {
-            bad_uint16 loadVirtualChannelArbitrationTable: 1;
-            bad_uint16 virtualChannelArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelArbitrationSelect
-            bad_uint16 __reserved:                         12;
+            u16 loadVirtualChannelArbitrationTable: 1;
+            u16 virtualChannelArbitrationSelect:    3; // TODO: Use enum PciExpressVirtualChannelArbitrationSelect
+            u16 __reserved:                         12;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

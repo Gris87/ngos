@@ -13,7 +13,7 @@
 
 struct PngImageGamma
 {
-    bad_uint32 gamma;
+    u32 gamma;
 } __attribute__((packed));
 
 

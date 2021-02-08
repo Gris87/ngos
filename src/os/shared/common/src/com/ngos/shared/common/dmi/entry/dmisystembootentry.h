@@ -11,7 +11,7 @@
 struct DmiSystemBootEntry
 {
     DmiEntryHeader      header;
-    bad_uint8                  __reserved[6];
+    u8                  __reserved[6];
     DmiSystemBootStatus bootStatus;
 } __attribute__((packed));
 

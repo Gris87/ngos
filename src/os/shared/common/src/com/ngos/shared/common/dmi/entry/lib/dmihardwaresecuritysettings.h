@@ -13,13 +13,13 @@ struct DmiHardwareSecuritySettings
     {
         struct
         {
-            bad_uint8 frontPanelResetStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
-            bad_uint8 administratorPasswordStatus: 2; // TODO: Use enum DmiHardwareSecurityStatus
-            bad_uint8 keyboardPasswordStatus:      2; // TODO: Use enum DmiHardwareSecurityStatus
-            bad_uint8 powerOnPasswordStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
+            u8 frontPanelResetStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
+            u8 administratorPasswordStatus: 2; // TODO: Use enum DmiHardwareSecurityStatus
+            u8 keyboardPasswordStatus:      2; // TODO: Use enum DmiHardwareSecurityStatus
+            u8 powerOnPasswordStatus:       2; // TODO: Use enum DmiHardwareSecurityStatus
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

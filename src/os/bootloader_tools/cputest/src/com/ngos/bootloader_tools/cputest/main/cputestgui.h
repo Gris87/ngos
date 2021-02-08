@@ -33,14 +33,14 @@ public:
     }
 
 private:
-    static NgosStatus addFeaturePanel(X86Feature flag, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
+    static NgosStatus addFeaturePanel(X86Feature flag, u64 posX, u64 posY, u64 width, u64 height, Image *featurePanelImage, Image *featurePanelResizedImage, TabPageWidget *tabPageWidget); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
     static NgosStatus addTestEntry(const char8 *name, const char8 *score); // TEST: NO
     static NgosStatus addTestEntry(); // TEST: NO
     static NgosStatus putTestScore(); // TEST: NO
-    static NgosStatus addSummaryEntry(const char8 *name, bad_uint64 score); // TEST: NO
-    static NgosStatus addSummaryFeature(X86Feature flag, bad_uint64 score); // TEST: NO
+    static NgosStatus addSummaryEntry(const char8 *name, u64 score); // TEST: NO
+    static NgosStatus addSummaryFeature(X86Feature flag, u64 score); // TEST: NO
     static NgosStatus fillSummaryTable(); // TEST: NO
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
@@ -52,7 +52,7 @@ private:
     static NgosStatus processKeyboardEvent(); // TEST: NO
     static NgosStatus processSimplePointerEvent(UefiSimplePointerProtocol *pointer); // TEST: NO
     static NgosStatus processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer); // TEST: NO
-    static NgosStatus processApplicationProcessorEvent(bad_uint64 processorId); // TEST: NO
+    static NgosStatus processApplicationProcessorEvent(u64 processorId); // TEST: NO
 
     static NgosStatus onRebootButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
     static NgosStatus onShutdownButtonKeyboardEvent(const UefiInputKey &key); // TEST: NO
@@ -90,14 +90,14 @@ private:
     static TableWidget            *sTestTableWidget;
     static LabelWidget            *sSummaryTotalLabelWidget;
     static TableWidget            *sSummaryTableWidget;
-    static bad_uint64                     sSummaryTotal;
+    static u64                     sSummaryTotal;
     static UefiMpServicesProtocol *sMpServices;
-    static bad_uint16                     sWaitEventsCount;
+    static u16                     sWaitEventsCount;
     static uefi_event             *sWaitEvents;
-    static bad_uint16                     sFirstProcessorEventIndex;
+    static u16                     sFirstProcessorEventIndex;
     static TestType                sCurrentTest;
     static TestType                sDisplayedTest;
-    static bad_uint64                     sNumberOfRunningProcessors;
+    static u64                     sNumberOfRunningProcessors;
     static bool                    sTerminated;
 };
 

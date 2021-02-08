@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 uefi_absolute_pointer_mode_attribute_flags;
+typedef u32 uefi_absolute_pointer_mode_attribute_flags;
 
 enum class UefiAbsolutePointerModeAttributeFlag: uefi_absolute_pointer_mode_attribute_flags
 {

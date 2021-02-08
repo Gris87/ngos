@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressRootComplexLinkDeclarationLinkType: bad_uint8
+enum class PciExpressRootComplexLinkDeclarationLinkType: u8
 {
     LINK_TO_MEMORY_MAPPED_SPACE = 0,
     LINK_TO_CONFIGURATION_SPACE = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciExpressRootComplexLinkDeclarationLinkTyp
 
     static char8 res[35];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

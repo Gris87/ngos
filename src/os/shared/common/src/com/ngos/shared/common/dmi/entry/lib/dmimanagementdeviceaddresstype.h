@@ -10,7 +10,7 @@
 
 
 
-enum class DmiManagementDeviceAddressType: bad_uint8
+enum class DmiManagementDeviceAddressType: u8
 {
     NONE    = 0,
     OTHER   = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(DmiManagementDeviceAddressType type) // TES
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

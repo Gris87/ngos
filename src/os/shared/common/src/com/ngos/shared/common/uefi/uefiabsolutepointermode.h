@@ -10,12 +10,12 @@
 
 struct UefiAbsolutePointerMode
 {
-    bad_uint64                                   absoluteMinX;
-    bad_uint64                                   absoluteMinY;
-    bad_uint64                                   absoluteMinZ;
-    bad_uint64                                   absoluteMaxX;
-    bad_uint64                                   absoluteMaxY;
-    bad_uint64                                   absoluteMaxZ;
+    u64                                   absoluteMinX;
+    u64                                   absoluteMinY;
+    u64                                   absoluteMinZ;
+    u64                                   absoluteMaxX;
+    u64                                   absoluteMaxY;
+    u64                                   absoluteMaxZ;
     UefiAbsolutePointerModeAttributeFlags attributes;
 };
 

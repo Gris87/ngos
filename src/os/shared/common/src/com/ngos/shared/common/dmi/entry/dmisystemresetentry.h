@@ -19,10 +19,10 @@ struct DmiSystemResetEntry
 {
     DmiEntryHeader             header;
     DmiSystemResetCapabilities capabilities;
-    bad_uint16                        resetCount;
-    bad_uint16                        resetLimit;
-    bad_uint16                        timerInterval;
-    bad_uint16                        timeout;
+    u16                        resetCount;
+    u16                        resetLimit;
+    u16                        timerInterval;
+    u16                        timeout;
 } __attribute__((packed));
 
 

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiChassisContainedElementTypeSelect: bad_uint8
+enum class DmiChassisContainedElementTypeSelect: u8
 {
     BASEBOARD_TYPE = 0,
     DMI_ENTRY_TYPE = 1
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiChassisContainedElementTypeSelect select
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)select, enumToString(select));
+    sprintf(res, "0x%02X (%s)", (u8)select, enumToString(select));
 
     return res;
 }

@@ -10,7 +10,7 @@
 
 struct DmiPortableBatteryManufactureDate
 {
-    bad_uint16 yearReal()
+    u16 yearReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -25,12 +25,12 @@ struct DmiPortableBatteryManufactureDate
     {
         struct
         {
-            bad_uint16 date:  5;
-            bad_uint16 month: 4;
-            bad_uint16 year:  7;
+            u16 date:  5;
+            u16 month: 4;
+            u16 year:  7;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 } __attribute__((packed));
 

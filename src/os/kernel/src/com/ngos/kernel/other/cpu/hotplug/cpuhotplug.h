@@ -22,7 +22,7 @@ private:
     static NgosStatus storeCallbacks(CpuHotplugState state, const char8 *name, cpu_up_down_action upAction, cpu_up_down_action downAction, bool multipleInstances); // TEST: NO
     static NgosStatus allocateDynamicState(CpuHotplugState state, CpuHotplugState *res); // TEST: NO
 
-    static CpuHotplugStep sSteps[(bad_uint64)CpuHotplugState::MAXIMUM];
+    static CpuHotplugStep sSteps[(u64)CpuHotplugState::MAXIMUM];
 };
 
 

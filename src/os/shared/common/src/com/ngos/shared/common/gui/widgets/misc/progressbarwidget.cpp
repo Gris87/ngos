@@ -97,12 +97,12 @@ NgosStatus ProgressBarWidget::repaint()
 
     NinePatch *patch = mPanelWidget->getPanelImage()->getNinePatch();
 
-    bad_uint16 paddingLeft;
-    bad_uint16 paddingTop;
-    bad_uint16 paddingRight;
-    bad_uint16 paddingBottom;
-    bad_uint64 allowedWidth;
-    bad_uint64 allowedHeight;
+    u16 paddingLeft;
+    u16 paddingTop;
+    u16 paddingRight;
+    u16 paddingBottom;
+    u64 allowedWidth;
+    u64 allowedHeight;
 
     if (patch)
     {
@@ -127,7 +127,7 @@ NgosStatus ProgressBarWidget::repaint()
 
 
 
-    bad_uint64 percentTextWidth = mHeight * PERCENT_TEXT_PROPORTION;
+    u64 percentTextWidth = mHeight * PERCENT_TEXT_PROPORTION;
 
     if (allowedWidth > percentTextWidth)
     {
@@ -135,8 +135,8 @@ NgosStatus ProgressBarWidget::repaint()
 
 
 
-        bad_int64 progressWidth;
-        bad_uint8  percents;
+        i64 progressWidth;
+        u8  percents;
 
         if (mMinimumValue < mMaximumValue)
         {
@@ -191,10 +191,10 @@ NgosStatus ProgressBarWidget::repaint()
         {
             mPercents = percents;
 
-            bad_int64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
             AVOID_UNUSED(percentsLength);
 
-            COMMON_TEST_ASSERT(percentsLength < (bad_int64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
 
             COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
         }
@@ -214,8 +214,8 @@ NgosStatus ProgressBarWidget::repaint()
 
 
 
-        bad_int64 progressWidth;
-        bad_uint8  percents;
+        i64 progressWidth;
+        u8  percents;
 
         if (mMinimumValue < mMaximumValue)
         {
@@ -270,10 +270,10 @@ NgosStatus ProgressBarWidget::repaint()
         {
             mPercents = percents;
 
-            bad_int64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
             AVOID_UNUSED(percentsLength);
 
-            COMMON_TEST_ASSERT(percentsLength < (bad_int64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
 
             COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
         }
@@ -325,7 +325,7 @@ NgosStatus ProgressBarWidget::setColor(const RgbaPixel &color)
     return NgosStatus::OK;
 }
 
-NgosStatus ProgressBarWidget::setMinimumValue(bad_int64 minimumValue)
+NgosStatus ProgressBarWidget::setMinimumValue(i64 minimumValue)
 {
     COMMON_LT((" | minimumValue = %d", minimumValue));
 
@@ -343,7 +343,7 @@ NgosStatus ProgressBarWidget::setMinimumValue(bad_int64 minimumValue)
     return NgosStatus::OK;
 }
 
-bad_int64 ProgressBarWidget::getMinimumValue() const
+i64 ProgressBarWidget::getMinimumValue() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -352,7 +352,7 @@ bad_int64 ProgressBarWidget::getMinimumValue() const
     return mMinimumValue;
 }
 
-NgosStatus ProgressBarWidget::setMaximumValue(bad_int64 maximumValue)
+NgosStatus ProgressBarWidget::setMaximumValue(i64 maximumValue)
 {
     COMMON_LT((" | maximumValue = %d", maximumValue));
 
@@ -370,7 +370,7 @@ NgosStatus ProgressBarWidget::setMaximumValue(bad_int64 maximumValue)
     return NgosStatus::OK;
 }
 
-bad_int64 ProgressBarWidget::getMaximumValue() const
+i64 ProgressBarWidget::getMaximumValue() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -379,7 +379,7 @@ bad_int64 ProgressBarWidget::getMaximumValue() const
     return mMaximumValue;
 }
 
-NgosStatus ProgressBarWidget::setValue(bad_int64 value)
+NgosStatus ProgressBarWidget::setValue(i64 value)
 {
     COMMON_LT((" | value = %d", value));
 
@@ -397,7 +397,7 @@ NgosStatus ProgressBarWidget::setValue(bad_int64 value)
     return NgosStatus::OK;
 }
 
-bad_int64 ProgressBarWidget::getValue() const
+i64 ProgressBarWidget::getValue() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -414,8 +414,8 @@ NgosStatus ProgressBarWidget::updatePercents()
 
     if (mProgressWidth > 0)
     {
-        bad_int64 progressWidth;
-        bad_uint8  percents;
+        i64 progressWidth;
+        u8  percents;
 
         if (mMinimumValue < mMaximumValue)
         {
@@ -450,10 +450,10 @@ NgosStatus ProgressBarWidget::updatePercents()
         {
             mPercents = percents;
 
-            bad_int64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
+            i64 percentsLength = sprintf(mPercentsBuffer, "%u %%", mPercents);
             AVOID_UNUSED(percentsLength);
 
-            COMMON_TEST_ASSERT(percentsLength < (bad_int64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(percentsLength < (i64)sizeof(mPercentsBuffer), NgosStatus::ASSERTION);
 
             COMMON_ASSERT_EXECUTION(mLabelWidget->setText(mPercentsBuffer), NgosStatus::ASSERTION);
         }

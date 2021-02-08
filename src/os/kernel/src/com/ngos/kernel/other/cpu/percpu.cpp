@@ -2,4 +2,4 @@
 
 
 
-bad_uint64 PERCPU::cr4;
+u64 PERCPU::cr4;

@@ -18,7 +18,7 @@ NgosStatus putTaskStackEndMagic(Task *task)
 
 
 
-    *(bad_uint64 *)task->stack = STACK_END_MAGIC;
+    *(u64 *)task->stack = STACK_END_MAGIC;
 
 
 

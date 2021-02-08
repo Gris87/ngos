@@ -8,7 +8,7 @@
 
 
 
-enum class PciPowerManagementDataSelect: bad_uint8
+enum class PciPowerManagementDataSelect: u8
 {
     D0_POWER_CONSUMED              = 0,
     D1_POWER_CONSUMED              = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(PciPowerManagementDataSelect select) // TES
 
     static char8 res[38];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)select, enumToString(select));
+    sprintf(res, "0x%02X (%s)", (u8)select, enumToString(select));
 
     return res;
 }

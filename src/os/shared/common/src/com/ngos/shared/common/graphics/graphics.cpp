@@ -23,7 +23,7 @@
 
 
 
-NgosStatus Graphics::loadImage(bad_uint8 *data, bad_uint64 size, bool withNinePatch, Image **image)
+NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, withNinePatch = %u, image = 0x%p", data, size, withNinePatch, image));
 
@@ -35,7 +35,7 @@ NgosStatus Graphics::loadImage(bad_uint8 *data, bad_uint64 size, bool withNinePa
 
     if (size >= 8)
     {
-        if (*(bad_uint64 *)&data[0] == PNG_HEADER_SIGNATURE)
+        if (*(u64 *)&data[0] == PNG_HEADER_SIGNATURE)
         {
             return Png::loadImage(data, size, withNinePatch, image);
         }
@@ -43,9 +43,9 @@ NgosStatus Graphics::loadImage(bad_uint8 *data, bad_uint64 size, bool withNinePa
 
 
         if (
-            *(bad_uint16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE
+            *(u16 *)&data[0]        == JPEG_START_OF_IMAGE_SIGNATURE
             &&
-            *(bad_uint16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE
+            *(u16 *)&data[size - 2] == JPEG_END_OF_IMAGE_SIGNATURE
            )
         {
             return Jpeg::loadImage(data, size, image);
@@ -53,7 +53,7 @@ NgosStatus Graphics::loadImage(bad_uint8 *data, bad_uint64 size, bool withNinePa
 
 
 
-        if (*(bad_uint16 *)&data[0] == BMP_HEADER_SIGNATURE)
+        if (*(u16 *)&data[0] == BMP_HEADER_SIGNATURE)
         {
             return Bmp::loadImage(data, size, image);
         }
@@ -108,9 +108,9 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, bool hasAlpha, Image **res)
 
 
 
-        bad_int64  resolution    = image->getWidth() * image->getHeight();
-        bad_uint8   bytesPerPixel = image->getBytesPerPixel();
-        bad_uint8  *data          = image->getBuffer();
+        i64  resolution    = image->getWidth() * image->getHeight();
+        u8   bytesPerPixel = image->getBytesPerPixel();
+        u8  *data          = image->getBuffer();
 
 
 
@@ -118,7 +118,7 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, bool hasAlpha, Image **res)
         {
             RgbaPixel *pixel = newImage->getRgbaBuffer();
 
-            for (bad_int64 i = 0; i < resolution; ++i)
+            for (i64 i = 0; i < resolution; ++i)
             {
                 RgbPixel *originalPixel = (RgbPixel *)data;
 
@@ -135,7 +135,7 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, bool hasAlpha, Image **res)
         {
             RgbPixel *pixel = newImage->getRgbBuffer();
 
-            for (bad_int64 i = 0; i < resolution; ++i)
+            for (i64 i = 0; i < resolution; ++i)
             {
                 RgbPixel *originalPixel = (RgbPixel *)data;
 
@@ -164,7 +164,7 @@ NgosStatus Graphics::makeOpaqueImage(Image *image, bool hasAlpha, Image **res)
     return NgosStatus::OK;
 }
 
-NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, bad_int64 positionX, bad_int64 positionY, bad_int64 width, bad_int64 height)
+NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, i64 positionX, i64 positionY, i64 width, i64 height)
 {
     COMMON_LT((" | sourceImage = 0x%p, destinationImage = 0x%p, positionX = %d, positionY = %d, width = %d, height = %d", sourceImage, destinationImage, positionX, positionY, width, height));
 
@@ -222,7 +222,7 @@ NgosStatus Graphics::insertImage(Image *sourceImage, Image *destinationImage, ba
     return NgosStatus::OK;
 }
 
-NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinationData, bad_uint16 sourceWidth, bad_uint16 sourceHeight, bad_uint16 destinationWidth, bad_uint16 destinationHeight, bad_uint8 sourceBytesPerPixel, bad_uint8 destinationBytesPerPixel, bool opaque, bad_int64 positionX, bad_int64 positionY)
+NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY)
 {
     // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY)); // Commented to avoid too frequent logs
 
@@ -253,7 +253,7 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                             sourceHeight);
 }
 
-NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinationData, bad_uint16 sourceWidth, bad_uint16 sourceHeight, bad_uint16 destinationWidth, bad_uint16 destinationHeight, bad_uint8 sourceBytesPerPixel, bad_uint8 destinationBytesPerPixel, bool opaque, bad_int64 positionX, bad_int64 positionY, bad_int64 left, bad_int64 top, bad_int64 right, bad_int64 bottom)
+NgosStatus Graphics::insertImageRaw(u8 *sourceData, u8 *destinationData, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u8 sourceBytesPerPixel, u8 destinationBytesPerPixel, bool opaque, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom)
 {
     // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceBytesPerPixel = %u, destinationBytesPerPixel = %u, opaque = %u, positionX = %d, positionY = %d, left = %d, top = %d, right = %d, bottom = %d", sourceData, destinationData, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceBytesPerPixel, destinationBytesPerPixel, opaque, positionX, positionY, left, top, right, bottom)); // Commented to avoid infinite loop
 
@@ -292,8 +292,8 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-    bad_uint64 sourceStride      = sourceWidth      * sourceBytesPerPixel;
-    bad_uint64 destinationStride = destinationWidth * destinationBytesPerPixel;
+    u64 sourceStride      = sourceWidth      * sourceBytesPerPixel;
+    u64 destinationStride = destinationWidth * destinationBytesPerPixel;
 
     // COMMON_LVVV(("left                     = %d", left));                      // Commented to avoid too frequent logs
     // COMMON_LVVV(("right                    = %d", right));                     // Commented to avoid too frequent logs
@@ -321,10 +321,10 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
             {
                 // If both images are RGB or RGBA then just copy as is
                 {
-                    for (bad_int64 i = top; i < bottom; ++i)
+                    for (i64 i = top; i < bottom; ++i)
                     {
-                        bad_uint8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,                  left,             i, sourceStride,      sourceBytesPerPixel);
-                        bad_uint8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, positionX + left, positionY + i, destinationStride, destinationBytesPerPixel);
+                        u8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,                  left,             i, sourceStride,      sourceBytesPerPixel);
+                        u8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, positionX + left, positionY + i, destinationStride, destinationBytesPerPixel);
 
                         memcpy(destinationPixel, sourcePixel, (right - left) * sourceBytesPerPixel);
                     }
@@ -340,9 +340,9 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                         {
                             COMMON_TEST_ASSERT(sourceBytesPerPixel == sizeof(RgbPixel), NgosStatus::ASSERTION);
 
-                            for (bad_int64 i = top; i < bottom; ++i)
+                            for (i64 i = top; i < bottom; ++i)
                             {
-                                for (bad_int64 j = left; j < right; ++j)
+                                for (i64 j = left; j < right; ++j)
                                 {
                                     RgbPixel  *sourcePixel      = (RgbPixel  *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
                                     RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
@@ -361,9 +361,9 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                         {
                             COMMON_TEST_ASSERT(sourceBytesPerPixel == sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
-                            for (bad_int64 i = top; i < bottom; ++i)
+                            for (i64 i = top; i < bottom; ++i)
                             {
-                                for (bad_int64 j = left; j < right; ++j)
+                                for (i64 j = left; j < right; ++j)
                                 {
                                     RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
                                     RgbPixel  *destinationPixel = (RgbPixel  *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
@@ -391,17 +391,17 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                     {
                         // Both images are RGBA. Composite images with two alpha channels
                         {
-                            for (bad_int64 i = top; i < bottom; ++i)
+                            for (i64 i = top; i < bottom; ++i)
                             {
-                                for (bad_int64 j = left; j < right; ++j)
+                                for (i64 j = left; j < right; ++j)
                                 {
                                     RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
                                     RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
 
-                                    bad_uint8 srcAlpha = sourcePixel->alpha;
-                                    bad_uint8 dstAlpha = destinationPixel->alpha;
-                                    bad_uint8 notAlpha = ~srcAlpha;                                // ~srcAlpha == (0xFF - srcAlpha)
-                                    bad_uint8 outAlpha = srcAlpha + (dstAlpha * notAlpha) / 0xFF;
+                                    u8 srcAlpha = sourcePixel->alpha;
+                                    u8 dstAlpha = destinationPixel->alpha;
+                                    u8 notAlpha = ~srcAlpha;                                // ~srcAlpha == (0xFF - srcAlpha)
+                                    u8 outAlpha = srcAlpha + (dstAlpha * notAlpha) / 0xFF;
 
                                     if (outAlpha != 0)
                                     {
@@ -422,15 +422,15 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                     {
                         // Source image is RGBA and destination image is RGB. Composite images without destination alpha channel
                         {
-                            for (bad_int64 i = top; i < bottom; ++i)
+                            for (i64 i = top; i < bottom; ++i)
                             {
-                                for (bad_int64 j = left; j < right; ++j)
+                                for (i64 j = left; j < right; ++j)
                                 {
                                     RgbaPixel *sourcePixel      = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
                                     RgbPixel  *destinationPixel = (RgbPixel  *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
 
-                                    bad_uint8 alpha    = sourcePixel->alpha;
-                                    bad_uint8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
+                                    u8 alpha    = sourcePixel->alpha;
+                                    u8 notAlpha = ~alpha;               // ~alpha == (0xFF - alpha)
 
                                     destinationPixel->red   = ((sourcePixel->red   * alpha) + (destinationPixel->red   * notAlpha)) / 0xFF;
                                     destinationPixel->green = ((sourcePixel->green * alpha) + (destinationPixel->green * notAlpha)) / 0xFF;
@@ -447,9 +447,9 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                 {
                     COMMON_TEST_ASSERT(destinationBytesPerPixel == sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
-                    for (bad_int64 i = top; i < bottom; ++i)
+                    for (i64 i = top; i < bottom; ++i)
                     {
-                        for (bad_int64 j = left; j < right; ++j)
+                        for (i64 j = left; j < right; ++j)
                         {
                             RgbPixel  *sourcePixel      = (RgbPixel  *)GET_PIXEL_ADDRESS(sourceData,                  j,             i, sourceStride,      sourceBytesPerPixel);
                             RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, positionX + j, positionY + i, destinationStride, destinationBytesPerPixel);
@@ -470,7 +470,7 @@ NgosStatus Graphics::insertImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
     return NgosStatus::OK;
 }
 
-NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 height, Image **res)
+NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **res)
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
 
@@ -509,7 +509,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                 if (element)
                 {
-                    bad_uint16 lastX = element->getData().getFrom();
+                    u16 lastX = element->getData().getFrom();
 
                     if (lastX != 0)
                     {
@@ -561,7 +561,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                 if (element)
                 {
-                    bad_uint16 lastY = element->getData().getFrom();
+                    u16 lastY = element->getData().getFrom();
 
                     if (lastY != 0)
                     {
@@ -607,10 +607,10 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
 
 
-            bad_uint16 totalStretchCountX = 0;
-            bad_uint16 totalStretchCountY = 0;
-            bad_uint16 totalFixedCountX   = 0;
-            bad_uint16 totalFixedCountY   = 0;
+            u16 totalStretchCountX = 0;
+            u16 totalStretchCountY = 0;
+            u16 totalFixedCountX   = 0;
+            u16 totalFixedCountY   = 0;
 
 
 
@@ -668,12 +668,12 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
             // Get destinationRangesX
             {
-                bad_uint16       totalWidth = 0;
-                List<bad_uint16> sizes;
+                u16       totalWidth = 0;
+                List<u16> sizes;
 
                 if (width >= totalFixedCountX)
                 {
-                    bad_uint16 stretchableCount = width - totalFixedCountX;
+                    u16 stretchableCount = width - totalFixedCountX;
 
 
 
@@ -682,7 +682,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     while (element)
                     {
-                        bad_uint16 size = element->getData().getSize();
+                        u16 size = element->getData().getSize();
 
                         if (isCurrentStretch)
                         {
@@ -705,14 +705,14 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     if (totalWidth < width)
                     {
-                        bad_uint16 remain = width - totalWidth;
+                        u16 remain = width - totalWidth;
 
                         while (remain)
                         {
                             isCurrentStretch = startWithStretchX;
 
-                            ListElement<bad_uint16> *sizeElement    = sizes.getHead();
-                            ListElement<bad_uint16> *minSizeElement = 0;
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
 
                             while (sizeElement)
                             {
@@ -748,7 +748,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     while (element)
                     {
-                        bad_uint16 size;
+                        u16 size;
 
                         if (isCurrentStretch)
                         {
@@ -776,14 +776,14 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     if (totalWidth < width)
                     {
-                        bad_uint16 remain = width - totalWidth;
+                        u16 remain = width - totalWidth;
 
                         while (remain)
                         {
                             isCurrentStretch = startWithStretchX;
 
-                            ListElement<bad_uint16> *sizeElement    = sizes.getHead();
-                            ListElement<bad_uint16> *minSizeElement = 0;
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
 
                             while (sizeElement)
                             {
@@ -817,11 +817,11 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                 totalWidth = 0;
 
-                ListElement<bad_uint16> *sizeElement = sizes.getHead();
+                ListElement<u16> *sizeElement = sizes.getHead();
 
                 while (sizeElement)
                 {
-                    bad_uint16 to = totalWidth + sizeElement->getData();
+                    u16 to = totalWidth + sizeElement->getData();
 
                     destinationRangesX.append(StretchRange(totalWidth, to));
                     totalWidth = to;
@@ -836,12 +836,12 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
             // Get destinationRangesY
             {
-                bad_uint16       totalHeight = 0;
-                List<bad_uint16> sizes;
+                u16       totalHeight = 0;
+                List<u16> sizes;
 
                 if (height >= totalFixedCountY)
                 {
-                    bad_uint16 stretchableCount = height - totalFixedCountY;
+                    u16 stretchableCount = height - totalFixedCountY;
 
 
 
@@ -850,7 +850,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     while (element)
                     {
-                        bad_uint16 size = element->getData().getSize();
+                        u16 size = element->getData().getSize();
 
                         if (isCurrentStretch)
                         {
@@ -873,14 +873,14 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     if (totalHeight < height)
                     {
-                        bad_uint16 remain = height - totalHeight;
+                        u16 remain = height - totalHeight;
 
                         while (remain)
                         {
                             isCurrentStretch = startWithStretchY;
 
-                            ListElement<bad_uint16> *sizeElement    = sizes.getHead();
-                            ListElement<bad_uint16> *minSizeElement = 0;
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
 
                             while (sizeElement)
                             {
@@ -916,7 +916,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     while (element)
                     {
-                        bad_uint16 size;
+                        u16 size;
 
                         if (isCurrentStretch)
                         {
@@ -944,14 +944,14 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                     if (totalHeight < height)
                     {
-                        bad_uint16 remain = height - totalHeight;
+                        u16 remain = height - totalHeight;
 
                         while (remain)
                         {
                             isCurrentStretch = startWithStretchY;
 
-                            ListElement<bad_uint16> *sizeElement    = sizes.getHead();
-                            ListElement<bad_uint16> *minSizeElement = 0;
+                            ListElement<u16> *sizeElement    = sizes.getHead();
+                            ListElement<u16> *minSizeElement = 0;
 
                             while (sizeElement)
                             {
@@ -985,11 +985,11 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
                 totalHeight = 0;
 
-                ListElement<bad_uint16> *sizeElement = sizes.getHead();
+                ListElement<u16> *sizeElement = sizes.getHead();
 
                 while (sizeElement)
                 {
-                    bad_uint16 to = totalHeight + sizeElement->getData();
+                    u16 to = totalHeight + sizeElement->getData();
 
                     destinationRangesY.append(StretchRange(totalHeight, to));
                     totalHeight = to;
@@ -1022,10 +1022,10 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
 
 
 
-                        bad_uint16 sourceSizeX      = sourceRangeX->getData().getSize();
-                        bad_uint16 sourceSizeY      = sourceRangeY->getData().getSize();
-                        bad_uint16 destinationSizeX = destinationRangeX->getData().getSize();
-                        bad_uint16 destinationSizeY = destinationRangeY->getData().getSize();
+                        u16 sourceSizeX      = sourceRangeX->getData().getSize();
+                        u16 sourceSizeY      = sourceRangeY->getData().getSize();
+                        u16 destinationSizeX = destinationRangeX->getData().getSize();
+                        u16 destinationSizeY = destinationRangeY->getData().getSize();
 
                         COMMON_TEST_ASSERT(sourceSizeX > 0, NgosStatus::ASSERTION);
                         COMMON_TEST_ASSERT(sourceSizeY > 0, NgosStatus::ASSERTION);
@@ -1105,7 +1105,7 @@ NgosStatus Graphics::resizeImage(Image *image, bad_uint16 width, bad_uint16 heig
     return NgosStatus::OK;
 }
 
-NgosStatus Graphics::resizeImageProportional(Image *image, bad_uint16 width, bad_uint16 height, Image **res)
+NgosStatus Graphics::resizeImageProportional(Image *image, u16 width, u16 height, Image **res)
 {
     COMMON_LT((" | image = 0x%p, width = %u, height = %u, res = 0x%p", image, width, height, res));
 
@@ -1121,15 +1121,15 @@ NgosStatus Graphics::resizeImageProportional(Image *image, bad_uint16 width, bad
 
     float scale = MIN(scaleX, scaleY);
 
-    bad_uint16 newWidth  = image->getWidth()  * scale;
-    bad_uint16 newHeight = image->getHeight() * scale;
+    u16 newWidth  = image->getWidth()  * scale;
+    u16 newHeight = image->getHeight() * scale;
 
 
 
     return resizeImage(image, newWidth, newHeight, res);
 }
 
-NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinationData, bad_uint16 sourcePositionX, bad_uint16 sourcePositionY, bad_uint16 destinationPositionX, bad_uint16 destinationPositionY, bad_uint16 sourceWidth, bad_uint16 sourceHeight, bad_uint16 destinationWidth, bad_uint16 destinationHeight, bad_uint64 sourceStride, bad_uint64 destinationStride, bad_uint8 bytesPerPixel)
+NgosStatus Graphics::resizeImageRaw(u8 *sourceData, u8 *destinationData, u16 sourcePositionX, u16 sourcePositionY, u16 destinationPositionX, u16 destinationPositionY, u16 sourceWidth, u16 sourceHeight, u16 destinationWidth, u16 destinationHeight, u64 sourceStride, u64 destinationStride, u8 bytesPerPixel)
 {
     // COMMON_LT((" | sourceData = 0x%p, destinationData = 0x%p, sourcePositionX = %u, sourcePositionY = %u, destinationPositionX = %u, destinationPositionY = %u, sourceWidth = %u, sourceHeight = %u, destinationWidth = %u, destinationHeight = %u, sourceStride = %u, destinationStride = %u, bytesPerPixel = %u", sourceData, destinationData, sourcePositionX, sourcePositionY, destinationPositionX, destinationPositionY, sourceWidth, sourceHeight, destinationWidth, destinationHeight, sourceStride, destinationStride, bytesPerPixel)); // Commented to avoid too frequent logs
 
@@ -1153,10 +1153,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
         {
             // If same size then just copy as is
             {
-                for (bad_int64 i = 0; i < destinationHeight; ++i)
+                for (i64 i = 0; i < destinationHeight; ++i)
                 {
-                    bad_uint8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,      sourcePositionX,      sourcePositionY      + i, sourceStride,      bytesPerPixel);
-                    bad_uint8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, destinationPositionX, destinationPositionY + i, destinationStride, bytesPerPixel);
+                    u8 *sourcePixel      = GET_PIXEL_ADDRESS(sourceData,      sourcePositionX,      sourcePositionY      + i, sourceStride,      bytesPerPixel);
+                    u8 *destinationPixel = GET_PIXEL_ADDRESS(destinationData, destinationPositionX, destinationPositionY + i, destinationStride, bytesPerPixel);
 
                     memcpy(destinationPixel, sourcePixel, sourceWidth * bytesPerPixel);
                 }
@@ -1166,14 +1166,14 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
         {
             // Width is the same, but height is different
             {
-                bad_int64 sourceBottom = sourcePositionY + sourceHeight;
+                i64 sourceBottom = sourcePositionY + sourceHeight;
 
                 if (bytesPerPixel == sizeof(RgbaPixel))
                 {
-                    for (bad_int64 i = 0; i < destinationHeight; ++i)
+                    for (i64 i = 0; i < destinationHeight; ++i)
                     {
-                        bad_int64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
+                        i64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
+                        i64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
 
                         if (bottom >= sourceBottom)
                         {
@@ -1189,18 +1189,18 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 j = 0; j < destinationWidth; ++j)
+                        for (i64 j = 0; j < destinationWidth; ++j)
                         {
                             RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
-                            bad_uint64 totalAlpha = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
+                            u64 totalAlpha = 0;
 
 
 
-                            for (bad_int64 k = top; k <= bottom; ++k)
+                            for (i64 k = top; k <= bottom; ++k)
                             {
                                 RgbaPixel *sourcePixel = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData, sourcePositionX + j, k, sourceStride, bytesPerPixel);
 
@@ -1214,7 +1214,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
                             if (totalAlpha > 0)
                             {
-                                bad_uint64 count = bottom - top + 1;
+                                u64 count = bottom - top + 1;
 
                                 COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 
@@ -1232,10 +1232,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                 }
                 else
                 {
-                    for (bad_int64 i = 0; i < destinationHeight; ++i)
+                    for (i64 i = 0; i < destinationHeight; ++i)
                     {
-                        bad_int64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
+                        i64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
+                        i64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
 
                         if (bottom >= sourceBottom)
                         {
@@ -1251,17 +1251,17 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 j = 0; j < destinationWidth; ++j)
+                        for (i64 j = 0; j < destinationWidth; ++j)
                         {
                             RgbPixel *destinationPixel = (RgbPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
 
 
 
-                            for (bad_int64 k = top; k <= bottom; ++k)
+                            for (i64 k = top; k <= bottom; ++k)
                             {
                                 RgbPixel *sourcePixel = (RgbPixel *)GET_PIXEL_ADDRESS(sourceData, sourcePositionX + j, k, sourceStride, bytesPerPixel);
 
@@ -1272,7 +1272,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                            bad_uint64 count = bottom - top + 1;
+                            u64 count = bottom - top + 1;
 
                             COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 
@@ -1291,14 +1291,14 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
         {
             // Height is the same, but width is different
             {
-                bad_int64 sourceRight = sourcePositionX + sourceWidth;
+                i64 sourceRight = sourcePositionX + sourceWidth;
 
                 if (bytesPerPixel == sizeof(RgbaPixel))
                 {
-                    for (bad_int64 j = 0; j < destinationWidth; ++j)
+                    for (i64 j = 0; j < destinationWidth; ++j)
                     {
-                        bad_int64 left  = j > 0 ? sourcePositionX + (j - 1) * sourceWidth / destinationWidth : sourcePositionX; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 right =         sourcePositionX + (j + 1) * sourceWidth / destinationWidth;                   // Ignore CppEqualAlignmentVerifier
+                        i64 left  = j > 0 ? sourcePositionX + (j - 1) * sourceWidth / destinationWidth : sourcePositionX; // Ignore CppEqualAlignmentVerifier
+                        i64 right =         sourcePositionX + (j + 1) * sourceWidth / destinationWidth;                   // Ignore CppEqualAlignmentVerifier
 
                         if (right >= sourceRight)
                         {
@@ -1314,18 +1314,18 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 i = 0; i < destinationHeight; ++i)
+                        for (i64 i = 0; i < destinationHeight; ++i)
                         {
                             RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
-                            bad_uint64 totalAlpha = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
+                            u64 totalAlpha = 0;
 
 
 
-                            for (bad_int64 k = left; k <= right; ++k)
+                            for (i64 k = left; k <= right; ++k)
                             {
                                 RgbaPixel *sourcePixel = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData, k, sourcePositionY + i, sourceStride, bytesPerPixel);
 
@@ -1339,7 +1339,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
                             if (totalAlpha > 0)
                             {
-                                bad_uint64 count = right - left + 1;
+                                u64 count = right - left + 1;
 
                                 COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 
@@ -1357,10 +1357,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                 }
                 else
                 {
-                    for (bad_int64 j = 0; j < destinationWidth; ++j)
+                    for (i64 j = 0; j < destinationWidth; ++j)
                     {
-                        bad_int64 left  = j > 0 ? sourcePositionX + (j - 1) * sourceWidth / destinationWidth : sourcePositionX; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 right =         sourcePositionX + (j + 1) * sourceWidth / destinationWidth;                   // Ignore CppEqualAlignmentVerifier
+                        i64 left  = j > 0 ? sourcePositionX + (j - 1) * sourceWidth / destinationWidth : sourcePositionX; // Ignore CppEqualAlignmentVerifier
+                        i64 right =         sourcePositionX + (j + 1) * sourceWidth / destinationWidth;                   // Ignore CppEqualAlignmentVerifier
 
                         if (right >= sourceRight)
                         {
@@ -1376,17 +1376,17 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 i = 0; i < destinationHeight; ++i)
+                        for (i64 i = 0; i < destinationHeight; ++i)
                         {
                             RgbPixel *destinationPixel = (RgbPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
 
 
 
-                            for (bad_int64 k = left; k <= right; ++k)
+                            for (i64 k = left; k <= right; ++k)
                             {
                                 RgbPixel *sourcePixel = (RgbPixel *)GET_PIXEL_ADDRESS(sourceData, k, sourcePositionY + i, sourceStride, bytesPerPixel);
 
@@ -1397,7 +1397,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                            bad_uint64 count = right - left + 1;
+                            u64 count = right - left + 1;
 
                             COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 
@@ -1413,15 +1413,15 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
         {
             // The size is different
             {
-                bad_int64 sourceRight  = sourcePositionX + sourceWidth;
-                bad_int64 sourceBottom = sourcePositionY + sourceHeight;
+                i64 sourceRight  = sourcePositionX + sourceWidth;
+                i64 sourceBottom = sourcePositionY + sourceHeight;
 
                 if (bytesPerPixel == sizeof(RgbaPixel))
                 {
-                    for (bad_int64 i = 0; i < destinationHeight; ++i)
+                    for (i64 i = 0; i < destinationHeight; ++i)
                     {
-                        bad_int64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
+                        i64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
+                        i64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
 
                         if (bottom >= sourceBottom)
                         {
@@ -1437,10 +1437,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 j = 0; j < destinationWidth; ++j)
+                        for (i64 j = 0; j < destinationWidth; ++j)
                         {
-                            bad_int64 left   = j > 0 ? sourcePositionX + (j - 1) * sourceWidth  / destinationWidth : sourcePositionX;  // Ignore CppEqualAlignmentVerifier
-                            bad_int64 right  =         sourcePositionX + (j + 1) * sourceWidth  / destinationWidth;                    // Ignore CppEqualAlignmentVerifier
+                            i64 left   = j > 0 ? sourcePositionX + (j - 1) * sourceWidth  / destinationWidth : sourcePositionX;  // Ignore CppEqualAlignmentVerifier
+                            i64 right  =         sourcePositionX + (j + 1) * sourceWidth  / destinationWidth;                    // Ignore CppEqualAlignmentVerifier
 
                             if (right >= sourceRight)
                             {
@@ -1458,16 +1458,16 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
                             RgbaPixel *destinationPixel = (RgbaPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
-                            bad_uint64 totalAlpha = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
+                            u64 totalAlpha = 0;
 
 
 
-                            for (bad_int64 k = top; k <= bottom; ++k)
+                            for (i64 k = top; k <= bottom; ++k)
                             {
-                                for (bad_int64 g = left; g <= right; ++g)
+                                for (i64 g = left; g <= right; ++g)
                                 {
                                     RgbaPixel *sourcePixel = (RgbaPixel *)GET_PIXEL_ADDRESS(sourceData, g, k, sourceStride, bytesPerPixel);
 
@@ -1482,7 +1482,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
                             if (totalAlpha > 0)
                             {
-                                bad_uint64 count = (bottom - top + 1) * (right - left + 1);
+                                u64 count = (bottom - top + 1) * (right - left + 1);
 
                                 COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 
@@ -1500,10 +1500,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
                 }
                 else
                 {
-                    for (bad_int64 i = 0; i < destinationHeight; ++i)
+                    for (i64 i = 0; i < destinationHeight; ++i)
                     {
-                        bad_int64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
-                        bad_int64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
+                        i64 top    = i > 0 ? sourcePositionY + (i - 1) * sourceHeight / destinationHeight : sourcePositionY; // Ignore CppEqualAlignmentVerifier
+                        i64 bottom =         sourcePositionY + (i + 1) * sourceHeight / destinationHeight;                   // Ignore CppEqualAlignmentVerifier
 
                         if (bottom >= sourceBottom)
                         {
@@ -1519,10 +1519,10 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                        for (bad_int64 j = 0; j < destinationWidth; ++j)
+                        for (i64 j = 0; j < destinationWidth; ++j)
                         {
-                            bad_int64 left   = j > 0 ? sourcePositionX + (j - 1) * sourceWidth  / destinationWidth : sourcePositionX;  // Ignore CppEqualAlignmentVerifier
-                            bad_int64 right  =         sourcePositionX + (j + 1) * sourceWidth  / destinationWidth;                    // Ignore CppEqualAlignmentVerifier
+                            i64 left   = j > 0 ? sourcePositionX + (j - 1) * sourceWidth  / destinationWidth : sourcePositionX;  // Ignore CppEqualAlignmentVerifier
+                            i64 right  =         sourcePositionX + (j + 1) * sourceWidth  / destinationWidth;                    // Ignore CppEqualAlignmentVerifier
 
                             if (right >= sourceRight)
                             {
@@ -1540,15 +1540,15 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
                             RgbPixel *destinationPixel = (RgbPixel *)GET_PIXEL_ADDRESS(destinationData, destinationPositionX + j, destinationPositionY + i, destinationStride, bytesPerPixel);
 
-                            bad_uint64 totalRed   = 0;
-                            bad_uint64 totalGreen = 0;
-                            bad_uint64 totalBlue  = 0;
+                            u64 totalRed   = 0;
+                            u64 totalGreen = 0;
+                            u64 totalBlue  = 0;
 
 
 
-                            for (bad_int64 k = top; k <= bottom; ++k)
+                            for (i64 k = top; k <= bottom; ++k)
                             {
-                                for (bad_int64 g = left; g <= right; ++g)
+                                for (i64 g = left; g <= right; ++g)
                                 {
                                     RgbPixel *sourcePixel = (RgbPixel *)GET_PIXEL_ADDRESS(sourceData, g, k, sourceStride, bytesPerPixel);
 
@@ -1560,7 +1560,7 @@ NgosStatus Graphics::resizeImageRaw(bad_uint8 *sourceData, bad_uint8 *destinatio
 
 
 
-                            bad_uint64 count = (bottom - top + 1) * (right - left + 1);
+                            u64 count = (bottom - top + 1) * (right - left + 1);
 
                             COMMON_TEST_ASSERT(count > 0, NgosStatus::ASSERTION);
 

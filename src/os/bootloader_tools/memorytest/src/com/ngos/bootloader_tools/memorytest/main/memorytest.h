@@ -12,12 +12,12 @@ class MemoryTest
 public:
     static NgosStatus init(); // TEST: NO
 
-    static bad_uint64 getCpuSpeed(); // TEST: NO
+    static u64 getCpuSpeed(); // TEST: NO
 
 private:
     static NgosStatus initCpuSpeed(); // TEST: NO
 
-    static bad_uint64 sCpuSpeed;
+    static u64 sCpuSpeed;
 };
 
 

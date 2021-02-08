@@ -33,7 +33,7 @@ NgosStatus printPte(PTE *pte)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_PTE; ++i)
+    for (i64 i = 0; i < PTRS_PER_PTE; ++i)
     {
         if (ptePresent(pte[i]))
         {
@@ -54,7 +54,7 @@ NgosStatus printPmd(PMD *pmd)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {
@@ -80,7 +80,7 @@ NgosStatus printPud(PUD *pud)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_PUD; ++i)
+    for (i64 i = 0; i < PTRS_PER_PUD; ++i)
     {
         if (pudPresent(pud[i]))
         {
@@ -107,7 +107,7 @@ NgosStatus printP4d(P4D *p4d)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_P4D; ++i)
+    for (i64 i = 0; i < PTRS_PER_P4D; ++i)
     {
         if (p4dPresent(p4d[i]))
         {
@@ -134,7 +134,7 @@ NgosStatus printPgd(PGD *pgd)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_PGD; ++i)
+    for (i64 i = 0; i < PTRS_PER_PGD; ++i)
     {
         if (pgdPresent(pgd[i]))
         {
@@ -157,9 +157,9 @@ NgosStatus printPgd(PGD *pgd)
 }
 #endif
 
-bad_uint8 currentVideoRamPageIndex = 0;
+u8 currentVideoRamPageIndex = 0;
 
-bad_uint8* allocateVideoRamPage(bad_uint64 videoRamPagetablePages)
+u8* allocateVideoRamPage(u64 videoRamPagetablePages)
 {
     EARLY_LT((" | videoRamPagetablePages = 0x%p", videoRamPagetablePages));
 
@@ -168,7 +168,7 @@ bad_uint8* allocateVideoRamPage(bad_uint64 videoRamPagetablePages)
 
 
     EARLY_TEST_ASSERT(currentVideoRamPageIndex < EARLY_VIDEO_RAM_PAGE_TABLES, 0);
-    bad_uint8 *page = (bad_uint8 *)(videoRamPagetablePages + currentVideoRamPageIndex * PAGE_SIZE);
+    u8 *page = (u8 *)(videoRamPagetablePages + currentVideoRamPageIndex * PAGE_SIZE);
     ++currentVideoRamPageIndex;
 
 
@@ -176,7 +176,7 @@ bad_uint8* allocateVideoRamPage(bad_uint64 videoRamPagetablePages)
     return page;
 }
 
-NgosStatus initializeVideoRamPageIdentity(PGD *page, bad_uint64 address, bad_uint64 end, bad_uint8 level, bad_uint64 videoRamPagetablePages)
+NgosStatus initializeVideoRamPageIdentity(PGD *page, u64 address, u64 end, u8 level, u64 videoRamPagetablePages)
 {
     EARLY_LT((" | page = 0x%p, address = 0x%p, end = 0x%p, level = %u, videoRamPagetablePages = 0x%p", page, address, end, level, videoRamPagetablePages));
 
@@ -187,10 +187,10 @@ NgosStatus initializeVideoRamPageIdentity(PGD *page, bad_uint64 address, bad_uin
 
 
 
-    bad_uint8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
+    u8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
 
-    bad_uint64 pageSize = (1ULL << bits);
-    bad_uint64 pageMask = ~(pageSize - 1);
+    u64 pageSize = (1ULL << bits);
+    u64 pageMask = ~(pageSize - 1);
 
 
 
@@ -200,7 +200,7 @@ NgosStatus initializeVideoRamPageIdentity(PGD *page, bad_uint64 address, bad_uin
 
 
 
-        bad_uint64 next = (address & pageMask) + pageSize;
+        u64 next = (address & pageMask) + pageSize;
 
         if (next > end)
         {
@@ -233,7 +233,7 @@ NgosStatus initializeVideoRamPageIdentity(PGD *page, bad_uint64 address, bad_uin
     return NgosStatus::OK;
 }
 
-NgosStatus addVideoRamIdentityMap(PGD *pgd, bad_uint64 start, bad_uint64 end, bad_uint64 videoRamPagetablePages)
+NgosStatus addVideoRamIdentityMap(PGD *pgd, u64 start, u64 end, u64 videoRamPagetablePages)
 {
     EARLY_LT((" | pgd = 0x%p, start = 0x%p, end = 0x%p, videoRamPagetablePages = 0x%p", pgd, start, end, videoRamPagetablePages));
 
@@ -261,9 +261,9 @@ NgosStatus addVideoRamIdentityMap(PGD *pgd, bad_uint64 start, bad_uint64 end, ba
     return NgosStatus::OK;
 }
 
-bad_uint8 currentAdaptDynamicPageIndex = 0;
+u8 currentAdaptDynamicPageIndex = 0;
 
-bad_uint8* allocateDynamicPage(bad_uint64 dynamicPagetablePages)
+u8* allocateDynamicPage(u64 dynamicPagetablePages)
 {
     EARLY_LT((" | dynamicPagetablePages = 0x%p", dynamicPagetablePages));
 
@@ -272,7 +272,7 @@ bad_uint8* allocateDynamicPage(bad_uint64 dynamicPagetablePages)
 
 
     EARLY_TEST_ASSERT(currentAdaptDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
-    bad_uint8 *page = (bad_uint8 *)(dynamicPagetablePages + currentAdaptDynamicPageIndex * PAGE_SIZE);
+    u8 *page = (u8 *)(dynamicPagetablePages + currentAdaptDynamicPageIndex * PAGE_SIZE);
     ++currentAdaptDynamicPageIndex;
 
 
@@ -280,7 +280,7 @@ bad_uint8* allocateDynamicPage(bad_uint64 dynamicPagetablePages)
     return page;
 }
 
-NgosStatus adaptPredefinedPageTable(bad_uint64 imageLocation, PGD *pgd)
+NgosStatus adaptPredefinedPageTable(u64 imageLocation, PGD *pgd)
 {
     EARLY_LT((" | imageLocation = 0x%p, pgd = 0x%p", imageLocation, pgd));
 
@@ -298,11 +298,11 @@ NgosStatus adaptPredefinedPageTable(bad_uint64 imageLocation, PGD *pgd)
 
     // HACK: Temporary fix for PIE. Try to find another solution
     // #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    //     P4D *p4d = (P4D *)((bad_uint64)&early_pagetable_level4 + imageLocation);
+    //     P4D *p4d = (P4D *)((u64)&early_pagetable_level4 + imageLocation);
     // #endif
     //
-    // PUD *pud = (PUD *)((bad_uint64)&early_pagetable_level3  + imageLocation);
-    // PMD *pmd = (PMD *)((bad_uint64)&fixmap_pagetable_level2 + imageLocation);
+    // PUD *pud = (PUD *)((u64)&early_pagetable_level3  + imageLocation);
+    // PMD *pmd = (PMD *)((u64)&fixmap_pagetable_level2 + imageLocation);
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
     P4D *p4d;
@@ -360,9 +360,9 @@ NgosStatus adaptPredefinedPageTable(bad_uint64 imageLocation, PGD *pgd)
 
 
 
-    // (bad_uint64)&_start give us chosen random virtual address
-    // We are substracting (bad_uint64)&_start since the predefined values already has values with the base address as chosen random virtual address
-    bad_uint64 delta = imageLocation - (bad_uint64)&_start;
+    // (u64)&_start give us chosen random virtual address
+    // We are substracting (u64)&_start since the predefined values already has values with the base address as chosen random virtual address
+    u64 delta = imageLocation - (u64)&_start;
 
     EARLY_LVVV(("delta = 0x%016llX", delta));
 
@@ -386,7 +386,7 @@ NgosStatus adaptPredefinedPageTable(bad_uint64 imageLocation, PGD *pgd)
     return NgosStatus::OK;
 }
 
-NgosStatus adaptVirtualAddressSpacePageTable(bad_uint64 imageLocation)
+NgosStatus adaptVirtualAddressSpacePageTable(u64 imageLocation)
 {
     EARLY_LT((" | imageLocation = 0x%p", imageLocation));
 
@@ -404,7 +404,7 @@ NgosStatus adaptVirtualAddressSpacePageTable(bad_uint64 imageLocation)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    // PMD *pmd = (PMD *)((bad_uint64)&early_pagetable_level2 + imageLocation);
+    // PMD *pmd = (PMD *)((u64)&early_pagetable_level2 + imageLocation);
 
     PMD *pmd;
 
@@ -422,8 +422,8 @@ NgosStatus adaptVirtualAddressSpacePageTable(bad_uint64 imageLocation)
 
 
 
-    // (bad_uint64)&_start give us chosen random virtual address
-    bad_uint64 delta = imageLocation - ((bad_uint64)&_start - 0xFFFFFFFF80000000);
+    // (u64)&_start give us chosen random virtual address
+    u64 delta = imageLocation - ((u64)&_start - 0xFFFFFFFF80000000);
 
     EARLY_LVVV(("delta = 0x%016llX", delta));
 
@@ -435,11 +435,11 @@ NgosStatus adaptVirtualAddressSpacePageTable(bad_uint64 imageLocation)
 
 
 
-    for (bad_int64 i = 0; i < PTRS_PER_PMD; ++i)
+    for (i64 i = 0; i < PTRS_PER_PMD; ++i)
     {
         if (pmdPresent(pmd[i]))
         {
-            if ((bad_int64)(pmdValue(pmd[i]) + delta) >= 0)
+            if ((i64)(pmdValue(pmd[i]) + delta) >= 0)
             {
                 setPmd(&pmd[i], pmdValue(pmd[i]) + delta);
             }
@@ -465,7 +465,7 @@ NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    bad_uint64 videoRamPagetablePages;
+    u64 videoRamPagetablePages;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -482,7 +482,7 @@ NgosStatus adaptVideoRamPageTable(BootParams *params, PGD *pgd)
     return addVideoRamIdentityMap(pgd, params->screens[0]->mode->frameBufferBase, params->screens[0]->mode->frameBufferBase + params->screens[0]->mode->frameBufferSize, videoRamPagetablePages);
 }
 
-NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
+NgosStatus adaptLastResortPageTable(u64 imageLocation, PGD *pgd)
 {
     EARLY_LT((" | imageLocation = 0x%p, pgd = 0x%p", imageLocation, pgd));
 
@@ -502,7 +502,7 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    bad_uint64 dynamicPagetablePages;
+    u64 dynamicPagetablePages;
 
     // Ignore CppAlignmentVerifier [BEGIN]
     asm volatile(
@@ -514,14 +514,14 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
 
 
 
-    bad_uint64 pgdId = pgdIndex(imageLocation);
+    u64 pgdId = pgdIndex(imageLocation);
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-    bad_uint64 p4dId = p4dIndex(imageLocation);
+    u64 p4dId = p4dIndex(imageLocation);
 #endif
 
-    bad_uint64 pudId = pudIndex(imageLocation);
-    bad_uint64 pmdId = pmdIndex(imageLocation);
+    u64 pudId = pudIndex(imageLocation);
+    u64 pmdId = pmdIndex(imageLocation);
 
 
 
@@ -546,10 +546,10 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
     {
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
         p4d = (P4D *)allocateDynamicPage(dynamicPagetablePages);
-        setPgd(&pgd[pgdId], (bad_uint64)p4d | KERNEL_PAGE_TABLE_FLAGS);
+        setPgd(&pgd[pgdId], (u64)p4d | KERNEL_PAGE_TABLE_FLAGS);
 #else
         pud = (PUD *)allocateDynamicPage(dynamicPagetablePages);
-        setPgd(&pgd[pgdId], (bad_uint64)pud | KERNEL_PAGE_TABLE_FLAGS);
+        setPgd(&pgd[pgdId], (u64)pud | KERNEL_PAGE_TABLE_FLAGS);
 #endif
     }
 
@@ -563,7 +563,7 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
     else
     {
         pud = (PUD *)allocateDynamicPage(dynamicPagetablePages);
-        setP4d(&p4d[p4dId], (bad_uint64)pud | KERNEL_PAGE_TABLE_FLAGS);
+        setP4d(&p4d[p4dId], (u64)pud | KERNEL_PAGE_TABLE_FLAGS);
     }
 #endif
 
@@ -576,7 +576,7 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
     else
     {
         pmd = (PMD *)allocateDynamicPage(dynamicPagetablePages);
-        setPud(&pud[pudId], (bad_uint64)pmd | KERNEL_PAGE_TABLE_FLAGS);
+        setPud(&pud[pudId], (u64)pmd | KERNEL_PAGE_TABLE_FLAGS);
     }
 
 
@@ -600,7 +600,7 @@ NgosStatus adaptLastResortPageTable(bad_uint64 imageLocation, PGD *pgd)
 }
 
 CPP_EXTERN_C
-NgosStatus adaptPageTable(bad_uint64 imageLocation, BootParams *params)
+NgosStatus adaptPageTable(u64 imageLocation, BootParams *params)
 {
     // We can't output at the moment
     // EARLY_LT((" | imageLocation = 0x%p, params = 0x%p", imageLocation, params)); // Commented to avoid error because Console is uninitialized
@@ -629,7 +629,7 @@ NgosStatus adaptPageTable(bad_uint64 imageLocation, BootParams *params)
 
 
     // HACK: Temporary fix for PIE. Try to find another solution
-    // PGD *pgd = (PGD *)((bad_uint64)&early_pagetable + imageLocation);
+    // PGD *pgd = (PGD *)((u64)&early_pagetable + imageLocation);
 
     PGD *pgd;
 

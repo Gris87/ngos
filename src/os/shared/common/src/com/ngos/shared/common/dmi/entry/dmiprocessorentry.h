@@ -41,9 +41,9 @@ struct DmiProcessorEntry
     DmiProcessorId                       processorId;
     DmiStringId                          processorVersion;
     DmiProcessorVoltage                  voltage;
-    bad_uint16                                  externalClock;
-    bad_uint16                                  maxSpeed;
-    bad_uint16                                  currentSpeed;
+    u16                                  externalClock;
+    u16                                  maxSpeed;
+    u16                                  currentSpeed;
     DmiProcessorStatusAndSocketPopulated processorStatusAndSocketPopulated;
     DmiProcessorUpgrade                  processorUpgrade;
 } __attribute__((packed));
@@ -52,9 +52,9 @@ struct DmiProcessorEntry
 
 struct DmiProcessorEntryV21: public DmiProcessorEntry
 {
-    bad_uint16 l1CacheHandle;
-    bad_uint16 l2CacheHandle;
-    bad_uint16 l3CacheHandle;
+    u16 l1CacheHandle;
+    u16 l2CacheHandle;
+    u16 l3CacheHandle;
 } __attribute__((packed));
 
 
@@ -70,9 +70,9 @@ struct DmiProcessorEntryV23: public DmiProcessorEntryV21
 
 struct DmiProcessorEntryV25: public DmiProcessorEntryV23
 {
-    bad_uint8                               coreCount;
-    bad_uint8                               enabledCoreCount;
-    bad_uint8                               threadCount;
+    u8                               coreCount;
+    u8                               enabledCoreCount;
+    u8                               threadCount;
     DmiProcessorCharacteristicsFlags processorCharacteristics;
 } __attribute__((packed));
 
@@ -87,9 +87,9 @@ struct DmiProcessorEntryV26: public DmiProcessorEntryV25
 
 struct DmiProcessorEntryV30: public DmiProcessorEntryV26
 {
-    bad_uint16 coreCount2;
-    bad_uint16 enabledCoreCount2;
-    bad_uint16 threadCount2;
+    u16 coreCount2;
+    u16 enabledCoreCount2;
+    u16 threadCount2;
 } __attribute__((packed));
 
 

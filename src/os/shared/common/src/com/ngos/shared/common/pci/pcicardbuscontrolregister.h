@@ -11,24 +11,24 @@
 
 struct PciCardBusControlRegister
 {
-    bad_uint32                    cardBusSocket;
-    bad_uint8                     capabilitiesPointer;
-    bad_uint8                     __reserved;
+    u32                    cardBusSocket;
+    u8                     capabilitiesPointer;
+    u8                     __reserved;
     PciStatus              secondaryStatus;
-    bad_uint8                     pciBusNumber;
-    bad_uint8                     cardBusBusNumber;
-    bad_uint8                     subordinateBusNumber;
-    bad_uint8                     cardBusLatencyTimer;
-    bad_uint32                    memoryBase0;
-    bad_uint32                    memoryLimit0;
-    bad_uint32                    memoryBase1;
-    bad_uint32                    memoryLimit1;
-    bad_uint32                    ioBase0;
-    bad_uint32                    ioLimit0;
-    bad_uint32                    ioBase1;
-    bad_uint32                    ioLimit1;
-    bad_uint8                     interruptLine;
-    bad_uint8                     interruptPin;
+    u8                     pciBusNumber;
+    u8                     cardBusBusNumber;
+    u8                     subordinateBusNumber;
+    u8                     cardBusLatencyTimer;
+    u32                    memoryBase0;
+    u32                    memoryLimit0;
+    u32                    memoryBase1;
+    u32                    memoryLimit1;
+    u32                    ioBase0;
+    u32                    ioLimit0;
+    u32                    ioBase1;
+    u32                    ioLimit1;
+    u8                     interruptLine;
+    u8                     interruptPin;
     PciCardBusControlFlags bridgeControl;
 };
 

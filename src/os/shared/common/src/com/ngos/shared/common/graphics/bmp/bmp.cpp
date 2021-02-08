@@ -11,7 +11,7 @@
 
 
 
-NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
+NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 {
     COMMON_LT((" | data = 0x%p, size = %u, image = 0x%p", data, size, image));
 
@@ -19,7 +19,7 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
     COMMON_ASSERT(size > 0, "size is zero",  NgosStatus::ASSERTION);
     COMMON_ASSERT(image,    "image is null", NgosStatus::ASSERTION);
 
-    COMMON_ASSERT(*(bad_uint16 *)&data[0] == BMP_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
+    COMMON_ASSERT(*(u16 *)&data[0] == BMP_HEADER_SIGNATURE, "data is invalid", NgosStatus::ASSERTION);
 
 
 
@@ -56,7 +56,7 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
 
 
-    BmpInformationHeader *bmpInfoHeader = (BmpInformationHeader *)((bad_uint64)bmpHeader + sizeof(BmpHeader));
+    BmpInformationHeader *bmpInfoHeader = (BmpInformationHeader *)((address_t)bmpHeader + sizeof(BmpHeader));
 
     COMMON_LVVV(("bmpInfoHeader->headerSize        = %u", bmpInfoHeader->headerSize));
     COMMON_LVVV(("bmpInfoHeader->width             = %u", bmpInfoHeader->width));
@@ -89,10 +89,10 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
 
 
-    bad_uint16 imageOffset  = bmpHeader->imageOffset;
-    bad_uint32 width        = bmpInfoHeader->width;
-    bad_uint32 height       = bmpInfoHeader->height;
-    bad_uint16 bitsPerPixel = bmpInfoHeader->bitsPerPixel;
+    u16 imageOffset  = bmpHeader->imageOffset;
+    u32 width        = bmpInfoHeader->width;
+    u32 height       = bmpInfoHeader->height;
+    u16 bitsPerPixel = bmpInfoHeader->bitsPerPixel;
 
 
 
@@ -113,7 +113,7 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
 
 
-    bad_uint64 stride;
+    u64 stride;
 
     switch (bitsPerPixel)
     {
@@ -150,14 +150,14 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
 
 
-    BmpColorMap *colorMap  = (BmpColorMap *)((bad_uint64)bmpInfoHeader + sizeof(BmpInformationHeader));
-    bad_uint8          *imageData = (bad_uint8 *)((bad_uint64)bmpHeader + imageOffset);
+    BmpColorMap *colorMap  = (BmpColorMap *)((address_t)bmpInfoHeader + sizeof(BmpInformationHeader));
+    u8          *imageData = (u8 *)((address_t)bmpHeader + imageOffset);
     RgbPixel    *pixelData = (*image)->getRgbBuffer();
-    bad_uint8           byteValue = 0;
+    u8           byteValue = 0;
 
-    for (bad_int64 y = height - 1; y >= 0; --y)
+    for (i64 y = height - 1; y >= 0; --y)
     {
-        bad_uint8 *imageByte =  imageData;
+        u8 *imageByte =  imageData;
         imageData     += stride;
 
         RgbPixel *pixel = pixelData + y * width;
@@ -166,9 +166,9 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
         {
             case 1:
             {
-                for (bad_int64 x = 0; x < width; ++x)
+                for (i64 x = 0; x < width; ++x)
                 {
-                    bad_uint8 index = x & 0x07;
+                    u8 index = x & 0x07;
 
                     if (index == 0)
                     {
@@ -191,13 +191,13 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
             case 4:
             {
-                for (bad_int64 x = 0; x <= width - 2; x += 2)
+                for (i64 x = 0; x <= width - 2; x += 2)
                 {
                     byteValue = *imageByte;
                     ++imageByte;
 
-                    bad_uint8 index  = byteValue >> 4;
-                    bad_uint8 index2 = byteValue & 0x0F;
+                    u8 index  = byteValue >> 4;
+                    u8 index2 = byteValue & 0x0F;
 
 
 
@@ -221,7 +221,7 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
                     byteValue = *imageByte;
                     ++imageByte;
 
-                    bad_uint8 index = byteValue >> 4;
+                    u8 index = byteValue >> 4;
 
 
 
@@ -236,9 +236,9 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
             case 8:
             {
-                for (bad_int64 x = 0; x < width; ++x)
+                for (i64 x = 0; x < width; ++x)
                 {
-                    bad_uint8 index = *imageByte;
+                    u8 index = *imageByte;
                     ++imageByte;
 
 
@@ -254,7 +254,7 @@ NgosStatus Bmp::loadImage(bad_uint8 *data, bad_uint64 size, Image **image)
 
             case 24:
             {
-                for (bad_int64 x = 0; x < width; ++x)
+                for (i64 x = 0; x < width; ++x)
                 {
                     pixel->blue  = *imageByte;  ++imageByte;
                     pixel->green = *imageByte;  ++imageByte;

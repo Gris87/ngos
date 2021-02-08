@@ -11,19 +11,19 @@
 
 
 
-#define CONST_BIT_ADDRESS(address, bit) (bad_uint8 *)((bad_uint64)(address) + ((bit) / 8))
-#define CONST_BIT_IN_bad_uint8(bit)            (1ULL << ((bit) & 7))
+#define CONST_BIT_ADDRESS(address, bit) (u8 *)((address_t)(address) + ((bit) / 8))
+#define CONST_BIT_IN_U8(bit)            (1ULL << ((bit) & 7))
 
 
 
 class BitUtils
 {
 public:
-    static inline bool test(bad_uint8 *address, bad_uint64 bit)
+    static inline bool test(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
-            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_bad_uint8(bit);
+            return *CONST_BIT_ADDRESS(address, bit) & CONST_BIT_IN_U8(bit);
         }
         else
         {
@@ -31,7 +31,7 @@ public:
         }
     }
 
-    static inline NgosStatus set(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus set(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -41,7 +41,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" (CONST_BIT_IN_bad_uint8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -55,7 +55,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus setSafe(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus setSafe(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -65,7 +65,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" (CONST_BIT_IN_bad_uint8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -79,7 +79,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus clear(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus clear(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -89,7 +89,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" ((bad_uint8)~CONST_BIT_IN_bad_uint8(bit))           // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))           // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -103,7 +103,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus clearSafe(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus clearSafe(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -113,7 +113,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" ((bad_uint8)~CONST_BIT_IN_bad_uint8(bit))           // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" ((u8)~CONST_BIT_IN_U8(bit))           // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -127,7 +127,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus invert(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus invert(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -137,7 +137,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" (CONST_BIT_IN_bad_uint8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -151,7 +151,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus invertSafe(bad_uint8 *address, bad_uint64 bit)
+    static inline NgosStatus invertSafe(u8 *address, u64 bit)
     {
         if (IS_CONSTANT(bit))
         {
@@ -161,7 +161,7 @@ public:
                     :                                             // Output parameters
                         "+m" (*CONST_BIT_ADDRESS(address, bit))   // 'm' - use memory, '+' - read and write
                     :                                             // Input parameters
-                        "i" (CONST_BIT_IN_bad_uint8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
+                        "i" (CONST_BIT_IN_U8(bit))                // 'i' - integer constant // Ignore CppSingleCharVerifier
                     :                                             // Clobber list
                         "memory"                                  // Inform gcc that memory will be changed
             );
@@ -175,7 +175,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline bad_uint8 findFirstBit16(bad_uint16 value)
+    static inline u8 findFirstBit16(u16 value)
     {
         if (value == 0)
         {
@@ -184,7 +184,7 @@ public:
 
 
 
-        bad_uint16 res;
+        u16 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -199,7 +199,7 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findFirstBit32(bad_uint32 value)
+    static inline u8 findFirstBit32(u32 value)
     {
         if (value == 0)
         {
@@ -208,7 +208,7 @@ public:
 
 
 
-        bad_uint32 res;
+        u32 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -223,7 +223,7 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findFirstBit64(bad_uint64 value)
+    static inline u8 findFirstBit64(u64 value)
     {
         if (value == 0)
         {
@@ -232,7 +232,7 @@ public:
 
 
 
-        bad_uint64 res;
+        u64 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -247,16 +247,16 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findFirstZero16(bad_uint16 value)
+    static inline u8 findFirstZero16(u16 value)
     {
-        if (value == (bad_uint16)-1LL)
+        if (value == (u16)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint16 res;
+        u16 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -264,23 +264,23 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint16)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u16)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_uint8 findFirstZero32(bad_uint32 value)
+    static inline u8 findFirstZero32(u32 value)
     {
-        if (value == (bad_uint32)-1LL)
+        if (value == (u32)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint32 res;
+        u32 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -288,23 +288,23 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint32)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u32)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_uint8 findFirstZero64(bad_uint64 value)
+    static inline u8 findFirstZero64(u64 value)
     {
-        if (value == (bad_uint64)-1LL)
+        if (value == (u64)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint64 res;
+        u64 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -312,14 +312,14 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint64)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u64)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_uint8 findLastBit16(bad_uint16 value)
+    static inline u8 findLastBit16(u16 value)
     {
         if (value == 0)
         {
@@ -328,7 +328,7 @@ public:
 
 
 
-        bad_uint16 res;
+        u16 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -343,7 +343,7 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findLastBit32(bad_uint32 value)
+    static inline u8 findLastBit32(u32 value)
     {
         if (value == 0)
         {
@@ -352,7 +352,7 @@ public:
 
 
 
-        bad_uint32 res;
+        u32 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -367,7 +367,7 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findLastBit64(bad_uint64 value)
+    static inline u8 findLastBit64(u64 value)
     {
         if (value == 0)
         {
@@ -376,7 +376,7 @@ public:
 
 
 
-        bad_uint64 res;
+        u64 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -391,16 +391,16 @@ public:
         return res + 1;
     }
 
-    static inline bad_uint8 findLastZero16(bad_uint16 value)
+    static inline u8 findLastZero16(u16 value)
     {
-        if (value == (bad_uint16)-1LL)
+        if (value == (u16)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint16 res;
+        u16 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -408,23 +408,23 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint16)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u16)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_uint8 findLastZero32(bad_uint32 value)
+    static inline u8 findLastZero32(u32 value)
     {
-        if (value == (bad_uint32)-1LL)
+        if (value == (u32)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint32 res;
+        u32 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -432,23 +432,23 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint32)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u32)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_uint8 findLastZero64(bad_uint64 value)
+    static inline u8 findLastZero64(u64 value)
     {
-        if (value == (bad_uint64)-1LL)
+        if (value == (u64)-1LL)
         {
             return 0;
         }
 
 
 
-        bad_uint64 res;
+        u64 res;
 
         // Ignore CppAlignmentVerifier [BEGIN]
         asm volatile(
@@ -456,46 +456,46 @@ public:
                 :                     // Output parameters
                     "=r" (res)        // 'r' - any general register, '=' - write only
                 :                     // Input parameters
-                    "r" ((bad_uint64)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
+                    "r" ((u64)~value) // 'r' - any general register // Ignore CppSingleCharVerifier
         );
         // Ignore CppAlignmentVerifier [END]
 
         return res + 1;
     }
 
-    static inline bad_int8 getCountOrder16(bad_uint16 value)
+    static inline i8 getCountOrder16(u16 value)
     {
         if (IS_POWER_OF_2(value))
         {
-            return (bad_int8)(findLastBit16(value) - 1);
+            return (i8)(findLastBit16(value) - 1);
         }
         else
         {
-            return (bad_int8)findLastBit16(value);
+            return (i8)findLastBit16(value);
         }
     }
 
-    static inline bad_int8 getCountOrder32(bad_uint32 value)
+    static inline i8 getCountOrder32(u32 value)
     {
         if (IS_POWER_OF_2(value))
         {
-            return (bad_int8)(findLastBit32(value) - 1);
+            return (i8)(findLastBit32(value) - 1);
         }
         else
         {
-            return (bad_int8)findLastBit32(value);
+            return (i8)findLastBit32(value);
         }
     }
 
-    static inline bad_int8 getCountOrder64(bad_uint64 value)
+    static inline i8 getCountOrder64(u64 value)
     {
         if (IS_POWER_OF_2(value))
         {
-            return (bad_int8)(findLastBit64(value) - 1);
+            return (i8)(findLastBit64(value) - 1);
         }
         else
         {
-            return (bad_int8)findLastBit64(value);
+            return (i8)findLastBit64(value);
         }
     }
 };

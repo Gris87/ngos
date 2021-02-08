@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 dmi_bios_characteristics_system_reserved_flags;
+typedef u8 dmi_bios_characteristics_system_reserved_flags;
 
 enum class DmiBiosCharacteristicsSystemReservedFlag: dmi_bios_characteristics_system_reserved_flags
 {

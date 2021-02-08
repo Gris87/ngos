@@ -13,11 +13,11 @@ struct PciMessageSignaledInterruptsExtendedTableOffsetBirUnion
     {
         struct
         {
-            bad_uint32 baseAddressIndicator: 3;
-            bad_uint32 tableOffset:          29;
+            u32 baseAddressIndicator: 3;
+            u32 tableOffset:          29;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

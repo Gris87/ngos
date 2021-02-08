@@ -14,12 +14,12 @@ extern PMD fixmap_pagetable_level2[PTRS_PER_PMD]; // fixmap_pagetable_level2 dec
 
 
 
-bad_uint64 IORemap::sSlotsAddresses[FIX_BITMAP_SLOTS];
-bad_uint64 IORemap::sSlotsSizes[FIX_BITMAP_SLOTS];
-bad_uint8  IORemap::sPoolOfSlots[FIX_BITMAP_SLOTS];
-bad_uint8  IORemap::sLastUsedSlot;
-bad_uint8  IORemap::sLastReleasedSlot;
-bad_uint8  IORemap::sSlotsAvailable;
+u64 IORemap::sSlotsAddresses[FIX_BITMAP_SLOTS];
+u64 IORemap::sSlotsSizes[FIX_BITMAP_SLOTS];
+u8  IORemap::sPoolOfSlots[FIX_BITMAP_SLOTS];
+u8  IORemap::sLastUsedSlot;
+u8  IORemap::sLastReleasedSlot;
+u8  IORemap::sSlotsAvailable;
 PTE IORemap::sFixmapPage[PTRS_PER_PTE] __attribute__((aligned(PAGE_SIZE)));
 
 
@@ -30,7 +30,7 @@ NgosStatus IORemap::init()
 
 
 
-    for (bad_int64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+    for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
     {
         sPoolOfSlots[i] = i;
 
@@ -90,7 +90,7 @@ NgosStatus IORemap::addPmdForFixmap()
     // Validation
     {
 #if NGOS_BUILD_COMMON_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_COMMON_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-        for (bad_int64 i = 0; i < PTRS_PER_PMD; ++i)
+        for (i64 i = 0; i < PTRS_PER_PMD; ++i)
         {
             if (pmdValue(fixmap_pagetable_level2[i]))
             {
@@ -138,13 +138,13 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
     --sSlotsAvailable;
     sLastUsedSlot = (sLastUsedSlot + 1) % FIX_BITMAP_SLOTS;
 
-    bad_uint8 slot = sPoolOfSlots[sLastUsedSlot];
+    u8 slot = sPoolOfSlots[sLastUsedSlot];
 
 
 
-    bad_uint64 start         = ROUND_DOWN(address, PAGE_SIZE);
-    bad_uint64 end           = ROUND_UP(address + size, PAGE_SIZE);
-    bad_uint8  numberOfPages = (end - start) / PAGE_SIZE;
+    u64 start         = ROUND_DOWN(address, PAGE_SIZE);
+    u64 end           = ROUND_UP(address + size, PAGE_SIZE);
+    u8  numberOfPages = (end - start) / PAGE_SIZE;
 
     COMMON_LVVV(("sLastUsedSlot   = %u",        sLastUsedSlot));
     COMMON_LVVV(("sSlotsAvailable = %u",        sSlotsAvailable));
@@ -161,9 +161,9 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
 
 
 
-    bad_uint16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
+    u16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
 
-    for (bad_int64 i = 0; i < numberOfPages; ++i)
+    for (i64 i = 0; i < numberOfPages; ++i)
     {
         COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) == 0, NgosStatus::ASSERTION);
 
@@ -172,9 +172,9 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
 
 
 
-    bad_uint64 fixedAddress = FIX_ADDRESS_BOTTOM + startPteForSlot * PAGE_SIZE + (address & ~PAGE_MASK);
+    u64 fixedAddress = FIX_ADDRESS_BOTTOM + startPteForSlot * PAGE_SIZE + (address & ~PAGE_MASK);
 
-    *(bad_uint64 *)res = fixedAddress;
+    *(u64 *)res = fixedAddress;
 
     COMMON_LVV(("Physical address (0x%p, %u) fixed to virtual address 0x%p", address, size, fixedAddress));
 
@@ -211,7 +211,7 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
 
 
-    bad_uint8 slot = (address - FIX_ADDRESS_BOTTOM) / (NUMBER_OF_FIX_BITMAPS * PAGE_SIZE);
+    u8 slot = (address - FIX_ADDRESS_BOTTOM) / (NUMBER_OF_FIX_BITMAPS * PAGE_SIZE);
 
     if (sSlotsAddresses[slot] != address || sSlotsSizes[slot] != size)
     {
@@ -231,9 +231,9 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
 
 
-    bad_uint64 start         = ROUND_DOWN(address, PAGE_SIZE);
-    bad_uint64 end           = ROUND_UP(address + size, PAGE_SIZE);
-    bad_uint8  numberOfPages = (end - start) / PAGE_SIZE;
+    u64 start         = ROUND_DOWN(address, PAGE_SIZE);
+    u64 end           = ROUND_UP(address + size, PAGE_SIZE);
+    u8  numberOfPages = (end - start) / PAGE_SIZE;
 
     COMMON_LVVV(("sLastReleasedSlot = %u",        sLastReleasedSlot));
     COMMON_LVVV(("sSlotsAvailable   = %u",        sSlotsAvailable));
@@ -250,15 +250,15 @@ NgosStatus IORemap::removeFixedMapping(address_t address, u64 size)
 
 
 
-    bad_uint16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
+    u16 startPteForSlot = slot * NUMBER_OF_FIX_BITMAPS;
 
-    for (bad_int64 i = 0; i < numberOfPages; ++i)
+    for (i64 i = 0; i < numberOfPages; ++i)
     {
         COMMON_TEST_ASSERT(pteValue(sFixmapPage[startPteForSlot + i]) != 0, NgosStatus::ASSERTION);
 
         setPte(&sFixmapPage[startPteForSlot + i], 0);
 
-        COMMON_ASSERT_EXECUTION(invlpg((bad_uint8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(invlpg((u8 *)(start + i * PAGE_SIZE)), NgosStatus::ASSERTION);
     }
 
 

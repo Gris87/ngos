@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice101E1960: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice101E1960: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_101E0471 = 0x101E0471,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(PciSubDevice101E1960 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }

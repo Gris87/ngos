@@ -12,8 +12,8 @@ extern void *_brk_end;   // _brk_end declared in linker.ld file // Ignore CppEqu
 
 
 
-bad_uint64 BRK::sBegin;
-bad_uint64 BRK::sEnd;
+u64 BRK::sBegin;
+u64 BRK::sEnd;
 
 
 
@@ -23,7 +23,7 @@ NgosStatus BRK::init()
 
 
 
-    sBegin = (bad_uint64)&_brk_begin;
+    sBegin = (u64)&_brk_begin;
     sEnd   = sBegin;
 
 
@@ -35,8 +35,8 @@ NgosStatus BRK::init()
 
 
 
-        COMMON_TEST_ASSERT(sBegin == (bad_uint64)&_brk_begin, NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(sEnd   == (bad_uint64)&_brk_begin, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sBegin == (u64)&_brk_begin, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(sEnd   == (u64)&_brk_begin, NgosStatus::ASSERTION);
     }
 
 
@@ -44,7 +44,7 @@ NgosStatus BRK::init()
     return NgosStatus::OK;
 }
 
-NgosStatus BRK::allocate(bad_uint64 size, bad_uint64 align, bad_uint8 **result)
+NgosStatus BRK::allocate(u64 size, u64 align, u8 **result)
 {
     COMMON_LT((" | size = %u, align = %u, result = 0x%p", size, align, result));
 
@@ -56,9 +56,9 @@ NgosStatus BRK::allocate(bad_uint64 size, bad_uint64 align, bad_uint8 **result)
 
 
     sEnd = ROUND_UP(sEnd, align);
-    COMMON_TEST_ASSERT(sEnd + size <= (bad_uint64)&_brk_end, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(sEnd + size <= (u64)&_brk_end, NgosStatus::ASSERTION);
 
-    *result = (bad_uint8 *)sEnd;
+    *result = (u8 *)sEnd;
 
     sEnd += size;
 

@@ -20,25 +20,25 @@ public:
     TestBase(TestType type, uefi_ap_procedure procedure); // TEST: NO
     ~TestBase(); // TEST: NO
 
-    NgosStatus reset(bad_uint64 start, bad_uint64 end, bad_int64 testSize); // TEST: NO
+    NgosStatus reset(address_t start, address_t end, i64 testSize); // TEST: NO
 
     uefi_ap_procedure getProcedure() const; // TEST: NO
 
-    NgosStatus setScore(bad_uint64 score); // TEST: NO
-    bad_uint64 getScore() const; // TEST: NO
+    NgosStatus setScore(i64 score); // TEST: NO
+    i64 getScore() const; // TEST: NO
 
-    NgosStatus setAverageSpeed(bad_uint64 speed); // TEST: NO
-    bad_uint64 getAverageSpeed() const; // TEST: NO
+    NgosStatus setAverageSpeed(i64 speed); // TEST: NO
+    i64 getAverageSpeed() const; // TEST: NO
 
     bool isCompleted() const; // TEST: NO
 
-    bad_uint64 getRegionStart() const; // TEST: NO
+    address_t getRegionStart() const; // TEST: NO
 
-    bad_uint64 getRegionEnd() const; // TEST: NO
+    address_t getRegionEnd() const; // TEST: NO
 
-    bad_int64 getTestSize() const; // TEST: NO
+    i64 getTestSize() const; // TEST: NO
 
-    inline NgosStatus setProgress(bad_int64 progress) // TEST: NO
+    inline NgosStatus setProgress(i64 progress) // TEST: NO
     {
         // UEFI_LT((" | progress = %d", progress)); // Commented to avoid bad looking logs
 
@@ -51,37 +51,37 @@ public:
         return NgosStatus::OK;
     }
 
-    bad_int64 getProgress() const; // TEST: NO
+    i64 getProgress() const; // TEST: NO
 
-    NgosStatus setHandledProgress(bad_int64 progress); // TEST: NO
-    bad_int64 getHandledProgress() const; // TEST: NO
+    NgosStatus setHandledProgress(i64 progress); // TEST: NO
+    i64 getHandledProgress() const; // TEST: NO
 
-    NgosStatus setMaximumSpeed(bad_uint64 speed); // TEST: NO
-    bad_uint64 getMaximumSpeed() const; // TEST: NO
+    NgosStatus setMaximumSpeed(i64 speed); // TEST: NO
+    i64 getMaximumSpeed() const; // TEST: NO
 
-    NgosStatus setStartTsc(bad_uint64 tsc); // TEST: NO
-    bad_uint64 getStartTsc() const; // TEST: NO
+    NgosStatus setStartTsc(u64 tsc); // TEST: NO
+    u64 getStartTsc() const; // TEST: NO
 
-    NgosStatus setIntermediateTsc(bad_uint64 tsc); // TEST: NO
-    bad_uint64 getIntermediateTsc() const; // TEST: NO
+    NgosStatus setIntermediateTsc(u64 tsc); // TEST: NO
+    u64 getIntermediateTsc() const; // TEST: NO
 
 private:
     uefi_ap_procedure mProcedure;
-    bad_uint64               mScore;
-    bad_uint64               mAverageSpeed;
-    bad_uint64               mRegionStart;
-    bad_uint64               mRegionEnd;
-    bad_int64               mTestSize;
-    bad_int64               mProgress;
-    bad_int64               mHandledProgress;
-    bad_uint64               mMaximumSpeed;
-    bad_uint64               mStartTsc;
-    bad_uint64               mIntermediateTsc;
+    i64               mScore;
+    i64               mAverageSpeed;
+    address_t         mRegionStart;
+    address_t         mRegionEnd;
+    i64               mTestSize;
+    i64               mProgress;
+    i64               mHandledProgress;
+    i64               mMaximumSpeed;
+    u64               mStartTsc;
+    u64               mIntermediateTsc;
 };
 
 
 
-extern TestBase* memoryTests[(bad_uint64)TestType::MAXIMUM]; // memoryTests declared in testbase.cpp file
+extern TestBase* memoryTests[(u64)TestType::MAXIMUM]; // memoryTests declared in testbase.cpp file
 
 
 

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExtendedCapabilityType: bad_uint16
+enum class PciExtendedCapabilityType: u16
 {
     NONE                                              = 0,
     ADVANCED_ERROR_REPORTING                          = 1,
@@ -83,7 +83,7 @@ inline const char8* enumToFullString(PciExtendedCapabilityType type) // TEST: NO
 
     static char8 res[59];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)type, enumToString(type));
+    sprintf(res, "0x%04X (%s)", (u16)type, enumToString(type));
 
     return res;
 }

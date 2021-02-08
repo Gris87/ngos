@@ -16,23 +16,23 @@ public:
     static NgosStatus init(); // TEST: NO
     static NgosStatus cleanUp(); // TEST: NO
 
-    static bad_uint8 getAbsolutePointersCount(); // TEST: NO
-    static UefiAbsolutePointerProtocol* getAbsolutePointer(bad_uint8 index); // TEST: NO
-    static bad_uint8 getSimplePointersCount(); // TEST: NO
-    static UefiSimplePointerProtocol* getSimplePointer(bad_uint8 index); // TEST: NO
+    static u8 getAbsolutePointersCount(); // TEST: NO
+    static UefiAbsolutePointerProtocol* getAbsolutePointer(u8 index); // TEST: NO
+    static u8 getSimplePointersCount(); // TEST: NO
+    static UefiSimplePointerProtocol* getSimplePointer(u8 index); // TEST: NO
 
 private:
     static NgosStatus initAbsolutePointerDevices(); // TEST: NO
-    static NgosStatus initAbsolutePointerDevices(Guid *protocol, bad_uint64 size); // TEST: NO
-    static NgosStatus initAbsolutePointerDevices(Guid *protocol, bad_uint64 size, uefi_handle *pointersHandles); // TEST: NO
+    static NgosStatus initAbsolutePointerDevices(Guid *protocol, u64 size); // TEST: NO
+    static NgosStatus initAbsolutePointerDevices(Guid *protocol, u64 size, uefi_handle *pointersHandles); // TEST: NO
     static NgosStatus initSimplePointerDevices(); // TEST: NO
-    static NgosStatus initSimplePointerDevices(Guid *protocol, bad_uint64 size); // TEST: NO
-    static NgosStatus initSimplePointerDevices(Guid *protocol, bad_uint64 size, uefi_handle *pointersHandles); // TEST: NO
+    static NgosStatus initSimplePointerDevices(Guid *protocol, u64 size); // TEST: NO
+    static NgosStatus initSimplePointerDevices(Guid *protocol, u64 size, uefi_handle *pointersHandles); // TEST: NO
 
 private:
-    static bad_uint8                            sAbsolutePointersCount;
+    static u8                            sAbsolutePointersCount;
     static UefiAbsolutePointerProtocol **sAbsolutePointers;
-    static bad_uint8                            sSimplePointersCount;
+    static u8                            sSimplePointersCount;
     static UefiSimplePointerProtocol   **sSimplePointers;
 };
 

@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice1507: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice1507: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0001 = 0x0001,
@@ -59,7 +59,7 @@ inline const char8* enumToFullString(PciDevice1507 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -78,7 +78,7 @@ inline const char8* enumToHumanString(PciDevice1507 device) // TEST: NO
         case PciDevice1507::DEVICE_0002: return "MPC106 [Grackle]";
         case PciDevice1507::DEVICE_0003: return "MPC8240 [Kahlua]";
         case PciDevice1507::DEVICE_0100: return "MC145575 [HFC-PCI]";
-        case PciDevice1507::DEVICE_0431: return "KTbad_int829c 100VG";
+        case PciDevice1507::DEVICE_0431: return "KTi829c 100VG";
         case PciDevice1507::DEVICE_4801: return "Raven";
         case PciDevice1507::DEVICE_4802: return "Falcon";
         case PciDevice1507::DEVICE_4803: return "Hawk";

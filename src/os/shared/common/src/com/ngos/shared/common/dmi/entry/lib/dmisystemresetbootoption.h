@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemResetBootOption: bad_uint8
+enum class DmiSystemResetBootOption: u8
 {
     NONE             = 0,
     OPERATION_SYSTEM = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiSystemResetBootOption option) // TEST: N
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)option, enumToString(option));
+    sprintf(res, "0x%02X (%s)", (u8)option, enumToString(option));
 
     return res;
 }

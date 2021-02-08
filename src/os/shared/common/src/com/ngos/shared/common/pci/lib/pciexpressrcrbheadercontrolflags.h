@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 pci_express_rcrb_header_control_flags;
+typedef u32 pci_express_rcrb_header_control_flags;
 
 enum class PciExpressRcrbHeaderControlFlag: pci_express_rcrb_header_control_flags
 {

@@ -89,10 +89,10 @@ NgosStatus TreeWidget::repaint()
 
     NinePatch *patch = mBackgroundImage->getNinePatch();
 
-    bad_uint16 paddingLeft;
-    bad_uint16 paddingTop;
-    bad_uint64 allowedWidth;
-    bad_uint64 allowedHeight;
+    u16 paddingLeft;
+    u16 paddingTop;
+    u64 allowedWidth;
+    u64 allowedHeight;
 
     if (patch)
     {
@@ -156,7 +156,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
 
                 if (parentNode)
                 {
-                    bad_int64 nodeIndex = mSelectedTreeNodeWidget->getNodeIndexInParent();
+                    i64 nodeIndex = mSelectedTreeNodeWidget->getNodeIndexInParent();
 
                     if (nodeIndex > 0)
                     {
@@ -210,9 +210,9 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
 
                     while (parentNode)
                     {
-                        bad_int64 nodeIndex = curNode->getNodeIndexInParent();
+                        i64 nodeIndex = curNode->getNodeIndexInParent();
 
-                        if (nodeIndex < (bad_int64)parentNode->getChildrenNodes().getSize() - 1)
+                        if (nodeIndex < (i64)parentNode->getChildrenNodes().getSize() - 1)
                         {
                             COMMON_ASSERT_EXECUTION(GUI::lockUpdates(),                                                          NgosStatus::ASSERTION);
                             COMMON_ASSERT_EXECUTION(setSelectedTreeNodeWidget(parentNode->getChildrenNodes().at(nodeIndex + 1)), NgosStatus::ASSERTION);
@@ -344,7 +344,7 @@ NgosStatus TreeWidget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus TreeWidget::onMouseScrollEvent(bad_int32 delta)
+NgosStatus TreeWidget::onMouseScrollEvent(i32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
@@ -352,9 +352,9 @@ NgosStatus TreeWidget::onMouseScrollEvent(bad_int32 delta)
 
 
 
-    bad_int64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
+    i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
 
-    if (positionY < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+    if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
     {
         positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
     }
@@ -381,8 +381,8 @@ NgosStatus TreeWidget::scrollToSelectedNode()
 
 
 
-    bad_int64 localPositionY  = mSelectedTreeNodeWidget->getPositionY();
-    bad_int64 globalPositionY = localPositionY + mScrollWrapperWidget->getPositionY();
+    i64 localPositionY  = mSelectedTreeNodeWidget->getPositionY();
+    i64 globalPositionY = localPositionY + mScrollWrapperWidget->getPositionY();
 
     if (globalPositionY < 0)
     {
@@ -398,11 +398,11 @@ NgosStatus TreeWidget::scrollToSelectedNode()
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
     else
-    if (globalPositionY + (bad_int64)mRowHeight > (bad_int64)mContentWrapperWidget->getHeight())
+    if (globalPositionY + (i64)mRowHeight > (i64)mContentWrapperWidget->getHeight())
     {
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, (bad_int64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, (i64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight), NgosStatus::ASSERTION);
 
         if (!GUI::getPressedWidget())
         {
@@ -425,7 +425,7 @@ NgosStatus TreeWidget::pageUp()
 
     if (mSelectedTreeNodeWidget)
     {
-        bad_uint64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+        u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
         if (visibleRow < 1)
         {
@@ -436,13 +436,13 @@ NgosStatus TreeWidget::pageUp()
 
         TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
 
-        for (bad_int64 i = 0; i < (bad_int64)visibleRow; ++i)
+        for (i64 i = 0; i < (i64)visibleRow; ++i)
         {
             TreeNodeWidget *parentNode = selectedTreeNodeWidget->getParentNode();
 
             if (parentNode)
             {
-                bad_int64 nodeIndex = selectedTreeNodeWidget->getNodeIndexInParent();
+                i64 nodeIndex = selectedTreeNodeWidget->getNodeIndexInParent();
 
                 if (nodeIndex > 0)
                 {
@@ -480,7 +480,7 @@ NgosStatus TreeWidget::pageUp()
 
         if (mScrollWrapperWidget->getHeight() > mContentWrapperWidget->getHeight())
         {
-            bad_int64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+            i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
 
             if (positionY > 0)
             {
@@ -515,7 +515,7 @@ NgosStatus TreeWidget::pageDown()
 
     if (mSelectedTreeNodeWidget)
     {
-        bad_uint64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+        u64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
         if (visibleRow < 1)
         {
@@ -526,7 +526,7 @@ NgosStatus TreeWidget::pageDown()
 
         TreeNodeWidget *selectedTreeNodeWidget = mSelectedTreeNodeWidget;
 
-        for (bad_int64 i = 0; i < (bad_int64)visibleRow; ++i)
+        for (i64 i = 0; i < (i64)visibleRow; ++i)
         {
             if (selectedTreeNodeWidget->isExpanded())
             {
@@ -539,9 +539,9 @@ NgosStatus TreeWidget::pageDown()
 
                 while (parentNode)
                 {
-                    bad_int64 nodeIndex = curNode->getNodeIndexInParent();
+                    i64 nodeIndex = curNode->getNodeIndexInParent();
 
-                    if (nodeIndex < (bad_int64)parentNode->getChildrenNodes().getSize() - 1)
+                    if (nodeIndex < (i64)parentNode->getChildrenNodes().getSize() - 1)
                     {
                         selectedTreeNodeWidget = parentNode->getChildrenNodes().at(nodeIndex + 1);
 
@@ -564,9 +564,9 @@ NgosStatus TreeWidget::pageDown()
 
         if (mScrollWrapperWidget->getHeight() > mContentWrapperWidget->getHeight())
         {
-            bad_int64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+            i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
 
-            if (positionY < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+            if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
             {
                 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
             }
@@ -614,9 +614,9 @@ NgosStatus TreeWidget::invalidateScrollWrapperWidget()
 
 
 
-    if (mScrollWrapperWidget->getPositionY() < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+    if (mScrollWrapperWidget->getPositionY() < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
     {
-        bad_int64 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+        i64 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
 
         if (positionY > 0)
         {
@@ -789,7 +789,7 @@ NgosStatus TreeWidget::setState(WidgetState state)
             {
                 if (mHighlightedTreeNodeWidget)
                 {
-                    bad_int64 currentTime = Time::currentTimestampInMilliseconds();
+                    i64 currentTime = Time::currentTimestampInMilliseconds();
 
                     if (mSelectedTreeNodeWidget != mHighlightedTreeNodeWidget)
                     {
@@ -880,7 +880,7 @@ WidgetState TreeWidget::getState() const
     return mState;
 }
 
-NgosStatus TreeWidget::setRowHeight(bad_uint64 height)
+NgosStatus TreeWidget::setRowHeight(u64 height)
 {
     COMMON_LT((" | height = %u", height));
 
@@ -899,7 +899,7 @@ NgosStatus TreeWidget::setRowHeight(bad_uint64 height)
     return NgosStatus::OK;
 }
 
-bad_uint64 TreeWidget::getRowHeight() const
+u64 TreeWidget::getRowHeight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

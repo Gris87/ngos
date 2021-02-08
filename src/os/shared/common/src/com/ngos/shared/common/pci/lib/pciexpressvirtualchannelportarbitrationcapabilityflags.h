@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 pci_express_virtual_channel_port_arbitration_capability_flags;
+typedef u8 pci_express_virtual_channel_port_arbitration_capability_flags;
 
 enum class PciExpressVirtualChannelPortArbitrationCapabilityFlag: pci_express_virtual_channel_port_arbitration_capability_flags
 {

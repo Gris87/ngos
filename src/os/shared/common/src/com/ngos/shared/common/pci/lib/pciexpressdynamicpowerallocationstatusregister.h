@@ -13,13 +13,13 @@ struct PciExpressDynamicPowerAllocationStatusRegister
     {
         struct
         {
-            bad_uint16 substateStatus         : 5;
-            bad_uint16 __reserved             : 3;
-            bad_uint16 substateControlEnabled : 1;
-            bad_uint16 __reserved2            : 7;
+            u16 substateStatus         : 5;
+            u16 __reserved             : 3;
+            u16 substateControlEnabled : 1;
+            u16 __reserved2            : 7;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_hyper_transport_error_handling_flags;
+typedef u16 pci_hyper_transport_error_handling_flags;
 
 enum class PciHyperTransportErrorHandlingFlag: pci_hyper_transport_error_handling_flags
 {

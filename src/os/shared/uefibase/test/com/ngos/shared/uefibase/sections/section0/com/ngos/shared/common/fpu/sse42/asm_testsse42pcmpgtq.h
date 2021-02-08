@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse42Pcmpgtq(bad_int64 *a, bad_int64 *b, bad_int64 *c);
+void testSse42Pcmpgtq(i64 *a, i64 *b, i64 *c);
 
 
 

@@ -10,11 +10,11 @@
 class Hex
 {
 public:
-    static NgosStatus toString(bad_uint8 *data, bad_int64 size, char8 *buffer, bad_int64 bufferSize, bool ellipsis);
-    static NgosStatus toString(bad_uint8 *data, bad_int64 size, char8 **buffer, bad_int64 maxBufferSize, bool ellipsis);
+    static NgosStatus toString(u8 *data, i64 size, char8 *buffer, i64 bufferSize, bool ellipsis);
+    static NgosStatus toString(u8 *data, i64 size, char8 **buffer, i64 maxBufferSize, bool ellipsis);
 
 private:
-    static bad_uint16 sHexChars[256];
+    static u16 sHexChars[256];
 };
 
 

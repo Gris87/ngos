@@ -10,7 +10,7 @@
 struct PciExtendedConfigurationSpace
 {
     PciExtendedCapabilityHeader capability;
-    bad_uint8                          data[3836];
+    u8                          data[3836];
 };
 
 

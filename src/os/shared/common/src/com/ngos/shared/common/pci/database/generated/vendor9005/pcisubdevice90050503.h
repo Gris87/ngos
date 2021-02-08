@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice90050503: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice90050503: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_101402BF = 0x101402BF,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(PciSubDevice90050503 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -62,9 +62,9 @@ inline const char8* enumToHumanString(PciSubDevice90050503 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice90050503::SUBDEVICE_101402BF: return "Quad Channel PCI-X DDR bad_uint320 SCSI RAID Adapter (571E)";
+        case PciSubDevice90050503::SUBDEVICE_101402BF: return "Quad Channel PCI-X DDR u320 SCSI RAID Adapter (571E)";
         case PciSubDevice90050503::SUBDEVICE_101402C3: return "PCI-X DDR 3Gb SAS RAID Adapter (572F)";
-        case PciSubDevice90050503::SUBDEVICE_101402D5: return "Quad Channel PCI-X DDR bad_uint320 SCSI RAID Adapter (571F)";
+        case PciSubDevice90050503::SUBDEVICE_101402D5: return "Quad Channel PCI-X DDR u320 SCSI RAID Adapter (571F)";
 
         default: return "Unknown device";
     }

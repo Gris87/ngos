@@ -24,7 +24,7 @@
 
 
 
-enum class PciDevice10B9: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice10B9: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0101 = 0x0101,
@@ -221,7 +221,7 @@ inline const char8* enumToFullString(PciDevice10B9 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -236,8 +236,8 @@ inline const char8* enumToHumanString(PciDevice10B9 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice10B9::DEVICE_0101: return "CMbad_int8338/C3DX PCI Audio Device";
-        case PciDevice10B9::DEVICE_0111: return "C-Media CMbad_int8738/C3DX Audio Device (OEM)";
+        case PciDevice10B9::DEVICE_0101: return "CMi8338/C3DX PCI Audio Device";
+        case PciDevice10B9::DEVICE_0111: return "C-Media CMi8738/C3DX Audio Device (OEM)";
         case PciDevice10B9::DEVICE_0780: return "Multi-IO Card";
         case PciDevice10B9::DEVICE_0782: return "Multi-IO Card";
         case PciDevice10B9::DEVICE_1435: return "M1435";
@@ -326,7 +326,7 @@ inline const char8* enumToHumanString(PciDevice10B9 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice10B9 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice10B9 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

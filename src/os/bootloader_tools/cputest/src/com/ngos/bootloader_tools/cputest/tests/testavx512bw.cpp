@@ -33,14 +33,14 @@ void UEFI_API testAvx512BwProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AVX512BW))
     {
-        bad_uint16 a[32] __attribute__((aligned(64))) = { 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8, 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2 };
-        bad_uint16 b[32] __attribute__((aligned(64))) = { 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2, 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8 };
+        u16 a[32] __attribute__((aligned(64))) = { 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8, 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2 };
+        u16 b[32] __attribute__((aligned(64))) = { 6, 2, 7, 3, 2, 9, 7, 1, 2, 9, 4, 6, 2, 3, 7, 6, 2, 1, 2, 3, 1, 9, 3, 1, 7, 6, 2, 4, 3, 2, 1, 8 };
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -85,7 +85,7 @@ void UEFI_API testAvx512BwProcedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 

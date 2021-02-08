@@ -152,8 +152,8 @@ NgosStatus Bootloader::cleanUpPath(char16 *path)
 
 
 
-    bad_uint64 source = 0;
-    bad_uint64 dest   = 0;
+    u64 source = 0;
+    u64 dest   = 0;
 
     while (path[source])
     {
@@ -218,10 +218,10 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char16 *path, c
 
 
 
-    bad_int64 size1 = strlen(parentPath);
-    bad_int64 size2 = strlen(path);
+    i64 size1 = strlen(parentPath);
+    i64 size2 = strlen(path);
 
-    bad_int64 totalSize;
+    i64 totalSize;
 
     if (size1)
     {
@@ -277,10 +277,10 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char8 *path, ch
 
 
 
-    bad_int64 size1 = strlen(parentPath);
-    bad_int64 size2 = strlen(path);
+    i64 size1 = strlen(parentPath);
+    i64 size2 = strlen(path);
 
-    bad_int64 totalSize;
+    i64 totalSize;
 
     if (size1)
     {
@@ -311,14 +311,14 @@ NgosStatus Bootloader::buildPath(const char16 *parentPath, const char8 *path, ch
         memcpy(str, parentPath, size1 * sizeof(char16));
         str[size1] = '\\';
 
-        for (bad_int64 i = 0; i <= size2; ++i)
+        for (i64 i = 0; i <= size2; ++i)
         {
             str[size1 + 1 + i] = path[i];
         }
     }
     else
     {
-        for (bad_int64 i = 0; i <= size2; ++i)
+        for (i64 i = 0; i <= size2; ++i)
         {
             str[i] = path[i];
         }
@@ -343,8 +343,8 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
     UefiFileProtocol *imageFile   = 0;
-    bad_uint8               *content     = 0;
-    bad_uint64               contentSize = 0;
+    u8               *content     = 0;
+    u64               contentSize = 0;
     NgosStatus        status      = NgosStatus::NO_EFFECT;
 
 
@@ -363,7 +363,7 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
         Guid          fileInfoGuid = UEFI_FILE_INFO_GUID;
-        bad_uint64           fileInfoSize = 0;
+        u64           fileInfoSize = 0;
         UefiFileInfo *fileInfo;
 
 
@@ -521,7 +521,7 @@ NgosStatus Bootloader::startTool(const char8 *path)
     return startApplication(sMainVolume, absolutePath, true);
 }
 
-NgosStatus Bootloader::startOs(bad_uint64 index)
+NgosStatus Bootloader::startOs(i64 index)
 {
     UEFI_LT((" | index = %u", index));
 
@@ -662,7 +662,7 @@ NgosStatus Bootloader::initVolumes()
 
 
     Guid blockIoProtocol = UEFI_BLOCK_IO_PROTOCOL_GUID;
-    bad_uint64  blockIoSize     = 0;
+    u64  blockIoSize     = 0;
 
 
 
@@ -796,7 +796,7 @@ NgosStatus Bootloader::initVolumes()
     return NgosStatus::OK;
 }
 
-NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, bad_uint64 size)
+NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u", protocol, size));
 
@@ -849,7 +849,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, bad_uint64 size)
     return status;
 }
 
-NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, bad_uint64 size, uefi_handle *blockIoHandles)
+NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size, uefi_handle *blockIoHandles)
 {
     UEFI_LT((" | protocol = 0x%p, size = %u, blockIoHandles = 0x%p", protocol, size, blockIoHandles));
 
@@ -859,10 +859,10 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, bad_uint64 size, uefi
 
 
 
-    bad_uint64 numberOfVolumes = size / sizeof(uefi_handle);
+    u64 numberOfVolumes = size / sizeof(uefi_handle);
     UEFI_LVVV(("numberOfVolumes = %u", numberOfVolumes));
 
-    for (bad_int64 i = 0; i < (bad_int64)numberOfVolumes; ++i)
+    for (i64 i = 0; i < (i64)numberOfVolumes; ++i)
     {
         VolumeInfo volume;
 
@@ -996,7 +996,7 @@ NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
 
         if (currentDevicePath->type == UefiDevicePathType::MESSAGING_DEVICE_PATH)
         {
-            bad_uint64 size = (bad_uint64)nextDevicePath - (bad_uint64)volume->devicePath + sizeof(UefiDevicePath);
+            u64 size = (u64)nextDevicePath - (u64)volume->devicePath + sizeof(UefiDevicePath);
 
 
 
@@ -1014,7 +1014,7 @@ NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
 
 
             memcpy(diskDevicePath, volume->devicePath, size - sizeof(UefiDevicePath));
-            UEFI_ASSERT_EXECUTION(UEFI::setDevicePathEndNode((UefiDevicePath *)((bad_uint64)diskDevicePath + size - sizeof(UefiDevicePath))), NgosStatus::ASSERTION);
+            UEFI_ASSERT_EXECUTION(UEFI::setDevicePathEndNode((UefiDevicePath *)((u64)diskDevicePath + size - sizeof(UefiDevicePath))), NgosStatus::ASSERTION);
 
 
 
@@ -1117,7 +1117,7 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
         !volume->blockIoProtocol->media->logicalPartition
        )
     {
-        bad_uint64 size = ROUND_UP(sizeof(Mbr), volume->blockIoProtocol->media->blockSize);
+        u64 size = ROUND_UP(sizeof(Mbr), volume->blockIoProtocol->media->blockSize);
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, size, (void **)&volume->gptData.protectiveMbr) != UefiStatus::SUCCESS)
         {
@@ -1191,11 +1191,11 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-            UEFI_TEST_ASSERT(Crc::crc32((bad_uint8 *)volume->gptData.entries, size) == volume->gptData.header->entryCrc32, NgosStatus::ASSERTION);
+            UEFI_TEST_ASSERT(Crc::crc32((u8 *)volume->gptData.entries, size) == volume->gptData.header->entryCrc32, NgosStatus::ASSERTION);
 
 
 
-            for (bad_int64 i = 0; i < volume->gptData.header->entryCount; ++i)
+            for (i64 i = 0; i < volume->gptData.header->entryCount; ++i)
             {
                 volume->gptData.entries[i].name[ARRAY_COUNT(volume->gptData.entries[i].name) - 1] = 0;
             }
@@ -1350,7 +1350,7 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
                     if (previousVolume.gptData.entries)
                     {
-                        for (bad_int64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
+                        for (i64 i = 0; i < previousVolume.gptData.header->entryCount; ++i)
                         {
                             GptEntry *gptEntry = &previousVolume.gptData.entries[i];
 
@@ -1381,7 +1381,7 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
     if (!volume->partitionUniqueGuid)
     {
         Guid *partitionUniqueGuid;
-        bad_uint64   size = sizeof(*partitionUniqueGuid);
+        u64   size = sizeof(*partitionUniqueGuid);
 
         UEFI_TEST_ASSERT(size == 16,              NgosStatus::ASSERTION);
         UEFI_TEST_ASSERT(size == sizeof(Md5Hash), NgosStatus::ASSERTION);
@@ -1408,10 +1408,10 @@ NgosStatus Bootloader::initVolumeNameAndGuid(VolumeInfo *volume)
 
 
 
-        Md5Hash hash = MD5::md5((bad_uint8 *)volume->devicePath, (bad_uint64)currentDevicePath - (bad_uint64)volume->devicePath);
+        Md5Hash hash = MD5::md5((u8 *)volume->devicePath, (u64)currentDevicePath - (u64)volume->devicePath);
 
-        ((bad_uint64 *)partitionUniqueGuid)[0] = hash.quads[0];
-        ((bad_uint64 *)partitionUniqueGuid)[1] = hash.quads[1];
+        ((u64 *)partitionUniqueGuid)[0] = hash.quads[0];
+        ((u64 *)partitionUniqueGuid)[1] = hash.quads[1];
 
 
 
@@ -1463,7 +1463,7 @@ NgosStatus Bootloader::initOSes()
         UEFI_LVVV(("sOSes:"));
         UEFI_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)sOSes.getSize(); ++i)
+        for (i64 i = 0; i < (i64)sOSes.getSize(); ++i)
         {
             const OsInfo &os = sOSes.at(i);
 
@@ -1477,7 +1477,7 @@ NgosStatus Bootloader::initOSes()
 
 
 
-            if (i < (bad_int64)(sOSes.getSize() - 1))
+            if (i < (i64)(sOSes.getSize() - 1))
             {
                 UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
             }
@@ -1739,7 +1739,7 @@ NgosStatus Bootloader::startApplication(VolumeInfo *volume, const char16 *path, 
 
 
 
-    bad_uint64     optionsSize = (1 + strlen(path) + 1) * sizeof(char16);
+    u64     optionsSize = (1 + strlen(path) + 1) * sizeof(char16);
     char16 *options;
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, optionsSize, (void **)&options) != UefiStatus::SUCCESS)

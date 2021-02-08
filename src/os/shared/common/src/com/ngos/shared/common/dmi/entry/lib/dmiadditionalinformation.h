@@ -10,11 +10,11 @@
 
 struct DmiAdditionalInformation
 {
-    bad_uint8          entryLength;
-    bad_uint16         referencedHandle;
-    bad_uint8          referencedOffset;
+    u8          entryLength;
+    u16         referencedHandle;
+    u8          referencedOffset;
     DmiStringId string;
-    bad_uint8          value[0];
+    u8          value[0];
 } __attribute__((packed));
 
 

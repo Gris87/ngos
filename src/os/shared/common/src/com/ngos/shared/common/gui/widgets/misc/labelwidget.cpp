@@ -32,7 +32,7 @@ LabelWidget::LabelWidget(const char8 *text, Widget *parent)
     AssetEntry *asset = Assets::getAssetEntry("glyphs/gui.bin");
     COMMON_TEST_ASSERT(asset);
 
-    mGlyphOffsets = (bad_uint16 *)asset->content;
+    mGlyphOffsets = (u16 *)asset->content;
 }
 
 LabelWidget::~LabelWidget()
@@ -59,9 +59,9 @@ NgosStatus LabelWidget::repaint()
 
 
 
-    bad_uint16 targetWidth  = 0;
-    bad_uint16 targetHeight = CHAR_HEIGHT + BOTTOM_MARGIN;
-    bad_uint16 curX         = SIDE_MARGIN * 2;
+    u16 targetWidth  = 0;
+    u16 targetHeight = CHAR_HEIGHT + BOTTOM_MARGIN;
+    u16 curX         = SIDE_MARGIN * 2;
 
 
 
@@ -79,7 +79,7 @@ NgosStatus LabelWidget::repaint()
         else
         if (ch >= 0x20 && ch < 0x7F)
         {
-            GlyphData *glyphData = (GlyphData *)((bad_uint64)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
+            GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
 
             curX += glyphData->width;
 
@@ -90,7 +90,7 @@ NgosStatus LabelWidget::repaint()
         }
         else
         {
-            COMMON_LW(("Non-printable character found: 0x%02X", (bad_uint8)ch));
+            COMMON_LW(("Non-printable character found: 0x%02X", ch));
 
             return NgosStatus::UNEXPECTED_BEHAVIOUR;
         }
@@ -117,8 +117,8 @@ NgosStatus LabelWidget::repaint()
 
 
 
-        bad_uint16 curX = SIDE_MARGIN;
-        bad_uint16 curY = 0;
+        u16 curX = SIDE_MARGIN;
+        u16 curY = 0;
 
         const char8 *str = mText;
 
@@ -154,13 +154,13 @@ NgosStatus LabelWidget::repaint()
             else
             if (ch >= 0x20 && ch < 0x7F)
             {
-                GlyphData *glyphData = (GlyphData *)((bad_uint64)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
+                GlyphData *glyphData = (GlyphData *)((address_t)mGlyphOffsets + mGlyphOffsets[ch - 0x20]);
 
 
 
-                bad_int16  charPosX   = curX + glyphData->bitmapLeft;
-                bad_int16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
-                bad_uint8  *bitmapByte = glyphData->bitmap;
+                i16  charPosX   = curX + glyphData->bitmapLeft;
+                i16  charPosY   = CHAR_HEIGHT - glyphData->bitmapTop;
+                u8  *bitmapByte = glyphData->bitmap;
 
                 COMMON_TEST_ASSERT(charPosX                           >= 0,                           NgosStatus::ASSERTION);
                 COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= targetWidth,                 NgosStatus::ASSERTION);
@@ -170,15 +170,15 @@ NgosStatus LabelWidget::repaint()
 
 
 
-                for (bad_int64 i = 0; i < glyphData->bitmapHeight; ++i)
+                for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
                 {
-                    for (bad_int64 j = 0; j < glyphData->bitmapWidth; ++j)
+                    for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
                     {
                         RgbaPixel *pixel = &oneLineImage->getRgbaBuffer()[(charPosY + i) * targetWidth + charPosX + j];
 
-                        COMMON_TEST_ASSERT((bad_uint64)pixel >= (bad_uint64)oneLineImage->getBuffer()
+                        COMMON_TEST_ASSERT((address_t)pixel >= (address_t)oneLineImage->getBuffer()
                                             &&
-                                            (bad_uint64)pixel <= (bad_uint64)oneLineImage->getBuffer() + oneLineImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
+                                            (address_t)pixel <= (address_t)oneLineImage->getBuffer() + oneLineImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
 
 
@@ -407,7 +407,7 @@ VerticalAlignment LabelWidget::getVerticalAlignment() const
     return mVerticalAlignment;
 }
 
-bad_int64 LabelWidget::applyHorizontalAlignment(bad_int64 fullWidth, bad_int64 targetWidth)
+i64 LabelWidget::applyHorizontalAlignment(i64 fullWidth, i64 targetWidth)
 {
     COMMON_LT((" | fullWidth = %d, targetWidth = %d", fullWidth, targetWidth));
 
@@ -441,7 +441,7 @@ bad_int64 LabelWidget::applyHorizontalAlignment(bad_int64 fullWidth, bad_int64 t
     return 0;
 }
 
-bad_int64 LabelWidget::applyVerticalAlignment(bad_int64 fullHeight, bad_int64 targetHeight)
+i64 LabelWidget::applyVerticalAlignment(i64 fullHeight, i64 targetHeight)
 {
     COMMON_LT((" | fullHeight = %d, targetHeight = %d", fullHeight, targetHeight));
 

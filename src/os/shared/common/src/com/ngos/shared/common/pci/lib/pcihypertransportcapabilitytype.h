@@ -8,7 +8,7 @@
 
 
 
-enum class PciHyperTransportCapabilityType: bad_uint8
+enum class PciHyperTransportCapabilityType: u8
 {
     SLAVE_OR_PRIMARY_INTERFACE  = 0,
     HOST_OR_SECONDARY_INTERFACE = 1
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PciHyperTransportCapabilityType type) // TE
 
     static char8 res[35];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

@@ -18,15 +18,15 @@
 struct UefiSimpleNetworkMode
 {
     UefiSimpleNetworkState              state;
-    bad_uint32                                 hardwareAddressSize;
-    bad_uint32                                 mediaHeaderSize;
-    bad_uint32                                 maximumPacketSize;
-    bad_uint32                                 nvramSize;
-    bad_uint32                                 nvramAccessSize;
+    u32                                 hardwareAddressSize;
+    u32                                 mediaHeaderSize;
+    u32                                 maximumPacketSize;
+    u32                                 nvramSize;
+    u32                                 nvramAccessSize;
     UefiSimpleNetworkReceiveFilterFlags receiveFilterMask;
     UefiSimpleNetworkReceiveFilterFlags receiveFilterSetting;
-    bad_uint32                                 maximumMulticastFilterCount;
-    bad_uint32                                 multicastFilterCount;
+    u32                                 maximumMulticastFilterCount;
+    u32                                 multicastFilterCount;
     UefiMacAddress                      multicastFilter[MAXIMUM_MULTICAST_FILTER_COUNT];
     UefiMacAddress                      currentAddress;
     UefiMacAddress                      broadcastAddress;

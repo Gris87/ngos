@@ -16,17 +16,17 @@ struct PciPowerManagementControlStatus
     {
         struct
         {
-            bad_uint16 powerState:              2; // TODO: Use enum PciPowerManagementPowerState
-            bad_uint16 __reservedForPciExpress: 1;
-            bad_uint16 noSoftReset:             1;
-            bad_uint16 __reserved:              4;
-            bad_uint16 enablePme:               1;
-            bad_uint16 dataSelect:              4; // TODO: Use enum PciPowerManagementDataSelect
-            bad_uint16 dataScale:               2; // TODO: Use enum PciPowerManagementDataScale
-            bad_uint16 pmeStatus:               1;
+            u16 powerState:              2; // TODO: Use enum PciPowerManagementPowerState
+            u16 __reservedForPciExpress: 1;
+            u16 noSoftReset:             1;
+            u16 __reserved:              4;
+            u16 enablePme:               1;
+            u16 dataSelect:              4; // TODO: Use enum PciPowerManagementDataSelect
+            u16 dataScale:               2; // TODO: Use enum PciPowerManagementDataScale
+            u16 pmeStatus:               1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

@@ -13,14 +13,14 @@ struct PciExpressAriControlRegister
     {
         struct
         {
-            bad_uint16 mfvcFunctionGroupsEnable : 1;
-            bad_uint16 acsFunctionGroupsEnable  : 1;
-            bad_uint16 __reserved               : 2;
-            bad_uint16 functionGroup            : 3;
-            bad_uint16 __reserved2              : 9;
+            u16 mfvcFunctionGroupsEnable : 1;
+            u16 acsFunctionGroupsEnable  : 1;
+            u16 __reserved               : 2;
+            u16 functionGroup            : 3;
+            u16 __reserved2              : 9;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

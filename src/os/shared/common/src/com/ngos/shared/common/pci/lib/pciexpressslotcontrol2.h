@@ -9,7 +9,7 @@
 
 struct PciExpressSlotControl2
 {
-    bad_uint16 value16;
+    u16 value16;
 };
 
 

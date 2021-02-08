@@ -10,7 +10,7 @@
 struct PciExpressRootComplexEventCollectorEndpointAssociationCapability
 {
     PciExtendedCapabilityHeader header;
-    bad_uint32                         associationBitmapForRootComplexIntegratedDevices;
+    u32                         associationBitmapForRootComplexIntegratedDevices;
 } __attribute__((packed));
 
 

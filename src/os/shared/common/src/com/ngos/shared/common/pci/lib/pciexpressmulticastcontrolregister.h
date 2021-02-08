@@ -9,7 +9,7 @@
 
 struct PciExpressMulticastControlRegister
 {
-    bad_uint8 mcNumGroupReal()
+    u8 mcNumGroupReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,12 +24,12 @@ struct PciExpressMulticastControlRegister
     {
         struct
         {
-            bad_uint16 mcNumGroup : 6;
-            bad_uint16 __reserved : 9;
-            bad_uint16 mcEnable   : 1;
+            u16 mcNumGroup : 6;
+            u16 __reserved : 9;
+            u16 mcEnable   : 1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

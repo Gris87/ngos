@@ -22,13 +22,13 @@
 
 
 FpuState          FPU::sState;
-bad_uint32               FPU::sStateKernelSize;
-bad_uint32               FPU::sStateUserSize;
-bad_uint32               FPU::sMxcsrMask;
+u32               FPU::sStateKernelSize;
+u32               FPU::sStateUserSize;
+u32               FPU::sMxcsrMask;
 XFeatureTypeFlags FPU::sXFeatures;
-bad_uint32               FPU::sXFeaturesOffsets[(bad_uint64)XFeature::MAXIMUM];
-bad_uint32               FPU::sXFeaturesCompactedOffsets[(bad_uint64)XFeature::MAXIMUM];
-bad_uint32               FPU::sXFeaturesSizes[(bad_uint64)XFeature::MAXIMUM];
+u32               FPU::sXFeaturesOffsets[(enum_t)XFeature::MAXIMUM];
+u32               FPU::sXFeaturesCompactedOffsets[(enum_t)XFeature::MAXIMUM];
+u32               FPU::sXFeaturesSizes[(enum_t)XFeature::MAXIMUM];
 
 
 
@@ -59,12 +59,12 @@ NgosStatus FPU::initForBootStrapProcessor()
         COMMON_LVVV(("sState.fxsave.mxcsr     = 0x%08X", sState.fxsave.mxcsr));
         COMMON_LVVV(("sState.fxsave.mxcsrMask = 0x%08X", sState.fxsave.mxcsrMask));
 
-        for (bad_int64 i = 0; i < 16; ++i)
+        for (i64 i = 0; i < 16; ++i)
         {
             COMMON_LVVV(("sState.fxsave.stack[%d] = 0x%016llX", i, sState.fxsave.stack[i]));
         }
 
-        for (bad_int64 i = 0; i < 16; ++i)
+        for (i64 i = 0; i < 16; ++i)
         {
             COMMON_LVVV(("sState.fxsave.xmm[%d][0] = 0x%016llX", i, sState.fxsave.xmm[i][0]));
             COMMON_LVVV(("sState.fxsave.xmm[%d][1] = 0x%016llX", i, sState.fxsave.xmm[i][1]));
@@ -77,7 +77,7 @@ NgosStatus FPU::initForBootStrapProcessor()
         COMMON_LVVV(("sMxcsrMask                      = 0x%08X",    sMxcsrMask));
         COMMON_LVVV(("sXFeatures                      = %s",        flagsToFullString(sXFeatures)));
 
-        for (bad_int64 i = 0; i < (bad_int64)XFeature::MAXIMUM; ++i)
+        for (i64 i = 0; i < (i64)XFeature::MAXIMUM; ++i)
         {
             COMMON_LVVV(("sXFeaturesOffsets[%-44s]          = 0x%08X", enumToFullString((XFeature)i), sXFeaturesOffsets[i]));
             COMMON_LVVV(("sXFeaturesCompactedOffsets[%-44s] = 0x%08X", enumToFullString((XFeature)i), sXFeaturesCompactedOffsets[i]));
@@ -213,7 +213,7 @@ NgosStatus FPU::initMxcsrMask()
 
     FXSaveState fxsaveState;
 
-    COMMON_ASSERT_EXECUTION(fxsave((bad_uint8 *)&fxsaveState), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(fxsave((u8 *)&fxsaveState), NgosStatus::ASSERTION);
 
 
 
@@ -251,12 +251,12 @@ NgosStatus FPU::initXState()
 
     if (CPU::isCpuIdLevelSupported(XSTATE_CPUID))
     {
-        bad_uint32 eax;
-        bad_uint32 edx;
-        bad_uint32 ignored;
+        u32 eax;
+        u32 edx;
+        u32 ignored;
 
         COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, 0, &eax, &ignored, &ignored, &edx), NgosStatus::ASSERTION);
-        sXFeatures = eax | ((bad_uint64)edx << 32);
+        sXFeatures = eax | ((u64)edx << 32);
 
         COMMON_TEST_ASSERT((sXFeatures & XFEATURE_MASK_FPU_SSE) == XFEATURE_MASK_FPU_SSE, NgosStatus::ASSERTION);
 
@@ -376,24 +376,24 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
 
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
-    bad_uint32 lastGoodOffset = sizeof(FXSaveState) + sizeof(XStateHeader);
+    u32 lastGoodOffset = sizeof(FXSaveState) + sizeof(XStateHeader);
 #endif
 
-    sXFeaturesOffsets[(bad_uint64)XFeature::FPU] = 0;
-    sXFeaturesSizes[(bad_uint64)XFeature::FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm) - sizeof(FXSaveState::__reserved) - sizeof(FXSaveState::__pad);
+    sXFeaturesOffsets[(enum_t)XFeature::FPU] = 0;
+    sXFeaturesSizes[(enum_t)XFeature::FPU]   = sizeof(FXSaveState) - sizeof(FXSaveState::xmm) - sizeof(FXSaveState::__reserved) - sizeof(FXSaveState::__pad);
 
-    sXFeaturesOffsets[(bad_uint64)XFeature::SSE] = sXFeaturesSizes[(bad_uint64)XFeature::FPU];
-    sXFeaturesSizes[(bad_uint64)XFeature::SSE]   = sizeof(FXSaveState::xmm);
+    sXFeaturesOffsets[(enum_t)XFeature::SSE] = sXFeaturesSizes[(enum_t)XFeature::FPU];
+    sXFeaturesSizes[(enum_t)XFeature::SSE]   = sizeof(FXSaveState::xmm);
 
 
 
-    for (bad_int64 i = (bad_int64)XFeature::SSE + 1; i < (bad_int64)XFeature::MAXIMUM; ++i)
+    for (i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
         XFeature feature = (XFeature)i;
 
         if (hasFeature(feature))
         {
-            bad_uint32 ignored;
+            u32 ignored;
 
             COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, i, &sXFeaturesSizes[i], &sXFeaturesOffsets[i], &ignored, &ignored), NgosStatus::ASSERTION);
 
@@ -422,11 +422,11 @@ NgosStatus FPU::initXFeaturesOffsetsAndSizes()
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
-        sXFeaturesCompactedOffsets[(bad_uint64)XFeature::FPU]     = sXFeaturesOffsets[(bad_uint64)XFeature::FPU];
-        sXFeaturesCompactedOffsets[(bad_uint64)XFeature::SSE]     = sXFeaturesOffsets[(bad_uint64)XFeature::SSE];
-        sXFeaturesCompactedOffsets[(bad_uint64)XFeature::SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
+        sXFeaturesCompactedOffsets[(enum_t)XFeature::FPU]     = sXFeaturesOffsets[(enum_t)XFeature::FPU];
+        sXFeaturesCompactedOffsets[(enum_t)XFeature::SSE]     = sXFeaturesOffsets[(enum_t)XFeature::SSE];
+        sXFeaturesCompactedOffsets[(enum_t)XFeature::SSE + 1] = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-        for (bad_int64 i = (bad_int64)XFeature::SSE + 2; i < (bad_int64)XFeature::MAXIMUM; ++i)
+        for (i64 i = (i64)XFeature::SSE + 2; i < (i64)XFeature::MAXIMUM; ++i)
         {
             XFeature feature = (XFeature)i;
 
@@ -458,7 +458,7 @@ NgosStatus FPU::initStateSizes()
 
 
 
-    bad_uint32 ignored;
+    u32 ignored;
 
     // CPUID 0x0000000D, sub-function 0:
     // EBX enumerates the size (in bytes) required by he XSAVE instruction for an XSAVE area
@@ -507,13 +507,13 @@ NgosStatus FPU::copyStateFromFPU() // TODO: check is it from FPU?
         // We need to set bit 63 of xComponents field to avoid General Protection during xrstors64 call
         sState.xsave.header.xComponents = sXFeatures | XCOMPONENTS_COMPACTED_FORMAT;
 
-        COMMON_ASSERT_EXECUTION(xrstors64((bad_uint8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xrstors64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
     else
     {
         COMMON_LVV(("X86Feature::XSAVES not supported"));
 
-        COMMON_ASSERT_EXECUTION(xrstor64((bad_uint8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xrstor64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
 
 
@@ -531,13 +531,13 @@ NgosStatus FPU::copyStateToFPU()
     {
         COMMON_LVV(("X86Feature::XSAVES supported"));
 
-        COMMON_ASSERT_EXECUTION(xsaves64((bad_uint8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xsaves64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
     else
     {
         COMMON_LVV(("X86Feature::XSAVES not supported"));
 
-        COMMON_ASSERT_EXECUTION(xsave64((bad_uint8 *)&sState.xsave), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(xsave64((u8 *)&sState.xsave), NgosStatus::ASSERTION);
     }
 
 
@@ -551,17 +551,17 @@ bool FPU::isXFeatureSupervisor(XFeature xFeature)
 
 
 
-    bad_uint32 ecx;
-    bad_uint32 ignored;
+    u32 ecx;
+    u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (bad_uint64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
     bool res = !!(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
-    COMMON_TEST_ASSERT(!!((1ULL << (bad_uint64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
+    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) == res, false);
 
     return res;
 }
@@ -572,17 +572,17 @@ bool FPU::isXFeatureUser(XFeature xFeature)
 
 
 
-    bad_uint32 ecx;
-    bad_uint32 ignored;
+    u32 ecx;
+    u32 ignored;
 
     // if xFeature is supervisor state then ECX[0] = 1, otherwise ECX[0] = 0
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (bad_uint64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
     bool res = !(ecx & FLAGS(XFeatureFlag::SUPERVISOR));
 
-    COMMON_TEST_ASSERT(!!((1ULL << (bad_uint64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
+    COMMON_TEST_ASSERT(!!((1ULL << (u64)xFeature) & XFEATURE_MASK_SUPERVISOR) != res, false);
 
     return res;
 }
@@ -593,12 +593,12 @@ bool FPU::isXFeatureAligned(XFeature xFeature)
 
 
 
-    bad_uint32 ecx;
-    bad_uint32 ignored;
+    u32 ecx;
+    u32 ignored;
 
     // The value returned by ECX[1] indicates the alignment of xFeature
     // when the compacted format of the extended region of an XSAVE area is used
-    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (bad_uint64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
+    COMMON_ASSERT_EXECUTION(CPU::cpuid(XSTATE_CPUID, (u64)xFeature, &ignored, &ignored, &ecx, &ignored), 0);
 
 
 
@@ -611,7 +611,7 @@ NgosStatus FPU::setFeature(XFeature xFeature)
 
 
 
-    sXFeatures |= (1ULL << (bad_uint64)xFeature);
+    sXFeatures |= (1ULL << (u64)xFeature);
 
 
 
@@ -624,7 +624,7 @@ NgosStatus FPU::clearFeature(XFeature xFeature)
 
 
 
-    sXFeatures &= ~(1ULL << (bad_uint64)xFeature);
+    sXFeatures &= ~(1ULL << (u64)xFeature);
 
 
 
@@ -637,7 +637,7 @@ bool FPU::hasFeature(XFeature xFeature)
 
 
 
-    return sXFeatures & (1ULL << (bad_uint64)xFeature);
+    return sXFeatures & (1ULL << (u64)xFeature);
 }
 
 NgosStatus FPU::setFlag(XFeatureTypeFlag flag)
@@ -676,22 +676,22 @@ bool FPU::hasFlag(XFeatureTypeFlag flag)
 }
 
 #if NGOS_BUILD_RELEASE == OPTION_NO && NGOS_BUILD_TEST_MODE == OPTION_YES // Ignore CppReleaseUsageVerifier
-bad_uint32 FPU::expectedStateSize()
+u32 FPU::expectedStateSize()
 {
     COMMON_LT((""));
 
 
 
-    bad_uint32 res = sizeof(FXSaveState) + sizeof(XStateHeader);
+    u32 res = sizeof(FXSaveState) + sizeof(XStateHeader);
 
-    for (bad_int64 i = (bad_int64)XFeature::SSE + 1; i < (bad_int64)XFeature::MAXIMUM; ++i)
+    for (i64 i = (i64)XFeature::SSE + 1; i < (i64)XFeature::MAXIMUM; ++i)
     {
         XFeature feature = (XFeature)i;
 
         if (hasFeature(feature))
         {
-            bad_uint32 featureSize = sXFeaturesSizes[i];
-            bad_uint32 featureStructSize;
+            u32 featureSize = sXFeaturesSizes[i];
+            u32 featureStructSize;
 
 
 

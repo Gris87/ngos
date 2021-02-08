@@ -8,7 +8,7 @@
 
 
 
-enum class NgosStatus: bad_uint64
+enum class NgosStatus: u64
 {
     OK                   = 0,
     FAILED               = 0x8000000000000001,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(NgosStatus status) // TEST: NO
 
     static char8 res[42];
 
-    sprintf(res, "0x%016llX (%s)", (bad_uint64)status, enumToString(status));
+    sprintf(res, "0x%016llX (%s)", (u64)status, enumToString(status));
 
     return res;
 }

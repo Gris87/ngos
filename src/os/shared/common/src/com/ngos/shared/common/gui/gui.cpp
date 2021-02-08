@@ -17,7 +17,7 @@ CursorWidget *GUI::sCursorWidget;
 Widget       *GUI::sHoveredWidget;
 Widget       *GUI::sPressedWidget;
 Widget       *GUI::sFocusedWidget;
-bad_uint8            GUI::sUpdatesLocks;
+u8            GUI::sUpdatesLocks;
 bool          GUI::sMouseLeftButton;
 
 
@@ -287,8 +287,8 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
         state->relativeMovementY
        )
     {
-        bad_int64 cursorX = sCursorWidget->getPositionX() + state->relativeMovementX;
-        bad_int64 cursorY = sCursorWidget->getPositionY() + state->relativeMovementY;
+        i64 cursorX = sCursorWidget->getPositionX() + state->relativeMovementX;
+        i64 cursorY = sCursorWidget->getPositionY() + state->relativeMovementY;
 
 
 
@@ -297,9 +297,9 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             cursorX = sRootWidget->getPositionX();
         }
 
-        if (cursorX > sRootWidget->getPositionX() + (bad_int64)sRootWidget->getWidth())
+        if (cursorX > sRootWidget->getPositionX() + (i64)sRootWidget->getWidth())
         {
-            cursorX = sRootWidget->getPositionX() + (bad_int64)sRootWidget->getWidth();
+            cursorX = sRootWidget->getPositionX() + (i64)sRootWidget->getWidth();
         }
 
         if (cursorY < sRootWidget->getPositionY())
@@ -307,9 +307,9 @@ NgosStatus GUI::processSimplePointerState(UefiSimplePointerState *state)
             cursorY = sRootWidget->getPositionY();
         }
 
-        if (cursorY > sRootWidget->getPositionY() + (bad_int64)sRootWidget->getHeight())
+        if (cursorY > sRootWidget->getPositionY() + (i64)sRootWidget->getHeight())
         {
-            cursorY = sRootWidget->getPositionY() + (bad_int64)sRootWidget->getHeight();
+            cursorY = sRootWidget->getPositionY() + (i64)sRootWidget->getHeight();
         }
 
 

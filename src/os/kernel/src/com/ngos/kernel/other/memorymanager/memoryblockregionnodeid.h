@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 memory_block_region_node_id;
+typedef u16 memory_block_region_node_id;
 
 
 

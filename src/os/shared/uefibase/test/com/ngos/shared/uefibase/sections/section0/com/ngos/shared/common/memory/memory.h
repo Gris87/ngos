@@ -18,8 +18,8 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 {
     TEST_CASE("memcpy()");
     {
-        bad_uint8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
-        bad_uint8 temp[34];
+        u8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
+        u8 temp[34];
 
 
 
@@ -41,12 +41,12 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
     TEST_CASE("memset()");
     {
-        bad_uint8 buffer[197];
-        bad_uint8 temp[197];
+        u8 buffer[197];
+        u8 temp[197];
 
 
 
-        for (bad_int64 i = 0; i < 197; ++i)
+        for (i64 i = 0; i < 197; ++i)
         {
             buffer[i] = 5;
             temp[i]   = 0;
@@ -60,7 +60,7 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
 
 
-        for (bad_int64 i = 0; i < 135; ++i)
+        for (i64 i = 0; i < 135; ++i)
         {
             temp[i] = 8;
         }
@@ -77,12 +77,12 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
     TEST_CASE("memzero()");
     {
-        bad_uint8 buffer[197];
-        bad_uint8 temp[197];
+        u8 buffer[197];
+        u8 temp[197];
 
 
 
-        for (bad_int64 i = 0; i < 197; ++i)
+        for (i64 i = 0; i < 197; ++i)
         {
             buffer[i] = 5;
             temp[i]   = 0;
@@ -100,8 +100,8 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
     TEST_CASE("memcmp()");
     {
-        bad_uint8 buffer[5] = { 5, 7, 3, 2, 8 };
-        bad_uint8 temp[5]   = { 5, 7, 3, 2, 8 };
+        u8 buffer[5] = { 5, 7, 3, 2, 8 };
+        u8 temp[5]   = { 5, 7, 3, 2, 8 };
 
         TEST_ASSERT_EQUALS(memcmp(buffer, temp, 5), 0);
 
@@ -117,7 +117,7 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
     TEST_CASE("memempty()");
     {
-        bad_uint8 buffer[197];
+        u8 buffer[197];
 
 
 
@@ -134,8 +134,8 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
     TEST_CASE("memmove()");
     {
-        bad_uint8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
-        bad_uint8 temp[34];
+        u8 buffer[34] = { 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7, 5, 7, 3, 2, 8, 9, 1, 3, 4, 6, 7, 5, 4, 3, 9, 1, 7 };
+        u8 temp[34];
 
 
 
@@ -145,7 +145,7 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
 
 
-        for (bad_int64 i = 0; i < 33; ++i)
+        for (i64 i = 0; i < 33; ++i)
         {
             temp[i] = temp[i + 1];
         }
@@ -158,7 +158,7 @@ TEST_CASES(section0, com_ngos_shared_common_memory_memory);
 
 
 
-        for (bad_int64 i = 31; i >= 0; --i)
+        for (i64 i = 31; i >= 0; --i)
         {
             temp[i + 2] = temp[i];
         }

@@ -8,7 +8,7 @@
 
 
 
-enum class UefiPciIoProtocolAttributeOperation: bad_uint32
+enum class UefiPciIoProtocolAttributeOperation: u32
 {
     GET,
     SET,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(UefiPciIoProtocolAttributeOperation operati
 
     static char8 res[23];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)operation, enumToString(operation));
+    sprintf(res, "0x%08X (%s)", (u32)operation, enumToString(operation));
 
     return res;
 }

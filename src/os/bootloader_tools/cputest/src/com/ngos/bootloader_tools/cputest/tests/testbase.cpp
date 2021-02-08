@@ -5,7 +5,7 @@
 
 
 
-TestBase* cpuTests[(bad_uint64)TestType::MAXIMUM];
+TestBase* cpuTests[(u64)TestType::MAXIMUM];
 
 
 
@@ -23,11 +23,11 @@ TestBase::TestBase(TestType type, const char8 *name, uefi_ap_procedure procedure
 
 
 
-    UEFI_TEST_ASSERT(cpuTests[(bad_uint64)type] == nullptr);
+    UEFI_TEST_ASSERT(cpuTests[(u64)type] == nullptr);
 
 
 
-    cpuTests[(bad_uint64)type] = this;
+    cpuTests[(u64)type] = this;
 }
 
 TestBase::~TestBase()
@@ -67,7 +67,7 @@ uefi_ap_procedure TestBase::getProcedure() const
     return mProcedure;
 }
 
-NgosStatus TestBase::setScore(bad_uint64 score)
+NgosStatus TestBase::setScore(u64 score)
 {
     // UEFI_LT((" | score = %u", score)); // Commented to avoid bad looking logs
 
@@ -81,7 +81,7 @@ NgosStatus TestBase::setScore(bad_uint64 score)
     return NgosStatus::OK;
 }
 
-bad_uint64 TestBase::getScore() const
+u64 TestBase::getScore() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 

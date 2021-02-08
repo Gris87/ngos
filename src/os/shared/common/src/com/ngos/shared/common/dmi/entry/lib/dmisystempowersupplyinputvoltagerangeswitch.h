@@ -10,7 +10,7 @@
 
 
 
-enum class DmiSystemPowerSupplyInputVoltageRangeSwitch: bad_uint8
+enum class DmiSystemPowerSupplyInputVoltageRangeSwitch: u8
 {
     NONE           = 0,
     OTHER          = 1,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(DmiSystemPowerSupplyInputVoltageRangeSwitch
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)rangeSwitch, enumToString(rangeSwitch));
+    sprintf(res, "0x%02X (%s)", (u8)rangeSwitch, enumToString(rangeSwitch));
 
     return res;
 }

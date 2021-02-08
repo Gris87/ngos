@@ -19,11 +19,11 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
     UefiMemoryDescriptor *memoryMap         = 0;
-    bad_uint64                   memoryMapSize     = 0;
-    bad_uint64                   descriptorSize    = 0;
-    bad_uint32                   descriptorVersion = 0;
-    bad_uint64                   mapKey            = 0;
-    bad_uint64                   bufferSize        = 0;
+    u64                   memoryMapSize     = 0;
+    u64                   descriptorSize    = 0;
+    u32                   descriptorVersion = 0;
+    u64                   mapKey            = 0;
+    u64                   bufferSize        = 0;
 
 
 
@@ -63,10 +63,10 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-    bad_uint64 summary[(bad_uint64)UefiMemoryType::MAXIMUM];
+    u64 summary[(u64)UefiMemoryType::MAXIMUM];
     memzero(summary, sizeof(summary));
 
-    bad_uint64 totalMemory = 0;
+    u64 totalMemory = 0;
 
 
 
@@ -74,9 +74,9 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-    bad_int64 numberOfDescriptors = memoryMapSize / descriptorSize;
+    i64 numberOfDescriptors = memoryMapSize / descriptorSize;
 
-    for (bad_int64 i = 0; i < numberOfDescriptors; ++i)
+    for (i64 i = 0; i < numberOfDescriptors; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(&bootMemoryMap, i);
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
@@ -93,9 +93,9 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-        bad_uint64 size = memoryDescriptor->numberOfPages * PAGE_SIZE;
+        u64 size = memoryDescriptor->numberOfPages * PAGE_SIZE;
 
-        summary[(bad_uint64)memoryDescriptor->type] += size;
+        summary[(u64)memoryDescriptor->type] += size;
 
 
 
@@ -116,7 +116,7 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)UefiMemoryType::MAXIMUM; ++i)
+    for (i64 i = 0; i < (i64)UefiMemoryType::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(sEntry->addRecord(enumToString((UefiMemoryType)i), strdup(bytesToString(summary[i])), DeviceManagerMode::BASIC), NgosStatus::ASSERTION);
     }

@@ -10,8 +10,8 @@
 // XFeaturePkruState is used for 32-bit PKRU register
 struct XFeaturePkruState
 {
-    bad_uint32 pkru;
-    bad_uint32 __pad;
+    u32 pkru;
+    u32 __pad;
 };
 
 

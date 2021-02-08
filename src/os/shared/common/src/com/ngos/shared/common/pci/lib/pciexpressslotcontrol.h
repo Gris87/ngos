@@ -15,21 +15,21 @@ struct PciExpressSlotControl
     {
         struct
         {
-            bad_uint16 attentionButtonPressedEnable      : 1;
-            bad_uint16 powerFaultDetectedEnable          : 1;
-            bad_uint16 mrlSensorChangedEnable            : 1;
-            bad_uint16 presenceDetectChangedEnable       : 1;
-            bad_uint16 commandCompletedInterruptEnable   : 1;
-            bad_uint16 hotPlugInterruptEnable            : 1;
-            bad_uint16 attentionIndicatorControl         : 2; // TODO: Use enum PciExpressIndicatorControl
-            bad_uint16 powerIndicatorControl             : 2; // TODO: Use enum PciExpressIndicatorControl
-            bad_uint16 powerControllerControl            : 1; // TODO: Use enum PciExpressPowerControllerControl
-            bad_uint16 electromechanicalInterlockControl : 1;
-            bad_uint16 dataLinkLayerStateChangedEnable   : 1;
-            bad_uint16 __reserved                        : 3;
+            u16 attentionButtonPressedEnable      : 1;
+            u16 powerFaultDetectedEnable          : 1;
+            u16 mrlSensorChangedEnable            : 1;
+            u16 presenceDetectChangedEnable       : 1;
+            u16 commandCompletedInterruptEnable   : 1;
+            u16 hotPlugInterruptEnable            : 1;
+            u16 attentionIndicatorControl         : 2; // TODO: Use enum PciExpressIndicatorControl
+            u16 powerIndicatorControl             : 2; // TODO: Use enum PciExpressIndicatorControl
+            u16 powerControllerControl            : 1; // TODO: Use enum PciExpressPowerControllerControl
+            u16 electromechanicalInterlockControl : 1;
+            u16 dataLinkLayerStateChangedEnable   : 1;
+            u16 __reserved                        : 3;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

@@ -14,11 +14,11 @@ struct DmiElectricalCurrentProbeLocationAndStatus
     {
         struct
         {
-            bad_uint8 location: 5; // TODO: Use enum DmiElectricalCurrentProbeLocation
-            bad_uint8 status:   3; // TODO: Use enum DmiElectricalCurrentProbeStatus
+            u8 location: 5; // TODO: Use enum DmiElectricalCurrentProbeLocation
+            u8 status:   3; // TODO: Use enum DmiElectricalCurrentProbeStatus
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

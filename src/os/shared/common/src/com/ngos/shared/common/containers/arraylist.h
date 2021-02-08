@@ -373,7 +373,7 @@ NgosStatus ArrayList<T>::setCapacity(i64 capacity)
     else
     if (capacity < mCapacity)
     {
-        mCapacity = capacity; // TODO: Check for reducing capacity and expanding (realloc?)
+        mCapacity = capacity;
 
         if (mCapacity > 0)
         {

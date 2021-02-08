@@ -519,7 +519,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
 
 
-        lines.append("enum class PciBaseClass: bad_uint8");
+        lines.append("enum class PciBaseClass: u8");
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!baseClasses.contains(0))
@@ -607,7 +607,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
         lines.append("    static char8 res[21];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (bad_uint8)baseClass, enumToString(baseClass));");
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)baseClass, enumToString(baseClass));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier
@@ -616,14 +616,14 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
 
 
 
-    // inline const char8* enumToHumanString(PciBaseClass baseClass, bad_uint8 subClassId, bad_uint8 interfaceId)
+    // inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId)
     {
         addThreeBlankLines(lines);
 
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciBaseClass baseClass, bad_uint8 subClassId, bad_uint8 interfaceId) // TEST: NO");
+        lines.append("inline const char8* enumToHumanString(PciBaseClass baseClass, u8 subClassId, u8 interfaceId) // TEST: NO");
         lines.append("{"); // Ignore CppSingleCharVerifier
         lines.append("    // COMMON_LT((\" | baseClass = %u, subClassId = %u, interfaceId = %u\", baseClass, subClassId, interfaceId)); // Commented to avoid bad looking logs");
 
@@ -737,7 +737,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
 
 
 
-        lines.append(QString("enum class PciSubClass%1: bad_uint8 // Ignore CppEnumVerifier").arg(baseClassIdStr, 2, QChar('0')));
+        lines.append(QString("enum class PciSubClass%1: u8 // Ignore CppEnumVerifier").arg(baseClassIdStr, 2, QChar('0')));
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!baseClass.subClasses.contains(0))
@@ -825,7 +825,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
 
         lines.append("    static char8 res[20];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (bad_uint8)subClass, enumToString(subClass));");
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)subClass, enumToString(subClass));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier
@@ -834,7 +834,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
 
 
 
-    // inline const char8* enumToHumanString(PciSubClass subClass, bad_uint8 interfaceId)
+    // inline const char8* enumToHumanString(PciSubClass subClass, u8 interfaceId)
     {
         QString unknownValue = baseClass.description;
 
@@ -870,7 +870,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
         if (interfaceIdUsed)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
-            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass, bad_uint8 interfaceId) // TEST: NO").arg(baseClassIdStr, 2, QChar('0')));
+            lines.append(QString("inline const char8* enumToHumanString(PciSubClass%1 subClass, u8 interfaceId) // TEST: NO").arg(baseClassIdStr, 2, QChar('0')));
             lines.append("{"); // Ignore CppSingleCharVerifier
             lines.append("    // COMMON_LT((\" | subClass = %u, interfaceId = %u\", subClass, interfaceId)); // Commented to avoid bad looking logs");
         }
@@ -947,7 +947,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
 
 
 
-        lines.append(QString("enum class PciInterface%1%2: bad_uint8 // Ignore CppEnumVerifier").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
+        lines.append(QString("enum class PciInterface%1%2: u8 // Ignore CppEnumVerifier").arg(baseClassIdStr, 2, QChar('0')).arg(subClassIdStr, 2, QChar('0')));
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!subClass.interfaces.contains(0))
@@ -1035,7 +1035,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
 
         lines.append("    static char8 res[20];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%02X (%s)\", (bad_uint8)interface, enumToString(interface));");
+        lines.append("    sprintf(res, \"0x%02X (%s)\", (u8)interface, enumToString(interface));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier
@@ -1126,7 +1126,7 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
 
 
-        lines.append("enum class PciVendor: bad_uint16");
+        lines.append("enum class PciVendor: u16");
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!vendors.contains(0))
@@ -1214,7 +1214,7 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
         lines.append("    static char8 res[21];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%04X (%s)\", (bad_uint16)vendor, enumToString(vendor));");
+        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)vendor, enumToString(vendor));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier
@@ -1262,14 +1262,14 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
 
 
-    // inline const char8* enumToHumanString(PciVendor vendor, bad_uint16 deviceId)
+    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId)
     {
         addThreeBlankLines(lines);
 
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciVendor vendor, bad_uint16 deviceId) // TEST: NO");
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: NO");
         lines.append("{"); // Ignore CppSingleCharVerifier
         lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u\", vendor, deviceId)); // Commented to avoid bad looking logs");
 
@@ -1310,14 +1310,14 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
 
 
-    // inline const char8* enumToHumanString(PciVendor vendor, bad_uint16 deviceId, PciVendor subsystemVendorID, bad_uint16 subDeviceId)
+    // inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId)
     {
         addThreeBlankLines(lines);
 
 
 
         // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append("inline const char8* enumToHumanString(PciVendor vendor, bad_uint16 deviceId, PciVendor subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO");
+        lines.append("inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor subsystemVendorID, u16 subDeviceId) // TEST: NO");
         lines.append("{"); // Ignore CppSingleCharVerifier
         lines.append("    // COMMON_LT((\" | vendor = %u, deviceId = %u, subsystemVendorID = %u, subDeviceId = %u\", vendor, deviceId, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs");
 
@@ -1361,7 +1361,7 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
 
             if (subDevicesExists)
             {
-                lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId, (bad_uint16)subsystemVendorID, subDeviceId);").arg(vendorIdStr, 4, QChar('0')));
+                lines.append(QString("        case PciVendor::VENDOR_%1: return enumToHumanString((PciDevice%1)deviceId, (u16)subsystemVendorID, subDeviceId);").arg(vendorIdStr, 4, QChar('0')));
             }
             else
             {
@@ -1425,7 +1425,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
 
 
-        lines.append(QString("enum class PciDevice%1: bad_uint16 // Ignore CppEnumVerifier").arg(vendorIdStr, 4, QChar('0')));
+        lines.append(QString("enum class PciDevice%1: u16 // Ignore CppEnumVerifier").arg(vendorIdStr, 4, QChar('0')));
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!vendor.devices.contains(0))
@@ -1513,7 +1513,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
         lines.append("    static char8 res[23];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%04X (%s)\", (bad_uint16)device, enumToString(device));");
+        lines.append("    sprintf(res, \"0x%04X (%s)\", (u16)device, enumToString(device));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier
@@ -1561,7 +1561,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
 
 
-    // inline const char8* enumToHumanString(PciDevice device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId)
+    // inline const char8* enumToHumanString(PciDevice device, u16 subsystemVendorID, u16 subDeviceId)
     {
         if (subDevicesExists)
         {
@@ -1570,7 +1570,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
 
 
             // Ignore CppAlignmentVerifier [BEGIN]
-            lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO").arg(vendorIdStr, 4, QChar('0')));
+            lines.append(QString("inline const char8* enumToHumanString(PciDevice%1 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO").arg(vendorIdStr, 4, QChar('0')));
             lines.append("{"); // Ignore CppSingleCharVerifier
             lines.append("    // COMMON_LT((\" | device = %u, subsystemVendorID = %u, subDeviceId = %u\", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs");
 
@@ -1640,7 +1640,7 @@ bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 v
 
 
 
-        lines.append(QString("enum class PciSubDevice%1%2: bad_uint32 // Ignore CppEnumVerifier").arg(vendorIdStr, 4, QChar('0')).arg(deviceIdStr, 4, QChar('0')));
+        lines.append(QString("enum class PciSubDevice%1%2: u32 // Ignore CppEnumVerifier").arg(vendorIdStr, 4, QChar('0')).arg(deviceIdStr, 4, QChar('0')));
         lines.append("{"); // Ignore CppSingleCharVerifier
 
         if (!device.subdevices.contains(0))
@@ -1728,7 +1728,7 @@ bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 v
 
         lines.append("    static char8 res[32];");
         lines.append("");
-        lines.append("    sprintf(res, \"0x%08X (%s)\", (bad_uint32)subDevice, enumToString(subDevice));");
+        lines.append("    sprintf(res, \"0x%08X (%s)\", (u32)subDevice, enumToString(subDevice));");
         lines.append("");
         lines.append("    return res;");
         lines.append("}"); // Ignore CppSingleCharVerifier

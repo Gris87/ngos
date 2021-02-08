@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint64 dmi_bios_characteristics_flags;
+typedef u64 dmi_bios_characteristics_flags;
 
 enum class DmiBiosCharacteristicsFlag: dmi_bios_characteristics_flags
 {

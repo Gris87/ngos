@@ -18,16 +18,16 @@ struct DmiMemoryArrayMappedAddressEntry
     DmiEntryHeader                   header;
     DmiMemoryArrayMappedAddressRange startingAddress;
     DmiMemoryArrayMappedAddressRange endingAddress;
-    bad_uint16                              memoryArrayHandle;
-    bad_uint8                               partitionWidth;
+    u16                              memoryArrayHandle;
+    u8                               partitionWidth;
 } __attribute__((packed));
 
 
 
 struct DmiMemoryArrayMappedAddressEntryV27: public DmiMemoryArrayMappedAddressEntry
 {
-    bad_uint64 extendedStartingAddress;
-    bad_uint64 extendedEndingAddress;
+    u64 extendedStartingAddress;
+    u64 extendedEndingAddress;
 } __attribute__((packed));
 
 

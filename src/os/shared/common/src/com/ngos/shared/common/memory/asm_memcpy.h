@@ -9,7 +9,7 @@
 
 
 CPP_EXTERN_C
-void* memcpy(void *dest, const void *src, bad_uint64 length); // TEST: MODULE=memory.h
+void* memcpy(void *dest, const void *src, u64 length); // TEST: MODULE=memory.h
 
 
 

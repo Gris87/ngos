@@ -33,22 +33,22 @@ void UEFI_API testLogicalProcedure(void *buffer)
 
 
 
-    bad_uint64 temp1  = 0;
-    bad_uint64 temp2  = 0;
-    bad_uint64 temp3  = 0;
-    bad_uint64 temp4  = 0;
-    bad_uint64 temp5  = 0;
-    bad_uint64 temp6  = 0;
-    bad_uint64 temp7  = 0;
-    bad_uint64 temp8  = 0;
-    bad_uint64 temp9  = 0;
-    bad_uint64 temp10 = 0;
+    u64 temp1  = 0;
+    u64 temp2  = 0;
+    u64 temp3  = 0;
+    u64 temp4  = 0;
+    u64 temp5  = 0;
+    u64 temp6  = 0;
+    u64 temp7  = 0;
+    u64 temp8  = 0;
+    u64 temp9  = 0;
+    u64 temp10 = 0;
 
 
 
-    bad_uint64 startTime = rdtsc();
+    u64 startTime = rdtsc();
 
-    for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         if (temp1 < 3)
         {
@@ -159,7 +159,7 @@ void UEFI_API testLogicalProcedure(void *buffer)
         }
     }
 
-    bad_uint64 endTime = rdtsc();
+    u64 endTime = rdtsc();
 
 
 

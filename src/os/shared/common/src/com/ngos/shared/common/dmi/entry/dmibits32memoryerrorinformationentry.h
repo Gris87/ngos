@@ -23,10 +23,10 @@ struct DmiBits32MemoryErrorInformationEntry
     DmiBits32MemoryErrorInformationErrorType        errorType;
     DmiBits32MemoryErrorInformationErrorGranularity errorGranularity;
     DmiBits32MemoryErrorInformationErrorOperation   errorOperation;
-    bad_uint32                                             vendorSyndrome;
-    bad_uint32                                             memoryArrayErrorAddress;
-    bad_uint32                                             deviceErrorAddress;
-    bad_uint32                                             errorResolution;
+    u32                                             vendorSyndrome;
+    u32                                             memoryArrayErrorAddress;
+    u32                                             deviceErrorAddress;
+    u32                                             errorResolution;
 } __attribute__((packed));
 
 

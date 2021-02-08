@@ -21,7 +21,7 @@ TEST_CASES(section2, com_ngos_kernel_other_pagetable_addressconversion);
 {
     TEST_CASE("physicalAddress()");
     {
-        bad_uint64 temp = AddressConversion::sPhysicalDelta;
+        u64 temp = AddressConversion::sPhysicalDelta;
 
         TEST_ASSERT_NOT_EQUALS(temp, 0);
         TEST_ASSERT_EQUALS(AddressConversion::physicalAddress(0), temp);
@@ -45,7 +45,7 @@ TEST_CASES(section2, com_ngos_kernel_other_pagetable_addressconversion);
 
     TEST_CASE("virtualAddress()");
     {
-        bad_uint64 temp = AddressConversion::sPhysicalDelta;
+        u64 temp = AddressConversion::sPhysicalDelta;
 
         TEST_ASSERT_NOT_EQUALS(temp, 0);
         TEST_ASSERT_EQUALS(AddressConversion::virtualAddress(0), -temp);
@@ -69,10 +69,10 @@ TEST_CASES(section2, com_ngos_kernel_other_pagetable_addressconversion);
 
     TEST_CASE("setPhysicalDeltaBaseOnLocation()");
     {
-        bad_uint64 temp = AddressConversion::sPhysicalDelta;
+        u64 temp = AddressConversion::sPhysicalDelta;
 
         TEST_ASSERT_NOT_EQUALS(temp, 0);
-        TEST_ASSERT_EQUALS(AddressConversion::setPhysicalDeltaBaseOnLocation((bad_uint64)&_start), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(AddressConversion::setPhysicalDeltaBaseOnLocation((u64)&_start), NgosStatus::OK);
         TEST_ASSERT_EQUALS(AddressConversion::sPhysicalDelta,                               0);
 
         AddressConversion::sPhysicalDelta = temp;

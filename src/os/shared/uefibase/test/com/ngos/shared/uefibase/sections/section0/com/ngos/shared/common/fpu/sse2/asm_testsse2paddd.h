@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse2Paddd(bad_uint32 *a, bad_uint32 *b, bad_uint32 *c);
+void testSse2Paddd(u32 *a, u32 *b, u32 *c);
 
 
 

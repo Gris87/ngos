@@ -33,7 +33,7 @@ bool HexCharsGenerator::generate(const QString &path)
 
 
 
-    lines.append("bad_uint16 Hex::sHexChars[256] =");
+    lines.append("u16 Hex::sHexChars[256] =");
     lines.append("{"); // Ignore CppSingleCharVerifier
 
     for (qint64 i = 0; i < 16; ++i)

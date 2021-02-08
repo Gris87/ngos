@@ -13,14 +13,14 @@ struct ZLibHeader
     {
         struct
         {
-            bad_uint8 compressionMethod: 4;
-            bad_uint8 compressionInfo:   4;
-            bad_uint8 checkBits:         5;
-            bad_uint8 presetDictionary:  1;
-            bad_uint8 compressionLevel:  2;
+            u8 compressionMethod: 4;
+            u8 compressionInfo:   4;
+            u8 checkBits:         5;
+            u8 presetDictionary:  1;
+            u8 compressionLevel:  2;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 } __attribute__((packed));
 

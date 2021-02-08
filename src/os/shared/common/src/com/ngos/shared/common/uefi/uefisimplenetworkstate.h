@@ -8,7 +8,7 @@
 
 
 
-enum class UefiSimpleNetworkState: bad_uint32
+enum class UefiSimpleNetworkState: u32
 {
     STOPPED,
     STARTED,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(UefiSimpleNetworkState state) // TEST: NO
 
     static char8 res[25];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)state, enumToString(state));
+    sprintf(res, "0x%08X (%s)", (u32)state, enumToString(state));
 
     return res;
 }

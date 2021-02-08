@@ -11,21 +11,21 @@
 class StretchRange
 {
 public:
-    StretchRange(bad_uint16 from, bad_uint16 to);
+    StretchRange(u16 from, u16 to);
     ~StretchRange(); // TEST: NO
 
-    bad_uint16 getSize() const;
+    u16 getSize() const;
 
-    bad_uint16 getFrom() const;
-    bad_uint16 getTo() const;
+    u16 getFrom() const;
+    u16 getTo() const;
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    bad_uint16 mFrom;
-    bad_uint16 mTo;
+    u16 mFrom;
+    u16 mTo;
 };
 
 

@@ -9,8 +9,8 @@
 
 struct PciExpressTphRequesterStTableEntry
 {
-    bad_uint8 stLowerEntry;
-    bad_uint8 stUpperEntry;
+    u8 stLowerEntry;
+    u8 stUpperEntry;
 };
 
 

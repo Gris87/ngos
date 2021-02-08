@@ -13,12 +13,12 @@ struct PciExpressMulticastBaseAddressRegister
     {
         struct
         {
-            bad_uint64 mcIndexPosition : 6;
-            bad_uint64 __reserved      : 6;
-            bad_uint64 mcBaseAddress   : 52;
+            u64 mcIndexPosition : 6;
+            u64 __reserved      : 6;
+            u64 mcBaseAddress   : 52;
         };
 
-        bad_uint64 value64;
+        u64 value64;
     };
 };
 

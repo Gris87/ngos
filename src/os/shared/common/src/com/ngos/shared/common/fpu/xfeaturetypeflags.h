@@ -17,21 +17,21 @@
 
 
 
-typedef bad_uint64 x_feature_type_flags;
+typedef u64 x_feature_type_flags;
 
 enum class XFeatureTypeFlag: x_feature_type_flags
 {
     NONE                                  = 0,
-    FPU                                   = (1ULL << (bad_uint64)XFeature::FPU),
-    SSE                                   = (1ULL << (bad_uint64)XFeature::SSE),
-    AVX                                   = (1ULL << (bad_uint64)XFeature::AVX),
-    MPX_BOUND_REGISTERS                   = (1ULL << (bad_uint64)XFeature::MPX_BOUND_REGISTERS),
-    MPX_BOUND_CONFIG_AND_STATUS_REGISTERS = (1ULL << (bad_uint64)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS),
-    AVX512_OPMASK                         = (1ULL << (bad_uint64)XFeature::AVX512_OPMASK),
-    AVX512_ZMM_FROM_0_TO_15               = (1ULL << (bad_uint64)XFeature::AVX512_ZMM_FROM_0_TO_15),
-    AVX512_ZMM_FROM_16_TO_31              = (1ULL << (bad_uint64)XFeature::AVX512_ZMM_FROM_16_TO_31),
-    PT                                    = (1ULL << (bad_uint64)XFeature::PT),
-    PKRU                                  = (1ULL << (bad_uint64)XFeature::PKRU)
+    FPU                                   = (1ULL << (enum_t)XFeature::FPU),
+    SSE                                   = (1ULL << (enum_t)XFeature::SSE),
+    AVX                                   = (1ULL << (enum_t)XFeature::AVX),
+    MPX_BOUND_REGISTERS                   = (1ULL << (enum_t)XFeature::MPX_BOUND_REGISTERS),
+    MPX_BOUND_CONFIG_AND_STATUS_REGISTERS = (1ULL << (enum_t)XFeature::MPX_BOUND_CONFIG_AND_STATUS_REGISTERS),
+    AVX512_OPMASK                         = (1ULL << (enum_t)XFeature::AVX512_OPMASK),
+    AVX512_ZMM_FROM_0_TO_15               = (1ULL << (enum_t)XFeature::AVX512_ZMM_FROM_0_TO_15),
+    AVX512_ZMM_FROM_16_TO_31              = (1ULL << (enum_t)XFeature::AVX512_ZMM_FROM_16_TO_31),
+    PT                                    = (1ULL << (enum_t)XFeature::PT),
+    PKRU                                  = (1ULL << (enum_t)XFeature::PKRU)
 };
 
 DEFINE_FLAGS(XFeatureTypeFlags, x_feature_type_flags); // TEST: NO

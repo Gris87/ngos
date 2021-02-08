@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice80862572: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice80862572: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140287 = 0x10140287,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(PciSubDevice80862572 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -77,7 +77,7 @@ inline const char8* enumToHumanString(PciSubDevice80862572 subDevice) // TEST: N
         case PciSubDevice80862572::SUBDEVICE_103C12BC: return "D530 sff(dc578av)";
         case PciSubDevice80862572::SUBDEVICE_104380A5: return "P5P800-MX Mainboard";
         case PciSubDevice80862572::SUBDEVICE_14627650: return "Hetis 865GV-E (MS-7065)";
-        case PciSubDevice80862572::SUBDEVICE_1734101B: return "Fujitsu-Siemens Scenic E300 bad_int865GV";
+        case PciSubDevice80862572::SUBDEVICE_1734101B: return "Fujitsu-Siemens Scenic E300 i865GV";
         case PciSubDevice80862572::SUBDEVICE_80864246: return "Desktop Board D865GBF";
         case PciSubDevice80862572::SUBDEVICE_80864C43: return "Desktop Board D865GLC";
 

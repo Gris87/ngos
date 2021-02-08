@@ -12,11 +12,11 @@
 struct PciExpressPowerBudgetingCapability
 {
     PciExtendedCapabilityHeader             header;
-    bad_uint8                                      dataSelect;
-    bad_uint8                                      __reserved[3];
+    u8                                      dataSelect;
+    u8                                      __reserved[3];
     PciExpressPowerBudgetingData            data;
     PciExpressPowerBudgetingCapabilityFlags powerBudgetCapability;
-    bad_uint8                                      __reserved2[3];
+    u8                                      __reserved2[3];
 } __attribute__((packed));
 
 

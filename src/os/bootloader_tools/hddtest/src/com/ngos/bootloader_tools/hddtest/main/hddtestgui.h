@@ -55,7 +55,7 @@ private:
     static Image      *sCriticalImage;
     static Image      *sStartImage;
     static Image      *sStopImage;
-    static bad_uint16         sWaitEventsCount;
+    static u16         sWaitEventsCount;
     static uefi_event *sWaitEvents;
 };
 

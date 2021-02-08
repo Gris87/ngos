@@ -776,8 +776,8 @@ TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
         pgd.pgd  = 0x00000FEDCBA98075;
         pgd2.pgd = 0x00000FEDCBA98080;
 
-        TEST_ASSERT_EQUALS((bad_uint64)p4dOffset(&pgd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98FA8);
-        TEST_ASSERT_EQUALS((bad_uint64)p4dOffset(&pgd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98FB8);
+        TEST_ASSERT_EQUALS((u64)p4dOffset(&pgd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98FA8);
+        TEST_ASSERT_EQUALS((u64)p4dOffset(&pgd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98FB8);
     }
     TEST_CASE_END();
 
@@ -791,8 +791,8 @@ TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
         p4d.p4d  = 0x00000FEDCBA98075;
         p4d2.p4d = 0x00000FEDCBA98080;
 
-        TEST_ASSERT_EQUALS((bad_uint64)pudOffset(&p4d,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98F58);
-        TEST_ASSERT_EQUALS((bad_uint64)pudOffset(&p4d2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98F78);
+        TEST_ASSERT_EQUALS((u64)pudOffset(&p4d,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98F58);
+        TEST_ASSERT_EQUALS((u64)pudOffset(&p4d2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98F78);
     }
     TEST_CASE_END();
 #else
@@ -804,8 +804,8 @@ TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
         pgd.pgd  = 0x00000FEDCBA98075;
         pgd2.pgd = 0x00000FEDCBA98080;
 
-        TEST_ASSERT_EQUALS((bad_uint64)pudOffset(&pgd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98F58);
-        TEST_ASSERT_EQUALS((bad_uint64)pudOffset(&pgd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98F78);
+        TEST_ASSERT_EQUALS((u64)pudOffset(&pgd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98F58);
+        TEST_ASSERT_EQUALS((u64)pudOffset(&pgd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA98F78);
     }
     TEST_CASE_END();
 #endif
@@ -820,8 +820,8 @@ TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
         pud.pud  = 0x00000FEDCBA98075;
         pud2.pud = 0x00000FEDCBA98080;
 
-        TEST_ASSERT_EQUALS((bad_uint64)pmdOffset(&pud,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98EB8);
-        TEST_ASSERT_EQUALS((bad_uint64)pmdOffset(&pud2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDC0000EF8);
+        TEST_ASSERT_EQUALS((u64)pmdOffset(&pud,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98EB8);
+        TEST_ASSERT_EQUALS((u64)pmdOffset(&pud2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDC0000EF8);
     }
     TEST_CASE_END();
 
@@ -835,8 +835,8 @@ TEST_CASES(section0, com_ngos_shared_common_pagetable_utils);
         pmd.pmd  = 0x00000FEDCBA98075;
         pmd2.pmd = 0x00000FEDCBA98080;
 
-        TEST_ASSERT_EQUALS((bad_uint64)pteOffset(&pmd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98D78);
-        TEST_ASSERT_EQUALS((bad_uint64)pteOffset(&pmd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA00DF8);
+        TEST_ASSERT_EQUALS((u64)pteOffset(&pmd,  0xFAFAFAFAFAFAFAFA), 0x00000FEDCBA98D78);
+        TEST_ASSERT_EQUALS((u64)pteOffset(&pmd2, 0xFBFBFBFBFBFBFBFB), 0x00000FEDCBA00DF8);
     }
     TEST_CASE_END();
 }

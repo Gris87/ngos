@@ -13,13 +13,13 @@ struct DmiProcessorStatusAndSocketPopulated
     {
         struct
         {
-            bad_uint8 status:          3; // TODO: Use enum DmiProcessorStatus
-            bad_uint8 __reserved:      3;
-            bad_uint8 socketPopulated: 1;
-            bad_uint8 __reserved2:     1;
+            u8 status:          3; // TODO: Use enum DmiProcessorStatus
+            u8 __reserved:      3;
+            u8 socketPopulated: 1;
+            u8 __reserved2:     1;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

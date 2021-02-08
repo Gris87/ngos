@@ -15,9 +15,9 @@ struct DmiOnboardDevicesExtendedEntry
     DmiEntryHeader                                header;
     DmiStringId                                   referenceDesignation;
     DmiOnboardDevicesExtendedDeviceTypeAndEnabled deviceTypeAndEnabled;
-    bad_uint8                                            deviceTypeInstance;
-    bad_uint16                                           segmentGroupNumber;
-    bad_uint8                                            busNumber;
+    u8                                            deviceTypeInstance;
+    u16                                           segmentGroupNumber;
+    u8                                            busNumber;
     DmiFunctionNumberAndDeviceNumber              functionNumberAndDeviceNumber;
 } __attribute__((packed));
 

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiPhysicalMemoryArrayErrorCorrection: bad_uint8
+enum class DmiPhysicalMemoryArrayErrorCorrection: u8
 {
     NULL           = 0,
     OTHER          = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayErrorCorrection corre
 
     static char8 res[22];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)correction, enumToString(correction));
+    sprintf(res, "0x%02X (%s)", (u8)correction, enumToString(correction));
 
     return res;
 }

@@ -8,7 +8,7 @@
 
 
 
-enum class UefiPciIoProtocolWidth: bad_uint32
+enum class UefiPciIoProtocolWidth: u32
 {
     UINT8,
     UINT16,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(UefiPciIoProtocolWidth width) // TEST: NO
 
     static char8 res[25];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)width, enumToString(width));
+    sprintf(res, "0x%08X (%s)", (u32)width, enumToString(width));
 
     return res;
 }

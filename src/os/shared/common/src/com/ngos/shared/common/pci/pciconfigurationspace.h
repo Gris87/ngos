@@ -28,7 +28,7 @@ struct PciConfigurationSpace
         PciCardBusControlRegister cardBus;
     };
 
-    bad_uint8 data[190];
+    u8 data[190];
 };
 
 

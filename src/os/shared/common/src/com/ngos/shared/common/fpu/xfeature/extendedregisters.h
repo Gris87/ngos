@@ -9,21 +9,21 @@
 
 struct Register128Bit
 {
-    bad_uint8 bytes[128 / 8];
+    u8 bytes[128 / 8];
 };
 
 
 
 struct Register256Bit
 {
-    bad_uint8 bytes[256 / 8];
+    u8 bytes[256 / 8];
 };
 
 
 
 struct Register512Bit
 {
-    bad_uint8 bytes[512 / 8];
+    u8 bytes[512 / 8];
 };
 
 

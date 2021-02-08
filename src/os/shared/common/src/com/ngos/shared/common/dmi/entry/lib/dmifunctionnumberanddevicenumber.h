@@ -13,11 +13,11 @@ struct DmiFunctionNumberAndDeviceNumber
     {
         struct
         {
-            bad_uint8 functionNumber: 3;
-            bad_uint8 deviceNumber:   5;
+            u8 functionNumber: 3;
+            u8 deviceNumber:   5;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

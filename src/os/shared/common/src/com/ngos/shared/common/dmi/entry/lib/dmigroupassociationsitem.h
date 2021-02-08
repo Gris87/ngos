@@ -10,7 +10,7 @@
 struct DmiGroupAssociationsItem
 {
     DmiEntryType type;
-    bad_uint16          handle;
+    u16          handle;
 } __attribute__((packed));
 
 

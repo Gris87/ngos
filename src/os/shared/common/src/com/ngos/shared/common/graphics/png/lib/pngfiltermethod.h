@@ -10,7 +10,7 @@
 
 
 
-enum class PngFilterMethod: bad_uint8
+enum class PngFilterMethod: u8
 {
     ADAPTIVE = 0
 };
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(PngFilterMethod method) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)method, enumToString(method));
+    sprintf(res, "0x%02X (%s)", (u8)method, enumToString(method));
 
     return res;
 }

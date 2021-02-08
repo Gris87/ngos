@@ -36,11 +36,11 @@ public:
     }
 
 private:
-    static NgosStatus addMemoryInfoPanel(bad_uint64 pageIndex, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice); // TEST: NO
+    static NgosStatus addMemoryInfoPanel(i64 pageIndex, i64 posX, i64 posY, i64 width, i64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice); // TEST: NO
     static NgosStatus addIssueEntry(Image *icon, const char8 *description); // TEST: NO
     static NgosStatus fillIssuesTable(); // TEST: NO
-    static NgosStatus addMemoryTestPanel(bad_uint64 pageIndex, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, Image *startResizedImage, bad_uint64 memoryTestStartButtonWidth, bad_uint64 memoryTestStartButtonHeight, const DmiMemoryDevice &memoryDevice); // TEST: NO
-    static NgosStatus addSummaryEntry(const char8 *name, bad_uint64 score); // TEST: NO
+    static NgosStatus addMemoryTestPanel(i64 pageIndex, i64 posX, i64 posY, i64 width, i64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, Image *startResizedImage, i64 memoryTestStartButtonWidth, i64 memoryTestStartButtonHeight, const DmiMemoryDevice &memoryDevice); // TEST: NO
+    static NgosStatus addSummaryEntry(const char8 *name, i64 score); // TEST: NO
     static NgosStatus fillSummaryTable(); // TEST: NO
 
     static NgosStatus focusTabFirstWidget(); // TEST: NO
@@ -54,8 +54,8 @@ private:
     static NgosStatus showFirstTestPage(); // TEST: NO
     static NgosStatus showLastTestPage(); // TEST: NO
 
-    static NgosStatus startTest(bad_int64 id); // TEST: NO
-    static NgosStatus updateTest(TestType testType, bad_uint64 tsc); // TEST: NO
+    static NgosStatus startTest(i64 id); // TEST: NO
+    static NgosStatus updateTest(TestType testType, i64 tsc); // TEST: NO
 
     static NgosStatus generateWaitEventList(); // TEST: NO
     static NgosStatus waitForEvent(); // TEST: NO
@@ -63,7 +63,7 @@ private:
     static NgosStatus processKeyboardEvent(); // TEST: NO
     static NgosStatus processSimplePointerEvent(UefiSimplePointerProtocol *pointer); // TEST: NO
     static NgosStatus processAbsolutePointerEvent(UefiAbsolutePointerProtocol *pointer); // TEST: NO
-    static NgosStatus processApplicationProcessorEvent(bad_uint64 processorId); // TEST: NO
+    static NgosStatus processApplicationProcessorEvent(i64 processorId); // TEST: NO
     static NgosStatus processTimerEvent(); // TEST: NO
     static NgosStatus enableTimerEvent(); // TEST: NO
     static NgosStatus disableTimerEvent(); // TEST: NO
@@ -116,7 +116,7 @@ private:
     static ArrayList<ImageWidget *>               sInfoPageIndicators;
     static Image                                 *sInfoPageIndicatorResizedImage;
     static Image                                 *sInfoPageIndicatorSelectedResizedImage;
-    static bad_uint64                                    sInfoCurrentPage;
+    static i64                                    sInfoCurrentPage;
     static Button                                *sInfoLeftButton;
     static Button                                *sInfoRightButton;
     static Image                                 *sWarningImage;
@@ -130,7 +130,7 @@ private:
     static ArrayList<ImageWidget *>               sTestPageIndicators;
     static Image                                 *sTestPageIndicatorResizedImage;
     static Image                                 *sTestPageIndicatorSelectedResizedImage;
-    static bad_uint64                                    sTestCurrentPage;
+    static i64                                    sTestCurrentPage;
     static Button                                *sTestLeftButton;
     static Button                                *sTestRightButton;
     static WrapperWidget                         *sTestRunningWrapperWidget;
@@ -149,25 +149,25 @@ private:
     static TabWidget                             *sTestingTabWidget;
     static TabButton                             *sListTabButton;
     static TabButton                             *sChartTabButton;
-    static LabelWidget*                           sAverageLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-    static LabelWidget*                           sMaximumLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-    static LabelWidget*                           sProgressLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-    static ProgressBarWidget*                     sProgressBarWidgets[(bad_uint64)TestType::MAXIMUM];
+    static LabelWidget*                           sAverageLabelWidgets[(enum_t)TestType::MAXIMUM];
+    static LabelWidget*                           sMaximumLabelWidgets[(enum_t)TestType::MAXIMUM];
+    static LabelWidget*                           sProgressLabelWidgets[(enum_t)TestType::MAXIMUM];
+    static ProgressBarWidget*                     sProgressBarWidgets[(enum_t)TestType::MAXIMUM];
     static LabelWidget                           *sSummaryTotalLabelWidget;
     static TableWidget                           *sSummaryTableWidget;
-    static bad_uint64                                    sSummaryTotal;
+    static i64                                    sSummaryTotal;
     static UefiMpServicesProtocol                *sMpServices;
-    static bad_uint16                                    sWaitEventsCount;
+    static u16                                    sWaitEventsCount;
     static uefi_event                            *sWaitEvents;
     static uefi_event                             sTimerEvent;
-    static bad_uint16                                    sFirstProcessorEventIndex;
+    static u16                                    sFirstProcessorEventIndex;
     static TestType                               sCurrentTest;
-    static bad_uint64                                    sNumberOfRunningProcessors;
+    static i64                                    sNumberOfRunningProcessors;
     static bool                                   sTerminated;
     static TestType                              *sProcessorTasks;
     static TestMode                               sMode;
-    static Image*                                 sModeImages[(bad_uint64)TestMode::MAXIMUM];
-    static const char8*                           sModeImagesPath[(bad_uint64)TestMode::MAXIMUM];
+    static Image*                                 sModeImages[(enum_t)TestMode::MAXIMUM];
+    static const char8*                           sModeImagesPath[(enum_t)TestMode::MAXIMUM];
 };
 
 

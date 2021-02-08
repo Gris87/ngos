@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 pci_express_correctable_error_flags;
+typedef u32 pci_express_correctable_error_flags;
 
 enum class PciExpressCorrectableErrorFlag: pci_express_correctable_error_flags
 {

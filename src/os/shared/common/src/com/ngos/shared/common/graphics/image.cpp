@@ -6,7 +6,7 @@
 
 
 
-Image::Image(bad_uint16 width, bad_uint16 height, bool hasAlpha, bool opaque)
+Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
     : mNinePatch(0)
     , mWidth(width)
     , mHeight(height)
@@ -14,7 +14,7 @@ Image::Image(bad_uint16 width, bad_uint16 height, bool hasAlpha, bool opaque)
     , mIsOpaque(opaque)
     , mStride(mWidth * mBytesPerPixel)
     , mBufferSize(mHeight * mStride)
-    , mBuffer(new bad_uint8[mBufferSize])
+    , mBuffer(new u8[mBufferSize])
 {
     COMMON_LT((" | width = %u, height = %u, hasAlpha = %d, opaque = %d", width, height, hasAlpha, opaque));
 
@@ -34,7 +34,7 @@ Image::Image(const Image &image)
     , mIsOpaque(image.mIsOpaque)
     , mStride(image.mStride)
     , mBufferSize(image.mBufferSize)
-    , mBuffer(new bad_uint8[mBufferSize])
+    , mBuffer(new u8[mBufferSize])
 {
     COMMON_LT((" | image = ..."));
 
@@ -76,13 +76,13 @@ NgosStatus Image::fill(const RgbaPixel &color)
 
 
 
-    bad_int64 resolution = mWidth * mHeight;
+    i64 resolution = mWidth * mHeight;
 
     if (isRgba())
     {
         RgbaPixel *buffer = getRgbaBuffer();
 
-        for (bad_int64 i = 0; i < resolution; ++i)
+        for (i64 i = 0; i < resolution; ++i)
         {
             buffer[i].value32 = color.value32;
         }
@@ -91,7 +91,7 @@ NgosStatus Image::fill(const RgbaPixel &color)
     {
         RgbPixel *buffer = getRgbBuffer();
 
-        for (bad_int64 i = 0; i < resolution; ++i)
+        for (i64 i = 0; i < resolution; ++i)
         {
             buffer[i].red   = color.red;
             buffer[i].green = color.green;
@@ -146,7 +146,7 @@ NinePatch* Image::getNinePatch() const
     return mNinePatch;
 }
 
-bad_uint16 Image::getWidth() const
+u16 Image::getWidth() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -155,7 +155,7 @@ bad_uint16 Image::getWidth() const
     return mWidth;
 }
 
-bad_uint16 Image::getHeight() const
+u16 Image::getHeight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -164,7 +164,7 @@ bad_uint16 Image::getHeight() const
     return mHeight;
 }
 
-bad_uint8 Image::getBytesPerPixel() const
+u8 Image::getBytesPerPixel() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -200,7 +200,7 @@ bool Image::isOpaque() const
     return mIsOpaque;
 }
 
-bad_uint16 Image::getStride() const
+u16 Image::getStride() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -209,7 +209,7 @@ bad_uint16 Image::getStride() const
     return mStride;
 }
 
-bad_uint64 Image::getBufferSize() const
+u64 Image::getBufferSize() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -218,7 +218,7 @@ bad_uint64 Image::getBufferSize() const
     return mBufferSize;
 }
 
-bad_uint8* Image::getBuffer() const
+u8* Image::getBuffer() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

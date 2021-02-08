@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice808624CB: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice808624CB: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140267 = 0x10140267,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(PciSubDevice808624CB subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -85,7 +85,7 @@ inline const char8* enumToHumanString(PciSubDevice808624CB subDevice) // TEST: N
         case PciSubDevice808624CB::SUBDEVICE_114A0582: return "PC8 onboard IDE";
         case PciSubDevice808624CB::SUBDEVICE_145824C2: return "GA-8PE667 Ultra";
         case PciSubDevice808624CB::SUBDEVICE_14625800: return "845PE Max (MS-6580)";
-        case PciSubDevice808624CB::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, bad_int845GV)";
+        case PciSubDevice808624CB::SUBDEVICE_17341004: return "D1451 Mainboard (SCENIC N300, i845GV)";
         case PciSubDevice808624CB::SUBDEVICE_4C531090: return "Cx9 / Vx9 mainboard";
         case PciSubDevice808624CB::SUBDEVICE_E4BF0CC9: return "CC9-SAMBA";
         case PciSubDevice808624CB::SUBDEVICE_E4BF0CD2: return "CD2-BEBOP";

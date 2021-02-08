@@ -6,7 +6,7 @@
 
 
 
-bad_uint8         Assets::sEntriesCount;
+u8         Assets::sEntriesCount;
 AssetEntry Assets::sEntries[ASSET_ENTRIES_COUNT];
 
 
@@ -22,12 +22,12 @@ NgosStatus Assets::init()
 
 
 
-    bad_uint8 *start = (bad_uint8 *)&_assets_begin;
-    bad_uint8 *end   = (bad_uint8 *)&_assets_end;
+    u8 *start = (u8 *)&_assets_begin;
+    u8 *end   = (u8 *)&_assets_end;
 
 
 
-    bad_uint8 *currentAddress = start;
+    u8 *currentAddress = start;
     sEntriesCount      = 0;
 
     while (currentAddress < end)
@@ -43,7 +43,7 @@ NgosStatus Assets::init()
 
 
 
-        sEntries[sEntriesCount].contentSize =  (*(bad_uint64 *)currentAddress);
+        sEntries[sEntriesCount].contentSize =  (*(u64 *)currentAddress);
         currentAddress                      += sizeof(sEntries[sEntriesCount].contentSize);
 
         COMMON_TEST_ASSERT(currentAddress < end, NgosStatus::ASSERTION);
@@ -85,7 +85,7 @@ AssetEntry* Assets::getAssetEntry(const char8 *fileName)
 
 
 
-    for (bad_int64 i = 0; i < sEntriesCount; ++i)
+    for (i64 i = 0; i < sEntriesCount; ++i)
     {
         if (strequal(sEntries[i].fileName, fileName))
         {

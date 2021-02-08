@@ -9,13 +9,13 @@
 
 struct IdtDescriptor
 {
-    bad_uint16               offsetLow;
-    bad_uint16               segment;
-    bad_uint8                ist;
+    u16               offsetLow;
+    u16               segment;
+    u8                ist;
     IdtDescriptorType type;
-    bad_uint16               offsetMiddle;
-    bad_uint32               offsetHigh;
-    bad_uint32               __reserved2;
+    u16               offsetMiddle;
+    u32               offsetHigh;
+    u32               __reserved2;
 } __attribute__((packed));
 
 

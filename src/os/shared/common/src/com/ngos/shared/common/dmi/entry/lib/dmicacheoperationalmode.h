@@ -10,7 +10,7 @@
 
 
 
-enum class DmiCacheOperationalMode: bad_uint8
+enum class DmiCacheOperationalMode: u8
 {
     WRITE_THROUGH              = 0,
     WRITE_BACK                 = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(DmiCacheOperationalMode mode) // TEST: NO
 
     static char8 res[34];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)mode, enumToString(mode));
+    sprintf(res, "0x%02X (%s)", (u8)mode, enumToString(mode));
 
     return res;
 }

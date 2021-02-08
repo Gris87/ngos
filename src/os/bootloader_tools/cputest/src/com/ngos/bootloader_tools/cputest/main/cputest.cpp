@@ -26,7 +26,7 @@ CacheInfo CpuTest::sLevel1DataCache;
 CacheInfo CpuTest::sLevel1InstructionCache;
 CacheInfo CpuTest::sLevel2Cache;
 CacheInfo CpuTest::sLevel3Cache;
-bad_uint64       CpuTest::sCpuSpeed;
+u64       CpuTest::sCpuSpeed;
 
 
 
@@ -80,7 +80,7 @@ const CacheInfo& CpuTest::getLevel3Cache()
     return sLevel3Cache;
 }
 
-bad_uint64 CpuTest::getCpuSpeed()
+u64 CpuTest::getCpuSpeed()
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -154,7 +154,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
     if (CPU::isCpuIdLevelSupported(CACHE_TOPOLOGY_CPUID))
     {
-        bad_uint32 level = 0;
+        u32 level = 0;
 
         do
         {
@@ -162,10 +162,10 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
 
 
-            bad_uint32 ignored;
-            bad_uint32 eax;
-            bad_uint32 ebx;
-            bad_uint32 numberOfSets;
+            u32 ignored;
+            u32 eax;
+            u32 ebx;
+            u32 numberOfSets;
 
             UEFI_ASSERT_EXECUTION(CPU::cpuid(CACHE_TOPOLOGY_CPUID, level, &eax, &ebx, &numberOfSets, &ignored), NgosStatus::ASSERTION);
 
@@ -175,7 +175,7 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
 
 
-            bad_uint8 cacheType = eax & 0x1F;
+            u8 cacheType = eax & 0x1F;
 
             UEFI_LVVV(("cacheType = %u", cacheType));
 
@@ -186,11 +186,11 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
 
 
-            bad_uint8  cacheLevel     = (eax >> 5) & 0x07;
-            bad_uint8  numberOfWays   = (ebx >> 22) + 1;
-            bad_uint8  linePartitions = ((ebx >> 12) & 0x03FF) + 1;
-            bad_uint8  lineSize       = (ebx & 0x0FFF) + 1;
-            bad_uint64 cacheSize      = numberOfWays * linePartitions * lineSize * (numberOfSets + 1);
+            u8  cacheLevel     = (eax >> 5) & 0x07;
+            u8  numberOfWays   = (ebx >> 22) + 1;
+            u8  linePartitions = ((ebx >> 12) & 0x03FF) + 1;
+            u8  lineSize       = (ebx & 0x0FFF) + 1;
+            u64 cacheSize      = numberOfWays * linePartitions * lineSize * (numberOfSets + 1);
 
             UEFI_LVVV(("cacheLevel     = %u", cacheLevel));
             UEFI_LVVV(("numberOfWays   = %u", numberOfWays));
@@ -257,15 +257,15 @@ NgosStatus CpuTest::initCpuCachesIntel()
 
 
 
-        bad_uint32 registers[4];
+        u32 registers[4];
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(CACHE_INFO_CPUID, 0, &registers[0], &registers[1], &registers[2], &registers[3]), NgosStatus::ASSERTION);
 
 
 
-        bad_uint8 *registerByte = (bad_uint8 *)&registers[0];
+        u8 *registerByte = (u8 *)&registers[0];
 
-        for (bad_int64 i = 0; i < (bad_int64)sizeof(registers); ++i)
+        for (i64 i = 0; i < (i64)sizeof(registers); ++i)
         {
             UEFI_LVVV(("registerByte[%d] = 0x%02X", i, registerByte[i]));
 
@@ -411,9 +411,9 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
     if (CPU::isCpuIdLevelSupported(L1_CACHE_IDENTIFIERS_CPUID)) // TODO: Unify with CPUID structures
     {
-        bad_uint32 ignored;
-        bad_uint32 ecx;
-        bad_uint32 edx;
+        u32 ignored;
+        u32 ecx;
+        u32 edx;
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(L1_CACHE_IDENTIFIERS_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
 
@@ -422,8 +422,8 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
 
-        bad_uint8  numberOfWays = (ecx >> 16) & 0xFF;
-        bad_uint64 cacheSize    = ((ecx >> 24) & 0xFF) * KB;
+        u8  numberOfWays = (ecx >> 16) & 0xFF;
+        u64 cacheSize    = ((ecx >> 24) & 0xFF) * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));
@@ -449,16 +449,16 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
     if (CPU::isCpuIdLevelSupported(EXTENDED_CACHE_FEATURES_CPUID))
     {
-        const bad_uint8 numberOfWaysTable[16] =
+        const u8 numberOfWaysTable[16] =
         {
             0, 1, 2, 0, 4, 0, 8, 0, 16, 0, 32, 48, 64, 96, 128, 255
         };
 
 
 
-        bad_uint32 ignored;
-        bad_uint32 ecx;
-        bad_uint32 edx;
+        u32 ignored;
+        u32 ecx;
+        u32 edx;
 
         UEFI_ASSERT_EXECUTION(CPU::cpuid(EXTENDED_CACHE_FEATURES_CPUID, 0, &ignored, &ignored, &ecx, &edx), NgosStatus::ASSERTION);
 
@@ -467,8 +467,8 @@ NgosStatus CpuTest::initCpuCachesAmd()
 
 
 
-        bad_uint8  numberOfWays = numberOfWaysTable[(ecx >> 12) & 0x0F];
-        bad_uint64 cacheSize    = (ecx >> 16) * KB;
+        u8  numberOfWays = numberOfWaysTable[(ecx >> 12) & 0x0F];
+        u64 cacheSize    = (ecx >> 16) * KB;
 
         UEFI_LVVV(("numberOfWays = %u", numberOfWays));
         UEFI_LVVV(("cacheSize    = %u", cacheSize));
@@ -495,7 +495,7 @@ NgosStatus CpuTest::initCpuCachesAmd()
     return NgosStatus::OK;
 }
 
-NgosStatus CpuTest::initCpuCache(CacheInfo *cache, bad_uint32 size, bad_uint8 numberOfWays)
+NgosStatus CpuTest::initCpuCache(CacheInfo *cache, u32 size, u8 numberOfWays)
 {
     UEFI_LT((" | cache = 0x%p, size = %u, numberOfWays = %u", cache, size, numberOfWays));
 
@@ -521,12 +521,12 @@ NgosStatus CpuTest::initCpuSpeed()
 
 
 
-    bad_uint64 startTSC = rdtsc();
+    u64 startTSC = rdtsc();
 
     UEFI_ASSERT_EXECUTION(UEFI::stall(CPU_SPEED_TIMEOUT), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    bad_uint64 endTSC = rdtsc();
-    bad_uint64 ticks  = endTSC - startTSC;
+    u64 endTSC = rdtsc();
+    u64 ticks  = endTSC - startTSC;
 
 
 

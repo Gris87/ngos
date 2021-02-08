@@ -24,7 +24,7 @@ NgosStatus reservePciRomImages()
     {
         PciRomImageWithInfo *currentPciMapped;
 
-        EARLY_ASSERT_EXECUTION(IORemap::addFixedMapping((bad_uint64)currentPci, sizeof(PciRomImageWithInfo), (void **)&currentPciMapped), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(IORemap::addFixedMapping((u64)currentPci, sizeof(PciRomImageWithInfo), (void **)&currentPciMapped), NgosStatus::ASSERTION);
 
 
 
@@ -41,18 +41,18 @@ NgosStatus reservePciRomImages()
 
 
 
-        bad_uint64 size = sizeof(PciRomImageWithInfo) + currentPciMapped->romSize;
+        u64 size = sizeof(PciRomImageWithInfo) + currentPciMapped->romSize;
 
-        EARLY_ASSERT_EXECUTION(MemoryManager::reserve((bad_uint64)currentPci, size), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(MemoryManager::reserve((u64)currentPci, size), NgosStatus::ASSERTION);
 
-        EARLY_ASSERT_EXECUTION(E820::updateRange((bad_uint64)currentPci,      size, MemoryMapEntryType::RAM, MemoryMapEntryType::RESERVED_BY_KERNEL), NgosStatus::ASSERTION);
-        EARLY_ASSERT_EXECUTION(E820::updateRangeKExec((bad_uint64)currentPci, size, MemoryMapEntryType::RAM, MemoryMapEntryType::RESERVED_BY_KERNEL), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(E820::updateRange((u64)currentPci,      size, MemoryMapEntryType::RAM, MemoryMapEntryType::RESERVED_BY_KERNEL), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(E820::updateRangeKExec((u64)currentPci, size, MemoryMapEntryType::RAM, MemoryMapEntryType::RESERVED_BY_KERNEL), NgosStatus::ASSERTION);
 
 
 
         currentPci = currentPciMapped->next;
 
-        EARLY_ASSERT_EXECUTION(IORemap::removeFixedMapping((bad_uint64)currentPciMapped, sizeof(PciRomImageWithInfo)), NgosStatus::ASSERTION);
+        EARLY_ASSERT_EXECUTION(IORemap::removeFixedMapping((u64)currentPciMapped, sizeof(PciRomImageWithInfo)), NgosStatus::ASSERTION);
     }
 
 
@@ -70,22 +70,22 @@ NgosStatus reservePciRomImages()
         EARLY_LVVV(("IORemap::sLastReleasedSlot = %u", IORemap::sLastReleasedSlot));
         EARLY_LVVV(("IORemap::sSlotsAvailable   = %u", IORemap::sSlotsAvailable));
 
-        for (bad_int64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             EARLY_LVVV(("IORemap::sSlotsAddresses[%d] = 0x%p", i, IORemap::sSlotsAddresses[i]));
         }
 
-        for (bad_int64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             EARLY_LVVV(("IORemap::sSlotsSizes[%d] = %u", i, IORemap::sSlotsSizes[i]));
         }
 
-        for (bad_int64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
+        for (i64 i = 0; i < FIX_BITMAP_SLOTS; ++i)
         {
             EARLY_LVVV(("IORemap::sPoolOfSlots[%d] = %u", i, IORemap::sPoolOfSlots[i]));
         }
 
-        for (bad_int64 i = 0; i < PTRS_PER_PTE; ++i)
+        for (i64 i = 0; i < PTRS_PER_PTE; ++i)
         {
             if (pteValue(IORemap::sFixmapPage[i]))
             {
@@ -142,7 +142,7 @@ NgosStatus reservePciRomImages()
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)MemoryManager::sMemoryBlock.reserved.count; ++i)
+        for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
         {
             EARLY_LVVV(("#%-3d: 0x%p-0x%p | %s | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), flagsToFullString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
         }
@@ -192,7 +192,7 @@ NgosStatus reservePciRomImages()
         EARLY_LVVV(("E820::sTable.entries:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)E820::sTable.count; ++i)
+        for (i64 i = 0; i < (i64)E820::sTable.count; ++i)
         {
             EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(E820::sTable.entries[i].type), E820::sTable.entries[i].start, E820::sTable.entries[i].end()));
         }
@@ -204,7 +204,7 @@ NgosStatus reservePciRomImages()
         EARLY_LVVV(("sTableKExec.entries:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)E820::sTableKExec.count; ++i)
+        for (i64 i = 0; i < (i64)E820::sTableKExec.count; ++i)
         {
             EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(E820::sTableKExec.entries[i].type), E820::sTableKExec.entries[i].start, E820::sTableKExec.entries[i].end()));
         }
@@ -216,7 +216,7 @@ NgosStatus reservePciRomImages()
         EARLY_LVVV(("sTableFirmware.entries:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)E820::sTableFirmware.count; ++i)
+        for (i64 i = 0; i < (i64)E820::sTableFirmware.count; ++i)
         {
             EARLY_LVVV(("#%-3d: type = %20s | 0x%p-0x%p", i, enumToFullString(E820::sTableFirmware.entries[i].type), E820::sTableFirmware.entries[i].start, E820::sTableFirmware.entries[i].end()));
         }

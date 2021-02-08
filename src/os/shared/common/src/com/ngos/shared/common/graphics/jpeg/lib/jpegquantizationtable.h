@@ -14,8 +14,8 @@
 struct JpegQuantizationTable
 {
     JpegQuantizationTableIdAndPrecision idAndPrecision;
-    bad_uint8                                  data8[0];
-    bad_uint16                                 data16[0];
+    u8                                  data8[0];
+    u16                                 data16[0];
 } __attribute__((packed));
 
 

@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice1402: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice1402: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0630 = 0x0630,
@@ -193,7 +193,7 @@ inline const char8* enumToFullString(PciDevice1402 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -227,7 +227,7 @@ inline const char8* enumToHumanString(PciDevice1402 device) // TEST: NO
         case PciDevice1402::DEVICE_1608: return "ME-1600/8U";
         case PciDevice1402::DEVICE_160C: return "ME-1600/12U";
         case PciDevice1402::DEVICE_160F: return "ME-1600/16U";
-        case PciDevice1402::DEVICE_168F: return "ME-1600/16bad_uint8I";
+        case PciDevice1402::DEVICE_168F: return "ME-1600/16u8I";
         case PciDevice1402::DEVICE_4610: return "ME-4610";
         case PciDevice1402::DEVICE_4650: return "ME-4650";
         case PciDevice1402::DEVICE_4660: return "ME-4660";

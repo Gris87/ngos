@@ -117,7 +117,7 @@ char8* strdup(const char8 *str)
 
 
 
-    bad_uint64 size = (strlen(str) + 1) * sizeof(char8);
+    u64 size = (strlen(str) + 1) * sizeof(char8);
 
     char8 *res = (char8 *)malloc(size);
     COMMON_TEST_ASSERT(res != nullptr, nullptr);
@@ -137,7 +137,7 @@ char16* strdup(const char16 *str)
 
 
 
-    bad_uint64 size = (strlen(str) + 1) * sizeof(char16);
+    u64 size = (strlen(str) + 1) * sizeof(char16);
 
     char16 *res = (char16 *)malloc(size);
     COMMON_TEST_ASSERT(res != nullptr, nullptr);
@@ -297,7 +297,7 @@ char16* strapp(char16 *str1, const char16 *str2)
     return cur;
 }
 
-bad_int64 strlen(const char8 *str)
+i64 strlen(const char8 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
@@ -315,7 +315,7 @@ bad_int64 strlen(const char8 *str)
     return str2 - str;
 }
 
-bad_int64 strlen(const char16 *str)
+i64 strlen(const char16 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
@@ -333,7 +333,7 @@ bad_int64 strlen(const char16 *str)
     return str2 - str;
 }
 
-bad_int64 strnlen(const char8 *str, bad_int64 maxlen)
+i64 strnlen(const char8 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
@@ -352,7 +352,7 @@ bad_int64 strnlen(const char8 *str, bad_int64 maxlen)
     return str2 - str;
 }
 
-bad_int64 strnlen(const char16 *str, bad_int64 maxlen)
+i64 strnlen(const char16 *str, i64 maxlen)
 {
     // COMMON_LT((" | str = 0x%p, maxlen = %d", str, maxlen)); // Commented to avoid bad looking logs
 
@@ -371,7 +371,7 @@ bad_int64 strnlen(const char16 *str, bad_int64 maxlen)
     return str2 - str;
 }
 
-bad_int8 strcmp(const char8 *str1, const char8 *str2)
+i8 strcmp(const char8 *str1, const char8 *str2)
 {
     // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
@@ -411,7 +411,7 @@ bad_int8 strcmp(const char8 *str1, const char8 *str2)
     return 0;
 }
 
-bad_int8 strcmp(const char16 *str1, const char16 *str2)
+i8 strcmp(const char16 *str1, const char16 *str2)
 {
     // COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2)); // Commented to avoid too frequent logs
 
@@ -451,7 +451,7 @@ bad_int8 strcmp(const char16 *str1, const char16 *str2)
     return 0;
 }
 
-bad_int8 strcmpi(const char8 *str1, const char8 *str2)
+i8 strcmpi(const char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
@@ -497,7 +497,7 @@ bad_int8 strcmpi(const char8 *str1, const char8 *str2)
     return 0;
 }
 
-bad_int8 strcmpi(const char16 *str1, const char16 *str2)
+i8 strcmpi(const char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
@@ -543,7 +543,7 @@ bad_int8 strcmpi(const char16 *str1, const char16 *str2)
     return 0;
 }
 
-bad_int8 strncmp(const char8 *str1, const char8 *str2, bad_int64 length)
+i8 strncmp(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -584,7 +584,7 @@ bad_int8 strncmp(const char8 *str1, const char8 *str2, bad_int64 length)
     return 0;
 }
 
-bad_int8 strncmp(const char16 *str1, const char16 *str2, bad_int64 length)
+i8 strncmp(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -625,7 +625,7 @@ bad_int8 strncmp(const char16 *str1, const char16 *str2, bad_int64 length)
     return 0;
 }
 
-bad_int8 strncmpi(const char8 *str1, const char8 *str2, bad_int64 length)
+i8 strncmpi(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -672,7 +672,7 @@ bad_int8 strncmpi(const char8 *str1, const char8 *str2, bad_int64 length)
     return 0;
 }
 
-bad_int8 strncmpi(const char16 *str1, const char16 *str2, bad_int64 length)
+i8 strncmpi(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -767,7 +767,7 @@ bool strequali(const char16 *str1, const char16 *str2)
     return strcmpi(str1, str2) == 0;
 }
 
-bool strnequal(const char8 *str1, const char8 *str2, bad_int64 length)
+bool strnequal(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -779,7 +779,7 @@ bool strnequal(const char8 *str1, const char8 *str2, bad_int64 length)
     return strncmp(str1, str2, length) == 0;
 }
 
-bool strnequal(const char16 *str1, const char16 *str2, bad_int64 length)
+bool strnequal(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -791,7 +791,7 @@ bool strnequal(const char16 *str1, const char16 *str2, bad_int64 length)
     return strncmp(str1, str2, length) == 0;
 }
 
-bool strnequali(const char8 *str1, const char8 *str2, bad_int64 length)
+bool strnequali(const char8 *str1, const char8 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -803,7 +803,7 @@ bool strnequali(const char8 *str1, const char8 *str2, bad_int64 length)
     return strncmpi(str1, str2, length) == 0;
 }
 
-bool strnequali(const char16 *str1, const char16 *str2, bad_int64 length)
+bool strnequali(const char16 *str1, const char16 *str2, i64 length)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p, length = %d", str1, str2, length));
 
@@ -1177,8 +1177,8 @@ bool strend(const char8 *str1, const char8 *str2)
 
 
 
-    bad_int64 len1 = strlen(str1);
-    bad_int64 len2 = strlen(str2);
+    i64 len1 = strlen(str1);
+    i64 len2 = strlen(str2);
 
     if (len2 > len1)
     {
@@ -1226,8 +1226,8 @@ bool strend(const char16 *str1, const char16 *str2)
 
 
 
-    bad_int64 len1 = strlen(str1);
-    bad_int64 len2 = strlen(str2);
+    i64 len1 = strlen(str1);
+    i64 len2 = strlen(str2);
 
     if (len2 > len1)
     {
@@ -1275,8 +1275,8 @@ bool strendi(const char8 *str1, const char8 *str2)
 
 
 
-    bad_int64 len1 = strlen(str1);
-    bad_int64 len2 = strlen(str2);
+    i64 len1 = strlen(str1);
+    i64 len2 = strlen(str2);
 
     if (len2 > len1)
     {
@@ -1331,8 +1331,8 @@ bool strendi(const char16 *str1, const char16 *str2)
 
 
 
-    bad_int64 len1 = strlen(str1);
-    bad_int64 len2 = strlen(str2);
+    i64 len1 = strlen(str1);
+    i64 len2 = strlen(str2);
 
     if (len2 > len1)
     {

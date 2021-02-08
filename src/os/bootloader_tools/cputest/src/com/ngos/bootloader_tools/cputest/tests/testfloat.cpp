@@ -42,9 +42,9 @@ void UEFI_API testFloatProcedure(void *buffer)
 
 
 
-    bad_uint64 startTime = rdtsc();
+    u64 startTime = rdtsc();
 
-    for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+    for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
     {
         temp1 += 3.123f;
         temp2 -= 5.987f;
@@ -55,7 +55,7 @@ void UEFI_API testFloatProcedure(void *buffer)
         --temp6;
     }
 
-    bad_uint64 endTime = rdtsc();
+    u64 endTime = rdtsc();
 
 
 

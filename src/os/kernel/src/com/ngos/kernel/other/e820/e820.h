@@ -14,17 +14,17 @@ class E820
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus updateRange(bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
-    static NgosStatus updateRangeKExec(bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
+    static NgosStatus updateRange(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
+    static NgosStatus updateRangeKExec(u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
 #else
 private:
 #endif
-    static NgosStatus insertRangeInTable(E820Table *table, bad_uint64 index, bad_uint64 start, bad_uint64 size, MemoryMapEntryType type);
-    static NgosStatus removeRangeInTable(E820Table *table, bad_uint64 index);
-    static NgosStatus updateRangeInTable(E820Table *table, bad_uint64 start, bad_uint64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType);
+    static NgosStatus insertRangeInTable(E820Table *table, u64 index, u64 start, u64 size, MemoryMapEntryType type);
+    static NgosStatus removeRangeInTable(E820Table *table, u64 index);
+    static NgosStatus updateRangeInTable(E820Table *table, u64 start, u64 size, MemoryMapEntryType oldType, MemoryMapEntryType newType);
 
     static E820Table sTable;
     static E820Table sTableKExec;

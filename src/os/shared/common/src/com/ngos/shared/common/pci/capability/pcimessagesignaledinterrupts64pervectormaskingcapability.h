@@ -14,11 +14,11 @@ struct PciMessageSignaledInterrupts64PerVectorMaskingCapability
     PciCapabilityHeader                        header;
     PciMessageSignaledInterruptsMessageControl messageControl;
     PciMessageSignaledInterruptsMessageAddress messageAddress;
-    bad_uint32                                        messageAddressUpper;
-    bad_uint16                                        messageData;
-    bad_uint16                                        __reserved;
-    bad_uint32                                        maskBits;
-    bad_uint32                                        pendingBits;
+    u32                                        messageAddressUpper;
+    u16                                        messageData;
+    u16                                        __reserved;
+    u32                                        maskBits;
+    u32                                        pendingBits;
 };
 
 

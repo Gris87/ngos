@@ -9,10 +9,10 @@
 
 struct PngSignificantBits
 {
-    bad_uint8 redBits;
-    bad_uint8 greenBits;
-    bad_uint8 blueBits;
-    bad_uint8 alphaBits;
+    u8 redBits;
+    u8 greenBits;
+    u8 blueBits;
+    u8 alphaBits;
 } __attribute__((packed));
 
 

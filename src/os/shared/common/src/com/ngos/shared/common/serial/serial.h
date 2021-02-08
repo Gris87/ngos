@@ -18,7 +18,7 @@ public:
     static void println(); // TEST: NO
     static void println(char8 ch); // TEST: NO
     static void println(const char8 *str); // TEST: NO
-    static bad_int64 printf(const char8 *format, ...); // TEST: NO
+    static i64 printf(const char8 *format, ...); // TEST: NO
 };
 
 

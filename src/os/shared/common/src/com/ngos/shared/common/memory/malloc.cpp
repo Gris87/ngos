@@ -11,11 +11,11 @@
 
 
 
-void* malloc(bad_uint64 size)
+void* malloc(u64 size)
 {
     // COMMON_LT((" | size = %u", size)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(size > 0, "size is zero", 0);
+    COMMON_ASSERT(size > 0, "size is zero", nullptr);
 
 
 
@@ -43,7 +43,7 @@ NgosStatus free(void *address)
 {
     // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address, "address is null", NgosStatus::ASSERTION);
+    COMMON_ASSERT(address != nullptr, "address is null", NgosStatus::ASSERTION);
 
 
 
@@ -67,24 +67,24 @@ NgosStatus free(void *address)
     return NgosStatus::OK;
 }
 
-void* realloc(void* address, bad_uint64 oldSize, bad_uint64 newSize)
+void* realloc(void* address, u64 oldSize, u64 newSize)
 {
     // COMMON_LT((" | address = 0x%p, oldSize = %u, newSize = %u", address, oldSize, newSize)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address,           "address is null",    0);
-    COMMON_ASSERT(oldSize > 0,       "oldSize is zero",    0);
-    COMMON_ASSERT(newSize > 0,       "newSize is zero",    0);
-    COMMON_ASSERT(newSize > oldSize, "newSize is invalid", 0);
+    COMMON_ASSERT(address != nullptr, "address is null",    nullptr);
+    COMMON_ASSERT(oldSize > 0,        "oldSize is zero",    nullptr);
+    COMMON_ASSERT(newSize > 0,        "newSize is zero",    nullptr);
+    COMMON_ASSERT(newSize > oldSize,  "newSize is invalid", nullptr);
 
 
 
     void *res = malloc(newSize);
 
-    if (res)
+    if (res != nullptr)
     {
         memcpy(res, address, oldSize);
 
-        COMMON_ASSERT_EXECUTION(free(address), 0);
+        COMMON_ASSERT_EXECUTION(free(address), nullptr);
     }
 
 
@@ -105,7 +105,7 @@ void operator delete(void *address)
 {
     // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address, "address is null");
+    COMMON_ASSERT(address != nullptr, "address is null");
 
 
 
@@ -116,8 +116,8 @@ void operator delete(void *address, size_t size)
 {
     // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address,  "address is null");
-    COMMON_ASSERT(size > 0, "size is zero");
+    COMMON_ASSERT(address != nullptr, "address is null");
+    COMMON_ASSERT(size > 0,           "size is zero");
 
 
 
@@ -141,7 +141,7 @@ void operator delete[](void *address)
 {
     // COMMON_LT((" | address = 0x%p", address)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address, "address is null");
+    COMMON_ASSERT(address != nullptr, "address is null");
 
 
 
@@ -152,8 +152,8 @@ void operator delete[](void *address, size_t size)
 {
     // COMMON_LT((" | address = 0x%p, size = %u", address, size)); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(address,  "address is null");
-    COMMON_ASSERT(size > 0, "size is zero");
+    COMMON_ASSERT(address != nullptr, "address is null");
+    COMMON_ASSERT(size > 0,           "size is zero");
 
 
 

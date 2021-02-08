@@ -14,11 +14,11 @@ struct PciHyperTransportCommand
     {
         struct
         {
-            bad_uint16 __reserved:     13;
-            bad_uint16 capabilityType: 3; // TODO: Use enum PciHyperTransportCapabilityType
+            u16 __reserved:     13;
+            u16 capabilityType: 3; // TODO: Use enum PciHyperTransportCapabilityType
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

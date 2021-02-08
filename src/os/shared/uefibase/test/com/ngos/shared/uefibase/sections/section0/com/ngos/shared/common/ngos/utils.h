@@ -36,14 +36,14 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
         TEST_ASSERT_EQUALS(__ROUND_MASK(0, 65536),  65535);
         TEST_ASSERT_EQUALS(__ROUND_MASK(0, 131072), 131071);
 
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_int8)0, 1024), -1);
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_uint8)0, 1024), 255);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i8)0, 1024), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u8)0, 1024), 255);
 
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_int8)0, 131072), -1);
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_uint8)0, 131072), 255);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i8)0, 131072), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u8)0, 131072), 255);
 
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_int16)0, 131072), -1);
-        TEST_ASSERT_EQUALS(__ROUND_MASK((bad_uint16)0, 131072), 65535);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((i16)0, 131072), -1);
+        TEST_ASSERT_EQUALS(__ROUND_MASK((u16)0, 131072), 65535);
     }
     TEST_CASE_END();
 
@@ -127,14 +127,14 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
     {
         struct TestStruct
         {
-            bad_uint8  a;
-            bad_uint16 b;
-            bad_uint32 c;
-            bad_uint64 d;
-            bad_uint16 e;
-            bad_uint8  f;
-            bad_uint64 g;
-            bad_uint32 h;
+            u8  a;
+            u16 b;
+            u32 c;
+            u64 d;
+            u16 e;
+            u8  f;
+            u64 g;
+            u32 h;
         };
 
 
@@ -219,15 +219,15 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
 
     TEST_CASE("MIN_TYPED()");
     {
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, 0,  1),  0);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, 1,  0),  0);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, 1,  1),  1);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, -1, 1),  1);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, 1,  -1), 1);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_uint8, -1, -1), 255);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_int8, -1, 1),  -1);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_int8, 1,  -1), -1);
-        TEST_ASSERT_EQUALS(MIN_TYPED(bad_int8, -1, -1), -1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 0,  1),  0);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  0),  0);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  1),  1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, -1, 1),  1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, 1,  -1), 1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(u8, -1, -1), 255);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, -1, 1),  -1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, 1,  -1), -1);
+        TEST_ASSERT_EQUALS(MIN_TYPED(i8, -1, -1), -1);
     }
     TEST_CASE_END();
 
@@ -249,15 +249,15 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_utils);
 
     TEST_CASE("MAX_TYPED()");
     {
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, 0,  1),  1);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, 1,  0),  1);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, 1,  1),  1);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, -1, 1),  255);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, 1,  -1), 255);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_uint8, -1, -1), 255);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_int8, -1, 1),  1);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_int8, 1,  -1), 1);
-        TEST_ASSERT_EQUALS(MAX_TYPED(bad_int8, -1, -1), -1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 0,  1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  0),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, -1, 1),  255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, 1,  -1), 255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(u8, -1, -1), 255);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, -1, 1),  1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, 1,  -1), 1);
+        TEST_ASSERT_EQUALS(MAX_TYPED(i8, -1, -1), -1);
     }
     TEST_CASE_END();
 

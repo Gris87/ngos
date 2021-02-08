@@ -9,9 +9,9 @@
 
 struct InflateCode
 {
-    bad_uint8  operation;
-    bad_uint8  bits;
-    bad_uint16 value;
+    u8  operation;
+    u8  bits;
+    u16 value;
 };
 
 

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressDynamicPowerAllocationPowerAllocationScale: bad_uint8
+enum class PciExpressDynamicPowerAllocationPowerAllocationScale: u8
 {
     _10_0_X = 0,
     _1_0_X  = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressDynamicPowerAllocationPowerAlloca
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)scale, enumToString(scale));
+    sprintf(res, "0x%02X (%s)", (u8)scale, enumToString(scale));
 
     return res;
 }

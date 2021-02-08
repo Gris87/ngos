@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice1000000C: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice1000000C: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10001010 = 0x10001010,
@@ -49,7 +49,7 @@ inline const char8* enumToFullString(PciSubDevice1000000C subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -64,8 +64,8 @@ inline const char8* enumToHumanString(PciSubDevice1000000C subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1000000C::SUBDEVICE_10001010: return "LSbad_int8951U PCI to Ultra2 SCSI host adapter";
-        case PciSubDevice1000000C::SUBDEVICE_10001020: return "LSbad_int8952U PCI to Ultra2 SCSI host adapter";
+        case PciSubDevice1000000C::SUBDEVICE_10001010: return "LSi8951U PCI to Ultra2 SCSI host adapter";
+        case PciSubDevice1000000C::SUBDEVICE_10001020: return "LSi8952U PCI to Ultra2 SCSI host adapter";
         case PciSubDevice1000000C::SUBDEVICE_1DE13906: return "DC-390U2B SCSI adapter";
         case PciSubDevice1000000C::SUBDEVICE_1DE13907: return "DC-390U2W";
 

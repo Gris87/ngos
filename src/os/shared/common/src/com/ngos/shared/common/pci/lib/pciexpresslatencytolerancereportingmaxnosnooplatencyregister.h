@@ -13,12 +13,12 @@ struct PciExpressLatencyToleranceReportingMaxNoSnoopLatencyRegister
     {
         struct
         {
-            bad_uint16 latencyValue : 10;
-            bad_uint16 latencyScale : 3; // TODO: Use enum PciExpressLatencyToleranceReportingLatencyScale
-            bad_uint16 __reserved   : 3;
+            u16 latencyValue : 10;
+            u16 latencyScale : 3; // TODO: Use enum PciExpressLatencyToleranceReportingLatencyScale
+            u16 __reserved   : 3;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

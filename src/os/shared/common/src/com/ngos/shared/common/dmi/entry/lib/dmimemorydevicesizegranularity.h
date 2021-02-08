@@ -10,7 +10,7 @@
 
 
 
-enum class DmiMemoryDeviceSizeGranularity: bad_uint8
+enum class DmiMemoryDeviceSizeGranularity: u8
 {
     _1_MEGABYTE = 0,
     _1_KILOBYTE = 1
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(DmiMemoryDeviceSizeGranularity granularity)
 
     static char8 res[18];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)granularity, enumToString(granularity));
+    sprintf(res, "0x%02X (%s)", (u8)granularity, enumToString(granularity));
 
     return res;
 }

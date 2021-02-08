@@ -12,7 +12,7 @@
 
 
 
-inline bad_uint64 pgdIndex(bad_uint64 address)
+inline u64 pgdIndex(u64 address)
 {
     COMMON_LT((" | address = 0x%016llX", address));
 
@@ -22,7 +22,7 @@ inline bad_uint64 pgdIndex(bad_uint64 address)
 }
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-inline bad_uint64 p4dIndex(bad_uint64 address)
+inline u64 p4dIndex(u64 address)
 {
     COMMON_LT((" | address = 0x%016llX", address));
 
@@ -32,7 +32,7 @@ inline bad_uint64 p4dIndex(bad_uint64 address)
 }
 #endif
 
-inline bad_uint64 pudIndex(bad_uint64 address)
+inline u64 pudIndex(u64 address)
 {
     COMMON_LT((" | address = 0x%016llX", address));
 
@@ -41,7 +41,7 @@ inline bad_uint64 pudIndex(bad_uint64 address)
     return (address >> PUD_SHIFT) & (PTRS_PER_PUD - 1);
 }
 
-inline bad_uint64 pmdIndex(bad_uint64 address)
+inline u64 pmdIndex(u64 address)
 {
     COMMON_LT((" | address = 0x%016llX", address));
 
@@ -50,7 +50,7 @@ inline bad_uint64 pmdIndex(bad_uint64 address)
     return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
 }
 
-inline bad_uint64 pteIndex(bad_uint64 address)
+inline u64 pteIndex(u64 address)
 {
     COMMON_LT((" | address = 0x%016llX", address));
 
@@ -474,51 +474,51 @@ inline pte_value pteFlags(const PTE &pte)
 
 
 
-inline bad_uint64 pgdPageVirtualAddress(const PGD &pgd)
+inline u64 pgdPageVirtualAddress(const PGD &pgd)
 {
     COMMON_LT((" | pgd = ..."));
 
 
 
-    return (bad_uint64)(pgdValue(pgd) & pgdPfnMask(pgd));
+    return (u64)(pgdValue(pgd) & pgdPfnMask(pgd));
 }
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-inline bad_uint64 p4dPageVirtualAddress(const P4D &p4d)
+inline u64 p4dPageVirtualAddress(const P4D &p4d)
 {
     COMMON_LT((" | p4d = ..."));
 
 
 
-    return (bad_uint64)(p4dValue(p4d) & p4dPfnMask(p4d));
+    return (u64)(p4dValue(p4d) & p4dPfnMask(p4d));
 }
 #endif
 
-inline bad_uint64 pudPageVirtualAddress(const PUD &pud)
+inline u64 pudPageVirtualAddress(const PUD &pud)
 {
     COMMON_LT((" | pud = ..."));
 
 
 
-    return (bad_uint64)(pudValue(pud) & pudPfnMask(pud));
+    return (u64)(pudValue(pud) & pudPfnMask(pud));
 }
 
-inline bad_uint64 pmdPageVirtualAddress(const PMD &pmd)
+inline u64 pmdPageVirtualAddress(const PMD &pmd)
 {
     COMMON_LT((" | pmd = ..."));
 
 
 
-    return (bad_uint64)(pmdValue(pmd) & pmdPfnMask(pmd));
+    return (u64)(pmdValue(pmd) & pmdPfnMask(pmd));
 }
 
-inline bad_uint64 ptePageVirtualAddress(const PTE &pte)
+inline u64 ptePageVirtualAddress(const PTE &pte)
 {
     COMMON_LT((" | pte = ..."));
 
 
 
-    return (bad_uint64)(pteValue(pte) & ptePfnMask(pte));
+    return (u64)(pteValue(pte) & ptePfnMask(pte));
 }
 
 
@@ -528,7 +528,7 @@ inline bad_uint64 ptePageVirtualAddress(const PTE &pte)
 
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-inline P4D* p4dOffset(PGD *pgd, bad_uint64 address)
+inline P4D* p4dOffset(PGD *pgd, u64 address)
 {
     COMMON_LT((" | pgd = 0x%p, address = 0x%016llX", pgd, address));
 
@@ -537,7 +537,7 @@ inline P4D* p4dOffset(PGD *pgd, bad_uint64 address)
     return (P4D *)pgdPageVirtualAddress(*pgd) + p4dIndex(address);
 }
 
-inline PUD* pudOffset(P4D *p4d, bad_uint64 address)
+inline PUD* pudOffset(P4D *p4d, u64 address)
 {
     COMMON_LT((" | p4d = 0x%p, address = 0x%016llX", p4d, address));
 
@@ -546,7 +546,7 @@ inline PUD* pudOffset(P4D *p4d, bad_uint64 address)
     return (PUD *)p4dPageVirtualAddress(*p4d) + pudIndex(address);
 }
 #else
-inline PUD* pudOffset(PGD *pgd, bad_uint64 address)
+inline PUD* pudOffset(PGD *pgd, u64 address)
 {
     COMMON_LT((" | pgd = 0x%p, address = 0x%016llX", pgd, address));
 
@@ -556,7 +556,7 @@ inline PUD* pudOffset(PGD *pgd, bad_uint64 address)
 }
 #endif
 
-inline PMD* pmdOffset(PUD *pud, bad_uint64 address)
+inline PMD* pmdOffset(PUD *pud, u64 address)
 {
     COMMON_LT((" | pud = 0x%p, address = 0x%016llX", pud, address));
 
@@ -565,7 +565,7 @@ inline PMD* pmdOffset(PUD *pud, bad_uint64 address)
     return (PMD *)pudPageVirtualAddress(*pud) + pmdIndex(address);
 }
 
-inline PTE* pteOffset(PMD *pmd, bad_uint64 address)
+inline PTE* pteOffset(PMD *pmd, u64 address)
 {
     COMMON_LT((" | pmd = 0x%p, address = 0x%016llX", pmd, address));
 

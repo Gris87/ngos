@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse41Pmaxud(bad_uint32 *a, bad_uint32 *b, bad_uint32 *c);
+void testSse41Pmaxud(u32 *a, u32 *b, u32 *c);
 
 
 

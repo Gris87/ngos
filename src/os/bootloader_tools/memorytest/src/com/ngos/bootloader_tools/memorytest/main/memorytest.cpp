@@ -10,7 +10,7 @@
 
 
 
-bad_uint64 MemoryTest::sCpuSpeed;
+u64 MemoryTest::sCpuSpeed;
 
 
 
@@ -27,7 +27,7 @@ NgosStatus MemoryTest::init()
     return NgosStatus::OK;
 }
 
-bad_uint64 MemoryTest::getCpuSpeed()
+u64 MemoryTest::getCpuSpeed()
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 
@@ -42,12 +42,12 @@ NgosStatus MemoryTest::initCpuSpeed()
 
 
 
-    bad_uint64 startTSC = rdtsc();
+    u64 startTSC = rdtsc();
 
     UEFI_ASSERT_EXECUTION(UEFI::stall(CPU_SPEED_TIMEOUT), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
-    bad_uint64 endTSC = rdtsc();
-    bad_uint64 ticks  = endTSC - startTSC;
+    u64 endTSC = rdtsc();
+    u64 ticks  = endTSC - startTSC;
 
 
 

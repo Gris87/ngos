@@ -23,10 +23,10 @@
 
 ConsoleWidget *GraphicalConsole::sConsoleWidget;
 Image         *GraphicalConsole::sTextImage;
-bad_uint16            GraphicalConsole::sPositionX;
-bad_uint16            GraphicalConsole::sPaddingLeft;
-bad_uint16            GraphicalConsole::sPaddingTop;
-bad_uint16           *GraphicalConsole::sGlyphOffsets;
+u16            GraphicalConsole::sPositionX;
+u16            GraphicalConsole::sPaddingLeft;
+u16            GraphicalConsole::sPaddingTop;
+u16           *GraphicalConsole::sGlyphOffsets;
 
 
 
@@ -38,19 +38,19 @@ NgosStatus GraphicalConsole::init()
 
     if (!sConsoleWidget)
     {
-        bad_uint16 *temp     = sGlyphOffsets; // To avoid infinite loop
+        u16 *temp     = sGlyphOffsets; // To avoid infinite loop
         sGlyphOffsets = 0;             // To avoid infinite loop
 
 
 
         ScreenWidget *screenWidget = GUI::getMainScreenWidget();
-        bad_uint64           screenWidth  = screenWidget->getWidth();
-        bad_uint64           screenHeight = screenWidget->getHeight();
+        u64           screenWidth  = screenWidget->getWidth();
+        u64           screenHeight = screenWidget->getHeight();
 
-        bad_int64 consolePositionX = screenWidth  * GRAPHICAL_CONSOLE_POSITION_X_PERCENT / 100;
-        bad_int64 consolePositionY = screenHeight * GRAPHICAL_CONSOLE_POSITION_Y_PERCENT / 100;
-        bad_uint64 consoleWidth     = screenWidth  * GRAPHICAL_CONSOLE_WIDTH_PERCENT      / 100;
-        bad_uint64 consoleHeight    = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT     / 100;
+        i64 consolePositionX = screenWidth  * GRAPHICAL_CONSOLE_POSITION_X_PERCENT / 100;
+        i64 consolePositionY = screenHeight * GRAPHICAL_CONSOLE_POSITION_Y_PERCENT / 100;
+        u64 consoleWidth     = screenWidth  * GRAPHICAL_CONSOLE_WIDTH_PERCENT      / 100;
+        u64 consoleHeight    = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT     / 100;
 
 
 
@@ -73,8 +73,8 @@ NgosStatus GraphicalConsole::init()
 
         sPaddingLeft      = patch->getPaddingLeft();
         sPaddingTop       = patch->getPaddingTop();
-        bad_uint16 paddingRight  = patch->getPaddingRight();
-        bad_uint16 paddingBottom = patch->getPaddingBottom();
+        u16 paddingRight  = patch->getPaddingRight();
+        u16 paddingBottom = patch->getPaddingBottom();
 
 
 
@@ -103,7 +103,7 @@ NgosStatus GraphicalConsole::readyToPrint()
 
 
     sPositionX    = SIDE_MARGIN;
-    sGlyphOffsets = (bad_uint16 *)asset->content;
+    sGlyphOffsets = (u16 *)asset->content;
 
 
 
@@ -130,7 +130,7 @@ NgosStatus GraphicalConsole::print(char8 ch)
     else
     if (ch >= 0x20 && ch < 0x7F)
     {
-        GlyphData *glyphData = (GlyphData *)((bad_uint64)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
+        GlyphData *glyphData = (GlyphData *)((address_t)sGlyphOffsets + sGlyphOffsets[ch - 0x20]);
 
 
 
@@ -141,9 +141,9 @@ NgosStatus GraphicalConsole::print(char8 ch)
 
 
 
-        bad_int16  charPosX   = sPositionX + glyphData->bitmapLeft;
-        bad_int16  charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
-        bad_uint8  *bitmapByte = glyphData->bitmap;
+        i16  charPosX   = sPositionX + glyphData->bitmapLeft;
+        i16  charPosY   = sTextImage->getHeight() - BOTTOM_MARGIN - glyphData->bitmapTop;
+        u8  *bitmapByte = glyphData->bitmap;
 
         COMMON_TEST_ASSERT(charPosX                           >= 0,                       NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(charPosX + glyphData->bitmapWidth  <= sTextImage->getWidth(),  NgosStatus::ASSERTION);
@@ -153,15 +153,15 @@ NgosStatus GraphicalConsole::print(char8 ch)
 
 
 
-        for (bad_int64 i = 0; i < glyphData->bitmapHeight; ++i)
+        for (i64 i = 0; i < glyphData->bitmapHeight; ++i)
         {
-            for (bad_int64 j = 0; j < glyphData->bitmapWidth; ++j)
+            for (i64 j = 0; j < glyphData->bitmapWidth; ++j)
             {
                 RgbaPixel *pixel = &sTextImage->getRgbaBuffer()[(charPosY + i) * sTextImage->getWidth() + charPosX + j];
 
-                COMMON_TEST_ASSERT((bad_uint64)pixel >= (bad_uint64)sTextImage->getBuffer() + sTextImage->getBufferSize() - (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride()
+                COMMON_TEST_ASSERT((address_t)pixel >= (address_t)sTextImage->getBuffer() + sTextImage->getBufferSize() - (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride()
                                     &&
-                                    (bad_uint64)pixel <= (bad_uint64)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
+                                    (address_t)pixel <= (address_t)sTextImage->getBuffer() + sTextImage->getBufferSize() - sizeof(RgbaPixel), NgosStatus::ASSERTION);
 
 
 
@@ -178,7 +178,7 @@ NgosStatus GraphicalConsole::print(char8 ch)
     }
     else
     {
-        COMMON_LW(("Non-printable character found: 0x%02X", (bad_uint8)ch));
+        COMMON_LW(("Non-printable character found: 0x%02X", ch));
 
         return NgosStatus::UNEXPECTED_BEHAVIOUR;
     }
@@ -346,7 +346,7 @@ NgosStatus GraphicalConsole::newLineWithoutCaretReturn()
 
 
 
-    bad_uint32 lineByteSize = (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride();
+    u32 lineByteSize = (CHAR_HEIGHT + BOTTOM_MARGIN) * sTextImage->getStride();
 
     memcpy((void *)sTextImage->getBuffer(), (void *)(sTextImage->getBuffer() + lineByteSize), sTextImage->getBufferSize() - lineByteSize);
     memzero((void *)(sTextImage->getBuffer() + sTextImage->getBufferSize() - lineByteSize), lineByteSize);

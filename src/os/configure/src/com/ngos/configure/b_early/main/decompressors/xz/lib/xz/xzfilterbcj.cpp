@@ -11,7 +11,7 @@
 
 
 
-NgosStatus filterBCJ(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 sizeOfProperties, bad_uint8 *filterProperties, bad_uint64 uncompressedSize)
+NgosStatus filterBCJ(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfProperties, u8 *filterProperties, u64 uncompressedSize)
 {
     EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, sizeOfProperties = %u, filterProperties = 0x%p, uncompressedSize = %u", compressedAddress, decompressedAddress, sizeOfProperties, filterProperties, uncompressedSize));
 
@@ -35,7 +35,7 @@ NgosStatus filterBCJ(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddres
 
     xzBuffer.in          = compressedAddress;
     xzBuffer.inPosition  = 0;
-    xzBuffer.inSize      = (bad_uint64)-1;
+    xzBuffer.inSize      = (u64)-1;
     xzBuffer.out         = decompressedAddress;
     xzBuffer.outPosition = 0;
     xzBuffer.outSize     = uncompressedSize;

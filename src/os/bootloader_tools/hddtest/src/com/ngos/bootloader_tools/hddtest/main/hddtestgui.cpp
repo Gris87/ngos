@@ -45,7 +45,7 @@ Image      *HddTestGUI::sWarningImage;
 Image      *HddTestGUI::sCriticalImage;
 Image      *HddTestGUI::sStartImage;
 Image      *HddTestGUI::sStopImage;
-bad_uint16         HddTestGUI::sWaitEventsCount;
+u16         HddTestGUI::sWaitEventsCount;
 uefi_event *HddTestGUI::sWaitEvents;
 
 
@@ -141,8 +141,8 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    u64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    u64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -160,10 +160,10 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    u64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    u64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    u64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -199,14 +199,14 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    bad_uint64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
-    bad_uint64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
-    bad_uint64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
+    u64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    u64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    u64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
     // Ignore CppAlignmentVerifier [END]
 
 
 
-    bad_uint64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
+    u64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
 
     if (tabPageWidth > screenWidth)
     {
@@ -217,8 +217,8 @@ NgosStatus HddTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 tabWidgetWidth = tabPageWidth;
-    bad_uint64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
+    u64 tabWidgetWidth = tabPageWidth;
+    u64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
 
     NinePatch *patch = tabWidgetPanelImage->getNinePatch();
 
@@ -413,7 +413,7 @@ NgosStatus HddTestGUI::generateWaitEventList()
 
 
     sWaitEventsCount = UefiPointerDevices::getSimplePointersCount() + UefiPointerDevices::getAbsolutePointersCount() + 1; // "+ 1" = keyboard event
-    bad_uint64 size         = sWaitEventsCount * sizeof(uefi_event);
+    u64 size         = sWaitEventsCount * sizeof(uefi_event);
 
 
 
@@ -429,11 +429,11 @@ NgosStatus HddTestGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    bad_uint16 eventId    = 1;
+    u16 eventId    = 1;
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -442,7 +442,7 @@ NgosStatus HddTestGUI::generateWaitEventList()
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -460,7 +460,7 @@ NgosStatus HddTestGUI::waitForEvent()
 
 
 
-    bad_uint64 eventIndex;
+    u64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 

@@ -17,7 +17,7 @@
 class CpuMask
 {
 public:
-    static inline NgosStatus setCpuOnline(bad_uint64 cpu, bool enabled)
+    static inline NgosStatus setCpuOnline(u64 cpu, bool enabled)
     {
         COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
@@ -32,7 +32,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus setCpuActive(bad_uint64 cpu, bool enabled)
+    static inline NgosStatus setCpuActive(u64 cpu, bool enabled)
     {
         COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
@@ -47,7 +47,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus setCpuPresent(bad_uint64 cpu, bool enabled)
+    static inline NgosStatus setCpuPresent(u64 cpu, bool enabled)
     {
         COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
@@ -62,7 +62,7 @@ public:
         return NgosStatus::OK;
     }
 
-    static inline NgosStatus setCpuPossible(bad_uint64 cpu, bool enabled)
+    static inline NgosStatus setCpuPossible(u64 cpu, bool enabled)
     {
         COMMON_LT((" | cpu = %u, enabled = %s", cpu, boolToString(enabled)));
 
@@ -82,7 +82,7 @@ public:
 #else
 private:
 #endif
-    inline NgosStatus setCpuMask(bad_uint64 cpu, bool enabled)
+    inline NgosStatus setCpuMask(u64 cpu, bool enabled)
     {
         COMMON_LT((" | cpu = %u, enabled = %s, this = 0x%p", cpu, boolToString(enabled), this));
 
@@ -92,17 +92,17 @@ private:
 
         if (enabled)
         {
-            return BitUtils::setSafe((bad_uint8 *)mBits, cpu);
+            return BitUtils::setSafe((u8 *)mBits, cpu);
         }
         else
         {
-            return BitUtils::clearSafe((bad_uint8 *)mBits, cpu);
+            return BitUtils::clearSafe((u8 *)mBits, cpu);
         }
     }
 
 
 
-    bad_uint64 mBits[ROUND_UP(NUMBER_OF_CPUS, 8) / 8]; // TODO: DIV_UP?
+    u64 mBits[ROUND_UP(NUMBER_OF_CPUS, 8) / 8]; // TODO: DIV_UP?
 
     static CpuMask sOnlineCpus;
     static CpuMask sActiveCpus;

@@ -13,13 +13,13 @@ struct PciExpressAriCapabilityRegister
     {
         struct
         {
-            bad_uint16 mfvcFunctionGroupsCapability : 1;
-            bad_uint16 acsFunctionGroupsCapability  : 1;
-            bad_uint16 __reserved                   : 6;
-            bad_uint16 nextFunctionNumber           : 8;
+            u16 mfvcFunctionGroupsCapability : 1;
+            u16 acsFunctionGroupsCapability  : 1;
+            u16 __reserved                   : 6;
+            u16 nextFunctionNumber           : 8;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

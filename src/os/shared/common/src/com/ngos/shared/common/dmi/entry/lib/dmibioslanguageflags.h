@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 dmi_bios_language_flags;
+typedef u8 dmi_bios_language_flags;
 
 enum class DmiBiosLanguageFlag: dmi_bios_language_flags
 {

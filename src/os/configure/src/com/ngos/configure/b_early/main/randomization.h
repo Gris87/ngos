@@ -9,7 +9,7 @@
 
 
 
-NgosStatus getRandomLocation(BootParams *params, bad_uint8 *pageTable, bad_uint64 imageSize, bad_uint64 *physicalAddress, bad_uint64 *virtualAddress); // TEST: NO
+NgosStatus getRandomLocation(BootParams *params, u8 *pageTable, u64 imageSize, u64 *physicalAddress, u64 *virtualAddress); // TEST: NO
 
 
 

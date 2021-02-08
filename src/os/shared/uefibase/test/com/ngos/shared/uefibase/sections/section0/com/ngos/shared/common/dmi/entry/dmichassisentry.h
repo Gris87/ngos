@@ -19,7 +19,7 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_entry_dmichassisentry);
     {
         DmiChassisEntryV23 entry;
 
-        bad_uint8 *buf = (bad_uint8 *)&entry;
+        u8 *buf = (u8 *)&entry;
 
 
 

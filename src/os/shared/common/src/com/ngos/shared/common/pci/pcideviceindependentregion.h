@@ -15,13 +15,13 @@
 struct PciDeviceIndependentRegion
 {
     PciVendor          vendorId;
-    bad_uint16                deviceId;
+    u16                deviceId;
     PciCommandFlags    command;
     PciStatus          status;
-    bad_uint8                 revisionId;
-    bad_uint8                 classCode[3];
-    bad_uint8                 cacheLineSize;
-    bad_uint8                 latencyTimer;
+    u8                 revisionId;
+    u8                 classCode[3];
+    u8                 cacheLineSize;
+    u8                 latencyTimer;
     PciHeaderTypeUnion headerType;
     PciBuiltInSelfTest builtInSelfTest;
 };

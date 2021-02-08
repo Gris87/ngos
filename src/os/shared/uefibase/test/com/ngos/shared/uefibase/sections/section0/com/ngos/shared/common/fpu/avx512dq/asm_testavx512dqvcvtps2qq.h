@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testAvx512dqVcvtps2qq(float *a, bad_uint64 *b);
+void testAvx512dqVcvtps2qq(float *a, u64 *b);
 
 
 

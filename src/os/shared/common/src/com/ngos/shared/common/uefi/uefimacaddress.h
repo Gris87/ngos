@@ -9,7 +9,7 @@
 
 struct UefiMacAddress
 {
-    bad_uint8 address[32];
+    u8 address[32];
 };
 
 

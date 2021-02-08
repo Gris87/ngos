@@ -14,12 +14,12 @@
 
 union IrqStack
 {
-    bad_uint8 stack[IRQ_STACK_SIZE];
+    u8 stack[IRQ_STACK_SIZE];
 
     struct
     {
-        bad_uint8  gsBase[40];
-        bad_uint64 stackCanary;
+        u8  gsBase[40];
+        u64 stackCanary;
     };
 };
 

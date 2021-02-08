@@ -10,7 +10,7 @@
 
 
 
-enum class ZLibCompressionLevel: bad_uint8
+enum class ZLibCompressionLevel: u8
 {
     FASTEST             = 0,
     FAST                = 1,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(ZLibCompressionLevel level) // TEST: NO
 
     static char8 res[27];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)level, enumToString(level));
+    sprintf(res, "0x%02X (%s)", (u8)level, enumToString(level));
 
     return res;
 }

@@ -9,9 +9,9 @@
 
 
 
-bad_int8 memcmp(const void *str1, const void *str2, bad_int64 length);
-bool memempty(const void *src, bad_int64 length);
-void* memmove(void *dest, const void *src, bad_int64 length);
+i8 memcmp(const void *str1, const void *str2, i64 length);
+bool memempty(const void *src, i64 length);
+void* memmove(void *dest, const void *src, i64 length);
 
 
 

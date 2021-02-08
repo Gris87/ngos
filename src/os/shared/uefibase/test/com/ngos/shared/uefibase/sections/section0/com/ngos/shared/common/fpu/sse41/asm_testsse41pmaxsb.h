@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse41Pmaxsb(bad_int8 *a, bad_int8 *b, bad_int8 *c);
+void testSse41Pmaxsb(i8 *a, i8 *b, i8 *c);
 
 
 

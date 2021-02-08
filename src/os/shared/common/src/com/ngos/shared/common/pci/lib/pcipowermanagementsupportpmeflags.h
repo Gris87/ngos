@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 pci_power_management_support_pme_flags;
+typedef u8 pci_power_management_support_pme_flags;
 
 enum class PciPowerManagementSupportPmeFlag: pci_power_management_support_pme_flags
 {

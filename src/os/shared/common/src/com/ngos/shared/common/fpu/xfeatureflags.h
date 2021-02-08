@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 x_feature_flags;
+typedef u32 x_feature_flags;
 
 enum class XFeatureFlag: x_feature_flags
 {

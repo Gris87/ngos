@@ -13,7 +13,7 @@
 
 
 
-typedef bad_uint8 memory_block_region_flags;
+typedef u8 memory_block_region_flags;
 
 enum class MemoryBlockRegionFlag: memory_block_region_flags
 {

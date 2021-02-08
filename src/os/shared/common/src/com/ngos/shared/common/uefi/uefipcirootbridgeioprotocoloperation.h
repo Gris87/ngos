@@ -8,7 +8,7 @@
 
 
 
-enum class UefiPciRootBridgeIoProtocolOperation: bad_uint32
+enum class UefiPciRootBridgeIoProtocolOperation: u32
 {
     BUS_MASTER_READ,
     BUS_MASTER_WRITE,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(UefiPciRootBridgeIoProtocolOperation operat
 
     static char8 res[40];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)operation, enumToString(operation));
+    sprintf(res, "0x%08X (%s)", (u32)operation, enumToString(operation));
 
     return res;
 }

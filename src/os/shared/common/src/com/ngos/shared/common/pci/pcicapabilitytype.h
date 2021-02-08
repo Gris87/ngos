@@ -8,7 +8,7 @@
 
 
 
-enum class PciCapabilityType: bad_uint8
+enum class PciCapabilityType: u8
 {
     NONE                          = 0,
     POWER_MANAGEMENT_INTERFACE    = 1,
@@ -71,7 +71,7 @@ inline const char8* enumToFullString(PciCapabilityType type) // TEST: NO
 
     static char8 res[37];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

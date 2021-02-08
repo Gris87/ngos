@@ -8,7 +8,7 @@
 
 
 
-enum class UefiPciIoProtocolOperation: bad_uint32
+enum class UefiPciIoProtocolOperation: u32
 {
     BUS_MASTER_READ,
     BUS_MASTER_WRITE,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(UefiPciIoProtocolOperation operation) // TE
 
     static char8 res[38];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)operation, enumToString(operation));
+    sprintf(res, "0x%08X (%s)", (u32)operation, enumToString(operation));
 
     return res;
 }

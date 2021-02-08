@@ -27,7 +27,7 @@ public:
 #else
 private:
 #endif
-    static NgosStatus initPlatform(bad_uint32 id); // TEST: NO
+    static NgosStatus initPlatform(u32 id); // TEST: NO
 
     static KvmFeatureTypeFlags sFeatures;
 };

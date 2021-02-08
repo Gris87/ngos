@@ -8,9 +8,9 @@
 
 
 
-bad_uint64 getElfMemorySize(ElfHeader *header); // TEST: NO
-NgosStatus loadElfToAddress(ElfHeader *header, bad_uint64 address); // TEST: NO
-NgosStatus handleRelocations(ElfHeader *header, bad_uint64 physicalAddress, bad_uint64 virtualAddress); // TEST: NO
+u64 getElfMemorySize(ElfHeader *header); // TEST: NO
+NgosStatus loadElfToAddress(ElfHeader *header, u64 address); // TEST: NO
+NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtualAddress); // TEST: NO
 
 
 

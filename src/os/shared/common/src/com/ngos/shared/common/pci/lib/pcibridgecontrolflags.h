@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_bridge_control_flags;
+typedef u16 pci_bridge_control_flags;
 
 enum class PciBridgeControlFlag: pci_bridge_control_flags
 {

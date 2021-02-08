@@ -33,19 +33,19 @@ void UEFI_API testRandomWriteProcedure(void *buffer)
 
 
 
-    bad_uint64  regionStart = test->getRegionStart();
-    bad_uint64  regionEnd   = test->getRegionEnd();
-    bad_int64  testSize    = test->getTestSize();
-    bad_uint8  *blockBuffer = test->getBuffer();
-    bad_uint64  rand;
+    u64  regionStart = test->getRegionStart();
+    u64  regionEnd   = test->getRegionEnd();
+    i64  testSize    = test->getTestSize();
+    u8  *blockBuffer = test->getBuffer();
+    u64  rand;
 
 
 
-    bad_uint64 startTime = rdtsc();
+    u64 startTime = rdtsc();
 
     if (CPU::hasFlag(X86Feature::RDRAND))
     {
-        for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 
@@ -57,22 +57,22 @@ void UEFI_API testRandomWriteProcedure(void *buffer)
             );
             // Ignore CppAlignmentVerifier [END]
 
-            writeMemoryBlock(blockBuffer, (bad_uint8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            writeMemoryBlock(blockBuffer, (u8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
     else
     {
-        for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 
             rand = i * 7;
 
-            writeMemoryBlock(blockBuffer, (bad_uint8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            writeMemoryBlock(blockBuffer, (u8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
 
-    bad_uint64 endTime = rdtsc();
+    u64 endTime = rdtsc();
 
 
 
@@ -90,7 +90,7 @@ TestRandomWrite::TestRandomWrite()
 
 
 
-    mBuffer = (bad_uint8 *)malloc(TEST_BLOCK_SIZE);
+    mBuffer = (u8 *)malloc(TEST_BLOCK_SIZE);
     UEFI_TEST_ASSERT(mBuffer != nullptr);
 }
 
@@ -99,7 +99,7 @@ TestRandomWrite::~TestRandomWrite()
     UEFI_LT((""));
 }
 
-bad_uint8* TestRandomWrite::getBuffer() const
+u8* TestRandomWrite::getBuffer() const
 {
     // UEFI_LT(("")); // Commented to avoid bad looking logs
 

@@ -18,7 +18,7 @@
 
 
 
-typedef bad_uint8 gzip_member_extra_flags;
+typedef u8 gzip_member_extra_flags;
 
 enum class GzipMemberExtraFlag: gzip_member_extra_flags
 {

@@ -14,7 +14,7 @@ struct PciMessageSignaledInterruptsCapability
     PciCapabilityHeader                        header;
     PciMessageSignaledInterruptsMessageControl messageControl;
     PciMessageSignaledInterruptsMessageAddress messageAddress;
-    bad_uint16                                        messageData;
+    u16                                        messageData;
 };
 
 

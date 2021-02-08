@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressTphRequesterStTableLocation: bad_uint8
+enum class PciExpressTphRequesterStTableLocation: u8
 {
     NOT_PRESENT              = 0,
     TPH_REQUESTER_CAPABILITY = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciExpressTphRequesterStTableLocation locat
 
     static char8 res[32];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

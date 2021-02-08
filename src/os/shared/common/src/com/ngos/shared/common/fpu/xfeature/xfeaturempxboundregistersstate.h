@@ -9,8 +9,8 @@
 
 struct MpxBoundRegister
 {
-    bad_uint64 lowerBound;
-    bad_uint64 upperBound;
+    u64 lowerBound;
+    u64 upperBound;
 };
 
 

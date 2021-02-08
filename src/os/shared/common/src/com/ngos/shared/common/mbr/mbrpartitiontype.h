@@ -8,7 +8,7 @@
 
 
 
-enum class MbrPartitionType: bad_uint8
+enum class MbrPartitionType: u8
 {
     NONE                              = 0,
     FAT12                             = 0x01,
@@ -549,7 +549,7 @@ inline const char8* enumToFullString(MbrPartitionType type) // TEST: NO
 
     static char8 res[41];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

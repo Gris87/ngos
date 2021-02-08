@@ -40,9 +40,9 @@ void UEFI_API testSse3Procedure(void *buffer)
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -183,7 +183,7 @@ void UEFI_API testSse3Procedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 

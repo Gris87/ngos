@@ -14,7 +14,7 @@
 
 
 
-enum class PciDevice12EB: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice12EB: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0001 = 0x0001,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(PciDevice12EB device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -70,7 +70,7 @@ inline const char8* enumToHumanString(PciDevice12EB device) // TEST: NO
     {
         case PciDevice12EB::DEVICE_0001: return "Vortex 1";
         case PciDevice12EB::DEVICE_0002: return "Vortex 2";
-        case PciDevice12EB::DEVICE_0003: return "Abad_uint8810 Vortex Digital Audio Processor";
+        case PciDevice12EB::DEVICE_0003: return "Au8810 Vortex Digital Audio Processor";
         case PciDevice12EB::DEVICE_8803: return "Vortex 56k Software Modem";
 
         default: return "Unknown device";
@@ -79,7 +79,7 @@ inline const char8* enumToHumanString(PciDevice12EB device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice12EB device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice12EB device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

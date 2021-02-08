@@ -14,7 +14,7 @@ NgosStatus setupCr4()
 
 
 
-    bad_uint64 cr4 = readCr4();
+    u64 cr4 = readCr4();
 
     // UEFI_LVVV(("cr4 = 0x%016llX", cr4)); // Commented to avoid bad looking logs
 

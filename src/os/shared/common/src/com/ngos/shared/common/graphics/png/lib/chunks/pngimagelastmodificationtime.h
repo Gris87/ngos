@@ -9,12 +9,12 @@
 
 struct PngImageLastModificationTime
 {
-    bad_uint16 year;
-    bad_uint8  month;
-    bad_uint8  day;
-    bad_uint8  hour;
-    bad_uint8  minute;
-    bad_uint8  second;
+    u16 year;
+    u8  month;
+    u8  day;
+    u8  hour;
+    u8  minute;
+    u8  second;
 } __attribute__((packed));
 
 

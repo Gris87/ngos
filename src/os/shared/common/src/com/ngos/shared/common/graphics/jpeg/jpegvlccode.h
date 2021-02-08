@@ -9,8 +9,8 @@
 
 struct JpegVlcCode
 {
-    bad_uint8 bits;
-    bad_uint8 code;
+    u8 bits;
+    u8 code;
 } __attribute__((packed));
 
 

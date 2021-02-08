@@ -21,10 +21,10 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
 
 
 
-    bad_int64 count = (*bootMemoryMap->memoryMapSize) / (*bootMemoryMap->descriptorSize);
+    i64 count = (*bootMemoryMap->memoryMapSize) / (*bootMemoryMap->descriptorSize);
     UEFI_LVVV(("count = %d", count));
 
-    for (bad_int64 i = 0; i < count; ++i)
+    for (i64 i = 0; i < count; ++i)
     {
         UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
         UEFI_LVV(("Handling memory descriptor #%d at address 0x%p", i, memoryDescriptor));
@@ -158,7 +158,7 @@ NgosStatus setupMemoryMapEntries(BootParams *params, UefiBootMemoryMap *bootMemo
             UEFI_LVVV(("UEFI Memory Map entries:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < count; ++i)
+            for (i64 i = 0; i < count; ++i)
             {
                 UefiMemoryDescriptor *memoryDescriptor = MEMORY_MAP_DESCRIPTOR(bootMemoryMap, i);
                 UEFI_TEST_ASSERT(memoryDescriptor, NgosStatus::ASSERTION);

@@ -11,8 +11,8 @@
 struct DmiEntryHeader
 {
     DmiEntryType type;
-    bad_uint8           length;
-    bad_uint16          handle;
+    u8           length;
+    u16          handle;
 } __attribute__((packed));
 
 

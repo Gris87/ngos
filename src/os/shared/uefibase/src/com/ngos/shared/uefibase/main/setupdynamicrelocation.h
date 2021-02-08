@@ -7,7 +7,7 @@
 
 
 
-NgosStatus setupDynamicRelocation(bad_uint64 kernelLocation); // TEST: NO
+NgosStatus setupDynamicRelocation(address_t kernelLocation); // TEST: NO
 
 
 

@@ -21,7 +21,7 @@ public:
     NgosStatus invalidate() override; // TEST: NO
     NgosStatus repaint() override; // TEST: NO
     NgosStatus onKeyboardEvent(const UefiInputKey &key) override; // TEST: NO
-    NgosStatus onMouseScrollEvent(bad_int32 delta) override; // TEST: NO
+    NgosStatus onMouseScrollEvent(i32 delta) override; // TEST: NO
 
     NgosStatus scrollToSelectedRow(); // TEST: NO
     NgosStatus pageUp(); // TEST: NO
@@ -32,30 +32,30 @@ public:
     NgosStatus setState(WidgetState state) override; // TEST: NO
     WidgetState getState() const override; // TEST: NO
 
-    NgosStatus setRowHeight(bad_uint64 height); // TEST: NO
-    bad_uint64 getRowHeight() const; // TEST: NO
+    NgosStatus setRowHeight(i64 height); // TEST: NO
+    i64 getRowHeight() const; // TEST: NO
 
-    NgosStatus setColumnCount(bad_uint64 columns); // TEST: NO
-    bad_uint64 getColumnCount() const; // TEST: NO
+    NgosStatus setColumnCount(i64 columns); // TEST: NO
+    i64 getColumnCount() const; // TEST: NO
 
-    NgosStatus setColumnWidth(bad_uint64 column, bad_uint64 width); // TEST: NO
-    bad_uint64 getColumnWidth(bad_uint64 column) const; // TEST: NO
+    NgosStatus setColumnWidth(i64 column, i64 width); // TEST: NO
+    i64 getColumnWidth(i64 column) const; // TEST: NO
 
-    NgosStatus setHeaderText(bad_uint64 column, const char8 *text); // TEST: NO
+    NgosStatus setHeaderText(i64 column, const char8 *text); // TEST: NO
 
-    NgosStatus setRowCount(bad_uint64 rows); // TEST: NO
-    bad_uint64 getRowCount() const; // TEST: NO
+    NgosStatus setRowCount(i64 rows); // TEST: NO
+    i64 getRowCount() const; // TEST: NO
 
     const ArrayList<TableRowWidget *>& getRows() const; // TEST: NO
 
-    NgosStatus setCellWidget(bad_uint64 row, bad_uint64 column, Widget *widget); // TEST: NO
-    Widget* getCellWidget(bad_uint64 row, bad_uint64 column) const; // TEST: NO
+    NgosStatus setCellWidget(i64 row, i64 column, Widget *widget); // TEST: NO
+    Widget* getCellWidget(i64 row, i64 column) const; // TEST: NO
 
-    NgosStatus setSelectedRow(bad_uint64 row); // TEST: NO
-    bad_uint64 getSelectedRow() const; // TEST: NO
+    NgosStatus setSelectedRow(i64 row); // TEST: NO
+    i64 getSelectedRow() const; // TEST: NO
 
-    NgosStatus setHighlightedRow(bad_uint64 row); // TEST: NO
-    bad_uint64 getHighlightedRow() const; // TEST: NO
+    NgosStatus setHighlightedRow(i64 row); // TEST: NO
+    i64 getHighlightedRow() const; // TEST: NO
 
     NgosStatus setKeyboardEventHandler(keyboard_event_handler handler) override; // TEST: NO
     keyboard_event_handler getKeyboardEventHandler() const override; // TEST: NO
@@ -64,15 +64,15 @@ private:
     Image                          *mBackgroundImage;
     Image                          *mHeaderImage;
     WidgetState                     mState;
-    bad_uint64                             mRowHeight;
-    ArrayList<bad_uint64>                  mColumnWidth;
-    bad_uint64                             mTotalColumnWidth;
+    i64                             mRowHeight;
+    ArrayList<i64>                  mColumnWidth;
+    i64                             mTotalColumnWidth;
     ArrayList<TableHeaderWidget *>  mHeaders;
     WrapperWidget                  *mContentWrapperWidget;
     WrapperWidget                  *mScrollWrapperWidget;
     ArrayList<TableRowWidget *>     mRows;
-    bad_uint64                             mSelectedRow;
-    bad_uint64                             mHighlightedRow;
+    i64                             mSelectedRow;
+    i64                             mHighlightedRow;
     keyboard_event_handler          mKeyboardEventHandler;
 };
 

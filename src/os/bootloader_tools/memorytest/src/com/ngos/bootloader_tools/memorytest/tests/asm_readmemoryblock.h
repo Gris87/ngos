@@ -9,7 +9,7 @@
 
 
 CPP_EXTERN_C
-void readMemoryBlock(bad_uint8 *blockBuffer, bad_uint8 *address); // TEST: NO
+void readMemoryBlock(u8 *blockBuffer, u8 *address); // TEST: NO
 
 
 

@@ -33,14 +33,14 @@ void UEFI_API testAvx2Procedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AVX2))
     {
-        bad_uint16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
-        bad_uint16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
+        u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
+        u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -97,7 +97,7 @@ void UEFI_API testAvx2Procedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 

@@ -46,13 +46,13 @@
 struct DmiMemoryDeviceEntry
 {
     DmiEntryHeader                 header;
-    bad_uint16                            memoryArrayHandle;
-    bad_uint16                            memoryErrorInformationHandle;
-    bad_uint16                            totalWidth;
-    bad_uint16                            dataWidth;
+    u16                            memoryArrayHandle;
+    u16                            memoryErrorInformationHandle;
+    u16                            totalWidth;
+    u16                            dataWidth;
     DmiMemoryDeviceSize            size;
     DmiMemoryDeviceFormFactor      formFactor;
-    bad_uint8                             deviceSet;
+    u8                             deviceSet;
     DmiStringId                    deviceLocator;
     DmiStringId                    bankLocator;
     DmiMemoryDeviceType            memoryType;
@@ -63,7 +63,7 @@ struct DmiMemoryDeviceEntry
 
 struct DmiMemoryDeviceEntryV23: public DmiMemoryDeviceEntry
 {
-    bad_uint16         speed;
+    u16         speed;
     DmiStringId manufacturer;
     DmiStringId serialNumber;
     DmiStringId assetTag;
@@ -82,16 +82,16 @@ struct DmiMemoryDeviceEntryV26: public DmiMemoryDeviceEntryV23
 struct DmiMemoryDeviceEntryV27: public DmiMemoryDeviceEntryV26
 {
     DmiMemoryDeviceExtendedSize extendedSize;
-    bad_uint16                         configuredMemorySpeed;
+    u16                         configuredMemorySpeed;
 } __attribute__((packed));
 
 
 
 struct DmiMemoryDeviceEntryV28: public DmiMemoryDeviceEntryV27
 {
-    bad_uint16 minimumVoltage;
-    bad_uint16 maximumVoltage;
-    bad_uint16 configuredVoltage;
+    u16 minimumVoltage;
+    u16 maximumVoltage;
+    u16 configuredVoltage;
 } __attribute__((packed));
 
 
@@ -101,22 +101,22 @@ struct DmiMemoryDeviceEntryV32: public DmiMemoryDeviceEntryV28
     DmiMemoryDeviceTechnology                   memoryTechnology;
     DmiMemoryDeviceOperatingModeCapabilityFlags memoryOperatingModeCapability;
     DmiStringId                                 firmwareVersion;
-    bad_uint16                                         moduleManufacturerID;
-    bad_uint16                                         moduleProductID;
-    bad_uint16                                         memorySubsystemControllerManufacturerID;
-    bad_uint16                                         memorySubsystemControllerProductID;
-    bad_uint64                                         nonVolatileSize;
-    bad_uint64                                         volatileSize;
-    bad_uint64                                         cacheSize;
-    bad_uint64                                         logicalSize;
+    u16                                         moduleManufacturerID;
+    u16                                         moduleProductID;
+    u16                                         memorySubsystemControllerManufacturerID;
+    u16                                         memorySubsystemControllerProductID;
+    u64                                         nonVolatileSize;
+    u64                                         volatileSize;
+    u64                                         cacheSize;
+    u64                                         logicalSize;
 } __attribute__((packed));
 
 
 
 struct DmiMemoryDeviceEntryV33: public DmiMemoryDeviceEntryV32
 {
-    bad_uint32 extendedSpeed;
-    bad_uint32 extendedConfiguredMemorySpeed;
+    u32 extendedSpeed;
+    u32 extendedConfiguredMemorySpeed;
 } __attribute__((packed));
 
 

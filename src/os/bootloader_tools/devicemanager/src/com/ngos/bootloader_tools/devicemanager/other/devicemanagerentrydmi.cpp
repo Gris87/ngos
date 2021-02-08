@@ -6,7 +6,7 @@
 
 
 
-DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, bad_uint16 handle, DeviceManagerImage image, const char8 *name)
+DeviceManagerEntryDMI::DeviceManagerEntryDMI(DmiEntryType type, u16 handle, DeviceManagerImage image, const char8 *name)
     : DeviceManagerEntry(image, name)
     , mType(type)
     , mHandle(handle)
@@ -39,7 +39,7 @@ bool DeviceManagerEntryDMI::operator<(const DeviceManagerEntryDMI &another) cons
 
 
 
-    bad_int8 match = strcmpi(getName(), another.getName());
+    i8 match = strcmpi(getName(), another.getName());
 
     if (match < 0)
     {
@@ -78,7 +78,7 @@ DmiEntryType DeviceManagerEntryDMI::getType() const
     return mType;
 }
 
-NgosStatus DeviceManagerEntryDMI::setHandle(bad_uint16 handle)
+NgosStatus DeviceManagerEntryDMI::setHandle(u16 handle)
 {
     UEFI_LT((" | handle = %u", handle));
 
@@ -91,7 +91,7 @@ NgosStatus DeviceManagerEntryDMI::setHandle(bad_uint16 handle)
     return NgosStatus::OK;
 }
 
-bad_uint16 DeviceManagerEntryDMI::getHandle() const
+u16 DeviceManagerEntryDMI::getHandle() const
 {
     // UEFI_LT(("")); // Commented to avoid too frequent logs
 

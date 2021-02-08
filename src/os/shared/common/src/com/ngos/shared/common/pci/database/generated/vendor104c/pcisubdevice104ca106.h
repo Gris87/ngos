@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice104CA106: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice104CA106: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_175C5000 = 0x175C5000,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(PciSubDevice104CA106 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -63,8 +63,8 @@ inline const char8* enumToHumanString(PciSubDevice104CA106 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice104CA106::SUBDEVICE_175C5000: return "ASI50xx Audio Adapter";
-        case PciSubDevice104CA106::SUBDEVICE_175C6400: return "ASbad_int6400 Cobranet series";
-        case PciSubDevice104CA106::SUBDEVICE_175C8700: return "ASbad_int87xx Radio Tuner card";
+        case PciSubDevice104CA106::SUBDEVICE_175C6400: return "ASi6400 Cobranet series";
+        case PciSubDevice104CA106::SUBDEVICE_175C8700: return "ASi87xx Radio Tuner card";
 
         default: return "Unknown device";
     }

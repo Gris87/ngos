@@ -33,14 +33,14 @@ void UEFI_API testSse42Procedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::XMM4_2))
     {
-        bad_int64 a[2] = { 1987965842, -1987077212 };
-        bad_int64 b[2] = { 1981132191, 1271329132 };
+        i64 a[2] = { 1987965842, -1987077212 };
+        i64 b[2] = { 1981132191, 1271329132 };
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -55,7 +55,7 @@ void UEFI_API testSse42Procedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 

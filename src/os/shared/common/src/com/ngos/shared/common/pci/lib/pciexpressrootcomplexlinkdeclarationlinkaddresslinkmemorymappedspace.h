@@ -9,8 +9,8 @@
 
 struct PciExpressRootComplexLinkDeclarationLinkAndressMemoryMappedSpace
 {
-    bad_uint32 lower32;
-    bad_uint32 upper32;
+    u32 lower32;
+    u32 upper32;
 };
 
 

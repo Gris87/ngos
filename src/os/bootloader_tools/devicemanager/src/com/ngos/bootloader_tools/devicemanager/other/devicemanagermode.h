@@ -8,7 +8,7 @@
 
 
 
-enum class DeviceManagerMode: bad_uint8
+enum class DeviceManagerMode: u8
 {
     BASIC,
     EXPERT,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(DeviceManagerMode mode) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)mode, enumToString(mode));
+    sprintf(res, "0x%02X (%s)", (u8)mode, enumToString(mode));
 
     return res;
 }

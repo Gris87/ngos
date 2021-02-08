@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 uefi_simple_network_receive_filter_flags;
+typedef u32 uefi_simple_network_receive_filter_flags;
 
 enum class UefiSimpleNetworkReceiveFilterFlag: uefi_simple_network_receive_filter_flags
 {

@@ -9,9 +9,9 @@
 
 struct UefiCpuPhysicalLocation
 {
-    bad_uint32 package;
-    bad_uint32 core;
-    bad_uint32 thread;
+    u32 package;
+    u32 core;
+    u32 thread;
 };
 
 

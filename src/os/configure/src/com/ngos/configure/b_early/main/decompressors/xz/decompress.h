@@ -13,7 +13,7 @@
 
 
 
-NgosStatus decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 expectedCompressedSize, bad_uint64 expectedDecompressedSize); // TEST: NO
+NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expectedCompressedSize, u64 expectedDecompressedSize); // TEST: NO
 
 
 

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiCacheLocation: bad_uint8
+enum class DmiCacheLocation: u8
 {
     INTERNAL = 0,
     EXTERNAL = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(DmiCacheLocation location) // TEST: NO
 
     static char8 res[16];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

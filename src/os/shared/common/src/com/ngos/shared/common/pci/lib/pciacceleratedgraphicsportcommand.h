@@ -13,15 +13,15 @@ struct PciAcceleratedGraphicsPortCommand
     {
         struct
         {
-            bad_uint32 rate:                           3; // TODO: Use flags PciAcceleratedGraphicsPortRateFlags
-            bad_uint32 __reserved:                     5;
-            bad_uint32 enableAcceleratedGraphicsPort:  1;
-            bad_uint32 enableSideBandAddressing:       1;
-            bad_uint32 __reserved2:                    14;
-            bad_uint32 maximumNumberOfCommandRequests: 8;
+            u32 rate:                           3; // TODO: Use flags PciAcceleratedGraphicsPortRateFlags
+            u32 __reserved:                     5;
+            u32 enableAcceleratedGraphicsPort:  1;
+            u32 enableSideBandAddressing:       1;
+            u32 __reserved2:                    14;
+            u32 maximumNumberOfCommandRequests: 8;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

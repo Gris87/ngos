@@ -41,7 +41,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         BootParams *params = 0;
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x1000, (void **)&params), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)params,                                                0xFFFFFFFFFF200000);
+        TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF200000);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     0);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   7);
@@ -73,7 +73,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[1], 511 * 8),                true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x2050, (void **)&params), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)params,                                                0xFFFFFFFFFF240000);
+        TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF240000);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     1);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   6);
@@ -109,7 +109,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[67], 445 * 8),               true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1234, 0x1050, (void **)&params), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)params,                                                0xFFFFFFFFFF280234);
+        TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF280234);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     2);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   5);
@@ -148,7 +148,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[130], 382 * 8),              true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1050, 0x1000, (void **)&params), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)params,                                                0xFFFFFFFFFF2C0050);
+        TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF2C0050);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     3);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   4);
@@ -190,7 +190,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[194], 318 * 8),              true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x1000, (void **)&params), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)params,                                                0xFFFFFFFFFF300000);
+        TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF300000);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                     4);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                 7);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                   3);
@@ -417,7 +417,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         void *a = 0;
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x00054321, 0x1F00, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF340321);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF340321);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    5);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                4);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  7);
@@ -452,7 +452,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[323], 189 * 8),             true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x00065F36, 0x0205, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF380F36);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF380F36);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    6);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                4);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  6);
@@ -490,7 +490,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[386], 126 * 8),             true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x000A0000, 0x1000, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF3C0000);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF3C0000);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    7);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                4);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  5);
@@ -600,7 +600,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[323], 189 * 8),           true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x000FFFFF, 0x0002, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF240FFF);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF240FFF);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    0);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                6);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  6);
@@ -638,7 +638,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[323], 189 * 8),             true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x000AAAAA, 0xBBBB, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF2C0AAA);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF2C0AAA);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    1);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                6);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  5);
@@ -800,7 +800,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
         TEST_ASSERT_EQUALS(memempty(&IORemap::sFixmapPage[0], 512 * 8),             true);
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x00010000, 0x1000, (void **)&a), NgosStatus::OK);
-        TEST_ASSERT_EQUALS((bad_uint64)a,                                                    0xFFFFFFFFFF280000);
+        TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF280000);
         TEST_ASSERT_EQUALS(IORemap::sLastUsedSlot,                                    2);
         TEST_ASSERT_EQUALS(IORemap::sLastReleasedSlot,                                1);
         TEST_ASSERT_EQUALS(IORemap::sSlotsAvailable,                                  7);

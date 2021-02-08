@@ -9,7 +9,7 @@
 
 struct PciMessageSignaledInterruptsExtendedMessageControl
 {
-    bad_uint16 tableSizeReal()
+    u16 tableSizeReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,12 +24,12 @@ struct PciMessageSignaledInterruptsExtendedMessageControl
     {
         struct
         {
-            bad_uint16 tableSize:  11;
-            bad_uint16 __reserved: 4;
-            bad_uint16 enableMSIX: 1;
+            u16 tableSize:  11;
+            u16 __reserved: 4;
+            u16 enableMSIX: 1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

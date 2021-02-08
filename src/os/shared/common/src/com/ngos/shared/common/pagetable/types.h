@@ -8,15 +8,15 @@
 
 
 
-typedef bad_uint64 pgd_value;
+typedef u64 pgd_value;
 
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
-typedef bad_uint64 p4d_value;
+typedef u64 p4d_value;
 #endif
 
-typedef bad_uint64 pud_value;
-typedef bad_uint64 pmd_value;
-typedef bad_uint64 pte_value;
+typedef u64 pud_value;
+typedef u64 pmd_value;
+typedef u64 pte_value;
 
 
 

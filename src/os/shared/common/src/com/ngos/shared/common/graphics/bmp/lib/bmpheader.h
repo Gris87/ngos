@@ -13,11 +13,11 @@
 
 struct BmpHeader
 {
-    bad_uint16 signature;
-    bad_uint32 size;
-    bad_uint16 __reserved[2];
-    bad_uint16 imageOffset;
-    bad_uint16 __pad;
+    u16 signature;
+    u32 size;
+    u16 __reserved[2];
+    u16 imageOffset;
+    u16 __pad;
 } __attribute__((packed));
 
 

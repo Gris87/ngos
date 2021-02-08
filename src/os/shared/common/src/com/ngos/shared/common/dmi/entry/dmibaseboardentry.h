@@ -20,10 +20,10 @@ struct DmiBaseboardEntry
     DmiStringId              assetTag;
     DmiBaseboardFeatureFlags featureFlags;
     DmiStringId              locationInChassis;
-    bad_uint16                      chassisHandle;
+    u16                      chassisHandle;
     DmiBaseboardType         boardType;
-    bad_uint8                       numberOfContainedObjectHandles;
-    bad_uint16                      containedObjectHandles[0];
+    u8                       numberOfContainedObjectHandles;
+    u16                      containedObjectHandles[0];
 } __attribute__((packed));
 
 

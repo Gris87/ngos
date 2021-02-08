@@ -9,7 +9,7 @@
 
 struct PciMessageSignaledInterruptsMessageControl
 {
-    bad_uint16 supportMultipleMessageReal()
+    u16 supportMultipleMessageReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -18,7 +18,7 @@ struct PciMessageSignaledInterruptsMessageControl
         return (1ULL << supportMultipleMessage);
     }
 
-    bad_uint16 enableMultipleMessageReal()
+    u16 enableMultipleMessageReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -33,15 +33,15 @@ struct PciMessageSignaledInterruptsMessageControl
     {
         struct
         {
-            bad_uint16 enableMSI:               1;
-            bad_uint16 supportMultipleMessage:  3;
-            bad_uint16 enableMultipleMessage:   3;
-            bad_uint16 support64BitAddress:     1;
-            bad_uint16 supportPerVectorMasking: 1;
-            bad_uint16 __reserved:              7;
+            u16 enableMSI:               1;
+            u16 supportMultipleMessage:  3;
+            u16 enableMultipleMessage:   3;
+            u16 support64BitAddress:     1;
+            u16 supportPerVectorMasking: 1;
+            u16 __reserved:              7;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

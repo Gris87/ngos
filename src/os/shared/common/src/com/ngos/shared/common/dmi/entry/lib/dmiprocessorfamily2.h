@@ -10,7 +10,7 @@
 
 
 
-enum class DmiProcessorFamily2: bad_uint16
+enum class DmiProcessorFamily2: u16
 {
     NONE                                   = 0,
     OTHER                                  = 0x0001,
@@ -211,7 +211,7 @@ enum class DmiProcessorFamily2: bad_uint16
     AMD_ATHLON_II                          = 0x00ED,
     SIX_CORE_AMD_OPTERON                   = 0x00EE,
     AMD_SEMPRON_M                          = 0x00EF,
-    bad_int860                                   = 0x00FA,
+    i860                                   = 0x00FA,
     I960                                   = 0x00FB,
     INDICATOR_FAMILY_2                     = 0x00FE,
     RESERVED_2                             = 0x00FF,
@@ -441,7 +441,7 @@ inline const char8* enumToString(DmiProcessorFamily2 family2) // TEST: NO
         case DmiProcessorFamily2::AMD_ATHLON_II:                          return "AMD_ATHLON_II";
         case DmiProcessorFamily2::SIX_CORE_AMD_OPTERON:                   return "SIX_CORE_AMD_OPTERON";
         case DmiProcessorFamily2::AMD_SEMPRON_M:                          return "AMD_SEMPRON_M";
-        case DmiProcessorFamily2::bad_int860:                                   return "bad_int860";
+        case DmiProcessorFamily2::i860:                                   return "i860";
         case DmiProcessorFamily2::I960:                                   return "I960";
         case DmiProcessorFamily2::INDICATOR_FAMILY_2:                     return "INDICATOR_FAMILY_2";
         case DmiProcessorFamily2::RESERVED_2:                             return "RESERVED_2";
@@ -475,7 +475,7 @@ inline const char8* enumToFullString(DmiProcessorFamily2 family2) // TEST: NO
 
     static char8 res[48];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)family2, enumToString(family2));
+    sprintf(res, "0x%04X (%s)", (u16)family2, enumToString(family2));
 
     return res;
 }

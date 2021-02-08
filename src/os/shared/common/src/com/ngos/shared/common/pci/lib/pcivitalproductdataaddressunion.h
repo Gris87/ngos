@@ -13,11 +13,11 @@ struct PciVitalProductDataAddressUnion
     {
         struct
         {
-            bad_uint16 value:    15;
-            bad_uint16 finished: 1;
+            u16 value:    15;
+            u16 finished: 1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

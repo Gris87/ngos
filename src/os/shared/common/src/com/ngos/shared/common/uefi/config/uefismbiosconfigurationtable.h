@@ -17,20 +17,20 @@
 
 struct UefiSmbiosConfigurationTable
 {
-    bad_uint32 anchor;
-    bad_uint8  entryPointStructureChecksum;
-    bad_uint8  entryPointLength;
-    bad_uint8  majorVersion;
-    bad_uint8  minorVersion;
-    bad_uint16 maximumStructureSize;
-    bad_uint8  entryPointRevision;
-    bad_uint8  formattedArea[5];
-    bad_uint8  intermediateAnchor[5];
-    bad_uint8  intermediateChecksum;
-    bad_uint16 structureTableLength;
-    bad_uint32 structureTableAddress;
-    bad_uint16 numberOfSmbiosStructures;
-    bad_uint8  bcdRevision;
+    u32 anchor;
+    u8  entryPointStructureChecksum;
+    u8  entryPointLength;
+    u8  majorVersion;
+    u8  minorVersion;
+    u16 maximumStructureSize;
+    u8  entryPointRevision;
+    u8  formattedArea[5];
+    u8  intermediateAnchor[5];
+    u8  intermediateChecksum;
+    u16 structureTableLength;
+    u32 structureTableAddress;
+    u16 numberOfSmbiosStructures;
+    u8  bcdRevision;
 } __attribute__((packed));
 
 

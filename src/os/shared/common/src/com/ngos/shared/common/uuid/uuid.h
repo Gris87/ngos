@@ -9,12 +9,12 @@
 
 struct Uuid
 {
-    bad_uint32 data1;
-    bad_uint16 data2;
-    bad_uint16 data3;
-    bad_uint8  data4;
-    bad_uint8  data5;
-    bad_uint8  data6[6];
+    u32 data1;
+    u16 data2;
+    u16 data3;
+    u8  data4;
+    u8  data5;
+    u8  data6[6];
 };
 
 

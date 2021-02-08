@@ -9,7 +9,7 @@
 
 struct PciExpressTphRequesterCapabilityRegister
 {
-    bad_uint16 stTableSizeReal()
+    u16 stTableSizeReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -24,18 +24,18 @@ struct PciExpressTphRequesterCapabilityRegister
     {
         struct
         {
-            bad_uint32 noStModeSupported             : 1;
-            bad_uint32 interruptVectorModeSupported  : 1;
-            bad_uint32 deviceSpecificModeSupported   : 1;
-            bad_uint32 __reserved                    : 5;
-            bad_uint32 extendedTphRequesterSupported : 1;
-            bad_uint32 stTableLocation               : 2; // TODO: Use enum PciExpressTphRequesterStTableLocation
-            bad_uint32 __reserved2                   : 5;
-            bad_uint32 stTableSize                   : 11;
-            bad_uint32 __reserved3                   : 5;
+            u32 noStModeSupported             : 1;
+            u32 interruptVectorModeSupported  : 1;
+            u32 deviceSpecificModeSupported   : 1;
+            u32 __reserved                    : 5;
+            u32 extendedTphRequesterSupported : 1;
+            u32 stTableLocation               : 2; // TODO: Use enum PciExpressTphRequesterStTableLocation
+            u32 __reserved2                   : 5;
+            u32 stTableSize                   : 11;
+            u32 __reserved3                   : 5;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

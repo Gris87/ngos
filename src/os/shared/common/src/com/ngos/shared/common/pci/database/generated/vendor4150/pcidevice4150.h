@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice4150: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice4150: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0001 = 0x0001,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(PciDevice4150 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -62,9 +62,9 @@ inline const char8* enumToHumanString(PciDevice4150 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice4150::DEVICE_0001: return "PCbad_int32TLITE FILSTRUP1 PCI to VME Bridge Controller";
-        case PciDevice4150::DEVICE_0006: return "PCbad_int32TLITE UART 16550 Opencores";
-        case PciDevice4150::DEVICE_0007: return "PCbad_int32TLITE CAN Controller Opencores";
+        case PciDevice4150::DEVICE_0001: return "PCi32TLITE FILSTRUP1 PCI to VME Bridge Controller";
+        case PciDevice4150::DEVICE_0006: return "PCi32TLITE UART 16550 Opencores";
+        case PciDevice4150::DEVICE_0007: return "PCi32TLITE CAN Controller Opencores";
 
         default: return "Unknown device";
     }

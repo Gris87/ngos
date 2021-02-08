@@ -14,17 +14,17 @@ struct PciExpressLinkStatus
     {
         struct
         {
-            bad_uint16 currentLinkSpeed              : 4; // TODO: Use enum PciExpressLinkSpeed
-            bad_uint16 negotiatedLinkWidth           : 6; // TODO: Use enum PciExpressLinkWidth
-            bad_uint16 undefined                     : 1;
-            bad_uint16 linkTraining                  : 1;
-            bad_uint16 slotClockConfiguration        : 1;
-            bad_uint16 dataLinkLayerLinkActive       : 1;
-            bad_uint16 linkBandwidthManagementStatus : 1;
-            bad_uint16 linkAutonomousBandwidthStatus : 1;
+            u16 currentLinkSpeed              : 4; // TODO: Use enum PciExpressLinkSpeed
+            u16 negotiatedLinkWidth           : 6; // TODO: Use enum PciExpressLinkWidth
+            u16 undefined                     : 1;
+            u16 linkTraining                  : 1;
+            u16 slotClockConfiguration        : 1;
+            u16 dataLinkLayerLinkActive       : 1;
+            u16 linkBandwidthManagementStatus : 1;
+            u16 linkAutonomousBandwidthStatus : 1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

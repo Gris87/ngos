@@ -13,12 +13,12 @@ struct PciExpressVendorSpecificHeader
     {
         struct
         {
-            bad_uint32 id       : 16;
-            bad_uint32 revision : 4;
-            bad_uint32 length   : 12;
+            u32 id       : 16;
+            u32 revision : 4;
+            u32 length   : 12;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

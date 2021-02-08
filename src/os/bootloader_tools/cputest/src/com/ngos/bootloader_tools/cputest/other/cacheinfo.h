@@ -9,8 +9,8 @@
 
 struct CacheInfo
 {
-    bad_uint32 size;
-    bad_uint8  numberOfWays;
+    u32 size;
+    u8  numberOfWays;
 };
 
 

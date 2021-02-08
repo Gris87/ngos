@@ -15,11 +15,11 @@ struct PciHyperTransportLinkErrorAndFrequencyUnion
     {
         struct
         {
-            bad_uint8 frequency: 4; // TODO: Use enum PciHyperTransportLinkFrequency
-            bad_uint8 error:     4; // TODO: Use flags PciHyperTransportLinkErrorFlags
+            u8 frequency: 4; // TODO: Use enum PciHyperTransportLinkFrequency
+            u8 error:     4; // TODO: Use flags PciHyperTransportLinkErrorFlags
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 };
 

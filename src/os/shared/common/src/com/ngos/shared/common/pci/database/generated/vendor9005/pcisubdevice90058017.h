@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice90058017: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice90058017: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_90050044 = 0x90050044,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice90058017 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice90058017 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice90058017::SUBDEVICE_90050044: return "ASC-29320ALP PCIx bad_uint320";
-        case PciSubDevice90058017::SUBDEVICE_90050045: return "ASC-29320LPE PCIe bad_uint320";
+        case PciSubDevice90058017::SUBDEVICE_90050044: return "ASC-29320ALP PCIx u320";
+        case PciSubDevice90058017::SUBDEVICE_90050045: return "ASC-29320LPE PCIe u320";
 
         default: return "Unknown device";
     }

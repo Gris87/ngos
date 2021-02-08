@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice10000030: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice10000030: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_0E1100DA = 0x0E1100DA,
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(PciSubDevice10000030 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -90,12 +90,12 @@ inline const char8* enumToHumanString(PciSubDevice10000030 subDevice) // TEST: N
         case PciSubDevice10000030::SUBDEVICE_1028016C: return "PowerEdge 1850 MPT Fusion SCSI/RAID (Perc 4)";
         case PciSubDevice10000030::SUBDEVICE_10280183: return "LSI Logic 1020/1030";
         case PciSubDevice10000030::SUBDEVICE_1028018A: return "PERC 4/IM";
-        case PciSubDevice10000030::SUBDEVICE_10281010: return "LSI bad_uint320 SCSI Controller";
+        case PciSubDevice10000030::SUBDEVICE_10281010: return "LSI u320 SCSI Controller";
         case PciSubDevice10000030::SUBDEVICE_103C12C5: return "Ultra320 SCSI [A7173A]";
         case PciSubDevice10000030::SUBDEVICE_103C1323: return "Core I/O LAN/SCSI Combo [AB314A]";
         case PciSubDevice10000030::SUBDEVICE_103C3108: return "Single Channel Ultra320 SCSI HBA G2";
         case PciSubDevice10000030::SUBDEVICE_103C322A: return "SC11Xe Ultra320 Single Channel PCIe x4 SCSI Host Bus Adapter (412911-B21)";
-        case PciSubDevice10000030::SUBDEVICE_124B1170: return "PMC-USCSbad_int320";
+        case PciSubDevice10000030::SUBDEVICE_124B1170: return "PMC-USCSi320";
         case PciSubDevice10000030::SUBDEVICE_15AD1976: return "LSI Logic Parallel SCSI Controller";
         case PciSubDevice10000030::SUBDEVICE_17341052: return "PRIMERGY BX/RX/TX S2 series onboard SCSI(IME)";
 

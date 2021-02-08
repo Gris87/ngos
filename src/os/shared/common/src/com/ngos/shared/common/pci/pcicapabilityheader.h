@@ -11,7 +11,7 @@
 struct PciCapabilityHeader
 {
     PciCapabilityType capabilityId;
-    bad_uint8                nextCapabilityPointer;
+    u8                nextCapabilityPointer;
 };
 
 

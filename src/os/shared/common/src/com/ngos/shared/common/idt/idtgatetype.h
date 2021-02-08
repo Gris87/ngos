@@ -8,7 +8,7 @@
 
 
 
-enum class IdtGateType: bad_uint8
+enum class IdtGateType: u8
 {
     NONE      = 0,
     TASK      = 0x05,
@@ -47,7 +47,7 @@ inline const char8* enumToFullString(IdtGateType type) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

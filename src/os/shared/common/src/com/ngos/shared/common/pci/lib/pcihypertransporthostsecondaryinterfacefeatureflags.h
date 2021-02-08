@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_hyper_transport_host_secondary_interface_feature_flags;
+typedef u16 pci_hyper_transport_host_secondary_interface_feature_flags;
 
 enum class PciHyperTransportHostSecondaryInterfaceFeatureFlag: pci_hyper_transport_host_secondary_interface_feature_flags
 {

@@ -13,15 +13,15 @@ struct PciExpressRootComplexLinkDeclarationLinkDescription
     {
         struct
         {
-            bad_uint32 linkValid           : 1;
-            bad_uint32 linkType            : 1; // TODO: Use enum PciExpressRootComplexLinkDeclarationLinkType
-            bad_uint32 associateRcrbHeader : 1;
-            bad_uint32 __reserved          : 13;
-            bad_uint32 targetComponentId   : 8;
-            bad_uint32 targetPortNumber    : 8;
+            u32 linkValid           : 1;
+            u32 linkType            : 1; // TODO: Use enum PciExpressRootComplexLinkDeclarationLinkType
+            u32 associateRcrbHeader : 1;
+            u32 __reserved          : 13;
+            u32 targetComponentId   : 8;
+            u32 targetPortNumber    : 8;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

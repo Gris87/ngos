@@ -10,7 +10,7 @@
 
 
 
-enum class UnavailableMemoryArea: bad_uint8
+enum class UnavailableMemoryArea: u8
 {
     ZERO_PAGE,
     BOOT_PARAMS,
@@ -53,7 +53,7 @@ inline const char8* enumToFullString(UnavailableMemoryArea area) // TEST: NO
 
     static char8 res[24];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)area, enumToString(area));
+    sprintf(res, "0x%02X (%s)", (u8)area, enumToString(area));
 
     return res;
 }

@@ -41,9 +41,9 @@ NgosStatus Serial::initConsole()
 
 
 
-    bad_uint64 divisor = 115200 / DEFAULT_BAUD;
+    u64 divisor = 115200 / DEFAULT_BAUD;
 
-    bad_uint8 c = inb(DEFAULT_SERIAL_PORT + LCR);
+    u8 c = inb(DEFAULT_SERIAL_PORT + LCR);
 
 
 
@@ -67,7 +67,7 @@ void Serial::print(char8 ch)
 
 
 
-    bad_uint16 timeout = 0xFFFF;
+    u16 timeout = 0xFFFF;
 
     while (
            !(inb(DEFAULT_SERIAL_PORT + LSR) & XMTRDY)
@@ -136,7 +136,7 @@ void Serial::println(const char8 *str)
     print(nl);
 }
 
-bad_int64 Serial::printf(const char8 *format, ...)
+i64 Serial::printf(const char8 *format, ...)
 {
     // COMMON_LT((" | format = 0x%p", format)); // Commented to avoid infinite loop
 
@@ -147,10 +147,10 @@ bad_int64 Serial::printf(const char8 *format, ...)
     va_list args;
 
     va_start(args, format);
-    bad_int64 res = vsprintf(printfBuffer, format, args);
+    i64 res = vsprintf(printfBuffer, format, args);
     va_end(args);
 
-    COMMON_TEST_ASSERT(res < (bad_int64)sizeof(printfBuffer), 0);
+    COMMON_TEST_ASSERT(res < (i64)sizeof(printfBuffer), 0);
 
 
 

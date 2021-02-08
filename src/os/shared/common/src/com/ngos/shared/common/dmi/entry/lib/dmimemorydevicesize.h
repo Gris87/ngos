@@ -11,7 +11,7 @@
 
 struct DmiMemoryDeviceSize
 {
-    bad_uint64 size()
+    u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -19,8 +19,8 @@ struct DmiMemoryDeviceSize
 
         switch ((DmiMemoryDeviceSizeGranularity)granularity)
         {
-            case DmiMemoryDeviceSizeGranularity::_1_MEGABYTE: return (bad_uint64)value * MB;
-            case DmiMemoryDeviceSizeGranularity::_1_KILOBYTE: return (bad_uint64)value * KB;
+            case DmiMemoryDeviceSizeGranularity::_1_MEGABYTE: return (u64)value * MB;
+            case DmiMemoryDeviceSizeGranularity::_1_KILOBYTE: return (u64)value * KB;
 
             default:
             {
@@ -42,11 +42,11 @@ struct DmiMemoryDeviceSize
     {
         struct
         {
-            bad_uint16 value:       15;
-            bad_uint16 granularity: 1; // TODO: Use enum DmiMemoryDeviceSizeGranularity
+            u16 value:       15;
+            u16 granularity: 1; // TODO: Use enum DmiMemoryDeviceSizeGranularity
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 } __attribute__((packed));
 

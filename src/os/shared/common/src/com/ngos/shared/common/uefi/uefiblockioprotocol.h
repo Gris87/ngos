@@ -16,12 +16,12 @@
 
 struct UefiBlockIoProtocol
 {
-    bad_uint64               revision;
+    u64               revision;
     UefiBlockIoMedia *media;
 
     UefiStatus (UEFI_API *reset)(UefiBlockIoProtocol *obj, bool extendedVerification); // TEST: NO
-    UefiStatus (UEFI_API *readBlocks)(UefiBlockIoProtocol *obj, bad_uint32 mediaId, uefi_lba lba, bad_uint64 bufferSize, void *buffer); // TEST: NO
-    UefiStatus (UEFI_API *writeBlocks)(UefiBlockIoProtocol *obj, bad_uint32 mediaId, uefi_lba lba, bad_uint64 bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *readBlocks)(UefiBlockIoProtocol *obj, u32 mediaId, uefi_lba lba, u64 bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *writeBlocks)(UefiBlockIoProtocol *obj, u32 mediaId, uefi_lba lba, u64 bufferSize, void *buffer); // TEST: NO
     UefiStatus (UEFI_API *flushBlocks)(UefiBlockIoProtocol *obj); // TEST: NO
 };
 

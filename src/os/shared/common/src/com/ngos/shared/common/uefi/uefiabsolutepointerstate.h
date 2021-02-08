@@ -10,9 +10,9 @@
 
 struct UefiAbsolutePointerState
 {
-    bad_uint64                                       currentX;
-    bad_uint64                                       currentY;
-    bad_uint64                                       currentZ;
+    u64                                       currentX;
+    u64                                       currentY;
+    u64                                       currentZ;
     UefiAbsolutePointerStateActiveButtonFlags activeButtons;
 };
 

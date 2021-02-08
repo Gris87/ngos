@@ -10,7 +10,7 @@
 
 struct DmiBiosRomSize
 {
-    bad_uint64 size()
+    u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -21,7 +21,7 @@ struct DmiBiosRomSize
 
 
 
-    bad_uint8 value;
+    u8 value;
 } __attribute__((packed));
 
 

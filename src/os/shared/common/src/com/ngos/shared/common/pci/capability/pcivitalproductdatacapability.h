@@ -12,7 +12,7 @@ struct PciVitalProductDataCapability
 {
     PciCapabilityHeader             header;
     PciVitalProductDataAddressUnion address;
-    bad_uint32                             data;
+    u32                             data;
 };
 
 

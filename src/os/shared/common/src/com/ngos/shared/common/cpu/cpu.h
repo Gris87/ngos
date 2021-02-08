@@ -17,9 +17,9 @@ class CPU
 public:
     static NgosStatus init(); // TEST: NO
 
-    static NgosStatus toString(char8 *buffer, bad_uint16 size); // TEST: NO
-    static NgosStatus flagsToString(char8 *buffer, bad_uint16 size); // TEST: NO
-    static NgosStatus bugsToString(char8 *buffer, bad_uint16 size); // TEST: NO
+    static NgosStatus toString(char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus flagsToString(char8 *buffer, u16 size); // TEST: NO
+    static NgosStatus bugsToString(char8 *buffer, u16 size); // TEST: NO
     static NgosStatus check(const char8 **wantedFlag); // TEST: NO
 
     static bool isOutdated(); // TEST: NO
@@ -27,11 +27,11 @@ public:
     static CpuVendor getVendor(); // TEST: NO
     static char8* getModelName(); // TEST: NO
     static CpuFamily getFamily(); // TEST: NO
-    static bad_uint8 getModel(); // TEST: NO
-    static bad_uint8 getStepping(); // TEST: NO
-    static bad_uint32 getMicrocodeRevision(); // TEST: NO
-    static bad_uint32 getNumberOfCores(); // TEST: NO
-    static bad_uint32 getNumberOfThreads(); // TEST: NO
+    static u8 getModel(); // TEST: NO
+    static u8 getStepping(); // TEST: NO
+    static u32 getMicrocodeRevision(); // TEST: NO
+    static u32 getNumberOfCores(); // TEST: NO
+    static u32 getNumberOfThreads(); // TEST: NO
 
     static NgosStatus setFlag(X86Feature flag);
     static NgosStatus clearFlag(X86Feature flag);
@@ -41,10 +41,10 @@ public:
     static NgosStatus clearBug(X86Bug bug);
     static bool hasBug(X86Bug bug);
 
-    static bool isCpuIdLevelSupported(bad_uint32 cpuidLevel);
+    static bool isCpuIdLevelSupported(u32 cpuidLevel);
 
-    static bool hasEFlag(bad_uint64 mask); // TEST: NO
-    static NgosStatus cpuid(bad_uint32 id, bad_uint32 count, bad_uint32 *a, bad_uint32 *b, bad_uint32 *c, bad_uint32 *d); // TEST: NO
+    static bool hasEFlag(u64 mask); // TEST: NO
+    static NgosStatus cpuid(u32 id, u32 count, u32 *a, u32 *b, u32 *c, u32 *d); // TEST: NO
 
 #if NGOS_BUILD_TEST_MODE == OPTION_YES
 public:
@@ -57,7 +57,7 @@ private:
     static NgosStatus doAmdPreprocessing(); // TEST: NO
     static NgosStatus doCommonPreprocessing(); // TEST: NO
     static NgosStatus initScatteredFeatures(); // TEST: NO
-    static NgosStatus setScatteredFeature(X86Feature feature, bad_uint8 registerId, bad_uint8 bit, bad_uint32 level, bad_uint32 count); // TEST: NO
+    static NgosStatus setScatteredFeature(X86Feature feature, u8 registerId, u8 bit, u32 level, u32 count); // TEST: NO
     static NgosStatus initSpeculationControl(); // TEST: NO
     static NgosStatus doPostprocessing(); // TEST: NO
     static NgosStatus doIntelPostprocessing(); // TEST: NO
@@ -72,28 +72,28 @@ private:
     static bool isCpuNoSpecStoreBypass(); // TEST: NO
     static bool isCpuNoL1TF(); // TEST: NO
 
-    static bad_uint32       sVendor[3];
+    static u32       sVendor[3];
     static CpuVendor sCpuVendor;
-    static bad_uint32       sModelName[12];
-    static bad_uint32       sCpuidLevel;
-    static bad_uint32       sExtendedCpuidLevel;
+    static u32       sModelName[12];
+    static u32       sCpuidLevel;
+    static u32       sExtendedCpuidLevel;
     static CpuFamily sFamily;
-    static bad_uint8        sModel;
-    static bad_uint8        sStepping;
-    static bad_uint32       sMicrocodeRevision;
-    static bad_uint32       sNumberOfCores;
-    static bad_uint32       sNumberOfThreads;
-    static bad_uint8        sNumberOfApicIdsPerPackage;
-    static bad_int8        sX86CoreIdBits;
-    static bad_uint16       sCacheLineFlushSize;
-    static bad_uint16       sCacheAlignment;
-    static bad_int32       sCacheMaxRmid;
-    static bad_int32       sCacheOccScale;
-    static bad_uint32       sPower;
-    static bad_uint8        sPhysicalBits;
-    static bad_uint8        sVirtualBits;
-    static bad_uint32       sFlags[(bad_uint64)x86FeatureWord::MAXIMUM];
-    static bad_uint32       sBugs[(bad_uint64)x86BugWord::MAXIMUM];
+    static u8        sModel;
+    static u8        sStepping;
+    static u32       sMicrocodeRevision;
+    static u32       sNumberOfCores;
+    static u32       sNumberOfThreads;
+    static u8        sNumberOfApicIdsPerPackage;
+    static i8        sX86CoreIdBits;
+    static u16       sCacheLineFlushSize;
+    static u16       sCacheAlignment;
+    static i32       sCacheMaxRmid;
+    static i32       sCacheOccScale;
+    static u32       sPower;
+    static u8        sPhysicalBits;
+    static u8        sVirtualBits;
+    static u32       sFlags[(enum_t)x86FeatureWord::MAXIMUM];
+    static u32       sBugs[(enum_t)x86BugWord::MAXIMUM];
 };
 
 

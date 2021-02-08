@@ -8,7 +8,7 @@
 
 
 
-const char8* x86FeaturesNames[(bad_uint64)x86FeatureWord::MAXIMUM * 32];
+const char8* x86FeaturesNames[(enum_t)x86FeatureWord::MAXIMUM * 32];
 
 
 

@@ -10,7 +10,7 @@
 
 
 
-enum class DmiElectricalCurrentProbeLocation: bad_uint8
+enum class DmiElectricalCurrentProbeLocation: u8
 {
     NONE                     = 0,
     OTHER                    = 1,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(DmiElectricalCurrentProbeLocation location)
 
     static char8 res[32];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

@@ -84,7 +84,7 @@ NgosStatus NinePatch::addStretchRangeY(const StretchRange &range)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingLeft(bad_uint16 padding)
+NgosStatus NinePatch::setPaddingLeft(u16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -97,7 +97,7 @@ NgosStatus NinePatch::setPaddingLeft(bad_uint16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingTop(bad_uint16 padding)
+NgosStatus NinePatch::setPaddingTop(u16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -110,7 +110,7 @@ NgosStatus NinePatch::setPaddingTop(bad_uint16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingRight(bad_uint16 padding)
+NgosStatus NinePatch::setPaddingRight(u16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -123,7 +123,7 @@ NgosStatus NinePatch::setPaddingRight(bad_uint16 padding)
     return NgosStatus::OK;
 }
 
-NgosStatus NinePatch::setPaddingBottom(bad_uint16 padding)
+NgosStatus NinePatch::setPaddingBottom(u16 padding)
 {
     COMMON_LT((" | padding = %u", padding));
 
@@ -154,7 +154,7 @@ const List<StretchRange>& NinePatch::getStretchRangesY() const
     return mStretchRangesY;
 }
 
-bad_uint16 NinePatch::getPaddingLeft() const
+u16 NinePatch::getPaddingLeft() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -163,7 +163,7 @@ bad_uint16 NinePatch::getPaddingLeft() const
     return mPaddingLeft;
 }
 
-bad_uint16 NinePatch::getPaddingTop() const
+u16 NinePatch::getPaddingTop() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -172,7 +172,7 @@ bad_uint16 NinePatch::getPaddingTop() const
     return mPaddingTop;
 }
 
-bad_uint16 NinePatch::getPaddingRight() const
+u16 NinePatch::getPaddingRight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -181,7 +181,7 @@ bad_uint16 NinePatch::getPaddingRight() const
     return mPaddingRight;
 }
 
-bad_uint16 NinePatch::getPaddingBottom() const
+u16 NinePatch::getPaddingBottom() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

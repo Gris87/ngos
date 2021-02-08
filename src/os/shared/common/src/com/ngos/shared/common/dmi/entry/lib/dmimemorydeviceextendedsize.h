@@ -10,13 +10,13 @@
 
 struct DmiMemoryDeviceExtendedSize
 {
-    bad_uint64 size()
+    u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
 
 
-        return (bad_uint64)value * MB;
+        return (u64)value * MB;
     }
 
 
@@ -25,11 +25,11 @@ struct DmiMemoryDeviceExtendedSize
     {
         struct
         {
-            bad_uint32 value:      31;
-            bad_uint32 __reserved: 1;
+            u32 value:      31;
+            u32 __reserved: 1;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 } __attribute__((packed));
 

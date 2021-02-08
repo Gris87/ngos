@@ -35,7 +35,7 @@ TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
 
     TEST_CASE("nextDevicePathNode()");
     {
-        bad_uint8 buffer[10];
+        u8 buffer[10];
         memzero(buffer, sizeof(buffer));
 
 
@@ -54,7 +54,7 @@ TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
 
     TEST_CASE("setDevicePathEndNode()");
     {
-        bad_uint8 buffer[10];
+        u8 buffer[10];
         memzero(buffer, sizeof(buffer));
 
 
@@ -85,7 +85,7 @@ TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
 
     TEST_CASE("isDevicePathEndType()");
     {
-        bad_uint8 buffer[10];
+        u8 buffer[10];
         memzero(buffer, sizeof(buffer));
 
 
@@ -108,7 +108,7 @@ TEST_CASES(section0, com_ngos_shared_uefibase_uefi_uefi);
 
     TEST_CASE("getDevicePathSize()");
     {
-        bad_uint8 buffer[25];
+        u8 buffer[25];
         memzero(buffer, sizeof(buffer));
 
 

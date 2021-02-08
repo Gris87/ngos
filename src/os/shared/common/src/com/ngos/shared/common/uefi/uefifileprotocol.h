@@ -15,17 +15,17 @@
 
 struct UefiFileProtocol
 {
-    bad_uint64 revision;
+    u64 revision;
 
     UefiStatus (UEFI_API *open)(UefiFileProtocol *obj, UefiFileProtocol **newHandle, const char16 *fileName, uefi_file_mode_flags openMode, uefi_file_attribute_flags attributes); // TEST: NO
     UefiStatus (UEFI_API *close)(UefiFileProtocol *obj); // TEST: NO
     UefiStatus (UEFI_API *deleteFile)(UefiFileProtocol *obj); // TEST: NO
-    UefiStatus (UEFI_API *read)(UefiFileProtocol *obj, bad_uint64 *bufferSize, void *buffer); // TEST: NO
-    UefiStatus (UEFI_API *write)(UefiFileProtocol *obj, bad_uint64 *bufferSize, void *buffer); // TEST: NO
-    UefiStatus (UEFI_API *getPosition)(UefiFileProtocol *obj, bad_uint64 *position); // TEST: NO
-    UefiStatus (UEFI_API *setPosition)(UefiFileProtocol *obj, bad_uint64 position); // TEST: NO
-    UefiStatus (UEFI_API *getInfo)(UefiFileProtocol *obj, Guid *informationType, bad_uint64 *bufferSize, void *buffer); // TEST: NO
-    UefiStatus (UEFI_API *setInfo)(UefiFileProtocol *obj, Guid *informationType, bad_uint64 bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *read)(UefiFileProtocol *obj, u64 *bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *write)(UefiFileProtocol *obj, u64 *bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *getPosition)(UefiFileProtocol *obj, u64 *position); // TEST: NO
+    UefiStatus (UEFI_API *setPosition)(UefiFileProtocol *obj, u64 position); // TEST: NO
+    UefiStatus (UEFI_API *getInfo)(UefiFileProtocol *obj, Guid *informationType, u64 *bufferSize, void *buffer); // TEST: NO
+    UefiStatus (UEFI_API *setInfo)(UefiFileProtocol *obj, Guid *informationType, u64 bufferSize, void *buffer); // TEST: NO
     UefiStatus (UEFI_API *flush)(UefiFileProtocol *obj); // TEST: NO
     UefiStatus (UEFI_API *openEx)(UefiFileProtocol *obj, UefiFileProtocol **newHandle, const char16 *fileName, uefi_file_mode_flags openMode, uefi_file_attribute_flags attributes, UefiFileIoToken *token); // TEST: NO
     UefiStatus (UEFI_API *readEx)(UefiFileProtocol *obj, UefiFileIoToken *token); // TEST: NO

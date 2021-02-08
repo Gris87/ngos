@@ -17,7 +17,7 @@
 
 struct UefiSimpleFileSystemProtocol
 {
-    bad_uint64 revision;
+    u64 revision;
 
     UefiStatus (UEFI_API *openVolume)(UefiSimpleFileSystemProtocol *obj, UefiFileProtocol **root); // TEST: NO
 };

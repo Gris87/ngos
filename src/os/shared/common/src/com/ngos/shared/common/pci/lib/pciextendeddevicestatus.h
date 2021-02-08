@@ -10,7 +10,7 @@
 
 struct PciExtendedDeviceStatus
 {
-    bad_uint16 designedMaximumMemoryReadByteCountReal()
+    u16 designedMaximumMemoryReadByteCountReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -19,7 +19,7 @@ struct PciExtendedDeviceStatus
         return 512ULL << designedMaximumMemoryReadByteCount;
     }
 
-    bad_uint8 designedMaximumOutstandingSplitTransactionsReal()
+    u8 designedMaximumOutstandingSplitTransactionsReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -38,7 +38,7 @@ struct PciExtendedDeviceStatus
         return designedMaximumOutstandingSplitTransactions + 1;
     }
 
-    bad_uint16 designedMaximumCumulativeReadSizeReal()
+    u16 designedMaximumCumulativeReadSizeReal()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -53,22 +53,22 @@ struct PciExtendedDeviceStatus
     {
         struct
         {
-            bad_uint32 functionNumber:                              3;
-            bad_uint32 deviceNumber:                                5;
-            bad_uint32 busNumber:                                   8;
-            bad_uint32 is64BitDevice:                               1;
-            bad_uint32 support133MHz:                               1;
-            bad_uint32 splitCompletionDiscarded:                    1;
-            bad_uint32 unexpectedSplitCompletion:                   1;
-            bad_uint32 deviceComplexity:                            1; // TODO: Use enum PciExtendedDeviceComplexity
-            bad_uint32 designedMaximumMemoryReadByteCount:          2;
-            bad_uint32 designedMaximumOutstandingSplitTransactions: 3;
-            bad_uint32 designedMaximumCumulativeReadSize:           3;
-            bad_uint32 receivedSplitCompletionErrorMessage:         1;
-            bad_uint32 __reserved:                                  2;
+            u32 functionNumber:                              3;
+            u32 deviceNumber:                                5;
+            u32 busNumber:                                   8;
+            u32 is64BitDevice:                               1;
+            u32 support133MHz:                               1;
+            u32 splitCompletionDiscarded:                    1;
+            u32 unexpectedSplitCompletion:                   1;
+            u32 deviceComplexity:                            1; // TODO: Use enum PciExtendedDeviceComplexity
+            u32 designedMaximumMemoryReadByteCount:          2;
+            u32 designedMaximumOutstandingSplitTransactions: 3;
+            u32 designedMaximumCumulativeReadSize:           3;
+            u32 receivedSplitCompletionErrorMessage:         1;
+            u32 __reserved:                                  2;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

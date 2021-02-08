@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice1069B166: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice1069B166: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10140242 = 0x10140242,
@@ -59,7 +59,7 @@ inline const char8* enumToFullString(PciSubDevice1069B166 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -75,14 +75,14 @@ inline const char8* enumToHumanString(PciSubDevice1069B166 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1069B166::SUBDEVICE_10140242: return "iSeries 2872 DASD IOA";
-        case PciSubDevice1069B166::SUBDEVICE_10140266: return "Dual Channel PCI-X bad_uint320 SCSI Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_10140278: return "Dual Channel PCI-X bad_uint320 SCSI RAID Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_101402D3: return "Dual Channel PCI-X bad_uint320 SCSI Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_101402D4: return "Dual Channel PCI-X bad_uint320 SCSI RAID Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_10690200: return "AcceleRAID 400, Single Channel, PCI-X, bad_uint320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690202: return "AcceleRAID Sapphire, Dual Channel, PCI-X, bad_uint320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690204: return "AcceleRAID 500, Dual Channel, Low-Profile, PCI-X, bad_uint320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690206: return "AcceleRAID 600, Dual Channel, PCI-X, bad_uint320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10140266: return "Dual Channel PCI-X u320 SCSI Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_10140278: return "Dual Channel PCI-X u320 SCSI RAID Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_101402D3: return "Dual Channel PCI-X u320 SCSI Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_101402D4: return "Dual Channel PCI-X u320 SCSI RAID Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_10690200: return "AcceleRAID 400, Single Channel, PCI-X, u320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690202: return "AcceleRAID Sapphire, Dual Channel, PCI-X, u320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690204: return "AcceleRAID 500, Dual Channel, Low-Profile, PCI-X, u320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690206: return "AcceleRAID 600, Dual Channel, PCI-X, u320, SCSI RAID";
 
         default: return "Unknown device";
     }

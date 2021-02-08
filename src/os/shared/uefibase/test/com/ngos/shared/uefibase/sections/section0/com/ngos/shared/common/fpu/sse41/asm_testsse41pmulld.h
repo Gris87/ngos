@@ -14,7 +14,7 @@
 
 
 CPP_EXTERN_C
-void testSse41Pmulld(bad_int32 *a, bad_int32 *b, bad_int32 *c);
+void testSse41Pmulld(i32 *a, i32 *b, i32 *c);
 
 
 

@@ -14,10 +14,10 @@ struct PciExpressDynamicPowerAllocationCapability
 {
     PciExtendedCapabilityHeader                        header;
     PciExpressDynamicPowerAllocationCapabilityRegister capability;
-    bad_uint32                                                latencyIndicator;
+    u32                                                latencyIndicator;
     PciExpressDynamicPowerAllocationStatusRegister     status;
     PciExpressDynamicPowerAllocationControlRegister    control;
-    bad_uint8                                                 substatePowerAllocation[0];
+    u8                                                 substatePowerAllocation[0];
 } __attribute__((packed));
 
 

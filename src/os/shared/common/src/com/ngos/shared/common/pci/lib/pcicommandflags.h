@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_command_flags;
+typedef u16 pci_command_flags;
 
 enum class PciCommandFlag: pci_command_flags
 {

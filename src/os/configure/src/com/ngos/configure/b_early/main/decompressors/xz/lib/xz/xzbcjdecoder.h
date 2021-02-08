@@ -17,7 +17,7 @@
 struct XzBcjDecoder
 {
     // x86 filter state
-    bad_uint32 x86PreviousMask;
+    u32 x86PreviousMask;
 };
 
 

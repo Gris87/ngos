@@ -13,18 +13,18 @@ struct PciExpressRootErrorStatus
     {
         struct
         {
-            bad_uint32 errCorReceived                      : 1;
-            bad_uint32 multipleErrCorReceived              : 1;
-            bad_uint32 errFatalOrNonFatalReceived          : 1;
-            bad_uint32 multipleErrFatalOrNonFatalReceived  : 1;
-            bad_uint32 firstUncorrectableFatal             : 1;
-            bad_uint32 nonFatalErrorMessagesReceived       : 1;
-            bad_uint32 fatalErrorMessagesReceived          : 1;
-            bad_uint32 __reserved                          : 20;
-            bad_uint32 advancedErrorInterruptMessageNumber : 5;
+            u32 errCorReceived                      : 1;
+            u32 multipleErrCorReceived              : 1;
+            u32 errFatalOrNonFatalReceived          : 1;
+            u32 multipleErrFatalOrNonFatalReceived  : 1;
+            u32 firstUncorrectableFatal             : 1;
+            u32 nonFatalErrorMessagesReceived       : 1;
+            u32 fatalErrorMessagesReceived          : 1;
+            u32 __reserved                          : 20;
+            u32 advancedErrorInterruptMessageNumber : 5;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

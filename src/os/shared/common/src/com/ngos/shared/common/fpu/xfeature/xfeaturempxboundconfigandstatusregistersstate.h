@@ -11,9 +11,9 @@
 // user-mode MPX config register and the 64-bit MPX status register
 struct XFeatureMpxBoundConfigAndStatusRegistersState
 {
-    bad_uint64 configRegister;
-    bad_uint64 statusRegister;
-    bad_uint8  __pad[48];
+    u64 configRegister;
+    u64 statusRegister;
+    u8  __pad[48];
 };
 
 

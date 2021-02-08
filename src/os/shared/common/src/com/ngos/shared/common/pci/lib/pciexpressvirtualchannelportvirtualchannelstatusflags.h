@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_express_virtual_channel_port_virtual_channel_status_flags;
+typedef u16 pci_express_virtual_channel_port_virtual_channel_status_flags;
 
 enum class PciExpressVirtualChannelPortVirtualChannelStatusFlag: pci_express_virtual_channel_port_virtual_channel_status_flags
 {

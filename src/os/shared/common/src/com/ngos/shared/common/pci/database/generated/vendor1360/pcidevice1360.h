@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice1360: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice1360: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0101 = 0x0101,
@@ -87,7 +87,7 @@ inline const char8* enumToFullString(PciDevice1360 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -102,7 +102,7 @@ inline const char8* enumToHumanString(PciDevice1360 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice1360::DEVICE_0101: return "PCbad_int32 DCF77 Radio Clock";
+        case PciDevice1360::DEVICE_0101: return "PCi32 DCF77 Radio Clock";
         case PciDevice1360::DEVICE_0102: return "PCI509 DCF77 Radio Clock";
         case PciDevice1360::DEVICE_0103: return "PCI510 DCF77 Radio Clock";
         case PciDevice1360::DEVICE_0104: return "PCI511 DCF77 Radio Clock";

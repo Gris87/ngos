@@ -13,13 +13,13 @@
 
 
 
-extern bad_uint8            earlyIdtHandlerArray[IDT_EXCEPTIONS_COUNT][EARLY_IDT_HANDLER_SIZE]; // earlyIdtHandlerArray declared in main.S file
+extern u8            earlyIdtHandlerArray[IDT_EXCEPTIONS_COUNT][EARLY_IDT_HANDLER_SIZE]; // earlyIdtHandlerArray declared in main.S file
 extern IdtRegister   earlyIdtRegister;                                                   // earlyIdtRegister declared in main.S file
 extern IdtDescriptor idt[IDT_EXCEPTIONS_COUNT];                                          // idt declared in main.S file
 
 
 
-NgosStatus setupIdtInterruptGate(bad_uint8 vectorNumber, void *address)
+NgosStatus setupIdtInterruptGate(u8 vectorNumber, void *address)
 {
     EARLY_LT((" | vectorNumber = %u, address = 0x%p", vectorNumber, address));
 
@@ -31,11 +31,11 @@ NgosStatus setupIdtInterruptGate(bad_uint8 vectorNumber, void *address)
     IdtDescriptor &idtEntry = idt[vectorNumber];
 
     idtEntry.segment         = GDT_KERNEL_CS;
-    idtEntry.offsetLow       = (bad_uint64)address & 0xFFFF;
-    idtEntry.offsetMiddle    = ((bad_uint64)address >> 16) & 0xFFFF;
-    idtEntry.offsetHigh      = (bad_uint64)address >> 32;
+    idtEntry.offsetLow       = (u64)address & 0xFFFF;
+    idtEntry.offsetMiddle    = ((u64)address >> 16) & 0xFFFF;
+    idtEntry.offsetHigh      = (u64)address >> 32;
     idtEntry.ist             = IDT_INTERRUPT_STACK_TABLE_NOT_USED;
-    idtEntry.type.gateType   = (bad_uint8)IdtGateType::INTERRUPT;
+    idtEntry.type.gateType   = (u8)IdtGateType::INTERRUPT;
     idtEntry.type.dpl        = IDT_DESCRIPTOR_PRIVELEGE_LEVEL_0_HIGHEST;
     idtEntry.type.p          = IDT_ENTRY_PRESENT_YES;
     idtEntry.type.__reserved = 0;
@@ -52,7 +52,7 @@ NgosStatus setupIdtDebugTrap()
 
 
 
-    bad_uint64 address = (bad_uint64)&earlyIdtDebugTrap;
+    u64 address = (u64)&earlyIdtDebugTrap;
 
 
 
@@ -73,7 +73,7 @@ NgosStatus setupIdtBreakpointTrap()
 
 
 
-    bad_uint64 address = (bad_uint64)&earlyIdtBreakpointTrap;
+    u64 address = (u64)&earlyIdtBreakpointTrap;
 
 
 
@@ -115,7 +115,7 @@ NgosStatus setupIdtHandlers()
 
 
 
-    for (bad_int64 i = 0; i < IDT_EXCEPTIONS_COUNT; ++i)
+    for (i64 i = 0; i < IDT_EXCEPTIONS_COUNT; ++i)
     {
         EARLY_ASSERT_EXECUTION(setupIdtInterruptGate(i, earlyIdtHandlerArray[i]), NgosStatus::ASSERTION);
     }

@@ -71,7 +71,7 @@ NgosStatus MemoryManager::reserve(address_t start, u64 size)
     return addRange(&sMemoryBlock.reserved, start, size, FLAGS(MemoryBlockRegionFlag::NONE), MAX_NUMNODES);
 }
 
-NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, bad_uint64 index, bad_uint64 start, bad_uint64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
+NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, u64 index, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
     COMMON_LT((" | type = 0x%p, index = %u, start = 0x%016llX, size = 0x%016llX, flags = ..., nodeId = 0x%04X", type, index, start, size, nodeId));
 
@@ -103,7 +103,7 @@ NgosStatus MemoryManager::insertRegion(MemoryBlockType *type, bad_uint64 index, 
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, bad_uint64 index)
+NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, u64 index)
 {
     COMMON_LT((" | type = 0x%p, index = %u", type, index));
 
@@ -128,7 +128,7 @@ NgosStatus MemoryManager::removeRegion(MemoryBlockType *type, bad_uint64 index)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, bad_uint64 index, bad_uint64 count)
+NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, u64 index, u64 count)
 {
     COMMON_LT((" | type = 0x%p, index = %u, count = %u", type, index, count));
 
@@ -139,7 +139,7 @@ NgosStatus MemoryManager::removeRegions(MemoryBlockType *type, bad_uint64 index,
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)count; ++i)
+    for (i64 i = 0; i < (i64)count; ++i)
     {
         type->totalSize -= type->regions[index + i].size;
     }
@@ -165,9 +165,9 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
 
 
 
-    bad_int64 i = 1;
+    i64 i = 1;
 
-    while (i < (bad_int64)type->count)
+    while (i < (i64)type->count)
     {
         MemoryBlockRegion &previousRegion = type->regions[i - 1];
         MemoryBlockRegion &currentRegion  = type->regions[i];
@@ -201,7 +201,7 @@ NgosStatus MemoryManager::mergeRegions(MemoryBlockType *type)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryManager::addRange(MemoryBlockType *type, bad_uint64 start, bad_uint64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
+NgosStatus MemoryManager::addRange(MemoryBlockType *type, u64 start, u64 size, const MemoryBlockRegionFlags &flags, memory_block_region_node_id nodeId)
 {
     COMMON_LT((" | type = 0x%p, start = 0x%016llX, size = 0x%016llX, flags = ..., nodeId = 0x%04X", type, start, size, nodeId));
 
@@ -235,10 +235,10 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, bad_uint64 start, bad_
 
 
 
-    bad_uint64 end = start + size;
+    u64 end = start + size;
 
-    bad_uint64 left  = 0;
-    bad_uint64 right = type->count;
+    u64 left  = 0;
+    u64 right = type->count;
 
 
 
@@ -287,7 +287,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, bad_uint64 start, bad_
 
     while (left < right)
     {
-        bad_uint64 middle = (left + right) / 2;
+        u64 middle = (left + right) / 2;
 
         MemoryBlockRegion &region = type->regions[middle];
 
@@ -312,7 +312,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, bad_uint64 start, bad_
     COMMON_TEST_ASSERT(left < type->count, NgosStatus::ASSERTION);
 
     MemoryBlockRegion &region    = type->regions[left];
-    bad_uint64                regionEnd = region.end();
+    u64                regionEnd = region.end();
 
 
 
@@ -434,7 +434,7 @@ NgosStatus MemoryManager::addRange(MemoryBlockType *type, bad_uint64 start, bad_
     start = MIN(start, region.start);
     end   = MAX(end,   regionEnd);
 
-    bad_uint64 newSize     =  end - start;
+    u64 newSize     =  end - start;
     type->totalSize += newSize - region.size;
 
     region.start = start;

@@ -238,25 +238,25 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                                 if (enumFlagType == expectedEnumType)
                                 {
-                                    if (enumStandardType == "bad_uint8" || enumStandardType == "quint8")
+                                    if (enumStandardType == "u8" || enumStandardType == "quint8")
                                     {
                                         enumTypeFormat       = "0x%02X";
                                         enumTypeFormatLength = 4;
                                     }
                                     else
-                                    if (enumStandardType == "bad_uint16" || enumStandardType == "quint16")
+                                    if (enumStandardType == "u16" || enumStandardType == "quint16")
                                     {
                                         enumTypeFormat       = "0x%04X";
                                         enumTypeFormatLength = 6;
                                     }
                                     else
-                                    if (enumStandardType == "bad_uint32" || enumStandardType == "quint32")
+                                    if (enumStandardType == "u32" || enumStandardType == "quint32")
                                     {
                                         enumTypeFormat       = "0x%08X";
                                         enumTypeFormatLength = 10;
                                     }
                                     else
-                                    if (enumStandardType == "bad_uint64" || enumStandardType == "quint64")
+                                    if (enumStandardType == "u64" || enumStandardType == "quint64")
                                     {
                                         enumTypeFormat       = "0x%016llX";
                                         enumTypeFormatLength = 18;
@@ -415,25 +415,25 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         QString enumTypeFormat       = "0x%016llX";
                         quint8  enumTypeFormatLength = 18;
 
-                        if (enumType == "bad_uint8" || enumType == "quint8")
+                        if (enumType == "u8" || enumType == "quint8")
                         {
                             enumTypeFormat       = "0x%02X";
                             enumTypeFormatLength = 4;
                         }
                         else
-                        if (enumType == "bad_uint16" || enumType == "quint16")
+                        if (enumType == "u16" || enumType == "quint16")
                         {
                             enumTypeFormat       = "0x%04X";
                             enumTypeFormatLength = 6;
                         }
                         else
-                        if (enumType == "bad_uint32" || enumType == "quint32")
+                        if (enumType == "u32" || enumType == "quint32")
                         {
                             enumTypeFormat       = "0x%08X";
                             enumTypeFormatLength = 10;
                         }
                         else
-                        if (enumType == "bad_uint64" || enumType == "quint64")
+                        if (enumType == "u64" || enumType == "quint64")
                         {
                             enumTypeFormat       = "0x%016llX";
                             enumTypeFormatLength = 18;

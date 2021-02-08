@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressVirtualChannelArbitrationSelect: bad_uint8
+enum class PciExpressVirtualChannelArbitrationSelect: u8
 {
     NONE                                             = 0,
     WEIGHTED_ROUND_ROBIN_ARBITRATION_WITH_32_PHASES  = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressVirtualChannelArbitrationSelect s
 
     static char8 res[56];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)select, enumToString(select));
+    sprintf(res, "0x%02X (%s)", (u8)select, enumToString(select));
 
     return res;
 }

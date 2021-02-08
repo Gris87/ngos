@@ -8,7 +8,7 @@
 
 
 
-enum class PciPowerManagementDataScale: bad_uint8
+enum class PciPowerManagementDataScale: u8
 {
     UNKNOWN = 0,
     _0_1X   = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciPowerManagementDataScale scale) // TEST:
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)scale, enumToString(scale));
+    sprintf(res, "0x%02X (%s)", (u8)scale, enumToString(scale));
 
     return res;
 }

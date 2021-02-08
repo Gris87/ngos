@@ -27,7 +27,7 @@ void TestResults::testPassed()
     ++mPassed;
 }
 
-void TestResults::testFailed(const char8 *fileName, bad_uint64 line, const char8 *description)
+void TestResults::testFailed(const char8 *fileName, u64 line, const char8 *description)
 {
     UEFI_LT((" | fileName = 0x%p, line = %u, description = 0x%p", fileName, line, description));
 

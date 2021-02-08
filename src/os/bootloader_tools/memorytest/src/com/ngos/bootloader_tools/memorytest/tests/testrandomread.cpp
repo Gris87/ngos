@@ -33,18 +33,18 @@ void UEFI_API testRandomReadProcedure(void *buffer)
 
 
 
-    bad_uint64 regionStart = test->getRegionStart();
-    bad_uint64 regionEnd   = test->getRegionEnd();
-    bad_int64 testSize    = test->getTestSize();
-    bad_uint64 rand;
+    u64 regionStart = test->getRegionStart();
+    u64 regionEnd   = test->getRegionEnd();
+    i64 testSize    = test->getTestSize();
+    u64 rand;
 
 
 
-    bad_uint64 startTime = rdtsc();
+    u64 startTime = rdtsc();
 
     if (CPU::hasFlag(X86Feature::RDRAND))
     {
-        for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 
@@ -56,22 +56,22 @@ void UEFI_API testRandomReadProcedure(void *buffer)
             );
             // Ignore CppAlignmentVerifier [END]
 
-            readMemoryBlock(nullptr, (bad_uint8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            readMemoryBlock(nullptr, (u8 *)(regionStart + (rand * TEST_BLOCK_SIZE) % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
     else
     {
-        for (bad_int64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
+        for (i64 i = 0; i < testSize && !MemoryTestGUI::isTerminated(); i += TEST_BLOCK_SIZE)
         {
             test->setProgress(i);
 
             rand = i * 7;
 
-            readMemoryBlock(nullptr, (bad_uint8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
+            readMemoryBlock(nullptr, (u8 *)(regionStart + rand % (regionEnd - regionStart - TEST_BLOCK_SIZE)));
         }
     }
 
-    bad_uint64 endTime = rdtsc();
+    u64 endTime = rdtsc();
 
 
 

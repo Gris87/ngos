@@ -840,7 +840,7 @@
 
 
 
-enum class PciDevice8086: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice8086: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0007 = 0x0007,
@@ -8637,7 +8637,7 @@ inline const char8* enumToFullString(PciDevice8086 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -9357,7 +9357,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_1136: return "Thunderbolt 4 Bridge [Maple Ridge 4C 2020]";
         case PciDevice8086::DEVICE_1137: return "Thunderbolt 4 NHI [Maple Ridge 4C 2020]";
         case PciDevice8086::DEVICE_1138: return "Thunderbolt 4 USB Controller [Maple Ridge 4C 2020]";
-        case PciDevice8086::DEVICE_1161: return "82806AA PCbad_int64 Hub Advanced Programmable Interrupt Controller";
+        case PciDevice8086::DEVICE_1161: return "82806AA PCi64 Hub Advanced Programmable Interrupt Controller";
         case PciDevice8086::DEVICE_1162: return "Xscale 80200 Big Endian Companion Chip";
         case PciDevice8086::DEVICE_1190: return "Merrifield SD/SDIO/eMMC Controller";
         case PciDevice8086::DEVICE_1191: return "Merrifield Serial IO HSUART Controller";
@@ -9403,8 +9403,8 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
         case PciDevice8086::DEVICE_124E: return "Ethernet Connection E823-L/X557-AT 10GBASE-T";
         case PciDevice8086::DEVICE_124F: return "Ethernet Connection E823-L 1GbE";
         case PciDevice8086::DEVICE_1250: return "430HX - 82439HX TXC [Triton II]";
-        case PciDevice8086::DEVICE_1360: return "82806AA PCbad_int64 Hub PCI Bridge";
-        case PciDevice8086::DEVICE_1361: return "82806AA PCbad_int64 Hub Controller (HRes)";
+        case PciDevice8086::DEVICE_1360: return "82806AA PCi64 Hub PCI Bridge";
+        case PciDevice8086::DEVICE_1361: return "82806AA PCi64 Hub Controller (HRes)";
         case PciDevice8086::DEVICE_1460: return "82870P2 P64H2 Hub PCI Bridge";
         case PciDevice8086::DEVICE_1461: return "82870P2 P64H2 I/OxAPIC";
         case PciDevice8086::DEVICE_1462: return "82870P2 P64H2 Hot Plug Controller";
@@ -12542,7 +12542,7 @@ inline const char8* enumToHumanString(PciDevice8086 device) // TEST: NO
 
 
 
-inline const char8* enumToHumanString(PciDevice8086 device, bad_uint16 subsystemVendorID, bad_uint16 subDeviceId) // TEST: NO
+inline const char8* enumToHumanString(PciDevice8086 device, u16 subsystemVendorID, u16 subDeviceId) // TEST: NO
 {
     // COMMON_LT((" | device = %u, subsystemVendorID = %u, subDeviceId = %u", device, subsystemVendorID, subDeviceId)); // Commented to avoid bad looking logs
 

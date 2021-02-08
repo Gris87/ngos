@@ -23,9 +23,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
     {
         if (CPU::hasFlag(X86Feature::AVX2))
         {
-            bad_uint16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
-            bad_uint16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
-            bad_uint16 c[16] __attribute__((aligned(32)));
+            u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
+            u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
+            u16 c[16] __attribute__((aligned(32)));
 
             testAvx2Vphaddw(a, b, c);
 
@@ -93,9 +93,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
     {
         if (CPU::hasFlag(X86Feature::AVX2))
         {
-            bad_uint32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
-            bad_uint32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };
-            bad_uint32 c[8] __attribute__((aligned(32)));
+            u32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
+            u32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };
+            u32 c[8] __attribute__((aligned(32)));
 
             testAvx2Vphaddd(a, b, c);
 
@@ -139,9 +139,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
     {
         if (CPU::hasFlag(X86Feature::AVX2))
         {
-            bad_uint16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
-            bad_uint16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
-            bad_uint16 c[16] __attribute__((aligned(32)));
+            u16 a[16] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97, 19, 34, 27, 18, 74, 85, 36, 39 };
+            u16 b[16] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44, 67, 39, 26, 17, 34, 24, 86, 26 };
+            u16 c[16] __attribute__((aligned(32)));
 
             testAvx2Vphsubw(a, b, c);
 
@@ -209,9 +209,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_avx2_avx2);
     {
         if (CPU::hasFlag(X86Feature::AVX2))
         {
-            bad_uint32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
-            bad_uint32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };
-            bad_uint32 c[8] __attribute__((aligned(32)));
+            u32 a[8] __attribute__((aligned(32))) = { 10, 54, 34, 97, 31, 51, 33, 97 };
+            u32 b[8] __attribute__((aligned(32))) = { 91, 37, 21, 49, 37, 21, 37, 44 };
+            u32 c[8] __attribute__((aligned(32)));
 
             testAvx2Vphsubd(a, b, c);
 

@@ -10,7 +10,7 @@
 
 
 
-enum class CpuHotplugState: bad_uint8 // Ignore CppEnumVerifier
+enum class CpuHotplugState: u8 // Ignore CppEnumVerifier
 {
     OFFLINE,
     BP_PREPARE_DYNAMIC,
@@ -34,12 +34,12 @@ inline const char8* enumToString(CpuHotplugState state) // TEST: NO
 
 
     if (
-        (bad_uint64)state > (bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC
+        (u64)state > (u64)CpuHotplugState::BP_PREPARE_DYNAMIC
         &&
-        (bad_uint64)state < (bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC_END
+        (u64)state < (u64)CpuHotplugState::BP_PREPARE_DYNAMIC_END
        )
     {
-        sprintf(res, "BP_PREPARE_DYNAMIC + %u", (bad_uint64)state - (bad_uint64)CpuHotplugState::BP_PREPARE_DYNAMIC);
+        sprintf(res, "BP_PREPARE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::BP_PREPARE_DYNAMIC);
 
         return res;
     }
@@ -47,12 +47,12 @@ inline const char8* enumToString(CpuHotplugState state) // TEST: NO
 
 
     if (
-        (bad_uint64)state > (bad_uint64)CpuHotplugState::AP_ONLINE_DYNAMIC
+        (u64)state > (u64)CpuHotplugState::AP_ONLINE_DYNAMIC
         &&
-        (bad_uint64)state < (bad_uint64)CpuHotplugState::AP_ONLINE_DYNAMIC_END
+        (u64)state < (u64)CpuHotplugState::AP_ONLINE_DYNAMIC_END
        )
     {
-        sprintf(res, "AP_ONLINE_DYNAMIC + %u", (bad_uint64)state - (bad_uint64)CpuHotplugState::AP_ONLINE_DYNAMIC);
+        sprintf(res, "AP_ONLINE_DYNAMIC + %u", (u64)state - (u64)CpuHotplugState::AP_ONLINE_DYNAMIC);
 
         return res;
     }
@@ -83,7 +83,7 @@ inline const char8* enumToFullString(CpuHotplugState type) // TEST: NO
 
     static char8 res[31];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

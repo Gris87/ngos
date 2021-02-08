@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice808624C5: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice808624C5: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_0E1100B8 = 0x0E1100B8,
@@ -93,7 +93,7 @@ inline const char8* enumToFullString(PciSubDevice808624C5 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -132,7 +132,7 @@ inline const char8* enumToHumanString(PciSubDevice808624C5 subDevice) // TEST: N
         case PciSubDevice808624C5::SUBDEVICE_144DC00C: return "P30/P35 notebook";
         case PciSubDevice808624C5::SUBDEVICE_1458A002: return "GA-8PE667 Ultra";
         case PciSubDevice808624C5::SUBDEVICE_14625800: return "845PE Max (MS-6580)";
-        case PciSubDevice808624C5::SUBDEVICE_17341005: return "D1451 (SCENIC N300, bad_int845GV) Sigmatel STAC9750T";
+        case PciSubDevice808624C5::SUBDEVICE_17341005: return "D1451 (SCENIC N300, i845GV) Sigmatel STAC9750T";
         case PciSubDevice808624C5::SUBDEVICE_17341055: return "Amilo M1420";
 
         default: return "Unknown device";

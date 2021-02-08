@@ -11,27 +11,27 @@
 
 struct PciBridgeControlRegister
 {
-    bad_uint32                   baseAddressRegisters[2];
-    bad_uint8                    primaryBus;
-    bad_uint8                    secondaryBus;
-    bad_uint8                    subordinateBus;
-    bad_uint8                    secondaryLatencyTimer;
-    bad_uint8                    ioBase;
-    bad_uint8                    ioLimit;
+    u32                   baseAddressRegisters[2];
+    u8                    primaryBus;
+    u8                    secondaryBus;
+    u8                    subordinateBus;
+    u8                    secondaryLatencyTimer;
+    u8                    ioBase;
+    u8                    ioLimit;
     PciStatus             secondaryStatus;
-    bad_uint16                   memoryBase;
-    bad_uint16                   memoryLimit;
-    bad_uint16                   prefetchableMemoryBase;
-    bad_uint16                   prefetchableMemoryLimit;
-    bad_uint32                   prefetchableBaseUpper32;
-    bad_uint32                   prefetchableLimitUpper32;
-    bad_uint16                   ioBaseUpper16;
-    bad_uint16                   ioLimitUpper16;
-    bad_uint8                    capabilitiesPointer;
-    bad_uint8                    __reserved[3];
-    bad_uint32                   expansionRomBaseAddress;
-    bad_uint8                    interruptLine;
-    bad_uint8                    interruptPin;
+    u16                   memoryBase;
+    u16                   memoryLimit;
+    u16                   prefetchableMemoryBase;
+    u16                   prefetchableMemoryLimit;
+    u32                   prefetchableBaseUpper32;
+    u32                   prefetchableLimitUpper32;
+    u16                   ioBaseUpper16;
+    u16                   ioLimitUpper16;
+    u8                    capabilitiesPointer;
+    u8                    __reserved[3];
+    u32                   expansionRomBaseAddress;
+    u8                    interruptLine;
+    u8                    interruptPin;
     PciBridgeControlFlags bridgeControl;
 };
 

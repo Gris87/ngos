@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice900500C0: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice900500C0: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_0E11F620 = 0x0E11F620,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciSubDevice900500C0 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice900500C0 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice900500C0::SUBDEVICE_0E11F620: return "Compaq 64-Bit/66MHz Dual Channel Wide Ultra3 SCSI Adapter";
-        case PciSubDevice900500C0::SUBDEVICE_9005F620: return "AHA-3960D bad_uint160/m";
+        case PciSubDevice900500C0::SUBDEVICE_9005F620: return "AHA-3960D u160/m";
 
         default: return "Unknown device";
     }

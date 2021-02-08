@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressVirtualChannelReferenceClock: bad_uint8
+enum class PciExpressVirtualChannelReferenceClock: u8
 {
     _100_NANOSECONDS = 0
 };
@@ -39,7 +39,7 @@ inline const char8* enumToFullString(PciExpressVirtualChannelReferenceClock cloc
 
     static char8 res[23];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)clock, enumToString(clock));
+    sprintf(res, "0x%02X (%s)", (u8)clock, enumToString(clock));
 
     return res;
 }

@@ -13,13 +13,13 @@ struct PciBuiltInSelfTest
     {
         struct
         {
-            bad_uint8 completionCode: 4;
-            bad_uint8 __reserved:     2;
-            bad_uint8 startBist:      1;
-            bad_uint8 capable:        1;
+            u8 completionCode: 4;
+            u8 __reserved:     2;
+            u8 startBist:      1;
+            u8 capable:        1;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 };
 

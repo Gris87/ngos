@@ -13,11 +13,11 @@ struct DmiMemoryDeviceAttributes
     {
         struct
         {
-            bad_uint8 rank:       4;
-            bad_uint8 __reserved: 4;
+            u8 rank:       4;
+            u8 __reserved: 4;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

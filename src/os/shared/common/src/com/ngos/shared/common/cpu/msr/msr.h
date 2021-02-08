@@ -14,10 +14,10 @@
 class MSR
 {
 public:
-    static NgosStatus setBit(bad_uint32 msr, bad_uint8 bit); // TEST: NO
-    static NgosStatus clearBit(bad_uint32 msr, bad_uint8 bit); // TEST: NO
+    static NgosStatus setBit(u32 msr, u8 bit); // TEST: NO
+    static NgosStatus clearBit(u32 msr, u8 bit); // TEST: NO
 
-    static inline bool testBit(bad_uint32 msr, bad_uint8 bit) // TEST: NO
+    static inline bool testBit(u32 msr, u8 bit) // TEST: NO
     {
         COMMON_LT((" | msr = %u, bit = %u", msr, bit));
 
@@ -29,7 +29,7 @@ public:
         return read(msr) & (1ULL << bit);
     }
 
-    static inline bad_uint64 read(bad_uint32 msr) // TEST: NO
+    static inline u64 read(u32 msr) // TEST: NO
     {
         COMMON_LT((" | msr = %u", msr));
 
@@ -40,7 +40,7 @@ public:
         return rdmsr(msr);
     }
 
-    static inline NgosStatus write(bad_uint32 msr, bad_uint64 value) // TEST: NO
+    static inline NgosStatus write(u32 msr, u64 value) // TEST: NO
     {
         COMMON_LT((" | msr = %u, value = %u", msr, value));
 
@@ -56,7 +56,7 @@ public:
 #else
 private:
 #endif
-    static NgosStatus setMsrBit(bad_uint32 msr, bad_uint8 bit, bool enabled); // TEST: NO
+    static NgosStatus setMsrBit(u32 msr, u8 bit, bool enabled); // TEST: NO
 };
 
 

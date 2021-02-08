@@ -17,9 +17,9 @@ struct PciExpressMulticastCapability
     PciExpressMulticastCapabilityRegister         capability;
     PciExpressMulticastControlRegister            control;
     PciExpressMulticastBaseAddressRegister        mcBaseAddress;
-    bad_uint64                                           mcReceive;
-    bad_uint64                                           mcBlockAll;
-    bad_uint64                                           mcBlockUntranslated;
+    u64                                           mcReceive;
+    u64                                           mcBlockAll;
+    u64                                           mcBlockUntranslated;
     PciExpressMulticastOverlayBaseAddressRegister mcOverlayBaseAddress;
 } __attribute__((packed));
 

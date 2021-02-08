@@ -8,7 +8,7 @@
 
 
 
-enum class PciExtendedBridgeSecondaryClockFrequency: bad_uint8
+enum class PciExtendedBridgeSecondaryClockFrequency: u8
 {
     CONVENTIONAL_MODE = 0,
     _66_MHZ           = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExtendedBridgeSecondaryClockFrequency fr
 
     static char8 res[25];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)frequency, enumToString(frequency));
+    sprintf(res, "0x%02X (%s)", (u8)frequency, enumToString(frequency));
 
     return res;
 }

@@ -9,7 +9,7 @@
 
 struct GdtRegister
 {
-    bad_uint16   size;
+    u16   size;
     void *address;
 } __attribute__((packed));
 

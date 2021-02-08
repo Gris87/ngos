@@ -17,7 +17,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 {
     TEST_CASE("ArrayList()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
         TEST_ASSERT_EQUALS(temp.mSize,     0);
@@ -29,7 +29,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("append()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
         TEST_ASSERT_EQUALS(temp.mSize,     0);
@@ -111,7 +111,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("prepend()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
         TEST_ASSERT_EQUALS(temp.mSize,     0);
@@ -193,7 +193,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("insert()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
         TEST_ASSERT_EQUALS(temp.mSize,     0);
@@ -288,7 +288,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
 
 
-        // TODO: Need to do when changed to bad_int64
+        // TODO: Need to do when changed to i64
         // TEST_ASSERT_EQUALS(temp.insert(-1, 0), NgosStatus::OK);
 
 
@@ -311,7 +311,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("removeAt()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -431,7 +431,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("clear()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -461,7 +461,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("sort()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -489,7 +489,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
 
 
-        TEST_ASSERT_EQUALS(temp.sort([](const bad_uint8 &first, const bad_uint8 &second)
+        TEST_ASSERT_EQUALS(temp.sort([](const u8 &first, const u8 &second)
         {
             UEFI_LT((" | first = %u, second = %u", first, second));
 
@@ -512,7 +512,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("indexOf()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
 
 
@@ -569,7 +569,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("first()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
 
 
@@ -627,7 +627,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("last()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
 
 
@@ -685,7 +685,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("at()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -711,7 +711,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("operator[]()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.append(5), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.append(9), NgosStatus::OK);
@@ -751,7 +751,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("getSize()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.getSize(), 0);
 
@@ -776,7 +776,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("isEmpty()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.isEmpty(), true);
 
@@ -794,7 +794,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("setCapacity()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
         TEST_ASSERT_EQUALS(temp.mSize,     0);
@@ -819,7 +819,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
 
         temp.mSize    = 4;
-        bad_uint8 *oldBuffer = temp.mValues;
+        u8 *oldBuffer = temp.mValues;
 
 
 
@@ -853,7 +853,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("getCapacity()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.getCapacity(), 0);
 
@@ -878,7 +878,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("extendCapacity()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
         TEST_ASSERT_EQUALS(temp.mCapacity, 0);
 
@@ -904,9 +904,9 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
     TEST_CASE("quickSort()");
     {
-        ArrayList<bad_uint8> temp;
+        ArrayList<u8> temp;
 
-        for (bad_int64 i = 0; i < 32; ++i)
+        for (i64 i = 0; i < 32; ++i)
         {
             TEST_ASSERT_EQUALS(temp.append(i * 169), NgosStatus::OK);
         }
@@ -985,7 +985,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
 
 
-        TEST_ASSERT_EQUALS(temp.quickSort(7, 25, [](const bad_uint8 &first, const bad_uint8 &second)
+        TEST_ASSERT_EQUALS(temp.quickSort(7, 25, [](const u8 &first, const u8 &second)
         {
             UEFI_LT((" | first = %u, second = %u", first, second));
 

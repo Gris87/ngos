@@ -10,20 +10,20 @@
 
 struct ElfRela
 {
-    bad_uint64 offset;
+    u64 offset;
 
     union
     {
         struct
         {
             ElfRelaType type;
-            bad_uint32         symbol;
+            u32         symbol;
         };
 
-        bad_uint64 info;
+        u64 info;
     };
 
-    bad_int64 addend;
+    i64 addend;
 };
 
 

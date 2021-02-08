@@ -15,7 +15,7 @@
 
 
 
-enum class Lzma2Sequence: bad_uint8
+enum class Lzma2Sequence: u8
 {
     SEQ_CONTROL        = 0,
     SEQ_UNCOMPRESSED_1 = 1,
@@ -62,7 +62,7 @@ inline const char8* enumToFullString(Lzma2Sequence sequence) // TEST: NO
 
     static char8 res[26];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)sequence, enumToString(sequence));
+    sprintf(res, "0x%02X (%s)", (u8)sequence, enumToString(sequence));
 
     return res;
 }

@@ -13,22 +13,22 @@ struct PciStatus
     {
         struct
         {
-            bad_uint16 __reserved:            3;
-            bad_uint16 interruptStatus:       1;
-            bad_uint16 capabilitiesList:      1;
-            bad_uint16 support64MHz:          1;
-            bad_uint16 __reserved2:           1;
-            bad_uint16 fastBackToBackCapable: 1;
-            bad_uint16 masterDataParityError: 1;
-            bad_uint16 deviceSelectTiming:    2; // TODO: Use enum PciDeviceSelectTiming
-            bad_uint16 signaledTargetAbort:   1;
-            bad_uint16 receivedTargetAbort:   1;
-            bad_uint16 receivedMasterAbort:   1;
-            bad_uint16 signaledSystemError:   1;
-            bad_uint16 detectedParityError:   1;
+            u16 __reserved:            3;
+            u16 interruptStatus:       1;
+            u16 capabilitiesList:      1;
+            u16 support64MHz:          1;
+            u16 __reserved2:           1;
+            u16 fastBackToBackCapable: 1;
+            u16 masterDataParityError: 1;
+            u16 deviceSelectTiming:    2; // TODO: Use enum PciDeviceSelectTiming
+            u16 signaledTargetAbort:   1;
+            u16 receivedTargetAbort:   1;
+            u16 receivedMasterAbort:   1;
+            u16 signaledSystemError:   1;
+            u16 detectedParityError:   1;
         };
 
-        bad_uint16 value16;
+        u16 value16;
     };
 };
 

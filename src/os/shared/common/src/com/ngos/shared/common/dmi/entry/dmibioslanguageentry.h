@@ -12,9 +12,9 @@
 struct DmiBiosLanguageEntry
 {
     DmiEntryHeader       header;
-    bad_uint8                   installableLanguages;
+    u8                   installableLanguages;
     DmiBiosLanguageFlags flags;
-    bad_uint8                   __reserved[15];
+    u8                   __reserved[15];
     DmiStringId          currentLanguage;
 } __attribute__((packed));
 

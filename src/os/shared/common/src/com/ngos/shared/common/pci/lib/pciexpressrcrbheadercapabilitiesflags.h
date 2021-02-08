@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 pci_express_rcrb_header_capabilities_flags;
+typedef u32 pci_express_rcrb_header_capabilities_flags;
 
 enum class PciExpressRcrbHeaderCapabilitiesFlag: pci_express_rcrb_header_capabilities_flags
 {

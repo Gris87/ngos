@@ -17,7 +17,7 @@ TEST_CASES(section0, com_ngos_shared_common_checksum_lib_md5hash);
 {
     TEST_CASE("Md5Hash()");
     {
-        bad_uint8 bytes[16] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112, 113, 114, 115, 116 };
+        u8 bytes[16] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 110, 111, 112, 113, 114, 115, 116 };
 
         Md5Hash temp1;
         Md5Hash temp2(0x0102030405060708, 0x090A0B0C0D0E0F00);

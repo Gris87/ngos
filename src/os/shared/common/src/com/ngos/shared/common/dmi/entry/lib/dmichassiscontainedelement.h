@@ -10,8 +10,8 @@
 struct DmiChassisContainedElement
 {
     DmiChassisContainedElementType type;
-    bad_uint8                             minimum;
-    bad_uint8                             maximum;
+    u8                             minimum;
+    u8                             maximum;
 } __attribute__((packed));
 
 

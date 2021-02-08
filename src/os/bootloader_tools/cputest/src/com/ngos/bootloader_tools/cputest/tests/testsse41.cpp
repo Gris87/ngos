@@ -33,14 +33,14 @@ void UEFI_API testSse41Procedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::XMM4_1))
     {
-        bad_int8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
-        bad_int8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
+        i8 a[16] = { 10, 64, 32, -46, -34, 97, -13, 64, 31, 97, -43, 37, 67, -24, 95, 32 };
+        i8 b[16] = { 31, 13, 92, -16, -54, 27, -73, 34, 41, 87, -63, 27, 47, -94, 35, 62 };
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             // Ignore CppAlignmentVerifier [BEGIN]
             asm volatile(
@@ -181,7 +181,7 @@ void UEFI_API testSse41Procedure(void *buffer)
             // Ignore CppAlignmentVerifier [END]
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 

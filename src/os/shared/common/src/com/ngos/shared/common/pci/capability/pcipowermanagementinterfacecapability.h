@@ -16,7 +16,7 @@ struct PciPowerManagementInterfaceCapability
     PciPowerManagementCapabilities            capabilities;
     PciPowerManagementControlStatus           controlStatus;
     PciPowerManagementBridgeSupportExtensions bridgeExtention;
-    bad_uint8                                        data;
+    u8                                        data;
 };
 
 

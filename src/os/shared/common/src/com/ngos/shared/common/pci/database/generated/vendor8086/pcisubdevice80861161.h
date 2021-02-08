@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice80861161: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice80861161: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_80861161 = 0x80861161
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciSubDevice80861161 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice80861161 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice80861161::SUBDEVICE_80861161: return "82806AA PCbad_int64 Hub APIC";
+        case PciSubDevice80861161::SUBDEVICE_80861161: return "82806AA PCi64 Hub APIC";
 
         default: return "Unknown device";
     }

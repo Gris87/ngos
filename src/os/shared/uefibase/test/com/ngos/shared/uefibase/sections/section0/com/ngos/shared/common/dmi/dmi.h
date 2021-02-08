@@ -13,7 +13,7 @@
 
 
 
-bad_uint8 testAmount;
+u8 testAmount;
 
 NgosStatus testCountEntry(DmiEntryHeader *header)
 {
@@ -61,7 +61,7 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
 
     TEST_CASE("iterateDmiEntries()");
     {
-        bad_uint8 buf[] =
+        u8 buf[] =
         {
             1, 10, 0x00, 0x11,
             0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
@@ -107,9 +107,9 @@ TEST_CASES(section0, com_ngos_shared_common_dmi_dmi);
 
     TEST_CASE("checksum()");
     {
-        bad_uint8 temp1[10] = { 5, 98, 31, 24, 18, 23, 67, 71, 82, 93 };
-        bad_uint8 temp2[10] = { 7, 82, 94, 37, 16, 79, 98, 46, 37, 16 };
-        bad_uint8 temp3[10] = { 9, 69, 58, 94, 31, 67, 34, 21, 34, 95 };
+        u8 temp1[10] = { 5, 98, 31, 24, 18, 23, 67, 71, 82, 93 };
+        u8 temp2[10] = { 7, 82, 94, 37, 16, 79, 98, 46, 37, 16 };
+        u8 temp3[10] = { 9, 69, 58, 94, 31, 67, 34, 21, 34, 95 };
 
         TEST_ASSERT_EQUALS(DMI::checksum(temp1, sizeof(temp1), temp1[4]), temp1[4]);
         TEST_ASSERT_EQUALS(DMI::checksum(temp2, sizeof(temp2), temp2[6]), temp2[6]);

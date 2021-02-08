@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint32 uefi_absolute_pointer_state_active_button_flags;
+typedef u32 uefi_absolute_pointer_state_active_button_flags;
 
 enum class UefiAbsolutePointerStateActiveButtonFlag: uefi_absolute_pointer_state_active_button_flags
 {

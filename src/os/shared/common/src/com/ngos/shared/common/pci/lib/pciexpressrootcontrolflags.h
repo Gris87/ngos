@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 pci_express_root_control_flags;
+typedef u16 pci_express_root_control_flags;
 
 enum class PciExpressRootControlFlag: pci_express_root_control_flags
 {

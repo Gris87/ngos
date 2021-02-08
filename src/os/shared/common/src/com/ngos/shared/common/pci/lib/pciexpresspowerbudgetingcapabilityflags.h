@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 pci_express_power_budgeting_capability_flags;
+typedef u8 pci_express_power_budgeting_capability_flags;
 
 enum class PciExpressPowerBudgetingCapabilityFlag: pci_express_power_budgeting_capability_flags
 {

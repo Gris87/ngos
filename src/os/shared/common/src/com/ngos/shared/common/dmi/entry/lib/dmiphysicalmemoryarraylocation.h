@@ -10,7 +10,7 @@
 
 
 
-enum class DmiPhysicalMemoryArrayLocation: bad_uint8
+enum class DmiPhysicalMemoryArrayLocation: u8
 {
     NONE                           = 0,
     OTHER                          = 0x01,
@@ -71,7 +71,7 @@ inline const char8* enumToFullString(DmiPhysicalMemoryArrayLocation location) //
 
     static char8 res[38];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)location, enumToString(location));
+    sprintf(res, "0x%02X (%s)", (u8)location, enumToString(location));
 
     return res;
 }

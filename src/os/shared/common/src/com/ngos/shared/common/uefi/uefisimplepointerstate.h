@@ -9,9 +9,9 @@
 
 struct UefiSimplePointerState
 {
-    bad_int32  relativeMovementX;
-    bad_int32  relativeMovementY;
-    bad_int32  relativeMovementZ;
+    i32  relativeMovementX;
+    i32  relativeMovementY;
+    i32  relativeMovementZ;
     bool leftButton;
     bool rightButton;
 };

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressTphRequesterTphRequesterEnable: bad_uint8
+enum class PciExpressTphRequesterTphRequesterEnable: u8
 {
     NO_TPH_OR_EXTENDED_TPH  = 0,
     TPH_AND_NO_EXTENDED_TPH = 1,
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(PciExpressTphRequesterTphRequesterEnable en
 
     static char8 res[31];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)enable, enumToString(enable));
+    sprintf(res, "0x%02X (%s)", (u8)enable, enumToString(enable));
 
     return res;
 }

@@ -10,7 +10,7 @@
 
 
 
-enum class InflateCodeType: bad_uint8
+enum class InflateCodeType: u8
 {
     CODES     = 0,
     LENGTHS   = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(InflateCodeType type) // TEST: NO
 
     static char8 res[17];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

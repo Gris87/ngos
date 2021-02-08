@@ -13,12 +13,12 @@ struct PciExpressVirtualChannelPortVirtualChannelCapability2
     {
         struct
         {
-            bad_uint32 virtualChannelArbitrationCapability  : 8; // TODO: Use flags PciExpressVirtualChannelArbitrationCapabilityFlags
-            bad_uint32 __reserved                           : 16;
-            bad_uint32 virtualChannelArbitrationTableOffset : 8;
+            u32 virtualChannelArbitrationCapability  : 8; // TODO: Use flags PciExpressVirtualChannelArbitrationCapabilityFlags
+            u32 __reserved                           : 16;
+            u32 virtualChannelArbitrationTableOffset : 8;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

@@ -14,7 +14,7 @@
 
 
 
-NgosStatus decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddress, bad_uint64 expectedCompressedSize, bad_uint64 expectedDecompressedSize)
+NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expectedCompressedSize, u64 expectedDecompressedSize)
 {
     EARLY_LT((" | compressedAddress = 0x%p, decompressedAddress = 0x%p, expectedCompressedSize = %u, expectedDecompressedSize = %u", compressedAddress, decompressedAddress, expectedCompressedSize, expectedDecompressedSize));
 
@@ -25,7 +25,7 @@ NgosStatus decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddre
 
 
 
-    bad_uint8 *currentPointer = compressedAddress;
+    u8 *currentPointer = compressedAddress;
 
     GzipMemberHeader *memberHeader = (GzipMemberHeader *)currentPointer;
 
@@ -56,8 +56,8 @@ NgosStatus decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddre
 
 
 
-    bad_uint64 compressedSize   = 0;
-    bad_uint64 uncompressedSize = 0;
+    u64 compressedSize   = 0;
+    u64 uncompressedSize = 0;
 
 
 
@@ -104,7 +104,7 @@ NgosStatus decompress(bad_uint8 *compressedAddress, bad_uint8 *decompressedAddre
 
 
 
-    bad_uint64 totalCompressedSize = currentPointer - compressedAddress;
+    u64 totalCompressedSize = currentPointer - compressedAddress;
 
     if (totalCompressedSize != expectedCompressedSize)
     {

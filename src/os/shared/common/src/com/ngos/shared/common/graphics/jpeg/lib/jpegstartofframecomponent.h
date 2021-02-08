@@ -12,7 +12,7 @@ struct JpegStartOfFrameComponent
 {
     JpegComponentId                         id;
     JpegStartOfFrameComponentSamplingFactor samplingFactor;
-    bad_uint8                                      quantizationTableId;
+    u8                                      quantizationTableId;
 } __attribute__((packed));
 
 

@@ -17,8 +17,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
 {
     TEST_CASE("ListElement()");
     {
-        ListElement<bad_uint8> temp(5);
-        ListElement<bad_uint8> temp2(10);
+        ListElement<u8> temp(5);
+        ListElement<u8> temp2(10);
 
         TEST_ASSERT_EQUALS(temp.mData,     5);
         TEST_ASSERT_EQUALS(temp.mNext,     0);
@@ -34,7 +34,7 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
 
     TEST_CASE("getData()/setData()");
     {
-        ListElement<bad_uint8> temp(3);
+        ListElement<u8> temp(3);
 
         TEST_ASSERT_EQUALS(temp.mData,     3);
         TEST_ASSERT_EQUALS(temp.getData(), 3);
@@ -50,8 +50,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
 
     TEST_CASE("getNext()/setNext()");
     {
-        ListElement<bad_uint8> temp(7);
-        ListElement<bad_uint8> temp2(6);
+        ListElement<u8> temp(7);
+        ListElement<u8> temp2(6);
 
         TEST_ASSERT_EQUALS(temp.mNext,     0);
         TEST_ASSERT_EQUALS(temp.getNext(), 0);
@@ -67,8 +67,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
 
     TEST_CASE("getPrevious()/setPrevious()");
     {
-        ListElement<bad_uint8> temp(7);
-        ListElement<bad_uint8> temp2(6);
+        ListElement<u8> temp(7);
+        ListElement<u8> temp2(6);
 
         TEST_ASSERT_EQUALS(temp.mPrevious,     0);
         TEST_ASSERT_EQUALS(temp.getPrevious(), 0);

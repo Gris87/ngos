@@ -9,9 +9,9 @@
 
 struct RgbPixel
 {
-    bad_uint8 blue;
-    bad_uint8 green;
-    bad_uint8 red; // TODO: Set with bad_uint32
+    u8 blue;
+    u8 green;
+    u8 red; // TODO: Set with u32
 } __attribute__((packed));
 
 

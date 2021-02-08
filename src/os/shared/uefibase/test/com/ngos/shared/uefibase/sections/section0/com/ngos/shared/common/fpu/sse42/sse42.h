@@ -20,9 +20,9 @@ TEST_CASES(section0, com_ngos_shared_common_fpu_sse42_sse42);
     {
         if (CPU::hasFlag(X86Feature::XMM4_2))
         {
-            bad_int64 a[2] = { 1987965842, -1987077212 };
-            bad_int64 b[2] = { 1981132191, 1271329132 };
-            bad_int64 c[2];
+            i64 a[2] = { 1987965842, -1987077212 };
+            i64 b[2] = { 1981132191, 1271329132 };
+            i64 c[2];
 
             testSse42Pcmpgtq(a, b, c);
 

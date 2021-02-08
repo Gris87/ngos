@@ -15,15 +15,15 @@
 struct UefiHardDriveDevicePath
 {
     UefiDevicePath                       header;
-    bad_uint32                                  partitionNumber;
-    bad_uint64                                  partitionStart;
-    bad_uint64                                  partitionSize;
+    u32                                  partitionNumber;
+    u64                                  partitionStart;
+    u64                                  partitionSize;
 
     union
     {
         struct
         {
-            bad_uint32                          signature;
+            u32                          signature;
         };
 
         Guid                             signatureGuid;

@@ -18,13 +18,13 @@ public:
     TestResults();
 
     void testPassed();
-    void testFailed(const char8 *fileName, bad_uint64 line, const char8 *description);
+    void testFailed(const char8 *fileName, u64 line, const char8 *description);
 
     NgosStatus summary();
 
 private:
-    bad_uint64 mPassed;
-    bad_uint64 mFailed;
+    u64 mPassed;
+    u64 mFailed;
 };
 
 

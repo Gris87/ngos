@@ -8,7 +8,7 @@
 
 
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_uint64 size, uefi_handle *graphicsHandles)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 size, uefi_handle *graphicsHandles)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u, graphicsHandles = 0x%p", params, protocol, size, graphicsHandles));
 
@@ -19,14 +19,14 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
 
 
 
-    bad_int64 count = size / sizeof(uefi_handle);
+    i64 count = size / sizeof(uefi_handle);
     UEFI_LVVV(("count = %d", count));
 
 
 
     UefiGraphicsOutputProtocol **screens;
-    bad_uint64                          screensSize  = count * sizeof(UefiGraphicsOutputProtocol *);
-    bad_uint64                          screensCount = 0;
+    u64                          screensSize  = count * sizeof(UefiGraphicsOutputProtocol *);
+    u64                          screensCount = 0;
 
     if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, screensSize, (void **)&screens) != UefiStatus::SUCCESS)
     {
@@ -39,7 +39,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
 
 
 
-    for (bad_int64 i = 0; i < count; ++i)
+    for (i64 i = 0; i < count; ++i)
     {
         uefi_handle                 handle = graphicsHandles[i];
         UefiGraphicsOutputProtocol *gop;
@@ -68,12 +68,12 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
 
 
 
-        bad_uint64 maximumBuffer = 0;
-        bad_uint32 foundMode     = 0;
+        u64 maximumBuffer = 0;
+        u32 foundMode     = 0;
 
-        for (bad_int64 j = 0; j < gop->mode->maxMode; ++j)
+        for (i64 j = 0; j < gop->mode->maxMode; ++j)
         {
-            bad_uint64                                sizeOfInfo = 0;
+            u64                                sizeOfInfo = 0;
             UefiGraphicsOutputModeInformation *info       = 0;
 
 
@@ -114,7 +114,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
 
 
 
-            bad_uint64 screenResolution = info->horizontalResolution * info->verticalResolution;
+            u64 screenResolution = info->horizontalResolution * info->verticalResolution;
 
             UEFI_LVVV(("screenResolution = %u", screenResolution));
 
@@ -160,7 +160,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
             UEFI_LVVV(("screens:"));
             UEFI_LVVV(("-------------------------------------"));
 
-            for (bad_int64 i = 0; i < (bad_int64)screensCount; ++i)
+            for (i64 i = 0; i < (i64)screensCount; ++i)
             {
                 UEFI_LVVV(("screens[%d]->mode->frameBufferBase                     = 0x%p",   i, screens[i]->mode->frameBufferBase));
                 UEFI_LVVV(("screens[%d]->mode->frameBufferSize                     = %u",     i, screens[i]->mode->frameBufferSize));
@@ -208,7 +208,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
 
     if (screensCount > 0)
     {
-        bad_uint64        doubleBufferSize = screens[0]->mode->frameBufferSize;
+        u64        doubleBufferSize = screens[0]->mode->frameBufferSize;
         RgbaPixel *doubleBuffer;
 
         if (UEFI::allocatePool(UefiMemoryType::LOADER_DATA, doubleBufferSize, (void **)&doubleBuffer) != UefiStatus::SUCCESS)
@@ -234,7 +234,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_u
     return NgosStatus::OK;
 }
 
-NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, bad_uint64 size)
+NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 size)
 {
     UEFI_LT((" | params = 0x%p, protocol = 0x%p, size = %u", params, protocol, size));
 
@@ -297,7 +297,7 @@ NgosStatus setupGraphics(BootParams *params)
 
 
     Guid graphicsProtocol = UEFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-    bad_uint64  graphicsSize     = 0;
+    u64  graphicsSize     = 0;
 
 
 

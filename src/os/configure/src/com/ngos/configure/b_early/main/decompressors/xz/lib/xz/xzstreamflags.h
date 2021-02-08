@@ -22,7 +22,7 @@
 
 
 
-typedef bad_uint16 xz_stream_flags;
+typedef u16 xz_stream_flags;
 
 enum class XzStreamFlag: xz_stream_flags
 {

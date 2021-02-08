@@ -12,8 +12,8 @@
 struct PciAcceleratedGraphicsPortCapability
 {
     PciCapabilityHeader               header;
-    bad_uint8                                revision;
-    bad_uint8                                __reserved;
+    u8                                revision;
+    u8                                __reserved;
     PciAcceleratedGraphicsPortStatus  status;
     PciAcceleratedGraphicsPortCommand command;
 };

@@ -11,7 +11,7 @@
 
 struct DmiCacheSize2
 {
-    bad_uint64 size()
+    u64 size()
     {
         // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -19,8 +19,8 @@ struct DmiCacheSize2
 
         switch ((DmiCacheSizeGranularity)granularity)
         {
-            case DmiCacheSizeGranularity::_1_KILOBYTE:   return (bad_uint64)value * KB;
-            case DmiCacheSizeGranularity::_64_KILOBYTES: return (bad_uint64)value * 64 * KB;
+            case DmiCacheSizeGranularity::_1_KILOBYTE:   return (u64)value * KB;
+            case DmiCacheSizeGranularity::_64_KILOBYTES: return (u64)value * 64 * KB;
 
             default:
             {
@@ -42,11 +42,11 @@ struct DmiCacheSize2
     {
         struct
         {
-            bad_uint32 value:       31;
-            bad_uint32 granularity: 1; // TODO: Use enum DmiCacheSizeGranularity
+            u32 value:       31;
+            u32 granularity: 1; // TODO: Use enum DmiCacheSizeGranularity
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 } __attribute__((packed));
 

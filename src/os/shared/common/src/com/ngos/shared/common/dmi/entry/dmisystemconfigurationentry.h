@@ -10,7 +10,7 @@
 struct DmiSystemConfigurationEntry
 {
     DmiEntryHeader header;
-    bad_uint8             stringCount;
+    u8             stringCount;
 } __attribute__((packed));
 
 

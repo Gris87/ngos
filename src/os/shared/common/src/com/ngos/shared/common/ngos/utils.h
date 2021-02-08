@@ -19,15 +19,15 @@
 
 
 
-#define WORD_BIT(wordId, bitId) (((bad_uint64)(wordId) * 32) + (bitId))
+#define WORD_BIT(wordId, bitId) (((u64)(wordId) * 32) + (bitId))
 
 
 
-#define OFFSET_OF(type, field) ((bad_uint64)&(((type *)nullptr)->field))
+#define OFFSET_OF(type, field) ((u64)&(((type *)nullptr)->field))
 
 
 
-#define IS_ALIGNED(a, b) (((bad_uint64)(a) & ((bad_uint64)(b) - 1)) == 0)
+#define IS_ALIGNED(a, b) (((u64)(a) & ((u64)(b) - 1)) == 0)
 #define IS_POWER_OF_2(a) IS_ALIGNED(a, a)
 
 
@@ -45,7 +45,7 @@
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-inline bad_uint16 htons(bad_uint16 value)
+inline u16 htons(u16 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -55,7 +55,7 @@ inline bad_uint16 htons(bad_uint16 value)
         | (value >> 8);
 }
 
-inline bad_uint16 ntohs(bad_uint16 value)
+inline u16 ntohs(u16 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -65,7 +65,7 @@ inline bad_uint16 ntohs(bad_uint16 value)
         | (value >> 8);
 }
 
-inline bad_uint32 htonl(bad_uint32 value)
+inline u32 htonl(u32 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -77,7 +77,7 @@ inline bad_uint32 htonl(bad_uint32 value)
         |   (value >> 24);
 }
 
-inline bad_uint32 ntohl(bad_uint32 value)
+inline u32 ntohl(u32 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -89,7 +89,7 @@ inline bad_uint32 ntohl(bad_uint32 value)
         |   (value >> 24);
 }
 
-inline bad_uint64 htonll(bad_uint64 value)
+inline u64 htonll(u64 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -105,7 +105,7 @@ inline bad_uint64 htonll(bad_uint64 value)
         |   (value >> 56);
 }
 
-inline bad_uint64 ntohll(bad_uint64 value)
+inline u64 ntohll(u64 value)
 {
     COMMON_LT((" | value = %u", value));
 
@@ -122,7 +122,7 @@ inline bad_uint64 ntohll(bad_uint64 value)
 }
 // Ignore CppAlignmentVerifier [END]
 
-inline bad_uint8 clamp(bad_uint8 value, bad_uint8 minValue, bad_uint8 maxValue)
+inline u8 clamp(u8 value, u8 minValue, u8 maxValue)
 {
     COMMON_LT((" | value = %u, minValue = %u, maxValue = %u", value, minValue, maxValue));
 
@@ -133,7 +133,7 @@ inline bad_uint8 clamp(bad_uint8 value, bad_uint8 minValue, bad_uint8 maxValue)
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_uint16 clamp(bad_uint16 value, bad_uint16 minValue, bad_uint16 maxValue)
+inline u16 clamp(u16 value, u16 minValue, u16 maxValue)
 {
     COMMON_LT((" | value = %u, minValue = %u, maxValue = %u", value, minValue, maxValue));
 
@@ -144,7 +144,7 @@ inline bad_uint16 clamp(bad_uint16 value, bad_uint16 minValue, bad_uint16 maxVal
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_uint32 clamp(bad_uint32 value, bad_uint32 minValue, bad_uint32 maxValue)
+inline u32 clamp(u32 value, u32 minValue, u32 maxValue)
 {
     COMMON_LT((" | value = %u, minValue = %u, maxValue = %u", value, minValue, maxValue));
 
@@ -155,7 +155,7 @@ inline bad_uint32 clamp(bad_uint32 value, bad_uint32 minValue, bad_uint32 maxVal
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_uint64 clamp(bad_uint64 value, bad_uint64 minValue, bad_uint64 maxValue)
+inline u64 clamp(u64 value, u64 minValue, u64 maxValue)
 {
     COMMON_LT((" | value = %u, minValue = %u, maxValue = %u", value, minValue, maxValue));
 
@@ -166,7 +166,7 @@ inline bad_uint64 clamp(bad_uint64 value, bad_uint64 minValue, bad_uint64 maxVal
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_int8 clamp(bad_int8 value, bad_int8 minValue, bad_int8 maxValue)
+inline i8 clamp(i8 value, i8 minValue, i8 maxValue)
 {
     COMMON_LT((" | value = %d, minValue = %d, maxValue = %d", value, minValue, maxValue));
 
@@ -177,7 +177,7 @@ inline bad_int8 clamp(bad_int8 value, bad_int8 minValue, bad_int8 maxValue)
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_int16 clamp(bad_int16 value, bad_int16 minValue, bad_int16 maxValue)
+inline i16 clamp(i16 value, i16 minValue, i16 maxValue)
 {
     COMMON_LT((" | value = %d, minValue = %d, maxValue = %d", value, minValue, maxValue));
 
@@ -188,7 +188,7 @@ inline bad_int16 clamp(bad_int16 value, bad_int16 minValue, bad_int16 maxValue)
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_int32 clamp(bad_int32 value, bad_int32 minValue, bad_int32 maxValue)
+inline i32 clamp(i32 value, i32 minValue, i32 maxValue)
 {
     COMMON_LT((" | value = %d, minValue = %d, maxValue = %d", value, minValue, maxValue));
 
@@ -199,7 +199,7 @@ inline bad_int32 clamp(bad_int32 value, bad_int32 minValue, bad_int32 maxValue)
     return value < minValue ? minValue : (value > maxValue ? maxValue : value);
 }
 
-inline bad_int64 clamp(bad_int64 value, bad_int64 minValue, bad_int64 maxValue)
+inline i64 clamp(i64 value, i64 minValue, i64 maxValue)
 {
     COMMON_LT((" | value = %d, minValue = %d, maxValue = %d", value, minValue, maxValue));
 

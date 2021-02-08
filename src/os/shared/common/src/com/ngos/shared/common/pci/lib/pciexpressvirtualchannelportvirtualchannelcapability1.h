@@ -14,16 +14,16 @@ struct PciExpressVirtualChannelPortVirtualChannelCapability1
     {
         struct
         {
-            bad_uint32 extendedVirtualChannelCount            : 3;
-            bad_uint32 __reserved                             : 1;
-            bad_uint32 lowPriorityExtendedVirtualChannelCount : 3;
-            bad_uint32 __reserved2                            : 1;
-            bad_uint32 referenceClock                         : 2; // TODO: Use enum PciExpressVirtualChannelReferenceClock
-            bad_uint32 portArbitrationTableEntrySize          : 2; // TODO: Use enum PciExpressVirtualChannelPortArbitrationTableEntrySize
-            bad_uint32 __reserved3                            : 20;
+            u32 extendedVirtualChannelCount            : 3;
+            u32 __reserved                             : 1;
+            u32 lowPriorityExtendedVirtualChannelCount : 3;
+            u32 __reserved2                            : 1;
+            u32 referenceClock                         : 2; // TODO: Use enum PciExpressVirtualChannelReferenceClock
+            u32 portArbitrationTableEntrySize          : 2; // TODO: Use enum PciExpressVirtualChannelPortArbitrationTableEntrySize
+            u32 __reserved3                            : 20;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

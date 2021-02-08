@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice10000014: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice10000014: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10009460 = 0x10009460,
@@ -67,7 +67,7 @@ inline const char8* enumToFullString(PciSubDevice10000014 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -83,7 +83,7 @@ inline const char8* enumToHumanString(PciSubDevice10000014 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10000014::SUBDEVICE_10009460: return "MegaRAID 9460-16i";
-        case PciSubDevice10000014::SUBDEVICE_10009480: return "MegaRAID 9480-8bad_int8e";
+        case PciSubDevice10000014::SUBDEVICE_10009480: return "MegaRAID 9480-8i8e";
         case PciSubDevice10000014::SUBDEVICE_10009481: return "MegaRAID 9480-8e";
         case PciSubDevice10000014::SUBDEVICE_10281F3A: return "PERC H745 Adapter";
         case PciSubDevice10000014::SUBDEVICE_10281F3B: return "PERC H745 Front";

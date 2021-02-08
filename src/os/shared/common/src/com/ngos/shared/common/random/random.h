@@ -7,7 +7,7 @@
 
 
 
-bad_uint64 simpleRandom(bad_uint64 seed = 0);
+u64 simpleRandom(u64 seed = 0);
 
 
 

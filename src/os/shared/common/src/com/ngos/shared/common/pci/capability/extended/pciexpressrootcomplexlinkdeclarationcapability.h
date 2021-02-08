@@ -13,7 +13,7 @@ struct PciExpressRootComplexLinkDeclarationCapability
 {
     PciExtendedCapabilityHeader                                header;
     PciExpressRootComplexLinkDeclarationElementSelfDescription elementSelfDescription;
-    bad_uint32                                                        __reserved;
+    u32                                                        __reserved;
     PciExpressRootComplexLinkDeclarationLinkEntry              linkEntry[0];
 } __attribute__((packed));
 

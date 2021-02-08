@@ -17,9 +17,9 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_linkage);
 {
     TEST_CASE("IS_CONSTANT()");
     {
-        bad_uint64 temp = 0;
+        u64 temp = 0;
 
-        for (bad_int64 i = 0; i < 100; ++i)
+        for (i64 i = 0; i < 100; ++i)
         {
             temp += temp + 1;
         }
@@ -41,10 +41,10 @@ TEST_CASES(section0, com_ngos_shared_common_ngos_linkage);
 
     TEST_CASE("ARRAY_COUNT()");
     {
-        bad_uint8     a[5];
-        bad_uint16    b[6];
-        bad_uint32    c[7];
-        bad_uint64    d[8];
+        u8     a[5];
+        u16    b[6];
+        u32    c[7];
+        u64    d[8];
         char8  e[9];
         char16 f[3];
 

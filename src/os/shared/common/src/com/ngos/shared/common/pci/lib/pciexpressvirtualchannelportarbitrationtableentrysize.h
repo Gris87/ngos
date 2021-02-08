@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressVirtualChannelPortArbitrationTableEntrySize: bad_uint8
+enum class PciExpressVirtualChannelPortArbitrationTableEntrySize: u8
 {
     _1_BIT  = 0,
     _2_BITS = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressVirtualChannelPortArbitrationTabl
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)size, enumToString(size));
+    sprintf(res, "0x%02X (%s)", (u8)size, enumToString(size));
 
     return res;
 }

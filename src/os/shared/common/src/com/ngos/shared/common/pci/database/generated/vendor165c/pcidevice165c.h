@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice165C: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice165C: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_5361 = 0x5361,
@@ -179,7 +179,7 @@ inline const char8* enumToFullString(PciDevice165C device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -216,7 +216,7 @@ inline const char8* enumToHumanString(PciDevice165C device) // TEST: NO
         case PciDevice165C::DEVICE_5942: return "ProcStarIII340-2";
         case PciDevice165C::DEVICE_5943: return "ProcStarIII340-3";
         case PciDevice165C::DEVICE_5944: return "ProcStarIII340-4";
-        case PciDevice165C::DEVICE_5A01: return "ProceIIbad_int80";
+        case PciDevice165C::DEVICE_5A01: return "ProceIIi80";
         case PciDevice165C::DEVICE_5A11: return "ProceIII110";
         case PciDevice165C::DEVICE_5A21: return "ProceIII150";
         case PciDevice165C::DEVICE_5A31: return "ProceIII260";

@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressIndicatorControl: bad_uint8
+enum class PciExpressIndicatorControl: u8
 {
     NONE  = 0,
     ON    = 1,
@@ -45,7 +45,7 @@ inline const char8* enumToFullString(PciExpressIndicatorControl control) // TEST
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)control, enumToString(control));
+    sprintf(res, "0x%02X (%s)", (u8)control, enumToString(control));
 
     return res;
 }

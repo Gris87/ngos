@@ -38,8 +38,8 @@ struct XzLzma2Decoder
     // decoder calls. See lzma2DecodeLzma() for details.
     struct
     {
-        bad_uint32 size;
-        bad_uint8  buffer[3 * LZMA_IN_REQUIRED];
+        u32 size;
+        u8  buffer[3 * LZMA_IN_REQUIRED];
     } temp;
 };
 

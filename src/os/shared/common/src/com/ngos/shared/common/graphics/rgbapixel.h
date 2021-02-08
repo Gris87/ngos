@@ -18,7 +18,7 @@ struct RgbaPixel
         value32 = 0x00000000;
     }
 
-    RgbaPixel(bad_uint8 r, bad_uint8 g, bad_uint8 b, bad_uint8 a)
+    RgbaPixel(u8 r, u8 g, u8 b, u8 a)
     {
         // COMMON_LT((" | r = %u, g = %u, b = %u, a = %u", r, g, b, a)); // Commented to avoid infinite loop
 
@@ -30,7 +30,7 @@ struct RgbaPixel
         alpha = a;
     }
 
-    RgbaPixel(bad_uint32 value)
+    RgbaPixel(u32 value)
     {
         // COMMON_LT((" | value = %u", value)); // Commented to avoid infinite loop
 
@@ -39,17 +39,19 @@ struct RgbaPixel
         value32 = value;
     }
 
+
+
     union
     {
         struct
         {
-            bad_uint8 blue;
-            bad_uint8 green;
-            bad_uint8 red;
-            bad_uint8 alpha;
+            u8 blue;
+            u8 green;
+            u8 red;
+            u8 alpha;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 } __attribute__((packed));
 

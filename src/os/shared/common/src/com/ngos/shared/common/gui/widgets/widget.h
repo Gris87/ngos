@@ -24,20 +24,20 @@ public:
 
     NgosStatus update(); // TEST: NO
 
-    virtual NgosStatus update(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height); // TEST: NO
+    virtual NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height); // TEST: NO
     virtual NgosStatus invalidate(); // TEST: NO
     virtual NgosStatus repaint(); // TEST: NO
     virtual NgosStatus onKeyboardEvent(const UefiInputKey &key); // TEST: NO
-    virtual NgosStatus onMouseScrollEvent(bad_int32 delta); // TEST: NO
+    virtual NgosStatus onMouseScrollEvent(i32 delta); // TEST: NO
 
-    NgosStatus drawWidget(Widget *widget, bad_int64 positionX, bad_int64 positionY); // TEST: NO
-    NgosStatus drawWidget(Widget *widget, bad_int64 positionX, bad_int64 positionY, bad_int64 left, bad_int64 top, bad_int64 right, bad_int64 bottom); // TEST: NO
+    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY); // TEST: NO
+    NgosStatus drawWidget(Widget *widget, i64 positionX, i64 positionY, i64 left, i64 top, i64 right, i64 bottom); // TEST: NO
 
-    Widget* detectHoveredWidget(bad_int64 positionX, bad_int64 positionY); // TEST: NO
+    Widget* detectHoveredWidget(i64 positionX, i64 positionY); // TEST: NO
     virtual bool isAcceptMouseEvents(); // TEST: NO
 
     bool hasIntersection(Widget *anotherWidget);
-    bool hasIntersection(bad_int64 positionX, bad_int64 positionY, bad_uint64 width, bad_uint64 height);
+    bool hasIntersection(i64 positionX, i64 positionY, u64 width, u64 height);
 
     NgosStatus lockUpdates(); // TEST: NO
     NgosStatus unlockUpdates(); // TEST: NO
@@ -65,15 +65,15 @@ public:
 
     List<Widget *>& getChildren(); // TEST: NO
 
-    NgosStatus setPosition(bad_int64 positionX, bad_int64 positionY);
-    bad_int64 getPositionX() const;
-    bad_int64 getPositionY() const;
-    bad_int64 getGlobalPositionX() const;
-    bad_int64 getGlobalPositionY() const;
+    NgosStatus setPosition(i64 positionX, i64 positionY);
+    i64 getPositionX() const;
+    i64 getPositionY() const;
+    i64 getGlobalPositionX() const;
+    i64 getGlobalPositionY() const;
 
-    virtual NgosStatus setSize(bad_uint64 width, bad_uint64 height);
-    bad_uint64 getWidth() const;
-    bad_uint64 getHeight() const;
+    virtual NgosStatus setSize(u64 width, u64 height);
+    u64 getWidth() const;
+    u64 getHeight() const;
 
     NgosStatus setVisible(bool visible);
     bool isVisible() const;
@@ -88,12 +88,12 @@ protected:
 #endif
     Widget         *mParent;
     List<Widget *>  mChildren;
-    bad_int64             mPositionX;
-    bad_int64             mPositionY;
-    bad_uint64             mWidth;
-    bad_uint64             mHeight;
+    i64             mPositionX;
+    i64             mPositionY;
+    u64             mWidth;
+    u64             mHeight;
     bool            mVisible;
-    bad_uint8              mUpdatesLocks;
+    u8              mUpdatesLocks;
     Image          *mOwnResultImage;
     Image          *mResultImage;
 };

@@ -13,17 +13,17 @@ struct DmiProcessorSignature
     {
         struct
         {
-            bad_uint32 stepping:       4;
-            bad_uint32 model:          4;
-            bad_uint32 family:         4;
-            bad_uint32 type:           2;
-            bad_uint32 __reserved:     2;
-            bad_uint32 extendedModel:  4;
-            bad_uint32 extendedFamily: 8;
-            bad_uint32 __reserved2:    4;
+            u32 stepping:       4;
+            u32 model:          4;
+            u32 family:         4;
+            u32 type:           2;
+            u32 __reserved:     2;
+            u32 extendedModel:  4;
+            u32 extendedFamily: 8;
+            u32 __reserved2:    4;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 } __attribute__((packed));
 

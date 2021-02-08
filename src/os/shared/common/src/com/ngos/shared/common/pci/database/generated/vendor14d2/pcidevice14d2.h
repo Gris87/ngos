@@ -10,7 +10,7 @@
 
 
 
-enum class PciDevice14D2: bad_uint16 // Ignore CppEnumVerifier
+enum class PciDevice14D2: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_8001 = 0x8001,
@@ -87,7 +87,7 @@ inline const char8* enumToFullString(PciDevice14D2 device) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)device, enumToString(device));
+    sprintf(res, "0x%04X (%s)", (u16)device, enumToString(device));
 
     return res;
 }
@@ -119,8 +119,8 @@ inline const char8* enumToHumanString(PciDevice14D2 device) // TEST: NO
         case PciDevice14D2::DEVICE_A003: return "VScom 400H 4 port serial adaptor";
         case PciDevice14D2::DEVICE_A004: return "VScom 400HF1 4 port serial adaptor";
         case PciDevice14D2::DEVICE_A005: return "VScom 200H 2 port serial adaptor";
-        case PciDevice14D2::DEVICE_A007: return "VScom PCbad_int800EH (PCIe) 8-port serial adapter Port 1-4";
-        case PciDevice14D2::DEVICE_A008: return "VScom PCbad_int800EH (PCIe) 8-port serial adapter Port 5-8";
+        case PciDevice14D2::DEVICE_A007: return "VScom PCi800EH (PCIe) 8-port serial adapter Port 1-4";
+        case PciDevice14D2::DEVICE_A008: return "VScom PCi800EH (PCIe) 8-port serial adapter Port 5-8";
         case PciDevice14D2::DEVICE_A009: return "VScom PCI400EH (PCIe) 4-port serial adapter";
         case PciDevice14D2::DEVICE_E001: return "VScom 010HV2 1 port parallel adaptor";
         case PciDevice14D2::DEVICE_E010: return "VScom 100HV2 1 port serial adaptor";

@@ -10,7 +10,7 @@
 
 
 
-enum class PciSubDevice12EB0002: bad_uint32 // Ignore CppEnumVerifier
+enum class PciSubDevice12EB0002: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_104D8049 = 0x104D8049,
@@ -63,7 +63,7 @@ inline const char8* enumToFullString(PciSubDevice12EB0002 subDevice) // TEST: NO
 
     static char8 res[32];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)subDevice, enumToString(subDevice));
+    sprintf(res, "0x%08X (%s)", (u32)subDevice, enumToString(subDevice));
 
     return res;
 }
@@ -78,16 +78,16 @@ inline const char8* enumToHumanString(PciSubDevice12EB0002 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice12EB0002::SUBDEVICE_104D8049: return "Abad_uint8830 Vortex 3D Digital Audio Processor";
-        case PciSubDevice12EB0002::SUBDEVICE_104D807B: return "Abad_uint8830 Vortex 3D Digital Audio Processor";
+        case PciSubDevice12EB0002::SUBDEVICE_104D8049: return "Au8830 Vortex 3D Digital Audio Processor";
+        case PciSubDevice12EB0002::SUBDEVICE_104D807B: return "Au8830 Vortex 3D Digital Audio Processor";
         case PciSubDevice12EB0002::SUBDEVICE_10923000: return "Monster Sound II";
         case PciSubDevice12EB0002::SUBDEVICE_10923001: return "Monster Sound II";
         case PciSubDevice12EB0002::SUBDEVICE_10923002: return "Monster Sound II";
         case PciSubDevice12EB0002::SUBDEVICE_10923003: return "Monster Sound II";
         case PciSubDevice12EB0002::SUBDEVICE_10923004: return "Monster Sound II";
-        case PciSubDevice12EB0002::SUBDEVICE_12EB0002: return "Abad_uint8830 Vortex 3D Digital Audio Processor";
-        case PciSubDevice12EB0002::SUBDEVICE_12EB0088: return "Abad_uint8830 Vortex 3D Digital Audio Processor";
-        case PciSubDevice12EB0002::SUBDEVICE_144D3510: return "Abad_uint8830 Vortex 3D Digital Audio Processor";
+        case PciSubDevice12EB0002::SUBDEVICE_12EB0002: return "Au8830 Vortex 3D Digital Audio Processor";
+        case PciSubDevice12EB0002::SUBDEVICE_12EB0088: return "Au8830 Vortex 3D Digital Audio Processor";
+        case PciSubDevice12EB0002::SUBDEVICE_144D3510: return "Au8830 Vortex 3D Digital Audio Processor";
         case PciSubDevice12EB0002::SUBDEVICE_50533356: return "Montego II";
 
         default: return "Unknown device";

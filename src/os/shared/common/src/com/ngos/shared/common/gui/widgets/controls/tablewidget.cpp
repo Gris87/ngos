@@ -9,7 +9,7 @@
 
 
 
-#define INVALID_ROW 0xFFFFFFFFFFFFFFFF
+#define INVALID_ROW -1
 
 
 
@@ -203,7 +203,7 @@ NgosStatus TableWidget::onKeyboardEvent(const UefiInputKey &key)
     return NgosStatus::NO_EFFECT;
 }
 
-NgosStatus TableWidget::onMouseScrollEvent(bad_int32 delta)
+NgosStatus TableWidget::onMouseScrollEvent(i32 delta)
 {
     COMMON_LT((" | delta = %d", delta));
 
@@ -211,9 +211,9 @@ NgosStatus TableWidget::onMouseScrollEvent(bad_int32 delta)
 
 
 
-    bad_int64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
+    i64 positionY = mScrollWrapperWidget->getPositionY() - mRowHeight * delta;
 
-    if (positionY < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+    if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
     {
         positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
     }
@@ -236,8 +236,8 @@ NgosStatus TableWidget::scrollToSelectedRow()
 
 
 
-    bad_int64 localPositionY  = mSelectedRow * mRowHeight;
-    bad_int64 globalPositionY = localPositionY + mScrollWrapperWidget->getPositionY();
+    i64 localPositionY  = mSelectedRow * mRowHeight;
+    i64 globalPositionY = localPositionY + mScrollWrapperWidget->getPositionY();
 
     if (globalPositionY < 0)
     {
@@ -253,11 +253,11 @@ NgosStatus TableWidget::scrollToSelectedRow()
         COMMON_ASSERT_EXECUTION(GUI::unlockUpdates(), NgosStatus::ASSERTION);
     }
     else
-    if (globalPositionY + (bad_int64)mRowHeight > (bad_int64)mContentWrapperWidget->getHeight())
+    if (globalPositionY + (i64)mRowHeight > (i64)mContentWrapperWidget->getHeight())
     {
         COMMON_ASSERT_EXECUTION(GUI::lockUpdates(), NgosStatus::ASSERTION);
 
-        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, (bad_int64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight), NgosStatus::ASSERTION);
+        COMMON_ASSERT_EXECUTION(mScrollWrapperWidget->setPosition(0, (i64)mContentWrapperWidget->getHeight() - localPositionY - mRowHeight), NgosStatus::ASSERTION);
 
         if (!GUI::getPressedWidget())
         {
@@ -278,7 +278,7 @@ NgosStatus TableWidget::pageUp()
 
 
 
-    bad_uint64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+    i64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
     if (visibleRow < 1)
     {
@@ -293,7 +293,7 @@ NgosStatus TableWidget::pageUp()
     }
     else
     {
-        bad_uint64 selectedRow;
+        i64 selectedRow;
 
         if (mSelectedRow <= visibleRow)
         {
@@ -306,7 +306,7 @@ NgosStatus TableWidget::pageUp()
 
 
 
-        bad_int64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
+        i64 positionY = mScrollWrapperWidget->getPositionY() + visibleRow * mRowHeight;
 
         if (positionY > 0)
         {
@@ -339,7 +339,7 @@ NgosStatus TableWidget::pageDown()
 
 
 
-    bad_uint64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
+    i64 visibleRow = mContentWrapperWidget->getHeight() / mRowHeight;
 
     if (visibleRow < 1)
     {
@@ -354,7 +354,7 @@ NgosStatus TableWidget::pageDown()
     }
     else
     {
-        bad_uint64 selectedRow;
+        i64 selectedRow;
 
         if (mSelectedRow >= mRows.getSize() - visibleRow)
         {
@@ -367,9 +367,9 @@ NgosStatus TableWidget::pageDown()
 
 
 
-        bad_int64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
+        i64 positionY = mScrollWrapperWidget->getPositionY() - visibleRow * mRowHeight;
 
-        if (positionY < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+        if (positionY < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
         {
             positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
         }
@@ -610,7 +610,7 @@ WidgetState TableWidget::getState() const
     return mState;
 }
 
-NgosStatus TableWidget::setRowHeight(bad_uint64 height)
+NgosStatus TableWidget::setRowHeight(i64 height)
 {
     COMMON_LT((" | height = %u", height));
 
@@ -637,7 +637,7 @@ NgosStatus TableWidget::setRowHeight(bad_uint64 height)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getRowHeight() const
+i64 TableWidget::getRowHeight() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -646,7 +646,7 @@ bad_uint64 TableWidget::getRowHeight() const
     return mRowHeight;
 }
 
-NgosStatus TableWidget::setColumnCount(bad_uint64 columns)
+NgosStatus TableWidget::setColumnCount(i64 columns)
 {
     COMMON_LT((" | columns = %u", columns));
 
@@ -658,7 +658,7 @@ NgosStatus TableWidget::setColumnCount(bad_uint64 columns)
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)columns; ++i)
+    for (i64 i = 0; i < (i64)columns; ++i)
     {
         mColumnWidth.append(0);
         mHeaders.append(nullptr);
@@ -669,7 +669,7 @@ NgosStatus TableWidget::setColumnCount(bad_uint64 columns)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getColumnCount() const
+i64 TableWidget::getColumnCount() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -678,7 +678,7 @@ bad_uint64 TableWidget::getColumnCount() const
     return mColumnWidth.getSize();
 }
 
-NgosStatus TableWidget::setColumnWidth(bad_uint64 column, bad_uint64 width)
+NgosStatus TableWidget::setColumnWidth(i64 column, i64 width)
 {
     COMMON_LT((" | column = %u, width = %u", column, width));
 
@@ -696,7 +696,7 @@ NgosStatus TableWidget::setColumnWidth(bad_uint64 column, bad_uint64 width)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getColumnWidth(bad_uint64 column) const
+i64 TableWidget::getColumnWidth(i64 column) const
 {
     // COMMON_LT((" | column = %u", column)); // Commented to avoid too frequent logs
 
@@ -705,7 +705,7 @@ bad_uint64 TableWidget::getColumnWidth(bad_uint64 column) const
     return mColumnWidth.at(column);
 }
 
-NgosStatus TableWidget::setHeaderText(bad_uint64 column, const char8 *text)
+NgosStatus TableWidget::setHeaderText(i64 column, const char8 *text)
 {
     COMMON_LT((" | column = %u, text = 0x%p", column, text));
 
@@ -718,9 +718,9 @@ NgosStatus TableWidget::setHeaderText(bad_uint64 column, const char8 *text)
 
 
 
-    bad_uint64 positionX = 0;
+    i64 positionX = 0;
 
-    for (bad_int64 i = 0; i < (bad_int64)column; ++i)
+    for (i64 i = 0; i < (i64)column; ++i)
     {
         COMMON_TEST_ASSERT(mColumnWidth.at(i) > 0, NgosStatus::ASSERTION);
 
@@ -741,7 +741,7 @@ NgosStatus TableWidget::setHeaderText(bad_uint64 column, const char8 *text)
     return NgosStatus::OK;
 }
 
-NgosStatus TableWidget::setRowCount(bad_uint64 rows)
+NgosStatus TableWidget::setRowCount(i64 rows)
 {
     COMMON_LT((" | rows = %u", rows));
 
@@ -756,11 +756,11 @@ NgosStatus TableWidget::setRowCount(bad_uint64 rows)
 
 
 
-    for (bad_int64 i = mRows.getSize(); i < (bad_int64)rows; ++i)
+    for (i64 i = mRows.getSize(); i < (i64)rows; ++i)
     {
         TableRowWidget *rowWidget = new TableRowWidget(mScrollWrapperWidget);
 
-        if (i == (bad_int64)mSelectedRow)
+        if (i == (i64)mSelectedRow)
         {
             COMMON_ASSERT_EXECUTION(rowWidget->setState(isFocused() ? WidgetState::FOCUSED : WidgetState::INACTIVE), NgosStatus::ASSERTION);
         }
@@ -770,11 +770,11 @@ NgosStatus TableWidget::setRowCount(bad_uint64 rows)
 
 
 
-        bad_uint64 positionX = 0;
+        i64 positionX = 0;
 
-        for (bad_int64 j = 0; j < (bad_int64)mColumnWidth.getSize(); ++j)
+        for (i64 j = 0; j < (i64)mColumnWidth.getSize(); ++j)
         {
-            bad_uint64 columnWidth = mColumnWidth.at(j);
+            i64 columnWidth = mColumnWidth.at(j);
 
 
 
@@ -797,7 +797,7 @@ NgosStatus TableWidget::setRowCount(bad_uint64 rows)
 
 
 
-    for (bad_int64 i = mRows.getSize(); i > (bad_int64)rows; --i)
+    for (i64 i = mRows.getSize(); i > (i64)rows; --i)
     {
         TableRowWidget *rowWidget = mRows.at(i - 1);
 
@@ -838,9 +838,9 @@ NgosStatus TableWidget::setRowCount(bad_uint64 rows)
 
 
 
-    if (mScrollWrapperWidget->getPositionY() < (bad_int64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
+    if (mScrollWrapperWidget->getPositionY() < (i64)(mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight()))
     {
-        bad_int64 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
+        i64 positionY = mContentWrapperWidget->getHeight() - mScrollWrapperWidget->getHeight();
 
         if (positionY > 0)
         {
@@ -855,7 +855,7 @@ NgosStatus TableWidget::setRowCount(bad_uint64 rows)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getRowCount() const
+i64 TableWidget::getRowCount() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -873,7 +873,7 @@ const ArrayList<TableRowWidget *>& TableWidget::getRows() const
     return mRows;
 }
 
-NgosStatus TableWidget::setCellWidget(bad_uint64 row, bad_uint64 column, Widget *widget)
+NgosStatus TableWidget::setCellWidget(i64 row, i64 column, Widget *widget)
 {
     COMMON_LT((" | row = %u, column = %u, widget = 0x%p", row, column, widget));
 
@@ -899,7 +899,7 @@ NgosStatus TableWidget::setCellWidget(bad_uint64 row, bad_uint64 column, Widget 
     return NgosStatus::OK;
 }
 
-Widget* TableWidget::getCellWidget(bad_uint64 row, bad_uint64 column) const
+Widget* TableWidget::getCellWidget(i64 row, i64 column) const
 {
     // COMMON_LT((" | row = %u, column = %u", row, column)); // Commented to avoid too frequent logs
 
@@ -914,7 +914,7 @@ Widget* TableWidget::getCellWidget(bad_uint64 row, bad_uint64 column) const
     return cell->getChildren().getHead()->getData();
 }
 
-NgosStatus TableWidget::setSelectedRow(bad_uint64 row)
+NgosStatus TableWidget::setSelectedRow(i64 row)
 {
     COMMON_LT((" | row = %u", row));
 
@@ -997,7 +997,7 @@ NgosStatus TableWidget::setSelectedRow(bad_uint64 row)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getSelectedRow() const
+i64 TableWidget::getSelectedRow() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
@@ -1006,7 +1006,7 @@ bad_uint64 TableWidget::getSelectedRow() const
     return mSelectedRow;
 }
 
-NgosStatus TableWidget::setHighlightedRow(bad_uint64 row)
+NgosStatus TableWidget::setHighlightedRow(i64 row)
 {
     COMMON_LT((" | row = %u", row));
 
@@ -1089,7 +1089,7 @@ NgosStatus TableWidget::setHighlightedRow(bad_uint64 row)
     return NgosStatus::OK;
 }
 
-bad_uint64 TableWidget::getHighlightedRow() const
+i64 TableWidget::getHighlightedRow() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 

@@ -23,13 +23,13 @@ struct DmiTemperatureProbeEntry
     DmiEntryHeader                       header;
     DmiStringId                          description;
     DmiTemperatureProbeLocationAndStatus locationAndStatus;
-    bad_uint16                                  maximumValue;
-    bad_uint16                                  minimumValue;
-    bad_uint16                                  resolution;
-    bad_uint16                                  tolerance;
-    bad_uint16                                  accuracy;
-    bad_uint32                                  oemDefined;
-    bad_uint16                                  nominalValue;
+    u16                                  maximumValue;
+    u16                                  minimumValue;
+    u16                                  resolution;
+    u16                                  tolerance;
+    u16                                  accuracy;
+    u32                                  oemDefined;
+    u16                                  nominalValue;
 } __attribute__((packed));
 
 

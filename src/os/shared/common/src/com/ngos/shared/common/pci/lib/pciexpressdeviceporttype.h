@@ -8,7 +8,7 @@
 
 
 
-enum class PciExpressDevicePortType: bad_uint8
+enum class PciExpressDevicePortType: u8
 {
     PCI_EXPRESS_ENDPOINT                  = 0,
     LEGACY_PCI_EXPRESS_ENDPOINT           = 1,
@@ -55,7 +55,7 @@ inline const char8* enumToFullString(PciExpressDevicePortType type) // TEST: NO
 
     static char8 res[45];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)type, enumToString(type));
+    sprintf(res, "0x%02X (%s)", (u8)type, enumToString(type));
 
     return res;
 }

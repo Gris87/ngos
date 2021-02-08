@@ -10,7 +10,7 @@
 
 
 
-enum class ZLibCompressionMethod: bad_uint8
+enum class ZLibCompressionMethod: u8
 {
     NONE    = 0,
     DEFLATE = 8
@@ -43,7 +43,7 @@ inline const char8* enumToFullString(ZLibCompressionMethod method) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)method, enumToString(method));
+    sprintf(res, "0x%02X (%s)", (u8)method, enumToString(method));
 
     return res;
 }

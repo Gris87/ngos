@@ -30,14 +30,14 @@ NgosStatus KVM::init()
 
     if (CPU::hasFlag(X86Feature::HYPERVISOR))
     {
-        bad_uint32 id = HYPERVISORS_REGION_BEGIN;
+        u32 id = HYPERVISORS_REGION_BEGIN;
 
         while (id < HYPERVISORS_REGION_END)
         {
-            bad_uint32 ebx;
-            bad_uint32 ecx;
-            bad_uint32 edx;
-            bad_uint32 ignored;
+            u32 ebx;
+            u32 ecx;
+            u32 edx;
+            u32 ignored;
 
 
 
@@ -79,7 +79,7 @@ NgosStatus KVM::setFeature(KvmFeature feature)
 
 
 
-    sFeatures |= (1ULL << (bad_uint64)feature);
+    sFeatures |= (1ULL << (u64)feature);
 
 
 
@@ -92,7 +92,7 @@ NgosStatus KVM::clearFeature(KvmFeature feature)
 
 
 
-    sFeatures &= ~(1ULL << (bad_uint64)feature);
+    sFeatures &= ~(1ULL << (u64)feature);
 
 
 
@@ -105,7 +105,7 @@ bool KVM::hasFeature(KvmFeature feature)
 
 
 
-    return sFeatures & (1ULL << (bad_uint64)feature);
+    return sFeatures & (1ULL << (u64)feature);
 }
 
 NgosStatus KVM::setFlag(KvmFeatureTypeFlag flag)
@@ -143,7 +143,7 @@ bool KVM::hasFlag(KvmFeatureTypeFlag flag)
     return sFeatures & FLAGS(flag);
 }
 
-NgosStatus KVM::initPlatform(bad_uint32 id)
+NgosStatus KVM::initPlatform(u32 id)
 {
     COMMON_LT((" | id = 0x%08X", id));
 
@@ -151,8 +151,8 @@ NgosStatus KVM::initPlatform(bad_uint32 id)
 
 
 
-    bad_uint32 ignored;
-    bad_uint32 eax;
+    u32 ignored;
+    u32 eax;
 
     COMMON_ASSERT_EXECUTION(CPU::cpuid(id | 0x01, 0, &eax, &ignored, &ignored, &ignored), NgosStatus::ASSERTION);
     sFeatures = eax;

@@ -33,10 +33,10 @@ void UEFI_API testAesProcedure(void *buffer)
 
     if (CPU::hasFlag(X86Feature::AES))
     {
-        bad_uint8 in[1024]  __attribute__((aligned(16)));
-        bad_uint8 out[1024] __attribute__((aligned(16)));
+        u8 in[1024]  __attribute__((aligned(16)));
+        u8 out[1024] __attribute__((aligned(16)));
 
-        bad_uint64 outSize;
+        u64 outSize;
 
 
 
@@ -44,15 +44,15 @@ void UEFI_API testAesProcedure(void *buffer)
 
 
 
-        bad_uint64 startTime = rdtsc();
+        u64 startTime = rdtsc();
 
-        for (bad_int64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
+        for (i64 i = 0; i < NUMBER_OF_ITERATIONS && !CpuTestGUI::isTerminated(); ++i)
         {
             UEFI_ASSERT_EXECUTION(aes.encode(in, sizeof(in), out, sizeof(out), &outSize));
             UEFI_ASSERT_EXECUTION(aes.decode(out, sizeof(out), in, sizeof(in), &outSize));
         }
 
-        bad_uint64 endTime = rdtsc();
+        u64 endTime = rdtsc();
 
 
 
@@ -80,7 +80,7 @@ TestAes::TestAes()
 
 
 
-    UEFI_ASSERT_EXECUTION(mAES.setKey((bad_uint8 *)key, strlen(key)));
+    UEFI_ASSERT_EXECUTION(mAES.setKey((u8 *)key, strlen(key)));
 }
 
 TestAes::~TestAes()

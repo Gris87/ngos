@@ -21,7 +21,7 @@ NgosStatus setupMemoryManager()
 
     EARLY_ASSERT_EXECUTION(MemoryManager::init(),                                                                               NgosStatus::ASSERTION);
     EARLY_ASSERT_EXECUTION(MemoryManager::reserve(0, PAGE_SIZE),                                                                NgosStatus::ASSERTION);
-    EARLY_ASSERT_EXECUTION(MemoryManager::reserve(AddressConversion::physicalAddress((bad_uint64)&_start), (bad_uint64)&_end - (bad_uint64)&_start), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(MemoryManager::reserve(AddressConversion::physicalAddress((u64)&_start), (u64)&_end - (u64)&_start), NgosStatus::ASSERTION);
 
 
 
@@ -35,7 +35,7 @@ NgosStatus setupMemoryManager()
         EARLY_LVVV(("MemoryManager::sMemoryBlock.reserved.regions:"));
         EARLY_LVVV(("-------------------------------------"));
 
-        for (bad_int64 i = 0; i < (bad_int64)MemoryManager::sMemoryBlock.reserved.count; ++i)
+        for (i64 i = 0; i < (i64)MemoryManager::sMemoryBlock.reserved.count; ++i)
         {
             EARLY_LVVV(("#%-3d: 0x%p-0x%p | %s | 0x%04X", i, MemoryManager::sMemoryBlock.reserved.regions[i].start, MemoryManager::sMemoryBlock.reserved.regions[i].end(), flagsToFullString(MemoryManager::sMemoryBlock.reserved.regions[i].flags), MemoryManager::sMemoryBlock.reserved.regions[i].nodeId));
         }
@@ -47,13 +47,13 @@ NgosStatus setupMemoryManager()
 
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.count             == 2,                                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.max               == INIT_MEMORYBLOCK_REGIONS,                         NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.totalSize         == PAGE_SIZE + (bad_uint64)&_end - (bad_uint64)&_start,            NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.totalSize         == PAGE_SIZE + (u64)&_end - (u64)&_start,            NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].start  == 0,                                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].size   == PAGE_SIZE,                                        NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].flags  == 0,                                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[0].nodeId == MAX_NUMNODES,                                     NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].start  == AddressConversion::physicalAddress((bad_uint64)&_start), NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].size   == (bad_uint64)&_end - (bad_uint64)&_start,                        NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].start  == AddressConversion::physicalAddress((u64)&_start), NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].size   == (u64)&_end - (u64)&_start,                        NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].flags  == 0,                                                NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(MemoryManager::sMemoryBlock.reserved.regions[1].nodeId == MAX_NUMNODES,                                     NgosStatus::ASSERTION);
     }

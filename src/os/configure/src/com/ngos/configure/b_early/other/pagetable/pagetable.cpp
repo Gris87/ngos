@@ -13,11 +13,11 @@
 
 
 PageAllocationContext  pageAllocationContext;
-bad_uint8                    *topLevelPage;
+u8                    *topLevelPage;
 
 
 
-bad_uint8* allocatePage()
+u8* allocatePage()
 {
     EARLY_LT((""));
 
@@ -32,7 +32,7 @@ bad_uint8* allocatePage()
 
 
 
-    bad_uint8 *page = pageAllocationContext.buffer + pageAllocationContext.position;
+    u8 *page = pageAllocationContext.buffer + pageAllocationContext.position;
     EARLY_LVV(("Page allocated at address 0x%p", page));
 
     pageAllocationContext.position += PAGE_SIZE;
@@ -43,7 +43,7 @@ bad_uint8* allocatePage()
     return page;
 }
 
-NgosStatus initializePageIdentity(PGD *page, bad_uint64 address, bad_uint64 end, bad_uint8 level)
+NgosStatus initializePageIdentity(PGD *page, u64 address, u64 end, u8 level)
 {
     EARLY_LT((" | page = 0x%p, address = 0x%p, end = 0x%p, level = %u", page, address, end, level));
 
@@ -53,10 +53,10 @@ NgosStatus initializePageIdentity(PGD *page, bad_uint64 address, bad_uint64 end,
 
 
 
-    bad_uint8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
+    u8 bits = PAGE_SHIFT + (level - 1) * (PMD_SHIFT - PAGE_SHIFT);
 
-    bad_uint64 pageSize = (1ULL << bits);
-    bad_uint64 pageMask = ~(pageSize - 1);
+    u64 pageSize = (1ULL << bits);
+    u64 pageMask = ~(pageSize - 1);
 
 
 
@@ -66,7 +66,7 @@ NgosStatus initializePageIdentity(PGD *page, bad_uint64 address, bad_uint64 end,
 
 
 
-        bad_uint64 next = (address & pageMask) + pageSize;
+        u64 next = (address & pageMask) + pageSize;
 
         if (next > end)
         {
@@ -113,7 +113,7 @@ NgosStatus initializePageIdentity(PGD *page, bad_uint64 address, bad_uint64 end,
     return NgosStatus::OK;
 }
 
-NgosStatus initializeIdentityMaps(bad_uint8 *pageTable)
+NgosStatus initializeIdentityMaps(u8 *pageTable)
 {
     EARLY_LT((" | pageTable = 0x%p", pageTable));
 
@@ -142,7 +142,7 @@ NgosStatus initializeIdentityMaps(bad_uint8 *pageTable)
     return NgosStatus::OK;
 }
 
-NgosStatus addIdentityMap(bad_uint64 start, bad_uint64 end)
+NgosStatus addIdentityMap(u64 start, u64 end)
 {
     EARLY_LT((" | start = 0x%p, end = 0x%p", start, end));
 
@@ -175,7 +175,7 @@ NgosStatus finalizeIdentityMaps()
 #if NGOS_BUILD_5_LEVEL_PAGING == OPTION_YES
     switchToFiveLevelPaging(topLevelPage);
 #else
-    EARLY_ASSERT_EXECUTION(writeCr3((bad_uint64)topLevelPage), NgosStatus::ASSERTION);
+    EARLY_ASSERT_EXECUTION(writeCr3((u64)topLevelPage), NgosStatus::ASSERTION);
 #endif
 
 

@@ -8,7 +8,7 @@
 
 
 
-enum class ElfRelaType: bad_uint32
+enum class ElfRelaType: u32
 {
     NONE      = 0,  // No reloc
     D64       = 1,  // Direct 64 bit
@@ -69,7 +69,7 @@ inline const char8* enumToFullString(ElfRelaType type) // TEST: NO
 
     static char8 res[23];
 
-    sprintf(res, "0x%08X (%s)", (bad_uint32)type, enumToString(type));
+    sprintf(res, "0x%08X (%s)", (u32)type, enumToString(type));
 
     return res;
 }

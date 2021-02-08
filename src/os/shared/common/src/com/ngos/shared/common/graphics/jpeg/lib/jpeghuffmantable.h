@@ -19,8 +19,8 @@
 struct JpegHuffmanTable
 {
     JpegHuffmanTableIdAndType idAndType;
-    bad_uint8                        numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
-    bad_uint8                        symbols[0];
+    u8                        numberOfSymbols[JPEG_HUFFMAN_NUMBER_OF_SYMBOLS_COUNT];
+    u8                        symbols[0];
 } __attribute__((packed));
 
 

@@ -8,8 +8,8 @@
 
 
 
-NgosStatus addDynamicIdentityMap(bad_uint64 start, bad_uint64 end);
-NgosStatus clearDynamicIdentityMap(bad_uint64 start, bad_uint64 end);
+NgosStatus addDynamicIdentityMap(u64 start, u64 end);
+NgosStatus clearDynamicIdentityMap(u64 start, u64 end);
 
 
 

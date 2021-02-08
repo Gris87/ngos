@@ -10,7 +10,7 @@
 
 
 
-enum class FixMap: bad_uint8
+enum class FixMap: u8
 {
     MAXIMUM
 };
@@ -41,7 +41,7 @@ inline const char8* enumToFullString(FixMap map) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)map, enumToString(map));
+    sprintf(res, "0x%02X (%s)", (u8)map, enumToString(map));
 
     return res;
 }

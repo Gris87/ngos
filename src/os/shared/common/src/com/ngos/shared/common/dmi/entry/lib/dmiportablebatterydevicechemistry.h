@@ -10,7 +10,7 @@
 
 
 
-enum class DmiPortableBatteryDeviceChemistry: bad_uint8
+enum class DmiPortableBatteryDeviceChemistry: u8
 {
     NONE                 = 0,
     OTHER                = 1,
@@ -57,7 +57,7 @@ inline const char8* enumToFullString(DmiPortableBatteryDeviceChemistry chemistry
 
     static char8 res[28];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)chemistry, enumToString(chemistry));
+    sprintf(res, "0x%02X (%s)", (u8)chemistry, enumToString(chemistry));
 
     return res;
 }

@@ -7,7 +7,7 @@
 
 
 
-NgosStatus earlyInitialization(bad_uint64 kernelLocation); // TEST: NO
+NgosStatus earlyInitialization(address_t kernelLocation); // TEST: NO
 
 
 

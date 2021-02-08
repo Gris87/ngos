@@ -37,9 +37,9 @@ TEST_CASES(section0, com_ngos_shared_common_time_time);
 
 
 
-        bad_int64 res = 16725225600000;
+        i64 res = 16725225600000;
 
-        for (bad_int64 i = 2500; i >= -1000; --i)
+        for (i64 i = 2500; i >= -1000; --i)
         {
             TEST_ASSERT_EQUALS(Time::timeToTimestampInMilliseconds(i, 1,  1,  0,  0,  0,  0), res);
 
@@ -87,9 +87,9 @@ TEST_CASES(section0, com_ngos_shared_common_time_time);
 
 
 
-        bad_uint16 total = 0;
+        u16 total = 0;
 
-        for (bad_int64 i = 1; i <= 12; ++i)
+        for (i64 i = 1; i <= 12; ++i)
         {
             TEST_ASSERT_EQUALS(Time::sDaysFromStartOfYear[i - 1], total);
 

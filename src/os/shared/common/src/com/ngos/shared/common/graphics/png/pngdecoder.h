@@ -27,11 +27,11 @@ struct PngDecoder
     PngStandardRgbColorSpace      *standardRgbColorSpace;
     PngPhysicalPixelDimensions    *physicalPixelDimensions;
     PngImageLastModificationTime  *imageLastModificationTime;
-    bad_uint8                            *imageDataBuffer;
-    bad_uint64                            imageDataSize;
-    bad_uint64                            imageDataAllocatedSize;
-    bad_uint8                            *rawImageBuffer;
-    bad_uint8                             bitsPerPixel;
+    u8                            *imageDataBuffer;
+    u64                            imageDataSize;
+    u64                            imageDataAllocatedSize;
+    u8                            *rawImageBuffer;
+    u8                             bitsPerPixel;
 };
 
 

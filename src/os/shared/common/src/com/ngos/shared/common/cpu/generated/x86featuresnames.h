@@ -8,7 +8,7 @@
 
 
 
-extern const char8* x86FeaturesNames[(bad_uint64)x86FeatureWord::MAXIMUM * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file
+extern const char8* x86FeaturesNames[(enum_t)x86FeatureWord::MAXIMUM * 32]; // x86FeaturesNames declared in x86featuresnames.cpp file
 
 
 

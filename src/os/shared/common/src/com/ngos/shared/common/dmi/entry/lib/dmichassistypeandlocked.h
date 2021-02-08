@@ -13,11 +13,11 @@ struct DmiChassisTypeAndLocked
     {
         struct
         {
-            bad_uint8 type:   7; // TODO: Use enum DmiChassisType
-            bad_uint8 locked: 1;
+            u8 type:   7; // TODO: Use enum DmiChassisType
+            u8 locked: 1;
         };
 
-        bad_uint8 value8;
+        u8 value8;
     };
 } __attribute__((packed));
 

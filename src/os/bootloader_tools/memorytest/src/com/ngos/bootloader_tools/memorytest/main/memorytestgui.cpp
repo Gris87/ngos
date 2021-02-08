@@ -403,7 +403,7 @@ ArrayList<ArrayList<PanelWidget *> *>  MemoryTestGUI::sInfoPages;
 ArrayList<ImageWidget *>               MemoryTestGUI::sInfoPageIndicators;
 Image                                 *MemoryTestGUI::sInfoPageIndicatorResizedImage;
 Image                                 *MemoryTestGUI::sInfoPageIndicatorSelectedResizedImage;
-bad_uint64                                    MemoryTestGUI::sInfoCurrentPage;
+i64                                    MemoryTestGUI::sInfoCurrentPage;
 Button                                *MemoryTestGUI::sInfoLeftButton;
 Button                                *MemoryTestGUI::sInfoRightButton;
 Image                                 *MemoryTestGUI::sWarningImage;
@@ -417,7 +417,7 @@ ArrayList<ArrayList<Widget *> *>       MemoryTestGUI::sTestButtonPages;
 ArrayList<ImageWidget *>               MemoryTestGUI::sTestPageIndicators;
 Image                                 *MemoryTestGUI::sTestPageIndicatorResizedImage;
 Image                                 *MemoryTestGUI::sTestPageIndicatorSelectedResizedImage;
-bad_uint64                                    MemoryTestGUI::sTestCurrentPage;
+i64                                    MemoryTestGUI::sTestCurrentPage;
 Button                                *MemoryTestGUI::sTestLeftButton;
 Button                                *MemoryTestGUI::sTestRightButton;
 WrapperWidget                         *MemoryTestGUI::sTestRunningWrapperWidget;
@@ -436,28 +436,28 @@ LabelWidget                           *MemoryTestGUI::sTestingTotalLabelWidget;
 TabWidget                             *MemoryTestGUI::sTestingTabWidget;
 TabButton                             *MemoryTestGUI::sListTabButton;
 TabButton                             *MemoryTestGUI::sChartTabButton;
-LabelWidget*                           MemoryTestGUI::sAverageLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-LabelWidget*                           MemoryTestGUI::sMaximumLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-LabelWidget*                           MemoryTestGUI::sProgressLabelWidgets[(bad_uint64)TestType::MAXIMUM];
-ProgressBarWidget*                     MemoryTestGUI::sProgressBarWidgets[(bad_uint64)TestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sAverageLabelWidgets[(enum_t)TestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sMaximumLabelWidgets[(enum_t)TestType::MAXIMUM];
+LabelWidget*                           MemoryTestGUI::sProgressLabelWidgets[(enum_t)TestType::MAXIMUM];
+ProgressBarWidget*                     MemoryTestGUI::sProgressBarWidgets[(enum_t)TestType::MAXIMUM];
 LabelWidget                           *MemoryTestGUI::sSummaryTotalLabelWidget;
 TableWidget                           *MemoryTestGUI::sSummaryTableWidget;
-bad_uint64                                    MemoryTestGUI::sSummaryTotal;
+i64                                    MemoryTestGUI::sSummaryTotal;
 UefiMpServicesProtocol                *MemoryTestGUI::sMpServices;
-bad_uint16                                    MemoryTestGUI::sWaitEventsCount;
+u16                                    MemoryTestGUI::sWaitEventsCount;
 uefi_event                            *MemoryTestGUI::sWaitEvents;
 uefi_event                             MemoryTestGUI::sTimerEvent;
-bad_uint16                                    MemoryTestGUI::sFirstProcessorEventIndex;
+u16                                    MemoryTestGUI::sFirstProcessorEventIndex;
 TestType                               MemoryTestGUI::sCurrentTest;
-bad_uint64                                    MemoryTestGUI::sNumberOfRunningProcessors;
+i64                                    MemoryTestGUI::sNumberOfRunningProcessors;
 bool                                   MemoryTestGUI::sTerminated;
 TestType                              *MemoryTestGUI::sProcessorTasks;
 TestMode                               MemoryTestGUI::sMode;
-Image*                                 MemoryTestGUI::sModeImages[(bad_uint64)TestMode::MAXIMUM];
+Image*                                 MemoryTestGUI::sModeImages[(enum_t)TestMode::MAXIMUM];
 
 
 
-const char8* MemoryTestGUI::sModeImagesPath[(bad_uint64)TestMode::MAXIMUM] =
+const char8* MemoryTestGUI::sModeImagesPath[(enum_t)TestMode::MAXIMUM] =
 {
     "images/quick_test.png",    // TestMode::QUICK_TEST
     "images/full_test.png"      // TestMode::FULL_TEST
@@ -584,7 +584,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/stop.png",                        &sStopImage),                   NgosStatus::ASSERTION);
     UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/close.png",                       &sCloseImage),                  NgosStatus::ASSERTION);
 
-    for (bad_int64 i = 0; i < (bad_int64)TestMode::MAXIMUM; ++i)
+    for (i64 i = 0; i < (i64)TestMode::MAXIMUM; ++i)
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets(sModeImagesPath[i], &sModeImages[i]), NgosStatus::ASSERTION);
     }
@@ -593,8 +593,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     UEFI_TEST_ASSERT(params->screensCount > 0, NgosStatus::ASSERTION);
 
-    bad_uint64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
-    bad_uint64 screenHeight = params->screens[0]->mode->info->verticalResolution;
+    i64 screenWidth  = params->screens[0]->mode->info->horizontalResolution;
+    i64 screenHeight = params->screens[0]->mode->info->verticalResolution;
 
 
 
@@ -612,10 +612,10 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
-    bad_uint64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
+    i64 allowedWidthForSystemButtons   = screenWidth  * (100 - (GRAPHICAL_CONSOLE_POSITION_X_PERCENT + GRAPHICAL_CONSOLE_WIDTH_PERCENT)) / 100;
+    i64 allowedHeighthForSystemButtons = screenHeight * GRAPHICAL_CONSOLE_HEIGHT_PERCENT                                                 / 100 - allowedWidthForSystemButtons * SYSTEM_BUTTON_RESERVED_PROPORTION;
 
-    bad_uint64 systemButtonSize = allowedHeighthForSystemButtons / 2;
+    i64 systemButtonSize = allowedHeighthForSystemButtons / 2;
 
     if (systemButtonSize > allowedWidthForSystemButtons)
     {
@@ -651,14 +651,14 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
     // Ignore CppAlignmentVerifier [BEGIN]
-    bad_uint64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
-    bad_uint64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
-    bad_uint64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
+    i64 tabWidgetHeight = screenHeight    * TABWIDGET_HEIGHT_PERCENT  / 100;
+    i64 tabButtonHeight = tabWidgetHeight * TAB_BUTTON_HEIGHT_PERCENT / 100;
+    i64 tabPageHeight   = tabWidgetHeight - tabButtonHeight;
     // Ignore CppAlignmentVerifier [END]
 
 
 
-    bad_uint64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
+    i64 tabPageWidth = tabPageHeight * TAB_PAGE_PROPORTION;
 
     if (tabPageWidth > screenWidth)
     {
@@ -669,8 +669,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 tabWidgetWidth = tabPageWidth;
-    bad_uint64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
+    i64 tabWidgetWidth = tabPageWidth;
+    i64 tabButtonWidth = tabWidgetWidth * TAB_BUTTON_WIDTH_PERCENT / 100;
 
     NinePatch *patch = tabWidgetPanelImage->getNinePatch();
 
@@ -747,8 +747,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 summaryMemoryInfoWidth  = tabPageWidth  * SUMMARY_MEMORY_INFO_WIDTH_PERCENT  / 100;
-    bad_uint64 summaryMemoryInfoHeight = tabPageHeight * SUMMARY_MEMORY_INFO_HEIGHT_PERCENT / 100;
+    i64 summaryMemoryInfoWidth  = tabPageWidth  * SUMMARY_MEMORY_INFO_WIDTH_PERCENT  / 100;
+    i64 summaryMemoryInfoHeight = tabPageHeight * SUMMARY_MEMORY_INFO_HEIGHT_PERCENT / 100;
 
 
 
@@ -784,10 +784,10 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 memoryInfoRegionPositionX;
-    bad_uint64 memoryInfoRegionPositionY;
-    bad_uint64 memoryInfoRegionWidth;
-    bad_uint64 memoryInfoRegionHeight;
+    i64 memoryInfoRegionPositionX;
+    i64 memoryInfoRegionPositionY;
+    i64 memoryInfoRegionWidth;
+    i64 memoryInfoRegionHeight;
 
     if (memoryDevices.getSize() > 4)
     {
@@ -806,14 +806,14 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 memoryInfoPanelHeight = memoryInfoRegionHeight / 2;
-    bad_uint64 memoryInfoImageSize   = memoryInfoPanelHeight * MEMORY_INFO_IMAGE_SIZE_PERCENT / 100;
+    i64 memoryInfoPanelHeight = memoryInfoRegionHeight / 2;
+    i64 memoryInfoImageSize   = memoryInfoPanelHeight * MEMORY_INFO_IMAGE_SIZE_PERCENT / 100;
 
 
 
     UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryDeviceImage, memoryInfoImageSize, memoryInfoImageSize, &memoryDeviceResizedImage), NgosStatus::ASSERTION);
 
-    if (memoryDevices.getSize() > DMI::getNumberOfInstalledMemoryDevices())
+    if (memoryDevices.getSize() > (i64)DMI::getNumberOfInstalledMemoryDevices())
     {
         UEFI_ASSERT_EXECUTION(Graphics::loadImageFromAssets("images/memory_device_disabled.png", &memoryDeviceDisabledImage), NgosStatus::ASSERTION);
 
@@ -829,13 +829,13 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (memoryDevices.getSize() > 2)
     {
-        bad_uint64 memoryInfoPanelWidth = memoryInfoRegionWidth / 2;
+        i64 memoryInfoPanelWidth = memoryInfoRegionWidth / 2;
 
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryInfoPanelImage, memoryInfoPanelWidth, memoryInfoPanelHeight, &memoryInfoPanelResizedImage), NgosStatus::ASSERTION);
 
 
 
-        for (bad_int64 i = 0; i < (bad_int64)memoryDevices.getSize(); ++i)
+        for (i64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(i / 4, memoryInfoRegionPositionX + (i % 2) * memoryInfoPanelWidth, memoryInfoRegionPositionY + ((i >> 1) % 2) * memoryInfoPanelHeight, memoryInfoPanelWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -851,8 +851,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-            bad_uint64 arrowButtonSize   = tabPageWidth  * MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT   / 100;
-            bad_uint64 pageIndicatorSize = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_SIZE_PERCENT / 100;
+            i64 arrowButtonSize   = tabPageWidth  * MEMORY_INFO_ARROW_BUTTON_SIZE_PERCENT   / 100;
+            i64 pageIndicatorSize = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_SIZE_PERCENT / 100;
 
 
 
@@ -885,12 +885,12 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-            bad_uint64 pageIndicatorPosX = (tabPageWidth - pageIndicatorSize * sInfoPages.getSize()) / 2;
-            bad_uint64 pageIndicatorPosY = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_POSITION_Y_PERCENT / 100;
+            i64 pageIndicatorPosX = (tabPageWidth - pageIndicatorSize * sInfoPages.getSize()) / 2;
+            i64 pageIndicatorPosY = tabPageHeight * MEMORY_INFO_PAGE_INDICATOR_POSITION_Y_PERCENT / 100;
 
 
 
-            for (bad_int64 i = 0; i < (bad_int64)sInfoPages.getSize(); ++i)
+            for (i64 i = 0; i < (i64)sInfoPages.getSize(); ++i)
             {
                 ImageWidget *pageIndicatorImageWidget;
 
@@ -914,13 +914,13 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     }
     else
     {
-        bad_uint64 memoryInfoPanelWidth = memoryInfoRegionWidth;
+        i64 memoryInfoPanelWidth = memoryInfoRegionWidth;
 
         UEFI_ASSERT_EXECUTION(Graphics::resizeImage(memoryInfoPanelImage, memoryInfoPanelWidth, memoryInfoPanelHeight, &memoryInfoPanelResizedImage), NgosStatus::ASSERTION);
 
 
 
-        for (bad_int64 i = 0; i < (bad_int64)memoryDevices.getSize(); ++i)
+        for (i64 i = 0; i < (i64)memoryDevices.getSize(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryInfoPanel(0, memoryInfoRegionPositionX, memoryInfoRegionPositionY + i * memoryInfoPanelHeight, memoryInfoPanelWidth, memoryInfoPanelHeight, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, systemInformationTabPageWidget, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -934,8 +934,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    bad_uint64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    i64 issuesTableWidth  = tabPageWidth  * ISSUES_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    i64 issuesTableHeight = tabPageHeight * ISSUES_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -975,8 +975,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 summaryMemoryTestWidth  = tabPageWidth  * SUMMARY_MEMORY_TEST_WIDTH_PERCENT  / 100;
-    bad_uint64 summaryMemoryTestHeight = tabPageHeight * SUMMARY_MEMORY_TEST_HEIGHT_PERCENT / 100;
+    i64 summaryMemoryTestWidth  = tabPageWidth  * SUMMARY_MEMORY_TEST_WIDTH_PERCENT  / 100;
+    i64 summaryMemoryTestHeight = tabPageHeight * SUMMARY_MEMORY_TEST_HEIGHT_PERCENT / 100;
 
 
 
@@ -1003,7 +1003,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     sMode = TestMode::QUICK_TEST;
 
-    sTestModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(bad_uint64)sMode], nullptr, enumToHumanString(sMode), summaryMemoryTestPanelWidget);
+    sTestModeButton = new Button(buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, sModeImages[(enum_t)sMode], nullptr, enumToHumanString(sMode), summaryMemoryTestPanelWidget);
 
     // Ignore CppAlignmentVerifier [BEGIN]
     UEFI_ASSERT_EXECUTION(sTestModeButton->setColor(blackColor),                                                                                                                                 NgosStatus::ASSERTION);
@@ -1030,10 +1030,10 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 memoryTestRegionPositionX;
-    bad_uint64 memoryTestRegionPositionY;
-    bad_uint64 memoryTestRegionWidth;
-    bad_uint64 memoryTestRegionHeight;
+    i64 memoryTestRegionPositionX;
+    i64 memoryTestRegionPositionY;
+    i64 memoryTestRegionWidth;
+    i64 memoryTestRegionHeight;
 
     if (DMI::getNumberOfInstalledMemoryDevices() > 4)
     {
@@ -1052,11 +1052,11 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 memoryTestPanelHeight       = memoryTestRegionHeight / 2;
-    bad_uint64 memoryTestImageSize         = memoryTestPanelHeight * MEMORY_TEST_IMAGE_SIZE_PERCENT / 100;
-    bad_uint64 memoryTestStartButtonHeight = memoryTestPanelHeight * MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT / 100;
-    bad_uint64 memoryTestStartButtonWidth  = memoryTestStartButtonHeight * MEMORY_TEST_START_BUTTON_WIDTH_PROPORTION;
-    bad_uint64 memoryTestStartImageSize    = memoryTestStartButtonHeight;
+    i64 memoryTestPanelHeight       = memoryTestRegionHeight / 2;
+    i64 memoryTestImageSize         = memoryTestPanelHeight * MEMORY_TEST_IMAGE_SIZE_PERCENT / 100;
+    i64 memoryTestStartButtonHeight = memoryTestPanelHeight * MEMORY_TEST_START_BUTTON_HEIGHT_PERCENT / 100;
+    i64 memoryTestStartButtonWidth  = memoryTestStartButtonHeight * MEMORY_TEST_START_BUTTON_WIDTH_PROPORTION;
+    i64 memoryTestStartImageSize    = memoryTestStartButtonHeight;
 
 
 
@@ -1076,7 +1076,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (DMI::getNumberOfInstalledMemoryDevices() > 2)
     {
-        bad_uint64 memoryTestPanelWidth = memoryTestRegionWidth / 2;
+        i64 memoryTestPanelWidth = memoryTestRegionWidth / 2;
 
         if (memoryTestStartButtonWidth > memoryTestPanelWidth - memoryTestImageSize)
         {
@@ -1094,7 +1094,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (bad_int64 i = 0; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryTestPanel(i / 4, memoryTestRegionPositionX + (i % 2) * memoryTestPanelWidth, memoryTestRegionPositionY + ((i >> 1) % 2) * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, startResizedImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -1103,8 +1103,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
         if (sTestPages.getSize() > 1)
         {
-            bad_uint64 arrowButtonSize   = tabPageWidth  * MEMORY_TEST_ARROW_BUTTON_SIZE_PERCENT   / 100;
-            bad_uint64 pageIndicatorSize = tabPageHeight * MEMORY_TEST_PAGE_INDICATOR_SIZE_PERCENT / 100;
+            i64 arrowButtonSize   = tabPageWidth  * MEMORY_TEST_ARROW_BUTTON_SIZE_PERCENT   / 100;
+            i64 pageIndicatorSize = tabPageHeight * MEMORY_TEST_PAGE_INDICATOR_SIZE_PERCENT / 100;
 
 
 
@@ -1137,12 +1137,12 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-            bad_uint64 pageIndicatorPosX = (tabPageWidth - pageIndicatorSize * sTestPages.getSize()) / 2;
-            bad_uint64 pageIndicatorPosY = tabPageHeight * MEMORY_TEST_PAGE_INDICATOR_POSITION_Y_PERCENT / 100;
+            i64 pageIndicatorPosX = (tabPageWidth - pageIndicatorSize * sTestPages.getSize()) / 2;
+            i64 pageIndicatorPosY = tabPageHeight * MEMORY_TEST_PAGE_INDICATOR_POSITION_Y_PERCENT / 100;
 
 
 
-            for (bad_int64 i = 0; i < (bad_int64)sTestPages.getSize(); ++i)
+            for (i64 i = 0; i < (i64)sTestPages.getSize(); ++i)
             {
                 ImageWidget *pageIndicatorImageWidget;
 
@@ -1166,7 +1166,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     }
     else
     {
-        bad_uint64 memoryTestPanelWidth = memoryTestRegionWidth;
+        i64 memoryTestPanelWidth = memoryTestRegionWidth;
 
         if (memoryTestStartButtonWidth > memoryTestPanelWidth - memoryTestImageSize)
         {
@@ -1184,7 +1184,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-        for (bad_int64 i = 0; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             UEFI_ASSERT_EXECUTION(addMemoryTestPanel(0, memoryTestRegionPositionX, memoryTestRegionPositionY + i * memoryTestPanelHeight, memoryTestPanelWidth, memoryTestPanelHeight, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, startResizedImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight, memoryDevices.at(i)), NgosStatus::ASSERTION);
         }
@@ -1200,7 +1200,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 testStopButtonSize = tabPageWidth * TEST_STOP_BUTTON_SIZE_PERCENT / 100;
+    i64 testStopButtonSize = tabPageWidth * TEST_STOP_BUTTON_SIZE_PERCENT / 100;
 
 
 
@@ -1300,8 +1300,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 testPanelWidth  = tabPageWidth  * TESTING_PANEL_WIDTH_PERCENT  / 100;
-    bad_uint64 testPanelHeight = tabPageHeight * TESTING_PANEL_HEIGHT_PERCENT / 100;
+    i64 testPanelWidth  = tabPageWidth  * TESTING_PANEL_WIDTH_PERCENT  / 100;
+    i64 testPanelHeight = tabPageHeight * TESTING_PANEL_HEIGHT_PERCENT / 100;
 
 
 
@@ -1312,14 +1312,14 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 testingTabWidgetWidth  = testPanelWidth  * TESTING_TABWIDGET_WIDTH_PERCENT  / 100;
-    bad_uint64 testingTabWidgetHeight = testPanelHeight * TESTING_TABWIDGET_HEIGHT_PERCENT / 100;
+    i64 testingTabWidgetWidth  = testPanelWidth  * TESTING_TABWIDGET_WIDTH_PERCENT  / 100;
+    i64 testingTabWidgetHeight = testPanelHeight * TESTING_TABWIDGET_HEIGHT_PERCENT / 100;
 
     tabButtonWidth  = testingTabWidgetWidth  * TESTING_TAB_BUTTON_WIDTH_PERCENT  / 100;
     tabButtonHeight = testingTabWidgetHeight * TESTING_TAB_BUTTON_HEIGHT_PERCENT / 100;
 
-    bad_uint64 testingTabPageWidth  = testingTabWidgetWidth;
-    bad_uint64 testingTabPageHeight = testingTabWidgetHeight - tabButtonHeight;
+    i64 testingTabPageWidth  = testingTabWidgetWidth;
+    i64 testingTabPageHeight = testingTabWidgetHeight - tabButtonHeight;
 
 
 
@@ -1631,25 +1631,25 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    sAverageLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_READ]  = sequentialReadAverageLabelWidget;
-    sMaximumLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_READ]  = sequentialReadMaximumLabelWidget;
-    sProgressLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_READ] = sequentialReadProgressLabelWidget;
-    sProgressBarWidgets[(bad_uint64)TestType::SEQUENTIAL_READ]   = sequentialReadProgressBarWidget;
+    sAverageLabelWidgets[(enum_t)TestType::SEQUENTIAL_READ]  = sequentialReadAverageLabelWidget;
+    sMaximumLabelWidgets[(enum_t)TestType::SEQUENTIAL_READ]  = sequentialReadMaximumLabelWidget;
+    sProgressLabelWidgets[(enum_t)TestType::SEQUENTIAL_READ] = sequentialReadProgressLabelWidget;
+    sProgressBarWidgets[(enum_t)TestType::SEQUENTIAL_READ]   = sequentialReadProgressBarWidget;
 
-    sAverageLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_WRITE]  = sequentialWriteAverageLabelWidget;
-    sMaximumLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_WRITE]  = sequentialWriteMaximumLabelWidget;
-    sProgressLabelWidgets[(bad_uint64)TestType::SEQUENTIAL_WRITE] = sequentialWriteProgressLabelWidget;
-    sProgressBarWidgets[(bad_uint64)TestType::SEQUENTIAL_WRITE]   = sequentialWriteProgressBarWidget;
+    sAverageLabelWidgets[(enum_t)TestType::SEQUENTIAL_WRITE]  = sequentialWriteAverageLabelWidget;
+    sMaximumLabelWidgets[(enum_t)TestType::SEQUENTIAL_WRITE]  = sequentialWriteMaximumLabelWidget;
+    sProgressLabelWidgets[(enum_t)TestType::SEQUENTIAL_WRITE] = sequentialWriteProgressLabelWidget;
+    sProgressBarWidgets[(enum_t)TestType::SEQUENTIAL_WRITE]   = sequentialWriteProgressBarWidget;
 
-    sAverageLabelWidgets[(bad_uint64)TestType::RANDOM_READ]  = randomReadAverageLabelWidget;
-    sMaximumLabelWidgets[(bad_uint64)TestType::RANDOM_READ]  = randomReadMaximumLabelWidget;
-    sProgressLabelWidgets[(bad_uint64)TestType::RANDOM_READ] = randomReadProgressLabelWidget;
-    sProgressBarWidgets[(bad_uint64)TestType::RANDOM_READ]   = randomReadProgressBarWidget;
+    sAverageLabelWidgets[(enum_t)TestType::RANDOM_READ]  = randomReadAverageLabelWidget;
+    sMaximumLabelWidgets[(enum_t)TestType::RANDOM_READ]  = randomReadMaximumLabelWidget;
+    sProgressLabelWidgets[(enum_t)TestType::RANDOM_READ] = randomReadProgressLabelWidget;
+    sProgressBarWidgets[(enum_t)TestType::RANDOM_READ]   = randomReadProgressBarWidget;
 
-    sAverageLabelWidgets[(bad_uint64)TestType::RANDOM_WRITE]  = randomWriteAverageLabelWidget;
-    sMaximumLabelWidgets[(bad_uint64)TestType::RANDOM_WRITE]  = randomWriteMaximumLabelWidget;
-    sProgressLabelWidgets[(bad_uint64)TestType::RANDOM_WRITE] = randomWriteProgressLabelWidget;
-    sProgressBarWidgets[(bad_uint64)TestType::RANDOM_WRITE]   = randomWriteProgressBarWidget;
+    sAverageLabelWidgets[(enum_t)TestType::RANDOM_WRITE]  = randomWriteAverageLabelWidget;
+    sMaximumLabelWidgets[(enum_t)TestType::RANDOM_WRITE]  = randomWriteMaximumLabelWidget;
+    sProgressLabelWidgets[(enum_t)TestType::RANDOM_WRITE] = randomWriteProgressLabelWidget;
+    sProgressBarWidgets[(enum_t)TestType::RANDOM_WRITE]   = randomWriteProgressBarWidget;
 
 
 
@@ -1671,8 +1671,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
 
 
-    bad_uint64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
-    bad_uint64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
+    i64 summaryTableWidth  = tabPageWidth  * SUMMARY_TABLEWIDGET_WIDTH_PERCENT  / 100;
+    i64 summaryTableHeight = tabPageHeight * SUMMARY_TABLEWIDGET_HEIGHT_PERCENT / 100;
 
 
 
@@ -1702,7 +1702,7 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
     char8 *summaryTotalText = (char8 *)malloc(SUMMARY_TOTAL_TEXT_LENGTH);
     UEFI_TEST_ASSERT(summaryTotalText != nullptr, NgosStatus::ASSERTION);
 
-    bad_int64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
+    i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal);
     AVOID_UNUSED(summaryTotalTextLength);
 
     UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -1755,8 +1755,8 @@ NgosStatus MemoryTestGUI::init(BootParams *params)
 
     if (sMpServices)
     {
-        bad_uint64 numberOfProcessors;
-        bad_uint64 numberOfEnabledProcessors;
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
 
         UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -1800,7 +1800,7 @@ NgosStatus MemoryTestGUI::exec()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::addMemoryInfoPanel(bad_uint64 pageIndex, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice)
+NgosStatus MemoryTestGUI::addMemoryInfoPanel(i64 pageIndex, i64 posX, i64 posY, i64 width, i64 height, Image *memoryInfoPanelImage, Image *memoryInfoPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *memoryDeviceDisabledImage, Image *memoryDeviceDisabledResizedImage, TabPageWidget *tabPageWidget, const DmiMemoryDevice &memoryDevice)
 {
     UEFI_LT((" | pageIndex = %u, posX = %u, posY = %u, width = %u, height = %u, memoryInfoPanelImage = 0x%p, memoryInfoPanelResizedImage = 0x%p, memoryDeviceImage = 0x%p, memoryDeviceResizedImage = 0x%p, memoryDeviceDisabledImage = 0x%p, memoryDeviceDisabledResizedImage = 0x%p, tabPageWidget = 0x%p, memoryDevice = ...", pageIndex, posX, posY, width, height, memoryInfoPanelImage, memoryInfoPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, memoryDeviceDisabledImage, memoryDeviceDisabledResizedImage, tabPageWidget));
 
@@ -1816,8 +1816,8 @@ NgosStatus MemoryTestGUI::addMemoryInfoPanel(bad_uint64 pageIndex, bad_uint64 po
 
 
 
-    bad_uint64 memoryImageSize = height * MEMORY_INFO_IMAGE_SIZE_PERCENT / 100;
-    bad_uint64 allowedWidth    = width - memoryImageSize;
+    i64 memoryImageSize = height * MEMORY_INFO_IMAGE_SIZE_PERCENT / 100;
+    i64 allowedWidth    = width - memoryImageSize;
 
 
 
@@ -2028,7 +2028,7 @@ NgosStatus MemoryTestGUI::addIssueEntry(Image *icon, const char8 *description)
 
 
 
-    bad_uint64 row = sIssuesTableWidget->getRowCount();
+    i64 row = sIssuesTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sIssuesTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
 
@@ -2074,14 +2074,14 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
 
 
 
-    bad_uint32  minimumSpeed   = 0xFFFFFFFF;
+    u32  minimumSpeed   = 0xFFFFFFFF;
     bool differentSpeed = false;
 
 
 
     const ArrayList<DmiMemoryDevice> &memoryDevices = DMI::getMemoryDevices();
 
-    for (bad_int64 i = 0; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2157,7 +2157,7 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
 
         const DmiMemoryDevice &firstMemoryDevice = memoryDevices.first();
 
-        for (bad_int64 i = 1; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+        for (i64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
         {
             const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2212,7 +2212,7 @@ NgosStatus MemoryTestGUI::fillIssuesTable()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::addMemoryTestPanel(bad_uint64 pageIndex, bad_uint64 posX, bad_uint64 posY, bad_uint64 width, bad_uint64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, Image *startResizedImage, bad_uint64 memoryTestStartButtonWidth, bad_uint64 memoryTestStartButtonHeight, const DmiMemoryDevice &memoryDevice)
+NgosStatus MemoryTestGUI::addMemoryTestPanel(i64 pageIndex, i64 posX, i64 posY, i64 width, i64 height, Image *memoryTestPanelImage, Image *memoryTestPanelResizedImage, Image *memoryDeviceImage, Image *memoryDeviceResizedImage, Image *buttonNormalImage, Image *buttonHoverImage, Image *buttonPressedImage, Image *buttonFocusedImage, Image *buttonFocusedHoverImage, Image *buttonNormalResizedImage, Image *buttonHoverResizedImage, Image *buttonPressedResizedImage, Image *buttonFocusedResizedImage, Image *buttonFocusedHoverResizedImage, Image *startImage, Image *startResizedImage, i64 memoryTestStartButtonWidth, i64 memoryTestStartButtonHeight, const DmiMemoryDevice &memoryDevice)
 {
     UEFI_LT((" | pageIndex = %u, posX = %u, posY = %u, width = %u, height = %u, memoryTestPanelImage = 0x%p, memoryTestPanelResizedImage = 0x%p, memoryDeviceImage = 0x%p, memoryDeviceResizedImage = 0x%p, buttonNormalImage = 0x%p, buttonHoverImage = 0x%p, buttonPressedImage = 0x%p, buttonFocusedImage = 0x%p, buttonFocusedHoverImage = 0x%p, buttonNormalResizedImage = 0x%p, buttonHoverResizedImage = 0x%p, buttonPressedResizedImage = 0x%p, buttonFocusedResizedImage = 0x%p, buttonFocusedHoverResizedImage = 0x%p, startImage = 0x%p, startResizedImage = 0x%p, memoryTestStartButtonWidth = %u, memoryTestStartButtonHeight = %u, memoryDevice = ...", pageIndex, posX, posY, width, height, memoryTestPanelImage, memoryTestPanelResizedImage, memoryDeviceImage, memoryDeviceResizedImage, buttonNormalImage, buttonHoverImage, buttonPressedImage, buttonFocusedImage, buttonFocusedHoverImage, buttonNormalResizedImage, buttonHoverResizedImage, buttonPressedResizedImage, buttonFocusedResizedImage, buttonFocusedHoverResizedImage, startImage, startResizedImage, memoryTestStartButtonWidth, memoryTestStartButtonHeight));
 
@@ -2239,8 +2239,8 @@ NgosStatus MemoryTestGUI::addMemoryTestPanel(bad_uint64 pageIndex, bad_uint64 po
 
 
 
-    bad_uint64 memoryImageSize = height * MEMORY_TEST_IMAGE_SIZE_PERCENT / 100;
-    bad_uint64 allowedWidth    = width - memoryImageSize;
+    i64 memoryImageSize = height * MEMORY_TEST_IMAGE_SIZE_PERCENT / 100;
+    i64 allowedWidth    = width - memoryImageSize;
 
 
 
@@ -2422,7 +2422,7 @@ NgosStatus MemoryTestGUI::addMemoryTestPanel(bad_uint64 pageIndex, bad_uint64 po
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::addSummaryEntry(const char8 *name, bad_uint64 score)
+NgosStatus MemoryTestGUI::addSummaryEntry(const char8 *name, i64 score)
 {
     UEFI_LT((" | name = 0x%p, score = %u", name, score));
 
@@ -2434,7 +2434,7 @@ NgosStatus MemoryTestGUI::addSummaryEntry(const char8 *name, bad_uint64 score)
 
 
 
-    bad_uint64 row = sSummaryTableWidget->getRowCount();
+    i64 row = sSummaryTableWidget->getRowCount();
 
     UEFI_ASSERT_EXECUTION(sSummaryTableWidget->setRowCount(row + 1), NgosStatus::ASSERTION);
 
@@ -2466,14 +2466,14 @@ NgosStatus MemoryTestGUI::fillSummaryTable()
 
 
 
-    bad_uint32             minimumSpeed = 0xFFFFFFFF;
+    u32             minimumSpeed = 0xFFFFFFFF;
     ArrayList<bool> dualChannelPairs;
 
 
 
     const ArrayList<DmiMemoryDevice> &memoryDevices = DMI::getMemoryDevices();
 
-    for (bad_int64 i = 0; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (i64 i = 0; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
@@ -2501,15 +2501,15 @@ NgosStatus MemoryTestGUI::fillSummaryTable()
 
 
 
-    bad_uint64 dualChannelNumberOfPairs = 0;
+    i64 dualChannelNumberOfPairs = 0;
 
-    for (bad_int64 i = 1; i < (bad_int64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
+    for (i64 i = 1; i < (i64)DMI::getNumberOfInstalledMemoryDevices(); ++i)
     {
         const DmiMemoryDevice &memoryDevice = memoryDevices.at(i);
 
 
 
-        for (bad_int64 j = 0; j < i; ++j)
+        for (i64 j = 0; j < i; ++j)
         {
             if (!dualChannelPairs.at(j))
             {
@@ -2725,7 +2725,7 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2740,7 +2740,7 @@ NgosStatus MemoryTestGUI::showFirstInfoPage()
 
     page = sInfoPages.first();
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2785,7 +2785,7 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2800,7 +2800,7 @@ NgosStatus MemoryTestGUI::showLastInfoPage()
 
     page = sInfoPages.last();
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2843,13 +2843,13 @@ NgosStatus MemoryTestGUI::showFirstTestPage()
 
 
 
-    bad_int64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
 
 
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2864,7 +2864,7 @@ NgosStatus MemoryTestGUI::showFirstTestPage()
 
     page = sTestPages.first();
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2910,7 +2910,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
 
 
 
-    bad_int64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
 
 
 
@@ -2920,7 +2920,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -2935,7 +2935,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
 
     page = sTestPages.last();
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -2968,7 +2968,7 @@ NgosStatus MemoryTestGUI::showLastTestPage()
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::startTest(bad_int64 id)
+NgosStatus MemoryTestGUI::startTest(i64 id)
 {
     UEFI_LT((" | id = %d", id));
 
@@ -2991,9 +2991,9 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
 
 
-    bad_uint64 start;
-    bad_uint64 end;
-    bad_int64 testSize;
+    address_t start;
+    address_t end;
+    i64       testSize;
 
 
 
@@ -3122,12 +3122,12 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
     char8 *sequentialReadProgressText = (char8 *)sProgressLabelWidgets[0]->getText();
 
-    bad_int64 progressTextLength = sprintf(sequentialReadProgressText, "0 B / %s", bytesToString(testSize));
+    i64 progressTextLength = sprintf(sequentialReadProgressText, "0 B / %s", bytesToString(testSize));
     UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)TestType::MAXIMUM; ++i)
+    for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
     {
         char8 *averageText  = (char8 *)sAverageLabelWidgets[i]->getText();
         char8 *maximumText  = (char8 *)sMaximumLabelWidgets[i]->getText();
@@ -3169,8 +3169,8 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
     if (sMpServices)
     {
-        bad_uint64 numberOfProcessors;
-        bad_uint64 numberOfEnabledProcessors;
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
 
         UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -3195,7 +3195,7 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
                 UEFI_LVVV(("Processors:"));
                 UEFI_LVVV(("-------------------------------------"));
 
-                for (bad_int64 i = 0; i < (bad_int64)numberOfProcessors; ++i)
+                for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
                 {
                     UefiProcessorInformation info;
 
@@ -3211,7 +3211,7 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
 
 
-                    if (i < (bad_int64)numberOfProcessors - 1)
+                    if (i < (i64)numberOfProcessors - 1)
                     {
                         UEFI_LVVV(("+++++++++++++++++++++++++++++++++++++"));
                     }
@@ -3223,7 +3223,7 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
 
 
-            for (bad_int64 i = 0; i < (bad_int64)TestType::MAXIMUM; ++i)
+            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 UEFI_ASSERT_EXECUTION(memoryTests[i]->reset(start, end, testSize), NgosStatus::ASSERTION);
             }
@@ -3237,7 +3237,7 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
             TestBase *test = memoryTests[0];
 
-            for (bad_int64 i = 0; i < (bad_int64)numberOfProcessors; ++i)
+            for (i64 i = 0; i < (i64)numberOfProcessors; ++i)
             {
                 if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), i, sWaitEvents[sFirstProcessorEventIndex + i], 0, test, nullptr) == UefiStatus::SUCCESS)
                 {
@@ -3253,14 +3253,14 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
 
 
 
-                    sCurrentTest = (TestType)((bad_uint64)sCurrentTest + 1);
+                    sCurrentTest = (TestType)((enum_t)sCurrentTest + 1);
 
                     if (sCurrentTest >= TestType::MAXIMUM)
                     {
                         break;
                     }
 
-                    test = memoryTests[(bad_uint64)sCurrentTest];
+                    test = memoryTests[(enum_t)sCurrentTest];
                 }
             }
 
@@ -3294,7 +3294,7 @@ NgosStatus MemoryTestGUI::startTest(bad_int64 id)
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::updateTest(TestType testType, bad_uint64 tsc)
+NgosStatus MemoryTestGUI::updateTest(TestType testType, i64 tsc)
 {
     UEFI_LT((" | testType = %u, tsc = %u", testType, tsc));
 
@@ -3302,14 +3302,14 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, bad_uint64 tsc)
 
 
 
-    TestBase *test = memoryTests[(bad_uint64)testType];
+    TestBase *test = memoryTests[(enum_t)testType];
 
-    bad_int64 progress = test->getProgress();
+    i64 progress = test->getProgress();
 
 
 
-    bad_uint64 averageSpeed;
-    bad_uint64 speed;
+    i64 averageSpeed;
+    i64 speed;
 
     if (!test->isCompleted())
     {
@@ -3324,14 +3324,14 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, bad_uint64 tsc)
 
 
 
-    char8 *averageText = (char8 *)sAverageLabelWidgets[(bad_uint64)testType]->getText();
+    char8 *averageText = (char8 *)sAverageLabelWidgets[(enum_t)testType]->getText();
 
-    bad_int64 averageTextLength = sprintf(averageText, "Avg: %s/s", bytesToString(averageSpeed));
+    i64 averageTextLength = sprintf(averageText, "Avg: %s/s", bytesToString(averageSpeed));
     UEFI_TEST_ASSERT(averageTextLength < AVERAGE_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-    UEFI_ASSERT_EXECUTION(sAverageLabelWidgets[(bad_uint64)testType]->setText(averageText), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sAverageLabelWidgets[(enum_t)testType]->setText(averageText), NgosStatus::ASSERTION);
 
 
 
@@ -3341,14 +3341,14 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, bad_uint64 tsc)
 
 
 
-        char8 *maximumText = (char8 *)sMaximumLabelWidgets[(bad_uint64)testType]->getText();
+        char8 *maximumText = (char8 *)sMaximumLabelWidgets[(enum_t)testType]->getText();
 
-        bad_int64 maximumTextLength = sprintf(maximumText, "Max: %s/s", bytesToString(speed));
+        i64 maximumTextLength = sprintf(maximumText, "Max: %s/s", bytesToString(speed));
         UEFI_TEST_ASSERT(maximumTextLength < MAXIMUM_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-        UEFI_ASSERT_EXECUTION(sMaximumLabelWidgets[(bad_uint64)testType]->setText(maximumText), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sMaximumLabelWidgets[(enum_t)testType]->setText(maximumText), NgosStatus::ASSERTION);
     }
 
 
@@ -3363,15 +3363,15 @@ NgosStatus MemoryTestGUI::updateTest(TestType testType, bad_uint64 tsc)
 
 
 
-        char8 *progressText = (char8 *)sProgressLabelWidgets[(bad_uint64)testType]->getText();
+        char8 *progressText = (char8 *)sProgressLabelWidgets[(enum_t)testType]->getText();
 
-        bad_int64 progressTextLength = sprintf(progressText, "%s / %s", startBuffer, endBuffer);
+        i64 progressTextLength = sprintf(progressText, "%s / %s", startBuffer, endBuffer);
         UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-        UEFI_ASSERT_EXECUTION(sProgressLabelWidgets[(bad_uint64)testType]->setText(progressText), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(sProgressBarWidgets[(bad_uint64)testType]->setValue(progress),      NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sProgressLabelWidgets[(enum_t)testType]->setText(progressText), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sProgressBarWidgets[(enum_t)testType]->setValue(progress),      NgosStatus::ASSERTION);
 
 
 
@@ -3396,8 +3396,8 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
     if (sMpServices)
     {
-        bad_uint64 numberOfProcessors;
-        bad_uint64 numberOfEnabledProcessors;
+        u64 numberOfProcessors;
+        u64 numberOfEnabledProcessors;
 
         UEFI_ASSERT_EXECUTION(sMpServices->getNumberOfProcessors(sMpServices, &numberOfProcessors, &numberOfEnabledProcessors), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -3419,7 +3419,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    bad_uint64 size = (sWaitEventsCount + 1) * sizeof(uefi_event); // "+ 1" = one more element for timer event
+    i64 size = (sWaitEventsCount + 1) * sizeof(uefi_event); // "+ 1" = one more element for timer event
 
 
 
@@ -3435,11 +3435,11 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
     sWaitEvents[0] = UEFI::getSystemTable()->stdin->waitForKey;
-    bad_uint16 eventId    = 1;
+    u16 eventId    = 1;
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getSimplePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getSimplePointer(i)->waitForInput;
 
@@ -3448,7 +3448,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    for (bad_int64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
+    for (i64 i = 0; i < UefiPointerDevices::getAbsolutePointersCount(); ++i)
     {
         sWaitEvents[eventId] = UefiPointerDevices::getAbsolutePointer(i)->waitForInput;
 
@@ -3457,7 +3457,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
 
 
-    for (bad_int64 i = eventId; i < sWaitEventsCount; ++i)
+    for (i64 i = eventId; i < sWaitEventsCount; ++i)
     {
         UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
@@ -3474,7 +3474,7 @@ NgosStatus MemoryTestGUI::waitForEvent()
 
 
 
-    bad_uint64 eventIndex;
+    u64 eventIndex;
 
     UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -3529,7 +3529,7 @@ NgosStatus MemoryTestGUI::terminateAndWaitForApplicationProcessors()
 
         while (sNumberOfRunningProcessors > 0)
         {
-            bad_uint64 eventIndex;
+            u64 eventIndex;
 
             UEFI_ASSERT_EXECUTION(UEFI::waitForEvent(sWaitEventsCount, sWaitEvents, &eventIndex), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
@@ -3651,7 +3651,7 @@ NgosStatus MemoryTestGUI::processAbsolutePointerEvent(UefiAbsolutePointerProtoco
     return NgosStatus::OK;
 }
 
-NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorId)
+NgosStatus MemoryTestGUI::processApplicationProcessorEvent(i64 processorId)
 {
     UEFI_LT((" | processorId = %u", processorId));
 
@@ -3669,7 +3669,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
 
 
-        TestBase *test = memoryTests[(bad_uint64)testType];
+        TestBase *test = memoryTests[(enum_t)testType];
 
         UEFI_TEST_ASSERT(test->isCompleted(), NgosStatus::ASSERTION);
 
@@ -3682,21 +3682,21 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
 
 
-        char8 *progressText = (char8 *)sProgressLabelWidgets[(bad_uint64)testType]->getText();
+        char8 *progressText = (char8 *)sProgressLabelWidgets[(enum_t)testType]->getText();
 
-        bad_int64 progressTextLength = sprintf(progressText, "Score: %u", test->getScore());
+        i64 progressTextLength = sprintf(progressText, "Score: %u", test->getScore());
         UEFI_TEST_ASSERT(progressTextLength < PROGRESS_TEXT_LENGTH, NgosStatus::ASSERTION);
 
 
 
-        UEFI_ASSERT_EXECUTION(sProgressLabelWidgets[(bad_uint64)testType]->setText(progressText), NgosStatus::ASSERTION);
-        UEFI_ASSERT_EXECUTION(sProgressBarWidgets[(bad_uint64)testType]->setVisible(false),       NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sProgressLabelWidgets[(enum_t)testType]->setText(progressText), NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(sProgressBarWidgets[(enum_t)testType]->setVisible(false),       NgosStatus::ASSERTION);
 
 
 
         if (sCurrentTest < TestType::MAXIMUM)
         {
-            TestBase *test = memoryTests[(bad_uint64)sCurrentTest];
+            TestBase *test = memoryTests[(enum_t)sCurrentTest];
 
             if (sMpServices->startupThisAP(sMpServices, test->getProcedure(), processorId, sWaitEvents[sFirstProcessorEventIndex + processorId], 0, test, nullptr) == UefiStatus::SUCCESS)
             {
@@ -3710,7 +3710,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
 
 
-                sCurrentTest = (TestType)((bad_uint64)sCurrentTest + 1);
+                sCurrentTest = (TestType)((enum_t)sCurrentTest + 1);
             }
             else
             {
@@ -3742,9 +3742,9 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
 
 
-            bad_uint64 testTotal = 0;
+            i64 testTotal = 0;
 
-            for (bad_int64 i = 0; i < (bad_int64)TestType::MAXIMUM; ++i)
+            for (i64 i = 0; i < (i64)TestType::MAXIMUM; ++i)
             {
                 testTotal += memoryTests[i]->getScore();
             }
@@ -3753,7 +3753,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
             char8 *testTotalText = (char8 *)sTestingTotalLabelWidget->getText();
 
-            bad_int64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
+            i64 testTotalTextLength = sprintf(testTotalText, "Total: %u", testTotal);
             AVOID_UNUSED(testTotalTextLength);
 
             UEFI_TEST_ASSERT(testTotalTextLength < TEST_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -3767,7 +3767,7 @@ NgosStatus MemoryTestGUI::processApplicationProcessorEvent(bad_uint64 processorI
 
             char8 *summaryTotalText = (char8 *)sSummaryTotalLabelWidget->getText();
 
-            bad_int64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
+            i64 summaryTotalTextLength = sprintf(summaryTotalText, "Total: %u", sSummaryTotal + testTotal);
             AVOID_UNUSED(summaryTotalTextLength);
 
             UEFI_TEST_ASSERT(summaryTotalTextLength < SUMMARY_TOTAL_TEXT_LENGTH, NgosStatus::ASSERTION);
@@ -3796,13 +3796,13 @@ NgosStatus MemoryTestGUI::processTimerEvent()
 
 
 
-    for (bad_int64 i = 0; i < (bad_int64)sCurrentTest; ++i)
+    for (i64 i = 0; i < (i64)sCurrentTest; ++i)
     {
         TestBase *test = memoryTests[i];
 
         if (!test->isCompleted() && test->getProgress() != test->getHandledProgress())
         {
-            bad_uint64 tsc = rdtsc();
+            i64 tsc = rdtsc();
 
             UEFI_ASSERT_EXECUTION(updateTest((TestType)i, tsc), NgosStatus::ASSERTION);
 
@@ -4454,7 +4454,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
 
 
     ArrayList<Widget *> *page  = sTestButtonPages.at(sTestCurrentPage);
-    bad_int64                  index = page->indexOf(GUI::getFocusedWidget());
+    i64                  index = page->indexOf(GUI::getFocusedWidget());
 
 
 
@@ -4487,7 +4487,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
                     }
                     else
                     {
-                        if (index + 2 < (bad_int64)page->getSize())
+                        if (index + 2 < (i64)page->getSize())
                         {
                             return GUI::setFocusedWidget(page->at(index + 2));
                         }
@@ -4536,7 +4536,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
 
                         page = sTestButtonPages.at(sTestCurrentPage);
 
-                        if (index - 1 < (bad_int64)page->getSize())
+                        if (index - 1 < (i64)page->getSize())
                         {
                             return GUI::setFocusedWidget(page->at(index - 1));
                         }
@@ -4548,7 +4548,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
                 }
                 else
                 {
-                    if (index + 1 < (bad_int64)page->getSize())
+                    if (index + 1 < (i64)page->getSize())
                     {
                         return GUI::setFocusedWidget(page->at(index + 1));
                     }
@@ -4612,7 +4612,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonKeyboardEvent(const UefiInputKey &key
     {
         case KEY_TAB:
         {
-            if (index + 1 < (bad_int64)page->getSize())
+            if (index + 1 < (i64)page->getSize())
             {
                 return GUI::setFocusedWidget(page->at(index + 1));
             }
@@ -4993,7 +4993,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5008,7 +5008,7 @@ NgosStatus MemoryTestGUI::onInfoLeftButtonPressed()
 
     page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5054,7 +5054,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
 
     ArrayList<PanelWidget *> *page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5069,7 +5069,7 @@ NgosStatus MemoryTestGUI::onInfoRightButtonPressed()
 
     page = sInfoPages.at(sInfoCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5105,9 +5105,9 @@ NgosStatus MemoryTestGUI::onTestModeButtonPressed()
 
 
 
-    sMode = (TestMode)((bad_uint64)sMode + 1);
+    sMode = (TestMode)((enum_t)sMode + 1);
 
-    if ((bad_uint64)sMode >= (bad_uint64)TestMode::MAXIMUM)
+    if ((enum_t)sMode >= (enum_t)TestMode::MAXIMUM)
     {
         sMode = TestMode::QUICK_TEST;
     }
@@ -5118,8 +5118,8 @@ NgosStatus MemoryTestGUI::onTestModeButtonPressed()
 
 
 
-    UEFI_ASSERT_EXECUTION(sTestModeButton->setContentImage(sModeImages[(bad_uint64)sMode]), NgosStatus::ASSERTION);
-    UEFI_ASSERT_EXECUTION(sTestModeButton->setText(enumToHumanString(sMode)),        NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestModeButton->setContentImage(sModeImages[(enum_t)sMode]), NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sTestModeButton->setText(enumToHumanString(sMode)),           NgosStatus::ASSERTION);
 
 
 
@@ -5157,13 +5157,13 @@ NgosStatus MemoryTestGUI::onTestLeftButtonPressed()
 
 
 
-    bad_int64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
 
 
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5178,7 +5178,7 @@ NgosStatus MemoryTestGUI::onTestLeftButtonPressed()
 
     page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5229,13 +5229,13 @@ NgosStatus MemoryTestGUI::onTestRightButtonPressed()
 
 
 
-    bad_int64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
 
 
 
     ArrayList<PanelWidget *> *page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(false), NgosStatus::ASSERTION);
     }
@@ -5250,7 +5250,7 @@ NgosStatus MemoryTestGUI::onTestRightButtonPressed()
 
     page = sTestPages.at(sTestCurrentPage);
 
-    for (bad_int64 i = 0; i < (bad_int64)page->getSize(); ++i)
+    for (i64 i = 0; i < (i64)page->getSize(); ++i)
     {
         UEFI_ASSERT_EXECUTION(page->at(i)->setVisible(true), NgosStatus::ASSERTION);
     }
@@ -5293,7 +5293,7 @@ NgosStatus MemoryTestGUI::onTestStartButtonPressed()
 
 
 
-    bad_int64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
+    i64 index = sTestButtonPages.at(sTestCurrentPage)->indexOf(GUI::getFocusedWidget());
 
     UEFI_TEST_ASSERT(index >= 0 && index < 4, NgosStatus::ASSERTION);
 

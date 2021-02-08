@@ -11,7 +11,7 @@
 
 
 
-enum class CpuFamily: bad_uint16 // Ignore CppEnumVerifier
+enum class CpuFamily: u16 // Ignore CppEnumVerifier
 {
     NONE           = 0,
     INTEL_FAMILY_6 = 6,
@@ -71,7 +71,7 @@ inline const char8* enumToFullString(CpuVendor vendor, CpuFamily family) // TEST
 
     static char8 res[24];
 
-    sprintf(res, "0x%04X (%s)", (bad_uint16)family, enumToString(vendor, family));
+    sprintf(res, "0x%04X (%s)", (u16)family, enumToString(vendor, family));
 
     return res;
 }

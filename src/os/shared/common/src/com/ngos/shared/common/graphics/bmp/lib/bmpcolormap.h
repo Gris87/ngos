@@ -9,10 +9,10 @@
 
 struct BmpColorMap
 {
-    bad_uint8 blue;
-    bad_uint8 green;
-    bad_uint8 red;
-    bad_uint8 __reserved;
+    u8 blue;
+    u8 green;
+    u8 red;
+    u8 __reserved;
 };
 
 

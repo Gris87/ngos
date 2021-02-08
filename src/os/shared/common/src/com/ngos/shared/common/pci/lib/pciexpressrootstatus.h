@@ -13,13 +13,13 @@ struct PciExpressRootStatus
     {
         struct
         {
-            bad_uint32 pmeRequesterId : 16;
-            bad_uint32 pmeStatus      : 1;
-            bad_uint32 pmePending     : 1;
-            bad_uint32 __reserved     : 14;
+            u32 pmeRequesterId : 16;
+            u32 pmeStatus      : 1;
+            u32 pmePending     : 1;
+            u32 __reserved     : 14;
         };
 
-        bad_uint32 value32;
+        u32 value32;
     };
 };
 

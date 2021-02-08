@@ -12,7 +12,7 @@ struct UefiFileIoToken
 {
     uefi_event  event;
     UefiStatus  status;
-    bad_uint64         bufferSize;
+    u64         bufferSize;
     void       *buffer;
 };
 

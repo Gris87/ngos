@@ -11,15 +11,15 @@
 
 
 
-#define GET_UNALIGNED_LE32(pointer)        (*(bad_uint32 *)(pointer))
-#define PUT_UNALIGNED_LE32(value, pointer) (*(bad_uint32 *)(pointer)) = (value)
+#define GET_UNALIGNED_LE32(pointer)        (*(u32 *)(pointer))
+#define PUT_UNALIGNED_LE32(value, pointer) (*(u32 *)(pointer)) = (value)
 
 
 
 #if NGOS_BUILD_ARCH == OPTION_ARCH_X86_64
 // This is used to test the most significant byte of a memory address
 // in an x86 instruction.
-inline bad_int32 bcjX86TestMsByte(bad_uint8 byte)
+inline i32 bcjX86TestMsByte(u8 byte)
 {
     // EARLY_LT((" | byte = 0x%02X", byte)); // Commented to avoid too frequent logs
 
@@ -30,7 +30,7 @@ inline bad_int32 bcjX86TestMsByte(bad_uint8 byte)
             byte == 0xFF;
 }
 
-bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
+u64 bcjX86(XzBcjDecoder *decoder, u8 *buffer, u64 size)
 {
     EARLY_LT((" | decoder = 0x%p, buffer = 0x%p, size = %u", decoder, buffer, size));
 
@@ -41,15 +41,15 @@ bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
 
 
     const bool maskToAllowedStatus[8] = { true, true, true, false, true, false, false, false };
-    const bad_uint8   maskToBitNumber[8]     = { 0, 1, 2, 2, 3, 3, 3, 3 };
+    const u8   maskToBitNumber[8]     = { 0, 1, 2, 2, 3, 3, 3, 3 };
 
-    bad_uint64 i;
-    bad_uint64 previousPosition = (bad_uint64)-1;
-    bad_uint32 previousMask     = decoder->x86PreviousMask;
-    bad_uint32 src;
-    bad_uint32 dest;
-    bad_uint32 j;
-    bad_uint8  byte;
+    u64 i;
+    u64 previousPosition = (u64)-1;
+    u32 previousMask     = decoder->x86PreviousMask;
+    u32 src;
+    u32 dest;
+    u32 j;
+    u8  byte;
 
 
 
@@ -64,7 +64,7 @@ bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
 
     for (i = 0; i < size; ++i)
     {
-        bad_uint8 flag = buffer[i] & 0xFE;
+        u8 flag = buffer[i] & 0xFE;
 
         if (flag != 0xE8)
         {
@@ -111,7 +111,7 @@ bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
 
             do
             {
-                dest = src - ((bad_uint32)i + 5);
+                dest = src - ((u32)i + 5);
 
                 if (previousMask == 0)
                 {
@@ -119,7 +119,7 @@ bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
                 }
 
                 j    = maskToBitNumber[previousMask] * 8;
-                byte = (bad_uint8)(dest >> (24 - j));
+                byte = (u8)(dest >> (24 - j));
 
                 if (!bcjX86TestMsByte(byte))
                 {
@@ -130,7 +130,7 @@ bad_uint64 bcjX86(XzBcjDecoder *decoder, bad_uint8 *buffer, bad_uint64 size)
             } while(true);
 
             dest &= 0x01FFFFFF;
-            dest |= (bad_uint32)0 - (dest & 0x01000000);
+            dest |= (u32)0 - (dest & 0x01000000);
 
             PUT_UNALIGNED_LE32(dest, buffer + i + 1);
 

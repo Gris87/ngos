@@ -10,7 +10,7 @@
 
 
 
-enum class JpegComponentId: bad_uint8
+enum class JpegComponentId: u8
 {
     NONE = 0,
     Y    = 1,
@@ -51,7 +51,7 @@ inline const char8* enumToFullString(JpegComponentId id) // TEST: NO
 
     static char8 res[15];
 
-    sprintf(res, "0x%02X (%s)", (bad_uint8)id, enumToString(id));
+    sprintf(res, "0x%02X (%s)", (u8)id, enumToString(id));
 
     return res;
 }

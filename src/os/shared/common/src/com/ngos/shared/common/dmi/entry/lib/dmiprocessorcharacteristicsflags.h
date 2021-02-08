@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint16 dmi_processor_characteristics_flags;
+typedef u16 dmi_processor_characteristics_flags;
 
 enum class DmiProcessorCharacteristicsFlag: dmi_processor_characteristics_flags
 {

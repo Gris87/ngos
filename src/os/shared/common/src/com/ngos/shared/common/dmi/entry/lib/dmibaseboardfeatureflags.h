@@ -11,7 +11,7 @@
 
 
 
-typedef bad_uint8 dmi_baseboard_feature_flags;
+typedef u8 dmi_baseboard_feature_flags;
 
 enum class DmiBaseboardFeatureFlag: dmi_baseboard_feature_flags
 {

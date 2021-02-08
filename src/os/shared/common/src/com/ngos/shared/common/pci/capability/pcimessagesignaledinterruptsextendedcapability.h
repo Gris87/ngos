@@ -13,7 +13,7 @@ struct PciMessageSignaledInterruptsExtendedCapability
 {
     PciCapabilityHeader                                     header;
     PciMessageSignaledInterruptsExtendedMessageControl      messageControl;
-    bad_uint32                                                     messageAddressUpper;
+    u32                                                     messageAddressUpper;
     PciMessageSignaledInterruptsExtendedTableOffsetBirUnion tableOffsetAndBir;
 };
 
