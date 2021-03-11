@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script helps to install webapps prerequisites on Ubuntu 16.04
+# This script helps to install webapps prerequisites on Ubuntu 20.04
 # Author: Maxim Shvecov
-# Usage: sudo ./ubuntu_16_04.sh
+# Usage: sudo ./ubuntu_20_04.sh
 
 
 
@@ -20,8 +20,8 @@ fi
 
 
 
-if [[ "`lsb_release -rs`" != "16.04" ]]; then
-    echo "This script should be called on Ubuntu 16.04"
+if [[ "`lsb_release -rs`" != "20.04" ]]; then
+    echo "This script should be called on Ubuntu 20.04"
 
     exit 1
 fi
