@@ -6141,6 +6141,7 @@ webapps/ngos/install.sh
 webapps/ngos/mariadb/create.sql
 webapps/ngos/setup.sh
 webapps/prerequisites/centos_7_6.sh
+webapps/prerequisites/centos_8_2.sh
 webapps/prerequisites/install.sh
 webapps/prerequisites/ubuntu_18_04.sh
 webapps/prerequisites/ubuntu_18_10.sh

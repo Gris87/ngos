@@ -42,6 +42,8 @@ elif [[ `lsb_release -rs` == 18.10 ]]; then
     ./ubuntu_18_10.sh
 elif [[ `lsb_release -rs` == 18.04 ]]; then
     ./ubuntu_18_04.sh
+elif [[ `lsb_release -rs` == 8.2.* ]]; then
+    ./centos_8_2.sh
 elif [[ `lsb_release -rs` == 7.6.* ]]; then
     ./centos_7_6.sh
 else
