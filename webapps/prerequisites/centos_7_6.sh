@@ -1,43 +1,43 @@
-#!/bin/bash
-
-# This script helps to install webapps prerequisites on CentOS 7.6
-# Author: Maxim Shvecov
-# Usage: sudo ./centos_7_6.sh
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ${EUID} -ne 0 ]; then
-    echo "Please run as root"
-
-    exit 1
-fi
-
-
-
-yum install -y redhat-lsb
-
-
-
-if [[ "`lsb_release -rs`" != "7.6.1810" ]]; then
-    echo "This script should be called on CentOS 7.6"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-echo ""
-echo -e "\e[31m-------------------- TBD --------------------\e[0m"
-echo ""
+#!/bin/bash                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to install webapps prerequisites on CentOS 7.6                                                                                                                                       # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: sudo ./centos_7_6.sh                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ${EUID} -ne 0 ]; then                                                                                                                                                                               # Colorize: green
+    echo "Please run as root"                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+yum install -y redhat-lsb                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [[ `lsb_release -rs` != 7.6.* ]]; then                                                                                                                                                                # Colorize: green
+    echo "This script should be called on CentOS 7.6"                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[31m-------------------- TBD --------------------\e[0m"                                                                                                                                       # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
