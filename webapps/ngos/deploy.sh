@@ -1,333 +1,333 @@
-#!/bin/bash
-
-# This script helps to deploy latest binaries to web servers
-# Author: Maxim Shvecov
-# Usage: ./deploy.sh
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-CURRENT_PATH=`pwd`
-BUILD_CONFIG=include/buildconfig.h
-BUILD_CFG_BACKUP=/tmp/ngos_deploy_buildconfig.h
-MASTER_SERVER=cps-etl-srv.northeurope.cloudapp.azure.com
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-APACHE_VERSION=`apache2 -v`
-
-if [ "${APACHE_VERSION}" == "" ]; then
-    echo "This script should be run on master server only"
-
-    exit 1
-fi
-
-
-
-SERVER_NAME=`mysql -u ngos -pngos -D ngos -NB -e "SELECT value FROM properties WHERE name = 'server_name';"`
-
-if [ "${SERVER_NAME}" != "${MASTER_SERVER}" ]; then
-    echo "This script should be run on master server only"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    FUNCTIONS
-###########################################################################################
-
-
-
-function send_post_request
-{
-    SERVER=$1
-
-    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER} || return 1
-
-    return 0
-}
-
-
-
-function execute_sql_without_header
-{
-    SQL=$1
-
-    mysql -u ngos -pngos -D ngos -NB -e "${SQL}" || return 1
-
-    return 0
-}
-
-
-
-function deploy_app_file
-{
-    APP_ID=$1
-    APP_VERSION_ID=$2
-    SECRET_KEY=$3
-    FILENAME=$4
-    FILEPATH=$5
-
-
-
-    FILENAME_LENGTH=${#FILENAME}
-
-    printf "    %s%$((40 - FILENAME_LENGTH))s" "${FILENAME}" ""
-
-
-
-    COMPRESSION_METHOD=0
-    HASH=`md5sum "${FILEPATH}" | awk '{ print $1 }'`
-
-
-
-    COMPRESSED_FILEPATH=`mktemp`
-    cat "${FILEPATH}" | xz --lzma2=dict=128MiB > "${COMPRESSED_FILEPATH}"
-
-
-
-    UNCOMPRESSED_SIZE=`wc -c "${FILEPATH}"          | awk '{ print $1 }'`
-    COMPRESSED_SIZE=`wc -c "${COMPRESSED_FILEPATH}" | awk '{ print $1 }'`
-
-    if [ ${COMPRESSED_SIZE} -lt ${UNCOMPRESSED_SIZE} ]; then
-        FILEPATH=${COMPRESSED_FILEPATH}
-        COMPRESSION_METHOD=1
-    fi
-
-
-
-    CONTENT=`base64 -w 0 "${FILEPATH}"`
-
-    rm "${COMPRESSED_FILEPATH}"
-
-
-
-    REQUEST_DATA=`cat << EOF
-        {
-            "app_id":             ${APP_ID},
-            "app_version_id":     ${APP_VERSION_ID},
-            "filename":           "${FILENAME}",
-            "compression_method": ${COMPRESSION_METHOD},
-            "hash":               "${HASH}",
-            "content":            "${CONTENT}",
-            "secret_key":         "${SECRET_KEY}"
-        }
-EOF
-    `
-
-
-
-    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php`
-
-    if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then
-        echo -e "[\e[31mFailed\e[0m]"
-        echo "Failed to upload file ${FILENAME}: ${DEPLOYMENT_RESPONSE}"
-
-        return 1
-    fi
-
-    echo -e "[\e[32mOK\e[0m]"
-
-
-
-    return 0
-}
-
-
-
-function deploy_app
-{
-    CODENAME=$1
-    NAME=$2
-    VERSION=$3
-
-
-
-    echo "Deploying ${NAME} (${CODENAME})"
-
-
-
-    SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM apps WHERE codename = '${CODENAME}';" | tr -dc "a-zA-Z0-9"`
-
-    if [ "${SECRET_KEY}" == "" ]; then
-        SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`
-    elif [ ${#SECRET_KEY} -ne 1000 ]; then
-        echo "Secret key is invalid. Please generate new secret key"
-
-        return 1
-    fi
-
-
-
-    REQUEST_DATA=`cat << EOF
-        {
-            "vendor_id":   1,
-            "codename":    "${CODENAME}",
-            "owner_email": "admin@ngos.com",
-            "name":        "${NAME}",
-            "version":     ${VERSION},
-            "secret_key":  "${SECRET_KEY}"
-        }
-EOF
-    `
-
-    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_app.php`
-
-
-
-    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then
-        echo -e "[\e[31mDeployment failure\e[0m]"
-        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
-
-        return 1
-    fi
-
-
-
-    APP_ID=`echo ${DEPLOYMENT_RESPONSE} | jq -r .app_id`
-    APP_VERSION_ID=`echo ${DEPLOYMENT_RESPONSE} | jq -r .app_version_id`
-
-
-
-    APP_DIR=../../build/deployment/${CODENAME}/
-    APP_DIR_LENGTH=${#APP_DIR}
-
-    for file in `find ${APP_DIR} -type f`
-    do
-        deploy_app_file ${APP_ID} ${APP_VERSION_ID} ${SECRET_KEY} "${file:${APP_DIR_LENGTH}}" "${file}" || return 1
-    done
-
-
-
-    REQUEST_DATA=`cat << EOF
-        {
-            "app_id":             ${APP_ID},
-            "app_version_id":     ${APP_VERSION_ID},
-            "secret_key":         "${SECRET_KEY}"
-        }
-EOF
-    `
-
-
-
-    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/complete_version.php`
-
-    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then
-        echo -e "[\e[31mDeployment failure\e[0m]"
-        echo ""
-        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"
-
-        return 1
-    fi
-
-
-
-    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .ignored`" != "true" ]; then
-        echo -e "[\e[32mDeployed\e[0m]"
-    else
-        echo -e "[\e[33mIgnored\e[0m]"
-    fi
-
-    echo ""
-
-
-
-    return 0
-}
-
-
-
-function deploy_all
-{
-    echo ""
-    echo -e "\e[33m-------------------- Deploying -------------------\e[0m"
-    echo ""
-
-
-
-    VERSION=`date +%Y%m%d%H%M%S`
-
-
-
-    deploy_app "com.ngos.bootloader" "NGOS bootloader" "${VERSION}" || return 1
-    deploy_app "com.ngos.kernel"     "NGOS kernel"     "${VERSION}" || return 1
-    deploy_app "com.ngos.installer"  "NGOS installer"  "${VERSION}" || return 1
-
-
-
-    return 0
-}
-
-
-
-function prepare_for_deployment
-{
-    echo ""
-    echo -e "\e[33m-------------------- Building --------------------\e[0m"
-    echo ""
-
-
-
-    cd ../../
-    cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}
-
-
-
-    make deployment
-
-    if [ $? -ne 0 ]; then
-        cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-        cd ${CURRENT_PATH}/
-
-        return 1
-    fi
-
-
-
-    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-    cd ${CURRENT_PATH}/
-
-
-
-    return 0
-}
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-echo -e "\e[36m==================================================\e[0m"
-echo -e "\e[36m                    Deployment\e[0m"
-echo -e "\e[36m==================================================\e[0m"
-
-
-
-prepare_for_deployment || exit 1
-deploy_all             || exit 1
-
-
-
-echo ""
-echo -e "\e[32m-------------------- Done --------------------\e[0m"
-echo ""
-
-
-
-exit 0
+#!/bin/bash                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to deploy latest binaries to web servers                                                                                                                                             # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./deploy.sh                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
+BUILD_CFG_BACKUP=/tmp/ngos_deploy_buildconfig.h                                                                                                                                                          # Colorize: green
+MASTER_SERVER=cps-etl-srv.northeurope.cloudapp.azure.com                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+APACHE_VERSION=`apache2 -v`                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${APACHE_VERSION}" == "" ]; then                                                                                                                                                                   # Colorize: green
+    echo "This script should be run on master server only"                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SERVER_NAME=`mysql -u ngos -pngos -D ngos -NB -e "SELECT value FROM properties WHERE name = 'server_name';"`                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${SERVER_NAME}" != "${MASTER_SERVER}" ]; then                                                                                                                                                      # Colorize: green
+    echo "This script should be run on master server only"                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    FUNCTIONS                                                                                                                                                                                           # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function send_post_request                                                                                                                                                                               # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    SERVER=$1                                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    curl -k -s -X POST -H "Content-Type: application/json" -d @- ${SERVER} || return 1                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function execute_sql_without_header                                                                                                                                                                      # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    SQL=$1                                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    mysql -u ngos -pngos -D ngos -NB -e "${SQL}" || return 1                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function deploy_app_file                                                                                                                                                                                 # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    APP_ID=$1                                                                                                                                                                                            # Colorize: green
+    APP_VERSION_ID=$2                                                                                                                                                                                    # Colorize: green
+    SECRET_KEY=$3                                                                                                                                                                                        # Colorize: green
+    FILENAME=$4                                                                                                                                                                                          # Colorize: green
+    FILEPATH=$5                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    FILENAME_LENGTH=${#FILENAME}                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    printf "    %s%$((40 - FILENAME_LENGTH))s" "${FILENAME}" ""                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    COMPRESSION_METHOD=0                                                                                                                                                                                 # Colorize: green
+    HASH=`md5sum "${FILEPATH}" | awk '{ print $1 }'`                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    COMPRESSED_FILEPATH=`mktemp`                                                                                                                                                                         # Colorize: green
+    cat "${FILEPATH}" | xz --lzma2=dict=128MiB > "${COMPRESSED_FILEPATH}"                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    UNCOMPRESSED_SIZE=`wc -c "${FILEPATH}"          | awk '{ print $1 }'`                                                                                                                                # Colorize: green
+    COMPRESSED_SIZE=`wc -c "${COMPRESSED_FILEPATH}" | awk '{ print $1 }'`                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ ${COMPRESSED_SIZE} -lt ${UNCOMPRESSED_SIZE} ]; then                                                                                                                                             # Colorize: green
+        FILEPATH=${COMPRESSED_FILEPATH}                                                                                                                                                                  # Colorize: green
+        COMPRESSION_METHOD=1                                                                                                                                                                             # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    CONTENT=`base64 -w 0 "${FILEPATH}"`                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    rm "${COMPRESSED_FILEPATH}"                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    REQUEST_DATA=`cat << EOF                                                                                                                                                                             # Colorize: green
+        {                                                                                                                                                                                                # Colorize: green
+            "app_id":             ${APP_ID},                                                                                                                                                             # Colorize: green
+            "app_version_id":     ${APP_VERSION_ID},                                                                                                                                                     # Colorize: green
+            "filename":           "${FILENAME}",                                                                                                                                                         # Colorize: green
+            "compression_method": ${COMPRESSION_METHOD},                                                                                                                                                 # Colorize: green
+            "hash":               "${HASH}",                                                                                                                                                             # Colorize: green
+            "content":            "${CONTENT}",                                                                                                                                                          # Colorize: green
+            "secret_key":         "${SECRET_KEY}"                                                                                                                                                        # Colorize: green
+        }                                                                                                                                                                                                # Colorize: green
+EOF                                                                                                                                                                                                      # Colorize: green
+    `                                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_file.php`                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ "${DEPLOYMENT_RESPONSE}" != "{\"status\":\"OK\"}" ]; then                                                                                                                                       # Colorize: green
+        echo -e "[\e[31mFailed\e[0m]"                                                                                                                                                                    # Colorize: green
+        echo "Failed to upload file ${FILENAME}: ${DEPLOYMENT_RESPONSE}"                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        return 1                                                                                                                                                                                         # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    echo -e "[\e[32mOK\e[0m]"                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function deploy_app                                                                                                                                                                                      # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    CODENAME=$1                                                                                                                                                                                          # Colorize: green
+    NAME=$2                                                                                                                                                                                              # Colorize: green
+    VERSION=$3                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    echo "Deploying ${NAME} (${CODENAME})"                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    SECRET_KEY=`execute_sql_without_header "SELECT secret_key FROM apps WHERE codename = '${CODENAME}';" | tr -dc "a-zA-Z0-9"`                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ "${SECRET_KEY}" == "" ]; then                                                                                                                                                                   # Colorize: green
+        SECRET_KEY=`cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 1000 | head -n 1`                                                                                                                    # Colorize: green
+    elif [ ${#SECRET_KEY} -ne 1000 ]; then                                                                                                                                                               # Colorize: green
+        echo "Secret key is invalid. Please generate new secret key"                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        return 1                                                                                                                                                                                         # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    REQUEST_DATA=`cat << EOF                                                                                                                                                                             # Colorize: green
+        {                                                                                                                                                                                                # Colorize: green
+            "vendor_id":   1,                                                                                                                                                                            # Colorize: green
+            "codename":    "${CODENAME}",                                                                                                                                                                # Colorize: green
+            "owner_email": "admin@ngos.com",                                                                                                                                                             # Colorize: green
+            "name":        "${NAME}",                                                                                                                                                                    # Colorize: green
+            "version":     ${VERSION},                                                                                                                                                                   # Colorize: green
+            "secret_key":  "${SECRET_KEY}"                                                                                                                                                               # Colorize: green
+        }                                                                                                                                                                                                # Colorize: green
+EOF                                                                                                                                                                                                      # Colorize: green
+    `                                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/deploy_app.php`                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then                                                                                                                                 # Colorize: green
+        echo -e "[\e[31mDeployment failure\e[0m]"                                                                                                                                                        # Colorize: green
+        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        return 1                                                                                                                                                                                         # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    APP_ID=`echo         ${DEPLOYMENT_RESPONSE} | jq -r .app_id`                                                                                                                                         # Colorize: green
+    APP_VERSION_ID=`echo ${DEPLOYMENT_RESPONSE} | jq -r .app_version_id`                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    APP_DIR=../../build/deployment/${CODENAME}/                                                                                                                                                          # Colorize: green
+    APP_DIR_LENGTH=${#APP_DIR}                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    for file in `find ${APP_DIR} -type f`                                                                                                                                                                # Colorize: green
+    do                                                                                                                                                                                                   # Colorize: green
+        deploy_app_file ${APP_ID} ${APP_VERSION_ID} ${SECRET_KEY} "${file:${APP_DIR_LENGTH}}" "${file}" || return 1                                                                                      # Colorize: green
+    done                                                                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    REQUEST_DATA=`cat << EOF                                                                                                                                                                             # Colorize: green
+        {                                                                                                                                                                                                # Colorize: green
+            "app_id":             ${APP_ID},                                                                                                                                                             # Colorize: green
+            "app_version_id":     ${APP_VERSION_ID},                                                                                                                                                     # Colorize: green
+            "secret_key":         "${SECRET_KEY}"                                                                                                                                                        # Colorize: green
+        }                                                                                                                                                                                                # Colorize: green
+EOF                                                                                                                                                                                                      # Colorize: green
+    `                                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    DEPLOYMENT_RESPONSE=`echo "${REQUEST_DATA}" | send_post_request https://localhost/rest/complete_version.php`                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .status`" != "OK" ]; then                                                                                                                                 # Colorize: green
+        echo -e "[\e[31mDeployment failure\e[0m]"                                                                                                                                                        # Colorize: green
+        echo ""                                                                                                                                                                                          # Colorize: green
+        echo "Failed to deploy ${NAME} (${CODENAME}) : ${DEPLOYMENT_RESPONSE}"                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        return 1                                                                                                                                                                                         # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ "`echo ${DEPLOYMENT_RESPONSE} | jq -r .ignored`" != "true" ]; then                                                                                                                              # Colorize: green
+        echo -e "[\e[32mDeployed\e[0m]"                                                                                                                                                                  # Colorize: green
+    else                                                                                                                                                                                                 # Colorize: green
+        echo -e "[\e[33mIgnored\e[0m]"                                                                                                                                                                   # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    echo ""                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function deploy_all                                                                                                                                                                                      # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    echo ""                                                                                                                                                                                              # Colorize: green
+    echo -e "\e[33m-------------------- Deploying -------------------\e[0m"                                                                                                                              # Colorize: green
+    echo ""                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    VERSION=`date +%Y%m%d%H%M%S`                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    deploy_app "com.ngos.bootloader" "NGOS bootloader" "${VERSION}" || return 1                                                                                                                          # Colorize: green
+    deploy_app "com.ngos.kernel"     "NGOS kernel"     "${VERSION}" || return 1                                                                                                                          # Colorize: green
+    deploy_app "com.ngos.installer"  "NGOS installer"  "${VERSION}" || return 1                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+function prepare_for_deployment                                                                                                                                                                          # Colorize: green
+{                                                                                                                                                                                                        # Colorize: green
+    echo ""                                                                                                                                                                                              # Colorize: green
+    echo -e "\e[33m-------------------- Building --------------------\e[0m"                                                                                                                              # Colorize: green
+    echo ""                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cd ../../                                                                                                                                                                                            # Colorize: green
+    cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    make deployment                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ $? -ne 0 ]; then                                                                                                                                                                                # Colorize: green
+        cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                           # Colorize: green
+        cd ${CURRENT_PATH}/                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        return 1                                                                                                                                                                                         # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                               # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    return 0                                                                                                                                                                                             # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+echo -e "\e[36m                    Deployment\e[0m"                                                                                                                                                      # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+prepare_for_deployment || exit 1                                                                                                                                                                         # Colorize: green
+deploy_all             || exit 1                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[32m-------------------- Done --------------------\e[0m"                                                                                                                                      # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

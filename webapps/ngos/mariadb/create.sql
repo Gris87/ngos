@@ -1,92 +1,92 @@
-CREATE DATABASE IF NOT EXISTS ngos default character set latin1;
-GRANT ALL PRIVILEGES ON ngos.* to ngos@localhost IDENTIFIED BY "ngos";
-
-use ngos;
-
-
-
-CREATE TABLE IF NOT EXISTS vendors
-(
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(256) NOT NULL UNIQUE,
-    password_crypted VARCHAR(256) NOT NULL
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS apps
-(
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    vendor_id BIGINT NOT NULL,
-    codename VARCHAR(256) NOT NULL UNIQUE,
-    owner_email VARCHAR(256) NOT NULL,
-    name VARCHAR(256) NOT NULL,
-    description VARCHAR(1024) NOT NULL,
-    secret_key VARCHAR(1024) NOT NULL,
-    CONSTRAINT `fk_vendor_to_app`
-        FOREIGN KEY (vendor_id) REFERENCES vendors (id)
-        ON DELETE RESTRICT
-        ON UPDATE RESTRICT
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS app_versions
-(
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    app_id BIGINT NOT NULL,
-    version BIGINT NOT NULL,
-    hash VARCHAR(32) NOT NULL,
-    completed BOOLEAN NOT NULL,
-    CONSTRAINT `fk_app_to_version`
-        FOREIGN KEY (app_id) REFERENCES apps (id)
-        ON DELETE RESTRICT
-        ON UPDATE RESTRICT
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS app_files
-(
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    app_version_id BIGINT NOT NULL,
-    filename VARCHAR(256) NOT NULL,
-    download_name VARCHAR(256) NOT NULL,
-    hash VARCHAR(32) NOT NULL,
-    CONSTRAINT `fk_app_version_to_file`
-        FOREIGN KEY (app_version_id) REFERENCES app_versions (id)
-        ON DELETE RESTRICT
-        ON UPDATE RESTRICT
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS properties
-(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(256) NOT NULL UNIQUE,
-    value VARCHAR(1024) NOT NULL
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS regions
-(
-    id INT NOT NULL PRIMARY KEY,
-    name VARCHAR(256) NOT NULL UNIQUE
-) engine=InnoDB default character set latin1;
-
-
-
-CREATE TABLE IF NOT EXISTS servers
-(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    region_id INT NOT NULL,
-    address VARCHAR(256) NOT NULL UNIQUE,
-    delay INT NOT NULL,
-    secret_key VARCHAR(1024) NULL,
-    CONSTRAINT `fk_region_to_server`
-        FOREIGN KEY (region_id) REFERENCES regions (id)
-        ON DELETE RESTRICT
-        ON UPDATE RESTRICT
-) engine=InnoDB default character set latin1;
+CREATE DATABASE IF NOT EXISTS ngos default character set latin1;                                                                                                                                         -- Colorize: green
+GRANT ALL PRIVILEGES ON ngos.* to ngos@localhost IDENTIFIED BY "ngos";                                                                                                                                   -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+use ngos;                                                                                                                                                                                                -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS vendors                                                                                                                                                                       -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                       -- Colorize: green
+    name VARCHAR(256) NOT NULL UNIQUE,                                                                                                                                                                   -- Colorize: green
+    password_crypted VARCHAR(256) NOT NULL                                                                                                                                                               -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS apps                                                                                                                                                                          -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                       -- Colorize: green
+    vendor_id BIGINT NOT NULL,                                                                                                                                                                           -- Colorize: green
+    codename VARCHAR(256) NOT NULL UNIQUE,                                                                                                                                                               -- Colorize: green
+    owner_email VARCHAR(256) NOT NULL,                                                                                                                                                                   -- Colorize: green
+    name VARCHAR(256) NOT NULL,                                                                                                                                                                          -- Colorize: green
+    description VARCHAR(1024) NOT NULL,                                                                                                                                                                  -- Colorize: green
+    secret_key VARCHAR(1024) NOT NULL,                                                                                                                                                                   -- Colorize: green
+    CONSTRAINT `fk_vendor_to_app`                                                                                                                                                                        -- Colorize: green
+        FOREIGN KEY (vendor_id) REFERENCES vendors (id)                                                                                                                                                  -- Colorize: green
+        ON DELETE RESTRICT                                                                                                                                                                               -- Colorize: green
+        ON UPDATE RESTRICT                                                                                                                                                                               -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS app_versions                                                                                                                                                                  -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                       -- Colorize: green
+    app_id BIGINT NOT NULL,                                                                                                                                                                              -- Colorize: green
+    version BIGINT NOT NULL,                                                                                                                                                                             -- Colorize: green
+    hash VARCHAR(32) NOT NULL,                                                                                                                                                                           -- Colorize: green
+    completed BOOLEAN NOT NULL,                                                                                                                                                                          -- Colorize: green
+    CONSTRAINT `fk_app_to_version`                                                                                                                                                                       -- Colorize: green
+        FOREIGN KEY (app_id) REFERENCES apps (id)                                                                                                                                                        -- Colorize: green
+        ON DELETE RESTRICT                                                                                                                                                                               -- Colorize: green
+        ON UPDATE RESTRICT                                                                                                                                                                               -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS app_files                                                                                                                                                                     -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                       -- Colorize: green
+    app_version_id BIGINT NOT NULL,                                                                                                                                                                      -- Colorize: green
+    filename VARCHAR(256) NOT NULL,                                                                                                                                                                      -- Colorize: green
+    download_name VARCHAR(256) NOT NULL,                                                                                                                                                                 -- Colorize: green
+    hash VARCHAR(32) NOT NULL,                                                                                                                                                                           -- Colorize: green
+    CONSTRAINT `fk_app_version_to_file`                                                                                                                                                                  -- Colorize: green
+        FOREIGN KEY (app_version_id) REFERENCES app_versions (id)                                                                                                                                        -- Colorize: green
+        ON DELETE RESTRICT                                                                                                                                                                               -- Colorize: green
+        ON UPDATE RESTRICT                                                                                                                                                                               -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS properties                                                                                                                                                                    -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                          -- Colorize: green
+    name VARCHAR(256) NOT NULL UNIQUE,                                                                                                                                                                   -- Colorize: green
+    value VARCHAR(1024) NOT NULL                                                                                                                                                                         -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS regions                                                                                                                                                                       -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id INT NOT NULL PRIMARY KEY,                                                                                                                                                                         -- Colorize: green
+    name VARCHAR(256) NOT NULL UNIQUE                                                                                                                                                                    -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+                                                                                                                                                                                                         -- Colorize: green
+CREATE TABLE IF NOT EXISTS servers                                                                                                                                                                       -- Colorize: green
+(                                                                                                                                                                                                        -- Colorize: green
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,                                                                                                                                                          -- Colorize: green
+    region_id INT NOT NULL,                                                                                                                                                                              -- Colorize: green
+    address VARCHAR(256) NOT NULL UNIQUE,                                                                                                                                                                -- Colorize: green
+    delay INT NOT NULL,                                                                                                                                                                                  -- Colorize: green
+    secret_key VARCHAR(1024) NULL,                                                                                                                                                                       -- Colorize: green
+    CONSTRAINT `fk_region_to_server`                                                                                                                                                                     -- Colorize: green
+        FOREIGN KEY (region_id) REFERENCES regions (id)                                                                                                                                                  -- Colorize: green
+        ON DELETE RESTRICT                                                                                                                                                                               -- Colorize: green
+        ON UPDATE RESTRICT                                                                                                                                                                               -- Colorize: green
+) engine=InnoDB default character set latin1;                                                                                                                                                            -- Colorize: green
