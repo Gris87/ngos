@@ -75,21 +75,21 @@ rm "../../../build/disks/${VM_NAME}.img"                                        
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-sudo virt-install --name ${VM_NAME} \                                                                                                                                                                    # Colorize: green
-    --connect qemu:///system \                                                                                                                                                                           # Colorize: green
-    --virt-type qemu \                                                                                                                                                                                   # Colorize: green
-    --arch=x86_64 \                                                                                                                                                                                      # Colorize: green
-    --os-variant=none \                                                                                                                                                                                  # Colorize: green
-    --ram ${RAM_SIZE} \                                                                                                                                                                                  # Colorize: green
-    --vcpus 4,sockets=1,cores=2,threads=2 \                                                                                                                                                              # Colorize: green
-    --cpu Icelake-Client,+la57 \                                                                                                                                                                         # Colorize: green
-    --graphics ${DISPLAY_TYPE} \                                                                                                                                                                         # Colorize: green
-    --video=vga \                                                                                                                                                                                        # Colorize: green
-    --network network=default,model=virtio \                                                                                                                                                             # Colorize: green
-    --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \                                                                                                                 # Colorize: green
-    --serial unix,path=/tmp/qemuttyS0 \                                                                                                                                                                  # Colorize: green
-    --boot uefi \                                                                                                                                                                                        # Colorize: green
-    --qemu-commandline="-gdb tcp::1234" \                                                                                                                                                                # Colorize: green
+sudo virt-install --name ${VM_NAME}                                                     \
+    --connect qemu:///system                                                            \
+    --virt-type qemu                                                                    \
+    --arch=x86_64                                                                       \
+    --os-variant=none                                                                   \
+    --ram ${RAM_SIZE}                                                                   \
+    --vcpus 4,sockets=1,cores=2,threads=2                                               \
+    --cpu Icelake-Client,+la57                                                          \
+    --graphics ${DISPLAY_TYPE}                                                          \
+    --video=vga                                                                         \
+    --network network=default,model=virtio                                              \
+    --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none  \
+    --serial unix,path=/tmp/qemuttyS0                                                   \
+    --boot uefi                                                                         \
+    --qemu-commandline="-gdb tcp::1234"                                                 \
     --noautoconsole                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
