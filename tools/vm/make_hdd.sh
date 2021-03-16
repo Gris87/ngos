@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                              # Colorize: green
+#!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to create RAW disk image that can be used by VM                                                                                                                                      # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green

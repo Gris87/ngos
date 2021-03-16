@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                              # Colorize: green
+#!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to install webapps prerequisites                                                                                                                                                     # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green

@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                              # Colorize: green
+#!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to trace over all win7 kernel instructions                                                                                                                                           # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green

@@ -1,12 +1,12 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    build_config_gui \
-    build_config_maker \
-    code_generator \
-    code_verifier \
-    docs_verifier \
-    image_builder \
-    qmake \
-    test_verifier \
-    usb_boot_maker
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    build_config_gui \                                                                                                                                                                                   # Colorize: green
+    build_config_maker \                                                                                                                                                                                 # Colorize: green
+    code_generator \                                                                                                                                                                                     # Colorize: green
+    code_verifier \                                                                                                                                                                                      # Colorize: green
+    docs_verifier \                                                                                                                                                                                      # Colorize: green
+    image_builder \                                                                                                                                                                                      # Colorize: green
+    qmake \                                                                                                                                                                                              # Colorize: green
+    test_verifier \                                                                                                                                                                                      # Colorize: green
+    usb_boot_maker                                                                                                                                                                                       # Colorize: green

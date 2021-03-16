@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                              # Colorize: green
+#!/bin/bash
                                                                                                                                                                                                          # Colorize: green
 # This script helps to start VM with a specified VIRTUAL_MANAGER                                                                                                                                         # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green

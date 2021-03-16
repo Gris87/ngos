@@ -1,19 +1,19 @@
 #!/bin/bash
-
-# This script helps to install useful GDB commands
-# Author: Maxim Shvecov
-# Usage: ./install.sh
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-cp .gdbinit ~/.gdbinit
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to install useful GDB commands                                                                                                                                                       # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./install.sh                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cp .gdbinit ~/.gdbinit                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green
