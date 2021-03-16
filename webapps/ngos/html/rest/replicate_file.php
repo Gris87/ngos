@@ -1,270 +1,270 @@
-<?php
-    require_once "../common/functions.php";
-
-
-
-    function handle_request()
-    {
-        switch ($_SERVER["REQUEST_METHOD"])
-        {
-            case "GET":
-            {
-                handle_get();
-            }
-            break;
-
-            case "POST":
-            {
-                handle_post();
-            }
-            break;
-
-            default:
-            {
-                die("Unknown method");
-            }
-            break;
-        }
-    }
-
-
-
-    function handle_get()
-    {
-        // Nothing
-    }
-
-
-
-    function check_file_hash($link, $data, $path, $hash)
-    {
-        $own_hash = calculate_download_file_hash($path);
-
-        if ($own_hash != $hash)
-        {
-            $error_details = "Invalid parameters";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "File broken";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
-    }
-
-
-
-    function create_download_file($link, $data, $download_name, $hash, $content)
-    {
-        $file_content = base64_decode($content, true);
-
-        if (!$file_content)
-        {
-            $error_details = "Invalid parameters";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "File broken";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
-
-
-
-        $path = "../downloads/" . $download_name;
-
-        if (!file_exists($path))
-        {
-            if (!file_exists("../downloads"))
-            {
-                mkdir("../downloads");
-            }
-
-            file_put_contents($path, $file_content);
-        }
-        else
-        {
-            check_file_hash($link, $data, $path, $hash);
-        }
-    }
-
-
-
-    function insert_app_file($link, $data, $app_file_id, $app_version_id, $filename, $download_name, $hash)
-    {
-        // Ignore PhpAlignmentVerifier [BEGIN]
-        $sql = "INSERT INTO " . DB_TABLE_APP_FILES
-            . " (id, app_version_id, filename, download_name, hash)"
-            . " VALUES("
-            . "  '" . $link->real_escape_string($app_file_id)    . "',"
-            . "  '" . $link->real_escape_string($app_version_id) . "',"
-            . "  '" . $link->real_escape_string($filename)       . "',"
-            . "  '" . $link->real_escape_string($download_name)  . "',"
-            . "  '" . $link->real_escape_string($hash)           . "'"
-            . ")";
-        // Ignore PhpAlignmentVerifier [END]
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-    }
-
-
-
-    function forward_message_to_another_servers($link, $data, $level, $my_address, $my_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key)
-    {
-        switch ($level)
-        {
-            case 0:
-            {
-                $replicate_data = [
-                    "my_address"     => $my_address,
-                    "my_secret_key"  => $my_secret_key,
-                    "app_file_id"    => $app_file_id,
-                    "app_version_id" => $app_version_id,
-                    "app_id"         => $app_id,
-                    "filename"       => $filename,
-                    "download_name"  => $download_name,
-                    "hash"           => $hash,
-                    "content"        => $content,
-                    "secret_key"     => $secret_key
-                ];
-
-                $region_id = get_region_id($link, $data);
-
-
-
-                replicate_by_region($link, $data, $replicate_data, "/rest/replicate_file.php", $region_id, $my_address);
-            }
-            break;
-
-            case 1:
-            {
-                // Nothing
-            }
-            break;
-
-            default:
-            {
-                die("Unknown level");
-            }
-            break;
-        }
-    }
-
-
-
-    function handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key)
-    {
-        validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);
-
-        validate_app_secret_key($link, $data, $app_id, $secret_key);
-        validate_app_version($link, $data, $app_version_id);
-
-
-
-        create_download_file($link, $data, $download_name, $hash, $content);
-        insert_app_file($link, $data, $app_file_id, $app_version_id, $filename, $download_name, $hash);
-
-
-
-        $own_address = get_server_name($link, $data);
-
-        forward_message_to_another_servers($link, $data, $level, $own_address, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key);
-    }
-
-
-
-    function handle_post()
-    {
-        header("Content-type: application/json");
-
-        $data =
-        [
-            "status" => "Failed"
-        ];
-
-
-
-        $_POST = json_decode(file_get_contents("php://input"), true);
-
-
-
-        $level           = @$_POST["level"];
-        $my_address      = @$_POST["my_address"];
-        $my_secret_key   = @$_POST["my_secret_key"];
-        $your_secret_key = @$_POST["your_secret_key"];
-        $app_file_id     = @$_POST["app_file_id"];
-        $app_version_id  = @$_POST["app_version_id"];
-        $app_id          = @$_POST["app_id"];
-        $filename        = @$_POST["filename"];
-        $download_name   = @$_POST["download_name"];
-        $hash            = @$_POST["hash"];
-        $content         = @$_POST["content"];
-        $secret_key      = @$_POST["secret_key"];
-
-
-
-        if (
-            !verify_level($level)
-            ||
-            !verify_address($my_address)
-            ||
-            !verify_secret_key($my_secret_key)
-            ||
-            !verify_secret_key($your_secret_key)
-            ||
-            !verify_app_file_id($app_file_id)
-            ||
-            !verify_app_version_id($app_version_id)
-            ||
-            !verify_app_id($app_id)
-            ||
-            !verify_filename($filename)
-            ||
-            !verify_download_name($download_name)
-            ||
-            !verify_hash($hash)
-            ||
-            !verify_content($content)
-            ||
-            !verify_secret_key($secret_key)
-           )
-        {
-            $data["message"] = "Invalid parameters";
-
-            die(json_encode($data));
-        }
-
-
-
-        $link = db_connect();
-
-        if ($link)
-        {
-            handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key);
-
-            db_disconnect($link);
-        }
-        else
-        {
-            $data["message"] = "Database connection error";
-
-            die(json_encode($data));
-        }
-
-
-
-        $data["status"] = "OK";
-        echo json_encode($data);
-    }
-
-
-
-    handle_request();
-?>
+<?php                                                                                                                                                                                                    // Colorize: green
+    require_once "../common/functions.php";                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_request()                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        switch ($_SERVER["REQUEST_METHOD"])                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            case "GET":                                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handle_get();                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            case "POST":                                                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handle_post();                                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            default:                                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                die("Unknown method");                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_get()                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Nothing                                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function check_file_hash($link, $data, $path, $hash)                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        $own_hash = calculate_download_file_hash($path);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if ($own_hash != $hash)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $error_details = "Invalid parameters";                                                                                                                                                       // Colorize: green
+            error_log($error_details);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            db_disconnect($link);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $data["message"] = "File broken";                                                                                                                                                            // Colorize: green
+            $data["details"] = $error_details;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function create_download_file($link, $data, $download_name, $hash, $content)                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        $file_content = base64_decode($content, true);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!$file_content)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $error_details = "Invalid parameters";                                                                                                                                                       // Colorize: green
+            error_log($error_details);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            db_disconnect($link);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $data["message"] = "File broken";                                                                                                                                                            // Colorize: green
+            $data["details"] = $error_details;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $path = "../downloads/" . $download_name;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file_exists($path))                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!file_exists("../downloads"))                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mkdir("../downloads");                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file_put_contents($path, $file_content);                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            check_file_hash($link, $data, $path, $hash);                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function insert_app_file($link, $data, $app_file_id, $app_version_id, $filename, $download_name, $hash)                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore PhpAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        $sql = "INSERT INTO " . DB_TABLE_APP_FILES                                                                                                                                                       // Colorize: green
+            . " (id, app_version_id, filename, download_name, hash)"                                                                                                                                     // Colorize: green
+            . " VALUES("                                                                                                                                                                                 // Colorize: green
+            . "  '" . $link->real_escape_string($app_file_id)    . "',"                                                                                                                                  // Colorize: green
+            . "  '" . $link->real_escape_string($app_version_id) . "',"                                                                                                                                  // Colorize: green
+            . "  '" . $link->real_escape_string($filename)       . "',"                                                                                                                                  // Colorize: green
+            . "  '" . $link->real_escape_string($download_name)  . "',"                                                                                                                                  // Colorize: green
+            . "  '" . $link->real_escape_string($hash)           . "'"                                                                                                                                   // Colorize: green
+            . ")";                                                                                                                                                                                       // Colorize: green
+        // Ignore PhpAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $result = $link->query($sql);                                                                                                                                                                    // Colorize: green
+        die_if_sql_failed($result, $link, $data, $sql);                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function forward_message_to_another_servers($link, $data, $level, $my_address, $my_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key)      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        switch ($level)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            case 0:                                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                $replicate_data = [                                                                                                                                                                      // Colorize: green
+                    "my_address"     => $my_address,                                                                                                                                                     // Colorize: green
+                    "my_secret_key"  => $my_secret_key,                                                                                                                                                  // Colorize: green
+                    "app_file_id"    => $app_file_id,                                                                                                                                                    // Colorize: green
+                    "app_version_id" => $app_version_id,                                                                                                                                                 // Colorize: green
+                    "app_id"         => $app_id,                                                                                                                                                         // Colorize: green
+                    "filename"       => $filename,                                                                                                                                                       // Colorize: green
+                    "download_name"  => $download_name,                                                                                                                                                  // Colorize: green
+                    "hash"           => $hash,                                                                                                                                                           // Colorize: green
+                    "content"        => $content,                                                                                                                                                        // Colorize: green
+                    "secret_key"     => $secret_key                                                                                                                                                      // Colorize: green
+                ];                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                $region_id = get_region_id($link, $data);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                replicate_by_region($link, $data, $replicate_data, "/rest/replicate_file.php", $region_id, $my_address);                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            case 1:                                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Nothing                                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            default:                                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                die("Unknown level");                                                                                                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key) // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        validate_access($link, $data, $my_address, $my_secret_key, $your_secret_key);                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        validate_app_secret_key($link, $data, $app_id, $secret_key);                                                                                                                                     // Colorize: green
+        validate_app_version($link, $data, $app_version_id);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        create_download_file($link, $data, $download_name, $hash, $content);                                                                                                                             // Colorize: green
+        insert_app_file($link, $data, $app_file_id, $app_version_id, $filename, $download_name, $hash);                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $own_address = get_server_name($link, $data);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        forward_message_to_another_servers($link, $data, $level, $own_address, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key);       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_post()                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        header("Content-type: application/json");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $data =                                                                                                                                                                                          // Colorize: green
+        [                                                                                                                                                                                                // Colorize: green
+            "status" => "Failed"                                                                                                                                                                         // Colorize: green
+        ];                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $_POST = json_decode(file_get_contents("php://input"), true);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $level           = @$_POST["level"];                                                                                                                                                             // Colorize: green
+        $my_address      = @$_POST["my_address"];                                                                                                                                                        // Colorize: green
+        $my_secret_key   = @$_POST["my_secret_key"];                                                                                                                                                     // Colorize: green
+        $your_secret_key = @$_POST["your_secret_key"];                                                                                                                                                   // Colorize: green
+        $app_file_id     = @$_POST["app_file_id"];                                                                                                                                                       // Colorize: green
+        $app_version_id  = @$_POST["app_version_id"];                                                                                                                                                    // Colorize: green
+        $app_id          = @$_POST["app_id"];                                                                                                                                                            // Colorize: green
+        $filename        = @$_POST["filename"];                                                                                                                                                          // Colorize: green
+        $download_name   = @$_POST["download_name"];                                                                                                                                                     // Colorize: green
+        $hash            = @$_POST["hash"];                                                                                                                                                              // Colorize: green
+        $content         = @$_POST["content"];                                                                                                                                                           // Colorize: green
+        $secret_key      = @$_POST["secret_key"];                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !verify_level($level)                                                                                                                                                                        // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_address($my_address)                                                                                                                                                                 // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_secret_key($my_secret_key)                                                                                                                                                           // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_secret_key($your_secret_key)                                                                                                                                                         // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_app_file_id($app_file_id)                                                                                                                                                            // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_app_version_id($app_version_id)                                                                                                                                                      // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_app_id($app_id)                                                                                                                                                                      // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_filename($filename)                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_download_name($download_name)                                                                                                                                                        // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_hash($hash)                                                                                                                                                                          // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_content($content)                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_secret_key($secret_key)                                                                                                                                                              // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $data["message"] = "Invalid parameters";                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $link = db_connect();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if ($link)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handle_post_with_params($link, $data, $level, $my_address, $my_secret_key, $your_secret_key, $app_file_id, $app_version_id, $app_id, $filename, $download_name, $hash, $content, $secret_key); // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            db_disconnect($link);                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $data["message"] = "Database connection error";                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $data["status"] = "OK";                                                                                                                                                                          // Colorize: green
+        echo json_encode($data);                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    handle_request();                                                                                                                                                                                    // Colorize: green
+?>                                                                                                                                                                                                       // Colorize: green

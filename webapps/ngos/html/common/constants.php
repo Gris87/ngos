@@ -1,16 +1,16 @@
-<?php
-    define("MASTER_SERVER", "cps-etl-srv.northeurope.cloudapp.azure.com");
-
-    define("DB_HOST",     "localhost");
-    define("DB_USER",     "ngos");
-    define("DB_PASSWORD", "ngos");
-    define("DB_NAME",     "ngos");
-
-    define("DB_TABLE_APP_FILES",    "app_files");
-    define("DB_TABLE_APP_VERSIONS", "app_versions");
-    define("DB_TABLE_APPS",         "apps");
-    define("DB_TABLE_PROPERTIES",   "properties");
-    define("DB_TABLE_REGIONS",      "regions");
-    define("DB_TABLE_SERVERS",      "servers");
-    define("DB_TABLE_VENDORS",      "vendors");
-?>
+<?php                                                                                                                                                                                                    // Colorize: green
+    define("MASTER_SERVER", "cps-etl-srv.northeurope.cloudapp.azure.com");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    define("DB_HOST",     "localhost");                                                                                                                                                                  // Colorize: green
+    define("DB_USER",     "ngos");                                                                                                                                                                       // Colorize: green
+    define("DB_PASSWORD", "ngos");                                                                                                                                                                       // Colorize: green
+    define("DB_NAME",     "ngos");                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    define("DB_TABLE_APP_FILES",    "app_files");                                                                                                                                                        // Colorize: green
+    define("DB_TABLE_APP_VERSIONS", "app_versions");                                                                                                                                                     // Colorize: green
+    define("DB_TABLE_APPS",         "apps");                                                                                                                                                             // Colorize: green
+    define("DB_TABLE_PROPERTIES",   "properties");                                                                                                                                                       // Colorize: green
+    define("DB_TABLE_REGIONS",      "regions");                                                                                                                                                          // Colorize: green
+    define("DB_TABLE_SERVERS",      "servers");                                                                                                                                                          // Colorize: green
+    define("DB_TABLE_VENDORS",      "vendors");                                                                                                                                                          // Colorize: green
+?>                                                                                                                                                                                                       // Colorize: green

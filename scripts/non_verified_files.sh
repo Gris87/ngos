@@ -47,8 +47,12 @@ do
                 -ve "\.qm$"             \
                 -ve "\.stl$"            \
                 -ve "\.ttf$"            \
+                -ve "\.vbox$"           \
                 -ve "/generated/"       \
                 -ve "/BCD$"             \
+                -ve "/.config$"         \
+                -ve "/.gitignore$"      \
+                -ve "/.htaccess$"       \
     `
 
     if [ "${IGNORE_FILE}" != "" ]; then

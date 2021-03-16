@@ -1,286 +1,286 @@
-<?php
-    require_once "../common/functions.php";
-
-
-
-    function handle_request()
-    {
-        switch ($_SERVER["REQUEST_METHOD"])
-        {
-            case "GET":
-            {
-                handle_get();
-            }
-            break;
-
-            case "POST":
-            {
-                handle_post();
-            }
-            break;
-
-            default:
-            {
-                die("Unknown method");
-            }
-            break;
-        }
-    }
-
-
-
-    function handle_get()
-    {
-        // Nothing
-    }
-
-
-
-    function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)
-    {
-        $res = 0;
-
-
-
-        // Ignore PhpAlignmentVerifier [BEGIN]
-        $sql = "SELECT"
-            . "     id,"
-            . "     secret_key"
-            . " FROM " . DB_TABLE_APPS
-            . " WHERE codename = '" . $link->real_escape_string($codename) . "'";
-        // Ignore PhpAlignmentVerifier [END]
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        if ($result->num_rows == 0)
-        {
-            $result->close();
-
-
-
-            if (
-                !verify_vendor_id($vendor_id)
-                ||
-                !verify_email($owner_email)
-                ||
-                !verify_name($name)
-               )
-            {
-                db_disconnect($link);
-
-                $data["message"] = "Invalid parameters";
-
-                die(json_encode($data));
-            }
-
-
-
-            // Ignore PhpAlignmentVerifier [BEGIN]
-            $sql = "INSERT INTO " . DB_TABLE_APPS
-                . " (vendor_id, codename, owner_email, name, description, secret_key)"
-                . " VALUES("
-                . "  '" . $link->real_escape_string($vendor_id)   . "',"
-                . "  '" . $link->real_escape_string($codename)    . "',"
-                . "  '" . $link->real_escape_string($owner_email) . "',"
-                . "  '" . $link->real_escape_string($name)        . "',"
-                . "  '',"
-                . "  '" . $link->real_escape_string($secret_key)  . "'"
-                . ")";
-            // Ignore PhpAlignmentVerifier [END]
-
-
-
-            $result = $link->query($sql);
-            die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-            $res = $link->insert_id;
-        }
-        else
-        {
-            $row = $result->fetch_assoc();
-
-            $res            = (int)$row["id"];
-            $app_secret_key = $row["secret_key"];
-
-            $result->close();
-
-
-
-            if ($secret_key != $app_secret_key)
-            {
-                $error_details = "Access violation";
-                error_log($error_details);
-
-                db_disconnect($link);
-
-                $data["message"] = "Access error";
-                $data["details"] = $error_details;
-
-                die(json_encode($data));
-            }
-        }
-
-
-
-        return $res;
-    }
-
-
-
-    function create_app_version_id($link, $data, $app_id, $version)
-    {
-        // Ignore PhpAlignmentVerifier [BEGIN]
-        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS
-            . " (app_id, version, hash, completed)"
-            . " VALUES("
-            . "  '" . $link->real_escape_string($app_id)  . "',"
-            . "  '" . $link->real_escape_string($version) . "',"
-            . "  '',"
-            . "  '0'"
-            . ")";
-        // Ignore PhpAlignmentVerifier [END]
-
-
-
-        $result = $link->query($sql);
-        die_if_sql_failed($result, $link, $data, $sql);
-
-
-
-        return $link->insert_id;
-    }
-
-
-
-    function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)
-    {
-        $replicate_data = [
-            "app_id"      => $app_id,
-            "vendor_id"   => $vendor_id,
-            "codename"    => $codename,
-            "owner_email" => $owner_email,
-            "name"        => $name,
-            "secret_key"  => $secret_key
-        ];
-
-        replicate($link, $data, $replicate_data, "/rest/replicate_app.php");
-    }
-
-
-
-    function replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)
-    {
-        $replicate_data = [
-            "app_version_id" => $app_version_id,
-            "app_id"         => $app_id,
-            "version"        => $version,
-            "secret_key"     => $secret_key
-        ];
-
-        replicate($link, $data, $replicate_data, "/rest/replicate_app_version.php");
-    }
-
-
-
-    function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)
-    {
-        if (get_server_name($link, $data) != MASTER_SERVER)
-        {
-            $error_details = "Access violation";
-            error_log($error_details);
-
-            db_disconnect($link);
-
-            $data["message"] = "Access error";
-            $data["details"] = $error_details;
-
-            die(json_encode($data));
-        }
-
-
-
-        $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);
-        replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);
-
-        $app_version_id = create_app_version_id($link, $data, $app_id, $version);
-        replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);
-
-
-
-        $data["app_id"]         = $app_id;
-        $data["app_version_id"] = $app_version_id;
-    }
-
-
-
-    function handle_post()
-    {
-        header("Content-type: application/json");
-
-        $data =
-        [
-            "status" => "Failed"
-        ];
-
-
-
-        $_POST = json_decode(file_get_contents("php://input"), true);
-
-
-
-        $vendor_id   = @$_POST["vendor_id"];
-        $codename    = @$_POST["codename"];
-        $owner_email = @$_POST["owner_email"];
-        $name        = @$_POST["name"];
-        $version     = @$_POST["version"];
-        $secret_key  = @$_POST["secret_key"];
-
-
-
-        if (
-            !verify_codename($codename)
-            ||
-            !verify_version($version)
-            ||
-            !verify_secret_key($secret_key)
-           )
-        {
-            $data["message"] = "Invalid parameters";
-
-            die(json_encode($data));
-        }
-
-
-
-        $link = db_connect();
-
-        if ($link)
-        {
-            handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);
-
-            db_disconnect($link);
-        }
-        else
-        {
-            $data["message"] = "Database connection error";
-
-            die(json_encode($data));
-        }
-
-
-
-        $data["status"] = "OK";
-        echo json_encode($data);
-    }
-
-
-
-    handle_request();
-?>
+<?php                                                                                                                                                                                                    // Colorize: green
+    require_once "../common/functions.php";                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_request()                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        switch ($_SERVER["REQUEST_METHOD"])                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            case "GET":                                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handle_get();                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            case "POST":                                                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handle_post();                                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            default:                                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                die("Unknown method");                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_get()                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Nothing                                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key)                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        $res = 0;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Ignore PhpAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        $sql = "SELECT"                                                                                                                                                                                  // Colorize: green
+            . "     id,"                                                                                                                                                                                 // Colorize: green
+            . "     secret_key"                                                                                                                                                                          // Colorize: green
+            . " FROM " . DB_TABLE_APPS                                                                                                                                                                   // Colorize: green
+            . " WHERE codename = '" . $link->real_escape_string($codename) . "'";                                                                                                                        // Colorize: green
+        // Ignore PhpAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $result = $link->query($sql);                                                                                                                                                                    // Colorize: green
+        die_if_sql_failed($result, $link, $data, $sql);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if ($result->num_rows == 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $result->close();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                !verify_vendor_id($vendor_id)                                                                                                                                                            // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                !verify_email($owner_email)                                                                                                                                                              // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                !verify_name($name)                                                                                                                                                                      // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                db_disconnect($link);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                $data["message"] = "Invalid parameters";                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                die(json_encode($data));                                                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Ignore PhpAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            $sql = "INSERT INTO " . DB_TABLE_APPS                                                                                                                                                        // Colorize: green
+                . " (vendor_id, codename, owner_email, name, description, secret_key)"                                                                                                                   // Colorize: green
+                . " VALUES("                                                                                                                                                                             // Colorize: green
+                . "  '" . $link->real_escape_string($vendor_id)   . "',"                                                                                                                                 // Colorize: green
+                . "  '" . $link->real_escape_string($codename)    . "',"                                                                                                                                 // Colorize: green
+                . "  '" . $link->real_escape_string($owner_email) . "',"                                                                                                                                 // Colorize: green
+                . "  '" . $link->real_escape_string($name)        . "',"                                                                                                                                 // Colorize: green
+                . "  '',"                                                                                                                                                                                // Colorize: green
+                . "  '" . $link->real_escape_string($secret_key)  . "'"                                                                                                                                  // Colorize: green
+                . ")";                                                                                                                                                                                   // Colorize: green
+            // Ignore PhpAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $result = $link->query($sql);                                                                                                                                                                // Colorize: green
+            die_if_sql_failed($result, $link, $data, $sql);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $res = $link->insert_id;                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $row = $result->fetch_assoc();                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $res            = (int)$row["id"];                                                                                                                                                           // Colorize: green
+            $app_secret_key = $row["secret_key"];                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $result->close();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if ($secret_key != $app_secret_key)                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                $error_details = "Access violation";                                                                                                                                                     // Colorize: green
+                error_log($error_details);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                db_disconnect($link);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                $data["message"] = "Access error";                                                                                                                                                       // Colorize: green
+                $data["details"] = $error_details;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                die(json_encode($data));                                                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return $res;                                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function create_app_version_id($link, $data, $app_id, $version)                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore PhpAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        $sql = "INSERT INTO " . DB_TABLE_APP_VERSIONS                                                                                                                                                    // Colorize: green
+            . " (app_id, version, hash, completed)"                                                                                                                                                      // Colorize: green
+            . " VALUES("                                                                                                                                                                                 // Colorize: green
+            . "  '" . $link->real_escape_string($app_id)  . "',"                                                                                                                                         // Colorize: green
+            . "  '" . $link->real_escape_string($version) . "',"                                                                                                                                         // Colorize: green
+            . "  '',"                                                                                                                                                                                    // Colorize: green
+            . "  '0'"                                                                                                                                                                                    // Colorize: green
+            . ")";                                                                                                                                                                                       // Colorize: green
+        // Ignore PhpAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $result = $link->query($sql);                                                                                                                                                                    // Colorize: green
+        die_if_sql_failed($result, $link, $data, $sql);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return $link->insert_id;                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key)                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        $replicate_data = [                                                                                                                                                                              // Colorize: green
+            "app_id"      => $app_id,                                                                                                                                                                    // Colorize: green
+            "vendor_id"   => $vendor_id,                                                                                                                                                                 // Colorize: green
+            "codename"    => $codename,                                                                                                                                                                  // Colorize: green
+            "owner_email" => $owner_email,                                                                                                                                                               // Colorize: green
+            "name"        => $name,                                                                                                                                                                      // Colorize: green
+            "secret_key"  => $secret_key                                                                                                                                                                 // Colorize: green
+        ];                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        replicate($link, $data, $replicate_data, "/rest/replicate_app.php");                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key)                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        $replicate_data = [                                                                                                                                                                              // Colorize: green
+            "app_version_id" => $app_version_id,                                                                                                                                                         // Colorize: green
+            "app_id"         => $app_id,                                                                                                                                                                 // Colorize: green
+            "version"        => $version,                                                                                                                                                                // Colorize: green
+            "secret_key"     => $secret_key                                                                                                                                                              // Colorize: green
+        ];                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        replicate($link, $data, $replicate_data, "/rest/replicate_app_version.php");                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_post_with_params($link, &$data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key)                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (get_server_name($link, $data) != MASTER_SERVER)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $error_details = "Access violation";                                                                                                                                                         // Colorize: green
+            error_log($error_details);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            db_disconnect($link);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            $data["message"] = "Access error";                                                                                                                                                           // Colorize: green
+            $data["details"] = $error_details;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $app_id = get_or_create_app_id($link, $data, $vendor_id, $codename, $owner_email, $name, $secret_key);                                                                                           // Colorize: green
+        replicate_app($link, $data, $app_id, $vendor_id, $codename, $owner_email, $name, $secret_key);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $app_version_id = create_app_version_id($link, $data, $app_id, $version);                                                                                                                        // Colorize: green
+        replicate_app_version($link, $data, $app_version_id, $app_id, $version, $secret_key);                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $data["app_id"]         = $app_id;                                                                                                                                                               // Colorize: green
+        $data["app_version_id"] = $app_version_id;                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    function handle_post()                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        header("Content-type: application/json");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $data =                                                                                                                                                                                          // Colorize: green
+        [                                                                                                                                                                                                // Colorize: green
+            "status" => "Failed"                                                                                                                                                                         // Colorize: green
+        ];                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $_POST = json_decode(file_get_contents("php://input"), true);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $vendor_id   = @$_POST["vendor_id"];                                                                                                                                                             // Colorize: green
+        $codename    = @$_POST["codename"];                                                                                                                                                              // Colorize: green
+        $owner_email = @$_POST["owner_email"];                                                                                                                                                           // Colorize: green
+        $name        = @$_POST["name"];                                                                                                                                                                  // Colorize: green
+        $version     = @$_POST["version"];                                                                                                                                                               // Colorize: green
+        $secret_key  = @$_POST["secret_key"];                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !verify_codename($codename)                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_version($version)                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !verify_secret_key($secret_key)                                                                                                                                                              // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $data["message"] = "Invalid parameters";                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $link = db_connect();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if ($link)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handle_post_with_params($link, $data, $vendor_id, $codename, $owner_email, $name, $version, $secret_key);                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            db_disconnect($link);                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            $data["message"] = "Database connection error";                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            die(json_encode($data));                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        $data["status"] = "OK";                                                                                                                                                                          // Colorize: green
+        echo json_encode($data);                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    handle_request();                                                                                                                                                                                    // Colorize: green
+?>                                                                                                                                                                                                       // Colorize: green
