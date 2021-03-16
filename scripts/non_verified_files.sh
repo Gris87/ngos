@@ -38,11 +38,13 @@ do
                 -ve "\.dll$"            \
                 -ve "\.efi$"            \
                 -ve "\.exe$"            \
+                -ve "\.gitignore$"      \
                 -ve "\.gpg$"            \
                 -ve "\.ico$"            \
                 -ve "\.jpg$"            \
                 -ve "\.LOG$"            \
                 -ve "\.mui$"            \
+                -ve "\.patch$"          \
                 -ve "\.png$"            \
                 -ve "\.qm$"             \
                 -ve "\.stl$"            \
@@ -50,9 +52,10 @@ do
                 -ve "\.vbox$"           \
                 -ve "/generated/"       \
                 -ve "/BCD$"             \
-                -ve "/.config$"         \
-                -ve "/.gitignore$"      \
-                -ve "/.htaccess$"       \
+                -ve "/\.config$"        \
+                -ve "/\.gdbinit$"       \
+                -ve "/\.htaccess$"      \
+                -ve "/\.spelling$"      \
     `
 
     if [ "${IGNORE_FILE}" != "" ]; then
