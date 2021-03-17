@@ -1,21 +1,21 @@
-NGOS
-====
-
-0.7.09. USB boot maker
-----------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/usb_boot_maker/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.
-
-### Usage
-
-```sh
-usb_boot_maker
-```
-
-### How to ...
-
-TODO: Write document
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.7.09. USB boot maker                                                                                                                                                                                   // Colorize: green
+----------------------                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/usb_boot_maker/Screenshot.png?raw=true" alt="Screenshot"/>                                                                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Usage                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+usb_boot_maker                                                                                                                                                                                           // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### How to ...                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TODO: Write document                                                                                                                                                                                     // Colorize: green

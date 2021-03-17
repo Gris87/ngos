@@ -1,26 +1,26 @@
-NGOS
-====
-
-0.7.04. Code verifier
----------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/code_verifier/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-Code verification tool can check the source code for several well known issues.
-
-It is highly required that you will follow all recommendations provided by this tool.<br/>
-Please fix your source code in order to make Code verifier happy.
-
-### Usage
-
-```sh
-code_verifier PATH
-    * PATH - path to file or folder
-```
-
-### How to ...
-
-Code verifier tool will check all files in specified PATH argument.<br/>
-It is your responsibility to fix all found issues.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.7.04. Code verifier                                                                                                                                                                                    // Colorize: green
+---------------------                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/code_verifier/Screenshot.png?raw=true" alt="Screenshot"/>                                                                              // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Code verification tool can check the source code for several well known issues.                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+It is highly required that you will follow all recommendations provided by this tool.<br/>                                                                                                               // Colorize: green
+Please fix your source code in order to make Code verifier happy.                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Usage                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+code_verifier PATH                                                                                                                                                                                       // Colorize: green
+    * PATH - path to file or folder                                                                                                                                                                      // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### How to ...                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Code verifier tool will check all files in specified PATH argument.<br/>                                                                                                                                 // Colorize: green
+It is your responsibility to fix all found issues.                                                                                                                                                       // Colorize: green

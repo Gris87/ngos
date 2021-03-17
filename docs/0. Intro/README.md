@@ -1,18 +1,18 @@
-NGOS
-====
-
-0. Intro
---------
-
-This chapter will help you to understand how to start work with the project.
-
-Here you will know the project structure, what is the main parts of the project, what tools and scripts may be useful for you.
-
-* [Project structure](1.%20Project%20structure/README.md)
-* [Getting started](2.%20Getting%20started/README.md)
-* [Configuration](3.%20Configuration/README.md)
-* [How to build](4.%20How%20to%20build/README.md)
-* [How to debug](5.%20How%20to%20debug/README.md)
-* [Source code](6.%20Source%20code/README.md)
-* [Tools](7.%20Tools/README.md)
-* [Scripts](8.%20Scripts/README.md)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0. Intro                                                                                                                                                                                                 // Colorize: green
+--------                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This chapter will help you to understand how to start work with the project.                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here you will know the project structure, what is the main parts of the project, what tools and scripts may be useful for you.                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [Project structure](1.%20Project%20structure/README.md)                                                                                                                                                // Colorize: green
+* [Getting started](2.%20Getting%20started/README.md)                                                                                                                                                    // Colorize: green
+* [Configuration](3.%20Configuration/README.md)                                                                                                                                                          // Colorize: green
+* [How to build](4.%20How%20to%20build/README.md)                                                                                                                                                        // Colorize: green
+* [How to debug](5.%20How%20to%20debug/README.md)                                                                                                                                                        // Colorize: green
+* [Source code](6.%20Source%20code/README.md)                                                                                                                                                            // Colorize: green
+* [Tools](7.%20Tools/README.md)                                                                                                                                                                          // Colorize: green
+* [Scripts](8.%20Scripts/README.md)                                                                                                                                                                      // Colorize: green

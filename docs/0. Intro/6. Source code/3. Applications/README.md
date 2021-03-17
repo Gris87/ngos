@@ -1,9 +1,9 @@
-NGOS
-====
-
-0.6.3. Applications
--------------------
-
-In this subsection you will get information about some standard NGOS applications.
-
-* [ls](1.%20ls/README.md)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.3. Applications                                                                                                                                                                                      // Colorize: green
+-------------------                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+In this subsection you will get information about some standard NGOS applications.                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [ls](1.%20ls/README.md)                                                                                                                                                                                // Colorize: green

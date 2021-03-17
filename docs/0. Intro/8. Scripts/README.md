@@ -1,80 +1,80 @@
-NGOS
-====
-
-0.8. Scripts
-------------
-
-There are several scripts can be found in the [scripts](../../../scripts/) folder.
-
-### add_rc_version_tag.sh
-
-This script helps to add tag for new RC version.<br/>
-It should be called from the project root directory.
-
-Example:
-
-```sh
-./scripts/add_rc_version_tag.sh
-```
-
-### add_version_tag.sh
-
-This script helps to add tag for new version.<br/>
-It should be called from the project root directory.
-
-Example:
-
-```sh
-./scripts/add_version_tag.sh
-```
-
-### commit.sh
-
-This script can be used to simplify interaction with the Git.<br/>
-You can use it for fast committing all of your changes.<br/>
-This script should be called from the project root directory.
-
-Here is the usage:
-
-```sh
-./scripts/commit.sh MESSAGE
-```
-
-Example:
-
-```sh
-./scripts/commit.sh "My dear commit"
-```
-
-### pull.sh
-
-This script can be used to simplify interaction with the Git.<br/>
-Equivalent for `git pull`
-
-Example:
-
-```sh
-./scripts/pull.sh
-```
-
-### push.sh
-
-This script can be used to simplify interaction with the Git.<br/>
-Equivalent for `git push origin master --tags`
-
-Example:
-
-```sh
-./scripts/push.sh
-```
-
-### update_ngos_files.sh
-
-Please use this script to recreate [ngos.files](../../../ngos.files) file after adding or removing files.<br/>
-This script should be called from the project root directory.
-
-Example:
-
-```sh
-./scripts/update_ngos_files.sh
-```
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.8. Scripts                                                                                                                                                                                             // Colorize: green
+------------                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+There are several scripts can be found in the [scripts](../../../scripts/) folder.                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### add_rc_version_tag.sh                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This script helps to add tag for new RC version.<br/>                                                                                                                                                    // Colorize: green
+It should be called from the project root directory.                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/add_rc_version_tag.sh                                                                                                                                                                          // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### add_version_tag.sh                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This script helps to add tag for new version.<br/>                                                                                                                                                       // Colorize: green
+It should be called from the project root directory.                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/add_version_tag.sh                                                                                                                                                                             // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### commit.sh                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This script can be used to simplify interaction with the Git.<br/>                                                                                                                                       // Colorize: green
+You can use it for fast committing all of your changes.<br/>                                                                                                                                             // Colorize: green
+This script should be called from the project root directory.                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here is the usage:                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/commit.sh MESSAGE                                                                                                                                                                              // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/commit.sh "My dear commit"                                                                                                                                                                     // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### pull.sh                                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This script can be used to simplify interaction with the Git.<br/>                                                                                                                                       // Colorize: green
+Equivalent for `git pull`                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/pull.sh                                                                                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### push.sh                                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This script can be used to simplify interaction with the Git.<br/>                                                                                                                                       // Colorize: green
+Equivalent for `git push origin master --tags`                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/push.sh                                                                                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### update_ngos_files.sh                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please use this script to recreate [ngos.files](../../../ngos.files) file after adding or removing files.<br/>                                                                                           // Colorize: green
+This script should be called from the project root directory.                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Example:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+./scripts/update_ngos_files.sh                                                                                                                                                                           // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green

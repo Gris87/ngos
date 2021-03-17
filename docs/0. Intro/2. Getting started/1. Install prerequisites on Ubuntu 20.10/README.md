@@ -1,64 +1,64 @@
-NGOS
-====
-
-0.2.1. Install prerequisites on Ubuntu 20.10
---------------------------------------------
-
-Please follow instructions below in order to obtain the required software
-
-VNC
----
-
-If you need to install VNC server please use the following instruction:
-
-```sh
-sudo su
-apt-get update
-apt-get upgrade -y
-apt-get install -y xfce4 xfce4-goodies
-apt-get install -y tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer
-```
-
-After this run commands with your user account:
-
-```sh
-vncserver
-
-echo '#!/bin/sh'                                                >  ~/.vnc/xstartup
-echo ""                                                         >> ~/.vnc/xstartup
-echo "# Uncomment the following two lines for normal desktop:"  >> ~/.vnc/xstartup
-echo "# unset SESSION_MANAGER"                                  >> ~/.vnc/xstartup
-echo "# exec /etc/X11/xinit/xinitrc"                            >> ~/.vnc/xstartup
-echo ""                                                         >> ~/.vnc/xstartup
-echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"       >> ~/.vnc/xstartup
-echo "[ -r ${HOME}/.Xresources ] && xrdb ${HOME}/.Xresources"   >> ~/.vnc/xstartup
-echo "startxfce4 &"                                             >> ~/.vnc/xstartup
-
-vncserver -kill :1
-vncserver
-```
-
-Installation
-------------
-
-Please call these commands to install prerequisites
-
-```sh
-cd scripts/prerequisites
-sudo ./install.sh
-```
-
-Qt + Qt Creator
----------------
-
-Execute commands below in the X11 terminal with your user account
-
-```sh
-cd ~/
-./qt-unified-linux-x64-online.run
-rm qt-unified-linux-x64-online.run
-```
-
-Please choose following items during Qt installation:
-* Qt -> Qt 6.0.0 -> Desktop gcc 64 bit
-* Qt -> Qt 6.0.0 -> Sources
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.2.1. Install prerequisites on Ubuntu 20.10                                                                                                                                                             // Colorize: green
+--------------------------------------------                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please follow instructions below in order to obtain the required software                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+VNC                                                                                                                                                                                                      // Colorize: green
+---                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+If you need to install VNC server please use the following instruction:                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+sudo su                                                                                                                                                                                                  // Colorize: green
+apt-get update                                                                                                                                                                                           // Colorize: green
+apt-get upgrade -y                                                                                                                                                                                       // Colorize: green
+apt-get install -y xfce4 xfce4-goodies                                                                                                                                                                   // Colorize: green
+apt-get install -y tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer                                                                                                                    // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+After this run commands with your user account:                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+vncserver                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+echo '#!/bin/sh'                                                >  ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo ""                                                         >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "# Uncomment the following two lines for normal desktop:"  >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "# unset SESSION_MANAGER"                                  >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "# exec /etc/X11/xinit/xinitrc"                            >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo ""                                                         >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup"       >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "[ -r ${HOME}/.Xresources ] && xrdb ${HOME}/.Xresources"   >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+echo "startxfce4 &"                                             >> ~/.vnc/xstartup                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+vncserver -kill :1                                                                                                                                                                                       // Colorize: green
+vncserver                                                                                                                                                                                                // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Installation                                                                                                                                                                                             // Colorize: green
+------------                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please call these commands to install prerequisites                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+cd scripts/prerequisites                                                                                                                                                                                 // Colorize: green
+sudo ./install.sh                                                                                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Qt + Qt Creator                                                                                                                                                                                          // Colorize: green
+---------------                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Execute commands below in the X11 terminal with your user account                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+cd ~/                                                                                                                                                                                                    // Colorize: green
+./qt-unified-linux-x64-online.run                                                                                                                                                                        // Colorize: green
+rm qt-unified-linux-x64-online.run                                                                                                                                                                       // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please choose following items during Qt installation:                                                                                                                                                    // Colorize: green
+* Qt -> Qt 6.0.0 -> Desktop gcc 64 bit                                                                                                                                                                   // Colorize: green
+* Qt -> Qt 6.0.0 -> Sources                                                                                                                                                                              // Colorize: green

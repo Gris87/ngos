@@ -1,10 +1,10 @@
-NGOS
-====
-
-2. Kernel initialization
-------------------------
-
-This chapter describes the NGOS kernel initialization process.<br/>
-Here we will explain the full cycle of kernel initialization from its first step after the kernel has been decompressed to the start of the first process run by the kernel itself.
-
-* [First steps in the kernel](1.%20First%20steps%20in%20the%20kernel/README.md) - describes first steps in the kernel.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+2. Kernel initialization                                                                                                                                                                                 // Colorize: green
+------------------------                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+This chapter describes the NGOS kernel initialization process.<br/>                                                                                                                                      // Colorize: green
+Here we will explain the full cycle of kernel initialization from its first step after the kernel has been decompressed to the start of the first process run by the kernel itself.                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [First steps in the kernel](1.%20First%20steps%20in%20the%20kernel/README.md) - describes first steps in the kernel.                                                                                   // Colorize: green

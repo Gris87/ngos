@@ -1,11 +1,11 @@
-NGOS
-====
-
-0.6. Source code
-----------------
-
-NGOS like any other operating system consists of the kernel, shared libraries and applications.
-
-* [NGOS](1.%20NGOS/README.md)
-* [Libraries](2.%20Libraries/README.md)
-* [Applications](3.%20Applications/README.md)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6. Source code                                                                                                                                                                                         // Colorize: green
+----------------                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NGOS like any other operating system consists of the kernel, shared libraries and applications.                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [NGOS](1.%20NGOS/README.md)                                                                                                                                                                            // Colorize: green
+* [Libraries](2.%20Libraries/README.md)                                                                                                                                                                  // Colorize: green
+* [Applications](3.%20Applications/README.md)                                                                                                                                                            // Colorize: green

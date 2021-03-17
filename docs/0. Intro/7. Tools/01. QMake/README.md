@@ -1,22 +1,22 @@
-NGOS
-====
-
-0.7.01. QMake
--------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/qmake/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-We are using own qmake tool that parses pro files and generates required optimal Makefiles.
-
-### Usage
-
-```sh
-qmake PATH_TO_PRO_FILE
-    * PATH_TO_PRO_FILE - path to pro file
-```
-
-### How to ...
-
-TODO: Write document
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.7.01. QMake                                                                                                                                                                                            // Colorize: green
+-------------                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/qmake/Screenshot.png?raw=true" alt="Screenshot"/>                                                                                      // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We are using own qmake tool that parses pro files and generates required optimal Makefiles.                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Usage                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+qmake PATH_TO_PRO_FILE                                                                                                                                                                                   // Colorize: green
+    * PATH_TO_PRO_FILE - path to pro file                                                                                                                                                                // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### How to ...                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TODO: Write document                                                                                                                                                                                     // Colorize: green

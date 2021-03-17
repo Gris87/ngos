@@ -1,25 +1,25 @@
-NGOS
-====
-
-0.7.06. Docs verifier
----------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/docs_verifier/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-Docs verifier tool is checking all *.md files for valid format and valid links.
-
-It is nice to have documentation without typos and another issues.
-
-### Usage
-
-```sh
-docs_verifier PATH
-    * PATH - path to file or folder
-```
-
-### How to ...
-
-Docs verifier will search and verify all *.md files in specified PATH.<br/>
-It will inform you in case of any issue.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.7.06. Docs verifier                                                                                                                                                                                    // Colorize: green
+---------------------                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/docs_verifier/Screenshot.png?raw=true" alt="Screenshot"/>                                                                              // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Docs verifier tool is checking all *.md files for valid format and valid links.                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+It is nice to have documentation without typos and another issues.                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Usage                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+docs_verifier PATH                                                                                                                                                                                       // Colorize: green
+    * PATH - path to file or folder                                                                                                                                                                      // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### How to ...                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Docs verifier will search and verify all *.md files in specified PATH.<br/>                                                                                                                              // Colorize: green
+It will inform you in case of any issue.                                                                                                                                                                 // Colorize: green

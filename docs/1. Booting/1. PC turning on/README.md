@@ -1,332 +1,332 @@
-NGOS
-====
-
-1.1. PC turning on
-------------------
-
-When you press Power On button on your PC, it starts working.
-
-There are 2 ways how PC may boot next:
-* via BIOS
-* via UEFI
-
-BIOS is non-volatile firmware used to perform hardware initialization during the booting process.
-
-As of 2011, the BIOS is being replaced by the more complex Unified Extensible Firmware Interface (UEFI) in many new machines.<br/>
-UEFI is a specification which replaces the runtime interface of the legacy BIOS.<br/>
-Initially written for the Intel Itanium architecture, UEFI is now available for x86 and x86_64 platforms.
-
-Unified Extensible Firmware Interface (UEFI) is a successor to BIOS.
-
-### BIOS
-
-BIOS booting is not supporting in NGOS, but we should anyway display some information to user in this case.
-
-BIOS loads first 0x0200 (512) bytes (boot sector) from hard disk in order to check that BIOS can start booting from this hard disk.<br/>
-Such boot sector should be also terminated with a special magic number 0xAA55 to indicate that this sector is bootable.
-
-The source code for these 0x0200 bytes can be found in [Boot](../../../src/os/boot/) part.
-
-If you check [src/os/boot/linker.ld](../../../src/os/boot/linker.ld) file you will see the following:
-
-```
-OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64", "elf64-x86-64")
-OUTPUT_ARCH(i386:x86-64)
-ENTRY(_start)
-
-SECTIONS
-{
-    . = 0;
-    .bootsector_code : { *(.bootsector_code) }
-    .bootsector_data : { *(.bootsector_data) }
-
-    . = 0x01FE;
-    .boot_marker : { *(.boot_marker) }
-
-    _end = .;
-
-
-
-    . = ASSERT(_end               == 0x0200, "Bootsector is broken!");
-    . = ASSERT(_boot_magic_number == 0x01FE, "Boot magic number 0xAA55 located at the wrong place!");
-}
-```
-
-* bootsector_code is a section that contains code for BIOS.
-* bootsector_data is a section with message for user.
-* boot_marker is a special section at the end of the boot sector with just 2 byte signature 0xAA55.
-
-Let's check [src/os/boot/asm/arch/x86_64/main.S](../../../src/os/boot/asm/arch/x86_64/main.S) file now.
-
-```
-    movw    %cs, %ax                                                            # Indirectly assign (via AX)...
-    movw    %ax, %ds                                                            # CS to DS
-    movw    %ax, %es                                                            # CS to ES
-    movw    %ax, %ss                                                            # CS to SS
-    xorw    %sp, %sp                                                            # Set SP to 0
-    sti                                                                         # Set Interrupt Flag (When the IF flag is set, the processor begins responding to external, maskable interrupts after the next instruction is executed.)
-    cld                                                                         # Clear Direction Flag (When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI))
-```
-
-We are doing some preparations here to be ready for message printing.
-
-After that we will put address of message to SI register.
-
-```
-    movw   $(reboot_msg), %si                                                   # Store pointer of reboot message to SI
-```
-
-The message can be found in bootsector_data section:
-
-```
-.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)
-reboot_msg:                                                                     # Reboot message
-    .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...
-    .ascii  "\n"                                                                # bytes for...
-    .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...
-    .byte   0                                                                   # Ends with 0
-```
-
-Since we are ready for printing we will print the message with the following instructions:
-
-```
-msg_loop:                                                                       # Label for printing message
-    lodsb                                                                       # Load one byte from SI to AL
-    andb    %al, %al                                                            # IF AL == 0
-    jz      bs_die                                                              #   THEN jump to bs_die
-    movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)
-    movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)
-    int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen
-    jmp     msg_loop                                                            #        Print next character
-```
-
-Next, we jump to bs_die label when the message printed.
-
-```
-bs_die:                                                                         # We will come to this label when reboot message printed
-    xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press
-    int     $0x16                                                               # Wait until user press some keyboard button
-    int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)
-                                                                                #
-    ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong
-```
-
-Here we waits for user interaction and reboot PC when user press some button.
-
-Let's see the results.
-
-```sh
-qemu-system-x86_64 -drive file=build/deployment/com.ngos.kernel/kernel.efi,format=raw
-```
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/BIOS.png?raw=true" alt="BIOS"/>
-</p>
-
-### UEFI
-
-In case of UEFI booting we should have PE Header.
-
-The source code for PE Header can also be found in [Boot](../../../src/os/boot/) part.
-
-If you already checked [src/os/boot/asm/arch/x86_64/main.S](../../../src/os/boot/asm/arch/x86_64/main.S) file then you probably knows that image starting with MZ characters (MS-DOS Header):
-
-```
-    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x0200 bytes
-```
-
-But UEFI didn't rely on MS-DOS Header. The most interesting thing for UEFI is PE Header.
-
-We can specify location of PE Header via [e_lfanew](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#MS-DOS_header) field at 0x3C offset.
-
-```
-    .org    0x3C                                                                # According to MS-DOS Header there is e_lfanew field at 0x3C.
-    .long   pe_header                                                           # We will put offset to the PE Header here.
-```
-
-[PE Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#PE_Header) is pretty simple and just contains PE\0\0 signature:
-
-```
-pe_header:                                                                      # Label for locating PE Header
-    .ascii  "PE\0\0"                                                            # PE Header starts with PE\0\0
-```
-
-The first big chunk of information lies in the [COFF Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#COFF_Header), directly after the PE signature.
-
-```
-coff_header:                                                                    # We will put COFF Header right after the PE Header
-                                                                                # struct COFFHeader
-                                                                                # {
-    .word   0x8664  # 0x8664 == x86-64 machine                                  #     short machine;                # This field determines what machine the file was compiled for.
-    .word   0x03    # 3 sections                                                #     short numberOfSections;       # The number of sections that are described at the end of the PE headers.
-    .long   0       # No timestamp                                              #     long timeDateStamp;           # 32 bit time at which this header was generated.
-    .long   0       # No symbols                                                #     long pointerToSymbolTable;    # Pointer to symbol table.
-    .long   0       # No symbols                                                #     long numberOfSymbols;         # Number of symbols.
-    .word   section_table - optional_header                                     #     short sizeOfOptionalHeader;   # This field shows how long the "PE Optional Header" is that follows the COFF header.
-    .word   0x0206  #   IMAGE_FILE_DEBUG_STRIPPED                               #     short characteristics;        # This is a field of bit flags, that show some characteristics of the file.
-                    # | IMAGE_FILE_LINE_NUMS_STRIPPED                           # }
-                    # | IMAGE_FILE_EXECUTABLE_IMAGE                             #
-```
-
-Here we are saying to UEFI that kernel was built for x86_64 architecture.<br/>
-We have 3 sections that we will describe below.<br/>
-There are no any timestamp and symbols.<br/>
-The sizeOfOptionalHeader is calculating by the provided labels.<br/>
-In characteristics field we are saying that the image is executable and there is no any debug information.
-
-[PE Optional Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#PE_Optional_Header) is not "optional", because it is required in Executable files, but not in COFF object files.<br/>
-This header goes next right after COFF Header.
-
-```
-optional_header:                                                                # Label for PE Optional Header
-                                                                                # struct PEOptHeader
-                                                                                # {
-    .word   0x020B  # PE32+ format                                              #     short signature;                                      # Magic number 0x020B for identifing PE format for 64 bit system
-    .byte   0x0E    # Some modern                                               #     char majorLinkerVersion;                              # The major version number of the linker.
-    .byte   0x0A    # linker version                                            #     char minorLinkerVersion;                              # The minor version number of the linker.
-    .long   0       # Ignored                                                   #     long sizeOfCode;                                      # The size of the code section, in bytes, or the sum of all such sections if there are multiple code sections.
-    .long   0       # Ignored                                                   #     long sizeOfInitializedData;                           # The size of the initialized data section, in bytes, or the sum of all such sections if there are multiple initialized data sections.
-    .long   0       # Ignored                                                   #     long sizeOfUninitializedData;                         # The size of the uninitialized data section, in bytes, or the sum of all such sections if there are multiple uninitialized data sections.
-    .long   0       # To be filled by image_builder                             #     long addressOfEntryPoint;                             # A pointer to the entry point function, relative to the image base address. For executable files, this is the starting address. For device drivers, this is the address of the initialization function. The entry point function is optional for DLLs. When no entry point is present, this member is zero.
-    .long   0       # Ignored                                                   #     long baseOfCode;                                      # A pointer to the beginning of the code section, relative to the image base.
-    .quad   0       # Ignored                                                   #     long long imageBase;                                  # The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows CE where it is 0x00010000.
-    .long   0x10    # 16                                                        #     long sectionAlignment;                                # The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the fileAlignment member. The default value is the page size for the system.
-    .long   0x10    # 16                                                        #     long fileAlignment;                                   # The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between 512 and 64K (inclusive). The default is 512. If the sectionAlignment member is less than the system page size, this member must be the same as sectionAlignment.
-    .word   0       # Ignored                                                   #     short majorOSVersion;                                 # The major version number of the required operating system.
-    .word   0       # Ignored                                                   #     short minorOSVersion;                                 # The minor version number of the required operating system.
-    .word   0       # Ignored                                                   #     short majorImageVersion;                              # The major version number of the image.
-    .word   0       # Ignored                                                   #     short minorImageVersion;                              # The minor version number of the image.
-    .word   0       # Ignored                                                   #     short majorSubsystemVersion;                          # The major version number of the subsystem.
-    .word   0       # Ignored                                                   #     short minorSubsystemVersion;                          # The minor version number of the subsystem.
-    .long   0       # Reserved                                                  #     long win32VersionValue;                               # This member is reserved and must be 0.
-    .long   0       # To be filled by image_builder                             #     long sizeOfImage;                                     # The size of the image, in bytes, including all headers. Must be a multiple of sectionAlignment.
-    .long   0x0200  # Say UEFI to skip 0x0200 bytes                             #     long sizeOfHeaders;                                   # Total size of all headers.
-    .long   0       # Ignored                                                   #     long checksum;                                        # The image file checksum.
-    .word   0x0A    # UEFI application                                          #     short subsystem;                                      # The subsystem that will be invoked to run the executable      # 0x0A == UEFI application
-    .word   0       # Ignored                                                   #     short dllCharacteristics;                             # The DLL characteristics of the image.
-    .quad   0       # Ignored                                                   #     long long sizeOfStackReserve;                         # The number of bytes to reserve for the stack. Only the memory specified by the sizeOfStackCommit member is committed at load time; the rest is made available one page at a time until this reserve size is reached.
-    .quad   0       # Ignored                                                   #     long long sizeOfStackCommit;                          # The number of bytes to commit for the stack.
-    .quad   0       # Ignored                                                   #     long long sizeOfHeapReserve;                          # The number of bytes to reserve for the local heap. Only the memory specified by the sizeOfHeapCommit member is committed at load time; the rest is made available one page at a time until this reserve size is reached.
-    .quad   0       # Ignored                                                   #     long long sizeOfHeapCommit;                           # The number of bytes to commit for the local heap.
-    .long   0       # Ignored                                                   #     long loaderFlags;                                     # This member is obsolete.
-    .long   0x06    # 6 data directories                                        #     long numberOfRvaAndSizes;                             # The number of directory entries in the remainder of the optional header. Each entry describes a location and size.
-                                                                                #     data_directory DataDirectory[numberOfRvaAndSizes];    # Provides RVAs and sizes which locate various data structures, which are used for setting up the execution environment of a module.
-                                                                                # }
-                                                                                #
-                                                                                # struct data_directory
-                                                                                # {
-                                                                                #     long virtualAddress;  # Address of DataDirectory
-                                                                                #     long size;            # Size of DataDirectory
-                                                                                # }
-                                                                                #
-    .long   0       # Ignored                                                   # ExportTable virtualAddress
-    .long   0       # Ignored                                                   # ExportTable size
-                                                                                #
-    .long   0       # Ignored                                                   # ImportTable virtualAddress
-    .long   0       # Ignored                                                   # ImportTable size
-                                                                                #
-    .long   0       # Ignored                                                   # ResourceTable virtualAddress
-    .long   0       # Ignored                                                   # ResourceTable size
-                                                                                #
-    .long   0       # Ignored                                                   # ExceptionTable virtualAddress
-    .long   0       # Ignored                                                   # ExceptionTable size
-                                                                                #
-    .long   0       # Ignored                                                   # CertificationTable virtualAddress
-    .long   0       # Ignored                                                   # CertificationTable size
-                                                                                #
-    .long   0       # Ignored                                                   # BaseRelocationTable virtualAddress
-    .long   0       # Ignored                                                   # BaseRelocationTable size
-```
-
-There are a lot of ignored fields. Let's explain the remaining ones.
-
-We are putting 0x020B signature to identify 64 bit version of PE Optional Header.<br/>
-majorLinkerVersion and minorLinkerVersion set for some modern linker version.<br/>
-addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x0240 (0x0200 bytes for Boot part and 0x40 byte for .reloc section).<br/>
-sectionAlignment and fileAlignment set to 0x10 in order to make kernel running in aligned place.<br/>
-sizeOfImage is the total size of image. We will put the value during image build procedure.<br/>
-sizeOfHeaders set to 0x0200. It is the size of whole Boot part.<br/>
-subsystem set to 0x0A that means that the image is UEFI application.<br/>
-numberOfRvaAndSizes usually set to 15 data_directory records, but we should have at least 6. Probably because BaseRelocationTable is required for x86_64.
-
-Section table can be found right after PE Optional Header:
-
-```
-section_table:                                                                  # Label for section table
-                                                                                # struct IMAGE_SECTION_HEADER
-                                                                                # {
-    .ascii  ".reloc\0\0"    # UEFI application must be                          #     char  name[8];
-                            # relocatable                                       #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x42100040  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_DISCARDABLE                           # }
-                        # | IMAGE_SCN_ALIGN_1BYTES                              #
-                        # | IMAGE_SCN_CNT_INITIALIZED_DATA                      #
-                                                                                # struct IMAGE_SECTION_HEADER
-                                                                                # {
-    .ascii  ".config\0"                                                         #     char  name[8];
-                                                                                #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x60500020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_EXECUTE                               # }
-                        # | IMAGE_SCN_ALIGN_16BYTES                             #
-                        # | IMAGE_SCN_CNT_CODE                                  #
-                                                                                # struct IMAGE_SECTION_HEADER
-                                                                                # {
-    .ascii  ".kernel\0"                                                         #     char  name[8];
-                                                                                #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x60100020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_EXECUTE                               # }
-                        # | IMAGE_SCN_ALIGN_1BYTES                              #
-                        # | IMAGE_SCN_CNT_CODE                                  #
-```
-
-We have 3 sections here:
-* .reloc section
-* .config section
-* .kernel section
-
-.reloc section is required for UEFI in order to run this image. It is located at 0x0200 offset right after the Boot part and contains 0x40 bytes.
-
-Since UEFI binaries are executed in physical mode, UEFI cannot guarantee that a given binary can be loaded at its preferred address. UEFI does _try_ to load a binary at it's preferred address, but if it can't do so, it will load it at another address and then relocate the binary using the contents of the .reloc section.
-
-.config section is located at 0x0240 (0x0200 + 0x40) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.
-
-.kernel section is located after the .config section and contains raw or compressed kernel.elf file or installer.elf file. This section starts with [KernelDescriptor](../../../src/os/configure/src/bits64/other/kerneldescriptor.h) that indicates the size of included image.
-
-The structure of kernel image can be displayed on figure below:
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/Image%20structure.png?raw=true" alt="Image structure"/>
-</p>
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+1.1. PC turning on                                                                                                                                                                                       // Colorize: green
+------------------                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+When you press Power On button on your PC, it starts working.                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+There are 2 ways how PC may boot next:                                                                                                                                                                   // Colorize: green
+* via BIOS                                                                                                                                                                                               // Colorize: green
+* via UEFI                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BIOS is non-volatile firmware used to perform hardware initialization during the booting process.                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+As of 2011, the BIOS is being replaced by the more complex Unified Extensible Firmware Interface (UEFI) in many new machines.<br/>                                                                       // Colorize: green
+UEFI is a specification which replaces the runtime interface of the legacy BIOS.<br/>                                                                                                                    // Colorize: green
+Initially written for the Intel Itanium architecture, UEFI is now available for x86 and x86_64 platforms.                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Unified Extensible Firmware Interface (UEFI) is a successor to BIOS.                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### BIOS                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BIOS booting is not supporting in NGOS, but we should anyway display some information to user in this case.                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BIOS loads first 0x0200 (512) bytes (boot sector) from hard disk in order to check that BIOS can start booting from this hard disk.<br/>                                                                 // Colorize: green
+Such boot sector should be also terminated with a special magic number 0xAA55 to indicate that this sector is bootable.                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The source code for these 0x0200 bytes can be found in [Boot](../../../src/os/boot/) part.                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+If you check [src/os/boot/linker.ld](../../../src/os/boot/linker.ld) file you will see the following:                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64", "elf64-x86-64")                                                                                                                                            // Colorize: green
+OUTPUT_ARCH(i386:x86-64)                                                                                                                                                                                 // Colorize: green
+ENTRY(_start)                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+SECTIONS                                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    . = 0;                                                                                                                                                                                               // Colorize: green
+    .bootsector_code : { *(.bootsector_code) }                                                                                                                                                           // Colorize: green
+    .bootsector_data : { *(.bootsector_data) }                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    . = 0x01FE;                                                                                                                                                                                          // Colorize: green
+    .boot_marker : { *(.boot_marker) }                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    _end = .;                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    . = ASSERT(_end               == 0x0200, "Bootsector is broken!");                                                                                                                                   // Colorize: green
+    . = ASSERT(_boot_magic_number == 0x01FE, "Boot magic number 0xAA55 located at the wrong place!");                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* bootsector_code is a section that contains code for BIOS.                                                                                                                                              // Colorize: green
+* bootsector_data is a section with message for user.                                                                                                                                                    // Colorize: green
+* boot_marker is a special section at the end of the boot sector with just 2 byte signature 0xAA55.                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Let's check [src/os/boot/asm/arch/x86_64/main.S](../../../src/os/boot/asm/arch/x86_64/main.S) file now.                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+    movw    %cs, %ax                                                            # Indirectly assign (via AX)...                                                                                          // Colorize: green
+    movw    %ax, %ds                                                            # CS to DS                                                                                                               // Colorize: green
+    movw    %ax, %es                                                            # CS to ES                                                                                                               // Colorize: green
+    movw    %ax, %ss                                                            # CS to SS                                                                                                               // Colorize: green
+    xorw    %sp, %sp                                                            # Set SP to 0                                                                                                            // Colorize: green
+    sti                                                                         # Set Interrupt Flag (When the IF flag is set, the processor begins responding to external, maskable interrupts after the next instruction is executed.) // Colorize: green
+    cld                                                                         # Clear Direction Flag (When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI))  // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We are doing some preparations here to be ready for message printing.                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+After that we will put address of message to SI register.                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+    movw   $(reboot_msg), %si                                                   # Store pointer of reboot message to SI                                                                                  // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The message can be found in bootsector_data section:                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)                                                                              // Colorize: green
+reboot_msg:                                                                     # Reboot message                                                                                                         // Colorize: green
+    .ascii  "Please use UEFI bootloader.\r\n"                                   # A lot of...                                                                                                            // Colorize: green
+    .ascii  "\n"                                                                # bytes for...                                                                                                           // Colorize: green
+    .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...                                                                                                      // Colorize: green
+    .byte   0                                                                   # Ends with 0                                                                                                            // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Since we are ready for printing we will print the message with the following instructions:                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+msg_loop:                                                                       # Label for printing message                                                                                             // Colorize: green
+    lodsb                                                                       # Load one byte from SI to AL                                                                                            // Colorize: green
+    andb    %al, %al                                                            # IF AL == 0                                                                                                             // Colorize: green
+    jz      bs_die                                                              #   THEN jump to bs_die                                                                                                  // Colorize: green
+    movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)                                                                         // Colorize: green
+    movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)                                                           // Colorize: green
+    int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen                                                // Colorize: green
+    jmp     msg_loop                                                            #        Print next character                                                                                            // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Next, we jump to bs_die label when the message printed.                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+bs_die:                                                                         # We will come to this label when reboot message printed                                                                 // Colorize: green
+    xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press                                                           // Colorize: green
+    int     $0x16                                                               # Wait until user press some keyboard button                                                                             // Colorize: green
+    int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)                                             // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong                                                                                 // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here we waits for user interaction and reboot PC when user press some button.                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Let's see the results.                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+qemu-system-x86_64 -drive file=build/deployment/com.ngos.kernel/kernel.efi,format=raw                                                                                                                    // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/BIOS.png?raw=true" alt="BIOS"/>                                                                        // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### UEFI                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+In case of UEFI booting we should have PE Header.                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The source code for PE Header can also be found in [Boot](../../../src/os/boot/) part.                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+If you already checked [src/os/boot/asm/arch/x86_64/main.S](../../../src/os/boot/asm/arch/x86_64/main.S) file then you probably knows that image starting with MZ characters (MS-DOS Header):            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+    .ascii  "MZ"                                                                # Start boot sector with MZ characters (MS-DOS Header) in order to let UEFI to skip 0x0200 bytes                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+But UEFI didn't rely on MS-DOS Header. The most interesting thing for UEFI is PE Header.                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We can specify location of PE Header via [e_lfanew](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#MS-DOS_header) field at 0x3C offset.                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+    .org    0x3C                                                                # According to MS-DOS Header there is e_lfanew field at 0x3C.                                                            // Colorize: green
+    .long   pe_header                                                           # We will put offset to the PE Header here.                                                                              // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+[PE Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#PE_Header) is pretty simple and just contains PE\0\0 signature:                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+pe_header:                                                                      # Label for locating PE Header                                                                                           // Colorize: green
+    .ascii  "PE\0\0"                                                            # PE Header starts with PE\0\0                                                                                           // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The first big chunk of information lies in the [COFF Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#COFF_Header), directly after the PE signature.                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+coff_header:                                                                    # We will put COFF Header right after the PE Header                                                                      // Colorize: green
+                                                                                # struct COFFHeader                                                                                                      // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+    .word   0x8664  # 0x8664 == x86-64 machine                                  #     short machine;                # This field determines what machine the file was compiled for.                      // Colorize: green
+    .word   0x03    # 3 sections                                                #     short numberOfSections;       # The number of sections that are described at the end of the PE headers.            // Colorize: green
+    .long   0       # No timestamp                                              #     long timeDateStamp;           # 32 bit time at which this header was generated.                                    // Colorize: green
+    .long   0       # No symbols                                                #     long pointerToSymbolTable;    # Pointer to symbol table.                                                           // Colorize: green
+    .long   0       # No symbols                                                #     long numberOfSymbols;         # Number of symbols.                                                                 // Colorize: green
+    .word   section_table - optional_header                                     #     short sizeOfOptionalHeader;   # This field shows how long the "PE Optional Header" is that follows the COFF header. // Colorize: green
+    .word   0x0206  #   IMAGE_FILE_DEBUG_STRIPPED                               #     short characteristics;        # This is a field of bit flags, that show some characteristics of the file.          // Colorize: green
+                    # | IMAGE_FILE_LINE_NUMS_STRIPPED                           # }                                                                                                                      // Colorize: green
+                    # | IMAGE_FILE_EXECUTABLE_IMAGE                             #                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here we are saying to UEFI that kernel was built for x86_64 architecture.<br/>                                                                                                                           // Colorize: green
+We have 3 sections that we will describe below.<br/>                                                                                                                                                     // Colorize: green
+There are no any timestamp and symbols.<br/>                                                                                                                                                             // Colorize: green
+The sizeOfOptionalHeader is calculating by the provided labels.<br/>                                                                                                                                     // Colorize: green
+In characteristics field we are saying that the image is executable and there is no any debug information.                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+[PE Optional Header](https://en.wikibooks.org/wiki/X86_Disassembly/Windows_Executable_Files#PE_Optional_Header) is not "optional", because it is required in Executable files, but not in COFF object files.<br/> // Colorize: green
+This header goes next right after COFF Header.                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+optional_header:                                                                # Label for PE Optional Header                                                                                           // Colorize: green
+                                                                                # struct PEOptHeader                                                                                                     // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+    .word   0x020B  # PE32+ format                                              #     short signature;                                      # Magic number 0x020B for identifing PE format for 64 bit system // Colorize: green
+    .byte   0x0E    # Some modern                                               #     char majorLinkerVersion;                              # The major version number of the linker.                    // Colorize: green
+    .byte   0x0A    # linker version                                            #     char minorLinkerVersion;                              # The minor version number of the linker.                    // Colorize: green
+    .long   0       # Ignored                                                   #     long sizeOfCode;                                      # The size of the code section, in bytes, or the sum of all such sections if there are multiple code sections. // Colorize: green
+    .long   0       # Ignored                                                   #     long sizeOfInitializedData;                           # The size of the initialized data section, in bytes, or the sum of all such sections if there are multiple initialized data sections. // Colorize: green
+    .long   0       # Ignored                                                   #     long sizeOfUninitializedData;                         # The size of the uninitialized data section, in bytes, or the sum of all such sections if there are multiple uninitialized data sections. // Colorize: green
+    .long   0       # To be filled by image_builder                             #     long addressOfEntryPoint;                             # A pointer to the entry point function, relative to the image base address. For executable files, this is the starting address. For device drivers, this is the address of the initialization function. The entry point function is optional for DLLs. When no entry point is present, this member is zero. // Colorize: green
+    .long   0       # Ignored                                                   #     long baseOfCode;                                      # A pointer to the beginning of the code section, relative to the image base. // Colorize: green
+    .quad   0       # Ignored                                                   #     long long imageBase;                                  # The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows CE where it is 0x00010000. // Colorize: green
+    .long   0x10    # 16                                                        #     long sectionAlignment;                                # The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the fileAlignment member. The default value is the page size for the system. // Colorize: green
+    .long   0x10    # 16                                                        #     long fileAlignment;                                   # The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between 512 and 64K (inclusive). The default is 512. If the sectionAlignment member is less than the system page size, this member must be the same as sectionAlignment. // Colorize: green
+    .word   0       # Ignored                                                   #     short majorOSVersion;                                 # The major version number of the required operating system. // Colorize: green
+    .word   0       # Ignored                                                   #     short minorOSVersion;                                 # The minor version number of the required operating system. // Colorize: green
+    .word   0       # Ignored                                                   #     short majorImageVersion;                              # The major version number of the image.                     // Colorize: green
+    .word   0       # Ignored                                                   #     short minorImageVersion;                              # The minor version number of the image.                     // Colorize: green
+    .word   0       # Ignored                                                   #     short majorSubsystemVersion;                          # The major version number of the subsystem.                 // Colorize: green
+    .word   0       # Ignored                                                   #     short minorSubsystemVersion;                          # The minor version number of the subsystem.                 // Colorize: green
+    .long   0       # Reserved                                                  #     long win32VersionValue;                               # This member is reserved and must be 0.                     // Colorize: green
+    .long   0       # To be filled by image_builder                             #     long sizeOfImage;                                     # The size of the image, in bytes, including all headers. Must be a multiple of sectionAlignment. // Colorize: green
+    .long   0x0200  # Say UEFI to skip 0x0200 bytes                             #     long sizeOfHeaders;                                   # Total size of all headers.                                 // Colorize: green
+    .long   0       # Ignored                                                   #     long checksum;                                        # The image file checksum.                                   // Colorize: green
+    .word   0x0A    # UEFI application                                          #     short subsystem;                                      # The subsystem that will be invoked to run the executable      # 0x0A == UEFI application // Colorize: green
+    .word   0       # Ignored                                                   #     short dllCharacteristics;                             # The DLL characteristics of the image.                      // Colorize: green
+    .quad   0       # Ignored                                                   #     long long sizeOfStackReserve;                         # The number of bytes to reserve for the stack. Only the memory specified by the sizeOfStackCommit member is committed at load time; the rest is made available one page at a time until this reserve size is reached. // Colorize: green
+    .quad   0       # Ignored                                                   #     long long sizeOfStackCommit;                          # The number of bytes to commit for the stack.               // Colorize: green
+    .quad   0       # Ignored                                                   #     long long sizeOfHeapReserve;                          # The number of bytes to reserve for the local heap. Only the memory specified by the sizeOfHeapCommit member is committed at load time; the rest is made available one page at a time until this reserve size is reached. // Colorize: green
+    .quad   0       # Ignored                                                   #     long long sizeOfHeapCommit;                           # The number of bytes to commit for the local heap.          // Colorize: green
+    .long   0       # Ignored                                                   #     long loaderFlags;                                     # This member is obsolete.                                   // Colorize: green
+    .long   0x06    # 6 data directories                                        #     long numberOfRvaAndSizes;                             # The number of directory entries in the remainder of the optional header. Each entry describes a location and size. // Colorize: green
+                                                                                #     data_directory DataDirectory[numberOfRvaAndSizes];    # Provides RVAs and sizes which locate various data structures, which are used for setting up the execution environment of a module. // Colorize: green
+                                                                                # }                                                                                                                      // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+                                                                                # struct data_directory                                                                                                  // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+                                                                                #     long virtualAddress;  # Address of DataDirectory                                                                   // Colorize: green
+                                                                                #     long size;            # Size of DataDirectory                                                                      // Colorize: green
+                                                                                # }                                                                                                                      // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # ExportTable virtualAddress                                                                                             // Colorize: green
+    .long   0       # Ignored                                                   # ExportTable size                                                                                                       // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # ImportTable virtualAddress                                                                                             // Colorize: green
+    .long   0       # Ignored                                                   # ImportTable size                                                                                                       // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # ResourceTable virtualAddress                                                                                           // Colorize: green
+    .long   0       # Ignored                                                   # ResourceTable size                                                                                                     // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # ExceptionTable virtualAddress                                                                                          // Colorize: green
+    .long   0       # Ignored                                                   # ExceptionTable size                                                                                                    // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # CertificationTable virtualAddress                                                                                      // Colorize: green
+    .long   0       # Ignored                                                   # CertificationTable size                                                                                                // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    .long   0       # Ignored                                                   # BaseRelocationTable virtualAddress                                                                                     // Colorize: green
+    .long   0       # Ignored                                                   # BaseRelocationTable size                                                                                               // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+There are a lot of ignored fields. Let's explain the remaining ones.                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We are putting 0x020B signature to identify 64 bit version of PE Optional Header.<br/>                                                                                                                   // Colorize: green
+majorLinkerVersion and minorLinkerVersion set for some modern linker version.<br/>                                                                                                                       // Colorize: green
+addressOfEntryPoint will be filled by image_builder, but in most cases the value is 0x0240 (0x0200 bytes for Boot part and 0x40 byte for .reloc section).<br/>                                           // Colorize: green
+sectionAlignment and fileAlignment set to 0x10 in order to make kernel running in aligned place.<br/>                                                                                                    // Colorize: green
+sizeOfImage is the total size of image. We will put the value during image build procedure.<br/>                                                                                                         // Colorize: green
+sizeOfHeaders set to 0x0200. It is the size of whole Boot part.<br/>                                                                                                                                     // Colorize: green
+subsystem set to 0x0A that means that the image is UEFI application.<br/>                                                                                                                                // Colorize: green
+numberOfRvaAndSizes usually set to 15 data_directory records, but we should have at least 6. Probably because BaseRelocationTable is required for x86_64.                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Section table can be found right after PE Optional Header:                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+section_table:                                                                  # Label for section table                                                                                                // Colorize: green
+                                                                                # struct IMAGE_SECTION_HEADER                                                                                            // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+    .ascii  ".reloc\0\0"    # UEFI application must be                          #     char  name[8];                                                                                                     // Colorize: green
+                            # relocatable                                       #     union                                                                                                              // Colorize: green
+                                                                                #     {                                                                                                                  // Colorize: green
+                                                                                #         long physicalAddress;                                                                                          // Colorize: green
+                                                                                #         long virtualSize;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     } misc;                                                                                                            // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  virtualAddress;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;                                                                                               // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;                                                                                            // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToRelocations;                                                                                        // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToLinenumbers;                                                                                        // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfRelocations;                                                                                         // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfLineNumbers;                                                                                         // Colorize: green
+    .long   0x42100040  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;                                                                                             // Colorize: green
+                        # | IMAGE_SCN_MEM_DISCARDABLE                           # }                                                                                                                      // Colorize: green
+                        # | IMAGE_SCN_ALIGN_1BYTES                              #                                                                                                                        // Colorize: green
+                        # | IMAGE_SCN_CNT_INITIALIZED_DATA                      #                                                                                                                        // Colorize: green
+                                                                                # struct IMAGE_SECTION_HEADER                                                                                            // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+    .ascii  ".config\0"                                                         #     char  name[8];                                                                                                     // Colorize: green
+                                                                                #     union                                                                                                              // Colorize: green
+                                                                                #     {                                                                                                                  // Colorize: green
+                                                                                #         long physicalAddress;                                                                                          // Colorize: green
+                                                                                #         long virtualSize;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     } misc;                                                                                                            // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  virtualAddress;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;                                                                                               // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;                                                                                            // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToRelocations;                                                                                        // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToLinenumbers;                                                                                        // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfRelocations;                                                                                         // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfLineNumbers;                                                                                         // Colorize: green
+    .long   0x60500020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;                                                                                             // Colorize: green
+                        # | IMAGE_SCN_MEM_EXECUTE                               # }                                                                                                                      // Colorize: green
+                        # | IMAGE_SCN_ALIGN_16BYTES                             #                                                                                                                        // Colorize: green
+                        # | IMAGE_SCN_CNT_CODE                                  #                                                                                                                        // Colorize: green
+                                                                                # struct IMAGE_SECTION_HEADER                                                                                            // Colorize: green
+                                                                                # {                                                                                                                      // Colorize: green
+    .ascii  ".kernel\0"                                                         #     char  name[8];                                                                                                     // Colorize: green
+                                                                                #     union                                                                                                              // Colorize: green
+                                                                                #     {                                                                                                                  // Colorize: green
+                                                                                #         long physicalAddress;                                                                                          // Colorize: green
+                                                                                #         long virtualSize;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     } misc;                                                                                                            // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  virtualAddress;                                                                                              // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;                                                                                               // Colorize: green
+    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;                                                                                            // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToRelocations;                                                                                        // Colorize: green
+    .long   0           # Ignored                                               #     long  pointerToLinenumbers;                                                                                        // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfRelocations;                                                                                         // Colorize: green
+    .word   0           # Ignored                                               #     short numberOfLineNumbers;                                                                                         // Colorize: green
+    .long   0x60100020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;                                                                                             // Colorize: green
+                        # | IMAGE_SCN_MEM_EXECUTE                               # }                                                                                                                      // Colorize: green
+                        # | IMAGE_SCN_ALIGN_1BYTES                              #                                                                                                                        // Colorize: green
+                        # | IMAGE_SCN_CNT_CODE                                  #                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We have 3 sections here:                                                                                                                                                                                 // Colorize: green
+* .reloc section                                                                                                                                                                                         // Colorize: green
+* .config section                                                                                                                                                                                        // Colorize: green
+* .kernel section                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+.reloc section is required for UEFI in order to run this image. It is located at 0x0200 offset right after the Boot part and contains 0x40 bytes.                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Since UEFI binaries are executed in physical mode, UEFI cannot guarantee that a given binary can be loaded at its preferred address. UEFI does _try_ to load a binary at it's preferred address, but if it can't do so, it will load it at another address and then relocate the binary using the contents of the .reloc section. // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+.config section is located at 0x0240 (0x0200 + 0x40) offset, next to .reloc section. This section contains the code from Configure part. It is a entry point for NGOS kernel.                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+.kernel section is located after the .config section and contains raw or compressed kernel.elf file or installer.elf file. This section starts with [KernelDescriptor](../../../src/os/configure/src/bits64/other/kerneldescriptor.h) that indicates the size of included image. // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The structure of kernel image can be displayed on figure below:                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/Image%20structure.png?raw=true" alt="Image structure"/>                                                // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green

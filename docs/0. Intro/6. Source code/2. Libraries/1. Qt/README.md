@@ -1,11 +1,11 @@
-NGOS
-====
-
-0.6.2.1. Qt
------------
-
-Qt is a cross-platform application development framework for desktop, embedded and mobile.
-
-It is used as a standard library in NGOS.
-
-Please read [for more details](http://doc.qt.io)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.2.1. Qt                                                                                                                                                                                              // Colorize: green
+-----------                                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Qt is a cross-platform application development framework for desktop, embedded and mobile.                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+It is used as a standard library in NGOS.                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please read [for more details](http://doc.qt.io)                                                                                                                                                         // Colorize: green

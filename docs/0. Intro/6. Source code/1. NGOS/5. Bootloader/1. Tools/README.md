@@ -1,14 +1,14 @@
-NGOS
-====
-
-0.6.1.5.1. Tools
-----------------
-
-Bootloader is coming together with the built-in tool set.
-
-* [Device Manager](1.%20Device%20Manager/README.md)
-* [CPU Test](2.%20CPU%20Test/README.md)
-* [Memory Test](3.%20Memory%20Test/README.md)
-* [Network Test](4.%20Network%20Test/README.md)
-* [HDD Test](5.%20HDD%20Test/README.md)
-* [Partition Wizard](6.%20Partition%20Wizard/README.md)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.1.5.1. Tools                                                                                                                                                                                         // Colorize: green
+----------------                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Bootloader is coming together with the built-in tool set.                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [Device Manager](1.%20Device%20Manager/README.md)                                                                                                                                                      // Colorize: green
+* [CPU Test](2.%20CPU%20Test/README.md)                                                                                                                                                                  // Colorize: green
+* [Memory Test](3.%20Memory%20Test/README.md)                                                                                                                                                            // Colorize: green
+* [Network Test](4.%20Network%20Test/README.md)                                                                                                                                                          // Colorize: green
+* [HDD Test](5.%20HDD%20Test/README.md)                                                                                                                                                                  // Colorize: green
+* [Partition Wizard](6.%20Partition%20Wizard/README.md)                                                                                                                                                  // Colorize: green

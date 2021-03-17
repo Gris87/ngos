@@ -1,13 +1,13 @@
-NGOS
-====
-
-0.6.1.5.1.1. Device Manager
----------------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader_tools/devicemanager/Image%20structure.png?raw=true" alt="Image structure"/>
-</p>
-
-Device Manager tool allow user to display general system information before running any OS.
-
-Device Manager tool also use Boot part in order to make binary file runnable via UEFI.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.1.5.1.1. Device Manager                                                                                                                                                                              // Colorize: green
+---------------------------                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader_tools/devicemanager/Image%20structure.png?raw=true" alt="Image structure"/>                                                   // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Device Manager tool allow user to display general system information before running any OS.                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Device Manager tool also use Boot part in order to make binary file runnable via UEFI.                                                                                                                   // Colorize: green

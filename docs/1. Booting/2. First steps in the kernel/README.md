@@ -1,151 +1,151 @@
-NGOS
-====
-
-1.2. First steps in the kernel
-------------------------------
-
-As we already know from the previous [chapter](../1.%20PC%20turning%20on/README.md#uefi) NGOS perform booting via UEFI.
-
-The structure of kernel image can be displayed on figure below:
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/Image%20structure.png?raw=true" alt="Image structure"/>
-</p>
-
-As you can see addressOfEntryPoint field of PE Optional Header is pointing to 0x0240 offset, right after .reloc section, at the first byte of .config section.<br/>
-But what is the place of that first instruction?
-
-If you check [src/os/configure/linker.ld](../../../src/os/configure/linker.ld) file you will see the following:
-
-```
-OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64", "elf64-x86-64")
-OUTPUT_ARCH(i386:x86-64)
-ENTRY(_start)
-
-SECTIONS
-{
-    . = 0;
-
-
-
-    .entry_point : { *(.entry_point) }
-    .asm_code    : { *(.asm_code) }
-    .text        : { *(.text*) }
-    .rodata      : { *(.rodata*) }
-    .data        : { *(.data*) }
-
-    .gdt         : { *(.gdt) }
-
-
-
-    .ctors       : {
-        _ctors_begin = .;
-        *(.ctors)
-        _ctors_end = .;
-    }
-
-
-
-    . = ALIGN(8);
-    _rela_begin = .;
-    .rela.dyn    : { *(.rela.dyn) }
-    _rela_end = .;
-
-
-
-    .assets      : {
-        _assets_begin = .;
-        *(.assets)
-        _assets_end = .;
-    }
-
-    .noinit      : {
-        *(.noinit)
-        *(.bss*)
-    }
-
-
-
-    . = ALIGN(64);
-
-    .align       : {
-        . += 63;
-        BYTE(0x00);
-    }
-
-    _end = .;
-
-
-
-    /DISCARD/    : { *(.dynamic) }
-    /DISCARD/    : { *(.dynsym) }
-    /DISCARD/    : { *(.dynstr) }
-    /DISCARD/    : { *(.hash) }
-
-
-
-    . = ASSERT(_start == 0, "Invalid entry point!");
-}
-```
-
-We have the list of sections below:
-* .entry_point - located at zero offset. This section contains the first kernel instructions.
-* .asm_code - section for code written in Assembler.
-* .text - section for C++ code.
-* .rodata - section with string constants.
-* .data - another data if exists.
-* .assets - section with content of files located in [src/os/configure/assets](../../../src/os/configure/assets) folder.
-* .noinit - zero filled section that used instead of .bss section.
-
-Please note that there is no .bss section. We are using .noinit section instead.
-
-The reason for doing this is the following. Usually .bss section located at the end of the image, but not even really present in file.<br/>
-It just allocating the required amount of bytes on loading. Since we have included Kernel part or Installer part right after Configure part it may cause overlapping between .bss and included image.
-
-The initial kernel code is located in .entry_point section.
-
-If you search for .entry_point section you will find that it is only declared at [src/os/configure/asm/arch/x86_64/main.S](../../../src/os/configure/asm/arch/x86_64/main.S) file.<br/>
-Let's check this [file](../../../src/os/configure/asm/arch/x86_64/main.S).
-
-### Jumping to C++ code
-
-```
-# ============================================================================= # =============================================================================
-# Entry point                                                                   #
-#                                                                               #
-# RDX - address of systemTable                                                  #
-# RCX - address of imageHandle                                                  #
-# ============================================================================= # =============================================================================
-                                                                                #
-    movq    %rcx, %rdi                                                          # Put address of imageHandle to RDI
-    movq    %rdx, %rsi                                                          # Put address of systemTable to RSI
-    leaq    _start(%rip), %rdx                                                  # Put address of entry point to RDX
-                                                                                #
-    call    uefiMain                                                            # Call uefiMain function
-                                                                                #
-    cmpq    $0, %rax                                                            # IF result == 0
-    je      fail                                                                #   THEN jump to fail
-```
-
-UEFI providing address of System Table and address of Image Handle to us in RDX and RCX registers.<br/>
-We will put them into RDI and RSI registers and also store the address of .config section in RDX.
-
-After that we calls uefiMain() function located in [src/os/configure/src/main.cpp](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/main.cpp#L106) file.
-
-Here is the uefiMain declaration:
-
-```
-CPP_EXTERN_C
-BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 kernelLocation)
-```
-
-As a result we should get the pointer to [BootParams](../../../src/os/include/bootparams/bootparams.h) structure.<br/>
-In case when result is null that means that we have some problem and we will jump to fail label.
-
-```
-fail:                                                                           # Label for failure
-    hlt                                                                         # Wait for interrupt
-    jmp    fail                                                                 # Loop in fail forever
-```
-
-In case of issue we came to fail label and hold PC into a forever loop.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+1.2. First steps in the kernel                                                                                                                                                                           // Colorize: green
+------------------------------                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+As we already know from the previous [chapter](../1.%20PC%20turning%20on/README.md#uefi) NGOS perform booting via UEFI.                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The structure of kernel image can be displayed on figure below:                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/1.%20Booting/1.%20PC%20turning%20on/Image%20structure.png?raw=true" alt="Image structure"/>                                                // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+As you can see addressOfEntryPoint field of PE Optional Header is pointing to 0x0240 offset, right after .reloc section, at the first byte of .config section.<br/>                                      // Colorize: green
+But what is the place of that first instruction?                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+If you check [src/os/configure/linker.ld](../../../src/os/configure/linker.ld) file you will see the following:                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64", "elf64-x86-64")                                                                                                                                            // Colorize: green
+OUTPUT_ARCH(i386:x86-64)                                                                                                                                                                                 // Colorize: green
+ENTRY(_start)                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+SECTIONS                                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    . = 0;                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .entry_point : { *(.entry_point) }                                                                                                                                                                   // Colorize: green
+    .asm_code    : { *(.asm_code) }                                                                                                                                                                      // Colorize: green
+    .text        : { *(.text*) }                                                                                                                                                                         // Colorize: green
+    .rodata      : { *(.rodata*) }                                                                                                                                                                       // Colorize: green
+    .data        : { *(.data*) }                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .gdt         : { *(.gdt) }                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .ctors       : {                                                                                                                                                                                     // Colorize: green
+        _ctors_begin = .;                                                                                                                                                                                // Colorize: green
+        *(.ctors)                                                                                                                                                                                        // Colorize: green
+        _ctors_end = .;                                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    . = ALIGN(8);                                                                                                                                                                                        // Colorize: green
+    _rela_begin = .;                                                                                                                                                                                     // Colorize: green
+    .rela.dyn    : { *(.rela.dyn) }                                                                                                                                                                      // Colorize: green
+    _rela_end = .;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .assets      : {                                                                                                                                                                                     // Colorize: green
+        _assets_begin = .;                                                                                                                                                                               // Colorize: green
+        *(.assets)                                                                                                                                                                                       // Colorize: green
+        _assets_end = .;                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .noinit      : {                                                                                                                                                                                     // Colorize: green
+        *(.noinit)                                                                                                                                                                                       // Colorize: green
+        *(.bss*)                                                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    . = ALIGN(64);                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    .align       : {                                                                                                                                                                                     // Colorize: green
+        . += 63;                                                                                                                                                                                         // Colorize: green
+        BYTE(0x00);                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    _end = .;                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    /DISCARD/    : { *(.dynamic) }                                                                                                                                                                       // Colorize: green
+    /DISCARD/    : { *(.dynsym) }                                                                                                                                                                        // Colorize: green
+    /DISCARD/    : { *(.dynstr) }                                                                                                                                                                        // Colorize: green
+    /DISCARD/    : { *(.hash) }                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    . = ASSERT(_start == 0, "Invalid entry point!");                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We have the list of sections below:                                                                                                                                                                      // Colorize: green
+* .entry_point - located at zero offset. This section contains the first kernel instructions.                                                                                                            // Colorize: green
+* .asm_code - section for code written in Assembler.                                                                                                                                                     // Colorize: green
+* .text - section for C++ code.                                                                                                                                                                          // Colorize: green
+* .rodata - section with string constants.                                                                                                                                                               // Colorize: green
+* .data - another data if exists.                                                                                                                                                                        // Colorize: green
+* .assets - section with content of files located in [src/os/configure/assets](../../../src/os/configure/assets) folder.                                                                                 // Colorize: green
+* .noinit - zero filled section that used instead of .bss section.                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please note that there is no .bss section. We are using .noinit section instead.                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The reason for doing this is the following. Usually .bss section located at the end of the image, but not even really present in file.<br/>                                                              // Colorize: green
+It just allocating the required amount of bytes on loading. Since we have included Kernel part or Installer part right after Configure part it may cause overlapping between .bss and included image.    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The initial kernel code is located in .entry_point section.                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+If you search for .entry_point section you will find that it is only declared at [src/os/configure/asm/arch/x86_64/main.S](../../../src/os/configure/asm/arch/x86_64/main.S) file.<br/>                  // Colorize: green
+Let's check this [file](../../../src/os/configure/asm/arch/x86_64/main.S).                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Jumping to C++ code                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+# ============================================================================= # =============================================================================                                          // Colorize: green
+# Entry point                                                                   #                                                                                                                        // Colorize: green
+#                                                                               #                                                                                                                        // Colorize: green
+# RDX - address of systemTable                                                  #                                                                                                                        // Colorize: green
+# RCX - address of imageHandle                                                  #                                                                                                                        // Colorize: green
+# ============================================================================= # =============================================================================                                          // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    movq    %rcx, %rdi                                                          # Put address of imageHandle to RDI                                                                                      // Colorize: green
+    movq    %rdx, %rsi                                                          # Put address of systemTable to RSI                                                                                      // Colorize: green
+    leaq    _start(%rip), %rdx                                                  # Put address of entry point to RDX                                                                                      // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    call    uefiMain                                                            # Call uefiMain function                                                                                                 // Colorize: green
+                                                                                #                                                                                                                        // Colorize: green
+    cmpq    $0, %rax                                                            # IF result == 0                                                                                                         // Colorize: green
+    je      fail                                                                #   THEN jump to fail                                                                                                    // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+UEFI providing address of System Table and address of Image Handle to us in RDX and RCX registers.<br/>                                                                                                  // Colorize: green
+We will put them into RDI and RSI registers and also store the address of .config section in RDX.                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+After that we calls uefiMain() function located in [src/os/configure/src/main.cpp](https://github.com/Gris87/ngos/blob/master/src/os/configure/src/main.cpp#L106) file.                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here is the uefiMain declaration:                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+CPP_EXTERN_C                                                                                                                                                                                             // Colorize: green
+BootParams* uefiMain(uefi_handle imageHandle, UefiSystemTable *systemTable, u64 kernelLocation)                                                                                                          // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+As a result we should get the pointer to [BootParams](../../../src/os/include/bootparams/bootparams.h) structure.<br/>                                                                                   // Colorize: green
+In case when result is null that means that we have some problem and we will jump to fail label.                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+fail:                                                                           # Label for failure                                                                                                      // Colorize: green
+    hlt                                                                         # Wait for interrupt                                                                                                     // Colorize: green
+    jmp    fail                                                                 # Loop in fail forever                                                                                                   // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+In case of issue we came to fail label and hold PC into a forever loop.                                                                                                                                  // Colorize: green

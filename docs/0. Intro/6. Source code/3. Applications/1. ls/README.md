@@ -1,19 +1,19 @@
-NGOS
-====
-
-0.6.3.1. ls
------------
-
-### NAME
-
-ls - list directory contents
-
-### SYNOPSIS
-
-**ls** [_OPTION_]... [_FILE_]...
-
-### DESCRIPTION
-
-List information about the FILEs (the current directory by default).
-
-Exit status is 0 if OK, 1 if minor problems, 2 if serious trouble.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.3.1. ls                                                                                                                                                                                              // Colorize: green
+-----------                                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### NAME                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ls - list directory contents                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### SYNOPSIS                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+**ls** [_OPTION_]... [_FILE_]...                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### DESCRIPTION                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+List information about the FILEs (the current directory by default).                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Exit status is 0 if OK, 1 if minor problems, 2 if serious trouble.                                                                                                                                       // Colorize: green

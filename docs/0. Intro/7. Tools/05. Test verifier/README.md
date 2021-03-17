@@ -1,25 +1,25 @@
-NGOS
-====
-
-0.7.05. Test verifier
----------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/test_verifier/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-Test verifier tool is checking that all declared functions has tests for testing such functions.
-
-Please cover your source code with the tests as much as possible. Use comment `// TEST: NO` if it's not needed to provide tests for some functions.
-
-### Usage
-
-```sh
-test_verifier PATH
-    * PATH - path to folder
-```
-
-### How to ...
-
-Test verifier tool will check all C++ headers in specified PATH argument for the declared functions.<br/>
-It will inform you if there are no tests for declared functions.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.7.05. Test verifier                                                                                                                                                                                    // Colorize: green
+---------------------                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/test_verifier/Screenshot.png?raw=true" alt="Screenshot"/>                                                                              // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Test verifier tool is checking that all declared functions has tests for testing such functions.                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please cover your source code with the tests as much as possible. Use comment `// TEST: NO` if it's not needed to provide tests for some functions.                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Usage                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+test_verifier PATH                                                                                                                                                                                       // Colorize: green
+    * PATH - path to folder                                                                                                                                                                              // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### How to ...                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Test verifier tool will check all C++ headers in specified PATH argument for the declared functions.<br/>                                                                                                // Colorize: green
+It will inform you if there are no tests for declared functions.                                                                                                                                         // Colorize: green

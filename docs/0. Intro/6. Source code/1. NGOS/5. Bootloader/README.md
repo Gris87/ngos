@@ -1,15 +1,15 @@
-NGOS
-====
-
-0.6.1.5. Bootloader
--------------------
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader/Image%20structure.png?raw=true" alt="Image structure"/>
-</p>
-
-Bootloader is the first thing that starts at PC start up. It can load NGOS or some another OS or application (like memory test, HDD test, partition tool, etc.).
-
-Bootloader also use Boot part in order to make binary file runnable via UEFI.
-
-* [Tools](1.%20Tools/README.md)
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.6.1.5. Bootloader                                                                                                                                                                                      // Colorize: green
+-------------------                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/src/os/bootloader/Image%20structure.png?raw=true" alt="Image structure"/>                                                                       // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Bootloader is the first thing that starts at PC start up. It can load NGOS or some another OS or application (like memory test, HDD test, partition tool, etc.).                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Bootloader also use Boot part in order to make binary file runnable via UEFI.                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [Tools](1.%20Tools/README.md)                                                                                                                                                                          // Colorize: green

@@ -1,93 +1,93 @@
-NGOS
-====
-
-0.2. Getting started
---------------------
-
-Prerequisites
--------------
-
-You need to install prerequisites before starting work with this project.
-
-* [Install prerequisites on Ubuntu 20.10](1.%20Install%20prerequisites%20on%20Ubuntu%2020.10/README.md)
-* [Install prerequisites on Ubuntu 20.04](2.%20Install%20prerequisites%20on%20Ubuntu%2020.04/README.md)
-* [Install prerequisites on Ubuntu 19.10](3.%20Install%20prerequisites%20on%20Ubuntu%2019.10/README.md)
-* [Install prerequisites on Ubuntu 19.04](4.%20Install%20prerequisites%20on%20Ubuntu%2019.04/README.md)
-* [Install prerequisites on Ubuntu 18.10](5.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)
-* [Install prerequisites on Ubuntu 18.04](6.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)
-* [Install prerequisites on CentOS 8.2](7.%20Install%20prerequisites%20on%20CentOS%208.2/README.md)
-* [Install prerequisites on CentOS 7.6](8.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)
-
-Configuring Qt Creator
-----------------------
-
-First of all open your Qt Creator application via Applications -> Development menu
-
-You will see the following image.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2001.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-Press File -> Open File or Project...
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2002.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-and open ngos.creator file located in the project folder.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2003.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-After that you will see project structure on picture below.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2004.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-You can choose one of available targets for running. "Test (debug)" target is the most preferable target for development.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2005.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-Press run button to rebuild and start target.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2006.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-### Adding sort utility in Qt Creator
-
-You probably also may need sort utility for your Qt Creator.<br/>
-Press Tools -> External -> Configure... to add sort utility.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2007.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-Select Text category and press Add -> Add Tool.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2008.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-Fill in all the fields according to the image below. Press OK button to store the changes.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2009.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-After that you can select some text
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2010.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
-
-and press Tools -> External -> Text -> sort to sort it.
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2011.png?raw=true" alt="Configuring Qt Creator"/>
-</p>
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.2. Getting started                                                                                                                                                                                     // Colorize: green
+--------------------                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Prerequisites                                                                                                                                                                                            // Colorize: green
+-------------                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You need to install prerequisites before starting work with this project.                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [Install prerequisites on Ubuntu 20.10](1.%20Install%20prerequisites%20on%20Ubuntu%2020.10/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on Ubuntu 20.04](2.%20Install%20prerequisites%20on%20Ubuntu%2020.04/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on Ubuntu 19.10](3.%20Install%20prerequisites%20on%20Ubuntu%2019.10/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on Ubuntu 19.04](4.%20Install%20prerequisites%20on%20Ubuntu%2019.04/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on Ubuntu 18.10](5.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on Ubuntu 18.04](6.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)                                                                                                  // Colorize: green
+* [Install prerequisites on CentOS 8.2](7.%20Install%20prerequisites%20on%20CentOS%208.2/README.md)                                                                                                      // Colorize: green
+* [Install prerequisites on CentOS 7.6](8.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Configuring Qt Creator                                                                                                                                                                                   // Colorize: green
+----------------------                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+First of all open your Qt Creator application via Applications -> Development menu                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You will see the following image.                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2001.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Press File -> Open File or Project...                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2002.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+and open ngos.creator file located in the project folder.                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2003.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+After that you will see project structure on picture below.                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2004.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You can choose one of available targets for running. "Test (debug)" target is the most preferable target for development.                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2005.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Press run button to rebuild and start target.                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2006.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+### Adding sort utility in Qt Creator                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You probably also may need sort utility for your Qt Creator.<br/>                                                                                                                                        // Colorize: green
+Press Tools -> External -> Configure... to add sort utility.                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2007.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Select Text category and press Add -> Add Tool.                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2008.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Fill in all the fields according to the image below. Press OK button to store the changes.                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2009.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+After that you can select some text                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2010.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+and press Tools -> External -> Text -> sort to sort it.                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/2.%20Getting%20started/Configuring%20Qt%20Creator%2011.png?raw=true" alt="Configuring Qt Creator"/>                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green

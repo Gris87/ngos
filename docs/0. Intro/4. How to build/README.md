@@ -1,53 +1,53 @@
-NGOS
-====
-
-0.4. How to build
------------------
-
-You have to install prerequisites before building the source code.
-
-* [Install prerequisites on Ubuntu 19.04](../2.%20Getting%20started/1.%20Install%20prerequisites%20on%20Ubuntu%2019.04/README.md)
-* [Install prerequisites on Ubuntu 18.10](../2.%20Getting%20started/2.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)
-* [Install prerequisites on Ubuntu 18.04](../2.%20Getting%20started/3.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)
-* [Install prerequisites on Ubuntu 16.04](../2.%20Getting%20started/4.%20Install%20prerequisites%20on%20Ubuntu%2016.04/README.md)
-* [Install prerequisites on CentOS 7.6](../2.%20Getting%20started/5.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)
-
-You can also change the build configuration if needed. Please read [for more details](../3.%20Configuration/README.md).
-
-Build targets
--------------
-
-The list of available targets can be found with the following command started at the project root:
-
-```sh
-$ make help
-```
-
-Here is the output example:
-
-```
-Available targets:
-    all              - Build all the source code
-    clean            - Delete all files that appears during the build process
-    deployment       - Prepare binaries for deployment
-    config           - Build and run build_config_gui tool in order to update build configuration
-    generate         - Build and run code_generator tool in order to update generated files
-    verify           - Build and run code_verifier tool in order to verify the source code
-    verify-tests     - Build and run test_verifier tool in order to verify test coverage
-    verify-docs      - Build and run docs_verifier tool in order to verify documents
-    test             - Perform kernel testing
-    debug            - Build the source code in debug mode
-    release          - Build the source code in release mode
-    test-debug       - Build the source code in debug mode with the tests included
-    test-release     - Build the source code in release mode with the tests included
-    run-debug        - Build the source code in debug mode and run kernel on the VM
-    run-release      - Build the source code in release mode and run kernel on the VM
-    run-test-debug   - Build the source code in debug mode with the tests included and run kernel on the VM. Preferable target for development
-    run-test-release - Build the source code in release mode with the tests included and run kernel on the VM
-    run-vm           - Run kernel on the VM (QEMU-KVM by default)
-    run-qemu-kvm     - Run kernel on the QEMU-KVM VM
-    run-qemu         - Run kernel on the QEMU VM
-    run-vbox         - Run kernel on the VirtualBox VM
-```
-
-Please use `make` command to obtain binaries that you can apply to your machine.
+NGOS                                                                                                                                                                                                     // Colorize: green
+====                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+0.4. How to build                                                                                                                                                                                        // Colorize: green
+-----------------                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You have to install prerequisites before building the source code.                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+* [Install prerequisites on Ubuntu 19.04](../2.%20Getting%20started/1.%20Install%20prerequisites%20on%20Ubuntu%2019.04/README.md)                                                                        // Colorize: green
+* [Install prerequisites on Ubuntu 18.10](../2.%20Getting%20started/2.%20Install%20prerequisites%20on%20Ubuntu%2018.10/README.md)                                                                        // Colorize: green
+* [Install prerequisites on Ubuntu 18.04](../2.%20Getting%20started/3.%20Install%20prerequisites%20on%20Ubuntu%2018.04/README.md)                                                                        // Colorize: green
+* [Install prerequisites on Ubuntu 16.04](../2.%20Getting%20started/4.%20Install%20prerequisites%20on%20Ubuntu%2016.04/README.md)                                                                        // Colorize: green
+* [Install prerequisites on CentOS 7.6](../2.%20Getting%20started/5.%20Install%20prerequisites%20on%20CentOS%207.6/README.md)                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+You can also change the build configuration if needed. Please read [for more details](../3.%20Configuration/README.md).                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Build targets                                                                                                                                                                                            // Colorize: green
+-------------                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+The list of available targets can be found with the following command started at the project root:                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```sh                                                                                                                                                                                                    // Colorize: green
+$ make help                                                                                                                                                                                              // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Here is the output example:                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+Available targets:                                                                                                                                                                                       // Colorize: green
+    all              - Build all the source code                                                                                                                                                         // Colorize: green
+    clean            - Delete all files that appears during the build process                                                                                                                            // Colorize: green
+    deployment       - Prepare binaries for deployment                                                                                                                                                   // Colorize: green
+    config           - Build and run build_config_gui tool in order to update build configuration                                                                                                        // Colorize: green
+    generate         - Build and run code_generator tool in order to update generated files                                                                                                              // Colorize: green
+    verify           - Build and run code_verifier tool in order to verify the source code                                                                                                               // Colorize: green
+    verify-tests     - Build and run test_verifier tool in order to verify test coverage                                                                                                                 // Colorize: green
+    verify-docs      - Build and run docs_verifier tool in order to verify documents                                                                                                                     // Colorize: green
+    test             - Perform kernel testing                                                                                                                                                            // Colorize: green
+    debug            - Build the source code in debug mode                                                                                                                                               // Colorize: green
+    release          - Build the source code in release mode                                                                                                                                             // Colorize: green
+    test-debug       - Build the source code in debug mode with the tests included                                                                                                                       // Colorize: green
+    test-release     - Build the source code in release mode with the tests included                                                                                                                     // Colorize: green
+    run-debug        - Build the source code in debug mode and run kernel on the VM                                                                                                                      // Colorize: green
+    run-release      - Build the source code in release mode and run kernel on the VM                                                                                                                    // Colorize: green
+    run-test-debug   - Build the source code in debug mode with the tests included and run kernel on the VM. Preferable target for development                                                           // Colorize: green
+    run-test-release - Build the source code in release mode with the tests included and run kernel on the VM                                                                                            // Colorize: green
+    run-vm           - Run kernel on the VM (QEMU-KVM by default)                                                                                                                                        // Colorize: green
+    run-qemu-kvm     - Run kernel on the QEMU-KVM VM                                                                                                                                                     // Colorize: green
+    run-qemu         - Run kernel on the QEMU VM                                                                                                                                                         // Colorize: green
+    run-vbox         - Run kernel on the VirtualBox VM                                                                                                                                                   // Colorize: green
+```                                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please use `make` command to obtain binaries that you can apply to your machine.                                                                                                                         // Colorize: green
