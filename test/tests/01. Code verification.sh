@@ -1,40 +1,40 @@
 #!/bin/bash
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-WORKING_DIR=`pwd`
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-echo -e "\e[36m==================================================\e[0m"
-echo -e "\e[36m              Test: Code verification\e[0m"
-echo -e "\e[36m==================================================\e[0m"
-
-
-
-cd ../../
-make verify
-VERIFICATION_RESULT=$?
-cd ${WORKING_DIR}/
-
-
-
-if [ ${VERIFICATION_RESULT} -ne 0 ]; then
-    exit 1
-fi
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+WORKING_DIR=`pwd`                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+echo -e "\e[36m              Test: Code verification\e[0m"                                                                                                                                               # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd ../../                                                                                                                                                                                                # Colorize: green
+make verify                                                                                                                                                                                              # Colorize: green
+VERIFICATION_RESULT=$?                                                                                                                                                                                   # Colorize: green
+cd ${WORKING_DIR}/                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ${VERIFICATION_RESULT} -ne 0 ]; then                                                                                                                                                                # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

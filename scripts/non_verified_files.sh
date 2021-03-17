@@ -40,6 +40,7 @@ do                                                                              
                 -ve "\.exe$"            \
                 -ve "\.gitignore$"      \
                 -ve "\.gpg$"            \
+                -ve "\.hex$"            \
                 -ve "\.ico$"            \
                 -ve "\.jpg$"            \
                 -ve "\.LOG$"            \

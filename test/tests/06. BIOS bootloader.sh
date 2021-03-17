@@ -1,73 +1,73 @@
 #!/bin/bash
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-QEMU_SCREENSHOT=/tmp/ngos_qemu_screen.ppm
-DIFF_IMAGE=/tmp/ngos_qemu_screen_difference.png
-EXPECTED_SCREENSHOT=assets/BIOS_screen.png
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-echo -e "\e[36m==================================================\e[0m"
-echo -e "\e[36m               Test: BIOS bootloader\e[0m"
-echo -e "\e[36m==================================================\e[0m"
-
-
-
-echo ""
-echo -e "\e[33m------------------ Starting QEMU -----------------\e[0m"
-echo ""
-
-
-
-( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \
-    qemu-system-x86_64 -display none -drive file=../../build/deployment/com.ngos.kernel/kernel.efi,format=raw -monitor stdio > /dev/null 2>&1
-
-if [ $? -ne 0 ]; then
-    exit 1
-fi
-
-convert ${QEMU_SCREENSHOT} -crop 1024x768+0+100 ${QEMU_SCREENSHOT}.png
-
-echo "Screenshot taken: ${QEMU_SCREENSHOT}.png"
-
-
-
-echo ""
-echo -e "\e[33m----------------- Checking result ----------------\e[0m"
-echo ""
-
-
-
-echo "Comparing 2 screenshots ${QEMU_SCREENSHOT}.png and ${EXPECTED_SCREENSHOT}"
-echo ""
-
-
-
-COMPARE_RESULT=`compare -verbose -metric mae ${QEMU_SCREENSHOT}.png ${EXPECTED_SCREENSHOT} ${DIFF_IMAGE} 2>&1`
-EXPECTED_OUTPUT=`echo "${COMPARE_RESULT}" | grep "all: 0 (0)"`
-
-if [ "${EXPECTED_OUTPUT}" == "" ]; then
-    echo "Screenshots are different"
-    echo "${COMPARE_RESULT}"
-
-    exit 1
-fi
-
-echo "OK"
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+QEMU_SCREENSHOT=/tmp/ngos_qemu_screen.ppm                                                                                                                                                                # Colorize: green
+DIFF_IMAGE=/tmp/ngos_qemu_screen_difference.png                                                                                                                                                          # Colorize: green
+EXPECTED_SCREENSHOT=assets/BIOS_screen.png                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+echo -e "\e[36m               Test: BIOS bootloader\e[0m"                                                                                                                                                # Colorize: green
+echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m------------------ Starting QEMU -----------------\e[0m"                                                                                                                                  # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \                                                                                                                                     # Colorize: green
+    qemu-system-x86_64 -display none -drive file=../../build/deployment/com.ngos.kernel/kernel.efi,format=raw -monitor stdio > /dev/null 2>&1                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+convert ${QEMU_SCREENSHOT} -crop 1024x768+0+100 ${QEMU_SCREENSHOT}.png                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo "Screenshot taken: ${QEMU_SCREENSHOT}.png"                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m----------------- Checking result ----------------\e[0m"                                                                                                                                  # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo "Comparing 2 screenshots ${QEMU_SCREENSHOT}.png and ${EXPECTED_SCREENSHOT}"                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+COMPARE_RESULT=`compare -verbose -metric mae ${QEMU_SCREENSHOT}.png ${EXPECTED_SCREENSHOT} ${DIFF_IMAGE} 2>&1`                                                                                           # Colorize: green
+EXPECTED_OUTPUT=`echo "${COMPARE_RESULT}" | grep "all: 0 (0)"`                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${EXPECTED_OUTPUT}" == "" ]; then                                                                                                                                                                  # Colorize: green
+    echo "Screenshots are different"                                                                                                                                                                     # Colorize: green
+    echo "${COMPARE_RESULT}"                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo "OK"                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

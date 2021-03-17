@@ -1,143 +1,143 @@
-TODO List
-=========
-
-NGOS:
-
-- Refactor
-- Use global variable for GUID
-- Replace zeros with nullptr
-- Centralize CPUID like in edk2
-- Check for asm volatile
-- Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes
-- Check for mouse wheel on table widget
-- Convert FLAGS_TO_STRING to template
-- Check for log includes: common or early?
-- Check where we can use enumToString and flagToString
-- Replace u64 with i64 where needed
-- guidToFullString
-- uuidToFullString
-- Change brackets for #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE
-- ASSERTS for QEMU only for variated checks
-- Split validation regions to output/check region
-- Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"
-- BIT0-63
-
-- Complete with interruptions
-- Implement boot screen for kernel
-- Per CPU?
-- Initialization via multiple CPU cores
-
-- Add option to disable inline
-- Add stack protector to build
-
-- All resources for one application (Turbo mode)
-
-
-
-Bootloader:
-
-- Custom arguments
-- Check for last started OS on real hardware
-
-
-
-Code verifier:
-
-- Verify for void functions
-- Verify for headers in assembler
-- Verify for function asserts
-- Verify for log alignment
-- Verify for 3 lines for if and while
-- Verify for amount of arguments in log
-- Verify for asserts alignment
-- Verify for DeviceManagerGUI::sImagesPath
-- Verify for English chars only in source code
-- Verify that #if, #ifdef, #endif, #define starts from the beginning of line
-- Verify for Validation region
-- Verify that each file includes buildconfig.h
-- Upgrade verifier for trace arguments (Check format with the types)
-
-
-
-Docs verifier:
-
-- Verify for Project structure
-- Verify for Configuration
-- Verify for How to Build
-- Verify for Scripts
-- Verify for amount of links (amount of tools/libraries/applications)
-
-
-
-Tests verifier:
-
-- Verify code
-
-
-
-Code generator:
-
-- Generate documentation for applications
-
-
-
-Assembler optimizer:
-
-- Implement tool
-- Auto inlining
-- Value prediction
-- Try to remove code if we know the results
-
-
-
-C++ headers optimizer:
-
-- Implement tool
-- Investigate C++ headers hierarchy
-- Extend C++ headers hierarchy for each C++ file
-- Iterate over all possible options for header inclusions
-- Try to delete some inclusions if it's not harmful for build
-
-
-
-QMake:
-
-- Verify code
-
-
-
-USB Boot Maker:
-
-- Verify code
-
-
-
-MathZip:
-
-- Implement tool
-- Try to think how we can produce original file with some magic function
-
-
-
-SpecVerifier:
-
-- Implement tool
-- Check the code with several specifications like SMBIOS, TCP, PCI, PCI Express ...
-
-
-
-webapps:
-
-- Replicate apps to registered server
-- Create web site
-
-
-
-Generic:
-
-- Write documentation
-- Coverity
-- Klocwork
-- Valgrind
-- Jenkins
-- Bug tracker (Redmine)
+TODO List                                                                                                                                                                                                // Colorize: green
+=========                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+NGOS:                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Refactor                                                                                                                                                                                               // Colorize: green
+- Use global variable for GUID                                                                                                                                                                           // Colorize: green
+- Replace zeros with nullptr                                                                                                                                                                             // Colorize: green
+- Centralize CPUID like in edk2                                                                                                                                                                          // Colorize: green
+- Check for asm volatile                                                                                                                                                                                 // Colorize: green
+- Make global GET_UNALIGNED_LE32 and PUT_UNALIGNED_LE32 for all sizes                                                                                                                                    // Colorize: green
+- Check for mouse wheel on table widget                                                                                                                                                                  // Colorize: green
+- Convert FLAGS_TO_STRING to template                                                                                                                                                                    // Colorize: green
+- Check for log includes: common or early?                                                                                                                                                               // Colorize: green
+- Check where we can use enumToString and flagToString                                                                                                                                                   // Colorize: green
+- Replace u64 with i64 where needed                                                                                                                                                                      // Colorize: green
+- guidToFullString                                                                                                                                                                                       // Colorize: green
+- uuidToFullString                                                                                                                                                                                       // Colorize: green
+- Change brackets for #if NGOS_BUILD_UEFI_LOG_LEVEL == OPTION_LOG_LEVEL_INHERIT && NGOS_BUILD_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE || NGOS_BUILD_UEFI_LOG_LEVEL >= OPTION_LOG_LEVEL_VERY_VERY_VERBOSE // Colorize: green
+- ASSERTS for QEMU only for variated checks                                                                                                                                                              // Colorize: green
+- Split validation regions to output/check region                                                                                                                                                        // Colorize: green
+- Check for "* sizeof()",  "+ sizeof()", "- sizeof()", "/ sizeof()"                                                                                                                                      // Colorize: green
+- BIT0-63                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Complete with interruptions                                                                                                                                                                            // Colorize: green
+- Implement boot screen for kernel                                                                                                                                                                       // Colorize: green
+- Per CPU?                                                                                                                                                                                               // Colorize: green
+- Initialization via multiple CPU cores                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Add option to disable inline                                                                                                                                                                           // Colorize: green
+- Add stack protector to build                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- All resources for one application (Turbo mode)                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Bootloader:                                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Custom arguments                                                                                                                                                                                       // Colorize: green
+- Check for last started OS on real hardware                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Code verifier:                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Verify for void functions                                                                                                                                                                              // Colorize: green
+- Verify for headers in assembler                                                                                                                                                                        // Colorize: green
+- Verify for function asserts                                                                                                                                                                            // Colorize: green
+- Verify for log alignment                                                                                                                                                                               // Colorize: green
+- Verify for 3 lines for if and while                                                                                                                                                                    // Colorize: green
+- Verify for amount of arguments in log                                                                                                                                                                  // Colorize: green
+- Verify for asserts alignment                                                                                                                                                                           // Colorize: green
+- Verify for DeviceManagerGUI::sImagesPath                                                                                                                                                               // Colorize: green
+- Verify for English chars only in source code                                                                                                                                                           // Colorize: green
+- Verify that #if, #ifdef, #endif, #define starts from the beginning of line                                                                                                                             // Colorize: green
+- Verify for Validation region                                                                                                                                                                           // Colorize: green
+- Verify that each file includes buildconfig.h                                                                                                                                                           // Colorize: green
+- Upgrade verifier for trace arguments (Check format with the types)                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Docs verifier:                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Verify for Project structure                                                                                                                                                                           // Colorize: green
+- Verify for Configuration                                                                                                                                                                               // Colorize: green
+- Verify for How to Build                                                                                                                                                                                // Colorize: green
+- Verify for Scripts                                                                                                                                                                                     // Colorize: green
+- Verify for amount of links (amount of tools/libraries/applications)                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Tests verifier:                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Verify code                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Code generator:                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Generate documentation for applications                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Assembler optimizer:                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Implement tool                                                                                                                                                                                         // Colorize: green
+- Auto inlining                                                                                                                                                                                          // Colorize: green
+- Value prediction                                                                                                                                                                                       // Colorize: green
+- Try to remove code if we know the results                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+C++ headers optimizer:                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Implement tool                                                                                                                                                                                         // Colorize: green
+- Investigate C++ headers hierarchy                                                                                                                                                                      // Colorize: green
+- Extend C++ headers hierarchy for each C++ file                                                                                                                                                         // Colorize: green
+- Iterate over all possible options for header inclusions                                                                                                                                                // Colorize: green
+- Try to delete some inclusions if it's not harmful for build                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QMake:                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Verify code                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+USB Boot Maker:                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Verify code                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MathZip:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Implement tool                                                                                                                                                                                         // Colorize: green
+- Try to think how we can produce original file with some magic function                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+SpecVerifier:                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Implement tool                                                                                                                                                                                         // Colorize: green
+- Check the code with several specifications like SMBIOS, TCP, PCI, PCI Express ...                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+webapps:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Replicate apps to registered server                                                                                                                                                                    // Colorize: green
+- Create web site                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Generic:                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+- Write documentation                                                                                                                                                                                    // Colorize: green
+- Coverity                                                                                                                                                                                               // Colorize: green
+- Klocwork                                                                                                                                                                                               // Colorize: green
+- Valgrind                                                                                                                                                                                               // Colorize: green
+- Jenkins                                                                                                                                                                                                // Colorize: green
+- Bug tracker (Redmine)                                                                                                                                                                                  // Colorize: green

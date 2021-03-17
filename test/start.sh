@@ -1,99 +1,99 @@
 #!/bin/bash
-
-# This script start kernel testing
-# Author: Maxim Shvecov
-# Usage: ./start.sh
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-CURRENT_PATH=`pwd`
-BUILD_CONFIG=include/buildconfig.h
-BUILD_LOG=/tmp/ngos_test.log
-BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-cd ../
-
-cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}
-
-make generate > ${BUILD_LOG} 2>&1
-
-if [ $? -ne 0 ]; then
-    cat ${BUILD_LOG} 2>&1
-
-    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-    cd ${CURRENT_PATH}/
-
-    exit 1
-fi
-
-make test-debug > ${BUILD_LOG} 2>&1
-
-if [ $? -ne 0 ]; then
-    cat ${BUILD_LOG} 2>&1
-
-    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}
-    cd ${CURRENT_PATH}/
-
-    exit 1
-fi
-
-cd ${CURRENT_PATH}/
-
-
-
-echo -e "\e[94mTesting started\e[0m"
-
-mkdir logs/ 2> /dev/null
-
-for file in tests/*.sh;
-do
-    SHELL_SCRIPT=$(basename "${file}")
-    TEST_NAME="${SHELL_SCRIPT%.*}"
-    TEST_NAME_LENGTH=${#TEST_NAME}
-
-
-
-    printf "%s...%$((40 - TEST_NAME_LENGTH))s" "${TEST_NAME}" ""
-
-    cd tests/
-    "./${SHELL_SCRIPT}" > "../logs/${SHELL_SCRIPT}.log" 2>&1
-    EXIT_CODE=$?
-    cd ${CURRENT_PATH}/
-
-
-
-    if [ ${EXIT_CODE} -ne 0 ]; then
-        echo -e "[\e[31mError\e[0m]"
-        echo ""
-
-        cat "logs/${SHELL_SCRIPT}.log"
-
-
-
-        cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}
-
-        exit ${EXIT_CODE}
-    fi
-
-    echo -e "[\e[32mOK\e[0m]"
-done
-
-
-
-cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script start kernel testing                                                                                                                                                                       # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./start.sh                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
+BUILD_LOG=/tmp/ngos_test.log                                                                                                                                                                             # Colorize: green
+BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd ../                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+make generate > ${BUILD_LOG} 2>&1                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
+    cat ${BUILD_LOG} 2>&1                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                               # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+make test-debug > ${BUILD_LOG} 2>&1                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
+    cat ${BUILD_LOG} 2>&1                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                               # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd ${CURRENT_PATH}/                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -e "\e[94mTesting started\e[0m"                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir logs/ 2> /dev/null                                                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+for file in tests/*.sh;                                                                                                                                                                                  # Colorize: green
+do                                                                                                                                                                                                       # Colorize: green
+    SHELL_SCRIPT=$(basename "${file}")                                                                                                                                                                   # Colorize: green
+    TEST_NAME="${SHELL_SCRIPT%.*}"                                                                                                                                                                       # Colorize: green
+    TEST_NAME_LENGTH=${#TEST_NAME}                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    printf "%s...%$((40 - TEST_NAME_LENGTH))s" "${TEST_NAME}" ""                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cd tests/                                                                                                                                                                                            # Colorize: green
+    "./${SHELL_SCRIPT}" > "../logs/${SHELL_SCRIPT}.log" 2>&1                                                                                                                                             # Colorize: green
+    EXIT_CODE=$?                                                                                                                                                                                         # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    if [ ${EXIT_CODE} -ne 0 ]; then                                                                                                                                                                      # Colorize: green
+        echo -e "[\e[31mError\e[0m]"                                                                                                                                                                     # Colorize: green
+        echo ""                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        cat "logs/${SHELL_SCRIPT}.log"                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+        exit ${EXIT_CODE}                                                                                                                                                                                # Colorize: green
+    fi                                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    echo -e "[\e[32mOK\e[0m]"                                                                                                                                                                            # Colorize: green
+done                                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cp ${BUILD_CFG_BACKUP} ../${BUILD_CONFIG}                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green
