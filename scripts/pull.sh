@@ -1,19 +1,19 @@
 #!/bin/bash
-
-# This script helps to simplify Git usage
-# Author: Maxim Shvecov
-# Usage: ./pull.sh
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-git pull
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to simplify Git usage                                                                                                                                                                # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./pull.sh                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+git pull                                                                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

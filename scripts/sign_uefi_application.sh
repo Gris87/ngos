@@ -1,68 +1,68 @@
 #!/bin/bash
-
-# This script helps to sign UEFI applications with the keys for Secure Boot
-# Author: Maxim Shvecov
-# Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-PATH_TO_UNSIGNED=$1
-PATH_TO_SIGNED=$2
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ! -f ngos.files ]; then
-    echo "Please run this script from the root folder"
-
-    exit 1
-fi
-
-
-
-if [ "${PATH_TO_UNSIGNED}" == "" ]; then
-    echo "Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED"
-
-    exit 1
-fi
-
-
-
-if [ "${PATH_TO_SIGNED}" == "" ]; then
-    echo "Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-if [ -f secure_boot/keys/ISK.key ]; then
-    sbsign --key secure_boot/keys/ISK.key --cert secure_boot/keys/ISK.pem --output ${PATH_TO_SIGNED} ${PATH_TO_UNSIGNED}
-
-    rm ${PATH_TO_UNSIGNED}
-else
-    echo -e "\e[31mSecure boot private key is unavailable. Please run ./scripts/extract_secure_boot_private_key.sh\e[0m"
-
-    mv ${PATH_TO_UNSIGNED} ${PATH_TO_SIGNED}
-fi
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to sign UEFI applications with the keys for Secure Boot                                                                                                                              # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+PATH_TO_UNSIGNED=$1                                                                                                                                                                                      # Colorize: green
+PATH_TO_SIGNED=$2                                                                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -f ngos.files ]; then                                                                                                                                                                             # Colorize: green
+    echo "Please run this script from the root folder"                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${PATH_TO_UNSIGNED}" == "" ]; then                                                                                                                                                                 # Colorize: green
+    echo "Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED"                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${PATH_TO_SIGNED}" == "" ]; then                                                                                                                                                                   # Colorize: green
+    echo "Usage: ./scripts/sign_uefi_application.sh PATH_TO_UNSIGNED PATH_TO_SIGNED"                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ -f secure_boot/keys/ISK.key ]; then                                                                                                                                                                 # Colorize: green
+    sbsign --key secure_boot/keys/ISK.key --cert secure_boot/keys/ISK.pem --output ${PATH_TO_SIGNED} ${PATH_TO_UNSIGNED}                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    rm ${PATH_TO_UNSIGNED}                                                                                                                                                                               # Colorize: green
+else                                                                                                                                                                                                     # Colorize: green
+    echo -e "\e[31mSecure boot private key is unavailable. Please run ./scripts/extract_secure_boot_private_key.sh\e[0m"                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    mv ${PATH_TO_UNSIGNED} ${PATH_TO_SIGNED}                                                                                                                                                             # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

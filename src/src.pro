@@ -1,6 +1,6 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    os \
-    libs \
-    apps
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    os \                                                                                                                                                                                                 # Colorize: green
+    libs \                                                                                                                                                                                               # Colorize: green
+    apps                                                                                                                                                                                                 # Colorize: green

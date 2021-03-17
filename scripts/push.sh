@@ -1,19 +1,19 @@
 #!/bin/bash
-
-# This script helps to simplify Git usage
-# Author: Maxim Shvecov
-# Usage: ./push.sh
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-git push origin master --tags
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to simplify Git usage                                                                                                                                                                # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./push.sh                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+git push origin master --tags                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

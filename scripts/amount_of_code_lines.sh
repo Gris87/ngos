@@ -1,81 +1,81 @@
 #!/bin/bash
-
-# This script helps to calculate amount of code lines for the whole project except generated files
-# Author: Maxim Shvecov
-# Usage: ./scripts/amount_of_code_lines.sh
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ! -f ngos.files ]; then
-    echo "Please run this script from the root folder"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-OLD_IFS=${IFS}
-IFS=$'\n'
-
-echo -n "Amount of code lines without generated: "
-
-wc -l ` \
-        cat ngos.files | \
-            grep \
-                -ve /generated/ \
-                -ve tools/tracers/assets/ \
-                -ve \.bin$ \
-                -ve \.dll$ \
-                -ve \.exe$ \
-                -ve \.gpg$ \
-                -ve \.pem$ \
-                -ve \.auth$ \
-                -ve \.ttf$ \
-                -ve \.ico$ \
-                -ve \.png$ \
-                -ve \.jpg$ \
-                -ve \.gif$ \
-                -ve \.svg$ \
-    ` | \
-    tail -n 1 | \
-    sed -s -E "s/ *([0-9]+) .*/\1/"
-
-echo -n "Amount of code lines with generated:    "
-
-    wc -l ` \
-            cat ngos.files | \
-                grep \
-                    -ve tools/tracers/assets/ \
-                    -ve \.bin$ \
-                    -ve \.dll$ \
-                    -ve \.exe$ \
-                    -ve \.gpg$ \
-                    -ve \.pem$ \
-                    -ve \.auth$ \
-                    -ve \.ttf$ \
-                    -ve \.ico$ \
-                    -ve \.png$ \
-                    -ve \.jpg$ \
-                    -ve \.gif$ \
-                    -ve \.svg$ \
-        ` | \
-        tail -n 1 | \
-        sed -s -E "s/ *([0-9]+) .*/\1/"
-
-IFS=${OLD_IFS}
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to calculate amount of code lines for the whole project except generated files                                                                                                       # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./scripts/amount_of_code_lines.sh                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -f ngos.files ]; then                                                                                                                                                                             # Colorize: green
+    echo "Please run this script from the root folder"                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+OLD_IFS=${IFS}                                                                                                                                                                                           # Colorize: green
+IFS=$'\n'                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -n "Amount of code lines without generated: "                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+wc -l ` \                                                                                                                                                                                                # Colorize: green
+        cat ngos.files | \                                                                                                                                                                               # Colorize: green
+            grep \                                                                                                                                                                                       # Colorize: green
+                -ve /generated/ \                                                                                                                                                                        # Colorize: green
+                -ve tools/tracers/assets/ \                                                                                                                                                              # Colorize: green
+                -ve \.bin$ \                                                                                                                                                                             # Colorize: green
+                -ve \.dll$ \                                                                                                                                                                             # Colorize: green
+                -ve \.exe$ \                                                                                                                                                                             # Colorize: green
+                -ve \.gpg$ \                                                                                                                                                                             # Colorize: green
+                -ve \.pem$ \                                                                                                                                                                             # Colorize: green
+                -ve \.auth$ \                                                                                                                                                                            # Colorize: green
+                -ve \.ttf$ \                                                                                                                                                                             # Colorize: green
+                -ve \.ico$ \                                                                                                                                                                             # Colorize: green
+                -ve \.png$ \                                                                                                                                                                             # Colorize: green
+                -ve \.jpg$ \                                                                                                                                                                             # Colorize: green
+                -ve \.gif$ \                                                                                                                                                                             # Colorize: green
+                -ve \.svg$ \                                                                                                                                                                             # Colorize: green
+    ` | \                                                                                                                                                                                                # Colorize: green
+    tail -n 1 | \                                                                                                                                                                                        # Colorize: green
+    sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -n "Amount of code lines with generated:    "                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    wc -l ` \                                                                                                                                                                                            # Colorize: green
+            cat ngos.files | \                                                                                                                                                                           # Colorize: green
+                grep \                                                                                                                                                                                   # Colorize: green
+                    -ve tools/tracers/assets/ \                                                                                                                                                          # Colorize: green
+                    -ve \.bin$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.dll$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.exe$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.gpg$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.pem$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.auth$ \                                                                                                                                                                        # Colorize: green
+                    -ve \.ttf$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.ico$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.png$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.jpg$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.gif$ \                                                                                                                                                                         # Colorize: green
+                    -ve \.svg$ \                                                                                                                                                                         # Colorize: green
+        ` | \                                                                                                                                                                                            # Colorize: green
+        tail -n 1 | \                                                                                                                                                                                    # Colorize: green
+        sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+IFS=${OLD_IFS}                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

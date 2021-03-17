@@ -1,44 +1,44 @@
 #!/bin/bash
-
-# This script helps to update ngos.files file
-# Author: Maxim Shvecov
-# Usage: ./scripts/update_ngos_files.sh
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ! -f ngos.files ]; then
-    echo "Please run this script from the root folder"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-find -type f | \
-    grep \
-        -ve /.git/ \
-        -ve /ngos.config$ \
-        -ve /ngos.creator$ \
-        -ve /ngos.creator.user$ \
-        -ve /ngos.files$ \
-        -ve /ngos.includes$ | \
-    git check-ignore --verbose --non-matching --stdin | \
-    grep -e "^::" | \
-    cut -c 6- | \
-    sort > ngos.files
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to update ngos.files file                                                                                                                                                            # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./scripts/update_ngos_files.sh                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -f ngos.files ]; then                                                                                                                                                                             # Colorize: green
+    echo "Please run this script from the root folder"                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+find -type f | \                                                                                                                                                                                         # Colorize: green
+    grep \                                                                                                                                                                                               # Colorize: green
+        -ve /.git/ \                                                                                                                                                                                     # Colorize: green
+        -ve /ngos.config$ \                                                                                                                                                                              # Colorize: green
+        -ve /ngos.creator$ \                                                                                                                                                                             # Colorize: green
+        -ve /ngos.creator.user$ \                                                                                                                                                                        # Colorize: green
+        -ve /ngos.files$ \                                                                                                                                                                               # Colorize: green
+        -ve /ngos.includes$ | \                                                                                                                                                                          # Colorize: green
+    git check-ignore --verbose --non-matching --stdin | \                                                                                                                                                # Colorize: green
+    grep -e "^::" | \                                                                                                                                                                                    # Colorize: green
+    cut -c 6- | \                                                                                                                                                                                        # Colorize: green
+    sort > ngos.files                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

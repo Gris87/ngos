@@ -1,107 +1,107 @@
 #!/bin/bash
-
-# This script helps to generate keys required for Secure Boot
-# Author: Maxim Shvecov
-# Usage: ./scripts/generate_secure_boot_keys.sh
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-CURRENT_PATH=`pwd`
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ! -f ngos.files ]; then
-    echo "Please run this script from the root folder"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-cd secure_boot/
-
-
-
-openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Platform Key"      -keyout PK.key  -out PK.pem  -nodes
-openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Key Exchange Key"  -keyout KEK.key -out KEK.pem -nodes
-openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Image Signing Key" -keyout ISK.key -out ISK.pem -nodes
-
-cert-to-efi-sig-list -g "`uuidgen`" PK.pem  PK.esl
-cert-to-efi-sig-list -g "`uuidgen`" KEK.pem KEK.esl
-cert-to-efi-sig-list -g "`uuidgen`" ISK.pem ISK.esl
-
-
-
-wget http://go.microsoft.com/fwlink/?LinkID=321192 -O MicWinProPCA2011_2011-10-19.crt
-wget http://go.microsoft.com/fwlink/?LinkId=321194 -O MicCorUEFCA2011_2011-06-27.crt
-
-
-
-openssl x509 -in MicWinProPCA2011_2011-10-19.crt -inform DER -out MsWin.pem -outform PEM
-openssl x509 -in MicCorUEFCA2011_2011-06-27.crt  -inform DER -out UEFI.pem  -outform PEM
-
-rm MicWinProPCA2011_2011-10-19.crt MicCorUEFCA2011_2011-06-27.crt
-
-cert-to-efi-sig-list -g "`uuidgen`" MsWin.pem MsWin.esl
-cert-to-efi-sig-list -g "`uuidgen`" UEFI.pem  UEFI.esl
-
-rm MsWin.pem UEFI.pem
-
-cat ISK.esl MsWin.esl UEFI.esl > db.esl
-rm  ISK.esl MsWin.esl UEFI.esl
-
-
-
-sign-efi-sig-list -k PK.key  -c PK.pem  PK  PK.esl  PK.auth
-sign-efi-sig-list -k PK.key  -c PK.pem  KEK KEK.esl KEK.auth
-sign-efi-sig-list -k KEK.key -c KEK.pem db  db.esl  db.auth
-
-rm PK.key KEK.key
-rm PK.pem
-rm PK.esl KEK.esl db.esl
-
-
-
-rm -rf setup/ 2> /dev/null
-mkdir setup
-
-mv PK.auth  setup/
-mv KEK.auth setup/
-mv db.auth  setup/
-
-
-
-rm -rf keys/ 2> /dev/null
-mkdir keys
-
-mv ISK.key keys/
-mv ISK.pem keys/
-mv KEK.pem keys/
-
-gpg -c -o keys/ISK.key.gpg keys/ISK.key
-
-
-
-cd ${CURRENT_PATH}
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to generate keys required for Secure Boot                                                                                                                                            # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./scripts/generate_secure_boot_keys.sh                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -f ngos.files ]; then                                                                                                                                                                             # Colorize: green
+    echo "Please run this script from the root folder"                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd secure_boot/                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Platform Key"      -keyout PK.key  -out PK.pem  -nodes                                                                            # Colorize: green
+openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Key Exchange Key"  -keyout KEK.key -out KEK.pem -nodes                                                                            # Colorize: green
+openssl req -new -x509 -newkey rsa:2048 -sha256 -days 36500 -subj "/CN=Image Signing Key" -keyout ISK.key -out ISK.pem -nodes                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cert-to-efi-sig-list -g "`uuidgen`" PK.pem  PK.esl                                                                                                                                                       # Colorize: green
+cert-to-efi-sig-list -g "`uuidgen`" KEK.pem KEK.esl                                                                                                                                                      # Colorize: green
+cert-to-efi-sig-list -g "`uuidgen`" ISK.pem ISK.esl                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+wget http://go.microsoft.com/fwlink/?LinkID=321192 -O MicWinProPCA2011_2011-10-19.crt                                                                                                                    # Colorize: green
+wget http://go.microsoft.com/fwlink/?LinkId=321194 -O MicCorUEFCA2011_2011-06-27.crt                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+openssl x509 -in MicWinProPCA2011_2011-10-19.crt -inform DER -out MsWin.pem -outform PEM                                                                                                                 # Colorize: green
+openssl x509 -in MicCorUEFCA2011_2011-06-27.crt  -inform DER -out UEFI.pem  -outform PEM                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+rm MicWinProPCA2011_2011-10-19.crt MicCorUEFCA2011_2011-06-27.crt                                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cert-to-efi-sig-list -g "`uuidgen`" MsWin.pem MsWin.esl                                                                                                                                                  # Colorize: green
+cert-to-efi-sig-list -g "`uuidgen`" UEFI.pem  UEFI.esl                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+rm MsWin.pem UEFI.pem                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cat ISK.esl MsWin.esl UEFI.esl > db.esl                                                                                                                                                                  # Colorize: green
+rm  ISK.esl MsWin.esl UEFI.esl                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+sign-efi-sig-list -k PK.key  -c PK.pem  PK  PK.esl  PK.auth                                                                                                                                              # Colorize: green
+sign-efi-sig-list -k PK.key  -c PK.pem  KEK KEK.esl KEK.auth                                                                                                                                             # Colorize: green
+sign-efi-sig-list -k KEK.key -c KEK.pem db  db.esl  db.auth                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+rm PK.key KEK.key                                                                                                                                                                                        # Colorize: green
+rm PK.pem                                                                                                                                                                                                # Colorize: green
+rm PK.esl KEK.esl db.esl                                                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+rm -rf setup/ 2> /dev/null                                                                                                                                                                               # Colorize: green
+mkdir setup                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mv PK.auth  setup/                                                                                                                                                                                       # Colorize: green
+mv KEK.auth setup/                                                                                                                                                                                       # Colorize: green
+mv db.auth  setup/                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+rm -rf keys/ 2> /dev/null                                                                                                                                                                                # Colorize: green
+mkdir keys                                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mv ISK.key keys/                                                                                                                                                                                         # Colorize: green
+mv ISK.pem keys/                                                                                                                                                                                         # Colorize: green
+mv KEK.pem keys/                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+gpg -c -o keys/ISK.key.gpg keys/ISK.key                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd ${CURRENT_PATH}                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

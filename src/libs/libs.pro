@@ -1,4 +1,4 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    qt
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    qt                                                                                                                                                                                                   # Colorize: green

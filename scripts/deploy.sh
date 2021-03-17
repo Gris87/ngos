@@ -1,45 +1,45 @@
 #!/bin/bash
-
-# This script helps to deploy latest binaries to web servers
-# Author: Maxim Shvecov
-# Usage: ./scripts/deploy.sh
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-CURRENT_PATH=`pwd`
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ! -f ngos.files ]; then
-    echo "Please run this script from the root folder"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-cd webapps/ngos/
-./deploy.sh
-cd ${CURRENT_PATH}
-
-
-
-exit 0
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to deploy latest binaries to web servers                                                                                                                                             # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: ./scripts/deploy.sh                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -f ngos.files ]; then                                                                                                                                                                             # Colorize: green
+    echo "Please run this script from the root folder"                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd webapps/ngos/                                                                                                                                                                                         # Colorize: green
+./deploy.sh                                                                                                                                                                                              # Colorize: green
+cd ${CURRENT_PATH}                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+exit 0                                                                                                                                                                                                   # Colorize: green

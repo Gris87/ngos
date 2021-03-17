@@ -1,4 +1,4 @@
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    ls
+TEMPLATE = subdirs                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SUBDIRS += \                                                                                                                                                                                             # Colorize: green
+    ls                                                                                                                                                                                                   # Colorize: green

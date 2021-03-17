@@ -1,244 +1,244 @@
 #!/bin/bash
-
-# This script helps to install prerequisites on Ubuntu 19.04
-# Author: Maxim Shvecov
-# Usage: sudo ./ubuntu_19_04.sh
-
-
-
-###########################################################################################
-#    PARAMETERS
-###########################################################################################
-
-
-
-CURRENT_PATH=`pwd`
-BINUTILS_VERSION=2.36
-GCC_VERSION=10.2.0
-VIRTUALBOX_VERSION=6.1
-QT_VERSION=6.0.0
-
-
-
-###########################################################################################
-#    VERIFICATION
-###########################################################################################
-
-
-
-if [ ${EUID} -ne 0 ]; then
-    echo "Please run as root"
-
-    exit 1
-fi
-
-
-
-if [[ `lsb_release -rs` != 19.04 ]]; then
-    echo "This script should be called on Ubuntu 19.04"
-
-    exit 1
-fi
-
-
-
-if [[ ${CURRENT_PATH} != /home/* ]]; then
-    echo "Please run this script under your home directory"
-
-    exit 1
-fi
-
-
-
-USER=`echo "${CURRENT_PATH}" | cut -d / -f 3`
-
-if [ "${USER}" == "" ]; then
-    echo "Failed to detect user name"
-
-    exit 1
-fi
-
-
-
-###########################################################################################
-#    PROCESSING
-###########################################################################################
-
-
-
-echo ""
-echo -e "\e[33m-------------------- Environment --------------------\e[0m"
-echo ""
-
-
-
-mkdir /tmp/src/
-cd /tmp/src/
-
-apt-get update
-apt-get upgrade -y
-apt-get install -y build-essential
-apt-get install -y texinfo
-apt-get install -y gdb
-apt-get install -y socat
-apt-get install -y curl
-apt-get install -y libgl-dev
-apt-get install -y libudev-dev
-apt-get install -y poppler-utils
-apt-get install -y npm
-
-ln -s /usr/bin/nodejs /usr/bin/node
-npm install sinon
-npm install markdown-spellcheck -g
-
-export PREFIX="/usr/local/x8664elfgcc"
-export TARGET=x86_64-elf
-export PATH="${PREFIX}/bin:${PATH}"
-
-
-
-echo ""
-echo -e "\e[33m-------------------- gcc-9 --------------------\e[0m"
-echo ""
-
-
-
-add-apt-repository -y ppa:jonathonf/gcc
-apt-get update
-apt-get install -y gcc-9 g++-9
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
-
-
-
-echo ""
-echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"
-echo ""
-
-
-
-mkdir /tmp/src
-cd /tmp/src
-
-if [ ! -d binutils-${BINUTILS_VERSION} ]; then
-    curl -O http://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz
-    tar xf binutils-${BINUTILS_VERSION}.tar.xz
-fi
-
-mkdir binutils-build
-cd binutils-build
-../binutils-${BINUTILS_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --disable-werror || exit 1
-make -j`nproc` all                                                                               || exit 1
-make install                                                                                     || exit 1
-
-
-
-echo ""
-echo -e "\e[33m-------------------- gcc-${GCC_VERSION} --------------------\e[0m"
-echo ""
-
-
-
-mkdir /tmp/src
-cd /tmp/src
-
-if [ ! -d gcc-${GCC_VERSION} ]; then
-    curl -O https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz
-    tar xf gcc-${GCC_VERSION}.tar.xz
-fi
-
-cd gcc-${GCC_VERSION}
-contrib/download_prerequisites
-cd ..
-
-mkdir gcc-build
-cd gcc-build
-../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ || exit 1
-make -j`nproc` all-gcc                                                                         || exit 1
-make install-gcc                                                                               || exit 1
-make -j`nproc` all-target-libgcc                                                               || exit 1
-make install-target-libgcc                                                                     || exit 1
-
-
-
-echo ""
-echo -e "\e[33m-------------------- libvirt --------------------\e[0m"
-echo ""
-
-
-
-apt-get install -y qemu qemu-kvm libvirt-daemon bridge-utils virt-manager virtinst
-
-systemctl enable libvirtd
-systemctl restart libvirtd
-
-
-
-echo ""
-echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"
-echo ""
-
-
-
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -
-wget -q https://www.virtualbox.org/download/oracle_vbox.asc      -O- | apt-key add -
-apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"
-
-apt-get update
-apt-get install -y virtualbox-${VIRTUALBOX_VERSION}
-
-
-
-echo ""
-echo -e "\e[33m-------------------- .gdbinit --------------------\e[0m"
-echo ""
-
-
-
-cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/${USER}/
-chown ${USER}:${USER} /home/${USER}/.gdbinit
-
-
-
-echo ""
-echo -e "\e[33m-------------------- .bashrc --------------------\e[0m"
-echo ""
-
-
-
-cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp
-mv /home/${USER}/temp /home/${USER}/.bashrc
-echo "export PATH=/usr/local/x8664elfgcc/bin:\${PATH}"    >> /home/${USER}/.bashrc
-echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\${PATH}" >> /home/${USER}/.bashrc
-chown ${USER}:${USER} /home/${USER}/.bashrc
-
-
-
-echo ""
-echo -e "\e[33m-------------------- Qt --------------------\e[0m"
-echo ""
-
-
-
-cd /home/${USER}/
-wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
-chmod 755 qt-unified-linux-x64-online.run
-chown ${USER}:${USER} qt-unified-linux-x64-online.run
-
-echo -e "\e[31mPlease install Qt in your X-Window Manager\e[0m"
-echo -e "\e[31m~/qt-unified-linux-x64-online.run\e[0m"
-echo ""
-echo -e "\e[31mPlease choose following items during Qt installation:\e[0m"
-echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit\e[0m"
-echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"
-
-
-
-echo ""
-echo -e "\e[32m-------------------- Done --------------------\e[0m"
-echo ""
-
-
-
-echo "Rebooting..."
-sleep 5
-reboot
+                                                                                                                                                                                                         # Colorize: green
+# This script helps to install prerequisites on Ubuntu 19.04                                                                                                                                             # Colorize: green
+# Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
+# Usage: sudo ./ubuntu_19_04.sh                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PARAMETERS                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+BINUTILS_VERSION=2.36                                                                                                                                                                                    # Colorize: green
+GCC_VERSION=10.2.0                                                                                                                                                                                       # Colorize: green
+VIRTUALBOX_VERSION=6.1                                                                                                                                                                                   # Colorize: green
+QT_VERSION=6.0.0                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ${EUID} -ne 0 ]; then                                                                                                                                                                               # Colorize: green
+    echo "Please run as root"                                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [[ `lsb_release -rs` != 19.04 ]]; then                                                                                                                                                                # Colorize: green
+    echo "This script should be called on Ubuntu 19.04"                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [[ ${CURRENT_PATH} != /home/* ]]; then                                                                                                                                                                # Colorize: green
+    echo "Please run this script under your home directory"                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+USER=`echo "${CURRENT_PATH}" | cut -d / -f 3`                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${USER}" == "" ]; then                                                                                                                                                                             # Colorize: green
+    echo "Failed to detect user name"                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    PROCESSING                                                                                                                                                                                          # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- Environment --------------------\e[0m"                                                                                                                               # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir /tmp/src/                                                                                                                                                                                          # Colorize: green
+cd /tmp/src/                                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+apt-get update                                                                                                                                                                                           # Colorize: green
+apt-get upgrade -y                                                                                                                                                                                       # Colorize: green
+apt-get install -y build-essential                                                                                                                                                                       # Colorize: green
+apt-get install -y texinfo                                                                                                                                                                               # Colorize: green
+apt-get install -y gdb                                                                                                                                                                                   # Colorize: green
+apt-get install -y socat                                                                                                                                                                                 # Colorize: green
+apt-get install -y curl                                                                                                                                                                                  # Colorize: green
+apt-get install -y libgl-dev                                                                                                                                                                             # Colorize: green
+apt-get install -y libudev-dev                                                                                                                                                                           # Colorize: green
+apt-get install -y poppler-utils                                                                                                                                                                         # Colorize: green
+apt-get install -y npm                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+ln -s /usr/bin/nodejs /usr/bin/node                                                                                                                                                                      # Colorize: green
+npm install sinon                                                                                                                                                                                        # Colorize: green
+npm install markdown-spellcheck -g                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+export PREFIX="/usr/local/x8664elfgcc"                                                                                                                                                                   # Colorize: green
+export TARGET=x86_64-elf                                                                                                                                                                                 # Colorize: green
+export PATH="${PREFIX}/bin:${PATH}"                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- gcc-9 --------------------\e[0m"                                                                                                                                     # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+add-apt-repository -y ppa:jonathonf/gcc                                                                                                                                                                  # Colorize: green
+apt-get update                                                                                                                                                                                           # Colorize: green
+apt-get install -y gcc-9 g++-9                                                                                                                                                                           # Colorize: green
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- binutils-${BINUTILS_VERSION} --------------------\e[0m"                                                                                                              # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir /tmp/src                                                                                                                                                                                           # Colorize: green
+cd /tmp/src                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -d binutils-${BINUTILS_VERSION} ]; then                                                                                                                                                           # Colorize: green
+    curl -O http://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VERSION}.tar.xz                                                                                                                          # Colorize: green
+    tar xf binutils-${BINUTILS_VERSION}.tar.xz                                                                                                                                                           # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir binutils-build                                                                                                                                                                                     # Colorize: green
+cd binutils-build                                                                                                                                                                                        # Colorize: green
+../binutils-${BINUTILS_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --disable-werror || exit 1                                                                                               # Colorize: green
+make -j`nproc` all                                                                               || exit 1                                                                                               # Colorize: green
+make install                                                                                     || exit 1                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- gcc-${GCC_VERSION} --------------------\e[0m"                                                                                                                        # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir /tmp/src                                                                                                                                                                                           # Colorize: green
+cd /tmp/src                                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ ! -d gcc-${GCC_VERSION} ]; then                                                                                                                                                                     # Colorize: green
+    curl -O https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.xz                                                                                                                     # Colorize: green
+    tar xf gcc-${GCC_VERSION}.tar.xz                                                                                                                                                                     # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd gcc-${GCC_VERSION}                                                                                                                                                                                    # Colorize: green
+contrib/download_prerequisites                                                                                                                                                                           # Colorize: green
+cd ..                                                                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+mkdir gcc-build                                                                                                                                                                                          # Colorize: green
+cd gcc-build                                                                                                                                                                                             # Colorize: green
+../gcc-${GCC_VERSION}/configure --prefix=${PREFIX} --target=${TARGET} --enable-languages=c,c++ || exit 1                                                                                                 # Colorize: green
+make -j`nproc` all-gcc                                                                         || exit 1                                                                                                 # Colorize: green
+make install-gcc                                                                               || exit 1                                                                                                 # Colorize: green
+make -j`nproc` all-target-libgcc                                                               || exit 1                                                                                                 # Colorize: green
+make install-target-libgcc                                                                     || exit 1                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- libvirt --------------------\e[0m"                                                                                                                                   # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+apt-get install -y qemu qemu-kvm libvirt-daemon bridge-utils virt-manager virtinst                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+systemctl enable libvirtd                                                                                                                                                                                # Colorize: green
+systemctl restart libvirtd                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- virtualbox-${VIRTUALBOX_VERSION} --------------------\e[0m"                                                                                                          # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add -                                                                                                                     # Colorize: green
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc      -O- | apt-key add -                                                                                                                     # Colorize: green
+apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib"                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+apt-get update                                                                                                                                                                                           # Colorize: green
+apt-get install -y virtualbox-${VIRTUALBOX_VERSION}                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- .gdbinit --------------------\e[0m"                                                                                                                                  # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cp ${CURRENT_PATH}/../../tools/gdb/.gdbinit /home/${USER}/                                                                                                                                               # Colorize: green
+chown ${USER}:${USER} /home/${USER}/.gdbinit                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- .bashrc --------------------\e[0m"                                                                                                                                   # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cat /home/${USER}/.bashrc | grep -v "/usr/local/x8664elfgcc/bin" | grep -v "~/Qt/" > /home/${USER}/temp                                                                                                  # Colorize: green
+mv /home/${USER}/temp /home/${USER}/.bashrc                                                                                                                                                              # Colorize: green
+echo "export PATH=/usr/local/x8664elfgcc/bin:\${PATH}"    >> /home/${USER}/.bashrc                                                                                                                       # Colorize: green
+echo "export PATH=~/Qt/${QT_VERSION}/gcc_64/bin:\${PATH}" >> /home/${USER}/.bashrc                                                                                                                       # Colorize: green
+chown ${USER}:${USER} /home/${USER}/.bashrc                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- Qt --------------------\e[0m"                                                                                                                                        # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd /home/${USER}/                                                                                                                                                                                        # Colorize: green
+wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run                                                                                                           # Colorize: green
+chmod 755 qt-unified-linux-x64-online.run                                                                                                                                                                # Colorize: green
+chown ${USER}:${USER} qt-unified-linux-x64-online.run                                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo -e "\e[31mPlease install Qt in your X-Window Manager\e[0m"                                                                                                                                          # Colorize: green
+echo -e "\e[31m~/qt-unified-linux-x64-online.run\e[0m"                                                                                                                                                   # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[31mPlease choose following items during Qt installation:\e[0m"                                                                                                                               # Colorize: green
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Desktop gcc 64 bit\e[0m"                                                                                                                                      # Colorize: green
+echo -e "\e[31m* Qt -> Qt ${QT_VERSION} -> Sources\e[0m"                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[32m-------------------- Done --------------------\e[0m"                                                                                                                                      # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo "Rebooting..."                                                                                                                                                                                      # Colorize: green
+sleep 5                                                                                                                                                                                                  # Colorize: green
+reboot                                                                                                                                                                                                   # Colorize: green

@@ -31,32 +31,34 @@ TOTAL_NOT_VERIFIED_LINES=0                                                      
                                                                                                                                                                                                          # Colorize: green
 while read file                                                                                                                                                                                          # Colorize: green
 do                                                                                                                                                                                                       # Colorize: green
-    IGNORE_FILE=`echo "${file}" | grep  \
-                -ve "\.auth$"           \
-                -ve "\.bin$"            \
-                -ve "\.DAT$"            \
-                -ve "\.dll$"            \
-                -ve "\.efi$"            \
-                -ve "\.exe$"            \
-                -ve "\.gitignore$"      \
-                -ve "\.gpg$"            \
-                -ve "\.hex$"            \
-                -ve "\.ico$"            \
-                -ve "\.jpg$"            \
-                -ve "\.LOG$"            \
-                -ve "\.mui$"            \
-                -ve "\.patch$"          \
-                -ve "\.png$"            \
-                -ve "\.qm$"             \
-                -ve "\.stl$"            \
-                -ve "\.ttf$"            \
-                -ve "\.vbox$"           \
-                -ve "/generated/"       \
-                -ve "/BCD$"             \
-                -ve "/\.config$"        \
-                -ve "/\.gdbinit$"       \
-                -ve "/\.htaccess$"      \
-                -ve "/\.spelling$"      \
+    IGNORE_FILE=`echo "${file}" | grep      \
+                -ve "\.auth$"               \
+                -ve "\.bin$"                \
+                -ve "\.DAT$"                \
+                -ve "\.dll$"                \
+                -ve "\.efi$"                \
+                -ve "\.exe$"                \
+                -ve "\.gitignore$"          \
+                -ve "\.gpg$"                \
+                -ve "\.hex$"                \
+                -ve "\.ico$"                \
+                -ve "\.jpg$"                \
+                -ve "\.LOG$"                \
+                -ve "\.mui$"                \
+                -ve "\.patch$"              \
+                -ve "\.pem$"                \
+                -ve "\.png$"                \
+                -ve "\.qm$"                 \
+                -ve "\.stl$"                \
+                -ve "\.ttf$"                \
+                -ve "\.vbox$"               \
+                -ve "ngos.creator.shared"   \
+                -ve "/generated/"           \
+                -ve "/BCD$"                 \
+                -ve "/\.config$"            \
+                -ve "/\.gdbinit$"           \
+                -ve "/\.htaccess$"          \
+                -ve "/\.spelling$"          \
     `                                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     if [ "${IGNORE_FILE}" != "" ]; then                                                                                                                                                                  # Colorize: green

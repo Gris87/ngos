@@ -1,15 +1,15 @@
-QT -= gui
-
-CONFIG += c++17 console
-CONFIG -= app_bundle
-
-TARGET = qt
-TEMPLATE = lib
-
-
-
-SOURCES += \
-    src/com/ngos/qt/qt.cpp
-
-HEADERS += \
-    src/com/ngos/qt/qt.h
+QT -= gui                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CONFIG += c++17 console                                                                                                                                                                                  # Colorize: green
+CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+TARGET = qt                                                                                                                                                                                              # Colorize: green
+TEMPLATE = lib                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/qt/qt.cpp                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/qt/qt.h                                                                                                                                                                                 # Colorize: green

@@ -1,4 +1,4 @@
-int main(int /*argc*/, char ** /*argv[]*/)
-{
-    return 0;
-}
+int main(int /*argc*/, char ** /*argv[]*/)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return 0;                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

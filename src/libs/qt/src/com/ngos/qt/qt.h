@@ -1,10 +1,10 @@
-#ifndef COM_NGOS_QT_QT_H
-#define COM_NGOS_QT_QT_H
-
-
-
-void temp(); // TEST: NO
-
-
-
-#endif // COM_NGOS_QT_QT_H
+#ifndef COM_NGOS_QT_QT_H                                                                                                                                                                                 // Colorize: green
+#define COM_NGOS_QT_QT_H                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void temp(); // TEST: NO                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_QT_QT_H                                                                                                                                                                               // Colorize: green

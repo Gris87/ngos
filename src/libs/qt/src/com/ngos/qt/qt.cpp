@@ -1,8 +1,8 @@
-#include "qt.h"
-
-
-
-void temp()
-{
-    // Nothing
-}
+#include "qt.h"                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void temp()                                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
