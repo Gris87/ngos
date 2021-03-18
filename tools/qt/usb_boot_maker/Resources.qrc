@@ -1,13 +1,13 @@
-<RCC>
-    <qresource prefix="/">
-        <file>assets/binaries/protective_mbr.bin</file>
-        <file>assets/images/about.png</file>
-        <file>assets/images/exit.png</file>
-        <file>assets/images/icon.ico</file>
-        <file>assets/images/logo.png</file>
-        <file>assets/images/start.png</file>
-        <file>assets/images/stop.png</file>
-        <file>assets/translations/language_en.qm</file>
-        <file>assets/translations/language_ru.qm</file>
-    </qresource>
-</RCC>
+<RCC>                                                                                                                                                                                                    <!-- Colorize: green -->
+    <qresource prefix="/">                                                                                                                                                                               <!-- Colorize: green -->
+        <file>assets/binaries/protective_mbr.bin</file>                                                                                                                                                  <!-- Colorize: green -->
+        <file>assets/images/about.png</file>                                                                                                                                                             <!-- Colorize: green -->
+        <file>assets/images/exit.png</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/icon.ico</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/logo.png</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/images/start.png</file>                                                                                                                                                             <!-- Colorize: green -->
+        <file>assets/images/stop.png</file>                                                                                                                                                              <!-- Colorize: green -->
+        <file>assets/translations/language_en.qm</file>                                                                                                                                                  <!-- Colorize: green -->
+        <file>assets/translations/language_ru.qm</file>                                                                                                                                                  <!-- Colorize: green -->
+    </qresource>                                                                                                                                                                                         <!-- Colorize: green -->
+</RCC>                                                                                                                                                                                                   <!-- Colorize: green -->

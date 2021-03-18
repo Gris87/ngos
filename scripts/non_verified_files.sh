@@ -49,10 +49,12 @@ do                                                                              
                 -ve "\.pem$"                \
                 -ve "\.png$"                \
                 -ve "\.qm$"                 \
+                -ve "\.rc$"                 \
                 -ve "\.stl$"                \
                 -ve "\.ttf$"                \
                 -ve "\.vbox$"               \
-                -ve "ngos.creator.shared"   \
+                -ve "^ngos.creator.shared$" \
+                -ve "Makefile$"             \
                 -ve "/generated/"           \
                 -ve "/BCD$"                 \
                 -ve "/\.config$"            \

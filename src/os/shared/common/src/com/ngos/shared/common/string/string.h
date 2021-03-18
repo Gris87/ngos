@@ -1,15 +1,15 @@
-#ifndef COM_NGOS_SHARED_COMMON_STRING_STRING_H
-#define COM_NGOS_SHARED_COMMON_STRING_STRING_H
-
-
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#ifdef DEVTOOLS_APPLICATION // Defined in pro file
-char8* strapp(char8 *str1, const char8 *str2);
-#else
+#ifndef COM_NGOS_SHARED_COMMON_STRING_STRING_H                                                                                                                                                           // Colorize: green
+#define COM_NGOS_SHARED_COMMON_STRING_STRING_H                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef DEVTOOLS_APPLICATION // Defined in pro file                                                                                                                                                       // Colorize: green
+char8* strapp(char8 *str1, const char8 *str2);                                                                                                                                                           // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
 char8 toLower(char8 ch);
 char16 toLower(char16 ch);
 char8 toUpper(char8 ch);
@@ -50,8 +50,8 @@ bool strend(const char8 *str1, const char8 *str2);
 bool strend(const char16 *str1, const char16 *str2);
 bool strendi(const char8 *str1, const char8 *str2);
 bool strendi(const char16 *str1, const char16 *str2);
-#endif
-
-
-
-#endif // COM_NGOS_SHARED_COMMON_STRING_STRING_H
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_SHARED_COMMON_STRING_STRING_H                                                                                                                                                         // Colorize: green

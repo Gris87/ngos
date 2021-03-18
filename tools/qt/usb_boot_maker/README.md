@@ -1,20 +1,20 @@
-usb_boot_maker
-==============
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/usb_boot_maker/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.
-
-
-
-In case of issue "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed" under Windows please do the following:
-
-1. Go to https://slproweb.com/products/Win32OpenSSL.html<br/>
-2. Download and install Win64 OpenSSL v1.0.2t Light<br/>
-3. Copy all *.dll files from installed dir to C:\Qt\5.15.0\msvc2017_64\bin
-
-
-
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/09.%20USB%20boot%20maker/README.md).
+usb_boot_maker                                                                                                                                                                                           // Colorize: green
+==============                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/usb_boot_maker/Screenshot.png?raw=true" alt="Screenshot"/>                                                                             // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+In case of issue "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed" under Windows please do the following:                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+1. Go to https://slproweb.com/products/Win32OpenSSL.html<br/>                                                                                                                                            // Colorize: green
+2. Download and install Win64 OpenSSL v1.0.2t Light<br/>                                                                                                                                                 // Colorize: green
+3. Copy all *.dll files from installed dir to C:\Qt\5.15.0\msvc2017_64\bin                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/09.%20USB%20boot%20maker/README.md).                                                                                                  // Colorize: green

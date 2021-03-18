@@ -94,7 +94,7 @@
  ***                                                                                                                                                                                                     // Colorize: green
  *** Default: OPTION_YES                                                                                                                                                                                 // Colorize: green
  ***/                                                                                                                                                                                                    // Colorize: green
-#define NGOS_BUILD_RELEASE OPTION_NO                                                                                                                                                                     // Colorize: green
+#define NGOS_BUILD_RELEASE OPTION_NO
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -111,7 +111,7 @@
  ***                                                                                                                                                                                                     // Colorize: green
  *** Default: OPTION_NO                                                                                                                                                                                  // Colorize: green
  ***/                                                                                                                                                                                                    // Colorize: green
-#define NGOS_BUILD_TEST_MODE OPTION_YES                                                                                                                                                                  // Colorize: green
+#define NGOS_BUILD_TEST_MODE OPTION_YES
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
