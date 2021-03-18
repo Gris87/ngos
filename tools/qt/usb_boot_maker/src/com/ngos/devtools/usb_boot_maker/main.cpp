@@ -1,15 +1,15 @@
-#include <QApplication>
-
-#include <com/ngos/devtools/usb_boot_maker/main/mainwindow.h>
-
-
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-    MainWindow mainWindow;
-    mainWindow.show();
-
-    return app.exec();
-}
+#include <QApplication>                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/main/mainwindow.h>                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QApplication app(argc, argv);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    MainWindow mainWindow;                                                                                                                                                                               // Colorize: green
+    mainWindow.show();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return app.exec();                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

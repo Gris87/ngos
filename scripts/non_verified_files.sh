@@ -51,7 +51,9 @@ do                                                                              
                 -ve "\.qm$"                 \
                 -ve "\.rc$"                 \
                 -ve "\.stl$"                \
+                -ve "\.ts$"                 \
                 -ve "\.ttf$"                \
+                -ve "\.ui$"                 \
                 -ve "\.vbox$"               \
                 -ve "^ngos.creator.shared$" \
                 -ve "Makefile$"             \

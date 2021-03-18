@@ -1,84 +1,84 @@
-BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)
-                                                                                #
-.code16                                                                         # Generate code in 16 bits mode
-.section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)
-                                                                                #
-.globl  _start                                                                  # Make _start visible for linker
-_start:                                                                         # Global pointer to the entry point in order to make linker silent
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    ljmp    $(BOOTSEG), $(start2)                                               # Normalize the start address
-start2:                                                                         # Label used for normalization
-                                                                                #
-# ============================================================================= # =============================================================================
-# We will print message and reboot PC                                           #
-# ============================================================================= # =============================================================================
-                                                                                #
-    movw    %cs, %ax                                                            # Indirectly assign (via AX)...
-    movw    %ax, %ds                                                            # CS to DS
-    movw    %ax, %es                                                            # CS to ES
-    movw    %ax, %ss                                                            # CS to SS
-    xorw    %sp, %sp                                                            # Set SP to 0
-    sti                                                                         # Set Interrupt Flag (When the IF flag is set, the processor begins responding to external, maskable interrupts after the next instruction is executed.)
-    cld                                                                         # Clear Direction Flag (When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI))
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-    movw    $(separator), %si                                                   # Put address of separator to SI
-    call    print_string                                                        # Call print_string function
-    movw    $(header), %si                                                      # Put address of header to SI
-    call    print_string                                                        # Call print_string function
-    movw    $(separator), %si                                                   # Put address of separator to SI
-    call    print_string                                                        # Call print_string function
-    movw    $(reboot_msg), %si                                                  # Put address of reboot message to SI
-    call    print_string                                                        # Call print_string function
-                                                                                #
-    xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press
-    int     $0x16                                                               # Wait until user press some keyboard button
-    int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)
-                                                                                #
-    ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong
-                                                                                #
-# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
-                                                                                #
-print_string:                                                                   # print_string function
-    lodsb                                                                       # Load one byte from SI to AL
-    andb    %al, %al                                                            # IF AL == 0
-    jz      1f                                                                  #   THEN jump to 1f
-    movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)
-    movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)
-    int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen
-    jmp     print_string                                                        #        Print next character
-1:                                                                              # Label for jumping when there are no more symbols
-    ret                                                                         # Return from the function
-                                                                                #
-# ============================================================================= # =============================================================================
-# Data used for printing                                                        #
-# ============================================================================= # =============================================================================
-                                                                                #
-.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)
-separator:                                                                      # Separator string
-    .ascii  "****************************************\r\n"                      # Separator text...
-    .byte   0                                                                   # Ends with 0
-                                                                                #
-header:                                                                         # Header string
-    .ascii  "*** ERROR: LEGACY BOOT OF UEFI MEDIA ***\r\n"                      # Header text...
-    .byte   0                                                                   # Ends with 0
-                                                                                #
-reboot_msg:                                                                     # Reboot message
-    .ascii  "\n"                                                                # A...
-    .ascii  "This drive can only boot in UEFI mode.\r\n"                        # lot...
-    .ascii  "It can not boot in BIOS/Legacy mode.\r\n"                          # of...
-    .ascii  "Please use UEFI bootloader.\r\n"                                   # bytes...
-    .ascii  "\n"                                                                # for...
-    .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...
-    .byte   0                                                                   # Ends with 0
-                                                                                #
-# ============================================================================= # =============================================================================
-                                                                                #
-.section ".boot_marker", "a"                                                    # boot_marker section (a - allocatable)
-                                                                                #
-.globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker
-_boot_magic_number:                                                             # Label for magic number
-    .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x0200 byte sector to make it bootable
+BOOTSEG = 0x07C0                                                                # Address of boot sector in memory (0x7C00 >> 4)                                                                         # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.code16                                                                         # Generate code in 16 bits mode                                                                                          # Colorize: green
+.section ".bootsector_code", "ax"                                               # bootsector_code section (a - allocatable, x - executable)                                                              # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.globl  _start                                                                  # Make _start visible for linker                                                                                         # Colorize: green
+_start:                                                                         # Global pointer to the entry point in order to make linker silent                                                       # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    ljmp    $(BOOTSEG), $(start2)                                               # Normalize the start address                                                                                            # Colorize: green
+start2:                                                                         # Label used for normalization                                                                                           # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+# We will print message and reboot PC                                           #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movw    %cs, %ax                                                            # Indirectly assign (via AX)...                                                                                          # Colorize: green
+    movw    %ax, %ds                                                            # CS to DS                                                                                                               # Colorize: green
+    movw    %ax, %es                                                            # CS to ES                                                                                                               # Colorize: green
+    movw    %ax, %ss                                                            # CS to SS                                                                                                               # Colorize: green
+    xorw    %sp, %sp                                                            # Set SP to 0                                                                                                            # Colorize: green
+    sti                                                                         # Set Interrupt Flag (When the IF flag is set, the processor begins responding to external, maskable interrupts after the next instruction is executed.) # Colorize: green
+    cld                                                                         # Clear Direction Flag (When the DF flag is set to 0, string operations increment the index registers (ESI and/or EDI))  # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    movw    $(separator), %si                                                   # Put address of separator to SI                                                                                         # Colorize: green
+    call    print_string                                                        # Call print_string function                                                                                             # Colorize: green
+    movw    $(header), %si                                                      # Put address of header to SI                                                                                            # Colorize: green
+    call    print_string                                                        # Call print_string function                                                                                             # Colorize: green
+    movw    $(separator), %si                                                   # Put address of separator to SI                                                                                         # Colorize: green
+    call    print_string                                                        # Call print_string function                                                                                             # Colorize: green
+    movw    $(reboot_msg), %si                                                  # Put address of reboot message to SI                                                                                    # Colorize: green
+    call    print_string                                                        # Call print_string function                                                                                             # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    xorw    %ax, %ax                                                            # Set AX to 0 in order to let interrupt 0x16 to read key press                                                           # Colorize: green
+    int     $0x16                                                               # Wait until user press some keyboard button                                                                             # Colorize: green
+    int     $0x19                                                               # Go to the bootstrap loader (It will try to reload from some bootable disk)                                             # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+    ljmp    $0xF000, $0xFFF0                                                    # Reboot your PC if something goes wrong                                                                                 # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+print_string:                                                                   # print_string function                                                                                                  # Colorize: green
+    lodsb                                                                       # Load one byte from SI to AL                                                                                            # Colorize: green
+    andb    %al, %al                                                            # IF AL == 0                                                                                                             # Colorize: green
+    jz      1f                                                                  #   THEN jump to 1f                                                                                                      # Colorize: green
+    movb    $0x0E, %ah                                                          #   ELSE set AH to 0x0E (Printing on the screen)                                                                         # Colorize: green
+    movw    $0x07, %bx                                                          #        set BX to 0x07 (BH=0 - first page, BL=7 - Light Gray)                                                           # Colorize: green
+    int     $0x10                                                               #        Call interrupt 0x10 for printing character from AL on the screen                                                # Colorize: green
+    jmp     print_string                                                        #        Print next character                                                                                            # Colorize: green
+1:                                                                              # Label for jumping when there are no more symbols                                                                       # Colorize: green
+    ret                                                                         # Return from the function                                                                                               # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+# Data used for printing                                                        #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.section ".bootsector_data", "a"                                                # bootsector_data section (a - allocatable)                                                                              # Colorize: green
+separator:                                                                      # Separator string                                                                                                       # Colorize: green
+    .ascii  "****************************************\r\n"                      # Separator text...                                                                                                      # Colorize: green
+    .byte   0                                                                   # Ends with 0                                                                                                            # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+header:                                                                         # Header string                                                                                                          # Colorize: green
+    .ascii  "*** ERROR: LEGACY BOOT OF UEFI MEDIA ***\r\n"                      # Header text...                                                                                                         # Colorize: green
+    .byte   0                                                                   # Ends with 0                                                                                                            # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+reboot_msg:                                                                     # Reboot message                                                                                                         # Colorize: green
+    .ascii  "\n"                                                                # A...                                                                                                                   # Colorize: green
+    .ascii  "This drive can only boot in UEFI mode.\r\n"                        # lot...                                                                                                                 # Colorize: green
+    .ascii  "It can not boot in BIOS/Legacy mode.\r\n"                          # of...                                                                                                                  # Colorize: green
+    .ascii  "Please use UEFI bootloader.\r\n"                                   # bytes...                                                                                                               # Colorize: green
+    .ascii  "\n"                                                                # for...                                                                                                                 # Colorize: green
+    .ascii  "Remove disk and press any key to reboot...\r\n"                    # reboot message...                                                                                                      # Colorize: green
+    .byte   0                                                                   # Ends with 0                                                                                                            # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+# ============================================================================= # =============================================================================                                          # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.section ".boot_marker", "a"                                                    # boot_marker section (a - allocatable)                                                                                  # Colorize: green
+                                                                                #                                                                                                                        # Colorize: green
+.globl  _boot_magic_number                                                      # Make _boot_magic_number visible for linker                                                                             # Colorize: green
+_boot_magic_number:                                                             # Label for magic number                                                                                                 # Colorize: green
+    .word   0xAA55                                                              # Insert magic number 0xAA55 at the end of 0x0200 byte sector to make it bootable                                        # Colorize: green
