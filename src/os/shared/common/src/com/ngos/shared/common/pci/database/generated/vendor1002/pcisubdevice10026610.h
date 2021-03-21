@@ -14,6 +14,8 @@ enum class PciSubDevice10026610: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10190030 = 0x10190030,
+    SUBDEVICE_10280081 = 0x10280081,
+    SUBDEVICE_10280083 = 0x10280083,
     SUBDEVICE_10282120 = 0x10282120,
     SUBDEVICE_10282322 = 0x10282322,
     SUBDEVICE_14622910 = 0x14622910,
@@ -36,6 +38,8 @@ inline const char8* enumToString(PciSubDevice10026610 subDevice) // TEST: NO
     {
         case PciSubDevice10026610::NONE:               return "NONE";
         case PciSubDevice10026610::SUBDEVICE_10190030: return "SUBDEVICE_10190030";
+        case PciSubDevice10026610::SUBDEVICE_10280081: return "SUBDEVICE_10280081";
+        case PciSubDevice10026610::SUBDEVICE_10280083: return "SUBDEVICE_10280083";
         case PciSubDevice10026610::SUBDEVICE_10282120: return "SUBDEVICE_10282120";
         case PciSubDevice10026610::SUBDEVICE_10282322: return "SUBDEVICE_10282322";
         case PciSubDevice10026610::SUBDEVICE_14622910: return "SUBDEVICE_14622910";
@@ -75,6 +79,8 @@ inline const char8* enumToHumanString(PciSubDevice10026610 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10026610::SUBDEVICE_10190030: return "Radeon HD 8670";
+        case PciSubDevice10026610::SUBDEVICE_10280081: return "Radeon R7 350X OEM";
+        case PciSubDevice10026610::SUBDEVICE_10280083: return "Radeon R5 340X OEM";
         case PciSubDevice10026610::SUBDEVICE_10282120: return "Radeon R7 250";
         case PciSubDevice10026610::SUBDEVICE_10282322: return "Radeon R7 250";
         case PciSubDevice10026610::SUBDEVICE_14622910: return "Radeon HD 8670";

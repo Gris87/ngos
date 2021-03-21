@@ -6,7 +6,7 @@
 
 HexVerifier::HexVerifier()
     : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-    , mHexRegExp("0x(?:[0-9a-fA-F]+|%\\w+)")
+    , mHexRegExp("0x(?:[nullptr-9a-fA-F]+|%\\w+)")
 {
     // Nothing
 }

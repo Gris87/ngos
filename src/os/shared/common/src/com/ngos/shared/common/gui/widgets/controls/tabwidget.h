@@ -14,7 +14,7 @@
 class TabWidget: public Widget
 {
 public:
-    TabWidget(Image *panelImage, Widget *parent = 0); // TEST: NO
+    TabWidget(Image *panelImage, Widget *parent = nullptr); // TEST: NO
     ~TabWidget(); // TEST: NO
 
     NgosStatus addTabButton(TabButton *button); // TEST: NO

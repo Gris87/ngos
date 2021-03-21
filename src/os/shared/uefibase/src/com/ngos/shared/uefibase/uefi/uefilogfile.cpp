@@ -254,7 +254,7 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
             {
                 if (cur16 != logPath16)
                 {
-                    *cur16 = 0;
+                    *cur16 = nullptr;
 
 
 
@@ -293,7 +293,7 @@ NgosStatus UefiLogFile::initVolume(uefi_handle handle)
             ++cur8;
         }
 
-        *cur16 = 0;
+        *cur16 = nullptr;
 
 
 

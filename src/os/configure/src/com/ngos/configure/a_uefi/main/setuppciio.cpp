@@ -20,7 +20,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
 
 
     u64                  size = sizeof(PciRomImageWithInfo) + pci->romSize;
-    PciRomImageWithInfo *rom  = 0;
+    PciRomImageWithInfo *rom  = nullptr;
 
 
 
@@ -37,7 +37,7 @@ NgosStatus processPciRomImage(UefiPciIoProtocol *pci, PciRomImageWithInfo **resu
 
     *result = rom;
 
-    rom->next    = 0;
+    rom->next    = nullptr;
     rom->romSize = pci->romSize;
 
 
@@ -110,7 +110,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
 
 
-    PciRomImageWithInfo *curNode = 0;
+    PciRomImageWithInfo *curNode = nullptr;
 
 
 
@@ -120,7 +120,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
     for (i64 i = 0; i < count; ++i)
     {
         uefi_handle        handle = pciIoHandles[i];
-        UefiPciIoProtocol *pci    = 0;
+        UefiPciIoProtocol *pci    = nullptr;
 
 
 
@@ -144,7 +144,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
 
 
-        PciRomImageWithInfo *rom = 0;
+        PciRomImageWithInfo *rom = nullptr;
 
         if (processPciRomImage(pci, &rom) != NgosStatus::OK)
         {
@@ -218,24 +218,24 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size, uefi
 
 
 
-        // UEFI_TEST_ASSERT(params->pciRomImages                       != 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages                       != nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
 
-        // UEFI_TEST_ASSERT(params->pciRomImages->next                 != 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next                 != nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->vendorId             == 0x15AD, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->deviceId             == 0x0405, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->segmentNumber        == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->busNumber            == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->segmentNumber        == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->busNumber            == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->deviceNumber         == 2,      NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->functionNumber       == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->functionNumber       == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->romSize              == 38400,  NgosStatus::ASSERTION); // Commented due to value variation
 
-        // UEFI_TEST_ASSERT(params->pciRomImages->next->next           == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->next           == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->next->vendorId       == 0x10EC, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceId       == 0x8139, NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->next->segmentNumber  == 0,      NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->next->busNumber      == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->segmentNumber  == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->busNumber      == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->next->deviceNumber   == 3,      NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(params->pciRomImages->next->functionNumber == 0,      NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(params->pciRomImages->next->functionNumber == nullptr,      NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(params->pciRomImages->next->romSize        == 247808, NgosStatus::ASSERTION); // Commented due to value variation
     }
 
@@ -254,7 +254,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size)
 
 
 
-    uefi_handle *pciIoHandles = 0;
+    uefi_handle *pciIoHandles = nullptr;
 
 
 
@@ -271,7 +271,7 @@ NgosStatus setupPciIoProtocol(BootParams *params, Guid *protocol, u64 size)
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, pciIoHandles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, pciIoHandles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_PCI_IO_PROTOCOL", pciIoHandles));
 
@@ -311,7 +311,7 @@ NgosStatus setupPciIo(BootParams *params)
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, 0, &pciIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pciIoProtocol, nullptr, &pciIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_PCI_IO_PROTOCOL", pciIoSize));
 

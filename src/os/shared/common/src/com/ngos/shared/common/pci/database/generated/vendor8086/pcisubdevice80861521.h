@@ -45,6 +45,7 @@ enum class PciSubDevice80861521: u32 // Ignore CppEnumVerifier
     SUBDEVICE_18D40C07 = 0x18D40C07,
     SUBDEVICE_193D1005 = 0x193D1005,
     SUBDEVICE_193D1007 = 0x193D1007,
+    SUBDEVICE_193D1080 = 0x193D1080,
     SUBDEVICE_1BD4001D = 0x1BD4001D,
     SUBDEVICE_1BD40035 = 0x1BD40035,
     SUBDEVICE_80860001 = 0x80860001,
@@ -102,6 +103,7 @@ inline const char8* enumToString(PciSubDevice80861521 subDevice) // TEST: NO
         case PciSubDevice80861521::SUBDEVICE_18D40C07: return "SUBDEVICE_18D40C07";
         case PciSubDevice80861521::SUBDEVICE_193D1005: return "SUBDEVICE_193D1005";
         case PciSubDevice80861521::SUBDEVICE_193D1007: return "SUBDEVICE_193D1007";
+        case PciSubDevice80861521::SUBDEVICE_193D1080: return "SUBDEVICE_193D1080";
         case PciSubDevice80861521::SUBDEVICE_1BD4001D: return "SUBDEVICE_1BD4001D";
         case PciSubDevice80861521::SUBDEVICE_1BD40035: return "SUBDEVICE_1BD40035";
         case PciSubDevice80861521::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
@@ -176,6 +178,7 @@ inline const char8* enumToHumanString(PciSubDevice80861521 subDevice) // TEST: N
         case PciSubDevice80861521::SUBDEVICE_18D40C07: return "I350 1Gb 2-port RJ45 OCP Mezz Card MOP41-I-1GT2";
         case PciSubDevice80861521::SUBDEVICE_193D1005: return "360T-B";
         case PciSubDevice80861521::SUBDEVICE_193D1007: return "360T-L";
+        case PciSubDevice80861521::SUBDEVICE_193D1080: return "NIC-ETH360T-3S-4P";
         case PciSubDevice80861521::SUBDEVICE_1BD4001D: return "1G base-T QP EP014Ti1 Adapter";
         case PciSubDevice80861521::SUBDEVICE_1BD40035: return "1G base-T QP EP014Ti1 Adapter";
         case PciSubDevice80861521::SUBDEVICE_80860001: return "Ethernet Server Adapter I350-T4";

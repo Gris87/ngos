@@ -34,7 +34,7 @@ bool isGitIgnored(const QString &workingDirectory, const QString &path)
         return false;
     }
 
-    return git.readAll().length(); // git.readAll().length() > 0
+    return !git.readAll().isEmpty();
 }
 
 qint32 main(qint32 argc, char *argv[])
@@ -206,7 +206,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (messages.length() > 0)
+    if (!messages.isEmpty())
     {
         std::sort(messages.begin(), messages.end());
 

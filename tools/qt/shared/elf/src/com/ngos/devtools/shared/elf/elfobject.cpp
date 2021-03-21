@@ -7,7 +7,7 @@
 
 ElfObject::ElfObject()
     : mBytes()
-    , mHeader(0)
+    , mHeader(nullptr)
     , mProgramHeaderTableEntries()
     , mSectionHeaderTableEntries()
     , mProgramBytes()
@@ -180,7 +180,7 @@ const QHash<QString, ElfSectionHeaderTableEntry *>& ElfObject::getSectionsMap() 
 
 ElfSectionHeaderTableEntry* ElfObject::getSection(QString name)
 {
-    return mNameToSectionMap.value(name, 0);
+    return mNameToSectionMap.value(name, nullptr);
 }
 
 const QHash<QString, ElfSymbol *>& ElfObject::getSymbolMap() const
@@ -190,7 +190,7 @@ const QHash<QString, ElfSymbol *>& ElfObject::getSymbolMap() const
 
 ElfSymbol* ElfObject::getSymbol(QString name)
 {
-    return mNameToSymbolMap.value(name, 0);
+    return mNameToSymbolMap.value(name, nullptr);
 }
 
 bool ElfObject::verifyHeader()

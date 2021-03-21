@@ -210,7 +210,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
     }
     else
     {
-        QString sectionName = lines.length() ? lines.at(0) : ""; // lines.length() > 0
+        QString sectionName = !lines.isEmpty() ? lines.at(0) : "";
 
         if (sectionName != "")
         {

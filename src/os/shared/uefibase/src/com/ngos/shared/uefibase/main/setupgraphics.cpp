@@ -74,7 +74,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
         for (i64 j = 0; j < gop->mode->maxMode; ++j)
         {
             u64                                sizeOfInfo = 0;
-            UefiGraphicsOutputModeInformation *info       = 0;
+            UefiGraphicsOutputModeInformation *info       = nullptr;
 
 
 
@@ -244,7 +244,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
 
 
-    uefi_handle *graphicsHandles = 0;
+    uefi_handle *graphicsHandles = nullptr;
 
 
 
@@ -261,7 +261,7 @@ NgosStatus setupGraphicsOutputProtocol(BootParams *params, Guid *protocol, u64 s
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, graphicsHandles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, graphicsHandles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsHandles));
 
@@ -301,7 +301,7 @@ NgosStatus setupGraphics(BootParams *params)
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, 0, &graphicsSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &graphicsProtocol, nullptr, &graphicsSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_GRAPHICS_OUTPUT_PROTOCOL", graphicsSize));
 

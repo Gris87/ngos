@@ -21,6 +21,7 @@ enum class PciSubDevice11063038: u32 // Ignore CppEnumVerifier
     SUBDEVICE_104380A1 = 0x104380A1,
     SUBDEVICE_104380ED = 0x104380ED,
     SUBDEVICE_11790001 = 0x11790001,
+    SUBDEVICE_12340925 = 0x12340925,
     SUBDEVICE_14585004 = 0x14585004,
     SUBDEVICE_14625901 = 0x14625901,
     SUBDEVICE_14627020 = 0x14627020,
@@ -53,6 +54,7 @@ inline const char8* enumToString(PciSubDevice11063038 subDevice) // TEST: NO
         case PciSubDevice11063038::SUBDEVICE_104380A1: return "SUBDEVICE_104380A1";
         case PciSubDevice11063038::SUBDEVICE_104380ED: return "SUBDEVICE_104380ED";
         case PciSubDevice11063038::SUBDEVICE_11790001: return "SUBDEVICE_11790001";
+        case PciSubDevice11063038::SUBDEVICE_12340925: return "SUBDEVICE_12340925";
         case PciSubDevice11063038::SUBDEVICE_14585004: return "SUBDEVICE_14585004";
         case PciSubDevice11063038::SUBDEVICE_14625901: return "SUBDEVICE_14625901";
         case PciSubDevice11063038::SUBDEVICE_14627020: return "SUBDEVICE_14627020";
@@ -98,10 +100,11 @@ inline const char8* enumToHumanString(PciSubDevice11063038 subDevice) // TEST: N
         case PciSubDevice11063038::SUBDEVICE_10190985: return "P6VXA Motherboard";
         case PciSubDevice11063038::SUBDEVICE_10190A81: return "L7VTA v1.0 Motherboard (KT400-8235)";
         case PciSubDevice11063038::SUBDEVICE_10438080: return "A7V333 motherboard";
-        case PciSubDevice11063038::SUBDEVICE_1043808C: return "VT6202 USB2.0 4 port controller";
+        case PciSubDevice11063038::SUBDEVICE_1043808C: return "VT62xx USB1.1 4 port controller";
         case PciSubDevice11063038::SUBDEVICE_104380A1: return "A7V8X-X motherboard";
         case PciSubDevice11063038::SUBDEVICE_104380ED: return "A7V600/K8V-X/A8V Deluxe motherboard";
         case PciSubDevice11063038::SUBDEVICE_11790001: return "Magnia Z310";
+        case PciSubDevice11063038::SUBDEVICE_12340925: return "MVP3 USB Controller";
         case PciSubDevice11063038::SUBDEVICE_14585004: return "GA-7VAX Mainboard";
         case PciSubDevice11063038::SUBDEVICE_14625901: return "KT6 Delta-FIS2R (MS-6590)";
         case PciSubDevice11063038::SUBDEVICE_14627020: return "K8T NEO 2 motherboard";

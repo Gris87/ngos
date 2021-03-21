@@ -13,6 +13,7 @@
 enum class PciDevice1462: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_3483 = 0x3483,
     DEVICE_AAF0 = 0xAAF0
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciDevice1462 device) // TEST: NO
     switch (device)
     {
         case PciDevice1462::NONE:        return "NONE";
+        case PciDevice1462::DEVICE_3483: return "DEVICE_3483";
         case PciDevice1462::DEVICE_AAF0: return "DEVICE_AAF0";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciDevice1462 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1462::DEVICE_3483: return "MSI USB 3.0 (VIA VL80x-based xHCI USB Controller)";
         case PciDevice1462::DEVICE_AAF0: return "Radeon RX 580 Gaming X 8G";
 
         default: return "Unknown device";

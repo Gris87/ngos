@@ -25,6 +25,7 @@ enum class PciSubDevice10024383: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1179FF50 = 0x1179FF50,
     SUBDEVICE_1458A022 = 0x1458A022,
     SUBDEVICE_1458A102 = 0x1458A102,
+    SUBDEVICE_14627596 = 0x14627596,
     SUBDEVICE_17F25000 = 0x17F25000
 };
 
@@ -51,6 +52,7 @@ inline const char8* enumToString(PciSubDevice10024383 subDevice) // TEST: NO
         case PciSubDevice10024383::SUBDEVICE_1179FF50: return "SUBDEVICE_1179FF50";
         case PciSubDevice10024383::SUBDEVICE_1458A022: return "SUBDEVICE_1458A022";
         case PciSubDevice10024383::SUBDEVICE_1458A102: return "SUBDEVICE_1458A102";
+        case PciSubDevice10024383::SUBDEVICE_14627596: return "SUBDEVICE_14627596";
         case PciSubDevice10024383::SUBDEVICE_17F25000: return "SUBDEVICE_17F25000";
 
         default: return "UNKNOWN";
@@ -94,6 +96,7 @@ inline const char8* enumToHumanString(PciSubDevice10024383 subDevice) // TEST: N
         case PciSubDevice10024383::SUBDEVICE_1179FF50: return "Satellite P305D-S8995E";
         case PciSubDevice10024383::SUBDEVICE_1458A022: return "GA-MA770-DS3rev2.0 Motherboard";
         case PciSubDevice10024383::SUBDEVICE_1458A102: return "GA-880GMA-USB3";
+        case PciSubDevice10024383::SUBDEVICE_14627596: return "760GM-E51(MS-7596) Motherboard";
         case PciSubDevice10024383::SUBDEVICE_17F25000: return "KI690-AM2 Motherboard";
 
         default: return "Unknown device";

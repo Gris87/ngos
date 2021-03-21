@@ -342,8 +342,8 @@ NgosStatus Bootloader::loadImageFromDiskOrAssets(const char8 *path, Image **imag
 
 
 
-    UefiFileProtocol *imageFile   = 0;
-    u8               *content     = 0;
+    UefiFileProtocol *imageFile   = nullptr;
+    u8               *content     = nullptr;
     u64               contentSize = 0;
     NgosStatus        status      = NgosStatus::NO_EFFECT;
 
@@ -666,7 +666,7 @@ NgosStatus Bootloader::initVolumes()
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, 0, &blockIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &blockIoProtocol, nullptr, &blockIoSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_BLOCK_IO_PROTOCOL", blockIoSize));
 
@@ -822,7 +822,7 @@ NgosStatus Bootloader::initBlockIoProtocol(Guid *protocol, u64 size)
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, blockIoHandles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, blockIoHandles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_BLOCK_IO_PROTOCOL", blockIoHandles));
 
@@ -981,8 +981,8 @@ NgosStatus Bootloader::initVolumeWholeDisk(VolumeInfo *volume, Guid *protocol)
 
 
 
-    volume->wholeDiskBlockIoProtocol = 0;
-    volume->wholeDiskDevicePath      = 0;
+    volume->wholeDiskBlockIoProtocol = nullptr;
+    volume->wholeDiskDevicePath      = nullptr;
 
 
 
@@ -1105,9 +1105,9 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-    volume->gptData.protectiveMbr = 0;
-    volume->gptData.header        = 0;
-    volume->gptData.entries       = 0;
+    volume->gptData.protectiveMbr = nullptr;
+    volume->gptData.header        = nullptr;
+    volume->gptData.entries       = nullptr;
 
 
 
@@ -1228,8 +1228,8 @@ NgosStatus Bootloader::initVolumeGptData(VolumeInfo *volume)
 
 
 
-            volume->gptData.protectiveMbr = 0;
-            volume->gptData.header        = 0;
+            volume->gptData.protectiveMbr = nullptr;
+            volume->gptData.header        = nullptr;
         }
     }
 

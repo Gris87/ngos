@@ -24,7 +24,10 @@ enum class PciSubDevice80860B60: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10282100 = 0x10282100,
     SUBDEVICE_10282102 = 0x10282102,
     SUBDEVICE_10282103 = 0x10282103,
-    SUBDEVICE_10282104 = 0x10282104
+    SUBDEVICE_10282104 = 0x10282104,
+    SUBDEVICE_80868008 = 0x80868008,
+    SUBDEVICE_80868D08 = 0x80868D08,
+    SUBDEVICE_80868D1D = 0x80868D1D
 };
 
 
@@ -50,6 +53,9 @@ inline const char8* enumToString(PciSubDevice80860B60 subDevice) // TEST: NO
         case PciSubDevice80860B60::SUBDEVICE_10282102: return "SUBDEVICE_10282102";
         case PciSubDevice80860B60::SUBDEVICE_10282103: return "SUBDEVICE_10282103";
         case PciSubDevice80860B60::SUBDEVICE_10282104: return "SUBDEVICE_10282104";
+        case PciSubDevice80860B60::SUBDEVICE_80868008: return "SUBDEVICE_80868008";
+        case PciSubDevice80860B60::SUBDEVICE_80868D08: return "SUBDEVICE_80868D08";
+        case PciSubDevice80860B60::SUBDEVICE_80868D1D: return "SUBDEVICE_80868D1D";
 
         default: return "UNKNOWN";
     }
@@ -92,6 +98,9 @@ inline const char8* enumToHumanString(PciSubDevice80860B60 subDevice) // TEST: N
         case PciSubDevice80860B60::SUBDEVICE_10282102: return "NVMe RI U.2 1.92TB (P5500)";
         case PciSubDevice80860B60::SUBDEVICE_10282103: return "NVMe RI U.2 3.84TB (P5500)";
         case PciSubDevice80860B60::SUBDEVICE_10282104: return "NVMe RI U.2 7.68TB (P5500)";
+        case PciSubDevice80860B60::SUBDEVICE_80868008: return "NVMe Datacenter SSD [3DNAND] SE 2.5\" U.2 (P5510)";
+        case PciSubDevice80860B60::SUBDEVICE_80868D08: return "NVMe Datacenter SSD [3DNAND] VE 2.5\" U.2 (P5316)";
+        case PciSubDevice80860B60::SUBDEVICE_80868D1D: return "NVMe Datacenter SSD [3DNAND] VE E1.L 9.5/18mm (P5316)";
 
         default: return "Unknown device";
     }

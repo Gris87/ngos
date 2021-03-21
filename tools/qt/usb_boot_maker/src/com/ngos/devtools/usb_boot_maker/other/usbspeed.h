@@ -53,10 +53,10 @@ inline const char8* enumToHumanString(UsbSpeed speed) // TEST: NO
     switch (speed)
     {
         case UsbSpeed::NONE:           return "NONE";
-        case UsbSpeed::LOW:            return "USB 1.0";
+        case UsbSpeed::LOW:            return "USB 1.nullptr";
         case UsbSpeed::FULL:           return "USB 1.1";
-        case UsbSpeed::HIGH:           return "USB 2.0";
-        case UsbSpeed::SUPER_OR_LATER: return "USB 3.0";
+        case UsbSpeed::HIGH:           return "USB 2.nullptr";
+        case UsbSpeed::SUPER_OR_LATER: return "USB 3.nullptr";
 
         default: return "UNKNOWN";
     }

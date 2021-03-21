@@ -24,6 +24,7 @@ enum class PciDevice1CE4: u16 // Ignore CppEnumVerifier
     DEVICE_0009 = 0x0009,
     DEVICE_000A = 0x000A,
     DEVICE_000B = 0x000B,
+    DEVICE_000C = 0x000C,
     DEVICE_0100 = 0x0100
 };
 
@@ -49,6 +50,7 @@ inline const char8* enumToString(PciDevice1CE4 device) // TEST: NO
         case PciDevice1CE4::DEVICE_0009: return "DEVICE_0009";
         case PciDevice1CE4::DEVICE_000A: return "DEVICE_000A";
         case PciDevice1CE4::DEVICE_000B: return "DEVICE_000B";
+        case PciDevice1CE4::DEVICE_000C: return "DEVICE_000C";
         case PciDevice1CE4::DEVICE_0100: return "DEVICE_0100";
 
         default: return "UNKNOWN";
@@ -91,6 +93,7 @@ inline const char8* enumToHumanString(PciDevice1CE4 device) // TEST: NO
         case PciDevice1CE4::DEVICE_0009: return "ExaNIC X25";
         case PciDevice1CE4::DEVICE_000A: return "ExaNIC X100";
         case PciDevice1CE4::DEVICE_000B: return "ExaNIC V9P";
+        case PciDevice1CE4::DEVICE_000C: return "ExaNIC V9P-3";
         case PciDevice1CE4::DEVICE_0100: return "ExaDISK FX1";
 
         default: return "Unknown device";

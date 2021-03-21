@@ -14,7 +14,8 @@ enum class PciDevice1D87: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
     DEVICE_0100 = 0x0100,
-    DEVICE_1808 = 0x1808
+    DEVICE_1808 = 0x1808,
+    DEVICE_3566 = 0x3566
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciDevice1D87 device) // TEST: NO
         case PciDevice1D87::NONE:        return "NONE";
         case PciDevice1D87::DEVICE_0100: return "DEVICE_0100";
         case PciDevice1D87::DEVICE_1808: return "DEVICE_1808";
+        case PciDevice1D87::DEVICE_3566: return "DEVICE_3566";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciDevice1D87 device) // TEST: NO
     {
         case PciDevice1D87::DEVICE_0100: return "RK3399 PCI Express Root Port";
         case PciDevice1D87::DEVICE_1808: return "RK1808 Neural Network Processor Card";
+        case PciDevice1D87::DEVICE_3566: return "RK3568 Remote Signal Processor";
 
         default: return "Unknown device";
     }

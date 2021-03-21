@@ -10,7 +10,7 @@
 class CursorWidget: public Widget
 {
 public:
-    CursorWidget(Image *cursorImage, Widget *parent = 0); // TEST: NO
+    CursorWidget(Image *cursorImage, Widget *parent = nullptr); // TEST: NO
     ~CursorWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

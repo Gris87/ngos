@@ -13,7 +13,8 @@
 enum class PciSubDevice14E416A1: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_1043866E = 0x1043866E
+    SUBDEVICE_1043866E = 0x1043866E,
+    SUBDEVICE_193D100B = 0x193D100B
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice14E416A1 subDevice) // TEST: NO
     {
         case PciSubDevice14E416A1::NONE:               return "NONE";
         case PciSubDevice14E416A1::SUBDEVICE_1043866E: return "SUBDEVICE_1043866E";
+        case PciSubDevice14E416A1::SUBDEVICE_193D100B: return "SUBDEVICE_193D100B";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice14E416A1 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice14E416A1::SUBDEVICE_1043866E: return "PEB-10G/57840-2T 10GBase-T Network Adapter";
+        case PciSubDevice14E416A1::SUBDEVICE_193D100B: return "NIC-ETH521i-Mb-4x10G";
 
         default: return "Unknown device";
     }

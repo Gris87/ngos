@@ -28,7 +28,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
 
 
 
-    *image = 0;
+    *image = nullptr;
 
 
 
@@ -134,7 +134,7 @@ NgosStatus Png::loadImage(u8 *data, u64 size, bool withNinePatch, Image **image)
         {
             delete *decoder.image;
 
-            *decoder.image = 0;
+            *decoder.image = nullptr;
         }
     }
 
@@ -153,18 +153,18 @@ NgosStatus Png::initDecoder(PngDecoder *decoder, Image **image)
 
 
     decoder->image                     = image;
-    decoder->imageHeader               = 0;
-    decoder->primaryChromaticities     = 0;
-    decoder->imageGamma                = 0;
-    decoder->embeddedIccProfile        = 0;
-    decoder->significantBits           = 0;
-    decoder->standardRgbColorSpace     = 0;
-    decoder->physicalPixelDimensions   = 0;
-    decoder->imageLastModificationTime = 0;
-    decoder->imageDataBuffer           = 0;
+    decoder->imageHeader               = nullptr;
+    decoder->primaryChromaticities     = nullptr;
+    decoder->imageGamma                = nullptr;
+    decoder->embeddedIccProfile        = nullptr;
+    decoder->significantBits           = nullptr;
+    decoder->standardRgbColorSpace     = nullptr;
+    decoder->physicalPixelDimensions   = nullptr;
+    decoder->imageLastModificationTime = nullptr;
+    decoder->imageDataBuffer           = nullptr;
     decoder->imageDataSize             = 0;
     decoder->imageDataAllocatedSize    = 0;
-    decoder->rawImageBuffer            = 0;
+    decoder->rawImageBuffer            = nullptr;
     decoder->bitsPerPixel              = 0;
 
 
@@ -314,9 +314,9 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
 
     if (
-        !width // width == 0
+        width == 0
         ||
-        !height // height == 0
+        height == 0
         ||
         width > 0xFFFF
         ||
@@ -397,13 +397,13 @@ NgosStatus Png::decodeImageHeader(PngDecoder *decoder, PngChunk *chunk, u32 chun
 
 
 
-    COMMON_TEST_ASSERT(*decoder->image == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(*decoder->image == nullptr, NgosStatus::ASSERTION);
 
     *decoder->image = new Image(width, height, hasAlpha, true);
 
 
 
-    COMMON_TEST_ASSERT(decoder->imageHeader == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(decoder->imageHeader == nullptr, NgosStatus::ASSERTION);
 
     decoder->imageHeader = imageHeader;
 
@@ -1332,7 +1332,7 @@ NgosStatus Png::applyNinePatch(PngDecoder *decoder)
 
         if (decoder->rawImageBuffer == image->getBuffer())
         {
-            decoder->rawImageBuffer = 0;
+            decoder->rawImageBuffer = nullptr;
         }
 
         delete image;
@@ -1365,7 +1365,7 @@ NgosStatus Png::unfilter(PngDecoder *decoder, u8 *in, u8 *out, u16 width, u16 he
     u8   bitsPerPixel = decoder->bitsPerPixel;
     u8   byteWidth    = DIV_UP(bitsPerPixel, 8);
     u32  bytesPerLine = DIV_UP(width * bitsPerPixel, 8);
-    u8  *previousLine = 0;
+    u8  *previousLine = nullptr;
 
     for (i64 i = 0; i < height; ++i)
     {
@@ -1476,7 +1476,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 for (i64 i = 0; i < byteWidth; ++i)
                 {
-                    outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(0, previousLine[i], 0) is always previousLine[i]
+                    outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(nullptr, previousLine[i], nullptr) is always previousLine[i]
                 }
 
                 for (i64 i = byteWidth; i < bytesPerLine; ++i)
@@ -1490,7 +1490,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
 
                 for (i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
-                    // paethPredictor(outLine[i - byteWidth], 0, 0) is always outLine[i - byteWidth]
+                    // paethPredictor(outLine[i - byteWidth], nullptr, nullptr) is always outLine[i - byteWidth]
                     outLine[i] = (inLine[i] + outLine[i - byteWidth]);
                 }
             }

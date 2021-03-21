@@ -13,8 +13,8 @@
 class ToolButton: public Widget
 {
 public:
-    ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = 0); // TEST: NO
-    ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = 0); // TEST: NO
+    ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = nullptr); // TEST: NO
+    ToolButton(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = nullptr); // TEST: NO
     ~ToolButton(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

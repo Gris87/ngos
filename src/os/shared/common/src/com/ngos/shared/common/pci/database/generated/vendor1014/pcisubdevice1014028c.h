@@ -65,8 +65,8 @@ inline const char8* enumToHumanString(PciSubDevice1014028C subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1014028C::SUBDEVICE_1014028D: return "Dual Channel PCI-X DDR SAS RAID Adapter (572E)";
-        case PciSubDevice1014028C::SUBDEVICE_101402BE: return "Dual Channel PCI-X DDR u320 SCSI RAID Adapter (571B)";
-        case PciSubDevice1014028C::SUBDEVICE_101402C0: return "Dual Channel PCI-X DDR u320 SCSI Adapter (571A)";
+        case PciSubDevice1014028C::SUBDEVICE_101402BE: return "Dual Channel PCI-X DDR U320 SCSI RAID Adapter (571B)";
+        case PciSubDevice1014028C::SUBDEVICE_101402C0: return "Dual Channel PCI-X DDR U320 SCSI Adapter (571A)";
         case PciSubDevice1014028C::SUBDEVICE_1014030D: return "PCI-X DDR Auxiliary Cache Adapter (575B)";
 
         default: return "Unknown device";

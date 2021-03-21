@@ -13,7 +13,12 @@
 enum class PciSubDevice10026611: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10281001 = 0x10281001,
+    SUBDEVICE_10281002 = 0x10281002,
+    SUBDEVICE_10281711 = 0x10281711,
     SUBDEVICE_1028210B = 0x1028210B,
+    SUBDEVICE_10282121 = 0x10282121,
+    SUBDEVICE_10CF1889 = 0x10CF1889,
     SUBDEVICE_16421869 = 0x16421869,
     SUBDEVICE_174B4248 = 0x174B4248,
     SUBDEVICE_174BA240 = 0x174BA240,
@@ -32,7 +37,12 @@ inline const char8* enumToString(PciSubDevice10026611 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice10026611::NONE:               return "NONE";
+        case PciSubDevice10026611::SUBDEVICE_10281001: return "SUBDEVICE_10281001";
+        case PciSubDevice10026611::SUBDEVICE_10281002: return "SUBDEVICE_10281002";
+        case PciSubDevice10026611::SUBDEVICE_10281711: return "SUBDEVICE_10281711";
         case PciSubDevice10026611::SUBDEVICE_1028210B: return "SUBDEVICE_1028210B";
+        case PciSubDevice10026611::SUBDEVICE_10282121: return "SUBDEVICE_10282121";
+        case PciSubDevice10026611::SUBDEVICE_10CF1889: return "SUBDEVICE_10CF1889";
         case PciSubDevice10026611::SUBDEVICE_16421869: return "SUBDEVICE_16421869";
         case PciSubDevice10026611::SUBDEVICE_174B4248: return "SUBDEVICE_174B4248";
         case PciSubDevice10026611::SUBDEVICE_174BA240: return "SUBDEVICE_174BA240";
@@ -68,7 +78,12 @@ inline const char8* enumToHumanString(PciSubDevice10026611 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice10026611::SUBDEVICE_10281001: return "Radeon R5 430 OEM (1024 MByte)";
+        case PciSubDevice10026611::SUBDEVICE_10281002: return "Radeon R5 430 OEM (2048 MByte)";
+        case PciSubDevice10026611::SUBDEVICE_10281711: return "R5 430 OEM (2048 MByte)";
         case PciSubDevice10026611::SUBDEVICE_1028210B: return "Radeon R5 240 OEM";
+        case PciSubDevice10026611::SUBDEVICE_10282121: return "Radeon HD 8570 OEM";
+        case PciSubDevice10026611::SUBDEVICE_10CF1889: return "Radeon HD 8570 OEM";
         case PciSubDevice10026611::SUBDEVICE_16421869: return "Radeon 520 OEM";
         case PciSubDevice10026611::SUBDEVICE_174B4248: return "Radeon R7 240 OEM";
         case PciSubDevice10026611::SUBDEVICE_174BA240: return "Radeon R7 240 OEM";

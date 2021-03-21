@@ -14,7 +14,8 @@ enum class PciSubDevice14E41750: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_14E42100 = 0x14E42100,
-    SUBDEVICE_14E45208 = 0x14E45208
+    SUBDEVICE_14E45208 = 0x14E45208,
+    SUBDEVICE_14E4DF24 = 0x14E4DF24
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice14E41750 subDevice) // TEST: NO
         case PciSubDevice14E41750::NONE:               return "NONE";
         case PciSubDevice14E41750::SUBDEVICE_14E42100: return "SUBDEVICE_14E42100";
         case PciSubDevice14E41750::SUBDEVICE_14E45208: return "SUBDEVICE_14E45208";
+        case PciSubDevice14E41750::SUBDEVICE_14E4DF24: return "SUBDEVICE_14E4DF24";
 
         default: return "UNKNOWN";
     }
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice14E41750 subDevice) // TEST: N
     {
         case PciSubDevice14E41750::SUBDEVICE_14E42100: return "NetXtreme-E Dual-port 100G QSFP56 Ethernet PCIe4.0 x16 Adapter (BCM957508-P2100G)";
         case PciSubDevice14E41750::SUBDEVICE_14E45208: return "NetXtreme-E Dual-port 100G QSFP56 Ethernet OCP 3.0 Adapter (BCM957508-N2100G)";
+        case PciSubDevice14E41750::SUBDEVICE_14E4DF24: return "BCM57508 NetXtreme-E NGM2100D 2x100G KR Mezz Ethernet";
 
         default: return "Unknown device";
     }

@@ -17,9 +17,9 @@ inline bool isGptValid(const GptData &data) // TEST: NO
 
 
     if (
-        !data.protectiveMbr // data.protectiveMbr == 0
+        data.protectiveMbr == nullptr
         ||
-        !data.header // data.header == 0
+        data.header == nullptr
        )
     {
         return false;

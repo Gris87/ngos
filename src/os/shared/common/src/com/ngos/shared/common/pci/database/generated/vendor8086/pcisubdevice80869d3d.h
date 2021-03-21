@@ -13,7 +13,8 @@
 enum class PciSubDevice80869D3D: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_103C8079 = 0x103C8079
+    SUBDEVICE_103C8079 = 0x103C8079,
+    SUBDEVICE_17AA2247 = 0x17AA2247
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice80869D3D subDevice) // TEST: NO
     {
         case PciSubDevice80869D3D::NONE:               return "NONE";
         case PciSubDevice80869D3D::SUBDEVICE_103C8079: return "SUBDEVICE_103C8079";
+        case PciSubDevice80869D3D::SUBDEVICE_17AA2247: return "SUBDEVICE_17AA2247";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice80869D3D subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice80869D3D::SUBDEVICE_103C8079: return "EliteBook 840 G3";
+        case PciSubDevice80869D3D::SUBDEVICE_17AA2247: return "ThinkPad T570";
 
         default: return "Unknown device";
     }

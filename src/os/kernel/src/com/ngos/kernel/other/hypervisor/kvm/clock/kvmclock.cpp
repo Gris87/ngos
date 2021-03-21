@@ -39,7 +39,7 @@ NgosStatus KvmClock::init()
 
 
 
-    COMMON_ASSERT_EXECUTION(CpuHotplug::setupState(CpuHotplugState::BP_PREPARE_DYNAMIC, "KvmClock::init", 0, 0, false), NgosStatus::ASSERTION);
+    COMMON_ASSERT_EXECUTION(CpuHotplug::setupState(CpuHotplugState::BP_PREPARE_DYNAMIC, "KvmClock::init", nullptr, nullptr, false), NgosStatus::ASSERTION);
 
 
 
@@ -70,9 +70,9 @@ NgosStatus KvmClock::init()
 
 
 
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].name              != 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].upAction          == 0,     NgosStatus::ASSERTION);
-        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].downAction        == 0,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].name              != nullptr,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].upAction          == nullptr,     NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].downAction        == nullptr,     NgosStatus::ASSERTION);
         COMMON_TEST_ASSERT(CpuHotplug::sSteps[(u64)CpuHotplugState::BP_PREPARE_DYNAMIC].multipleInstances == false, NgosStatus::ASSERTION);
 
 

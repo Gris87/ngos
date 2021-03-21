@@ -26,7 +26,7 @@ u8* allocateDynamicPage()
 
 
 
-    COMMON_TEST_ASSERT(currentDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
+    COMMON_TEST_ASSERT(currentDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, nullptr);
     u8 *page = (u8 *)dynamic_pagetable_pages[currentDynamicPageIndex];
     ++currentDynamicPageIndex;
 

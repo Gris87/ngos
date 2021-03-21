@@ -27,7 +27,7 @@ u8* allocatePage()
     {
         EARLY_LF(("Page allocation is failed because buffer is out of space"));
 
-        return 0;
+        return nullptr;
     }
 
 

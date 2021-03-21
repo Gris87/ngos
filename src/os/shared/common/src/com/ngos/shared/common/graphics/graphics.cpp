@@ -63,7 +63,7 @@ NgosStatus Graphics::loadImage(u8 *data, u64 size, bool withNinePatch, Image **i
 
     COMMON_LC(("Failed to load image from not supported image format"));
 
-    *image = 0;
+    *image = nullptr;
 
 
 
@@ -712,7 +712,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                             isCurrentStretch = startWithStretchX;
 
                             ListElement<u16> *sizeElement    = sizes.getHead();
-                            ListElement<u16> *minSizeElement = 0;
+                            ListElement<u16> *minSizeElement = nullptr;
 
                             while (sizeElement)
                             {
@@ -783,7 +783,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                             isCurrentStretch = startWithStretchX;
 
                             ListElement<u16> *sizeElement    = sizes.getHead();
-                            ListElement<u16> *minSizeElement = 0;
+                            ListElement<u16> *minSizeElement = nullptr;
 
                             while (sizeElement)
                             {
@@ -880,7 +880,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                             isCurrentStretch = startWithStretchY;
 
                             ListElement<u16> *sizeElement    = sizes.getHead();
-                            ListElement<u16> *minSizeElement = 0;
+                            ListElement<u16> *minSizeElement = nullptr;
 
                             while (sizeElement)
                             {
@@ -951,7 +951,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
                             isCurrentStretch = startWithStretchY;
 
                             ListElement<u16> *sizeElement    = sizes.getHead();
-                            ListElement<u16> *minSizeElement = 0;
+                            ListElement<u16> *minSizeElement = nullptr;
 
                             while (sizeElement)
                             {
@@ -1095,7 +1095,7 @@ NgosStatus Graphics::resizeImage(Image *image, u16 width, u16 height, Image **re
     }
     else
     {
-        *res = 0;
+        *res = nullptr;
 
         return NgosStatus::INVALID_DATA;
     }

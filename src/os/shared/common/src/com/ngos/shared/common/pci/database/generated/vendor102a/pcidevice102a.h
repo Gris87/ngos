@@ -70,8 +70,8 @@ inline const char8* enumToHumanString(PciDevice102A device) // TEST: NO
         case PciDevice102A::DEVICE_0000: return "HYDRA";
         case PciDevice102A::DEVICE_0010: return "ASPEN";
         case PciDevice102A::DEVICE_001F: return "AHA-2940U2/U2W /7890/7891 SCSI Controllers";
-        case PciDevice102A::DEVICE_00C5: return "AIC-7899 u160/m SCSI Controller";
-        case PciDevice102A::DEVICE_00CF: return "AIC-7899P u160/m";
+        case PciDevice102A::DEVICE_00C5: return "AIC-7899 U160/m SCSI Controller";
+        case PciDevice102A::DEVICE_00CF: return "AIC-7899P U160/m";
 
         default: return "Unknown device";
     }

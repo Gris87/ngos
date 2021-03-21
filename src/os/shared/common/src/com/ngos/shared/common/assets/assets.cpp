@@ -81,7 +81,7 @@ AssetEntry* Assets::getAssetEntry(const char8 *fileName)
 {
     COMMON_LT((" | fileName = 0x%p", fileName));
 
-    COMMON_ASSERT(fileName, "fileName is null", 0);
+    COMMON_ASSERT(fileName, "fileName is null", nullptr);
 
 
 
@@ -99,5 +99,5 @@ AssetEntry* Assets::getAssetEntry(const char8 *fileName)
 
     COMMON_LF(("Asset \"%s\" not found", fileName));
 
-    return 0;
+    return nullptr;
 }

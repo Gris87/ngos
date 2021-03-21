@@ -47,7 +47,9 @@ enum class PciSubDevice10778070: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1590021E = 0x1590021E,
     SUBDEVICE_1590021F = 0x1590021F,
     SUBDEVICE_15900220 = 0x15900220,
-    SUBDEVICE_159002BD = 0x159002BD
+    SUBDEVICE_159002BD = 0x159002BD,
+    SUBDEVICE_193D1030 = 0x193D1030,
+    SUBDEVICE_193D1032 = 0x193D1032
 };
 
 
@@ -96,6 +98,8 @@ inline const char8* enumToString(PciSubDevice10778070 subDevice) // TEST: NO
         case PciSubDevice10778070::SUBDEVICE_1590021F: return "SUBDEVICE_1590021F";
         case PciSubDevice10778070::SUBDEVICE_15900220: return "SUBDEVICE_15900220";
         case PciSubDevice10778070::SUBDEVICE_159002BD: return "SUBDEVICE_159002BD";
+        case PciSubDevice10778070::SUBDEVICE_193D1030: return "SUBDEVICE_193D1030";
+        case PciSubDevice10778070::SUBDEVICE_193D1032: return "SUBDEVICE_193D1032";
 
         default: return "UNKNOWN";
     }
@@ -161,6 +165,8 @@ inline const char8* enumToHumanString(PciSubDevice10778070 subDevice) // TEST: N
         case PciSubDevice10778070::SUBDEVICE_1590021F: return "10/25GbE 2P QL41262HMCU-HP Adapter";
         case PciSubDevice10778070::SUBDEVICE_15900220: return "10/25GbE 2P QL41122HLRJ-HP Adapter";
         case PciSubDevice10778070::SUBDEVICE_159002BD: return "10Gb 2P 524SFP+ NIC";
+        case PciSubDevice10778070::SUBDEVICE_193D1030: return "NIC-ETH681i-Mb-2x25G";
+        case PciSubDevice10778070::SUBDEVICE_193D1032: return "NIC-ETH682i-Mb-2x25G";
 
         default: return "Unknown device";
     }

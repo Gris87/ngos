@@ -27,7 +27,8 @@ enum class PciSubDevice10772261: u32 // Ignore CppEnumVerifier
     SUBDEVICE_159000FA = 0x159000FA,
     SUBDEVICE_15900203 = 0x15900203,
     SUBDEVICE_15900204 = 0x15900204,
-    SUBDEVICE_1590022D = 0x1590022D
+    SUBDEVICE_1590022D = 0x1590022D,
+    SUBDEVICE_193D100D = 0x193D100D
 };
 
 
@@ -56,6 +57,7 @@ inline const char8* enumToString(PciSubDevice10772261 subDevice) // TEST: NO
         case PciSubDevice10772261::SUBDEVICE_15900203: return "SUBDEVICE_15900203";
         case PciSubDevice10772261::SUBDEVICE_15900204: return "SUBDEVICE_15900204";
         case PciSubDevice10772261::SUBDEVICE_1590022D: return "SUBDEVICE_1590022D";
+        case PciSubDevice10772261::SUBDEVICE_193D100D: return "SUBDEVICE_193D100D";
 
         default: return "UNKNOWN";
     }
@@ -101,6 +103,7 @@ inline const char8* enumToHumanString(PciSubDevice10772261 subDevice) // TEST: N
         case PciSubDevice10772261::SUBDEVICE_15900203: return "StoreFabric SN1600Q 32Gb Single Port Fibre Channel Host Bus Adapter";
         case PciSubDevice10772261::SUBDEVICE_15900204: return "StoreFabric SN1600Q 32Gb Dual Port Fibre Channel Host Bus Adapter";
         case PciSubDevice10772261::SUBDEVICE_1590022D: return "5830C 32Gb Dual Port Fibre Channel Adapter";
+        case PciSubDevice10772261::SUBDEVICE_193D100D: return "NIC-FC680i-Mb-2x16G";
 
         default: return "Unknown device";
     }

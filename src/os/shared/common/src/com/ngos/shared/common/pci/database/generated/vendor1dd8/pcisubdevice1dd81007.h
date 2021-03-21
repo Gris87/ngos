@@ -77,11 +77,11 @@ inline const char8* enumToHumanString(PciSubDevice1DD81007 subDevice) // TEST: N
         case PciSubDevice1DD81007::SUBDEVICE_1DD84000: return "Naples 100Gb 2-port QSFP28 x16 8GB";
         case PciSubDevice1DD81007::SUBDEVICE_1DD84001: return "Naples 100Gb 2-port QSFP28 x16 4GB";
         case PciSubDevice1DD81007::SUBDEVICE_1DD84002: return "Naples 25Gb 2-port SFP28 x8 4GB";
-        case PciSubDevice1DD81007::SUBDEVICE_1DD84007: return "DSP DSC-25 10/25G 2p OCP Card";
-        case PciSubDevice1DD81007::SUBDEVICE_1DD84008: return "DSC-25 10/25G 2-port SFP28 x8 4GB RAM 8GB eMMC";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD84007: return "DSP DSC-25 Ent 10/25G OCP3 Card";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD84008: return "DSP DSC-25 10/25G 2p SFP28 Card";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400A: return "DSC-100 40/100G 2-port 8G RAM 16G eMMC G1 Services Card";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400C: return "DSC-25 10/25G 2-port 4G RAM 8G eMMC G1 Services Card";
-        case PciSubDevice1DD81007::SUBDEVICE_1DD8400D: return "DSP DSC-100 100G 2p QSFP28 Card";
+        case PciSubDevice1DD81007::SUBDEVICE_1DD8400D: return "DSP DSC-100 Ent 100Gb Card";
         case PciSubDevice1DD81007::SUBDEVICE_1DD8400E: return "DSC-25 10/25G 2-port 4G RAM 8G eMMC G1 Services Card";
 
         default: return "Unknown device";

@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice10026749 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice10026749::SUBDEVICE_15C32B06: return "MED-X4900";
+        case PciSubDevice10026749::SUBDEVICE_15C32B06: return "MED-X4900 (EIZO)";
 
         default: return "Unknown device";
     }

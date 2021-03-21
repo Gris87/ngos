@@ -25,7 +25,8 @@ enum class PciSubDevice14E4168E: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C3382 = 0x103C3382,
     SUBDEVICE_103C339D = 0x103C339D,
     SUBDEVICE_193D1003 = 0x193D1003,
-    SUBDEVICE_193D1006 = 0x193D1006
+    SUBDEVICE_193D1006 = 0x193D1006,
+    SUBDEVICE_193D100F = 0x193D100F
 };
 
 
@@ -52,6 +53,7 @@ inline const char8* enumToString(PciSubDevice14E4168E subDevice) // TEST: NO
         case PciSubDevice14E4168E::SUBDEVICE_103C339D: return "SUBDEVICE_103C339D";
         case PciSubDevice14E4168E::SUBDEVICE_193D1003: return "SUBDEVICE_193D1003";
         case PciSubDevice14E4168E::SUBDEVICE_193D1006: return "SUBDEVICE_193D1006";
+        case PciSubDevice14E4168E::SUBDEVICE_193D100F: return "SUBDEVICE_193D100F";
 
         default: return "UNKNOWN";
     }
@@ -95,6 +97,7 @@ inline const char8* enumToHumanString(PciSubDevice14E4168E subDevice) // TEST: N
         case PciSubDevice14E4168E::SUBDEVICE_103C339D: return "Ethernet 10Gb 2-port 530SFP+ Adapter";
         case PciSubDevice14E4168E::SUBDEVICE_193D1003: return "530F-B";
         case PciSubDevice14E4168E::SUBDEVICE_193D1006: return "530F-L";
+        case PciSubDevice14E4168E::SUBDEVICE_193D100F: return "NIC-ETH522i-Mb-2x10G";
 
         default: return "Unknown device";
     }

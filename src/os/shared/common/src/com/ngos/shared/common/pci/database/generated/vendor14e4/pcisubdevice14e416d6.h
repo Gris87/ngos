@@ -13,6 +13,7 @@
 enum class PciSubDevice14E416D6: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_14E41202 = 0x14E41202,
     SUBDEVICE_14E44120 = 0x14E44120,
     SUBDEVICE_14E44126 = 0x14E44126,
     SUBDEVICE_152D8B20 = 0x152D8B20,
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice14E416D6 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice14E416D6::NONE:               return "NONE";
+        case PciSubDevice14E416D6::SUBDEVICE_14E41202: return "SUBDEVICE_14E41202";
         case PciSubDevice14E416D6::SUBDEVICE_14E44120: return "SUBDEVICE_14E44120";
         case PciSubDevice14E416D6::SUBDEVICE_14E44126: return "SUBDEVICE_14E44126";
         case PciSubDevice14E416D6::SUBDEVICE_152D8B20: return "SUBDEVICE_152D8B20";
@@ -64,6 +66,7 @@ inline const char8* enumToHumanString(PciSubDevice14E416D6 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice14E416D6::SUBDEVICE_14E41202: return "BCM957412M4122C OCP 1x25G Type1 wRoCE";
         case PciSubDevice14E416D6::SUBDEVICE_14E44120: return "NetXtreme E-Series Advanced Dual-port 10Gb SFP+ Ethernet Network Daughter Card";
         case PciSubDevice14E416D6::SUBDEVICE_14E44126: return "NetXtreme-E Dual-port 10G SFP+ Ethernet OCP 3.0 Adapter (BCM957412N4120C)";
         case PciSubDevice14E416D6::SUBDEVICE_152D8B20: return "BCM57412 NetXtreme-E 10Gb RDMA Ethernet Controller";

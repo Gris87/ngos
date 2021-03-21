@@ -10,8 +10,8 @@
 class ImageWidget: public Widget
 {
 public:
-    ImageWidget(Image *image, Widget *parent = 0); // TEST: NO
-    ImageWidget(Image *image, Image *resizedImage, Widget *parent = 0); // TEST: NO
+    ImageWidget(Image *image, Widget *parent = nullptr); // TEST: NO
+    ImageWidget(Image *image, Image *resizedImage, Widget *parent = nullptr); // TEST: NO
     ~ImageWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

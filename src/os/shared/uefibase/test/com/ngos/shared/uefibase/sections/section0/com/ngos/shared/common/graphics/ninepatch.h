@@ -20,10 +20,10 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
     {
         NinePatch temp;
 
-        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead, 0);
-        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail, 0);
-        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead, 0);
-        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail, 0);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail, nullptr);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead, nullptr);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail, nullptr);
         TEST_ASSERT_EQUALS(temp.mPaddingLeft,          0);
         TEST_ASSERT_EQUALS(temp.mPaddingTop,           0);
         TEST_ASSERT_EQUALS(temp.mPaddingRight,         0);
@@ -45,10 +45,10 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
 
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mHead,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mHead,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead->mData.mFrom, 10);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead->mData.mTo,   20);
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mHead,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mHead,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead->mData.mFrom, 20);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead->mData.mTo,   30);
         TEST_ASSERT_EQUALS(temp.mPaddingLeft,                       5);
@@ -56,10 +56,10 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
         TEST_ASSERT_EQUALS(temp.mPaddingRight,                      50);
         TEST_ASSERT_EQUALS(temp.mPaddingBottom,                     25);
 
-        TEST_ASSERT_NOT_EQUALS(temp2.mStretchRangesX.mHead,          0);
+        TEST_ASSERT_NOT_EQUALS(temp2.mStretchRangesX.mHead,          nullptr);
         TEST_ASSERT_EQUALS(temp2.mStretchRangesX.mHead->mData.mFrom, 10);
         TEST_ASSERT_EQUALS(temp2.mStretchRangesX.mHead->mData.mTo,   20);
-        TEST_ASSERT_NOT_EQUALS(temp2.mStretchRangesY.mHead,          0);
+        TEST_ASSERT_NOT_EQUALS(temp2.mStretchRangesY.mHead,          nullptr);
         TEST_ASSERT_EQUALS(temp2.mStretchRangesY.mHead->mData.mFrom, 20);
         TEST_ASSERT_EQUALS(temp2.mStretchRangesY.mHead->mData.mTo,   30);
         TEST_ASSERT_EQUALS(temp2.mPaddingLeft,                       5);
@@ -82,7 +82,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeX(StretchRange(10, 20)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mFrom, 10);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mTo,   20);
 
@@ -90,7 +90,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeX(StretchRange(30, 40)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mFrom, 30);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mTo,   40);
 
@@ -98,7 +98,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeX(StretchRange(50, 75)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mFrom, 50);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mTail->mData.mTo,   75);
     }
@@ -112,7 +112,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeY(StretchRange(10, 20)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mFrom, 10);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mTo,   20);
 
@@ -120,7 +120,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeY(StretchRange(30, 40)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mFrom, 30);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mTo,   40);
 
@@ -128,7 +128,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeY(StretchRange(50, 75)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mTail,          nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mFrom, 50);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mTail->mData.mTo,   75);
     }
@@ -204,13 +204,13 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
     {
         NinePatch temp;
 
-        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead,     0);
-        TEST_ASSERT_EQUALS(temp.getStretchRangesX().mHead, 0);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead,     nullptr);
+        TEST_ASSERT_EQUALS(temp.getStretchRangesX().mHead, nullptr);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeX(StretchRange(10, 20)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mHead,     0);
-        TEST_ASSERT_NOT_EQUALS(temp.getStretchRangesX().mHead, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesX.mHead,     nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.getStretchRangesX().mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesX.mHead,         temp.getStretchRangesX().mHead);
     }
     TEST_CASE_END();
@@ -221,13 +221,13 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_ninepatch);
     {
         NinePatch temp;
 
-        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead,     0);
-        TEST_ASSERT_EQUALS(temp.getStretchRangesY().mHead, 0);
+        TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead,     nullptr);
+        TEST_ASSERT_EQUALS(temp.getStretchRangesY().mHead, nullptr);
 
         TEST_ASSERT_EQUALS(temp.addStretchRangeY(StretchRange(10, 20)), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mHead,     0);
-        TEST_ASSERT_NOT_EQUALS(temp.getStretchRangesY().mHead, 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mStretchRangesY.mHead,     nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.getStretchRangesY().mHead, nullptr);
         TEST_ASSERT_EQUALS(temp.mStretchRangesY.mHead,         temp.getStretchRangesY().mHead);
     }
     TEST_CASE_END();

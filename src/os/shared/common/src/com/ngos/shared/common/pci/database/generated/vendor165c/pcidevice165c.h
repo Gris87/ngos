@@ -216,7 +216,7 @@ inline const char8* enumToHumanString(PciDevice165C device) // TEST: NO
         case PciDevice165C::DEVICE_5942: return "ProcStarIII340-2";
         case PciDevice165C::DEVICE_5943: return "ProcStarIII340-3";
         case PciDevice165C::DEVICE_5944: return "ProcStarIII340-4";
-        case PciDevice165C::DEVICE_5A01: return "ProceIIi80";
+        case PciDevice165C::DEVICE_5A01: return "ProceIII80";
         case PciDevice165C::DEVICE_5A11: return "ProceIII110";
         case PciDevice165C::DEVICE_5A21: return "ProceIII150";
         case PciDevice165C::DEVICE_5A31: return "ProceIII260";

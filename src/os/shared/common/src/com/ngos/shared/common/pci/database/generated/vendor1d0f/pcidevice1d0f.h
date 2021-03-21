@@ -13,6 +13,7 @@
 enum class PciDevice1D0F: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_8061 = 0x8061,
     DEVICE_CD01 = 0xCD01,
     DEVICE_EC20 = 0xEC20,
     DEVICE_EFA0 = 0xEFA0,
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciDevice1D0F device) // TEST: NO
     switch (device)
     {
         case PciDevice1D0F::NONE:        return "NONE";
+        case PciDevice1D0F::DEVICE_8061: return "DEVICE_8061";
         case PciDevice1D0F::DEVICE_CD01: return "DEVICE_CD01";
         case PciDevice1D0F::DEVICE_EC20: return "DEVICE_EC20";
         case PciDevice1D0F::DEVICE_EFA0: return "DEVICE_EFA0";
@@ -64,6 +66,7 @@ inline const char8* enumToHumanString(PciDevice1D0F device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1D0F::DEVICE_8061: return "NVMe EBS Controller";
         case PciDevice1D0F::DEVICE_CD01: return "NVMe SSD Controller";
         case PciDevice1D0F::DEVICE_EC20: return "Elastic Network Adapter (ENA)";
         case PciDevice1D0F::DEVICE_EFA0: return "Elastic Fabric Adapter (EFA)";

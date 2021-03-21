@@ -45,15 +45,15 @@ struct LzmaDecoder
     // If 1, it's a repeated match. The distance is one of repeat0 .. repeat3.
     u16 isRepeat[STATES];
 
-    // If 0, distance of a repeated match is repeat0.
+    // If nullptr, distance of a repeated match is repeat0.
     // Otherwise check isRepeat1.
     u16 isRepeat0[STATES];
 
-    // If 0, distance of a repeated match is repeat1.
+    // If nullptr, distance of a repeated match is repeat1.
     // Otherwise check isRepeat2.
     u16 isRepeat1[STATES];
 
-    // If 0, distance of a repeated match is repeat2. Otherwise it is repeat3.
+    // If nullptr, distance of a repeated match is repeat2. Otherwise it is repeat3.
     u16 isRepeat2[STATES];
 
     // If 1, the repeated match has length of one byte. Otherwise

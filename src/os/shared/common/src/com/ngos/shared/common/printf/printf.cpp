@@ -48,14 +48,14 @@ char8* number(char8 *str, i64 value, u8 base, i64 size, i64 precision, u8 flags)
 {
     // COMMON_LT((" | str = 0x%p, value = %d, base = %u, size = %d, precision = %d, flags = %u", str, value, base, size, precision, flags)); // Commented to avoid infinite loop
 
-    COMMON_ASSERT(str,                     "str is null",        0);
-    COMMON_ASSERT(base >= 2 && base <= 16, "Invalid base value", 0);
+    COMMON_ASSERT(str,                     "str is null",        nullptr);
+    COMMON_ASSERT(base >= 2 && base <= 16, "Invalid base value", nullptr);
 
 
 
     if (base < 2 || base > 16)
     {
-        return 0;
+        return nullptr;
     }
 
 

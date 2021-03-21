@@ -39,7 +39,7 @@ NgosStatus GraphicalConsole::init()
     if (!sConsoleWidget)
     {
         u16 *temp     = sGlyphOffsets; // To avoid infinite loop
-        sGlyphOffsets = 0;             // To avoid infinite loop
+        sGlyphOffsets = nullptr;       // To avoid infinite loop
 
 
 
@@ -55,7 +55,7 @@ NgosStatus GraphicalConsole::init()
 
 
         AssetEntry *asset = Assets::getAssetEntry("images/console.9.png");
-        COMMON_TEST_ASSERT(asset != 0, NgosStatus::ASSERTION);
+        COMMON_TEST_ASSERT(asset != nullptr, NgosStatus::ASSERTION);
 
         Image *consoleImage;
         COMMON_ASSERT_EXECUTION(Graphics::loadImage(asset->content, asset->contentSize, true, &consoleImage), NgosStatus::ASSERTION);

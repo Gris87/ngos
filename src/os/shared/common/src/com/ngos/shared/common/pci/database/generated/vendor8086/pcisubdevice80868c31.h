@@ -13,6 +13,7 @@
 enum class PciSubDevice80868C31: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_102805D7 = 0x102805D7,
     SUBDEVICE_103C1909 = 0x103C1909,
     SUBDEVICE_103C1998 = 0x103C1998,
     SUBDEVICE_17AA220E = 0x17AA220E,
@@ -31,6 +32,7 @@ inline const char8* enumToString(PciSubDevice80868C31 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80868C31::NONE:               return "NONE";
+        case PciSubDevice80868C31::SUBDEVICE_102805D7: return "SUBDEVICE_102805D7";
         case PciSubDevice80868C31::SUBDEVICE_103C1909: return "SUBDEVICE_103C1909";
         case PciSubDevice80868C31::SUBDEVICE_103C1998: return "SUBDEVICE_103C1998";
         case PciSubDevice80868C31::SUBDEVICE_17AA220E: return "SUBDEVICE_17AA220E";
@@ -66,6 +68,7 @@ inline const char8* enumToHumanString(PciSubDevice80868C31 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80868C31::SUBDEVICE_102805D7: return "Alienware X51 R2";
         case PciSubDevice80868C31::SUBDEVICE_103C1909: return "ZBook 15";
         case PciSubDevice80868C31::SUBDEVICE_103C1998: return "EliteDesk 800 G1";
         case PciSubDevice80868C31::SUBDEVICE_17AA220E: return "ThinkPad T440p";

@@ -8,7 +8,7 @@ CppForVerifier::CppForVerifier()
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
     , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .+$")
     , mConditionRegexp("^(?:(\\w) [<>]=? .+|\\*(\\w+))$")
-    , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")
+    , mStepRegexp("^[+-]{nullptr,2}(\\w+)(?: [+-]= .+)?$")
 {
     // Nothing
 }

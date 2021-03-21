@@ -33,6 +33,7 @@
 enum class PciDevice11AB: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_0100 = 0x0100,
     DEVICE_0146 = 0x0146,
     DEVICE_0F53 = 0x0F53,
     DEVICE_11AB = 0x11AB,
@@ -120,6 +121,8 @@ enum class PciDevice11AB: u16 // Ignore CppEnumVerifier
     DEVICE_6460 = 0x6460,
     DEVICE_6480 = 0x6480,
     DEVICE_6485 = 0x6485,
+    DEVICE_6820 = 0x6820,
+    DEVICE_6828 = 0x6828,
     DEVICE_7042 = 0x7042,
     DEVICE_7810 = 0x7810,
     DEVICE_7820 = 0x7820,
@@ -140,6 +143,7 @@ inline const char8* enumToString(PciDevice11AB device) // TEST: NO
     switch (device)
     {
         case PciDevice11AB::NONE:        return "NONE";
+        case PciDevice11AB::DEVICE_0100: return "DEVICE_0100";
         case PciDevice11AB::DEVICE_0146: return "DEVICE_0146";
         case PciDevice11AB::DEVICE_0F53: return "DEVICE_0F53";
         case PciDevice11AB::DEVICE_11AB: return "DEVICE_11AB";
@@ -227,6 +231,8 @@ inline const char8* enumToString(PciDevice11AB device) // TEST: NO
         case PciDevice11AB::DEVICE_6460: return "DEVICE_6460";
         case PciDevice11AB::DEVICE_6480: return "DEVICE_6480";
         case PciDevice11AB::DEVICE_6485: return "DEVICE_6485";
+        case PciDevice11AB::DEVICE_6820: return "DEVICE_6820";
+        case PciDevice11AB::DEVICE_6828: return "DEVICE_6828";
         case PciDevice11AB::DEVICE_7042: return "DEVICE_7042";
         case PciDevice11AB::DEVICE_7810: return "DEVICE_7810";
         case PciDevice11AB::DEVICE_7820: return "DEVICE_7820";
@@ -264,6 +270,7 @@ inline const char8* enumToHumanString(PciDevice11AB device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice11AB::DEVICE_0100: return "88F3700 [Armada 3700 Family] ARM SoC";
         case PciDevice11AB::DEVICE_0146: return "GT-64010/64010A System Controller";
         case PciDevice11AB::DEVICE_0F53: return "88E6318 Link Street network controller";
         case PciDevice11AB::DEVICE_11AB: return "MV88SE614x SATA II PCI-E controller";
@@ -351,6 +358,8 @@ inline const char8* enumToHumanString(PciDevice11AB device) // TEST: NO
         case PciDevice11AB::DEVICE_6460: return "MV64360/64361/64362 System Controller";
         case PciDevice11AB::DEVICE_6480: return "MV64460/64461/64462 System Controller";
         case PciDevice11AB::DEVICE_6485: return "MV64460/64461/64462 System Controller, Revision B";
+        case PciDevice11AB::DEVICE_6820: return "88F6820 [Armada 385] ARM SoC";
+        case PciDevice11AB::DEVICE_6828: return "88F6828 [Armada 388] ARM SoC";
         case PciDevice11AB::DEVICE_7042: return "88SX7042 PCI-e 4-port SATA-II";
         case PciDevice11AB::DEVICE_7810: return "MV78100 [Discovery Innovation] ARM SoC";
         case PciDevice11AB::DEVICE_7820: return "MV78200 [Discovery Innovation] ARM SoC";
@@ -373,6 +382,7 @@ inline const char8* enumToHumanString(PciDevice11AB device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice11AB::DEVICE_0100: return "Unknown device";
         case PciDevice11AB::DEVICE_0146: return "Unknown device";
         case PciDevice11AB::DEVICE_0F53: return "Unknown device";
         case PciDevice11AB::DEVICE_11AB: return "Unknown device";
@@ -460,6 +470,8 @@ inline const char8* enumToHumanString(PciDevice11AB device, u16 subsystemVendorI
         case PciDevice11AB::DEVICE_6460: return "Unknown device";
         case PciDevice11AB::DEVICE_6480: return enumToHumanString((PciSubDevice11AB6480)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice11AB::DEVICE_6485: return "Unknown device";
+        case PciDevice11AB::DEVICE_6820: return "Unknown device";
+        case PciDevice11AB::DEVICE_6828: return "Unknown device";
         case PciDevice11AB::DEVICE_7042: return enumToHumanString((PciSubDevice11AB7042)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice11AB::DEVICE_7810: return "Unknown device";
         case PciDevice11AB::DEVICE_7820: return "Unknown device";

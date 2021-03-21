@@ -62,9 +62,9 @@ inline const char8* enumToHumanString(PciDevice4150 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice4150::DEVICE_0001: return "PCi32TLITE FILSTRUP1 PCI to VME Bridge Controller";
-        case PciDevice4150::DEVICE_0006: return "PCi32TLITE UART 16550 Opencores";
-        case PciDevice4150::DEVICE_0007: return "PCi32TLITE CAN Controller Opencores";
+        case PciDevice4150::DEVICE_0001: return "PCI32TLITE FILSTRUP1 PCI to VME Bridge Controller";
+        case PciDevice4150::DEVICE_0006: return "PCI32TLITE UART 16550 Opencores";
+        case PciDevice4150::DEVICE_0007: return "PCI32TLITE CAN Controller Opencores";
 
         default: return "Unknown device";
     }

@@ -75,14 +75,14 @@ inline const char8* enumToHumanString(PciSubDevice1069B166 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice1069B166::SUBDEVICE_10140242: return "iSeries 2872 DASD IOA";
-        case PciSubDevice1069B166::SUBDEVICE_10140266: return "Dual Channel PCI-X u320 SCSI Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_10140278: return "Dual Channel PCI-X u320 SCSI RAID Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_101402D3: return "Dual Channel PCI-X u320 SCSI Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_101402D4: return "Dual Channel PCI-X u320 SCSI RAID Adapter";
-        case PciSubDevice1069B166::SUBDEVICE_10690200: return "AcceleRAID 400, Single Channel, PCI-X, u320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690202: return "AcceleRAID Sapphire, Dual Channel, PCI-X, u320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690204: return "AcceleRAID 500, Dual Channel, Low-Profile, PCI-X, u320, SCSI RAID";
-        case PciSubDevice1069B166::SUBDEVICE_10690206: return "AcceleRAID 600, Dual Channel, PCI-X, u320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10140266: return "Dual Channel PCI-X U320 SCSI Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_10140278: return "Dual Channel PCI-X U320 SCSI RAID Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_101402D3: return "Dual Channel PCI-X U320 SCSI Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_101402D4: return "Dual Channel PCI-X U320 SCSI RAID Adapter";
+        case PciSubDevice1069B166::SUBDEVICE_10690200: return "AcceleRAID 400, Single Channel, PCI-X, U320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690202: return "AcceleRAID Sapphire, Dual Channel, PCI-X, U320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690204: return "AcceleRAID 500, Dual Channel, Low-Profile, PCI-X, U320, SCSI RAID";
+        case PciSubDevice1069B166::SUBDEVICE_10690206: return "AcceleRAID 600, Dual Channel, PCI-X, U320, SCSI RAID";
 
         default: return "Unknown device";
     }

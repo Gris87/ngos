@@ -16,7 +16,7 @@ class ParameterWidget: public QWidget
     Q_OBJECT
 
 public:
-    explicit ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = 0); // TEST: NO
+    explicit ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
 
     virtual void setValue(const QString &value); // TEST: NO
     QString value() const; // TEST: NO

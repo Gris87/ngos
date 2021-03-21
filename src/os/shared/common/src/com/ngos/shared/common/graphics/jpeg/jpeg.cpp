@@ -52,7 +52,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    *image = 0;
+    *image = nullptr;
 
 
 
@@ -107,7 +107,7 @@ NgosStatus Jpeg::loadImage(u8 *data, u64 size, Image **image)
         {
             delete *decoder.image;
 
-            *decoder.image = 0;
+            *decoder.image = nullptr;
         }
     }
 
@@ -130,8 +130,8 @@ NgosStatus Jpeg::initDecoder(JpegDecoder *decoder, u8 *data, u64 size, Image **i
     decoder->data               = data;
     decoder->size               = size;
     decoder->image              = image;
-    decoder->startOfFrameMarker = 0;
-    decoder->startOfScanMarker  = 0;
+    decoder->startOfFrameMarker = nullptr;
+    decoder->startOfScanMarker  = nullptr;
     decoder->restartInterval    = 0;
     decoder->mcuBlockCountX     = 0;
     decoder->mcuBlockCountY     = 0;
@@ -382,9 +382,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
     COMMON_LVVV(("height = %u", height));
 
     if (
-        !width // width == 0
+        width == 0
         ||
-        !height // height == 0
+        height == 0
        )
     {
         COMMON_LE(("Empty JPEG image"));
@@ -434,9 +434,9 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
             ||
             (enum_t)componentId > (enum_t)JpegComponentId::Q
             ||
-            !samplingFactorX // samplingFactorX == 0
+            samplingFactorX == 0
             ||
-            !samplingFactorY // samplingFactorY == 0
+            samplingFactorY == 0
             ||
             !IS_POWER_OF_2(samplingFactorX)
             ||
@@ -537,13 +537,13 @@ NgosStatus Jpeg::decodeStartOfFrame(JpegDecoder *decoder, JpegMarkerHeader *mark
 
 
 
-    COMMON_TEST_ASSERT(*decoder->image == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(*decoder->image == nullptr, NgosStatus::ASSERTION);
 
     *decoder->image = new Image(width, height, false, true);
 
 
 
-    COMMON_TEST_ASSERT(decoder->startOfFrameMarker == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(decoder->startOfFrameMarker == nullptr, NgosStatus::ASSERTION);
 
     decoder->startOfFrameMarker = startOfFrameMarker;
 
@@ -618,13 +618,13 @@ NgosStatus Jpeg::decodeDefineHuffmanTableMarker(JpegDecoder *decoder, JpegMarker
 
         if (tableType == JpegHuffmanTableType::DC)
         {
-            COMMON_TEST_ASSERT(decoder->vlcDcTables[tableId] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(decoder->vlcDcTables[tableId] == nullptr, NgosStatus::ASSERTION);
 
             decoder->vlcDcTables[tableId] = vlc;
         }
         else
         {
-            COMMON_TEST_ASSERT(decoder->vlcAcTables[tableId] == 0, NgosStatus::ASSERTION);
+            COMMON_TEST_ASSERT(decoder->vlcAcTables[tableId] == nullptr, NgosStatus::ASSERTION);
 
             decoder->vlcAcTables[tableId] = vlc;
         }
@@ -1417,19 +1417,19 @@ NgosStatus Jpeg::handleRowIDCT(i64 *block)
     i64 x8 = W7 * (x4 + x5);
 
     if (
-        !x1 // x1 == 0
+        x1 == 0
         &&
-        !x2 // x2 == 0
+        x2 == 0
         &&
-        !x3 // x3 == 0
+        x3 == 0
         &&
-        !x4 // x4 == 0
+        x4 == 0
         &&
-        !x5 // x5 == 0
+        x5 == 0
         &&
-        !x6 // x6 == 0
+        x6 == 0
         &&
-        !x7 // x7 == 0
+        x7 == 0
        )
     {
         x0       = block[0] << 3;
@@ -1505,19 +1505,19 @@ NgosStatus Jpeg::handleColIDCT(i64 *block, u8 *sampleDataBuffer, u64 stride)
     i64 x8 = W7 * (x4 + x5) + 4;
 
     if (
-        !x1 // x1 == 0
+        x1 == 0
         &&
-        !x2 // x2 == 0
+        x2 == 0
         &&
-        !x3 // x3 == 0
+        x3 == 0
         &&
-        !x4 // x4 == 0
+        x4 == 0
         &&
-        !x5 // x5 == 0
+        x5 == 0
         &&
-        !x6 // x6 == 0
+        x6 == 0
         &&
-        !x7 // x7 == 0
+        x7 == 0
        )
     {
         x0 = CLAMP_TO_BYTE(((block[0] + 32) >> 6) + 128);
@@ -1881,7 +1881,7 @@ NgosStatus Jpeg::bufferBits(JpegDecoder *decoder, u8 count)
 
 
             if (
-                newByte // newByte != 0
+                newByte != 0
                 &&
                 newByte != 0xFF
                )

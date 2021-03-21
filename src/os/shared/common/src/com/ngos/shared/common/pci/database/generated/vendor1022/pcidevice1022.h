@@ -9,6 +9,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221410.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221412.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221414.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221452.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221480.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221487.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice1022149c.h>
@@ -16,6 +17,8 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice10221536.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215d0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215d1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215db.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215dc.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215df.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1022/pcisubdevice102215e1.h>
@@ -409,6 +412,8 @@ enum class PciDevice1022: u16 // Ignore CppEnumVerifier
     DEVICE_2096 = 0x2096,
     DEVICE_2097 = 0x2097,
     DEVICE_209A = 0x209A,
+    DEVICE_2625 = 0x2625,
+    DEVICE_2627 = 0x2627,
     DEVICE_3000 = 0x3000,
     DEVICE_43A0 = 0x43A0,
     DEVICE_43A1 = 0x43A1,
@@ -880,6 +885,8 @@ inline const char8* enumToString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_2096: return "DEVICE_2096";
         case PciDevice1022::DEVICE_2097: return "DEVICE_2097";
         case PciDevice1022::DEVICE_209A: return "DEVICE_209A";
+        case PciDevice1022::DEVICE_2625: return "DEVICE_2625";
+        case PciDevice1022::DEVICE_2627: return "DEVICE_2627";
         case PciDevice1022::DEVICE_3000: return "DEVICE_3000";
         case PciDevice1022::DEVICE_43A0: return "DEVICE_43A0";
         case PciDevice1022::DEVICE_43A1: return "DEVICE_43A1";
@@ -1352,7 +1359,7 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_1718: return "Family 12h/14h Processor Function 6";
         case PciDevice1022::DEVICE_1719: return "Family 12h/14h Processor Function 7";
         case PciDevice1022::DEVICE_2000: return "79c970 [PCnet32 LANCE]";
-        case PciDevice1022::DEVICE_2001: return "79c978 [HomePNA]";
+        case PciDevice1022::DEVICE_2001: return "Am79C978 PCnet Home (HomePNA) 1/10 PCI Ethernet Adapter [Am79C971 PHY]";
         case PciDevice1022::DEVICE_2003: return "Am 1771 MBW [Alchemy]";
         case PciDevice1022::DEVICE_2020: return "53c974 [PCscsi]";
         case PciDevice1022::DEVICE_2040: return "79c974";
@@ -1368,6 +1375,8 @@ inline const char8* enumToHumanString(PciDevice1022 device) // TEST: NO
         case PciDevice1022::DEVICE_2096: return "CS5536 [Geode companion] UDC";
         case PciDevice1022::DEVICE_2097: return "CS5536 [Geode companion] UOC";
         case PciDevice1022::DEVICE_209A: return "CS5536 [Geode companion] IDE";
+        case PciDevice1022::DEVICE_2625: return "Am79C973 [Lance/PCI PCNet/32]";
+        case PciDevice1022::DEVICE_2627: return "Am79C975 [Lance/PCI PCNet/32]";
         case PciDevice1022::DEVICE_3000: return "ELanSC520 Microcontroller";
         case PciDevice1022::DEVICE_43A0: return "Hudson PCI to PCI bridge (PCIE port 0)";
         case PciDevice1022::DEVICE_43A1: return "Hudson PCI to PCI bridge (PCIE port 1)";
@@ -1591,7 +1600,7 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_144F: return "Unknown device";
         case PciDevice1022::DEVICE_1450: return "Unknown device";
         case PciDevice1022::DEVICE_1451: return "Unknown device";
-        case PciDevice1022::DEVICE_1452: return "Unknown device";
+        case PciDevice1022::DEVICE_1452: return enumToHumanString((PciSubDevice10221452)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_1453: return "Unknown device";
         case PciDevice1022::DEVICE_1454: return "Unknown device";
         case PciDevice1022::DEVICE_1455: return "Unknown device";
@@ -1731,8 +1740,8 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_15D4: return "Unknown device";
         case PciDevice1022::DEVICE_15D5: return "Unknown device";
         case PciDevice1022::DEVICE_15DA: return "Unknown device";
-        case PciDevice1022::DEVICE_15DB: return "Unknown device";
-        case PciDevice1022::DEVICE_15DC: return "Unknown device";
+        case PciDevice1022::DEVICE_15DB: return enumToHumanString((PciSubDevice102215DB)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1022::DEVICE_15DC: return enumToHumanString((PciSubDevice102215DC)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15DE: return "Unknown device";
         case PciDevice1022::DEVICE_15DF: return enumToHumanString((PciSubDevice102215DF)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1022::DEVICE_15E0: return enumToHumanString((PciSubDevice102215E0)(subsystemVendorID << 16 | subDeviceId));
@@ -1841,6 +1850,8 @@ inline const char8* enumToHumanString(PciDevice1022 device, u16 subsystemVendorI
         case PciDevice1022::DEVICE_2096: return "Unknown device";
         case PciDevice1022::DEVICE_2097: return "Unknown device";
         case PciDevice1022::DEVICE_209A: return "Unknown device";
+        case PciDevice1022::DEVICE_2625: return "Unknown device";
+        case PciDevice1022::DEVICE_2627: return "Unknown device";
         case PciDevice1022::DEVICE_3000: return "Unknown device";
         case PciDevice1022::DEVICE_43A0: return "Unknown device";
         case PciDevice1022::DEVICE_43A1: return "Unknown device";

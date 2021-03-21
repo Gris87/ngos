@@ -20,7 +20,7 @@ NgosStatus filterBCJ(u8 *compressedAddress, u8 *decompressedAddress, u64 sizeOfP
 
     EARLY_ASSERT(compressedAddress,    "compressedAddress is null",   NgosStatus::ASSERTION);
     EARLY_ASSERT(decompressedAddress,  "decompressedAddress is null", NgosStatus::ASSERTION);
-    EARLY_ASSERT(!sizeOfProperties     // sizeOfProperties == 0
+    EARLY_ASSERT(sizeOfProperties == 0
                 ||
                 sizeOfProperties == 4, "sizeOfProperties is invalid", NgosStatus::ASSERTION);
     EARLY_ASSERT(filterProperties,     "filterProperties is null",    NgosStatus::ASSERTION);

@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------------------------------------
 // | Vector | Mnemonic | Description          | Type  | Error Code | Source                                |
 // ---------------------------------------------------------------------------------------------------------
-// | 0      | #DE      | Divide Error         | Fault | NO         | DIV and IDIV                          |
+// | nullptr      | #DE      | Divide Error         | Fault | NO         | DIV and IDIV                          |
 // |--------------------------------------------------------------------------------------------------------
 // | 1      | #DB      | Debug                | F/T   | NO         | Debug interrupt                       |
 // |--------------------------------------------------------------------------------------------------------
@@ -58,7 +58,7 @@
 #define IDT_EXCEPTIONS_COUNT                    32
 
 // TODO: Use enums
-#define IDT_EXCEPTION_DIVIDE_ERROR              0
+#define IDT_EXCEPTION_DIVIDE_ERROR              nullptr
 #define IDT_EXCEPTION_DEBUG                     1
 #define IDT_EXCEPTION_NMI                       2
 #define IDT_EXCEPTION_BREAKPOINT                3

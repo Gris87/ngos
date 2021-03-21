@@ -5286,9 +5286,9 @@ NgosStatus DeviceManagerDMI::saveDmiCoolingDeviceEntry(DmiCoolingDeviceEntry *en
             // UEFI_TEST_ASSERT(entry->deviceTypeAndStatus.deviceType == DmiCoolingDeviceType::OTHER,   NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->deviceTypeAndStatus.status     == DmiCoolingDeviceStatus::OTHER, NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->deviceTypeAndStatus.value8     == 0x00,                          NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->coolingUnitGroup               == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->coolingUnitGroup               == nullptr,                             NgosStatus::ASSERTION); // Commented due to value variation
             // UEFI_TEST_ASSERT(entry->oemDefined                     == 0x00000000,                    NgosStatus::ASSERTION); // Commented due to value variation
-            // UEFI_TEST_ASSERT(entry->nominalSpeed                   == 0,                             NgosStatus::ASSERTION); // Commented due to value variation
+            // UEFI_TEST_ASSERT(entry->nominalSpeed                   == nullptr,                             NgosStatus::ASSERTION); // Commented due to value variation
 
             if (entryV27)
             {

@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice900500C0 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice900500C0::SUBDEVICE_0E11F620: return "Compaq 64-Bit/66MHz Dual Channel Wide Ultra3 SCSI Adapter";
-        case PciSubDevice900500C0::SUBDEVICE_9005F620: return "AHA-3960D u160/m";
+        case PciSubDevice900500C0::SUBDEVICE_9005F620: return "AHA-3960D U160/m";
 
         default: return "Unknown device";
     }

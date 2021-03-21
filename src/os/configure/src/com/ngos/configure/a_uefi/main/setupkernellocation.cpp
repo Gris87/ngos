@@ -25,7 +25,7 @@ NgosStatus setupKernelLocation(BootParams *params)
 
     Guid                     protocol = UEFI_LOADED_IMAGE_PROTOCOL_GUID;
     uefi_handle              handle   = UEFI::getImageHandle();
-    UefiLoadedImageProtocol *image    = 0;
+    UefiLoadedImageProtocol *image    = nullptr;
 
 
 

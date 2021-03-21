@@ -7,7 +7,7 @@
 
 
 Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
-    : mNinePatch(0)
+    : mNinePatch(nullptr)
     , mWidth(width)
     , mHeight(height)
     , mBytesPerPixel(hasAlpha ? sizeof(RgbaPixel) : sizeof(RgbPixel))
@@ -27,7 +27,7 @@ Image::Image(u16 width, u16 height, bool hasAlpha, bool opaque)
 }
 
 Image::Image(const Image &image)
-    : mNinePatch(image.mNinePatch ? new NinePatch(*image.mNinePatch) : 0)
+    : mNinePatch(image.mNinePatch ? new NinePatch(*image.mNinePatch) : nullptr)
     , mWidth(image.mWidth)
     , mHeight(image.mHeight)
     , mBytesPerPixel(image.mBytesPerPixel)
@@ -231,7 +231,7 @@ RgbPixel* Image::getRgbBuffer() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(isRgb(), "Image is not RGB", 0);
+    COMMON_ASSERT(isRgb(), "Image is not RGB", nullptr);
 
 
 
@@ -242,7 +242,7 @@ RgbaPixel* Image::getRgbaBuffer() const
 {
     // COMMON_LT(("")); // Commented to avoid too frequent logs
 
-    COMMON_ASSERT(isRgba(), "Image is not RGBA", 0);
+    COMMON_ASSERT(isRgba(), "Image is not RGBA", nullptr);
 
 
 

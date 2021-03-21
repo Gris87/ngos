@@ -1501,7 +1501,7 @@ NgosStatus CpuTestGUI::generateWaitEventList()
 
     for (i64 i = eventId; i < sWaitEventsCount; ++i)
     {
-        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, nullptr, nullptr, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
     }
 

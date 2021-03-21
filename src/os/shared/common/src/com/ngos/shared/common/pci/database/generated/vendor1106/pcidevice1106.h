@@ -252,6 +252,7 @@ enum class PciDevice1106: u16 // Ignore CppEnumVerifier
     DEVICE_3351 = 0x3351,
     DEVICE_3353 = 0x3353,
     DEVICE_3364 = 0x3364,
+    DEVICE_3365 = 0x3365,
     DEVICE_3371 = 0x3371,
     DEVICE_3372 = 0x3372,
     DEVICE_337A = 0x337A,
@@ -406,7 +407,8 @@ enum class PciDevice1106: u16 // Ignore CppEnumVerifier
     DEVICE_F208 = 0xF208,
     DEVICE_F238 = 0xF238,
     DEVICE_F340 = 0xF340,
-    DEVICE_F353 = 0xF353
+    DEVICE_F353 = 0xF353,
+    DEVICE_F410 = 0xF410
 };
 
 
@@ -613,6 +615,7 @@ inline const char8* enumToString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_3351: return "DEVICE_3351";
         case PciDevice1106::DEVICE_3353: return "DEVICE_3353";
         case PciDevice1106::DEVICE_3364: return "DEVICE_3364";
+        case PciDevice1106::DEVICE_3365: return "DEVICE_3365";
         case PciDevice1106::DEVICE_3371: return "DEVICE_3371";
         case PciDevice1106::DEVICE_3372: return "DEVICE_3372";
         case PciDevice1106::DEVICE_337A: return "DEVICE_337A";
@@ -768,6 +771,7 @@ inline const char8* enumToString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_F238: return "DEVICE_F238";
         case PciDevice1106::DEVICE_F340: return "DEVICE_F340";
         case PciDevice1106::DEVICE_F353: return "DEVICE_F353";
+        case PciDevice1106::DEVICE_F410: return "DEVICE_F410";
 
         default: return "UNKNOWN";
     }
@@ -819,18 +823,18 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_0336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_0340: return "PT900 Host Bridge";
         case PciDevice1106::DEVICE_0351: return "K8T890CF Host Bridge";
-        case PciDevice1106::DEVICE_0353: return "VX800 Host Bridge";
+        case PciDevice1106::DEVICE_0353: return "VX800/820-Series Chipset Host-Bridge Controller";
         case PciDevice1106::DEVICE_0364: return "CN896/VN896/P4M900 Host Bridge";
         case PciDevice1106::DEVICE_0391: return "VT8371 [KX133]";
         case PciDevice1106::DEVICE_0409: return "VX855/VX875 Host Bridge: Host Control";
-        case PciDevice1106::DEVICE_0410: return "VX900 Host Bridge: Host Control";
+        case PciDevice1106::DEVICE_0410: return "VX900 Series Host Bridge: Host Control";
         case PciDevice1106::DEVICE_0415: return "VT6415 PATA IDE Host Controller";
         case PciDevice1106::DEVICE_0501: return "VT8501 [Apollo MVP4]";
         case PciDevice1106::DEVICE_0505: return "VT82C505";
         case PciDevice1106::DEVICE_0561: return "VT82C576MV";
         case PciDevice1106::DEVICE_0571: return "VT82C586A/B/VT82C686/A/B/VT823x/A/C PIPC Bus Master IDE";
         case PciDevice1106::DEVICE_0576: return "VT82C576 3V [Apollo Master]";
-        case PciDevice1106::DEVICE_0581: return "CX700/VX700 RAID Controller";
+        case PciDevice1106::DEVICE_0581: return "CX700/VX700/VX800/820-Series Serial ATA RAID-Controller";
         case PciDevice1106::DEVICE_0585: return "VT82C585VP [Apollo VP1/VPX]";
         case PciDevice1106::DEVICE_0586: return "VT82C586/A/B PCI-to-ISA [Apollo VP]";
         case PciDevice1106::DEVICE_0591: return "VT8237A SATA 2-Port Controller";
@@ -867,7 +871,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_1296: return "P4M800 Host Bridge";
         case PciDevice1106::DEVICE_1308: return "PT894 Host Bridge";
         case PciDevice1106::DEVICE_1314: return "CN700/VN800/P4M800CE/Pro Host Bridge";
-        case PciDevice1106::DEVICE_1324: return "CX700/VX700 Host Bridge";
+        case PciDevice1106::DEVICE_1324: return "CX700/VX700-Series Error Reporting";
         case PciDevice1106::DEVICE_1327: return "P4M890 Host Bridge";
         case PciDevice1106::DEVICE_1336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_1340: return "PT900 Host Bridge";
@@ -875,7 +879,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_1353: return "VX800/VX820 Error Reporting";
         case PciDevice1106::DEVICE_1364: return "CN896/VN896/P4M900 Host Bridge";
         case PciDevice1106::DEVICE_1409: return "VX855/VX875 Error Reporting";
-        case PciDevice1106::DEVICE_1410: return "VX900 Error Reporting";
+        case PciDevice1106::DEVICE_1410: return "VX900 Series Error Reporting";
         case PciDevice1106::DEVICE_1571: return "VT82C576M/VT82C586";
         case PciDevice1106::DEVICE_1595: return "VT82C595/97 [Apollo VP2/97]";
         case PciDevice1106::DEVICE_1732: return "VT1732 [Envy24 II] PCI Multi-Channel Audio Controller";
@@ -892,7 +896,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_2296: return "P4M800 Host Bridge";
         case PciDevice1106::DEVICE_2308: return "PT894 Host Bridge";
         case PciDevice1106::DEVICE_2314: return "CN700/VN800/P4M800CE/Pro Host Bridge";
-        case PciDevice1106::DEVICE_2324: return "CX700/VX700 Host Bridge";
+        case PciDevice1106::DEVICE_2324: return "CX700/VX700-Series Host Interface Control";
         case PciDevice1106::DEVICE_2327: return "P4M890 Host Bridge";
         case PciDevice1106::DEVICE_2336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_2340: return "PT900 Host Bridge";
@@ -900,14 +904,14 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_2353: return "VX800/VX820 Host Bus Control";
         case PciDevice1106::DEVICE_2364: return "CN896/VN896/P4M900 Host Bridge";
         case PciDevice1106::DEVICE_2409: return "VX855/VX875 Host Bus Control";
-        case PciDevice1106::DEVICE_2410: return "VX900 CPU Bus Controller";
+        case PciDevice1106::DEVICE_2410: return "VX900 Series CPU Bus Controller";
         case PciDevice1106::DEVICE_287A: return "VT8251 PCI to PCI Bridge";
         case PciDevice1106::DEVICE_287B: return "VT8251 Host Bridge";
         case PciDevice1106::DEVICE_287C: return "VT8251 PCIE Root Port";
         case PciDevice1106::DEVICE_287D: return "VT8251 PCIE Root Port";
         case PciDevice1106::DEVICE_287E: return "VT8237/8251 Ultra VLINK Controller";
         case PciDevice1106::DEVICE_3022: return "CLE266";
-        case PciDevice1106::DEVICE_3038: return "VT82xx/62xx UHCI USB 1.1 Controller";
+        case PciDevice1106::DEVICE_3038: return "VT82xx/62xx/VX700/8x0/900 UHCI USB 1.1 Controller";
         case PciDevice1106::DEVICE_3040: return "VT82C586B ACPI";
         case PciDevice1106::DEVICE_3043: return "VT86C100A [Rhine]";
         case PciDevice1106::DEVICE_3044: return "VT6306/7/8 [Fire II(M)] IEEE 1394 OHCI Controller";
@@ -925,7 +929,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_3101: return "VT8653 Host Bridge";
         case PciDevice1106::DEVICE_3102: return "VT8662 Host Bridge";
         case PciDevice1106::DEVICE_3103: return "VT8615 Host Bridge";
-        case PciDevice1106::DEVICE_3104: return "USB 2.0";
+        case PciDevice1106::DEVICE_3104: return "USB 2.0 EHCI-Compliant Host-Controller";
         case PciDevice1106::DEVICE_3106: return "VT6105/VT6106S [Rhine-III]";
         case PciDevice1106::DEVICE_3108: return "K8M800/K8N800/K8N800A [S3 UniChrome Pro]";
         case PciDevice1106::DEVICE_3109: return "VT8233C PCI to ISA Bridge";
@@ -977,10 +981,10 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_3269: return "KT880 Host Bridge";
         case PciDevice1106::DEVICE_3282: return "K8T800Pro Host Bridge";
         case PciDevice1106::DEVICE_3287: return "VT8251 PCI to ISA Bridge";
-        case PciDevice1106::DEVICE_3288: return "VT8237A/VT8251 HDA Controller";
+        case PciDevice1106::DEVICE_3288: return "VX900/VT8xxx High Definition Audio Controller";
         case PciDevice1106::DEVICE_3290: return "K8M890 Host Bridge";
         case PciDevice1106::DEVICE_3296: return "P4M800 Host Bridge";
-        case PciDevice1106::DEVICE_3324: return "CX700/VX700 Host Bridge";
+        case PciDevice1106::DEVICE_3324: return "CX700/VX700-Series DRAM Bus Control";
         case PciDevice1106::DEVICE_3327: return "P4M890 Host Bridge";
         case PciDevice1106::DEVICE_3336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_3337: return "VT8237A PCI to ISA Bridge";
@@ -989,19 +993,20 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_3344: return "CN700/P4M800 Pro/P4M800 CE/VN800 Graphics [S3 UniChrome Pro]";
         case PciDevice1106::DEVICE_3349: return "VT8251 AHCI/SATA 4-Port Controller";
         case PciDevice1106::DEVICE_3351: return "VT3351 Host Bridge";
-        case PciDevice1106::DEVICE_3353: return "VX800 PCI to PCI Bridge";
+        case PciDevice1106::DEVICE_3353: return "VX800/820 PCI to PCI Bridge";
         case PciDevice1106::DEVICE_3364: return "CN896/VN896/P4M900 Host Bridge";
+        case PciDevice1106::DEVICE_3365: return "VT630x IEEE 1394 Host Controller [Fire II/M]";
         case PciDevice1106::DEVICE_3371: return "CN896/VN896/P4M900 [Chrome 9 HC]";
         case PciDevice1106::DEVICE_3372: return "VT8237S PCI to ISA Bridge";
         case PciDevice1106::DEVICE_337A: return "VT8237A PCI to PCI Bridge";
         case PciDevice1106::DEVICE_337B: return "VT8237A Host Bridge";
         case PciDevice1106::DEVICE_3403: return "VT6315 Series Firewire Controller";
         case PciDevice1106::DEVICE_3409: return "VX855/VX875 DRAM Bus Control";
-        case PciDevice1106::DEVICE_3410: return "VX900 DRAM Bus Control";
-        case PciDevice1106::DEVICE_3432: return "VL80x xHCI USB 3.0 Controller";
+        case PciDevice1106::DEVICE_3410: return "VX900 Series DRAM Bus Control";
+        case PciDevice1106::DEVICE_3432: return "VL800/801 xHCI USB 3.0 Controller";
         case PciDevice1106::DEVICE_3456: return "VX11 Standard Host Bridge";
         case PciDevice1106::DEVICE_345B: return "VX11 Miscellaneous Bus";
-        case PciDevice1106::DEVICE_3483: return "VL805 USB 3.0 Host Controller";
+        case PciDevice1106::DEVICE_3483: return "VL805/806 xHCI USB 3.0 Controller";
         case PciDevice1106::DEVICE_3A01: return "VX11 Graphics [Chrome 645/640]";
         case PciDevice1106::DEVICE_4149: return "VIA VT6420 (ATA133) Controller";
         case PciDevice1106::DEVICE_4204: return "K8M800 Host Bridge";
@@ -1016,7 +1021,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_4296: return "P4M800 Host Bridge";
         case PciDevice1106::DEVICE_4308: return "PT894 Host Bridge";
         case PciDevice1106::DEVICE_4314: return "CN700/VN800/P4M800CE/Pro Host Bridge";
-        case PciDevice1106::DEVICE_4324: return "CX700/VX700 Host Bridge";
+        case PciDevice1106::DEVICE_4324: return "CX700/VX700-Series Power Management and Testing Control";
         case PciDevice1106::DEVICE_4327: return "P4M890 Host Bridge";
         case PciDevice1106::DEVICE_4336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_4340: return "PT900 Host Bridge";
@@ -1024,7 +1029,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_4353: return "VX800/VX820 Power Management Control";
         case PciDevice1106::DEVICE_4364: return "CN896/VN896/P4M900 Host Bridge";
         case PciDevice1106::DEVICE_4409: return "VX855/VX875 Power Management Control";
-        case PciDevice1106::DEVICE_4410: return "VX900 Power Management and Chip Testing Control";
+        case PciDevice1106::DEVICE_4410: return "VX900 Series Power Management and Chip Testing Control";
         case PciDevice1106::DEVICE_5030: return "VT82C596 ACPI [Apollo PRO]";
         case PciDevice1106::DEVICE_5122: return "VX855/VX875 Chrome 9 HCM Integrated Graphics";
         case PciDevice1106::DEVICE_5208: return "PT890 I/O APIC Interrupt Controller";
@@ -1032,7 +1037,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_5287: return "VT8251 Serial ATA Controller";
         case PciDevice1106::DEVICE_5290: return "K8M890 I/O APIC Interrupt Controller";
         case PciDevice1106::DEVICE_5308: return "PT894 I/O APIC Interrupt Controller";
-        case PciDevice1106::DEVICE_5324: return "VX800 Serial ATA and EIDE Controller";
+        case PciDevice1106::DEVICE_5324: return "CX700M2/VX700/VX800/820-Series Serial ATA & EIDE-Controller";
         case PciDevice1106::DEVICE_5327: return "P4M890 I/O APIC Interrupt Controller";
         case PciDevice1106::DEVICE_5336: return "K8M890CE I/O APIC Interrupt Controller";
         case PciDevice1106::DEVICE_5340: return "PT900 I/O APIC Interrupt Controller";
@@ -1041,7 +1046,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_5364: return "CN896/VN896/P4M900 I/O APIC Interrupt Controller";
         case PciDevice1106::DEVICE_5372: return "VT8237/8251 Serial ATA Controller";
         case PciDevice1106::DEVICE_5409: return "VX855/VX875 APIC and Central Traffic Control";
-        case PciDevice1106::DEVICE_5410: return "VX900 APIC and Central Traffic Control";
+        case PciDevice1106::DEVICE_5410: return "VX900 Series APIC and Central Traffic Control";
         case PciDevice1106::DEVICE_6100: return "VT85C100A [Rhine II]";
         case PciDevice1106::DEVICE_6287: return "SATA RAID Controller";
         case PciDevice1106::DEVICE_6290: return "K8M890CE Host Bridge";
@@ -1049,7 +1054,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_6353: return "VX800/VX820 Scratch Registers";
         case PciDevice1106::DEVICE_6364: return "CN896/VN896/P4M900 Security Device";
         case PciDevice1106::DEVICE_6409: return "VX855/VX875 Scratch Registers";
-        case PciDevice1106::DEVICE_6410: return "VX900 Scratch Registers";
+        case PciDevice1106::DEVICE_6410: return "VX900 Series Scratch Registers";
         case PciDevice1106::DEVICE_7122: return "VX900 Graphics [Chrome9 HD]";
         case PciDevice1106::DEVICE_7204: return "K8M800 Host Bridge";
         case PciDevice1106::DEVICE_7205: return "KM400/KN400/P4M800 [S3 UniChrome]";
@@ -1064,7 +1069,7 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_7296: return "P4M800 Host Bridge";
         case PciDevice1106::DEVICE_7308: return "PT894 Host Bridge";
         case PciDevice1106::DEVICE_7314: return "CN700/VN800/P4M800CE/Pro Host Bridge";
-        case PciDevice1106::DEVICE_7324: return "CX700/VX700 Host Bridge";
+        case PciDevice1106::DEVICE_7324: return "CX700/VX700-Series North-South Module Interface Control";
         case PciDevice1106::DEVICE_7327: return "P4M890 Host Bridge";
         case PciDevice1106::DEVICE_7336: return "K8M890CE Host Bridge";
         case PciDevice1106::DEVICE_7340: return "PT900 Host Bridge";
@@ -1072,16 +1077,16 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_7353: return "VX800/VX820 North-South Module Interface Control";
         case PciDevice1106::DEVICE_7364: return "CN896/VN896/P4M900 Host Bridge";
         case PciDevice1106::DEVICE_7409: return "VX855/VX875 North-South Module Interface Control";
-        case PciDevice1106::DEVICE_7410: return "VX900 North-South Module Interface Control";
+        case PciDevice1106::DEVICE_7410: return "VX900 Series North-South Module Interface Control";
         case PciDevice1106::DEVICE_8231: return "VT8231 [PCI-to-ISA Bridge]";
         case PciDevice1106::DEVICE_8235: return "VT8235 ACPI";
         case PciDevice1106::DEVICE_8305: return "VT8363/8365 [KT133/KM133 AGP]";
-        case PciDevice1106::DEVICE_8324: return "CX700/VX700 PCI to ISA Bridge";
+        case PciDevice1106::DEVICE_8324: return "CX700/VX700-Series Bus Control and Power Management";
         case PciDevice1106::DEVICE_8353: return "VX800/VX820 Bus Control and Power Management";
         case PciDevice1106::DEVICE_8391: return "VT8371 [KX133 AGP]";
         case PciDevice1106::DEVICE_8400: return "MVP4";
         case PciDevice1106::DEVICE_8409: return "VX855/VX875 Bus Control and Power Management";
-        case PciDevice1106::DEVICE_8410: return "VX900 Bus Control and Power Management";
+        case PciDevice1106::DEVICE_8410: return "VX900 Series Bus Control and Power Management";
         case PciDevice1106::DEVICE_8500: return "KLE133/PLE133/PLE133T";
         case PciDevice1106::DEVICE_8501: return "VT8501 [Apollo MVP4 AGP]";
         case PciDevice1106::DEVICE_8596: return "VT82C596 [Apollo PRO AGP]";
@@ -1095,19 +1100,19 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_8A26: return "KL133/KL133A/KM133/KM133A [S3 ProSavage]";
         case PciDevice1106::DEVICE_8D01: return "PN133/PN133T [S3 Twister]";
         case PciDevice1106::DEVICE_8D04: return "KM266/P4M266/P4M266A/P4N266 [S3 ProSavageDDR]";
-        case PciDevice1106::DEVICE_9001: return "VX900 Serial ATA Controller";
+        case PciDevice1106::DEVICE_9001: return "VX900 Series Serial-ATA Controller";
         case PciDevice1106::DEVICE_9082: return "Standard AHCI 1.0 SATA Controller";
         case PciDevice1106::DEVICE_9140: return "HDMI Audio Device";
         case PciDevice1106::DEVICE_9201: return "USB3.0 Controller";
-        case PciDevice1106::DEVICE_9530: return "Secure Digital Memory Card Controller";
-        case PciDevice1106::DEVICE_95D0: return "SDIO Host Controller";
+        case PciDevice1106::DEVICE_9530: return "VX800/820/900 Series Secure Digital Memory Card Controller";
+        case PciDevice1106::DEVICE_95D0: return "VX800/820/900 Series SDIO Host Controller";
         case PciDevice1106::DEVICE_A208: return "PT890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_A238: return "K8T890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_A327: return "P4M890 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_A353: return "VX8xx South-North Module Interface Control";
+        case PciDevice1106::DEVICE_A353: return "VX8xx/900 Series South-North Module Interface Control";
         case PciDevice1106::DEVICE_A364: return "CN896/VN896/P4M900 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_A409: return "VX855/VX875 USB Device Controller";
-        case PciDevice1106::DEVICE_A410: return "VX900 PCI Express Root Port 0";
+        case PciDevice1106::DEVICE_A409: return "VX855/VX875/VX900 Series USB Device Controller";
+        case PciDevice1106::DEVICE_A410: return "VX900 Series PCI Express Root Port 0";
         case PciDevice1106::DEVICE_B091: return "VT8633 [Apollo Pro266 AGP]";
         case PciDevice1106::DEVICE_B099: return "VT8366/A/7 [Apollo KT266/A/333 AGP]";
         case PciDevice1106::DEVICE_B101: return "VT8653 AGP Bridge";
@@ -1118,34 +1123,35 @@ inline const char8* enumToHumanString(PciDevice1106 device) // TEST: NO
         case PciDevice1106::DEVICE_B115: return "VT8363/8365 [KT133/KM133] PCI Bridge";
         case PciDevice1106::DEVICE_B168: return "VT8235 PCI Bridge";
         case PciDevice1106::DEVICE_B188: return "VT8237/8251 PCI bridge [K8M890/K8T800/K8T890 South]";
-        case PciDevice1106::DEVICE_B198: return "VT8237/VX700 PCI Bridge";
+        case PciDevice1106::DEVICE_B198: return "VT8237/CX700/VX700-Series PCI to PCI Bridge";
         case PciDevice1106::DEVICE_B213: return "VPX/VPX2 I/O APIC Interrupt Controller";
         case PciDevice1106::DEVICE_B353: return "VX855/VX875/VX900 PCI to PCI Bridge";
-        case PciDevice1106::DEVICE_B410: return "VX900 PCI Express Root Port 1";
+        case PciDevice1106::DEVICE_B410: return "VX900 Series PCI Express Root Port 1";
         case PciDevice1106::DEVICE_B999: return "[K8T890 North / VT8237 South] PCI Bridge";
         case PciDevice1106::DEVICE_C208: return "PT890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_C238: return "K8T890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_C327: return "P4M890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_C340: return "PT900 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_C353: return "VX800/VX820 PCI Express Root Port";
+        case PciDevice1106::DEVICE_C353: return "VX800/820-Series PCI-Express Root (PCI-to-PCI Virtual Bridge)";
         case PciDevice1106::DEVICE_C364: return "CN896/VN896/P4M900 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_C409: return "VX855/VX875 EIDE Controller";
-        case PciDevice1106::DEVICE_C410: return "VX900 PCI Express Root Port 2";
+        case PciDevice1106::DEVICE_C410: return "VX900 Series PCI Express Root Port 2";
         case PciDevice1106::DEVICE_D104: return "VT8237R USB UDCI Controller";
         case PciDevice1106::DEVICE_D208: return "PT890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_D213: return "VPX/VPX2 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_D238: return "K8T890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_D340: return "PT900 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_D410: return "VX900 PCI Express Root Port 3";
+        case PciDevice1106::DEVICE_D410: return "VX900 Series PCI Express Root Port 3";
         case PciDevice1106::DEVICE_E208: return "PT890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_E238: return "K8T890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_E340: return "PT900 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_E353: return "VX800/VX820 PCI Express Root Port";
-        case PciDevice1106::DEVICE_E410: return "VX900 PCI Express Physical Layer Electrical Sub-block";
+        case PciDevice1106::DEVICE_E353: return "VX800/820-Series PCI-Express Root Port 0";
+        case PciDevice1106::DEVICE_E410: return "VX900 Series PCI Express Physical Layer Electrical Sub-block";
         case PciDevice1106::DEVICE_F208: return "PT890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_F238: return "K8T890 PCI to PCI Bridge Controller";
         case PciDevice1106::DEVICE_F340: return "PT900 PCI to PCI Bridge Controller";
-        case PciDevice1106::DEVICE_F353: return "VX800/VX820 PCI Express Root Port";
+        case PciDevice1106::DEVICE_F353: return "VX800/820-Series PCI-Express Root Port 1";
+        case PciDevice1106::DEVICE_F410: return "VX900 Series PCI UART Port 0-3";
 
         default: return "Unknown device";
     }
@@ -1354,6 +1360,7 @@ inline const char8* enumToHumanString(PciDevice1106 device, u16 subsystemVendorI
         case PciDevice1106::DEVICE_3351: return "Unknown device";
         case PciDevice1106::DEVICE_3353: return "Unknown device";
         case PciDevice1106::DEVICE_3364: return "Unknown device";
+        case PciDevice1106::DEVICE_3365: return "Unknown device";
         case PciDevice1106::DEVICE_3371: return "Unknown device";
         case PciDevice1106::DEVICE_3372: return "Unknown device";
         case PciDevice1106::DEVICE_337A: return "Unknown device";
@@ -1509,6 +1516,7 @@ inline const char8* enumToHumanString(PciDevice1106 device, u16 subsystemVendorI
         case PciDevice1106::DEVICE_F238: return "Unknown device";
         case PciDevice1106::DEVICE_F340: return "Unknown device";
         case PciDevice1106::DEVICE_F353: return "Unknown device";
+        case PciDevice1106::DEVICE_F410: return "Unknown device";
 
         default: return "Unknown device";
     }

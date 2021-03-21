@@ -19,6 +19,7 @@ enum class PciDevice1C5C: u16 // Ignore CppEnumVerifier
     DEVICE_1284 = 0x1284,
     DEVICE_1285 = 0x1285,
     DEVICE_1327 = 0x1327,
+    DEVICE_1339 = 0x1339,
     DEVICE_1504 = 0x1504,
     DEVICE_1527 = 0x1527,
     DEVICE_243B = 0x243B,
@@ -40,6 +41,7 @@ inline const char8* enumToString(PciDevice1C5C device) // TEST: NO
         case PciDevice1C5C::DEVICE_1284: return "DEVICE_1284";
         case PciDevice1C5C::DEVICE_1285: return "DEVICE_1285";
         case PciDevice1C5C::DEVICE_1327: return "DEVICE_1327";
+        case PciDevice1C5C::DEVICE_1339: return "DEVICE_1339";
         case PciDevice1C5C::DEVICE_1504: return "DEVICE_1504";
         case PciDevice1C5C::DEVICE_1527: return "DEVICE_1527";
         case PciDevice1C5C::DEVICE_243B: return "DEVICE_243B";
@@ -78,6 +80,7 @@ inline const char8* enumToHumanString(PciDevice1C5C device) // TEST: NO
         case PciDevice1C5C::DEVICE_1284: return "PC300 NVMe Solid State Drive 512GB";
         case PciDevice1C5C::DEVICE_1285: return "PC300 NVMe Solid State Drive 1TB";
         case PciDevice1C5C::DEVICE_1327: return "BC501 NVMe Solid State Drive 512GB";
+        case PciDevice1C5C::DEVICE_1339: return "BC511";
         case PciDevice1C5C::DEVICE_1504: return "SC300 512GB M.2 2280 SATA Solid State Drive";
         case PciDevice1C5C::DEVICE_1527: return "PC401 NVMe Solid State Drive 256GB";
         case PciDevice1C5C::DEVICE_243B: return "PE6110 NVMe Solid State Drive";
@@ -101,6 +104,7 @@ inline const char8* enumToHumanString(PciDevice1C5C device, u16 subsystemVendorI
         case PciDevice1C5C::DEVICE_1284: return "Unknown device";
         case PciDevice1C5C::DEVICE_1285: return "Unknown device";
         case PciDevice1C5C::DEVICE_1327: return "Unknown device";
+        case PciDevice1C5C::DEVICE_1339: return "Unknown device";
         case PciDevice1C5C::DEVICE_1504: return "Unknown device";
         case PciDevice1C5C::DEVICE_1527: return "Unknown device";
         case PciDevice1C5C::DEVICE_243B: return enumToHumanString((PciSubDevice1C5C243B)(subsystemVendorID << 16 | subDeviceId));

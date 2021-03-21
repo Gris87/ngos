@@ -10,7 +10,7 @@
 class ConsoleWidget: public Widget
 {
 public:
-    ConsoleWidget(Image *panelImage, Widget *parent = 0); // TEST: NO
+    ConsoleWidget(Image *panelImage, Widget *parent = nullptr); // TEST: NO
     ~ConsoleWidget(); // TEST: NO
 
     NgosStatus update(i64 positionX, i64 positionY, u64 width, u64 height) override; // TEST: NO

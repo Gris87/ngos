@@ -366,7 +366,7 @@ bool Widget::isUpdatesEnabled()
 
 
 
-    return !mUpdatesLocks; // sUpdatesLocks == 0
+    return mUpdatesLocks == 0;
 }
 
 bool Widget::isFocused()

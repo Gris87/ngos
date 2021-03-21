@@ -13,7 +13,7 @@
 class LabelWidget: public Widget
 {
 public:
-    LabelWidget(const char8 *text, Widget *parent = 0); // TEST: NO
+    LabelWidget(const char8 *text, Widget *parent = nullptr); // TEST: NO
     ~LabelWidget(); // TEST: NO
 
     NgosStatus repaint() override; // TEST: NO

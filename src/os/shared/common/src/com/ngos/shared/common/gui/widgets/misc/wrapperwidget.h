@@ -10,7 +10,7 @@
 class WrapperWidget: public Widget
 {
 public:
-    WrapperWidget(Widget *parent = 0); // TEST: NO
+    WrapperWidget(Widget *parent = nullptr); // TEST: NO
     ~WrapperWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

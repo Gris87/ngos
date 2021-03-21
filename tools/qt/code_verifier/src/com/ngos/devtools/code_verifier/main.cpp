@@ -35,7 +35,7 @@ bool isGitIgnored(const QString &workingDirectory, const QString &path)
         return false;
     }
 
-    return git.readAll().length(); // git.readAll().length() > 0
+    return !git.readAll().isEmpty();
 }
 
 qint32 main(qint32 argc, char *argv[])
@@ -272,7 +272,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (warnings.length() > 0)
+    if (!warnings.isEmpty())
     {
         std::sort(warnings.begin(), warnings.end());
 
@@ -299,7 +299,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (errors.length() > 0)
+    if (!errors.isEmpty())
     {
         std::sort(errors.begin(), errors.end());
 
@@ -339,7 +339,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    if (warnings.length() == 0)
+    if (warnings.isEmpty())
     {
         Console::out("");
         Console::out("Everything is OK");

@@ -15,7 +15,7 @@
 class TableWidget: public Widget
 {
 public:
-    TableWidget(Image *backgroundImage, Image *headerImage, Widget *parent = 0); // TEST: NO
+    TableWidget(Image *backgroundImage, Image *headerImage, Widget *parent = nullptr); // TEST: NO
     ~TableWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

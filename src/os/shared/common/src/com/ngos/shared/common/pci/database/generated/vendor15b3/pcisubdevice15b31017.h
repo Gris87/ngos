@@ -16,7 +16,8 @@ enum class PciSubDevice15B31017: u32 // Ignore CppEnumVerifier
     SUBDEVICE_15B30006 = 0x15B30006,
     SUBDEVICE_15B30007 = 0x15B30007,
     SUBDEVICE_15B30020 = 0x15B30020,
-    SUBDEVICE_15B30068 = 0x15B30068
+    SUBDEVICE_15B30068 = 0x15B30068,
+    SUBDEVICE_193D1051 = 0x193D1051
 };
 
 
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice15B31017 subDevice) // TEST: NO
         case PciSubDevice15B31017::SUBDEVICE_15B30007: return "SUBDEVICE_15B30007";
         case PciSubDevice15B31017::SUBDEVICE_15B30020: return "SUBDEVICE_15B30020";
         case PciSubDevice15B31017::SUBDEVICE_15B30068: return "SUBDEVICE_15B30068";
+        case PciSubDevice15B31017::SUBDEVICE_193D1051: return "SUBDEVICE_193D1051";
 
         default: return "UNKNOWN";
     }
@@ -68,6 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice15B31017 subDevice) // TEST: N
         case PciSubDevice15B31017::SUBDEVICE_15B30007: return "Mellanox ConnectX*-5 MCX516A-CCAT";
         case PciSubDevice15B31017::SUBDEVICE_15B30020: return "ConnectX*-5 EN network interface card, 10/25GbE dual-port SFP28, PCIe3.0 x8, tall bracket ; MCX512A-ACAT";
         case PciSubDevice15B31017::SUBDEVICE_15B30068: return "ConnectX*-5 EN network interface card for OCP2.0, Type 1, with host management, 25GbE dual-port SFP28, PCIe3.0 x8, no bracket Halogen free ; MCX542B-ACAN";
+        case PciSubDevice15B31017::SUBDEVICE_193D1051: return "NIC-IB1040i-Mb-2P";
 
         default: return "Unknown device";
     }

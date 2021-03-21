@@ -12,7 +12,7 @@ class TrackingGroupBox: public QGroupBox
     Q_OBJECT
 
 public:
-    explicit TrackingGroupBox(const QString &title, QWidget *parent = 0); // TEST: NO
+    explicit TrackingGroupBox(const QString &title, QWidget *parent = nullptr); // TEST: NO
 
 protected:
     void focusInEvent(QFocusEvent *event) override; // TEST: NO

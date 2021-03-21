@@ -657,7 +657,7 @@ NgosStatus BootloaderGUI::cleanUp()
 
     UEFI_ASSERT_EXECUTION(sRebootButton->setPredefined(false),  NgosStatus::ASSERTION); // It will force to release release for resized images
 
-    if (sOsButtons.getSize() > 0)
+    if (!sOsButtons.isEmpty())
     {
         UEFI_ASSERT_EXECUTION(sOsButtons.first()->setPredefined(false), NgosStatus::ASSERTION); // It will force to release memory for resized images
         UEFI_ASSERT_EXECUTION(sOsButtons.clear(),                       NgosStatus::ASSERTION);
@@ -1006,7 +1006,7 @@ NgosStatus BootloaderGUI::generateWaitEventList()
 
     if (sTimeoutLabelWidget)
     {
-        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, nullptr, nullptr, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
 
 

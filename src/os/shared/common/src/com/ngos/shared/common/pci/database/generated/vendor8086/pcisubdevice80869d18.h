@@ -13,6 +13,7 @@
 enum class PciSubDevice80869D18: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_17AA2247 = 0x17AA2247,
     SUBDEVICE_17AA382A = 0x17AA382A
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciSubDevice80869D18 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80869D18::NONE:               return "NONE";
+        case PciSubDevice80869D18::SUBDEVICE_17AA2247: return "SUBDEVICE_17AA2247";
         case PciSubDevice80869D18::SUBDEVICE_17AA382A: return "SUBDEVICE_17AA382A";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciSubDevice80869D18 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80869D18::SUBDEVICE_17AA2247: return "ThinkPad T570";
         case PciSubDevice80869D18::SUBDEVICE_17AA382A: return "B51-80 Laptop";
 
         default: return "Unknown device";

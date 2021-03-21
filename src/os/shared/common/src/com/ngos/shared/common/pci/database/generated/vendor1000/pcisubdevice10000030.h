@@ -90,12 +90,12 @@ inline const char8* enumToHumanString(PciSubDevice10000030 subDevice) // TEST: N
         case PciSubDevice10000030::SUBDEVICE_1028016C: return "PowerEdge 1850 MPT Fusion SCSI/RAID (Perc 4)";
         case PciSubDevice10000030::SUBDEVICE_10280183: return "LSI Logic 1020/1030";
         case PciSubDevice10000030::SUBDEVICE_1028018A: return "PERC 4/IM";
-        case PciSubDevice10000030::SUBDEVICE_10281010: return "LSI u320 SCSI Controller";
+        case PciSubDevice10000030::SUBDEVICE_10281010: return "LSI U320 SCSI Controller";
         case PciSubDevice10000030::SUBDEVICE_103C12C5: return "Ultra320 SCSI [A7173A]";
         case PciSubDevice10000030::SUBDEVICE_103C1323: return "Core I/O LAN/SCSI Combo [AB314A]";
         case PciSubDevice10000030::SUBDEVICE_103C3108: return "Single Channel Ultra320 SCSI HBA G2";
         case PciSubDevice10000030::SUBDEVICE_103C322A: return "SC11Xe Ultra320 Single Channel PCIe x4 SCSI Host Bus Adapter (412911-B21)";
-        case PciSubDevice10000030::SUBDEVICE_124B1170: return "PMC-USCSi320";
+        case PciSubDevice10000030::SUBDEVICE_124B1170: return "PMC-USCSI320";
         case PciSubDevice10000030::SUBDEVICE_15AD1976: return "LSI Logic Parallel SCSI Controller";
         case PciSubDevice10000030::SUBDEVICE_17341052: return "PRIMERGY BX/RX/TX S2 series onboard SCSI(IME)";
 

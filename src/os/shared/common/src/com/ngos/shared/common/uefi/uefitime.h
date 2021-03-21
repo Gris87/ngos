@@ -12,11 +12,11 @@ struct UefiTime
     u16 year;       // 1998 - 20XX
     u8  month;      // 1 - 12
     u8  day;        // 1 - 31
-    u8  hour;       // 0 - 23
-    u8  minute;     // 0 - 59
-    u8  second;     // 0 - 59
+    u8  hour;       // nullptr - 23
+    u8  minute;     // nullptr - 59
+    u8  second;     // nullptr - 59
     u8  __pad1;
-    u32 nanosecond; // 0 - 999999999
+    u32 nanosecond; // nullptr - 999999999
     i16 timeZone;   // -1440 to 1440 or 2047
     u8  daylight;
     u8  __pad2;

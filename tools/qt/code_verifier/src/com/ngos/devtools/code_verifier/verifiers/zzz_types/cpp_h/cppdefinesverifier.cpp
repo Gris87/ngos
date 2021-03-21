@@ -75,7 +75,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
             if (line == "")
             {
-                if (currentBlock.length() > 0)
+                if (!currentBlock.isEmpty())
                 {
                     currentBlock.clear();
                 }
@@ -127,7 +127,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     !line.startsWith("#endif")
                    )
                 {
-                    bool multiline = currentBlock.length(); // currentBlock.length() > 0
+                    bool multiline = !currentBlock.isEmpty();
 
                     for (qint64 j = 0; j < currentBlock.length(); ++j)
                     {

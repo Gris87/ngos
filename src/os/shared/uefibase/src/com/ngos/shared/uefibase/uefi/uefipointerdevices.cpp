@@ -75,7 +75,7 @@ UefiAbsolutePointerProtocol* UefiPointerDevices::getAbsolutePointer(u8 index)
 {
     // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
-    UEFI_ASSERT(index < sAbsolutePointersCount, "index is invalid", 0);
+    UEFI_ASSERT(index < sAbsolutePointersCount, "index is invalid", nullptr);
 
 
 
@@ -95,7 +95,7 @@ UefiSimplePointerProtocol* UefiPointerDevices::getSimplePointer(u8 index)
 {
     // UEFI_LT((" | index = %u", index)); // Commented to avoid too frequent logs
 
-    UEFI_ASSERT(index < sSimplePointersCount, "index is invalid", 0);
+    UEFI_ASSERT(index < sSimplePointersCount, "index is invalid", nullptr);
 
 
 
@@ -113,7 +113,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, nullptr, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_ABSOLUTE_POINTER_PROTOCOL", pointersSize));
 
@@ -161,10 +161,10 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
         // UEFI_TEST_ASSERT(sAbsolutePointersCount                   == 1,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput       != 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput       != nullptr,                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == nullptr,                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == nullptr,                                                NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == nullptr,                                                NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxX == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxY == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxZ == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
@@ -185,7 +185,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
 
 
-    uefi_handle *pointersHandles = 0;
+    uefi_handle *pointersHandles = nullptr;
 
 
 
@@ -202,7 +202,7 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices(Guid *protocol, u64 si
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, pointersHandles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, pointersHandles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_ABSOLUTE_POINTER_PROTOCOL", pointersHandles));
 
@@ -319,7 +319,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, 0, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &pointersProtocol, nullptr, &pointersSize, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_SIMPLE_POINTER_PROTOCOL", pointersSize));
 
@@ -365,7 +365,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices()
 
 
         // UEFI_TEST_ASSERT(sSimplePointersCount                  == 1,     NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sSimplePointers[0]->waitForInput      != 0,     NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sSimplePointers[0]->waitForInput      != nullptr,     NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionX == 65536, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionY == 65536, NgosStatus::ASSERTION); // Commented due to value variation
         // UEFI_TEST_ASSERT(sSimplePointers[0]->mode->resolutionZ == 65536, NgosStatus::ASSERTION); // Commented due to value variation
@@ -387,7 +387,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
 
 
 
-    uefi_handle *pointersHandles = 0;
+    uefi_handle *pointersHandles = nullptr;
 
 
 
@@ -404,7 +404,7 @@ NgosStatus UefiPointerDevices::initSimplePointerDevices(Guid *protocol, u64 size
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, pointersHandles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, pointersHandles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_SIMPLE_POINTER_PROTOCOL", pointersHandles));
 

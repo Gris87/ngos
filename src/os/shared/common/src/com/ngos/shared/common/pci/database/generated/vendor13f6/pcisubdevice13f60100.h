@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice13F60100 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice13F60100::SUBDEVICE_13F6FFFF: return "CMi8338/C3DX PCI Audio Device";
+        case PciSubDevice13F60100::SUBDEVICE_13F6FFFF: return "CMI8338/C3DX PCI Audio Device";
 
         default: return "Unknown device";
     }

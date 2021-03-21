@@ -20,7 +20,11 @@ enum class PciSubDevice15B31015: u32 // Ignore CppEnumVerifier
     SUBDEVICE_15B30020 = 0x15B30020,
     SUBDEVICE_15B30021 = 0x15B30021,
     SUBDEVICE_15B30025 = 0x15B30025,
-    SUBDEVICE_193D100A = 0x193D100A
+    SUBDEVICE_193D100A = 0x193D100A,
+    SUBDEVICE_193D1023 = 0x193D1023,
+    SUBDEVICE_193D1031 = 0x193D1031,
+    SUBDEVICE_193D1083 = 0x193D1083,
+    SUBDEVICE_193D1084 = 0x193D1084
 };
 
 
@@ -42,6 +46,10 @@ inline const char8* enumToString(PciSubDevice15B31015 subDevice) // TEST: NO
         case PciSubDevice15B31015::SUBDEVICE_15B30021: return "SUBDEVICE_15B30021";
         case PciSubDevice15B31015::SUBDEVICE_15B30025: return "SUBDEVICE_15B30025";
         case PciSubDevice15B31015::SUBDEVICE_193D100A: return "SUBDEVICE_193D100A";
+        case PciSubDevice15B31015::SUBDEVICE_193D1023: return "SUBDEVICE_193D1023";
+        case PciSubDevice15B31015::SUBDEVICE_193D1031: return "SUBDEVICE_193D1031";
+        case PciSubDevice15B31015::SUBDEVICE_193D1083: return "SUBDEVICE_193D1083";
+        case PciSubDevice15B31015::SUBDEVICE_193D1084: return "SUBDEVICE_193D1084";
 
         default: return "UNKNOWN";
     }
@@ -80,6 +88,10 @@ inline const char8* enumToHumanString(PciSubDevice15B31015 subDevice) // TEST: N
         case PciSubDevice15B31015::SUBDEVICE_15B30021: return "MCX4421A-ACQN ConnectX-4 Lx EN OCP, 2x25G";
         case PciSubDevice15B31015::SUBDEVICE_15B30025: return "ConnectX-4 Lx 25 GbE Dual Port SFP28 rNDC";
         case PciSubDevice15B31015::SUBDEVICE_193D100A: return "620F-B";
+        case PciSubDevice15B31015::SUBDEVICE_193D1023: return "NIC-ETH540F-LP-2P";
+        case PciSubDevice15B31015::SUBDEVICE_193D1031: return "NIC-ETH640i-Mb-2x25G";
+        case PciSubDevice15B31015::SUBDEVICE_193D1083: return "NIC-ETH640F-3S-2P";
+        case PciSubDevice15B31015::SUBDEVICE_193D1084: return "NIC-ETH540F-3S-2P";
 
         default: return "Unknown device";
     }

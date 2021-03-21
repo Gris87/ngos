@@ -38,7 +38,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
 
     TEST_CASE("addFixedMapping()");
     {
-        BootParams *params = 0;
+        BootParams *params = nullptr;
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x1000, 0x1000, (void **)&params), NgosStatus::OK);
         TEST_ASSERT_EQUALS((u64)params,                                                0xFFFFFFFFFF200000);
@@ -414,7 +414,7 @@ TEST_CASES(section2, com_ngos_kernel_other_ioremap_ioremap);
 
     TEST_CASE("addFixedMapping()/removeFixedMapping()");
     {
-        void *a = 0;
+        void *a = nullptr;
 
         TEST_ASSERT_EQUALS(IORemap::addFixedMapping(0x00054321, 0x1F00, (void **)&a), NgosStatus::OK);
         TEST_ASSERT_EQUALS((u64)a,                                                    0xFFFFFFFFFF340321);

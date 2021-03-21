@@ -449,7 +449,7 @@ NgosStatus buildTree(InflateCodeType codeType, u16 *lengthBuffer, u32 numberOfCo
     {
         // when done with sub-table, drop back to root table
         if (
-            drop // drop != 0
+            drop != 0
             &&
             (huff & mask) != low
            )
@@ -530,7 +530,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
         if (
             code.operation
             &&
-            !(code.operation & 0xF0) // (code.operation & 0xF0) == 0
+            (code.operation & 0xF0) == 0
            )
         {
             InflateCode tempCode = code;

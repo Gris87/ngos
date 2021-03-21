@@ -128,7 +128,7 @@ NgosStatus IORemap::addFixedMapping(address_t address, u64 size, void **res)
     {
         COMMON_LF(("There is no free slot for fixed mapping"));
 
-        *res = 0;
+        *res = nullptr;
 
         return NgosStatus::FAILED;
     }

@@ -130,7 +130,7 @@ inline const char8* enumToHumanString(PciDevice1057 device) // TEST: NO
         case PciDevice1057::DEVICE_0009: return "MPC8560";
         case PciDevice1057::DEVICE_0012: return "MPC8548 [PowerQUICC III]";
         case PciDevice1057::DEVICE_0100: return "MC145575 [HFC-PCI]";
-        case PciDevice1057::DEVICE_0431: return "KTi829c 100VG";
+        case PciDevice1057::DEVICE_0431: return "KTI829c 100VG";
         case PciDevice1057::DEVICE_1073: return "Nokia N770";
         case PciDevice1057::DEVICE_1219: return "Nokia N800";
         case PciDevice1057::DEVICE_1801: return "DSP56301 Digital Signal Processor";

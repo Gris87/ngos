@@ -69,8 +69,8 @@ void* memmove(void *dest, const void *src, i64 length)
 {
     COMMON_LT((" | dest = 0x%p, src = 0x%p, length = %d", dest, src, length));
 
-    COMMON_ASSERT(dest, "dest is null", 0);
-    COMMON_ASSERT(src,  "src is null",  0);
+    COMMON_ASSERT(dest, "dest is null", nullptr);
+    COMMON_ASSERT(src,  "src is null",  nullptr);
 
 
 

@@ -116,7 +116,7 @@ NgosStatus exitBootServices(BootParams *params)
 
 
 
-    UefiMemoryDescriptor *memoryMap         = 0;
+    UefiMemoryDescriptor *memoryMap         = nullptr;
     u64                   memoryMapSize     = 0;
     u64                   descriptorSize    = 0;
     u32                   descriptorVersion = 0;
@@ -163,7 +163,7 @@ NgosStatus exitBootServices(BootParams *params)
 
     u64             numberOfDescriptors = (memoryMapSize / descriptorSize) + 5; // Let's add few
     u64             size                = numberOfDescriptors * sizeof(MemoryMapEntry);
-    MemoryMapEntry *memoryMapEntries    = 0;
+    MemoryMapEntry *memoryMapEntries    = nullptr;
 
 
 

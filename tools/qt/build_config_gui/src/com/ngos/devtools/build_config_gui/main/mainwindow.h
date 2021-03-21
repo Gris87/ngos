@@ -26,7 +26,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0); // TEST: NO
+    explicit MainWindow(QWidget *parent = nullptr); // TEST: NO
     ~MainWindow(); // TEST: NO
 
     void loadBuildConfigFile(); // TEST: NO

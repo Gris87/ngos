@@ -16,6 +16,7 @@ enum class PciSubDevice10024398: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10192120 = 0x10192120,
     SUBDEVICE_104382EF = 0x104382EF,
     SUBDEVICE_105B0E13 = 0x105B0E13,
+    SUBDEVICE_14627596 = 0x14627596,
     SUBDEVICE_15D9A811 = 0x15D9A811
 };
 
@@ -33,6 +34,7 @@ inline const char8* enumToString(PciSubDevice10024398 subDevice) // TEST: NO
         case PciSubDevice10024398::SUBDEVICE_10192120: return "SUBDEVICE_10192120";
         case PciSubDevice10024398::SUBDEVICE_104382EF: return "SUBDEVICE_104382EF";
         case PciSubDevice10024398::SUBDEVICE_105B0E13: return "SUBDEVICE_105B0E13";
+        case PciSubDevice10024398::SUBDEVICE_14627596: return "SUBDEVICE_14627596";
         case PciSubDevice10024398::SUBDEVICE_15D9A811: return "SUBDEVICE_15D9A811";
 
         default: return "UNKNOWN";
@@ -67,6 +69,7 @@ inline const char8* enumToHumanString(PciSubDevice10024398 subDevice) // TEST: N
         case PciSubDevice10024398::SUBDEVICE_10192120: return "A785GM-M";
         case PciSubDevice10024398::SUBDEVICE_104382EF: return "M3A78-EH Motherboard";
         case PciSubDevice10024398::SUBDEVICE_105B0E13: return "N15235/A74MX mainboard / AMD SB700";
+        case PciSubDevice10024398::SUBDEVICE_14627596: return "760GM-E51(MS-7596) Motherboard";
         case PciSubDevice10024398::SUBDEVICE_15D9A811: return "H8DGU";
 
         default: return "Unknown device";

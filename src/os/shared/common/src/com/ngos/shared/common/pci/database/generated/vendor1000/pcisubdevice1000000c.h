@@ -64,8 +64,8 @@ inline const char8* enumToHumanString(PciSubDevice1000000C subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1000000C::SUBDEVICE_10001010: return "LSi8951U PCI to Ultra2 SCSI host adapter";
-        case PciSubDevice1000000C::SUBDEVICE_10001020: return "LSi8952U PCI to Ultra2 SCSI host adapter";
+        case PciSubDevice1000000C::SUBDEVICE_10001010: return "LSI8951U PCI to Ultra2 SCSI host adapter";
+        case PciSubDevice1000000C::SUBDEVICE_10001020: return "LSI8952U PCI to Ultra2 SCSI host adapter";
         case PciSubDevice1000000C::SUBDEVICE_1DE13906: return "DC-390U2B SCSI adapter";
         case PciSubDevice1000000C::SUBDEVICE_1DE13907: return "DC-390U2W";
 

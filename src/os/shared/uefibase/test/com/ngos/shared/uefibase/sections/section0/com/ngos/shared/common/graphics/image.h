@@ -21,23 +21,23 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
         Image temp(10, 20, true, true);
         Image temp2(temp);
 
-        TEST_ASSERT_EQUALS(temp.mNinePatch,     0);
+        TEST_ASSERT_EQUALS(temp.mNinePatch,     nullptr);
         TEST_ASSERT_EQUALS(temp.mWidth,         10);
         TEST_ASSERT_EQUALS(temp.mHeight,        20);
         TEST_ASSERT_EQUALS(temp.mBytesPerPixel, 4);
         TEST_ASSERT_EQUALS(temp.mIsOpaque,      true);
         TEST_ASSERT_EQUALS(temp.mStride,        40);
         TEST_ASSERT_EQUALS(temp.mBufferSize,    800);
-        TEST_ASSERT_NOT_EQUALS(temp.mBuffer,    0);
+        TEST_ASSERT_NOT_EQUALS(temp.mBuffer,    nullptr);
 
-        TEST_ASSERT_EQUALS(temp2.mNinePatch,     0);
+        TEST_ASSERT_EQUALS(temp2.mNinePatch,     nullptr);
         TEST_ASSERT_EQUALS(temp2.mWidth,         10);
         TEST_ASSERT_EQUALS(temp2.mHeight,        20);
         TEST_ASSERT_EQUALS(temp2.mBytesPerPixel, 4);
         TEST_ASSERT_EQUALS(temp2.mIsOpaque,      true);
         TEST_ASSERT_EQUALS(temp2.mStride,        40);
         TEST_ASSERT_EQUALS(temp2.mBufferSize,    800);
-        TEST_ASSERT_NOT_EQUALS(temp2.mBuffer,    0);
+        TEST_ASSERT_NOT_EQUALS(temp2.mBuffer,    nullptr);
 
         TEST_ASSERT_NOT_EQUALS(temp2.mBuffer, temp.mBuffer);
     }
@@ -104,9 +104,9 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
     {
         Image temp(10, 20, true, true);
 
-        TEST_ASSERT_EQUALS(temp.mNinePatch,        0);
+        TEST_ASSERT_EQUALS(temp.mNinePatch,        nullptr);
         TEST_ASSERT_EQUALS(temp.createNinePatch(), NgosStatus::OK);
-        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,    0);
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,    nullptr);
 
         TEST_ASSERT_EQUALS(temp.mNinePatch->addStretchRangeX(StretchRange(5, 10)), NgosStatus::OK);
         TEST_ASSERT_EQUALS(temp.mNinePatch->setPaddingLeft(20),                    NgosStatus::OK);
@@ -115,12 +115,12 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
 
         Image temp2(temp);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead,          0);
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead,          nullptr);
         TEST_ASSERT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead->mData.mFrom, 5);
         TEST_ASSERT_EQUALS(temp.mNinePatch->mStretchRangesX.mHead->mData.mTo,   10);
         TEST_ASSERT_EQUALS(temp.mNinePatch->mPaddingLeft,                       20);
 
-        TEST_ASSERT_NOT_EQUALS(temp2.mNinePatch, 0);
+        TEST_ASSERT_NOT_EQUALS(temp2.mNinePatch, nullptr);
         TEST_ASSERT_NOT_EQUALS(temp2.mNinePatch, temp.mNinePatch);
 
         TEST_ASSERT_EQUALS(temp2.mNinePatch->mStretchRangesX.mHead->mData.mFrom, 5);
@@ -147,13 +147,13 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
     {
         Image temp(10, 20, true, true);
 
-        TEST_ASSERT_EQUALS(temp.mNinePatch,     0);
-        TEST_ASSERT_EQUALS(temp.getNinePatch(), 0);
+        TEST_ASSERT_EQUALS(temp.mNinePatch,     nullptr);
+        TEST_ASSERT_EQUALS(temp.getNinePatch(), nullptr);
 
         TEST_ASSERT_EQUALS(temp.createNinePatch(), NgosStatus::OK);
 
-        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,     0);
-        TEST_ASSERT_NOT_EQUALS(temp.getNinePatch(), 0);
+        TEST_ASSERT_NOT_EQUALS(temp.mNinePatch,     nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp.getNinePatch(), nullptr);
     }
     TEST_CASE_END();
 
@@ -248,8 +248,8 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
         Image temp(10, 20, true, true);
         Image temp2(30, 40, false, true);
 
-        TEST_ASSERT_NOT_EQUALS(temp.getBuffer(),  0);
-        TEST_ASSERT_NOT_EQUALS(temp2.getBuffer(), 0);
+        TEST_ASSERT_NOT_EQUALS(temp.getBuffer(),  nullptr);
+        TEST_ASSERT_NOT_EQUALS(temp2.getBuffer(), nullptr);
         TEST_ASSERT_NOT_EQUALS(temp.getBuffer(),  temp2.getBuffer());
     }
     TEST_CASE_END();
@@ -260,7 +260,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
     {
         Image temp(10, 20, false, true);
 
-        TEST_ASSERT_NOT_EQUALS(temp.getRgbBuffer(), 0);
+        TEST_ASSERT_NOT_EQUALS(temp.getRgbBuffer(), nullptr);
         TEST_ASSERT_EQUALS((u8 *)temp.getRgbBuffer(), temp.getBuffer());
     }
     TEST_CASE_END();
@@ -271,7 +271,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_image);
     {
         Image temp(10, 20, true, true);
 
-        TEST_ASSERT_NOT_EQUALS(temp.getRgbaBuffer(), 0);
+        TEST_ASSERT_NOT_EQUALS(temp.getRgbaBuffer(), nullptr);
         TEST_ASSERT_EQUALS((u8 *)temp.getRgbaBuffer(), temp.getBuffer());
     }
     TEST_CASE_END();

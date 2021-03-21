@@ -257,14 +257,14 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
             EARLY_ASSERT(compressedSize > 0
                         &&
                         (
-                            !blockCompressedSize // blockCompressedSize == 0
+                            blockCompressedSize == 0
                             ||
                             compressedSize == blockCompressedSize
                         ),                                                       "Compressed size is invalid",   NgosStatus::ASSERTION);
             EARLY_ASSERT(uncompressedSize > 0
                         &&
                         (
-                            !blockUncompressedSize // blockUncompressedSize == 0
+                            blockUncompressedSize == 0
                             ||
                             uncompressedSize == blockUncompressedSize
                         ),                                                       "Uncompressed size is invalid", NgosStatus::ASSERTION);

@@ -17,7 +17,7 @@ typedef NgosStatus (*tree_widget_node_select_event_handler) (TreeNodeWidget *nod
 class TreeWidget: public Widget
 {
 public:
-    TreeWidget(Image *backgroundImage, Widget *parent = 0); // TEST: NO
+    TreeWidget(Image *backgroundImage, Widget *parent = nullptr); // TEST: NO
     ~TreeWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

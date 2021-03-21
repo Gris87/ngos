@@ -13,6 +13,7 @@
 enum class PciSubDevice80862A42: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_102802AA = 0x102802AA,
     SUBDEVICE_17AA2112 = 0x17AA2112,
     SUBDEVICE_E4BFCC4D = 0xE4BFCC4D
 };
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice80862A42 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80862A42::NONE:               return "NONE";
+        case PciSubDevice80862A42::SUBDEVICE_102802AA: return "SUBDEVICE_102802AA";
         case PciSubDevice80862A42::SUBDEVICE_17AA2112: return "SUBDEVICE_17AA2112";
         case PciSubDevice80862A42::SUBDEVICE_E4BFCC4D: return "SUBDEVICE_E4BFCC4D";
 
@@ -60,6 +62,7 @@ inline const char8* enumToHumanString(PciSubDevice80862A42 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80862A42::SUBDEVICE_102802AA: return "Dell Inspiron 1545";
         case PciSubDevice80862A42::SUBDEVICE_17AA2112: return "ThinkPad T400";
         case PciSubDevice80862A42::SUBDEVICE_E4BFCC4D: return "CCM-BOOGIE";
 

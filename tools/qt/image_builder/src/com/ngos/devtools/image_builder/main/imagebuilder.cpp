@@ -37,7 +37,7 @@ ImageBuilder::ImageBuilder(const QString &bootElfPath, const QString &configureE
     , mKernelElfObject()
     , mKernelElf()
     , mRelocSection(RELOC_SECTION_SIZE, (char)0)
-    , mPEHeader(0)
+    , mPEHeader(nullptr)
     , mBootStart(-1)
     , mBootEnd(-1)
     , mRelocStart(-1)

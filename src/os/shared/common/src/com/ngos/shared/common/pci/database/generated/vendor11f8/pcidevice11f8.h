@@ -33,7 +33,8 @@ enum class PciDevice11F8: u16 // Ignore CppEnumVerifier
     DEVICE_8072 = 0x8072,
     DEVICE_8073 = 0x8073,
     DEVICE_8531 = 0x8531,
-    DEVICE_8546 = 0x8546
+    DEVICE_8546 = 0x8546,
+    DEVICE_8562 = 0x8562
 };
 
 
@@ -67,6 +68,7 @@ inline const char8* enumToString(PciDevice11F8 device) // TEST: NO
         case PciDevice11F8::DEVICE_8073: return "DEVICE_8073";
         case PciDevice11F8::DEVICE_8531: return "DEVICE_8531";
         case PciDevice11F8::DEVICE_8546: return "DEVICE_8546";
+        case PciDevice11F8::DEVICE_8562: return "DEVICE_8562";
 
         default: return "UNKNOWN";
     }
@@ -117,6 +119,7 @@ inline const char8* enumToHumanString(PciDevice11F8 device) // TEST: NO
         case PciDevice11F8::DEVICE_8073: return "PM8073 Tachyon SPCve 12G 16-port SAS/SATA controller";
         case PciDevice11F8::DEVICE_8531: return "PM8531 PFX 24xG3 Fanout PCIe Switches";
         case PciDevice11F8::DEVICE_8546: return "PM8546 B-FEIP PSX 96xG3 PCIe Storage Switch";
+        case PciDevice11F8::DEVICE_8562: return "PM8562 Switchtec PFX-L 32xG3 Fanout-Lite PCIe Gen3 Switch";
 
         default: return "Unknown device";
     }
@@ -152,6 +155,7 @@ inline const char8* enumToHumanString(PciDevice11F8 device, u16 subsystemVendorI
         case PciDevice11F8::DEVICE_8073: return "Unknown device";
         case PciDevice11F8::DEVICE_8531: return "Unknown device";
         case PciDevice11F8::DEVICE_8546: return "Unknown device";
+        case PciDevice11F8::DEVICE_8562: return "Unknown device";
 
         default: return "Unknown device";
     }

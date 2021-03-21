@@ -61,7 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice10140180 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10140180::SUBDEVICE_10140241: return "iSeries 2757 DASD IOA";
-        case PciSubDevice10140180::SUBDEVICE_10140264: return "Quad Channel PCI-X u320 SCSI RAID Adapter (2780)";
+        case PciSubDevice10140180::SUBDEVICE_10140264: return "Quad Channel PCI-X U320 SCSI RAID Adapter (2780)";
 
         default: return "Unknown device";
     }

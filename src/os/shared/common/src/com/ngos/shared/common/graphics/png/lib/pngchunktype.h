@@ -43,7 +43,7 @@ inline const char8* enumToString(PngChunkType type) // TEST: NO
     static char8 res[5];
 
     *(u32 *)res = (u32)type;
-    COMMON_TEST_ASSERT(res[4] == 0, 0);
+    COMMON_TEST_ASSERT(res[4] == 0, nullptr);
 
     return res;
 }

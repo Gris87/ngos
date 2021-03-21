@@ -20,6 +20,7 @@ enum class PciSubDevice80861581: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10590170 = 0x10590170,
     SUBDEVICE_15900000 = 0x15900000,
     SUBDEVICE_159000F8 = 0x159000F8,
+    SUBDEVICE_193D100E = 0x193D100E,
     SUBDEVICE_80860000 = 0x80860000
 };
 
@@ -41,6 +42,7 @@ inline const char8* enumToString(PciSubDevice80861581 subDevice) // TEST: NO
         case PciSubDevice80861581::SUBDEVICE_10590170: return "SUBDEVICE_10590170";
         case PciSubDevice80861581::SUBDEVICE_15900000: return "SUBDEVICE_15900000";
         case PciSubDevice80861581::SUBDEVICE_159000F8: return "SUBDEVICE_159000F8";
+        case PciSubDevice80861581::SUBDEVICE_193D100E: return "SUBDEVICE_193D100E";
         case PciSubDevice80861581::SUBDEVICE_80860000: return "SUBDEVICE_80860000";
 
         default: return "UNKNOWN";
@@ -79,6 +81,7 @@ inline const char8* enumToHumanString(PciSubDevice80861581 subDevice) // TEST: N
         case PciSubDevice80861581::SUBDEVICE_10590170: return "RD-01213 10GbE interface";
         case PciSubDevice80861581::SUBDEVICE_15900000: return "Ethernet 2-port 563i Adapter";
         case PciSubDevice80861581::SUBDEVICE_159000F8: return "Ethernet 2-port 563i Adapter";
+        case PciSubDevice80861581::SUBDEVICE_193D100E: return "NIC-ETH561i-Mb-4x10G";
         case PciSubDevice80861581::SUBDEVICE_80860000: return "Ethernet Converged Network Adapter XL710-Q2";
 
         default: return "Unknown device";

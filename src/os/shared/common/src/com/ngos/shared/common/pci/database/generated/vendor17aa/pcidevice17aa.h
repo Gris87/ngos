@@ -13,6 +13,7 @@
 enum class PciDevice17AA: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_3181 = 0x3181,
     DEVICE_402B = 0x402B
 };
 
@@ -27,6 +28,7 @@ inline const char8* enumToString(PciDevice17AA device) // TEST: NO
     switch (device)
     {
         case PciDevice17AA::NONE:        return "NONE";
+        case PciDevice17AA::DEVICE_3181: return "DEVICE_3181";
         case PciDevice17AA::DEVICE_402B: return "DEVICE_402B";
 
         default: return "UNKNOWN";
@@ -58,6 +60,7 @@ inline const char8* enumToHumanString(PciDevice17AA device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice17AA::DEVICE_3181: return "ThinkCentre M75n IoT";
         case PciDevice17AA::DEVICE_402B: return "Intel 82599ES 10Gb 2-port Server Adapter X520-2";
 
         default: return "Unknown device";

@@ -494,7 +494,7 @@ inline const char8* enumToHumanString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_00AC: return "SAS3416 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
         case PciDevice1000::DEVICE_00AE: return "SAS3508 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
         case PciDevice1000::DEVICE_00AF: return "SAS3408 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
-        case PciDevice1000::DEVICE_00B2: return "PEX880xx PCIe Gen 4 Switch SES management endpoint";
+        case PciDevice1000::DEVICE_00B2: return "PCIe Switch management endpoint";
         case PciDevice1000::DEVICE_00BE: return "SAS3504 Fusion-MPT Tri-Mode RAID On Chip (ROC)";
         case PciDevice1000::DEVICE_00BF: return "SAS3404 Fusion-MPT Tri-Mode I/O Controller Chip (IOC)";
         case PciDevice1000::DEVICE_00C0: return "SAS3324 PCI-Express Fusion-MPT SAS-3";

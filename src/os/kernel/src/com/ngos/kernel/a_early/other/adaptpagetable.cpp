@@ -163,11 +163,11 @@ u8* allocateVideoRamPage(u64 videoRamPagetablePages)
 {
     EARLY_LT((" | videoRamPagetablePages = 0x%p", videoRamPagetablePages));
 
-    EARLY_ASSERT(videoRamPagetablePages, "videoRamPagetablePages is null", 0);
+    EARLY_ASSERT(videoRamPagetablePages, "videoRamPagetablePages is null", nullptr);
 
 
 
-    EARLY_TEST_ASSERT(currentVideoRamPageIndex < EARLY_VIDEO_RAM_PAGE_TABLES, 0);
+    EARLY_TEST_ASSERT(currentVideoRamPageIndex < EARLY_VIDEO_RAM_PAGE_TABLES, nullptr);
     u8 *page = (u8 *)(videoRamPagetablePages + currentVideoRamPageIndex * PAGE_SIZE);
     ++currentVideoRamPageIndex;
 
@@ -267,11 +267,11 @@ u8* allocateDynamicPage(u64 dynamicPagetablePages)
 {
     EARLY_LT((" | dynamicPagetablePages = 0x%p", dynamicPagetablePages));
 
-    EARLY_ASSERT(dynamicPagetablePages, "dynamicPagetablePages is null", 0);
+    EARLY_ASSERT(dynamicPagetablePages, "dynamicPagetablePages is null", nullptr);
 
 
 
-    EARLY_TEST_ASSERT(currentAdaptDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, 0);
+    EARLY_TEST_ASSERT(currentAdaptDynamicPageIndex < EARLY_DYNAMIC_PAGE_TABLES, nullptr);
     u8 *page = (u8 *)(dynamicPagetablePages + currentAdaptDynamicPageIndex * PAGE_SIZE);
     ++currentAdaptDynamicPageIndex;
 

@@ -12,7 +12,7 @@
 class TableHeaderWidget: public Widget
 {
 public:
-    TableHeaderWidget(Image *image, const char8* text, Widget *parent = 0); // TEST: NO
+    TableHeaderWidget(Image *image, const char8* text, Widget *parent = nullptr); // TEST: NO
     ~TableHeaderWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

@@ -338,7 +338,7 @@ inline bool rcIsFinished(const LzmaRcDecoder *rc)
 
 
 
-    return !rc->code; // rc->code == 0
+    return rc->code == 0;
 }
 
 // Read the next input byte if needed.
@@ -589,11 +589,11 @@ inline u32 lzmaGetDistanceState(u32 length)
 }
 
 // Get pointer to Literal coder probability array.
-u16 *lzmaLiteralProbs(XzLzma2Decoder *decoder)
+u16* lzmaLiteralProbs(XzLzma2Decoder *decoder)
 {
     // EARLY_LT((" | decoder = 0x%p", decoder)); // Commented to avoid too frequent logs
 
-    EARLY_ASSERT(decoder, "decoder is null", 0);
+    EARLY_ASSERT(decoder, "decoder is null", nullptr);
 
 
 

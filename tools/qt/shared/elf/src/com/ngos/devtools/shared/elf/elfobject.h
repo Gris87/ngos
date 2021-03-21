@@ -19,7 +19,7 @@ class ElfObject
 public:
     ElfObject(); // TEST: NO
 
-    bool read(const QString &path, bool *isRunning = 0); // TEST: NO
+    bool read(const QString &path, bool *isRunning = nullptr); // TEST: NO
 
     const QByteArray& getProgramBytes() const; // TEST: NO
     quint64 getFileSize() const; // TEST: NO

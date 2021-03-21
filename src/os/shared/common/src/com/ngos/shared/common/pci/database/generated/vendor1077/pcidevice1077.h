@@ -17,10 +17,12 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772031.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772071.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772081.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772089.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772100.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772200.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772261.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772281.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772289.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772312.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772422.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1077/pcisubdevice10772432.h>
@@ -59,10 +61,12 @@ enum class PciDevice1077: u16 // Ignore CppEnumVerifier
     DEVICE_2031 = 0x2031,
     DEVICE_2071 = 0x2071,
     DEVICE_2081 = 0x2081,
+    DEVICE_2089 = 0x2089,
     DEVICE_2100 = 0x2100,
     DEVICE_2200 = 0x2200,
     DEVICE_2261 = 0x2261,
     DEVICE_2281 = 0x2281,
+    DEVICE_2289 = 0x2289,
     DEVICE_2300 = 0x2300,
     DEVICE_2312 = 0x2312,
     DEVICE_2322 = 0x2322,
@@ -126,10 +130,12 @@ inline const char8* enumToString(PciDevice1077 device) // TEST: NO
         case PciDevice1077::DEVICE_2031: return "DEVICE_2031";
         case PciDevice1077::DEVICE_2071: return "DEVICE_2071";
         case PciDevice1077::DEVICE_2081: return "DEVICE_2081";
+        case PciDevice1077::DEVICE_2089: return "DEVICE_2089";
         case PciDevice1077::DEVICE_2100: return "DEVICE_2100";
         case PciDevice1077::DEVICE_2200: return "DEVICE_2200";
         case PciDevice1077::DEVICE_2261: return "DEVICE_2261";
         case PciDevice1077::DEVICE_2281: return "DEVICE_2281";
+        case PciDevice1077::DEVICE_2289: return "DEVICE_2289";
         case PciDevice1077::DEVICE_2300: return "DEVICE_2300";
         case PciDevice1077::DEVICE_2312: return "DEVICE_2312";
         case PciDevice1077::DEVICE_2322: return "DEVICE_2322";
@@ -210,10 +216,12 @@ inline const char8* enumToHumanString(PciDevice1077 device) // TEST: NO
         case PciDevice1077::DEVICE_2031: return "ISP8324-based 16Gb Fibre Channel to PCI Express Adapter";
         case PciDevice1077::DEVICE_2071: return "ISP2714-based 16/32Gb Fibre Channel to PCIe Adapter";
         case PciDevice1077::DEVICE_2081: return "ISP2814-based 64/32G Fibre Channel to PCIe Controller";
+        case PciDevice1077::DEVICE_2089: return "ISP2854-based 64/32G Fibre Channel to PCIe Controller with StorCryption";
         case PciDevice1077::DEVICE_2100: return "QLA2100 64-bit Fibre Channel Adapter";
         case PciDevice1077::DEVICE_2200: return "QLA2200 64-bit Fibre Channel Adapter";
         case PciDevice1077::DEVICE_2261: return "ISP2722-based 16/32Gb Fibre Channel to PCIe Adapter";
         case PciDevice1077::DEVICE_2281: return "ISP2812-based 64/32G Fibre Channel to PCIe Controller";
+        case PciDevice1077::DEVICE_2289: return "ISP2852-based 64/32G Fibre Channel to PCIe Controller with StorCryption";
         case PciDevice1077::DEVICE_2300: return "QLA2300 64-bit Fibre Channel Adapter";
         case PciDevice1077::DEVICE_2312: return "ISP2312-based 2Gb Fibre Channel to PCI-X HBA";
         case PciDevice1077::DEVICE_2322: return "ISP2322-based 2Gb Fibre Channel to PCI-X HBA";
@@ -279,10 +287,12 @@ inline const char8* enumToHumanString(PciDevice1077 device, u16 subsystemVendorI
         case PciDevice1077::DEVICE_2031: return enumToHumanString((PciSubDevice10772031)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2071: return enumToHumanString((PciSubDevice10772071)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2081: return enumToHumanString((PciSubDevice10772081)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1077::DEVICE_2089: return enumToHumanString((PciSubDevice10772089)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2100: return enumToHumanString((PciSubDevice10772100)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2200: return enumToHumanString((PciSubDevice10772200)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2261: return enumToHumanString((PciSubDevice10772261)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2281: return enumToHumanString((PciSubDevice10772281)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1077::DEVICE_2289: return enumToHumanString((PciSubDevice10772289)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2300: return "Unknown device";
         case PciDevice1077::DEVICE_2312: return enumToHumanString((PciSubDevice10772312)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1077::DEVICE_2322: return "Unknown device";

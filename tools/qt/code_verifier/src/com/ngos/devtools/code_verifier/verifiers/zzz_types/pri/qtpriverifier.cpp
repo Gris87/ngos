@@ -150,7 +150,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
 
 
-    if (block.length() > 0)
+    if (!block.isEmpty())
     {
         for (qint64 i = 0; i < block.length(); ++i)
         {

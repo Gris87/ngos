@@ -12,7 +12,7 @@ class TrackingCheckBox: public QCheckBox
     Q_OBJECT
 
 public:
-    explicit TrackingCheckBox(const QString &text, QWidget *parent = 0); // TEST: NO
+    explicit TrackingCheckBox(const QString &text, QWidget *parent = nullptr); // TEST: NO
 
 protected:
     void focusInEvent(QFocusEvent *event) override; // TEST: NO

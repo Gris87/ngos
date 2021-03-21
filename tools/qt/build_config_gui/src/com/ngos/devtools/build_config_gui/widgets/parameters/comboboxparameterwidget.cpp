@@ -9,7 +9,7 @@
 
 ComboboxParameterWidget::ComboboxParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
     : ParameterWidget(id, metaInformation, options, parent)
-    , mComboBox(0)
+    , mComboBox(nullptr)
     , mOptionsDescriptions()
     , mOptionsList()
 {

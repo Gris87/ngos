@@ -13,7 +13,10 @@
 enum class PciSubDevice80880101: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_80880201 = 0x80880201
+    SUBDEVICE_80880201 = 0x80880201,
+    SUBDEVICE_80884201 = 0x80884201,
+    SUBDEVICE_80888201 = 0x80888201,
+    SUBDEVICE_8088C201 = 0x8088C201
 };
 
 
@@ -28,6 +31,9 @@ inline const char8* enumToString(PciSubDevice80880101 subDevice) // TEST: NO
     {
         case PciSubDevice80880101::NONE:               return "NONE";
         case PciSubDevice80880101::SUBDEVICE_80880201: return "SUBDEVICE_80880201";
+        case PciSubDevice80880101::SUBDEVICE_80884201: return "SUBDEVICE_80884201";
+        case PciSubDevice80880101::SUBDEVICE_80888201: return "SUBDEVICE_80888201";
+        case PciSubDevice80880101::SUBDEVICE_8088C201: return "SUBDEVICE_8088C201";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +65,9 @@ inline const char8* enumToHumanString(PciSubDevice80880101 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice80880101::SUBDEVICE_80880201: return "Dual-Port Ethernet Network Adaptor SF200T";
+        case PciSubDevice80880101::SUBDEVICE_80884201: return "Dual-Port Ethernet Network Adaptor SF200T (WOL)";
+        case PciSubDevice80880101::SUBDEVICE_80888201: return "Dual-Port Ethernet Network Adaptor SF200T (NCSI)";
+        case PciSubDevice80880101::SUBDEVICE_8088C201: return "Dual-Port Ethernet Network Adaptor SF200T (WOL, NCSI)";
 
         default: return "Unknown device";
     }

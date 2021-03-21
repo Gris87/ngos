@@ -16,7 +16,8 @@ enum class PciSubDevice10772031: u32 // Ignore CppEnumVerifier
     SUBDEVICE_103C17E7 = 0x103C17E7,
     SUBDEVICE_103C17E8 = 0x103C17E8,
     SUBDEVICE_103C1939 = 0x103C1939,
-    SUBDEVICE_103C8002 = 0x103C8002
+    SUBDEVICE_103C8002 = 0x103C8002,
+    SUBDEVICE_10770241 = 0x10770241
 };
 
 
@@ -34,6 +35,7 @@ inline const char8* enumToString(PciSubDevice10772031 subDevice) // TEST: NO
         case PciSubDevice10772031::SUBDEVICE_103C17E8: return "SUBDEVICE_103C17E8";
         case PciSubDevice10772031::SUBDEVICE_103C1939: return "SUBDEVICE_103C1939";
         case PciSubDevice10772031::SUBDEVICE_103C8002: return "SUBDEVICE_103C8002";
+        case PciSubDevice10772031::SUBDEVICE_10770241: return "SUBDEVICE_10770241";
 
         default: return "UNKNOWN";
     }
@@ -68,6 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice10772031 subDevice) // TEST: N
         case PciSubDevice10772031::SUBDEVICE_103C17E8: return "SN1000Q 16Gb Dual Port Fibre Channel Adapter";
         case PciSubDevice10772031::SUBDEVICE_103C1939: return "QMH2672 16Gb Dual Port Fibre Channel Adapter";
         case PciSubDevice10772031::SUBDEVICE_103C8002: return "3830C 16G Fibre Channel Host Bus Adapter";
+        case PciSubDevice10772031::SUBDEVICE_10770241: return "QLE2670 16Gb Single Port Fibre Channel Adapter";
 
         default: return "Unknown device";
     }

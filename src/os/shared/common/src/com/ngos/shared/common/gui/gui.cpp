@@ -571,7 +571,7 @@ bool GUI::isUpdatesEnabled()
 
 
 
-    return !sUpdatesLocks; // sUpdatesLocks == 0
+    return !sUpdatesLocks; // sUpdatesLocks == nullptr
 }
 
 NgosStatus GUI::setHoveredWidget(Widget *widget)

@@ -71,7 +71,7 @@ inline const char8* enumToHumanString(PciDevice12AB device) // TEST: NO
     switch (device)
     {
         case PciDevice12AB::DEVICE_0000: return "MPG160/Kuroutoshikou ITVC15-STVLP";
-        case PciDevice12AB::DEVICE_0002: return "Au8830 [Vortex2] Based Sound Card With A3D Support";
+        case PciDevice12AB::DEVICE_0002: return "AU8830 [Vortex2] Based Sound Card With A3D Support";
         case PciDevice12AB::DEVICE_0003: return "T507 (DVB-T) TV tuner/capture device";
         case PciDevice12AB::DEVICE_2300: return "Club-3D Zap TV2100";
         case PciDevice12AB::DEVICE_3000: return "MPG-200C PCI DVD Decoder Card";

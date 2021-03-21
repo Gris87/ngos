@@ -13,7 +13,7 @@
 class TableRowWidget: public Widget
 {
 public:
-    TableRowWidget(Widget *parent = 0); // TEST: NO
+    TableRowWidget(Widget *parent = nullptr); // TEST: NO
     ~TableRowWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

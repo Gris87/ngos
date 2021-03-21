@@ -654,7 +654,7 @@ NgosStatus TableWidget::setColumnCount(i64 columns)
 
 
 
-    COMMON_TEST_ASSERT(mColumnWidth.getSize() == 0, NgosStatus::ASSERTION);
+    COMMON_TEST_ASSERT(mColumnWidth.isEmpty(), NgosStatus::ASSERTION);
 
 
 

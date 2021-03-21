@@ -20,6 +20,7 @@ enum class PciDevice106B: u16 // Ignore CppEnumVerifier
     DEVICE_0003 = 0x0003,
     DEVICE_0004 = 0x0004,
     DEVICE_0007 = 0x0007,
+    DEVICE_000B = 0x000B,
     DEVICE_000C = 0x000C,
     DEVICE_000E = 0x000E,
     DEVICE_0010 = 0x0010,
@@ -107,6 +108,7 @@ inline const char8* enumToString(PciDevice106B device) // TEST: NO
         case PciDevice106B::DEVICE_0003: return "DEVICE_0003";
         case PciDevice106B::DEVICE_0004: return "DEVICE_0004";
         case PciDevice106B::DEVICE_0007: return "DEVICE_0007";
+        case PciDevice106B::DEVICE_000B: return "DEVICE_000B";
         case PciDevice106B::DEVICE_000C: return "DEVICE_000C";
         case PciDevice106B::DEVICE_000E: return "DEVICE_000E";
         case PciDevice106B::DEVICE_0010: return "DEVICE_0010";
@@ -211,6 +213,7 @@ inline const char8* enumToHumanString(PciDevice106B device) // TEST: NO
         case PciDevice106B::DEVICE_0003: return "Control Video";
         case PciDevice106B::DEVICE_0004: return "PlanB Video-In";
         case PciDevice106B::DEVICE_0007: return "O'Hare I/O";
+        case PciDevice106B::DEVICE_000B: return "Apple Camera";
         case PciDevice106B::DEVICE_000C: return "DOS on Mac";
         case PciDevice106B::DEVICE_000E: return "Hydra Mac I/O";
         case PciDevice106B::DEVICE_0010: return "Heathrow Mac I/O";
@@ -300,6 +303,7 @@ inline const char8* enumToHumanString(PciDevice106B device, u16 subsystemVendorI
         case PciDevice106B::DEVICE_0003: return "Unknown device";
         case PciDevice106B::DEVICE_0004: return "Unknown device";
         case PciDevice106B::DEVICE_0007: return "Unknown device";
+        case PciDevice106B::DEVICE_000B: return "Unknown device";
         case PciDevice106B::DEVICE_000C: return "Unknown device";
         case PciDevice106B::DEVICE_000E: return "Unknown device";
         case PciDevice106B::DEVICE_0010: return "Unknown device";

@@ -91,7 +91,7 @@ NgosStatus earlyInitialization(u64 kernelLocation)
 
 
 #ifdef BUILD_TARGET_CONFIGURE // Defined in pro file
-    const char8 *wantedCpuFlag = 0;
+    const char8 *wantedCpuFlag = nullptr;
 
     if (CPU::check(&wantedCpuFlag) != NgosStatus::OK)
     {

@@ -70,7 +70,7 @@ inline const char8* enumToHumanString(PciDevice12EB device) // TEST: NO
     {
         case PciDevice12EB::DEVICE_0001: return "Vortex 1";
         case PciDevice12EB::DEVICE_0002: return "Vortex 2";
-        case PciDevice12EB::DEVICE_0003: return "Au8810 Vortex Digital Audio Processor";
+        case PciDevice12EB::DEVICE_0003: return "AU8810 Vortex Digital Audio Processor";
         case PciDevice12EB::DEVICE_8803: return "Vortex 56k Software Modem";
 
         default: return "Unknown device";

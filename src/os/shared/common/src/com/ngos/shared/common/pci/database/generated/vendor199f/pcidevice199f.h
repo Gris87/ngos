@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciDevice199F device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice199F::DEVICE_8501: return "Au85X1 PCI REV1.1";
-        case PciDevice199F::DEVICE_8521: return "Au8521 TV card";
+        case PciDevice199F::DEVICE_8501: return "AU85X1 PCI REV1.1";
+        case PciDevice199F::DEVICE_8521: return "AU8521 TV card";
 
         default: return "Unknown device";
     }

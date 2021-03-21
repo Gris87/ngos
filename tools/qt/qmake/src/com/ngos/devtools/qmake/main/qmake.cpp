@@ -493,7 +493,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     const QStringList &defines = mEntries.value("DEFINES");
 
-    if (defines.length() > 0)
+    if (!defines.isEmpty())
     {
         if (defines.length() > 1)
         {
@@ -517,7 +517,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     const QStringList &includes = mEntries.value("INCLUDEPATH");
 
-    if (includes.length() > 0)
+    if (!includes.isEmpty())
     {
         lines.append("");
         lines.append("# Includes:");
@@ -864,7 +864,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 {
     const QStringList &resources = mEntries.value("RESOURCES");
 
-    if (resources.length() > 0)
+    if (!resources.isEmpty())
     {
         if (!QDir().mkpath(workingDirectory + "/build/assets"))
         {
@@ -955,7 +955,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
                         // Ignore CppAlignmentVerifier [BEGIN]
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
-                        assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
+                        assetsFile.write("    .byte   nullptr                                                                                              # Terminate file name with zero\n");
                         assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).length() * 2), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());

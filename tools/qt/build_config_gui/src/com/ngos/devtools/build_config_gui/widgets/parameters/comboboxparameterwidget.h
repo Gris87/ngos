@@ -14,7 +14,7 @@ class ComboboxParameterWidget: public ParameterWidget
     Q_OBJECT
 
 public:
-    explicit ComboboxParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = 0); // TEST: NO
+    explicit ComboboxParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
 
     void setValue(const QString &value) override; // TEST: NO
 

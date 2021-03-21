@@ -188,7 +188,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-                                if (arguments.length() > 0)
+                                if (!arguments.isEmpty())
                                 {
                                     QString parsedTrace = traceLine.mid(traceCommand.length() + 3);
 
@@ -285,7 +285,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                             {
                                 QString trace;
 
-                                if (arguments.length() > 0)
+                                if (!arguments.isEmpty())
                                 {
                                     trace = traceCommand + "((\" | ";
 

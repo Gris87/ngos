@@ -11,7 +11,7 @@
 
 
 
-#define PE_HEADER_SIGNATURE 0x00004550 // PE\0\0
+#define PE_HEADER_SIGNATURE 0x00004550 // PE\nullptr\nullptr
 
 #define SECTION_RELOC  0
 #define SECTION_CONFIG 1

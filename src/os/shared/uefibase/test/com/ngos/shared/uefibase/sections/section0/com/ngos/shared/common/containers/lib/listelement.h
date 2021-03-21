@@ -21,12 +21,12 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
         ListElement<u8> temp2(10);
 
         TEST_ASSERT_EQUALS(temp.mData,     5);
-        TEST_ASSERT_EQUALS(temp.mNext,     0);
-        TEST_ASSERT_EQUALS(temp.mPrevious, 0);
+        TEST_ASSERT_EQUALS(temp.mNext,     nullptr);
+        TEST_ASSERT_EQUALS(temp.mPrevious, nullptr);
 
         TEST_ASSERT_EQUALS(temp2.mData,     10);
-        TEST_ASSERT_EQUALS(temp2.mNext,     0);
-        TEST_ASSERT_EQUALS(temp2.mPrevious, 0);
+        TEST_ASSERT_EQUALS(temp2.mNext,     nullptr);
+        TEST_ASSERT_EQUALS(temp2.mPrevious, nullptr);
     }
     TEST_CASE_END();
 
@@ -53,8 +53,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
         ListElement<u8> temp(7);
         ListElement<u8> temp2(6);
 
-        TEST_ASSERT_EQUALS(temp.mNext,     0);
-        TEST_ASSERT_EQUALS(temp.getNext(), 0);
+        TEST_ASSERT_EQUALS(temp.mNext,     nullptr);
+        TEST_ASSERT_EQUALS(temp.getNext(), nullptr);
 
         TEST_ASSERT_EQUALS(temp.setNext(&temp2), NgosStatus::OK);
 
@@ -70,8 +70,8 @@ TEST_CASES(section0, com_ngos_shared_common_containers_lib_listelement);
         ListElement<u8> temp(7);
         ListElement<u8> temp2(6);
 
-        TEST_ASSERT_EQUALS(temp.mPrevious,     0);
-        TEST_ASSERT_EQUALS(temp.getPrevious(), 0);
+        TEST_ASSERT_EQUALS(temp.mPrevious,     nullptr);
+        TEST_ASSERT_EQUALS(temp.getPrevious(), nullptr);
 
         TEST_ASSERT_EQUALS(temp.setPrevious(&temp2), NgosStatus::OK);
 

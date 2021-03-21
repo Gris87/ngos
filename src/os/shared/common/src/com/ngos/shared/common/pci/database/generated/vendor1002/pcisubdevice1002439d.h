@@ -19,6 +19,7 @@ enum class PciSubDevice1002439D: u32 // Ignore CppEnumVerifier
     SUBDEVICE_104382EF = 0x104382EF,
     SUBDEVICE_10438443 = 0x10438443,
     SUBDEVICE_105B0E13 = 0x105B0E13,
+    SUBDEVICE_14627596 = 0x14627596,
     SUBDEVICE_174B1001 = 0x174B1001
 };
 
@@ -39,6 +40,7 @@ inline const char8* enumToString(PciSubDevice1002439D subDevice) // TEST: NO
         case PciSubDevice1002439D::SUBDEVICE_104382EF: return "SUBDEVICE_104382EF";
         case PciSubDevice1002439D::SUBDEVICE_10438443: return "SUBDEVICE_10438443";
         case PciSubDevice1002439D::SUBDEVICE_105B0E13: return "SUBDEVICE_105B0E13";
+        case PciSubDevice1002439D::SUBDEVICE_14627596: return "SUBDEVICE_14627596";
         case PciSubDevice1002439D::SUBDEVICE_174B1001: return "SUBDEVICE_174B1001";
 
         default: return "UNKNOWN";
@@ -76,6 +78,7 @@ inline const char8* enumToHumanString(PciSubDevice1002439D subDevice) // TEST: N
         case PciSubDevice1002439D::SUBDEVICE_104382EF: return "M3A78-EH Motherboard";
         case PciSubDevice1002439D::SUBDEVICE_10438443: return "M5A88-V EVO";
         case PciSubDevice1002439D::SUBDEVICE_105B0E13: return "N15235/A74MX mainboard / AMD SB700";
+        case PciSubDevice1002439D::SUBDEVICE_14627596: return "760GM-E51(MS-7596) Motherboard";
         case PciSubDevice1002439D::SUBDEVICE_174B1001: return "PURE Fusion Mini";
 
         default: return "Unknown device";

@@ -34,7 +34,8 @@ enum class PciSubDevice10DFE300: u32 // Ignore CppEnumVerifier
     SUBDEVICE_15900202 = 0x15900202,
     SUBDEVICE_15900213 = 0x15900213,
     SUBDEVICE_15900214 = 0x15900214,
-    SUBDEVICE_1590022E = 0x1590022E
+    SUBDEVICE_1590022E = 0x1590022E,
+    SUBDEVICE_193D1060 = 0x193D1060
 };
 
 
@@ -70,6 +71,7 @@ inline const char8* enumToString(PciSubDevice10DFE300 subDevice) // TEST: NO
         case PciSubDevice10DFE300::SUBDEVICE_15900213: return "SUBDEVICE_15900213";
         case PciSubDevice10DFE300::SUBDEVICE_15900214: return "SUBDEVICE_15900214";
         case PciSubDevice10DFE300::SUBDEVICE_1590022E: return "SUBDEVICE_1590022E";
+        case PciSubDevice10DFE300::SUBDEVICE_193D1060: return "SUBDEVICE_193D1060";
 
         default: return "UNKNOWN";
     }
@@ -122,6 +124,7 @@ inline const char8* enumToHumanString(PciSubDevice10DFE300 subDevice) // TEST: N
         case PciSubDevice10DFE300::SUBDEVICE_15900213: return "StoreFabric SN1200E 1-Port 16Gb Fibre Channel Adapter";
         case PciSubDevice10DFE300::SUBDEVICE_15900214: return "StoreFabric SN1200E 2-Port 16Gb Fibre Channel Adapter";
         case PciSubDevice10DFE300::SUBDEVICE_1590022E: return "Synergy 5330C 2-Port 32Gb Fibre Channel Mezz Card";
+        case PciSubDevice10DFE300::SUBDEVICE_193D1060: return "NIC-FC730i-Mb-2P";
 
         default: return "Unknown device";
     }

@@ -13,9 +13,9 @@
 class Button: public Widget
 {
 public:
-    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = 0); // TEST: NO
-    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = 0); // TEST: NO
-    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *contentResizedImage, Image *badgeImage, const char8 *text, Widget *parent = 0); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = nullptr); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *badgeImage, const char8 *text, Widget *parent = nullptr); // TEST: NO
+    Button(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *focusedImage, Image *focusedHoverImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *focusedResizedImage, Image *focusedHoverResizedImage, Image *contentImage, Image *contentResizedImage, Image *badgeImage, const char8 *text, Widget *parent = nullptr); // TEST: NO
     ~Button(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

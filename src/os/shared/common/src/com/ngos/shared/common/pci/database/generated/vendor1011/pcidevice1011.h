@@ -121,9 +121,9 @@ inline const char8* enumToHumanString(PciDevice1011 device) // TEST: NO
         case PciDevice1011::DEVICE_0009: return "DECchip 21140 [FasterNet]";
         case PciDevice1011::DEVICE_000A: return "21230 Video Codec";
         case PciDevice1011::DEVICE_000D: return "PBXGB [TGA2]";
-        case PciDevice1011::DEVICE_000F: return "DEFPA FDDI PCI-to-PDQ Interface Chip [PFI]";
+        case PciDevice1011::DEVICE_000F: return "PCI-to-PDQ Interface Chip [PFI] FDDI (DEFPA)";
         case PciDevice1011::DEVICE_0014: return "DECchip 21041 [Tulip Pass 3]";
-        case PciDevice1011::DEVICE_0016: return "DGLPB [OPPO]";
+        case PciDevice1011::DEVICE_0016: return "ATMworks 350 Adapter [OPPO] (DGLPB)";
         case PciDevice1011::DEVICE_0017: return "PV-PCI Graphics Controller (ZLXp-L)";
         case PciDevice1011::DEVICE_0018: return "Memory Channel interface";
         case PciDevice1011::DEVICE_0019: return "DECchip 21142/43";

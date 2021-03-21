@@ -26,7 +26,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::NONE, 1, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::NONE, 1, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -52,7 +52,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::SUB, 1, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::SUB, 1, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 110);
@@ -78,7 +78,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::UP, 1, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::UP, 1, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -104,7 +104,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::AVERAGE, 1, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::AVERAGE, 1, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 103);
@@ -130,7 +130,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::PAETH, 1, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::PAETH, 1, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 110);
@@ -156,7 +156,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::NONE, 2, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::NONE, 2, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -182,7 +182,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::SUB, 2, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::SUB, 2, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -208,7 +208,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::UP, 2, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::UP, 2, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -234,7 +234,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::AVERAGE, 2, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::AVERAGE, 2, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);
@@ -260,7 +260,7 @@ TEST_CASES(section0, com_ngos_shared_common_graphics_png_png);
 
 
 
-        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, 0, PngFilterType::PAETH, 2, sizeof(res)), NgosStatus::OK);
+        TEST_ASSERT_EQUALS(Png::unfilterLine(temp1, res, nullptr, PngFilterType::PAETH, 2, sizeof(res)), NgosStatus::OK);
 
         TEST_ASSERT_EQUALS(res[0], 13);
         TEST_ASSERT_EQUALS(res[1], 97);

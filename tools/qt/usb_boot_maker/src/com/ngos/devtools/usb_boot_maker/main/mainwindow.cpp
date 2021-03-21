@@ -41,10 +41,10 @@ MainWindow::MainWindow(QWidget *parent)
     , mTranslator(new QTranslator(this))
     , mUpdateTimer(new QTimer(this))
     , mManager(new QNetworkAccessManager(this))
-    , mTemporaryDir(0)
-    , mBurnThread(0)
+    , mTemporaryDir(nullptr)
+    , mBurnThread(nullptr)
 #ifdef Q_OS_LINUX
-    , mUsbMonitorThread(0)
+    , mUsbMonitorThread(nullptr)
 #endif
     , mState(UsbBootMakerState::INITIAL)
     , mRequestTime(0)
@@ -147,7 +147,7 @@ void MainWindow::on_startButton_clicked()
                 addLog(tr("Failed to create temporary directory"));
 
                 delete mTemporaryDir;
-                mTemporaryDir = 0;
+                mTemporaryDir = nullptr;
 
                 return;
             }
@@ -238,7 +238,7 @@ void MainWindow::updateUsbDevices()
 
 
 
-    ui->startButton->setEnabled(usbDevices.length()); // usbDevices.length() > 0
+    ui->startButton->setEnabled(!usbDevices.isEmpty());
 }
 
 void MainWindow::usbStatusChanged(quint16 delay)
@@ -341,7 +341,7 @@ void MainWindow::latestVersionReplyFinished()
 
 
 
-    if (mReplies.size() == 0)
+    if (mReplies.isEmpty())
     {
         switchToState(UsbBootMakerState::GET_FILE_LIST);
     }
@@ -561,7 +561,7 @@ void MainWindow::fileListReplyFinished()
 
 
 
-    if (mReplies.size() == 0)
+    if (mReplies.isEmpty())
     {
         switchToState(UsbBootMakerState::DOWNLOAD);
     }
@@ -734,7 +734,7 @@ void MainWindow::downloadReplyFinished()
 
 
 
-    if (mReplies.size() == 0)
+    if (mReplies.isEmpty())
     {
         ++mCurrentApplication;
 
@@ -752,7 +752,7 @@ void MainWindow::downloadReplyFinished()
 void MainWindow::burnFinished()
 {
     delete mBurnThread;
-    mBurnThread = 0;
+    mBurnThread = nullptr;
 
 
 
@@ -892,7 +892,7 @@ void MainWindow::handleGetFileListState()
 
 
 
-    if (mLatestVersions.size() == 0)
+    if (mLatestVersions.isEmpty())
     {
         switchToInitialState();
 
@@ -1089,7 +1089,7 @@ void MainWindow::resetToInitialState()
             mBurnThread->wait();
 
             delete mBurnThread;
-            mBurnThread = 0;
+            mBurnThread = nullptr;
         }
         break;
 

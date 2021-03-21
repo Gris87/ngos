@@ -30,7 +30,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols()
 
 
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &protocol, 0, &size, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, &protocol, nullptr, &size, nullptr) == UefiStatus::BUFFER_TOO_SMALL)
     {
         UEFI_LVV(("Found size(%u) of buffer for handles for UEFI_SIMPLE_NETWORK_PROTOCOL", size));
 
@@ -79,7 +79,7 @@ NgosStatus NetworkTest::initSimpleNetworkProtocols(Guid *protocol, u64 size)
 
     NgosStatus status = NgosStatus::FAILED;
 
-    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, 0, &size, handles) == UefiStatus::SUCCESS)
+    if (UEFI::locateHandle(UefiLocateSearchType::BY_PROTOCOL, protocol, nullptr, &size, handles) == UefiStatus::SUCCESS)
     {
         UEFI_LVV(("Located handles(0x%p) for UEFI_SIMPLE_NETWORK_PROTOCOL", handles));
 

@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice14C18043 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice14C18043::SUBDEVICE_103C1240: return "Myrinet M2L-PCi64/2-3.0 LANai 7.4 (HP OEM)";
+        case PciSubDevice14C18043::SUBDEVICE_103C1240: return "Myrinet M2L-PCI64/2-3.0 LANai 7.4 (HP OEM)";
 
         default: return "Unknown device";
     }

@@ -63,8 +63,8 @@ inline const char8* enumToHumanString(PciSubDevice104CA106 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice104CA106::SUBDEVICE_175C5000: return "ASI50xx Audio Adapter";
-        case PciSubDevice104CA106::SUBDEVICE_175C6400: return "ASi6400 Cobranet series";
-        case PciSubDevice104CA106::SUBDEVICE_175C8700: return "ASi87xx Radio Tuner card";
+        case PciSubDevice104CA106::SUBDEVICE_175C6400: return "ASI6400 Cobranet series";
+        case PciSubDevice104CA106::SUBDEVICE_175C8700: return "ASI87xx Radio Tuner card";
 
         default: return "Unknown device";
     }

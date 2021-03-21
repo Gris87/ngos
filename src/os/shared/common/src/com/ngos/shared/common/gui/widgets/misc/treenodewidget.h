@@ -16,8 +16,8 @@
 class TreeNodeWidget: public Widget, public PressEventHandler
 {
 public:
-    TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = 0); // TEST: NO
-    TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = 0); // TEST: NO
+    TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = nullptr); // TEST: NO
+    TreeNodeWidget(Image *normalImage, Image *hoverImage, Image *pressedImage, Image *normalResizedImage, Image *hoverResizedImage, Image *pressedResizedImage, Image *collapsedImage, Image *expandedImage, Image *image, const char8* text, Widget *parent = nullptr); // TEST: NO
     ~TreeNodeWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

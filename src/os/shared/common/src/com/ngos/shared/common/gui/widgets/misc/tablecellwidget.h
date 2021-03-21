@@ -10,7 +10,7 @@
 class TableCellWidget: public Widget
 {
 public:
-    TableCellWidget(Widget *parent = 0); // TEST: NO
+    TableCellWidget(Widget *parent = nullptr); // TEST: NO
     ~TableCellWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

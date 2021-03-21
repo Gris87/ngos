@@ -147,7 +147,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     if (
                         QFile::exists(tempParentFolder + "/Makefile")
                         ||
-                        QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).length() > 0
+                        !QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
                        )
                     {
                         break;
@@ -187,7 +187,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
                 if (line == "")
                 {
-                    if (currentBlock.length() > 0)
+                    if (!currentBlock.isEmpty())
                     {
                         blocks.append(currentBlock);
                         blockStarts.append(currentBlockStart);
@@ -329,7 +329,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 }
             }
 
-            if (currentBlock.length() > 0)
+            if (!currentBlock.isEmpty())
             {
                 blocks.append(currentBlock);
                 blockStarts.append(currentBlockStart);

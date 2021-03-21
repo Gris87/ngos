@@ -13,6 +13,7 @@
 enum class PciSubDevice80868C02: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_102805D7 = 0x102805D7,
     SUBDEVICE_103C1998 = 0x103C1998,
     SUBDEVICE_17AA3098 = 0x17AA3098,
     SUBDEVICE_17AA309F = 0x17AA309F
@@ -29,6 +30,7 @@ inline const char8* enumToString(PciSubDevice80868C02 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice80868C02::NONE:               return "NONE";
+        case PciSubDevice80868C02::SUBDEVICE_102805D7: return "SUBDEVICE_102805D7";
         case PciSubDevice80868C02::SUBDEVICE_103C1998: return "SUBDEVICE_103C1998";
         case PciSubDevice80868C02::SUBDEVICE_17AA3098: return "SUBDEVICE_17AA3098";
         case PciSubDevice80868C02::SUBDEVICE_17AA309F: return "SUBDEVICE_17AA309F";
@@ -62,6 +64,7 @@ inline const char8* enumToHumanString(PciSubDevice80868C02 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice80868C02::SUBDEVICE_102805D7: return "Alienware X51 R2";
         case PciSubDevice80868C02::SUBDEVICE_103C1998: return "EliteDesk 800 G1";
         case PciSubDevice80868C02::SUBDEVICE_17AA3098: return "ThinkCentre E73";
         case PciSubDevice80868C02::SUBDEVICE_17AA309F: return "ThinkCentre M83";

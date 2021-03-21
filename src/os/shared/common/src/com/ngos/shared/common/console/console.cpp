@@ -289,7 +289,7 @@ NgosStatus Console::newLineWithoutCaretReturn()
 
 
     COMMON_ASSERT_EXECUTION(sScreenGop->blt(sScreenGop,
-                                            0,
+                                            nullptr,
                                             UefiGraphicsOutputBltOperation::VIDEO_TO_VIDEO,
                                             0, CHAR_HEIGHT + BOTTOM_MARGIN,
                                             0, 0,

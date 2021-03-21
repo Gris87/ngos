@@ -19,7 +19,7 @@ class AboutDialog: public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutDialog(QWidget *parent = 0); // TEST: NO
+    explicit AboutDialog(QWidget *parent = nullptr); // TEST: NO
     ~AboutDialog(); // TEST: NO
 
 private slots:

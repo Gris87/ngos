@@ -481,7 +481,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                     if (
                         QFile::exists(parentFolder + "/../../../Makefile")
                         ||
-                        QDir(parentFolder + "/../../../").entryList(QStringList() << "*.pro", QDir::Files).length() > 0
+                        !QDir(parentFolder + "/../../../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
                        )
                     {
                         break;

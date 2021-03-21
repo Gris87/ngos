@@ -13,7 +13,7 @@
 class CategoryTreeWidgetItem: public QTreeWidgetItem
 {
 public:
-    CategoryTreeWidgetItem(const QString &title, QWidget *parent = 0); // TEST: NO
+    CategoryTreeWidgetItem(const QString &title, QWidget *parent = nullptr); // TEST: NO
 
     QScrollArea* getPage() const; // TEST: NO
     QVBoxLayout* getLayout() const; // TEST: NO

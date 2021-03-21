@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice80861361 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice80861361::SUBDEVICE_80861361: return "82806AA PCi64 Hub Controller (HRes)";
-        case PciSubDevice80861361::SUBDEVICE_80868000: return "82806AA PCi64 Hub Controller (HRes)";
+        case PciSubDevice80861361::SUBDEVICE_80861361: return "82806AA PCI64 Hub Controller (HRes)";
+        case PciSubDevice80861361::SUBDEVICE_80868000: return "82806AA PCI64 Hub Controller (HRes)";
 
         default: return "Unknown device";
     }

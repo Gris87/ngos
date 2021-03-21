@@ -14,6 +14,7 @@ enum class PciSubDevice80861911: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_10280869 = 0x10280869,
+    SUBDEVICE_14627A72 = 0x14627A72,
     SUBDEVICE_17AA2247 = 0x17AA2247,
     SUBDEVICE_17AA224F = 0x17AA224F,
     SUBDEVICE_17AA225D = 0x17AA225D
@@ -31,6 +32,7 @@ inline const char8* enumToString(PciSubDevice80861911 subDevice) // TEST: NO
     {
         case PciSubDevice80861911::NONE:               return "NONE";
         case PciSubDevice80861911::SUBDEVICE_10280869: return "SUBDEVICE_10280869";
+        case PciSubDevice80861911::SUBDEVICE_14627A72: return "SUBDEVICE_14627A72";
         case PciSubDevice80861911::SUBDEVICE_17AA2247: return "SUBDEVICE_17AA2247";
         case PciSubDevice80861911::SUBDEVICE_17AA224F: return "SUBDEVICE_17AA224F";
         case PciSubDevice80861911::SUBDEVICE_17AA225D: return "SUBDEVICE_17AA225D";
@@ -65,6 +67,7 @@ inline const char8* enumToHumanString(PciSubDevice80861911 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice80861911::SUBDEVICE_10280869: return "Vostro 3470";
+        case PciSubDevice80861911::SUBDEVICE_14627A72: return "H270 PC MATE";
         case PciSubDevice80861911::SUBDEVICE_17AA2247: return "ThinkPad T570";
         case PciSubDevice80861911::SUBDEVICE_17AA224F: return "ThinkPad X1 Carbon 5th Gen";
         case PciSubDevice80861911::SUBDEVICE_17AA225D: return "ThinkPad T480";

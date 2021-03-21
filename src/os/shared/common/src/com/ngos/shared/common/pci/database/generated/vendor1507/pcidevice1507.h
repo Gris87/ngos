@@ -78,7 +78,7 @@ inline const char8* enumToHumanString(PciDevice1507 device) // TEST: NO
         case PciDevice1507::DEVICE_0002: return "MPC106 [Grackle]";
         case PciDevice1507::DEVICE_0003: return "MPC8240 [Kahlua]";
         case PciDevice1507::DEVICE_0100: return "MC145575 [HFC-PCI]";
-        case PciDevice1507::DEVICE_0431: return "KTi829c 100VG";
+        case PciDevice1507::DEVICE_0431: return "KTI829c 100VG";
         case PciDevice1507::DEVICE_4801: return "Raven";
         case PciDevice1507::DEVICE_4802: return "Falcon";
         case PciDevice1507::DEVICE_4803: return "Hawk";

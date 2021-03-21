@@ -18,7 +18,7 @@ NgosStatus DeviceManagerMemoryMap::init()
 
 
 
-    UefiMemoryDescriptor *memoryMap         = 0;
+    UefiMemoryDescriptor *memoryMap         = nullptr;
     u64                   memoryMapSize     = 0;
     u64                   descriptorSize    = 0;
     u32                   descriptorVersion = 0;

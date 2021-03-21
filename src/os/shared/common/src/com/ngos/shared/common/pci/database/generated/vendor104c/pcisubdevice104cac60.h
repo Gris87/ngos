@@ -75,7 +75,7 @@ inline const char8* enumToHumanString(PciSubDevice104CAC60 subDevice) // TEST: N
         case PciSubDevice104CAC60::SUBDEVICE_175C5100: return "ASI51xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_175C6100: return "ASI61xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_175C6200: return "ASI62xx Audio Adapter";
-        case PciSubDevice104CAC60::SUBDEVICE_175C8800: return "ASi88xx Audio Adapter";
+        case PciSubDevice104CAC60::SUBDEVICE_175C8800: return "ASI88xx Audio Adapter";
         case PciSubDevice104CAC60::SUBDEVICE_186F3001: return "WR-G303 PCI radio receiver";
         case PciSubDevice104CAC60::SUBDEVICE_186F3005: return "WR-G305 PCI radio receiver";
         case PciSubDevice104CAC60::SUBDEVICE_186F3101: return "WR-G313 PCI radio receiver";

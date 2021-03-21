@@ -44,6 +44,10 @@ enum class PciDevice1760: u16 // Ignore CppEnumVerifier
     DEVICE_0245 = 0x0245,
     DEVICE_0303 = 0x0303,
     DEVICE_0800 = 0x0800,
+    DEVICE_0840 = 0x0840,
+    DEVICE_0841 = 0x0841,
+    DEVICE_0842 = 0x0842,
+    DEVICE_0843 = 0x0843,
     DEVICE_FF00 = 0xFF00
 };
 
@@ -89,6 +93,10 @@ inline const char8* enumToString(PciDevice1760 device) // TEST: NO
         case PciDevice1760::DEVICE_0245: return "DEVICE_0245";
         case PciDevice1760::DEVICE_0303: return "DEVICE_0303";
         case PciDevice1760::DEVICE_0800: return "DEVICE_0800";
+        case PciDevice1760::DEVICE_0840: return "DEVICE_0840";
+        case PciDevice1760::DEVICE_0841: return "DEVICE_0841";
+        case PciDevice1760::DEVICE_0842: return "DEVICE_0842";
+        case PciDevice1760::DEVICE_0843: return "DEVICE_0843";
         case PciDevice1760::DEVICE_FF00: return "DEVICE_FF00";
 
         default: return "UNKNOWN";
@@ -151,6 +159,10 @@ inline const char8* enumToHumanString(PciDevice1760 device) // TEST: NO
         case PciDevice1760::DEVICE_0245: return "PCA7428CE_F1 - Analog Inputs isolated";
         case PciDevice1760::DEVICE_0303: return "PCD-7006C Digital Input & Output PCI Card";
         case PciDevice1760::DEVICE_0800: return "PCD8006 - PCIe digital Inputs/Outputs";
+        case PciDevice1760::DEVICE_0840: return "PCA-8428 General-purpose multifunctional PCIe card with 8 analog inputs and 2 analog outputs";
+        case PciDevice1760::DEVICE_0841: return "PCA-8429 General-purpose multifunctional PCIe card with 8 analog inputs";
+        case PciDevice1760::DEVICE_0842: return "PCA-8438 General-purpose multifunctional PCIe card with 16 analog inputs and 2 analog outputs";
+        case PciDevice1760::DEVICE_0843: return "PCA-8439 General-purpose multifunctional PCIe card with 16 analog inputs";
         case PciDevice1760::DEVICE_FF00: return "CTU CAN FD PCIe Card";
 
         default: return "Unknown device";

@@ -14,6 +14,7 @@
 enum class PciDevice173B: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_0001 = 0x0001,
     DEVICE_03E8 = 0x03E8,
     DEVICE_03E9 = 0x03E9,
     DEVICE_03EA = 0x03EA,
@@ -31,6 +32,7 @@ inline const char8* enumToString(PciDevice173B device) // TEST: NO
     switch (device)
     {
         case PciDevice173B::NONE:        return "NONE";
+        case PciDevice173B::DEVICE_0001: return "DEVICE_0001";
         case PciDevice173B::DEVICE_03E8: return "DEVICE_03E8";
         case PciDevice173B::DEVICE_03E9: return "DEVICE_03E9";
         case PciDevice173B::DEVICE_03EA: return "DEVICE_03EA";
@@ -65,6 +67,7 @@ inline const char8* enumToHumanString(PciDevice173B device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice173B::DEVICE_0001: return "AC1002 PCI Gigabit Ethernet controller";
         case PciDevice173B::DEVICE_03E8: return "AC1000 Gigabit Ethernet";
         case PciDevice173B::DEVICE_03E9: return "AC1001 Gigabit Ethernet";
         case PciDevice173B::DEVICE_03EA: return "AC9100 Gigabit Ethernet";
@@ -84,6 +87,7 @@ inline const char8* enumToHumanString(PciDevice173B device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice173B::DEVICE_0001: return "Unknown device";
         case PciDevice173B::DEVICE_03E8: return "Unknown device";
         case PciDevice173B::DEVICE_03E9: return "Unknown device";
         case PciDevice173B::DEVICE_03EA: return enumToHumanString((PciSubDevice173B03EA)(subsystemVendorID << 16 | subDeviceId));

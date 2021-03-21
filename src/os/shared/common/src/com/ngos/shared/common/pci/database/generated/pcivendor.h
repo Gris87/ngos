@@ -358,6 +358,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1435/pcidevice1435.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor144a/pcidevice144a.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor144d/pcidevice144d.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1458/pcidevice1458.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor145f/pcidevice145f.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1461/pcidevice1461.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1462/pcidevice1462.h>
@@ -689,8 +690,10 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1e60/pcidevice1e60.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e7c/pcidevice1e7c.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1e89/pcidevice1e89.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ea0/pcidevice1ea0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1eab/pcidevice1eab.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1eb1/pcidevice1eb1.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1ed8/pcidevice1ed8.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1fc0/pcidevice1fc0.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1fc1/pcidevice1fc1.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1fc9/pcidevice1fc9.h>
@@ -2788,9 +2791,14 @@ enum class PciVendor: u16
     VENDOR_1E89 = 0x1E89,
     VENDOR_1E94 = 0x1E94,
     VENDOR_1E95 = 0x1E95,
+    VENDOR_1EA0 = 0x1EA0,
     VENDOR_1EAB = 0x1EAB,
     VENDOR_1EAE = 0x1EAE,
     VENDOR_1EB1 = 0x1EB1,
+    VENDOR_1ED3 = 0x1ED3,
+    VENDOR_1ED8 = 0x1ED8,
+    VENDOR_1ED9 = 0x1ED9,
+    VENDOR_1EE9 = 0x1EE9,
     VENDOR_1FC0 = 0x1FC0,
     VENDOR_1FC1 = 0x1FC1,
     VENDOR_1FC9 = 0x1FC9,
@@ -2842,6 +2850,7 @@ enum class PciVendor: u16
     VENDOR_4321 = 0x4321,
     VENDOR_4348 = 0x4348,
     VENDOR_434E = 0x434E,
+    VENDOR_43BC = 0x43BC,
     VENDOR_4444 = 0x4444,
     VENDOR_4468 = 0x4468,
     VENDOR_4594 = 0x4594,
@@ -2938,6 +2947,7 @@ enum class PciVendor: u16
     VENDOR_9710 = 0x9710,
     VENDOR_9850 = 0x9850,
     VENDOR_9902 = 0x9902,
+    VENDOR_9A11 = 0x9A11,
     VENDOR_9D32 = 0x9D32,
     VENDOR_A000 = 0xA000,
     VENDOR_A0A0 = 0xA0A0,
@@ -5031,9 +5041,14 @@ inline const char8* enumToString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1E89: return "VENDOR_1E89";
         case PciVendor::VENDOR_1E94: return "VENDOR_1E94";
         case PciVendor::VENDOR_1E95: return "VENDOR_1E95";
+        case PciVendor::VENDOR_1EA0: return "VENDOR_1EA0";
         case PciVendor::VENDOR_1EAB: return "VENDOR_1EAB";
         case PciVendor::VENDOR_1EAE: return "VENDOR_1EAE";
         case PciVendor::VENDOR_1EB1: return "VENDOR_1EB1";
+        case PciVendor::VENDOR_1ED3: return "VENDOR_1ED3";
+        case PciVendor::VENDOR_1ED8: return "VENDOR_1ED8";
+        case PciVendor::VENDOR_1ED9: return "VENDOR_1ED9";
+        case PciVendor::VENDOR_1EE9: return "VENDOR_1EE9";
         case PciVendor::VENDOR_1FC0: return "VENDOR_1FC0";
         case PciVendor::VENDOR_1FC1: return "VENDOR_1FC1";
         case PciVendor::VENDOR_1FC9: return "VENDOR_1FC9";
@@ -5085,6 +5100,7 @@ inline const char8* enumToString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_4321: return "VENDOR_4321";
         case PciVendor::VENDOR_4348: return "VENDOR_4348";
         case PciVendor::VENDOR_434E: return "VENDOR_434E";
+        case PciVendor::VENDOR_43BC: return "VENDOR_43BC";
         case PciVendor::VENDOR_4444: return "VENDOR_4444";
         case PciVendor::VENDOR_4468: return "VENDOR_4468";
         case PciVendor::VENDOR_4594: return "VENDOR_4594";
@@ -5181,6 +5197,7 @@ inline const char8* enumToString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_9710: return "VENDOR_9710";
         case PciVendor::VENDOR_9850: return "VENDOR_9850";
         case PciVendor::VENDOR_9902: return "VENDOR_9902";
+        case PciVendor::VENDOR_9A11: return "VENDOR_9A11";
         case PciVendor::VENDOR_9D32: return "VENDOR_9D32";
         case PciVendor::VENDOR_A000: return "VENDOR_A000";
         case PciVendor::VENDOR_A0A0: return "VENDOR_A0A0";
@@ -7247,9 +7264,9 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1D78: return "DERA Storage";
         case PciVendor::VENDOR_1D7C: return "Aerotech, Inc.";
         case PciVendor::VENDOR_1D82: return "NETINT Technologies Inc.";
-        case PciVendor::VENDOR_1D87: return "Fuzhou Rockchip Electronics Co., Ltd";
+        case PciVendor::VENDOR_1D87: return "Rockchip Electronics Co., Ltd";
         case PciVendor::VENDOR_1D8F: return "Enyx";
-        case PciVendor::VENDOR_1D93: return "YADRO (KNS Group)";
+        case PciVendor::VENDOR_1D93: return "YADRO";
         case PciVendor::VENDOR_1D94: return "Chengdu Haiguang IC Design Co., Ltd.";
         case PciVendor::VENDOR_1D95: return "Graphcore Ltd";
         case PciVendor::VENDOR_1D97: return "Shenzhen Longsys Electronics Co., Ltd.";
@@ -7291,9 +7308,14 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1E89: return "ID Quantique SA";
         case PciVendor::VENDOR_1E94: return "Calian SED";
         case PciVendor::VENDOR_1E95: return "Solid State Storage Technology Corporation";
+        case PciVendor::VENDOR_1EA0: return "Tencent Technology (Shenzhen) Company Limited";
         case PciVendor::VENDOR_1EAB: return "Hefei DATANG Storage Technology Co., LTD.";
         case PciVendor::VENDOR_1EAE: return "XFX Limited";
         case PciVendor::VENDOR_1EB1: return "VeriSilicon Inc";
+        case PciVendor::VENDOR_1ED3: return "Yeston";
+        case PciVendor::VENDOR_1ED8: return "Digiteq Automotive";
+        case PciVendor::VENDOR_1ED9: return "Myrtle.ai";
+        case PciVendor::VENDOR_1EE9: return "SUSE LLC";
         case PciVendor::VENDOR_1FC0: return "Ascom (Finland) Oy";
         case PciVendor::VENDOR_1FC1: return "QLogic, Corp.";
         case PciVendor::VENDOR_1FC9: return "Tehuti Networks Ltd.";
@@ -7344,7 +7366,8 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_4254: return "DVBSky";
         case PciVendor::VENDOR_4321: return "Tata Power Strategic Electronics Division";
         case PciVendor::VENDOR_4348: return "WCH.CN";
-        case PciVendor::VENDOR_434E: return "CAST Navigation LLC";
+        case PciVendor::VENDOR_434E: return "Cornelis Networks";
+        case PciVendor::VENDOR_43BC: return "Tiger Lake-H PCIe Root Port #5";
         case PciVendor::VENDOR_4444: return "Internext Compression Inc";
         case PciVendor::VENDOR_4468: return "Bridgeport machines";
         case PciVendor::VENDOR_4594: return "Cogetec Informatique Inc";
@@ -7441,6 +7464,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_9710: return "MosChip Semiconductor Technology Ltd.";
         case PciVendor::VENDOR_9850: return "3Com (wrong ID)";
         case PciVendor::VENDOR_9902: return "Stargen Inc.";
+        case PciVendor::VENDOR_9A11: return "Tiger Lake-H Gaussian & Neural Accelerator";
         case PciVendor::VENDOR_9D32: return "Beijing Starblaze Technology Co. Ltd.";
         case PciVendor::VENDOR_A000: return "Asix Electronics Corporation (Wrong ID)";
         case PciVendor::VENDOR_A0A0: return "AOPEN Inc.";
@@ -8669,7 +8693,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: N
         case PciVendor::VENDOR_1455: return "Unknown device";
         case PciVendor::VENDOR_1456: return "Unknown device";
         case PciVendor::VENDOR_1457: return "Unknown device";
-        case PciVendor::VENDOR_1458: return "Unknown device";
+        case PciVendor::VENDOR_1458: return enumToHumanString((PciDevice1458)deviceId);
         case PciVendor::VENDOR_1459: return "Unknown device";
         case PciVendor::VENDOR_145A: return "Unknown device";
         case PciVendor::VENDOR_145B: return "Unknown device";
@@ -9536,9 +9560,14 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: N
         case PciVendor::VENDOR_1E89: return enumToHumanString((PciDevice1E89)deviceId);
         case PciVendor::VENDOR_1E94: return "Unknown device";
         case PciVendor::VENDOR_1E95: return "Unknown device";
+        case PciVendor::VENDOR_1EA0: return enumToHumanString((PciDevice1EA0)deviceId);
         case PciVendor::VENDOR_1EAB: return enumToHumanString((PciDevice1EAB)deviceId);
         case PciVendor::VENDOR_1EAE: return "Unknown device";
         case PciVendor::VENDOR_1EB1: return enumToHumanString((PciDevice1EB1)deviceId);
+        case PciVendor::VENDOR_1ED3: return "Unknown device";
+        case PciVendor::VENDOR_1ED8: return enumToHumanString((PciDevice1ED8)deviceId);
+        case PciVendor::VENDOR_1ED9: return "Unknown device";
+        case PciVendor::VENDOR_1EE9: return "Unknown device";
         case PciVendor::VENDOR_1FC0: return enumToHumanString((PciDevice1FC0)deviceId);
         case PciVendor::VENDOR_1FC1: return enumToHumanString((PciDevice1FC1)deviceId);
         case PciVendor::VENDOR_1FC9: return enumToHumanString((PciDevice1FC9)deviceId);
@@ -9590,6 +9619,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: N
         case PciVendor::VENDOR_4321: return "Unknown device";
         case PciVendor::VENDOR_4348: return enumToHumanString((PciDevice4348)deviceId);
         case PciVendor::VENDOR_434E: return "Unknown device";
+        case PciVendor::VENDOR_43BC: return "Unknown device";
         case PciVendor::VENDOR_4444: return enumToHumanString((PciDevice4444)deviceId);
         case PciVendor::VENDOR_4468: return "Unknown device";
         case PciVendor::VENDOR_4594: return "Unknown device";
@@ -9686,6 +9716,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId) // TEST: N
         case PciVendor::VENDOR_9710: return enumToHumanString((PciDevice9710)deviceId);
         case PciVendor::VENDOR_9850: return "Unknown device";
         case PciVendor::VENDOR_9902: return enumToHumanString((PciDevice9902)deviceId);
+        case PciVendor::VENDOR_9A11: return "Unknown device";
         case PciVendor::VENDOR_9D32: return enumToHumanString((PciDevice9D32)deviceId);
         case PciVendor::VENDOR_A000: return "Unknown device";
         case PciVendor::VENDOR_A0A0: return "Unknown device";
@@ -11692,7 +11723,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor 
         case PciVendor::VENDOR_1C44: return "Unknown device";
         case PciVendor::VENDOR_1C58: return enumToHumanString((PciDevice1C58)deviceId, (u16)subsystemVendorID, subDeviceId);
         case PciVendor::VENDOR_1C5C: return enumToHumanString((PciDevice1C5C)deviceId, (u16)subsystemVendorID, subDeviceId);
-        case PciVendor::VENDOR_1C5F: return "Unknown device";
+        case PciVendor::VENDOR_1C5F: return enumToHumanString((PciDevice1C5F)deviceId, (u16)subsystemVendorID, subDeviceId);
         case PciVendor::VENDOR_1C63: return "Unknown device";
         case PciVendor::VENDOR_1C7E: return "Unknown device";
         case PciVendor::VENDOR_1C7F: return "Unknown device";
@@ -11781,9 +11812,14 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor 
         case PciVendor::VENDOR_1E89: return "Unknown device";
         case PciVendor::VENDOR_1E94: return "Unknown device";
         case PciVendor::VENDOR_1E95: return "Unknown device";
+        case PciVendor::VENDOR_1EA0: return "Unknown device";
         case PciVendor::VENDOR_1EAB: return "Unknown device";
         case PciVendor::VENDOR_1EAE: return "Unknown device";
         case PciVendor::VENDOR_1EB1: return "Unknown device";
+        case PciVendor::VENDOR_1ED3: return "Unknown device";
+        case PciVendor::VENDOR_1ED8: return "Unknown device";
+        case PciVendor::VENDOR_1ED9: return "Unknown device";
+        case PciVendor::VENDOR_1EE9: return "Unknown device";
         case PciVendor::VENDOR_1FC0: return "Unknown device";
         case PciVendor::VENDOR_1FC1: return "Unknown device";
         case PciVendor::VENDOR_1FC9: return enumToHumanString((PciDevice1FC9)deviceId, (u16)subsystemVendorID, subDeviceId);
@@ -11835,6 +11871,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor 
         case PciVendor::VENDOR_4321: return "Unknown device";
         case PciVendor::VENDOR_4348: return "Unknown device";
         case PciVendor::VENDOR_434E: return "Unknown device";
+        case PciVendor::VENDOR_43BC: return "Unknown device";
         case PciVendor::VENDOR_4444: return enumToHumanString((PciDevice4444)deviceId, (u16)subsystemVendorID, subDeviceId);
         case PciVendor::VENDOR_4468: return "Unknown device";
         case PciVendor::VENDOR_4594: return "Unknown device";
@@ -11931,6 +11968,7 @@ inline const char8* enumToHumanString(PciVendor vendor, u16 deviceId, PciVendor 
         case PciVendor::VENDOR_9710: return enumToHumanString((PciDevice9710)deviceId, (u16)subsystemVendorID, subDeviceId);
         case PciVendor::VENDOR_9850: return "Unknown device";
         case PciVendor::VENDOR_9902: return "Unknown device";
+        case PciVendor::VENDOR_9A11: return "Unknown device";
         case PciVendor::VENDOR_9D32: return "Unknown device";
         case PciVendor::VENDOR_A000: return "Unknown device";
         case PciVendor::VENDOR_A0A0: return "Unknown device";

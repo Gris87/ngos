@@ -4,7 +4,7 @@
 
 
 
-void *__dso_handle = 0; // Ignore CppEqualAlignmentVerifier
+void *__dso_handle = nullptr; // Ignore CppEqualAlignmentVerifier
 
 
 

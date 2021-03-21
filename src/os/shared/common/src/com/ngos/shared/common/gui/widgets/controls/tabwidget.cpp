@@ -80,7 +80,7 @@ NgosStatus TabWidget::invalidate()
 
 
 
-    if (mTabButtons.getSize() > 0)
+    if (!mTabButtons.isEmpty())
     {
         u64 tabButtonHeight = mTabButtons.first()->getHeight();
 

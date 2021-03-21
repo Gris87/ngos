@@ -17,6 +17,7 @@ enum class PciSubDevice10024390: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10438389 = 0x10438389,
     SUBDEVICE_105B0E13 = 0x105B0E13,
     SUBDEVICE_1458B002 = 0x1458B002,
+    SUBDEVICE_14627596 = 0x14627596,
     SUBDEVICE_18494390 = 0x18494390
 };
 
@@ -35,6 +36,7 @@ inline const char8* enumToString(PciSubDevice10024390 subDevice) // TEST: NO
         case PciSubDevice10024390::SUBDEVICE_10438389: return "SUBDEVICE_10438389";
         case PciSubDevice10024390::SUBDEVICE_105B0E13: return "SUBDEVICE_105B0E13";
         case PciSubDevice10024390::SUBDEVICE_1458B002: return "SUBDEVICE_1458B002";
+        case PciSubDevice10024390::SUBDEVICE_14627596: return "SUBDEVICE_14627596";
         case PciSubDevice10024390::SUBDEVICE_18494390: return "SUBDEVICE_18494390";
 
         default: return "UNKNOWN";
@@ -70,6 +72,7 @@ inline const char8* enumToHumanString(PciSubDevice10024390 subDevice) // TEST: N
         case PciSubDevice10024390::SUBDEVICE_10438389: return "M4A785TD Motherboard";
         case PciSubDevice10024390::SUBDEVICE_105B0E13: return "N15235/A74MX mainboard / AMD SB700";
         case PciSubDevice10024390::SUBDEVICE_1458B002: return "GA-MA770-DS3rev2.0 Motherboard";
+        case PciSubDevice10024390::SUBDEVICE_14627596: return "760GM-E51(MS-7596) Motherboard";
         case PciSubDevice10024390::SUBDEVICE_18494390: return "Motherboard (one of many)";
 
         default: return "Unknown device";

@@ -299,7 +299,7 @@ inline const char8* enumToHumanString(PciDevice10B5 device) // TEST: NO
         case PciDevice10B5::DEVICE_6152: return "PCI6152 32-bit 66MHz PCI-to-PCI Bridge";
         case PciDevice10B5::DEVICE_6154: return "PCI6154 64-bit 66MHz PCI-to-PCI Bridge";
         case PciDevice10B5::DEVICE_6254: return "PCI6254 64-bit 66MHz PCI-to-PCI Bridge";
-        case PciDevice10B5::DEVICE_6466: return "PCi6466 64-bit 66MHz PCI-to-PCI Bridge";
+        case PciDevice10B5::DEVICE_6466: return "PCI6466 64-bit 66MHz PCI-to-PCI Bridge";
         case PciDevice10B5::DEVICE_6520: return "PCI6520 64-bit 133MHz PCI-X-to-PCI-X Bridge";
         case PciDevice10B5::DEVICE_6540: return "PCI6540 64-bit 133MHz PCI-X-to-PCI-X Bridge";
         case PciDevice10B5::DEVICE_6541: return "PCI6540/6466 PCI-PCI bridge (non-transparent mode, primary side)";

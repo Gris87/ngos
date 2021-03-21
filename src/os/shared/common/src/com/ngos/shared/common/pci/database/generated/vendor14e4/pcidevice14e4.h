@@ -72,6 +72,12 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e4170d.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41713.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41750.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41802.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41805.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41806.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41807.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41808.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41809.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e44301.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e44311.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e44312.h>
@@ -282,6 +288,8 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_1805 = 0x1805,
     DEVICE_1806 = 0x1806,
     DEVICE_1807 = 0x1807,
+    DEVICE_1808 = 0x1808,
+    DEVICE_1809 = 0x1809,
     DEVICE_2711 = 0x2711,
     DEVICE_3352 = 0x3352,
     DEVICE_3360 = 0x3360,
@@ -619,6 +627,8 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_1805: return "DEVICE_1805";
         case PciDevice14E4::DEVICE_1806: return "DEVICE_1806";
         case PciDevice14E4::DEVICE_1807: return "DEVICE_1807";
+        case PciDevice14E4::DEVICE_1808: return "DEVICE_1808";
+        case PciDevice14E4::DEVICE_1809: return "DEVICE_1809";
         case PciDevice14E4::DEVICE_2711: return "DEVICE_2711";
         case PciDevice14E4::DEVICE_3352: return "DEVICE_3352";
         case PciDevice14E4::DEVICE_3360: return "DEVICE_3360";
@@ -844,7 +854,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_165C: return "NetXtreme BCM5724 Gigabit Ethernet PCIe";
         case PciDevice14E4::DEVICE_165D: return "NetXtreme BCM5705M Gigabit Ethernet";
         case PciDevice14E4::DEVICE_165E: return "NetXtreme BCM5705M_2 Gigabit Ethernet";
-        case PciDevice14E4::DEVICE_165F: return "NetXtreme BCM5720 2-port Gigabit Ethernet PCIe";
+        case PciDevice14E4::DEVICE_165F: return "NetXtreme BCM5720 Gigabit Ethernet PCIe";
         case PciDevice14E4::DEVICE_1662: return "NetXtreme II BCM57712 10 Gigabit Ethernet";
         case PciDevice14E4::DEVICE_1663: return "NetXtreme II BCM57712 10 Gigabit Ethernet Multi Function";
         case PciDevice14E4::DEVICE_1665: return "NetXtreme BCM5717 Gigabit Ethernet PCIe";
@@ -970,9 +980,11 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_1802: return "BCM57508 NetXtreme-E Ethernet Partition";
         case PciDevice14E4::DEVICE_1803: return "BCM57502 NetXtreme-E RDMA Partition";
         case PciDevice14E4::DEVICE_1804: return "BCM57504 NetXtreme-E RDMA Partition";
-        case PciDevice14E4::DEVICE_1805: return "BCM57508 NetXtreme-E RDMA Partition";
+        case PciDevice14E4::DEVICE_1805: return "BCM57508 NetXtreme-E NGM2100D 2x100G KR Mezz RDMA Partition";
         case PciDevice14E4::DEVICE_1806: return "BCM5750X NetXtreme-E Ethernet Virtual Function";
         case PciDevice14E4::DEVICE_1807: return "BCM5750X NetXtreme-E RDMA Virtual Function";
+        case PciDevice14E4::DEVICE_1808: return "BCM5750X NetXtreme-E Ethernet Virtual Function";
+        case PciDevice14E4::DEVICE_1809: return "BCM5750X NetXtreme-E RDMA Virtual Function";
         case PciDevice14E4::DEVICE_2711: return "BCM2711 PCIe Bridge";
         case PciDevice14E4::DEVICE_3352: return "BCM3352";
         case PciDevice14E4::DEVICE_3360: return "BCM3360";
@@ -1306,12 +1318,14 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_1752: return "Unknown device";
         case PciDevice14E4::DEVICE_1800: return "Unknown device";
         case PciDevice14E4::DEVICE_1801: return "Unknown device";
-        case PciDevice14E4::DEVICE_1802: return "Unknown device";
+        case PciDevice14E4::DEVICE_1802: return enumToHumanString((PciSubDevice14E41802)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14E4::DEVICE_1803: return "Unknown device";
         case PciDevice14E4::DEVICE_1804: return "Unknown device";
-        case PciDevice14E4::DEVICE_1805: return "Unknown device";
-        case PciDevice14E4::DEVICE_1806: return "Unknown device";
-        case PciDevice14E4::DEVICE_1807: return "Unknown device";
+        case PciDevice14E4::DEVICE_1805: return enumToHumanString((PciSubDevice14E41805)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice14E4::DEVICE_1806: return enumToHumanString((PciSubDevice14E41806)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice14E4::DEVICE_1807: return enumToHumanString((PciSubDevice14E41807)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice14E4::DEVICE_1808: return enumToHumanString((PciSubDevice14E41808)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice14E4::DEVICE_1809: return enumToHumanString((PciSubDevice14E41809)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14E4::DEVICE_2711: return "Unknown device";
         case PciDevice14E4::DEVICE_3352: return "Unknown device";
         case PciDevice14E4::DEVICE_3360: return "Unknown device";

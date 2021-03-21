@@ -12,7 +12,7 @@ class TrackingComboBox: public QComboBox
     Q_OBJECT
 
 public:
-    explicit TrackingComboBox(QWidget *parent = 0); // TEST: NO
+    explicit TrackingComboBox(QWidget *parent = nullptr); // TEST: NO
 
 protected:
     void focusInEvent(QFocusEvent *event) override; // TEST: NO

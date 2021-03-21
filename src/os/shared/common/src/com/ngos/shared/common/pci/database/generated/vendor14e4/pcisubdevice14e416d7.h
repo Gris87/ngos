@@ -13,7 +13,6 @@
 enum class PciSubDevice14E416D7: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_14E41202 = 0x14E41202,
     SUBDEVICE_14E41402 = 0x14E41402,
     SUBDEVICE_14E41404 = 0x14E41404,
     SUBDEVICE_14E44140 = 0x14E44140,
@@ -33,7 +32,6 @@ inline const char8* enumToString(PciSubDevice14E416D7 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice14E416D7::NONE:               return "NONE";
-        case PciSubDevice14E416D7::SUBDEVICE_14E41202: return "SUBDEVICE_14E41202";
         case PciSubDevice14E416D7::SUBDEVICE_14E41402: return "SUBDEVICE_14E41402";
         case PciSubDevice14E416D7::SUBDEVICE_14E41404: return "SUBDEVICE_14E41404";
         case PciSubDevice14E416D7::SUBDEVICE_14E44140: return "SUBDEVICE_14E44140";
@@ -70,7 +68,6 @@ inline const char8* enumToHumanString(PciSubDevice14E416D7 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice14E416D7::SUBDEVICE_14E41202: return "BCM957412M4122C OCP 1x25G Type1 wRoCE";
         case PciSubDevice14E416D7::SUBDEVICE_14E41402: return "BCM957414A4142CC 10Gb/25Gb Ethernet PCIe";
         case PciSubDevice14E416D7::SUBDEVICE_14E41404: return "BCM957414M4142C OCP 2x25G Type1 wRoCE";
         case PciSubDevice14E416D7::SUBDEVICE_14E44140: return "NetXtreme E-Series Advanced Dual-port 25Gb SFP28 Network Daughter Card";

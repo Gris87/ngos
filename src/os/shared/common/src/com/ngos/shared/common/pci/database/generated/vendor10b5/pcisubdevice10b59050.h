@@ -153,7 +153,7 @@ inline const char8* enumToHumanString(PciSubDevice10B59050 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10B59050::SUBDEVICE_10B51067: return "IXXAT CAN i165";
-        case PciSubDevice10B59050::SUBDEVICE_10B5114E: return "Wasco WITIO PCi168extended";
+        case PciSubDevice10B59050::SUBDEVICE_10B5114E: return "Wasco WITIO PCI168extended";
         case PciSubDevice10B59050::SUBDEVICE_10B51169: return "Wasco OPTOIO32standard 32 digital in, 32 digital out";
         case PciSubDevice10B59050::SUBDEVICE_10B51172: return "IK220 (Heidenhain)";
         case PciSubDevice10B59050::SUBDEVICE_10B52036: return "SatPak GPS";

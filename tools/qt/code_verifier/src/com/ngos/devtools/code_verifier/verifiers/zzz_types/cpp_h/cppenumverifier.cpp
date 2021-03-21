@@ -483,7 +483,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             else
                             {
                                 if (
-                                    valuesNumeric.length() == 0
+                                    valuesNumeric.isEmpty()
                                     ||
                                     (
                                      valuesNumeric.first() != '0'

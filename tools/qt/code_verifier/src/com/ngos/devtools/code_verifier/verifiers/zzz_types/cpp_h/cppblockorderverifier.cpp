@@ -128,7 +128,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
 
         if (currentBlockType != blockType)
         {
-            if (currentBlock.length() > 0)
+            if (!currentBlock.isEmpty())
             {
                 blocks.append(currentBlock);
                 blockStarts.append(currentBlockStart);
@@ -147,7 +147,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
         }
     }
 
-    if (currentBlock.length() > 0)
+    if (!currentBlock.isEmpty())
     {
         blocks.append(currentBlock);
         blockStarts.append(currentBlockStart);
@@ -161,7 +161,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
         QStringList block = blocks.at(i - 1);
 
         while (
-               block.length() // block.length() > 0
+               !block.isEmpty()
                &&
                (
                 block.constLast().startsWith("//")

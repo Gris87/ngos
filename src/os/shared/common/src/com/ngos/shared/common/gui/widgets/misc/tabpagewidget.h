@@ -10,7 +10,7 @@
 class TabPageWidget: public WrapperWidget
 {
 public:
-    TabPageWidget(Widget *parent = 0); // TEST: NO
+    TabPageWidget(Widget *parent = nullptr); // TEST: NO
     ~TabPageWidget(); // TEST: NO
 };
 

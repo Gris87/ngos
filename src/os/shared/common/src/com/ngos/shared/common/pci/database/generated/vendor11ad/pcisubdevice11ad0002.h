@@ -72,7 +72,7 @@ inline const char8* enumToHumanString(PciSubDevice11AD0002 subDevice) // TEST: N
         case PciSubDevice11AD0002::SUBDEVICE_11AD0003: return "LNE100TX";
         case PciSubDevice11AD0002::SUBDEVICE_11ADF003: return "LNE100TX";
         case PciSubDevice11AD0002::SUBDEVICE_11ADFFFF: return "LNE100TX";
-        case PciSubDevice11AD0002::SUBDEVICE_1385F004: return "FA310TX";
+        case PciSubDevice11AD0002::SUBDEVICE_1385F004: return "FA310/TX LAN 10/100 PCI Ethernet Adapter";
         case PciSubDevice11AD0002::SUBDEVICE_2646F002: return "KNE110TX EtheRx Fast Ethernet";
 
         default: return "Unknown device";

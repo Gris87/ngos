@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice1011000F subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1011000F::SUBDEVICE_1011DEF1: return "FDDI controller (DEFPA)";
-        case PciSubDevice1011000F::SUBDEVICE_103CDEF1: return "FDDI controller (3X-DEFPA)";
+        case PciSubDevice1011000F::SUBDEVICE_1011DEF1: return "FDDIcontroller/PCI (DEFPA)";
+        case PciSubDevice1011000F::SUBDEVICE_103CDEF1: return "FDDIcontroller/PCI (3X-DEFPA)";
 
         default: return "Unknown device";
     }

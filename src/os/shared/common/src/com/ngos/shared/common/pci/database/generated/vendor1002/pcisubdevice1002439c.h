@@ -17,7 +17,8 @@ enum class PciSubDevice1002439C: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10192120 = 0x10192120,
     SUBDEVICE_103C1609 = 0x103C1609,
     SUBDEVICE_104382EF = 0x104382EF,
-    SUBDEVICE_105B0E13 = 0x105B0E13
+    SUBDEVICE_105B0E13 = 0x105B0E13,
+    SUBDEVICE_14627596 = 0x14627596
 };
 
 
@@ -36,6 +37,7 @@ inline const char8* enumToString(PciSubDevice1002439C subDevice) // TEST: NO
         case PciSubDevice1002439C::SUBDEVICE_103C1609: return "SUBDEVICE_103C1609";
         case PciSubDevice1002439C::SUBDEVICE_104382EF: return "SUBDEVICE_104382EF";
         case PciSubDevice1002439C::SUBDEVICE_105B0E13: return "SUBDEVICE_105B0E13";
+        case PciSubDevice1002439C::SUBDEVICE_14627596: return "SUBDEVICE_14627596";
 
         default: return "UNKNOWN";
     }
@@ -71,6 +73,7 @@ inline const char8* enumToHumanString(PciSubDevice1002439C subDevice) // TEST: N
         case PciSubDevice1002439C::SUBDEVICE_103C1609: return "ProLiant MicroServer N36L";
         case PciSubDevice1002439C::SUBDEVICE_104382EF: return "M3A78-EH Motherboard";
         case PciSubDevice1002439C::SUBDEVICE_105B0E13: return "N15235/A74MX mainboard / AMD SB700";
+        case PciSubDevice1002439C::SUBDEVICE_14627596: return "760GM-E51(MS-7596) Motherboard";
 
         default: return "Unknown device";
     }

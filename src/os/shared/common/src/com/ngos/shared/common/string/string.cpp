@@ -47,8 +47,8 @@ char8* strcpy(char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
 
 
 
@@ -80,8 +80,8 @@ char16* strcpy(char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
 
 
 
@@ -113,7 +113,7 @@ char8* strdup(const char8 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", nullptr);
 
 
 
@@ -133,7 +133,7 @@ char16* strdup(const char16 *str)
 {
     COMMON_LT((" | str = 0x%p", str));
 
-    COMMON_ASSERT(str, "str is null", 0);
+    COMMON_ASSERT(str, "str is null", nullptr);
 
 
 
@@ -153,8 +153,8 @@ char8* strcat(char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
 
 
 
@@ -193,8 +193,8 @@ char16* strcat(char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1, "str1 is null", 0);
-    COMMON_ASSERT(str2, "str2 is null", 0);
+    COMMON_ASSERT(str1, "str1 is null", nullptr);
+    COMMON_ASSERT(str2, "str2 is null", nullptr);
 
 
 
@@ -233,9 +233,9 @@ char8* strapp(char8 *str1, const char8 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1,       "str1 is null",    0);
-    COMMON_ASSERT(str2,       "str2 is null",    0);
-    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
+    COMMON_ASSERT(str1,       "str1 is null",    nullptr);
+    COMMON_ASSERT(str2,       "str2 is null",    nullptr);
+    COMMON_ASSERT(*str1 == 0, "str1 is invalid", nullptr);
 
 
 
@@ -267,9 +267,9 @@ char16* strapp(char16 *str1, const char16 *str2)
 {
     COMMON_LT((" | str1 = 0x%p, str2 = 0x%p", str1, str2));
 
-    COMMON_ASSERT(str1,       "str1 is null",    0);
-    COMMON_ASSERT(str2,       "str2 is null",    0);
-    COMMON_ASSERT(*str1 == 0, "str1 is invalid", 0);
+    COMMON_ASSERT(str1,       "str1 is null",    nullptr);
+    COMMON_ASSERT(str2,       "str2 is null",    nullptr);
+    COMMON_ASSERT(*str1 == 0, "str1 is invalid", nullptr);
 
 
 

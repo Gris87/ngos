@@ -19,7 +19,7 @@ typedef NgosStatus (*press_event_handler) ();
 class Widget
 {
 public:
-    Widget(Widget *parent = 0); // TEST: NO
+    Widget(Widget *parent = nullptr); // TEST: NO
     virtual ~Widget(); // TEST: NO
 
     NgosStatus update(); // TEST: NO

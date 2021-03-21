@@ -18,6 +18,7 @@ enum class PciSubDevice80869D70: u32 // Ignore CppEnumVerifier
     SUBDEVICE_102806E6 = 0x102806E6,
     SUBDEVICE_102806F3 = 0x102806F3,
     SUBDEVICE_103C8079 = 0x103C8079,
+    SUBDEVICE_17AA2247 = 0x17AA2247,
     SUBDEVICE_17AA382A = 0x17AA382A
 };
 
@@ -37,6 +38,7 @@ inline const char8* enumToString(PciSubDevice80869D70 subDevice) // TEST: NO
         case PciSubDevice80869D70::SUBDEVICE_102806E6: return "SUBDEVICE_102806E6";
         case PciSubDevice80869D70::SUBDEVICE_102806F3: return "SUBDEVICE_102806F3";
         case PciSubDevice80869D70::SUBDEVICE_103C8079: return "SUBDEVICE_103C8079";
+        case PciSubDevice80869D70::SUBDEVICE_17AA2247: return "SUBDEVICE_17AA2247";
         case PciSubDevice80869D70::SUBDEVICE_17AA382A: return "SUBDEVICE_17AA382A";
 
         default: return "UNKNOWN";
@@ -73,6 +75,7 @@ inline const char8* enumToHumanString(PciSubDevice80869D70 subDevice) // TEST: N
         case PciSubDevice80869D70::SUBDEVICE_102806E6: return "Latitude 11 5175 2-in-1";
         case PciSubDevice80869D70::SUBDEVICE_102806F3: return "Latitude 3570";
         case PciSubDevice80869D70::SUBDEVICE_103C8079: return "EliteBook 840 G3";
+        case PciSubDevice80869D70::SUBDEVICE_17AA2247: return "ThinkPad T570";
         case PciSubDevice80869D70::SUBDEVICE_17AA382A: return "B51-80 Laptop";
 
         default: return "Unknown device";

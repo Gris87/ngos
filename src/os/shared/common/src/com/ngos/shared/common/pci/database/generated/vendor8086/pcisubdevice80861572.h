@@ -28,7 +28,11 @@ enum class PciSubDevice80861572: u32 // Ignore CppEnumVerifier
     SUBDEVICE_17AA0000 = 0x17AA0000,
     SUBDEVICE_17AA4001 = 0x17AA4001,
     SUBDEVICE_17AA4002 = 0x17AA4002,
+    SUBDEVICE_193D1020 = 0x193D1020,
+    SUBDEVICE_193D1021 = 0x193D1021,
+    SUBDEVICE_193D1081 = 0x193D1081,
     SUBDEVICE_19E5D11C = 0x19E5D11C,
+    SUBDEVICE_1BD40042 = 0x1BD40042,
     SUBDEVICE_1BD40056 = 0x1BD40056,
     SUBDEVICE_80860000 = 0x80860000,
     SUBDEVICE_80860001 = 0x80860001,
@@ -83,7 +87,11 @@ inline const char8* enumToString(PciSubDevice80861572 subDevice) // TEST: NO
         case PciSubDevice80861572::SUBDEVICE_17AA0000: return "SUBDEVICE_17AA0000";
         case PciSubDevice80861572::SUBDEVICE_17AA4001: return "SUBDEVICE_17AA4001";
         case PciSubDevice80861572::SUBDEVICE_17AA4002: return "SUBDEVICE_17AA4002";
+        case PciSubDevice80861572::SUBDEVICE_193D1020: return "SUBDEVICE_193D1020";
+        case PciSubDevice80861572::SUBDEVICE_193D1021: return "SUBDEVICE_193D1021";
+        case PciSubDevice80861572::SUBDEVICE_193D1081: return "SUBDEVICE_193D1081";
         case PciSubDevice80861572::SUBDEVICE_19E5D11C: return "SUBDEVICE_19E5D11C";
+        case PciSubDevice80861572::SUBDEVICE_1BD40042: return "SUBDEVICE_1BD40042";
         case PciSubDevice80861572::SUBDEVICE_1BD40056: return "SUBDEVICE_1BD40056";
         case PciSubDevice80861572::SUBDEVICE_80860000: return "SUBDEVICE_80860000";
         case PciSubDevice80861572::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
@@ -155,7 +163,11 @@ inline const char8* enumToHumanString(PciSubDevice80861572 subDevice) // TEST: N
         case PciSubDevice80861572::SUBDEVICE_17AA0000: return "ThinkServer X710 AnyFabric for 10GbE SFP+";
         case PciSubDevice80861572::SUBDEVICE_17AA4001: return "ThinkServer X710-4 AnyFabric for 10GbE SFP+";
         case PciSubDevice80861572::SUBDEVICE_17AA4002: return "ThinkServer X710-2 AnyFabric for 10GbE SFP+";
+        case PciSubDevice80861572::SUBDEVICE_193D1020: return "NIC-ETH561F-sL-4x10G";
+        case PciSubDevice80861572::SUBDEVICE_193D1021: return "NIC-ETH561F-sL-2x10G";
+        case PciSubDevice80861572::SUBDEVICE_193D1081: return "NIC-ETH561F-3S-2P";
         case PciSubDevice80861572::SUBDEVICE_19E5D11C: return "Ethernet 2-port X710 10Gb SFP+ Adapter SP330";
+        case PciSubDevice80861572::SUBDEVICE_1BD40042: return "10G SFP+ DP EP102Fi4 Adapter";
         case PciSubDevice80861572::SUBDEVICE_1BD40056: return "Ethernet Network Adapter X710-BM2 for OCP NIC 3.0";
         case PciSubDevice80861572::SUBDEVICE_80860000: return "Ethernet Converged Network Adapter X710";
         case PciSubDevice80861572::SUBDEVICE_80860001: return "Ethernet Converged Network Adapter X710-4";

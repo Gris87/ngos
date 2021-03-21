@@ -14,7 +14,7 @@ class IntegerPowerOf2ParameterWidget: public ParameterWidget
     Q_OBJECT
 
 public:
-    explicit IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = 0); // TEST: NO
+    explicit IntegerPowerOf2ParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent = nullptr); // TEST: NO
 
     void setValue(const QString &value) override; // TEST: NO
 

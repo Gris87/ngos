@@ -40,8 +40,8 @@ private:
 template <typename T>
 ListElement<T>::ListElement(const T &data)
     : mData(data)
-    , mNext(0)
-    , mPrevious(0)
+    , mNext(nullptr)
+    , mPrevious(nullptr)
 {
     COMMON_LT((" | data = ..."));
 }

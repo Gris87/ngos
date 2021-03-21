@@ -14,7 +14,7 @@
 class ProgressBarWidget: public Widget
 {
 public:
-    ProgressBarWidget(Image *backgroundImage, Image *indicatorImage, Widget *parent = 0); // TEST: NO
+    ProgressBarWidget(Image *backgroundImage, Image *indicatorImage, Widget *parent = nullptr); // TEST: NO
     ~ProgressBarWidget(); // TEST: NO
 
     NgosStatus invalidate() override; // TEST: NO

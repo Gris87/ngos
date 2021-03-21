@@ -75,13 +75,13 @@ inline const char8* enumToHumanString(PciDevice13F6 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice13F6::DEVICE_0011: return "CMi8738";
+        case PciDevice13F6::DEVICE_0011: return "CMI8738";
         case PciDevice13F6::DEVICE_0100: return "CM8338A";
         case PciDevice13F6::DEVICE_0101: return "CM8338B";
-        case PciDevice13F6::DEVICE_0111: return "CMi8738/CMi8768 PCI Audio";
+        case PciDevice13F6::DEVICE_0111: return "CMI8738/CMI8768 PCI Audio";
         case PciDevice13F6::DEVICE_0211: return "CM8738";
         case PciDevice13F6::DEVICE_5011: return "CM8888 [Oxygen Express]";
-        case PciDevice13F6::DEVICE_8788: return "CMi8788 [Oxygen HD Audio]";
+        case PciDevice13F6::DEVICE_8788: return "CMI8788 [Oxygen HD Audio]";
 
         default: return "Unknown device";
     }

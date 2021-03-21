@@ -67,7 +67,7 @@ inline const char8* enumToHumanString(PciSubDevice80860600 subDevice) // TEST: N
         case PciSubDevice80860600::SUBDEVICE_80860136: return "SRCU31L";
         case PciSubDevice80860600::SUBDEVICE_808601AF: return "SRCZCR";
         case PciSubDevice80860600::SUBDEVICE_808601C1: return "ICP Vortex GDT8546RZ";
-        case PciSubDevice80860600::SUBDEVICE_808601F7: return "SCRu32";
+        case PciSubDevice80860600::SUBDEVICE_808601F7: return "SCRU32";
 
         default: return "Unknown device";
     }

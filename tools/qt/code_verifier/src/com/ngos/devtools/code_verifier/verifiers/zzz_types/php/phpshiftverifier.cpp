@@ -6,7 +6,7 @@
 
 PhpShiftVerifier::PhpShiftVerifier()
     : BaseCodeVerifier(CodeVerificationFileType::PHP)
-    , mShiftRegexp("(?:\\*|\\/) *(0x[0-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)")
+    , mShiftRegexp("(?:\\*|\\/) *(0x[nullptr-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)")
 {
     // Nothing
 }
@@ -61,7 +61,7 @@ bool PhpShiftVerifier::isPowerOf2(const QString &number)
 
 
 
-    return !(value & (value - 1)); // (value & (value - 1)) == 0
+    return !(value & (value - 1)); // (value & (value - 1)) == nullptr
 }
 
 

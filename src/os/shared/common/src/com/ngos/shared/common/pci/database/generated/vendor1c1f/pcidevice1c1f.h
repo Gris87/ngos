@@ -18,7 +18,8 @@ enum class PciDevice1C1F: u16 // Ignore CppEnumVerifier
     DEVICE_001A = 0x001A,
     DEVICE_001B = 0x001B,
     DEVICE_001C = 0x001C,
-    DEVICE_001D = 0x001D
+    DEVICE_001D = 0x001D,
+    DEVICE_001F = 0x001F
 };
 
 
@@ -38,6 +39,7 @@ inline const char8* enumToString(PciDevice1C1F device) // TEST: NO
         case PciDevice1C1F::DEVICE_001B: return "DEVICE_001B";
         case PciDevice1C1F::DEVICE_001C: return "DEVICE_001C";
         case PciDevice1C1F::DEVICE_001D: return "DEVICE_001D";
+        case PciDevice1C1F::DEVICE_001F: return "DEVICE_001F";
 
         default: return "UNKNOWN";
     }
@@ -74,6 +76,7 @@ inline const char8* enumToHumanString(PciDevice1C1F device) // TEST: NO
         case PciDevice1C1F::DEVICE_001B: return "FD720";
         case PciDevice1C1F::DEVICE_001C: return "FD922";
         case PciDevice1C1F::DEVICE_001D: return "Vega";
+        case PciDevice1C1F::DEVICE_001F: return "FD940";
 
         default: return "Unknown device";
     }

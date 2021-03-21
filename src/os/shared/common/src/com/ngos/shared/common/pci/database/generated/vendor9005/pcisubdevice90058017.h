@@ -60,8 +60,8 @@ inline const char8* enumToHumanString(PciSubDevice90058017 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice90058017::SUBDEVICE_90050044: return "ASC-29320ALP PCIx u320";
-        case PciSubDevice90058017::SUBDEVICE_90050045: return "ASC-29320LPE PCIe u320";
+        case PciSubDevice90058017::SUBDEVICE_90050044: return "ASC-29320ALP PCIx U320";
+        case PciSubDevice90058017::SUBDEVICE_90050045: return "ASC-29320LPE PCIe U320";
 
         default: return "Unknown device";
     }

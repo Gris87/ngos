@@ -62,7 +62,7 @@ QString SearchDependenciesThread::takeSource()
     {
         QMutexLocker lock(&sSourcesMutex);
 
-        if (sSources.size() > 0)
+        if (!sSources.isEmpty())
         {
             --sNumberOfBlockedThreads;
 

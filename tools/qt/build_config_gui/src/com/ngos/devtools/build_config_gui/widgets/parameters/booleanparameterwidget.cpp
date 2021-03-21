@@ -8,7 +8,7 @@
 
 BooleanParameterWidget::BooleanParameterWidget(const QString &id, const QHash<QString, QString> &metaInformation, QHash<QString, OptionInfo> &options, QWidget *parent)
     : ParameterWidget(id, metaInformation, options, parent)
-    , mCheckBox(0)
+    , mCheckBox(nullptr)
     , mTrueValue()
     , mFalseValue()
     , mTrueDescription()

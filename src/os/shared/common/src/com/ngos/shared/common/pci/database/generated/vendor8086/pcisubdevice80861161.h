@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice80861161 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice80861161::SUBDEVICE_80861161: return "82806AA PCi64 Hub APIC";
+        case PciSubDevice80861161::SUBDEVICE_80861161: return "82806AA PCI64 Hub APIC";
 
         default: return "Unknown device";
     }

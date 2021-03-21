@@ -19,7 +19,7 @@ NgosStatus testCountEntry(DmiEntryHeader *header)
 {
     UEFI_LT((" | header = 0x%p", header));
 
-    UEFI_ASSERT(header, "header is null", NgosStatus::ASSERTION);
+    UEFI_ASSERT(header != nullptr, "header is null", NgosStatus::ASSERTION);
 
 
 

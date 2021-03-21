@@ -23,7 +23,7 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
 
-    *image = 0;
+    *image = nullptr;
 
 
 
@@ -97,9 +97,9 @@ NgosStatus Bmp::loadImage(u8 *data, u64 size, Image **image)
 
 
     if (
-        !width // width == 0
+        width == 0
         ||
-        !height // height == 0
+        height == 0
         ||
         width > 0xFFFF
         ||

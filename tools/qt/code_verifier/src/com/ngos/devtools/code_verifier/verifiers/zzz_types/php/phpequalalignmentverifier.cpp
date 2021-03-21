@@ -40,7 +40,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             if (!match.hasMatch())
             {
-                if (ranges.length() > 0)
+                if (!ranges.isEmpty())
                 {
                     for (qint64 j = 1; j < ranges.length(); ++j)
                     {

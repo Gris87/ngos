@@ -45,7 +45,7 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
         EARLY_TEST_ASSERT(memberHeader->signature         == GZIP_MEMBER_HEADER_SIGNATURE,             NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->compressionMethod == GzipCompressionMethod::DEFLATE,           NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->flags             == FLAGS(GzipMemberFlag::NONE),              NgosStatus::ASSERTION);
-        EARLY_TEST_ASSERT(memberHeader->modificationTime  == 0,                                        NgosStatus::ASSERTION);
+        EARLY_TEST_ASSERT(memberHeader->modificationTime  == nullptr,                                        NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->extraFlags        == FLAGS(GzipMemberExtraFlag::DEFLATE_SLOW), NgosStatus::ASSERTION);
         EARLY_TEST_ASSERT(memberHeader->operatingSystem   == GzipOperatingSystem::UNIX,                NgosStatus::ASSERTION);
     }
@@ -56,8 +56,8 @@ NgosStatus decompress(u8 *compressedAddress, u8 *decompressedAddress, u64 expect
 
 
 
-    u64 compressedSize   = 0;
-    u64 uncompressedSize = 0;
+    u64 compressedSize   = nullptr;
+    u64 uncompressedSize = nullptr;
 
 
 

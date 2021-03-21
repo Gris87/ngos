@@ -65,7 +65,7 @@ inline const char8* enumToHumanString(PciDevice1DE1 device) // TEST: NO
     switch (device)
     {
         case PciDevice1DE1::DEVICE_0391: return "TRM-S1040 [DC-315 / DC-395 series]";
-        case PciDevice1DE1::DEVICE_2020: return "DC-390";
+        case PciDevice1DE1::DEVICE_2020: return "DC-390 Series SCSI Adapter [AMD Am53C974]";
         case PciDevice1DE1::DEVICE_690C: return "690c";
         case PciDevice1DE1::DEVICE_DC29: return "DC290";
 

@@ -12,7 +12,7 @@ class TrackingLineEdit: public QLineEdit
     Q_OBJECT
 
 public:
-    explicit TrackingLineEdit(const QString &contents, QWidget *parent = 0); // TEST: NO
+    explicit TrackingLineEdit(const QString &contents, QWidget *parent = nullptr); // TEST: NO
 
 protected:
     void focusInEvent(QFocusEvent *event) override; // TEST: NO

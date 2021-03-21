@@ -130,7 +130,7 @@ NgosStatus TestResults::summary()
 
 
 
-    return !mFailed ? NgosStatus::OK : NgosStatus::FAILED; // mFailed == 0
+    return mFailed == 0 ? NgosStatus::OK : NgosStatus::FAILED;
 }
 
 

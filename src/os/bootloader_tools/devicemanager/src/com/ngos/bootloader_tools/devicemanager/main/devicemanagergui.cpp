@@ -524,7 +524,7 @@ NgosStatus DeviceManagerGUI::fillDevicesTreeForPciChildren(TreeNodeWidget *nodeW
 
         const ArrayList<DeviceManagerEntryPCI *>& children = entry->getChildren();
 
-        if (children.getSize() > 0)
+        if (!children.isEmpty())
         {
             UEFI_ASSERT_EXECUTION(fillDevicesTreeForPciChildren(entryNodeWidget, iconImage, children, toolButtonNormalImage, toolButtonHoverImage, toolButtonPressedImage, toolButtonNormalResizedImage, toolButtonHoverResizedImage, toolButtonPressedResizedImage, collapsedImage, expandedImage), NgosStatus::ASSERTION);
         }

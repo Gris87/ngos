@@ -3459,7 +3459,7 @@ NgosStatus MemoryTestGUI::generateWaitEventList()
 
     for (i64 i = eventId; i < sWaitEventsCount; ++i)
     {
-        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, 0, 0, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+        UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::NONE, UefiTpl::NONE, nullptr, nullptr, &sWaitEvents[i]), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
         UEFI_LVV(("Created event(0x%p) for processor", sWaitEvents[i]));
     }
 
@@ -3825,7 +3825,7 @@ NgosStatus MemoryTestGUI::enableTimerEvent()
 
 
 
-    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, 0, 0, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(UEFI::createEvent(UefiEventType::TIMER, UefiTpl::NONE, nullptr, nullptr, &sTimerEvent), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
     UEFI_LVV(("Created timer event(0x%p)", sTimerEvent));
 
 
@@ -4233,7 +4233,7 @@ NgosStatus MemoryTestGUI::onTestModeButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(!sTestButtonPages.isEmpty() ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
 
         case UefiInputKeyScanCode::RIGHT:
         {
@@ -4264,7 +4264,7 @@ NgosStatus MemoryTestGUI::onTestModeButtonKeyboardEvent(const UefiInputKey &key)
                 return GUI::setFocusedWidget(sTestAllButton);
             }
 
-            return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.first()->first() : (Widget *)sRebootButton);
+            return GUI::setFocusedWidget(!sTestButtonPages.isEmpty() ? (Widget *)sTestButtonPages.first()->first() : (Widget *)sRebootButton);
         }
         break;
 
@@ -4289,7 +4289,7 @@ NgosStatus MemoryTestGUI::onTestAllButtonKeyboardEvent(const UefiInputKey &key)
     switch (key.scanCode)
     {
         case UefiInputKeyScanCode::UP:   return GUI::setFocusedWidget(sTestTabButton);
-        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
+        case UefiInputKeyScanCode::DOWN: return GUI::setFocusedWidget(!sTestButtonPages.isEmpty() ? (Widget *)sTestButtonPages.at(sTestCurrentPage)->first() : (Widget *)sRebootButton);
         case UefiInputKeyScanCode::LEFT: return GUI::setFocusedWidget(sTestModeButton);
 
         default:
@@ -4314,7 +4314,7 @@ NgosStatus MemoryTestGUI::onTestAllButtonKeyboardEvent(const UefiInputKey &key)
                 UEFI_ASSERT_EXECUTION(showFirstTestPage(), NgosStatus::ASSERTION);
             }
 
-            return GUI::setFocusedWidget(sTestButtonPages.getSize() > 0 ? (Widget *)sTestButtonPages.first()->first() : (Widget *)sRebootButton);
+            return GUI::setFocusedWidget(!sTestButtonPages.isEmpty() ? (Widget *)sTestButtonPages.first()->first() : (Widget *)sRebootButton);
         }
         break;
 

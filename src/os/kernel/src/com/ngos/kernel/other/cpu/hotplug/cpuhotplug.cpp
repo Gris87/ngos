@@ -64,7 +64,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
     {
         for (i64 i = (i64)CpuHotplugState::BP_PREPARE_DYNAMIC; i <= (i64)CpuHotplugState::BP_PREPARE_DYNAMIC_END; ++i)
         {
-            if (sSteps[i].name == 0)
+            if (sSteps[i].name == nullptr)
             {
                 *res = (CpuHotplugState)i;
 
@@ -77,7 +77,7 @@ NgosStatus CpuHotplug::allocateDynamicState(CpuHotplugState state, CpuHotplugSta
     {
         for (i64 i = (i64)CpuHotplugState::AP_ONLINE_DYNAMIC; i <= (i64)CpuHotplugState::AP_ONLINE_DYNAMIC_END; ++i)
         {
-            if (sSteps[i].name == 0)
+            if (sSteps[i].name == nullptr)
             {
                 *res = (CpuHotplugState)i;
 

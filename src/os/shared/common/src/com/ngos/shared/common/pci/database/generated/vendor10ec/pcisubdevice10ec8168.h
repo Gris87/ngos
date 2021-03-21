@@ -18,6 +18,7 @@ enum class PciSubDevice10EC8168: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10280283 = 0x10280283,
     SUBDEVICE_102804B2 = 0x102804B2,
     SUBDEVICE_102804DA = 0x102804DA,
+    SUBDEVICE_102805D7 = 0x102805D7,
     SUBDEVICE_102806F2 = 0x102806F2,
     SUBDEVICE_102806F3 = 0x102806F3,
     SUBDEVICE_10280869 = 0x10280869,
@@ -74,6 +75,7 @@ inline const char8* enumToString(PciSubDevice10EC8168 subDevice) // TEST: NO
         case PciSubDevice10EC8168::SUBDEVICE_10280283: return "SUBDEVICE_10280283";
         case PciSubDevice10EC8168::SUBDEVICE_102804B2: return "SUBDEVICE_102804B2";
         case PciSubDevice10EC8168::SUBDEVICE_102804DA: return "SUBDEVICE_102804DA";
+        case PciSubDevice10EC8168::SUBDEVICE_102805D7: return "SUBDEVICE_102805D7";
         case PciSubDevice10EC8168::SUBDEVICE_102806F2: return "SUBDEVICE_102806F2";
         case PciSubDevice10EC8168::SUBDEVICE_102806F3: return "SUBDEVICE_102806F3";
         case PciSubDevice10EC8168::SUBDEVICE_10280869: return "SUBDEVICE_10280869";
@@ -147,6 +149,7 @@ inline const char8* enumToHumanString(PciSubDevice10EC8168 subDevice) // TEST: N
         case PciSubDevice10EC8168::SUBDEVICE_10280283: return "Vostro 220";
         case PciSubDevice10EC8168::SUBDEVICE_102804B2: return "Vostro 3350";
         case PciSubDevice10EC8168::SUBDEVICE_102804DA: return "Vostro 3750";
+        case PciSubDevice10EC8168::SUBDEVICE_102805D7: return "Alienware X51 R2";
         case PciSubDevice10EC8168::SUBDEVICE_102806F2: return "Latitude 3470";
         case PciSubDevice10EC8168::SUBDEVICE_102806F3: return "Latitude 3570";
         case PciSubDevice10EC8168::SUBDEVICE_10280869: return "Vostro 3470";

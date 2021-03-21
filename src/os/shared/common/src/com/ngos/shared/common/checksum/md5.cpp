@@ -127,8 +127,8 @@ Md5Hash MD5::md5(u8 *data, u64 length)
 {
     COMMON_LT((" | data = 0x%p, length = %u", data, length));
 
-    COMMON_ASSERT(data,       "data is null",   0);
-    COMMON_ASSERT(length > 0, "length is zero", 0);
+    COMMON_ASSERT(data,       "data is null",   nullptr);
+    COMMON_ASSERT(length > 0, "length is zero", nullptr);
 
 
 

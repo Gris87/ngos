@@ -74,15 +74,15 @@ inline const char8* enumToHumanString(PciSubDevice12EB0003 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice12EB0003::SUBDEVICE_104D8049: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_104D8077: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_109F1000: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_12EB0003: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14626780: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42073: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42091: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42104: return "Au8810 Vortex Digital Audio Processor";
-        case PciSubDevice12EB0003::SUBDEVICE_14A42106: return "Au8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_104D8049: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_104D8077: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_109F1000: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_12EB0003: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14626780: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42073: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42091: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42104: return "AU8810 Vortex Digital Audio Processor";
+        case PciSubDevice12EB0003::SUBDEVICE_14A42106: return "AU8810 Vortex Digital Audio Processor";
 
         default: return "Unknown device";
     }

@@ -227,7 +227,7 @@ inline const char8* enumToHumanString(PciDevice1402 device) // TEST: NO
         case PciDevice1402::DEVICE_1608: return "ME-1600/8U";
         case PciDevice1402::DEVICE_160C: return "ME-1600/12U";
         case PciDevice1402::DEVICE_160F: return "ME-1600/16U";
-        case PciDevice1402::DEVICE_168F: return "ME-1600/16u8I";
+        case PciDevice1402::DEVICE_168F: return "ME-1600/16U8I";
         case PciDevice1402::DEVICE_4610: return "ME-4610";
         case PciDevice1402::DEVICE_4650: return "ME-4650";
         case PciDevice1402::DEVICE_4660: return "ME-4660";

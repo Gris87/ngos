@@ -16,6 +16,7 @@ enum class PciSubDevice10000072: u32 // Ignore CppEnumVerifier
     SUBDEVICE_10003040 = 0x10003040,
     SUBDEVICE_10003080 = 0x10003080,
     SUBDEVICE_100030B0 = 0x100030B0,
+    SUBDEVICE_101403CA = 0x101403CA,
     SUBDEVICE_10281F1C = 0x10281F1C,
     SUBDEVICE_10281F1D = 0x10281F1D,
     SUBDEVICE_10281F1E = 0x10281F1E,
@@ -45,6 +46,7 @@ inline const char8* enumToString(PciSubDevice10000072 subDevice) // TEST: NO
         case PciSubDevice10000072::SUBDEVICE_10003040: return "SUBDEVICE_10003040";
         case PciSubDevice10000072::SUBDEVICE_10003080: return "SUBDEVICE_10003080";
         case PciSubDevice10000072::SUBDEVICE_100030B0: return "SUBDEVICE_100030B0";
+        case PciSubDevice10000072::SUBDEVICE_101403CA: return "SUBDEVICE_101403CA";
         case PciSubDevice10000072::SUBDEVICE_10281F1C: return "SUBDEVICE_10281F1C";
         case PciSubDevice10000072::SUBDEVICE_10281F1D: return "SUBDEVICE_10281F1D";
         case PciSubDevice10000072::SUBDEVICE_10281F1E: return "SUBDEVICE_10281F1E";
@@ -91,6 +93,7 @@ inline const char8* enumToHumanString(PciSubDevice10000072 subDevice) // TEST: N
         case PciSubDevice10000072::SUBDEVICE_10003040: return "9210-8i";
         case PciSubDevice10000072::SUBDEVICE_10003080: return "9200-8e [LSI SAS 6Gb/s SAS/SATA PCIe x8 External HBA]";
         case PciSubDevice10000072::SUBDEVICE_100030B0: return "9200-8e [LSI SAS 6Gb/s SAS/SATA PCIe x8 External HBA]";
+        case PciSubDevice10000072::SUBDEVICE_101403CA: return "IBM 6Gb SAS HBA [9212-4i4e]";
         case PciSubDevice10000072::SUBDEVICE_10281F1C: return "6Gbps SAS HBA Adapter";
         case PciSubDevice10000072::SUBDEVICE_10281F1D: return "PERC H200 Adapter";
         case PciSubDevice10000072::SUBDEVICE_10281F1E: return "PERC H200 Integrated";

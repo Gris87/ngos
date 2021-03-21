@@ -74,7 +74,7 @@ inline const char8* enumToHumanString(PciDevice1896 device) // TEST: NO
     {
         case PciDevice1896::DEVICE_4202: return "MIport 3PCIU2 2-port Serial";
         case PciDevice1896::DEVICE_4204: return "MIport 3PCIU4 4-port Serial";
-        case PciDevice1896::DEVICE_4208: return "MIport 3PCIu8 8-port Serial";
+        case PciDevice1896::DEVICE_4208: return "MIport 3PCIU8 8-port Serial";
         case PciDevice1896::DEVICE_4211: return "MIport 3PCIOU1 1-port Isolated Serial";
         case PciDevice1896::DEVICE_4212: return "MIport 3PCIOU2 2-port Isolated Serial";
         case PciDevice1896::DEVICE_4214: return "MIport 3PCIOU4 4-port Isolated Serial";

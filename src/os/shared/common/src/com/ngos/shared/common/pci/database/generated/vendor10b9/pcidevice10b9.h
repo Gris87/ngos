@@ -236,8 +236,8 @@ inline const char8* enumToHumanString(PciDevice10B9 device) // TEST: NO
 
     switch (device)
     {
-        case PciDevice10B9::DEVICE_0101: return "CMi8338/C3DX PCI Audio Device";
-        case PciDevice10B9::DEVICE_0111: return "C-Media CMi8738/C3DX Audio Device (OEM)";
+        case PciDevice10B9::DEVICE_0101: return "CMI8338/C3DX PCI Audio Device";
+        case PciDevice10B9::DEVICE_0111: return "C-Media CMI8738/C3DX Audio Device (OEM)";
         case PciDevice10B9::DEVICE_0780: return "Multi-IO Card";
         case PciDevice10B9::DEVICE_0782: return "Multi-IO Card";
         case PciDevice10B9::DEVICE_1435: return "M1435";

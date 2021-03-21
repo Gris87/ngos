@@ -210,7 +210,7 @@ NgosStatus UEFI::noMorePrint()
 
 
 
-    sTextOutput = 0;
+    sTextOutput = nullptr;
 
 
 
@@ -331,7 +331,7 @@ UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
 {
     UEFI_LT((" | handle = 0x%p", handle));
 
-    UEFI_ASSERT(handle, "handle is null", 0);
+    UEFI_ASSERT(handle, "handle is null", nullptr);
 
 
 
@@ -340,7 +340,7 @@ UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
 
     if (handleProtocol(handle, &protocol, (void **)&fs) != UefiStatus::SUCCESS)
     {
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_SIMPLE_FILE_SYSTEM_PROTOCOL", handle, fs));
@@ -351,7 +351,7 @@ UefiFileProtocol* UEFI::openVolume(uefi_handle handle)
 
     if (fs->openVolume(fs, &res) != UefiStatus::SUCCESS)
     {
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Openned volume(0x%p) for handle(0x%p)", res, handle));
@@ -388,7 +388,7 @@ char16* UEFI::parentDirectory(const char16 *path)
 {
     UEFI_LT((" | path = %ls", path));
 
-    UEFI_ASSERT(path, "path is null", 0);
+    UEFI_ASSERT(path, "path is null", nullptr);
 
 
 
@@ -405,7 +405,7 @@ char16* UEFI::parentDirectory(const char16 *path)
         ++str;
     }
 
-    UEFI_TEST_ASSERT(size > 0, 0);
+    UEFI_TEST_ASSERT(size > 0, nullptr);
 
     size = size - (u64)path + sizeof(char16);
 
@@ -417,7 +417,7 @@ char16* UEFI::parentDirectory(const char16 *path)
     {
         UEFI_LF(("Failed to allocate pool(%u) for string", size));
 
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, size));
@@ -436,18 +436,18 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
-    UEFI_ASSERT(path, "path is null", 0);
+    UEFI_ASSERT(path, "path is null", nullptr);
 
 
 
     Guid                          protocol                 = UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
-    UefiDevicePathToTextProtocol *devicePathToTextProtocol = 0;
+    UefiDevicePathToTextProtocol *devicePathToTextProtocol = nullptr;
 
-    if (locateProtocol(&protocol, 0, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
+    if (locateProtocol(&protocol, nullptr, (void **)&devicePathToTextProtocol) != UefiStatus::SUCCESS)
     {
         UEFI_LF(("Failed to locate protocol for UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL"));
 
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Located(0x%p) protocol for UEFI_DEVICE_PATH_TO_TEXT_PROTOCOL", devicePathToTextProtocol));
@@ -460,7 +460,7 @@ char16* UEFI::devicePathToString(UefiDevicePath *path)
     {
         UEFI_LF(("Failed to allocate pool(0x%p) for string", res));
 
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Allocated pool(0x%p, %u) for string", res, (strlen(res) + 1) * sizeof(char16)));
@@ -474,7 +474,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
 {
     UEFI_LT((" | handle = 0x%p", handle));
 
-    UEFI_ASSERT(handle, "handle is null", 0);
+    UEFI_ASSERT(handle, "handle is null", nullptr);
 
 
 
@@ -485,7 +485,7 @@ UefiDevicePath* UEFI::devicePathFromHandle(uefi_handle handle)
     {
         UEFI_LF(("Failed to handle(0x%p) protocol for UEFI_DEVICE_PATH_PROTOCOL", handle));
 
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Handled(0x%p) protocol(0x%p) for UEFI_DEVICE_PATH_PROTOCOL", handle, res));
@@ -499,16 +499,16 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
 {
     UEFI_LT((" | device = 0x%p, fileName = 0x%p", device, fileName));
 
-    UEFI_ASSERT(device,   "device is null",   0);
-    UEFI_ASSERT(fileName, "fileName is null", 0);
+    UEFI_ASSERT(device,   "device is null",   nullptr);
+    UEFI_ASSERT(fileName, "fileName is null", nullptr);
 
 
 
     UefiDevicePath *parentDevicePath = devicePathFromHandle(device);
-    UEFI_TEST_ASSERT(parentDevicePath != 0, 0);
+    UEFI_TEST_ASSERT(parentDevicePath != nullptr, nullptr);
 
     u64 parentDevicePathSize = getDevicePathSize(parentDevicePath);
-    UEFI_TEST_ASSERT(parentDevicePathSize > 0, 0);
+    UEFI_TEST_ASSERT(parentDevicePathSize > 0, nullptr);
 
 
 
@@ -524,7 +524,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
     {
         UEFI_LF(("Failed to allocate pool(%u) for device path", size));
 
-        return 0;
+        return nullptr;
     }
 
     UEFI_LVV(("Allocated pool(0x%p, %u) for device path", res, size));
@@ -548,7 +548,7 @@ UefiDevicePath* UEFI::fileDevicePath(uefi_handle device, const char16 *fileName)
 
 
 
-    UEFI_ASSERT_EXECUTION(setDevicePathEndNode((UefiDevicePath *)((u64)res + size - sizeof(UefiDevicePath))), 0);
+    UEFI_ASSERT_EXECUTION(setDevicePathEndNode((UefiDevicePath *)((u64)res + size - sizeof(UefiDevicePath))), nullptr);
 
 
 
@@ -559,7 +559,7 @@ UefiDevicePath* UEFI::nextDevicePathNode(UefiDevicePath *path)
 {
     UEFI_LT((" | path = 0x%p", path));
 
-    UEFI_ASSERT(path, "path is null", 0);
+    UEFI_ASSERT(path, "path is null", nullptr);
 
 
 
@@ -846,7 +846,7 @@ UefiStatus UEFI::getMemoryMap(UefiBootMemoryMap *map)
 
 
 
-    UefiMemoryDescriptor *memoryDescriptor = 0;
+    UefiMemoryDescriptor *memoryDescriptor = nullptr;
 
     *map->descriptorSize = sizeof(UefiMemoryDescriptor);
     *map->memoryMapSize  = *map->descriptorSize * 64;
@@ -971,8 +971,8 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
     bootMemoryMap.memoryMap         = &memoryMap;
     bootMemoryMap.memoryMapSize     = &memoryMapSize;
     bootMemoryMap.descriptorSize    = &descriptorSize;
-    bootMemoryMap.descriptorVersion = 0;
-    bootMemoryMap.mapKey            = 0;
+    bootMemoryMap.descriptorVersion = nullptr;
+    bootMemoryMap.mapKey            = nullptr;
     bootMemoryMap.bufferSize        = &bufferSize;
 
 
@@ -1020,7 +1020,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    *address = 0;
+    *address = nullptr;
 
 
 
@@ -1121,7 +1121,7 @@ UefiStatus UEFI::lowAlloc(u64 size, u64 align, void **address)
 
 
 
-    if (*address == 0)
+    if (*address == nullptr)
     {
         UEFI_LF(("Failed to find valid memory descriptor"));
 
@@ -1255,7 +1255,7 @@ NgosStatus UEFI::disableWatchdogTimer()
 
 
 
-    UEFI_ASSERT_EXECUTION(sBootServices->setWatchdogTimer(0, 0, 0, 0), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
+    UEFI_ASSERT_EXECUTION(sBootServices->setWatchdogTimer(0, 0, 0, nullptr), UefiStatus, UefiStatus::SUCCESS, NgosStatus::ASSERTION);
 
 
 

@@ -587,7 +587,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
 
 
-        CategoryTreeWidgetItem *categoryItem = 0;
+        CategoryTreeWidgetItem *categoryItem = nullptr;
 
         for (qint64 j = 0; j < ui->categoriesTreeWidget->topLevelItemCount(); ++j)
         {
@@ -601,7 +601,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
             }
         }
 
-        if (categoryItem == 0)
+        if (categoryItem == nullptr)
         {
             categoryItem = new CategoryTreeWidgetItem(topCategory, this);
 
@@ -618,7 +618,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
 
 
-            CategoryTreeWidgetItem *subCategoryItem = 0;
+            CategoryTreeWidgetItem *subCategoryItem = nullptr;
 
             for (qint64 k = 0; k < categoryItem->childCount(); ++k)
             {
@@ -632,7 +632,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
                 }
             }
 
-            if (subCategoryItem == 0)
+            if (subCategoryItem == nullptr)
             {
                 subCategoryItem = new CategoryTreeWidgetItem(subCategory, this);
 
@@ -648,7 +648,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
 
 
-        ParameterWidget *parameterWidget = 0;
+        ParameterWidget *parameterWidget = nullptr;
 
         if (metaType == "Boolean")
         {
