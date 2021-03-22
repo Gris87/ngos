@@ -15,7 +15,7 @@
 
 
 
-#define ZERO_SIZE nullptr
+#define ZERO_SIZE 0
 
 #define DISK_ACCESS_RETRIES 150
 #define DISK_ACCESS_TIMEOUT 100
@@ -191,7 +191,7 @@ QString getLogicalName(BurnThread *thread)
 
 
         size_t len          = strlen(volumeName);
-        volumeName[len - 1] = nullptr;
+        volumeName[len - 1] = 0;
 
 
 
@@ -269,8 +269,8 @@ HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Acc
     {
         // Ignore CppAlignmentVerifier [BEGIN]
         res = CreateFileA(path.toLatin1().data()
-                            , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : nullptr)
-                            , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : nullptr)
+                            , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
+                            , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)
                             , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
         // Ignore CppAlignmentVerifier [END]
 
@@ -294,7 +294,7 @@ HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Acc
 
 
 
-        if (i == nullptr)
+        if (i == 0)
         {
             qDebug() << "Waiting for access to disk";
         }
@@ -471,7 +471,7 @@ QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfS
 
 
     DWORD size = numberOfSectors * SECTOR_SIZE;
-    QByteArray buffer(size, nullptr);
+    QByteArray buffer(size, 0);
 
     if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))
     {
@@ -520,7 +520,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 QChar getUnusedDiskLetter()
 {
-    QChar res = nullptr;
+    QChar res = 0;
 
 
 
@@ -569,15 +569,15 @@ QString partitionSizeHumanReadable(quint64 partitionSize)
 {
     if (partitionSize >= 1000000000000)
     {
-        return QString::number((quint64)floor(partitionSize / 1000000000000.nullptr)) + "TB";
+        return QString::number((quint64)floor(partitionSize / 1000000000000.0)) + "TB";
     }
 
     if (partitionSize >= 1000000000)
     {
-        return QString::number((quint64)floor(partitionSize / 1000000000.nullptr)) + "GB";
+        return QString::number((quint64)floor(partitionSize / 1000000000.0)) + "GB";
     }
 
-    return QString::number((quint64)floor(partitionSize / 1000000.nullptr)) + "MB";
+    return QString::number((quint64)floor(partitionSize / 1000000.0)) + "MB";
 }
 
 quint8 currentStep;
@@ -627,7 +627,7 @@ void unmountVolumes(BurnThread *thread, QString *targetDiskLetter)
     {
         for (qint64 i = 0; i < diskLetters.length(); ++i)
         {
-            wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', nullptr };
+            wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };
 
             thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));
 
@@ -664,7 +664,7 @@ void clearGpt(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    QByteArray buffer(SECTOR_SIZE, nullptr);
+    QByteArray buffer(SECTOR_SIZE, 0);
 
     thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));
 
@@ -710,7 +710,7 @@ void initializeDisk(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{ nullptr }} };
+    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{ 0 }} };
     DWORD       size       = sizeof(createDisk);
 
     thread->addLog(QCoreApplication::translate("BurnThread", "Initializing disk"));
@@ -740,7 +740,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    DRIVE_LAYOUT_INFORMATION_EX driveLayout = { nullptr };
+    DRIVE_LAYOUT_INFORMATION_EX driveLayout = { 0 };
 
     driveLayout.PartitionStyle = PARTITION_STYLE_GPT;
     driveLayout.PartitionCount = 1;
@@ -757,7 +757,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{ nullptr }} };
+    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{ 0 }} };
 
     CoCreateGuid(&createDisk.Gpt.DiskId);
     createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
@@ -782,7 +782,7 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
     size = sizeof(driveLayout);
 
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *)&driveLayout, size, nullptr, nullptr, &size, nullptr))
+    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *)&driveLayout, size, nullptr, 0, &size, nullptr))
     {
         qCritical() << "Could not set disk layout:" << GetLastError();
 
@@ -875,9 +875,9 @@ void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
 
 
 
-    wchar_t volumeName[MAX_PATH] = { nullptr };
-    wchar_t fsType[8]            = { nullptr };
-    wchar_t label[16]            = { nullptr };
+    wchar_t volumeName[MAX_PATH] = { 0 };
+    wchar_t fsType[8]            = { 0 };
+    wchar_t label[16]            = { 0 };
 
     getLogicalName(thread).toWCharArray(volumeName);
     QString("FAT32").toWCharArray(fsType);
@@ -949,7 +949,7 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
     for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
     {
-        originalBuffer = readSectors(diskHandle, nullptr, 1);
+        originalBuffer = readSectors(diskHandle, 0, 1);
 
         if (originalBuffer.size() == SECTOR_SIZE)
         {
@@ -989,7 +989,7 @@ void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
 
         for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
         {
-            if (writeSectors(diskHandle, nullptr, 1, buffer) == SECTOR_SIZE)
+            if (writeSectors(diskHandle, 0, 1, buffer) == SECTOR_SIZE)
             {
                 break;
             }
@@ -1154,7 +1154,7 @@ void remountVolume(BurnThread *thread, const QString &diskPath)
 
 void BurnThread::run()
 {
-    currentStep = nullptr;
+    currentStep = 0;
 
 
 

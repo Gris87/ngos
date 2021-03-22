@@ -624,7 +624,7 @@ TEST_CASES(section0, com_ngos_shared_common_string_string);
         TEST_ASSERT_EQUALS(strstr(str, "aa"),      &str[0]);
         TEST_ASSERT_EQUALS(strstr(str, "aab"),     &str[1]);
         TEST_ASSERT_EQUALS(strstr(str, "ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstr(str, "dsfggaa"),  0);
+        TEST_ASSERT_EQUALS(strstr(str, "dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstr(str, "bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -640,7 +640,7 @@ TEST_CASES(section0, com_ngos_shared_common_string_string);
         TEST_ASSERT_EQUALS(strstr(str, u"aa"),      &str[0]);
         TEST_ASSERT_EQUALS(strstr(str, u"aab"),     &str[1]);
         TEST_ASSERT_EQUALS(strstr(str, u"ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstr(str, u"dsfggaa"),  0);
+        TEST_ASSERT_EQUALS(strstr(str, u"dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstr(str, u"bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -657,7 +657,7 @@ TEST_CASES(section0, com_ngos_shared_common_string_string);
         TEST_ASSERT_EQUALS(strstri(str, "aA"),      &str[0]);
         TEST_ASSERT_EQUALS(strstri(str, "aAb"),     &str[1]);
         TEST_ASSERT_EQUALS(strstri(str, "Ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstri(str, "dsfggaa"),  0);
+        TEST_ASSERT_EQUALS(strstri(str, "dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstri(str, "bc"),      &str[4]);
     }
     TEST_CASE_END();
@@ -674,7 +674,7 @@ TEST_CASES(section0, com_ngos_shared_common_string_string);
         TEST_ASSERT_EQUALS(strstri(str, u"aA"),      &str[0]);
         TEST_ASSERT_EQUALS(strstri(str, u"aAb"),     &str[1]);
         TEST_ASSERT_EQUALS(strstri(str, u"Ab"),      &str[2]);
-        TEST_ASSERT_EQUALS(strstri(str, u"dsfggaa"),  0);
+        TEST_ASSERT_EQUALS(strstri(str, u"dsfggaa"),  nullptr);
         TEST_ASSERT_EQUALS(strstri(str, u"bc"),      &str[4]);
     }
     TEST_CASE_END();

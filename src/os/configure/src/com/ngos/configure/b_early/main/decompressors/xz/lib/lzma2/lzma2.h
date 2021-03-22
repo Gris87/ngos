@@ -48,7 +48,7 @@
 
 // Each literal coder is divided in three sections:
 // - 0x0001-0x00FF: Without match byte
-// - 0x0101-0x01FF: With match byte; match bit is nullptr
+// - 0x0101-0x01FF: With match byte; match bit is 0
 // - 0x0201-0x02FF: With match byte; match bit is 1
 //
 // Match byte is used when the previous LZMA symbol was something else than
@@ -64,8 +64,8 @@
 // Match length is encoded with 4, 5, or 10 bits.
 //
 // Length   Bits
-// 2-9      4   = Choice=nullptr + 3 bits
-// 10-17    5   = Choice=1 + Choice2=nullptr + 3 bits
+// 2-9      4   = Choice=0 + 3 bits
+// 10-17    5   = Choice=1 + Choice2=0 + 3 bits
 // 18-273   10  = Choice=1 + Choice2=1 + 8 bits
 //
 #define LEN_LOW_BITS     3
@@ -90,7 +90,7 @@
 
 // Match distances up to 127 are fully encoded using probabilities. Since
 // the highest two bits (distance slot) are always encoded using six bits,
-// the distances nullptr-3 don't need any additional bits to encode, since the
+// the distances 0-3 don't need any additional bits to encode, since the
 // distance slot itself is the same as the actual distance. DIST_MODEL_START
 // indicates the first distance slot where at least one additional bit is
 // needed.

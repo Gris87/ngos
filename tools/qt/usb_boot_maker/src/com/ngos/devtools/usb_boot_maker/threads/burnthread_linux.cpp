@@ -166,7 +166,7 @@ void createPartition(BurnThread *thread, QProcess *suProcess)
 
 
 
-    execWithSu(thread, suProcess, "sgdisk --new 1::-nullptr --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName); // Ignore CppPunctuationVerifier
+    execWithSu(thread, suProcess, "sgdisk --new 1::-0 --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName); // Ignore CppPunctuationVerifier
 }
 
 void formatPartition(BurnThread *thread, QProcess *suProcess)

@@ -15,7 +15,7 @@
 #define IMAGE_NT_OPTIONAL_HDR64_MAGIC 0x020B // 64 bit executable image
 #define IMAGE_ROM_OPTIONAL_HDR_MAGIC  0x0107 // ROM image
 
-#define IMAGE_SUBSYSTEM_UNKNOWN                  nullptr  // Unknown subsystem
+#define IMAGE_SUBSYSTEM_UNKNOWN                  0  // Unknown subsystem
 #define IMAGE_SUBSYSTEM_NATIVE                   1  // No subsystem required (device drivers and native system processes)
 #define IMAGE_SUBSYSTEM_WINDOWS_GUI              2  // Windows graphical user interface (GUI) subsystem
 #define IMAGE_SUBSYSTEM_WINDOWS_CUI              3  // Windows character-mode user interface (CUI) subsystem

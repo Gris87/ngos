@@ -21,9 +21,9 @@
 
 
 
-#define NO_FLAGS           nullptr
-#define ZERO_SIZE          nullptr
-#define MEMBER_INDEX_FIRST nullptr
+#define NO_FLAGS           0
+#define ZERO_SIZE          0
+#define MEMBER_INDEX_FIRST 0
 
 #define USB_CARD_READER_INDEX 1
 #define UASPSTOR_INDEX        4
@@ -55,7 +55,7 @@ const QStringList genericStorageDrivers = QStringList()
         << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
     ;
 
-const QRegularExpression vidPidRegExp("^.+\\\\VID_([nullptr-9a-fA-F]+)&PID_([nullptr-9a-fA-F]+)\\\\.+$");
+const QRegularExpression vidPidRegExp("^.+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+$");
 
 
 
@@ -239,7 +239,7 @@ void handleUsbHubs(const HDEVINFO &deviceInfoSet, QHash<QString, QString> *devic
 
 
 
-    DWORD memberIndex = nullptr;
+    DWORD memberIndex = 0;
 
     while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
     {
@@ -718,7 +718,7 @@ bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
     USB_NODE_CONNECTION_INFORMATION_EX connectionInfoEx;
 
     DWORD size = sizeof(connectionInfoEx);
-    memset(&connectionInfoEx, nullptr, size);
+    memset(&connectionInfoEx, 0, size);
 
     connectionInfoEx.ConnectionIndex = (ULONG)props->port;
 
@@ -727,9 +727,9 @@ bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
     if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, &connectionInfoEx, size, &connectionInfoEx, size, &size, nullptr))
     {
         if (
-            connectionInfoEx.DeviceDescriptor.idVendor // connectionInfoEx.DeviceDescriptor.idVendor != nullptr
+            connectionInfoEx.DeviceDescriptor.idVendor != 0
             ||
-            connectionInfoEx.DeviceDescriptor.idProduct // connectionInfoEx.DeviceDescriptor.idProduct != nullptr
+            connectionInfoEx.DeviceDescriptor.idProduct != 0
            )
         {
             props->vid   = connectionInfoEx.DeviceDescriptor.idVendor;
@@ -764,7 +764,7 @@ void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)
     USB_NODE_CONNECTION_INFORMATION_EX_V2 connectionInfoExV2;
 
     DWORD size = sizeof(connectionInfoExV2);
-    memset(&connectionInfoExV2, nullptr, size);
+    memset(&connectionInfoExV2, 0, size);
 
     connectionInfoExV2.ConnectionIndex              = (ULONG)props->port;
     connectionInfoExV2.Length                       = size;
@@ -818,7 +818,7 @@ void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceI
 
     if (ret == CR_SUCCESS)
     {
-        props->port = nullptr;
+        props->port = 0;
 
         DWORD size = sizeof(props->port);
         ret        = CM_Get_DevNode_Registry_Property(deviceInstance, CM_DRP_ADDRESS, nullptr, &props->port, &size, NO_FLAGS);
@@ -873,7 +873,7 @@ bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePath
         {
             if (deviceInstance != deviceInfoData.DevInst)
             {
-                while (CM_Get_Sibling(&deviceInstance, deviceInstance, nullptr) == CR_SUCCESS)
+                while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
                 {
                     if (deviceInstance == deviceInfoData.DevInst)
                     {
@@ -905,7 +905,7 @@ bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePath
             if (deviceInterfacePath == "")
             {
                 DEVINST grandparentDeviceInstance;
-                ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, nullptr);
+                ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);
 
                 if (ret == CR_SUCCESS)
                 {
@@ -1001,9 +1001,9 @@ bool checkDeviceType(UsbProperties *props)
          !props->isUSB
          ||
          (
-          !props->vid // props->vid == nullptr
+          props->vid == 0
           &&
-          !props->pid // props->pid == nullptr
+          props->pid == 0
          )
         )
        )
@@ -1028,9 +1028,9 @@ bool checkDeviceType(UsbProperties *props)
         if (
             !props->isUSB
             &&
-            !props->vid // props->vid == nullptr
+            props->vid == 0
             &&
-            !props->pid // props->pid == nullptr
+            props->pid == 0
            )
         {
             qDebug() << "    Found non-USB non-removable device";
@@ -1044,7 +1044,7 @@ bool checkDeviceType(UsbProperties *props)
 
         if (props->isLowerSpeed)
         {
-            qDebug() << "    NOTE: This device is an USB 3.nullptr device operating at lower speed...";
+            qDebug() << "    NOTE: This device is an USB 3.0 device operating at lower speed...";
         }
     }
 
@@ -1098,7 +1098,7 @@ HANDLE getDiskHandle(DWORD diskNumber)
 
 quint64 getDiskSize(DWORD diskNumber)
 {
-    quint64 res = nullptr;
+    quint64 res = 0;
 
 
 
@@ -1135,15 +1135,15 @@ QString diskSizeHumanReadable(quint64 diskSize)
 {
     if (diskSize >= 1000000000000)
     {
-        return QString::number((quint64)floor(diskSize / 1000000000000.nullptr)) + "TB";
+        return QString::number((quint64)floor(diskSize / 1000000000000.0)) + "TB";
     }
 
     if (diskSize >= 1000000000)
     {
-        return QString::number((quint64)floor(diskSize / 1000000000.nullptr)) + "GB";
+        return QString::number((quint64)floor(diskSize / 1000000000.0)) + "GB";
     }
 
-    return QString::number((quint64)floor(diskSize / 1000000.nullptr)) + "MB";
+    return QString::number((quint64)floor(diskSize / 1000000.0)) + "MB";
 }
 
 void getDiskLetters(DWORD diskNumber, char *letters)
@@ -1213,12 +1213,12 @@ void getDiskLetters(DWORD diskNumber, char *letters)
 
 
 
-    *curLetter = nullptr;
+    *curLetter = 0;
 }
 
 QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
 {
-    if (letters[0] == nullptr)
+    if (letters[0] == 0)
     {
         return "Disk " + QString::number(diskNumber);
     }
@@ -1242,7 +1242,7 @@ QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
 
 QString getDiskLabel(DWORD diskNumber, char *letters)
 {
-    if (letters[0] != nullptr)
+    if (letters[0] != 0)
     {
         QString autorunLabel;
 
@@ -1285,7 +1285,7 @@ QString getDiskLabel(DWORD diskNumber, char *letters)
 
 
         wchar_t volumeLabel[MAX_PATH];
-        wchar_t diskPath[] = { (wchar_t)letters[0], ':', '\\', nullptr };
+        wchar_t diskPath[] = { (wchar_t)letters[0], ':', '\\', 0 };
 
         if (GetVolumeInformation(diskPath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))
         {
@@ -1320,9 +1320,9 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
 
     quint64 diskSize = getDiskSize(diskNumber);
-    qDebug() << "        Disk size:" << (diskSize / 1000000.nullptr) << "MB"; // Ignore CppAlignmentVerifier
+    qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB"; // Ignore CppAlignmentVerifier
 
-    if (diskSize == nullptr)
+    if (diskSize == 0)
     {
         qCritical() << "Device without media";
 
@@ -1448,7 +1448,7 @@ void handleDiskInterfaces(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &device
 
 
 
-    DWORD memberIndex = nullptr;
+    DWORD memberIndex = 0;
 
     do
     {
@@ -1486,7 +1486,7 @@ void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash
 
 
     UsbProperties props;
-    memset(&props, nullptr, sizeof(UsbProperties));
+    memset(&props, 0, sizeof(UsbProperties));
 
 
 
@@ -1525,7 +1525,7 @@ void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHas
 
 
 
-    DWORD memberIndex = nullptr;
+    DWORD memberIndex = 0;
 
     while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
     {

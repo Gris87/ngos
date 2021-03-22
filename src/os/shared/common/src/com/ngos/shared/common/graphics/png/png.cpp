@@ -1476,7 +1476,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
             {
                 for (i64 i = 0; i < byteWidth; ++i)
                 {
-                    outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(nullptr, previousLine[i], nullptr) is always previousLine[i]
+                    outLine[i] = (inLine[i] + previousLine[i]); // paethPredictor(0, previousLine[i], 0) is always previousLine[i]
                 }
 
                 for (i64 i = byteWidth; i < bytesPerLine; ++i)
@@ -1490,7 +1490,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
 
                 for (i64 i = byteWidth; i < bytesPerLine; ++i)
                 {
-                    // paethPredictor(outLine[i - byteWidth], nullptr, nullptr) is always outLine[i - byteWidth]
+                    // paethPredictor(outLine[i - byteWidth], 0, 0) is always outLine[i - byteWidth]
                     outLine[i] = (inLine[i] + outLine[i - byteWidth]);
                 }
             }

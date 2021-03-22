@@ -955,7 +955,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
                         // Ignore CppAlignmentVerifier [BEGIN]
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
-                        assetsFile.write("    .byte   nullptr                                                                                              # Terminate file name with zero\n");
+                        assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
                         assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).length() * 2), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());

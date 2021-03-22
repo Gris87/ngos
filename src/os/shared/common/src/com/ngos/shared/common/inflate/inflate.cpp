@@ -528,7 +528,7 @@ NgosStatus decodeHuffmanBlock(InflateDecoder *decoder, InflateCode *lengthCodes,
 
 
         if (
-            code.operation
+            code.operation != 0
             &&
             (code.operation & 0xF0) == 0
            )

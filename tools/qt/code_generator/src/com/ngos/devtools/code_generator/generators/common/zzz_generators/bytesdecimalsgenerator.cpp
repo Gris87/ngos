@@ -48,7 +48,7 @@ bool BytesDecimalsGenerator::generate(const QString &path)
         else
         if (number.endsWith('0'))
         {
-            number.replace(1, 1, "\\nullptr");
+            number.replace(1, 1, "\\0");
         }
 
 

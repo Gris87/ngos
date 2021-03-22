@@ -8,7 +8,7 @@ PhpForVerifier::PhpForVerifier()
     : BaseCodeVerifier(CodeVerificationFileType::PHP)
     , mInitRegexp("^\\$(\\w) = .+$")
     , mConditionRegexp("^\\$(\\w) [<>]=? .+$")
-    , mStepRegexp("^[+-]{nullptr,2}\\$(\\w)(?: [+-]= .+)?$")
+    , mStepRegexp("^[+-]{0,2}\\$(\\w)(?: [+-]= .+)?$")
 {
     // Nothing
 }
