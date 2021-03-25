@@ -14,7 +14,7 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;USB boot maker helps user to make bootable USB flash drive ready for NGOS installation.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;a href=&quot;https://github.com/Gris87/ngos/blob/master/docs/0.%20Intro/7.%20Tools/10.%20USB%20boot%20maker/README.md&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Read more...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.ui" line="131"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/aboutdialog.ui" line="128"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -79,29 +79,29 @@
         <translation>Mounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="28"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="30"/>
         <source>Copying files to disk</source>
         <translation>Copying files to disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="34"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="43"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="36"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="45"/>
         <source>Failed to copy folder %1</source>
         <translation>Failed to copy folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="100"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="102"/>
         <source>Failed to create folder %1</source>
         <translation>Failed to create folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="59"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="125"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="61"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="127"/>
         <source>Failed to copy file %1</source>
         <translation>Failed to copy file %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="53"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="55"/>
         <source>Create autorun.inf file</source>
         <translation>Create autorun.inf file</translation>
     </message>
@@ -160,153 +160,166 @@
         <translation>About (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="134"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="154"/>
         <source>Format disk</source>
         <translation>Format disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="134"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="154"/>
         <source>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</source>
         <translation>Do you really want to format disk &quot;%1&quot;?
 All data on the device will be destroyed!</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="147"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="172"/>
         <source>Failed to create temporary directory</source>
         <translation>Failed to create temporary directory</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="196"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="234"/>
         <source>Language switched to %1</source>
         <translation>Language switched to %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="200"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="238"/>
         <source>Failed to switch language to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="216"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="259"/>
         <source>Found devices: %1</source>
         <translation>Found devices: %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="286"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="296"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="301"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="306"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="334"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="339"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="341"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="351"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="356"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="361"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="389"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="394"/>
         <source>Failed to get information about latest version from server %1: %2</source>
         <translation>Failed to get information about latest version from server %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="286"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="301"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="378"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="413"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="341"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="356"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="446"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="487"/>
         <source>version field absent</source>
         <translation>version field absent</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="296"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="403"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="351"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="477"/>
         <source>id field absent</source>
         <translation>id field absent</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="306"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="423"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="361"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="497"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="616"/>
         <source>hash field absent</source>
         <translation>hash field absent</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="322"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="379"/>
         <source>Response received from server %1 in %2 ms. Version: %3</source>
         <translation>Response received from server %1 in %2 ms. Version: %3</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="378"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="388"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="403"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="413"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="423"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="544"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="554"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="446"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="456"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="477"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="487"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="497"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="596"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="606"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="616"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="649"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="659"/>
         <source>Failed to get file list from server %1: %2</source>
         <translation>Failed to get file list from server %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="388"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="456"/>
         <source>files field absent</source>
         <translation>files field absent</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="440"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="463"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="481"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="511"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="518"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="544"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="567"/>
         <source>File list received from server %1 did&apos;t match with stored value</source>
         <translation>File list received from server %1 did&apos;t match with stored value</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="532"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="596"/>
+        <source>download_name field absent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="606"/>
+        <source>filename field absent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="642"/>
         <source>File list received from server %1</source>
         <translation>File list received from server %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="589"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="703"/>
         <source>Downloaded file %1 from server %2</source>
         <translation>Downloaded file %1 from server %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="606"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="629"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="641"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="674"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="686"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="717"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="722"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="748"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="760"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="798"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="810"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="845"/>
         <source>Failed to store file %1</source>
         <translation>Failed to store file %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="696"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="821"/>
         <source>Failed to decompress file %1</source>
         <translation>Failed to decompress file %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="727"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="856"/>
         <source>Failed to download file %1 from server %2: %3</source>
         <translation>Failed to download file %1 from server %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="899"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1049"/>
         <source>Latest version is unavailable</source>
         <translation>Latest version is unavailable</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="964"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1117"/>
         <source>Database is broken</source>
         <translation>Database is broke</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1057"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1220"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Making bootable USB flash drive on disk &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="760"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="893"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="862"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1006"/>
         <source>Getting information about latest version of %1 from servers</source>
         <translation>Getting information about latest version of %1 from servers</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1071"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1238"/>
         <source>Operation terminated by user</source>
         <translation>Operation terminated by user</translation>
     </message>
