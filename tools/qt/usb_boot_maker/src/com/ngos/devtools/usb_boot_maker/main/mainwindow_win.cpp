@@ -1135,15 +1135,15 @@ QString diskSizeHumanReadable(qint64 diskSize)
 {
     if (diskSize >= 1000000000000)
     {
-        return QString::number((qint64)floor(diskSize / 1000000000000.0)) + "TB";
+        return QString::number(diskSize / 1000000000000) + "TB";
     }
 
     if (diskSize >= 1000000000)
     {
-        return QString::number((qint64)floor(diskSize / 1000000000.0)) + "GB";
+        return QString::number(diskSize / 1000000000) + "GB";
     }
 
-    return QString::number((qint64)floor(diskSize / 1000000.0)) + "MB";
+    return QString::number(diskSize / 1000000) + "MB";
 }
 
 void getDiskLetters(DWORD diskNumber, char *letters)
@@ -1320,7 +1320,7 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
 
     qint64 diskSize = getDiskSize(diskNumber);
-    qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB"; // Ignore CppAlignmentVerifier
+    qDebug() << "        Disk size:" << (diskSize / 1000000) << "MB"; // Ignore CppAlignmentVerifier
 
     if (diskSize == 0)
     {

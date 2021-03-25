@@ -184,7 +184,7 @@ All data on the device will be destroyed!</source>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="238"/>
         <source>Failed to switch language to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось изменить язык на %1</translation>
     </message>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="259"/>
@@ -256,12 +256,12 @@ All data on the device will be destroyed!</source>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="596"/>
         <source>download_name field absent</source>
-        <translation type="unfinished"></translation>
+        <translation>поле download_name отсутствует</translation>
     </message>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="606"/>
         <source>filename field absent</source>
-        <translation type="unfinished"></translation>
+        <translation>поле filename отсутствует</translation>
     </message>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="642"/>
