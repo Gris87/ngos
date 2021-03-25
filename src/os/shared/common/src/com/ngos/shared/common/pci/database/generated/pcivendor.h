@@ -5664,7 +5664,7 @@ inline const char8* enumToHumanString(PciVendor vendor) // TEST: NO
         case PciVendor::VENDOR_1132: return "Mitel Corp.";
         case PciVendor::VENDOR_1133: return "Dialogic Corporation";
         case PciVendor::VENDOR_1134: return "Mercury Computer Systems";
-        case PciVendor::VENDOR_1135: return "Fuji Xerox Co Ltd";
+        case PciVendor::VENDOR_1135: return "FUJIFILM Business Innovation Corp.";
         case PciVendor::VENDOR_1136: return "Momentum Data Systems";
         case PciVendor::VENDOR_1137: return "Cisco Systems Inc";
         case PciVendor::VENDOR_1138: return "Ziatech Corporation";

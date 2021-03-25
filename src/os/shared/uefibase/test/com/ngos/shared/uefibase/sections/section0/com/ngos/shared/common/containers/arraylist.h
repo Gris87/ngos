@@ -288,22 +288,21 @@ TEST_CASES(section0, com_ngos_shared_common_containers_arraylist);
 
 
 
-        // TODO: Need to do when changed to i64
-        // TEST_ASSERT_EQUALS(temp.insert(-1, 0), NgosStatus::OK);
+         TEST_ASSERT_EQUALS(temp.insert(-1, 0), NgosStatus::OK);
 
 
 
-        // TEST_ASSERT_EQUALS(temp.mCapacity,   8);
-        // TEST_ASSERT_EQUALS(temp.mSize,       7);
-        // TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
+         TEST_ASSERT_EQUALS(temp.mCapacity,   8);
+         TEST_ASSERT_EQUALS(temp.mSize,       7);
+         TEST_ASSERT_NOT_EQUALS(temp.mValues, nullptr);
 
-        // TEST_ASSERT_EQUALS(temp.mValues[0], 0);
-        // TEST_ASSERT_EQUALS(temp.mValues[1], 9);
-        // TEST_ASSERT_EQUALS(temp.mValues[2], 5);
-        // TEST_ASSERT_EQUALS(temp.mValues[3], 1);
-        // TEST_ASSERT_EQUALS(temp.mValues[4], 3);
-        // TEST_ASSERT_EQUALS(temp.mValues[5], 7);
-        // TEST_ASSERT_EQUALS(temp.mValues[6], 8);
+         TEST_ASSERT_EQUALS(temp.mValues[0], 0);
+         TEST_ASSERT_EQUALS(temp.mValues[1], 9);
+         TEST_ASSERT_EQUALS(temp.mValues[2], 5);
+         TEST_ASSERT_EQUALS(temp.mValues[3], 1);
+         TEST_ASSERT_EQUALS(temp.mValues[4], 3);
+         TEST_ASSERT_EQUALS(temp.mValues[5], 7);
+         TEST_ASSERT_EQUALS(temp.mValues[6], 8);
     }
     TEST_CASE_END();
 

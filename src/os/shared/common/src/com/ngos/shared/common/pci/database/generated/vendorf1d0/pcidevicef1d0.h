@@ -49,6 +49,7 @@ enum class PciDeviceF1D0: u16 // Ignore CppEnumVerifier
     DEVICE_EB23 = 0xEB23,
     DEVICE_EB24 = 0xEB24,
     DEVICE_EB25 = 0xEB25,
+    DEVICE_EB26 = 0xEB26,
     DEVICE_EFAC = 0xEFAC,
     DEVICE_FACD = 0xFACD
 };
@@ -99,6 +100,7 @@ inline const char8* enumToString(PciDeviceF1D0 device) // TEST: NO
         case PciDeviceF1D0::DEVICE_EB23: return "DEVICE_EB23";
         case PciDeviceF1D0::DEVICE_EB24: return "DEVICE_EB24";
         case PciDeviceF1D0::DEVICE_EB25: return "DEVICE_EB25";
+        case PciDeviceF1D0::DEVICE_EB26: return "DEVICE_EB26";
         case PciDeviceF1D0::DEVICE_EFAC: return "DEVICE_EFAC";
         case PciDeviceF1D0::DEVICE_FACD: return "DEVICE_FACD";
 
@@ -166,6 +168,7 @@ inline const char8* enumToHumanString(PciDeviceF1D0 device) // TEST: NO
         case PciDeviceF1D0::DEVICE_EB23: return "Kona 1";
         case PciDeviceF1D0::DEVICE_EB24: return "Kona HDMI";
         case PciDeviceF1D0::DEVICE_EB25: return "Corvid 44 12g";
+        case PciDeviceF1D0::DEVICE_EB26: return "T-Tap Pro";
         case PciDeviceF1D0::DEVICE_EFAC: return "Xena SD-MM/SD-22-MM";
         case PciDeviceF1D0::DEVICE_FACD: return "Xena HD-MM";
 
@@ -218,6 +221,7 @@ inline const char8* enumToHumanString(PciDeviceF1D0 device, u16 subsystemVendorI
         case PciDeviceF1D0::DEVICE_EB23: return "Unknown device";
         case PciDeviceF1D0::DEVICE_EB24: return "Unknown device";
         case PciDeviceF1D0::DEVICE_EB25: return "Unknown device";
+        case PciDeviceF1D0::DEVICE_EB26: return "Unknown device";
         case PciDeviceF1D0::DEVICE_EFAC: return "Unknown device";
         case PciDeviceF1D0::DEVICE_FACD: return "Unknown device";
 

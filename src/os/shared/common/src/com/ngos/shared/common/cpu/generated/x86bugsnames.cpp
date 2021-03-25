@@ -8,7 +8,7 @@
 
 
 
-const char8* x86BugsNames[(enum_t)x86BugWord::MAXIMUM * 32];
+const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32];
 
 
 

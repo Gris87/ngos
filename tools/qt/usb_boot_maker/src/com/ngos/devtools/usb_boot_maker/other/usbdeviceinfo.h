@@ -1,23 +1,23 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H
-
-
-
-#include <QString>
-
-
-
-struct UsbDeviceInfo
-{
-    QString title;
-    quint64 diskNumber;
-    quint64 diskSize;
-    QString letters;
-    QString deviceName;
-};
-
-Q_DECLARE_METATYPE(UsbDeviceInfo *); // TEST: NO
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct UsbDeviceInfo                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString title;                                                                                                                                                                                       // Colorize: green
+    qint64  diskNumber;                                                                                                                                                                                  // Colorize: green
+    qint64  diskSize;                                                                                                                                                                                    // Colorize: green
+    QString letters;                                                                                                                                                                                     // Colorize: green
+    QString deviceName;                                                                                                                                                                                  // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Q_DECLARE_METATYPE(UsbDeviceInfo *); // TEST: NO                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBDEVICEINFO_H                                                                                                                                         // Colorize: green

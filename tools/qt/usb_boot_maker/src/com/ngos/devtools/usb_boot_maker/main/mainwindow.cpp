@@ -1,1173 +1,1360 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-#include <QActionGroup>
-#include <QDateTime>
-#include <QDebug>
-#include <QDir>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QMessageBox>
-#include <QNetworkRequest>
-#include <QProcess>
-#include <QSettings>
-#include <QUrl>
-
-#include <com/ngos/devtools/usb_boot_maker/main/aboutdialog.h>
-
-
-
-#define MASTER_SERVER "cps-etl-srv.northeurope.cloudapp.azure.com"
-
-
-
-const QStringList servers =
-{
-    MASTER_SERVER
-};
-
-const QStringList applications =
-{
-    "com.ngos.bootloader",
-    "com.ngos.installer"
-};
-
-
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow())
-    , mTranslator(new QTranslator(this))
-    , mUpdateTimer(new QTimer(this))
-    , mManager(new QNetworkAccessManager(this))
-    , mTemporaryDir(nullptr)
-    , mBurnThread(nullptr)
-#ifdef Q_OS_LINUX
-    , mUsbMonitorThread(nullptr)
-#endif
-    , mState(UsbBootMakerState::INITIAL)
-    , mRequestTime(0)
-    , mReplies()
-    , mLatestVersions()
-    , mSelectedVersionInfo()
-    , mCurrentApplication(0)
-    , mVersionFiles()
-    , mLanguage()
-    , mLanguageActions()
-{
-    ui->setupUi(this);
-
-
-
-    mUpdateTimer->setSingleShot(true);
-    connect(mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateUsbDevices()));
-
-
-
-    connect(mManager, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)), this, SLOT(ignoreSslErrors(QNetworkReply *, const QList<QSslError> &)));
-
-
-
-#ifdef Q_OS_LINUX
-    mUsbMonitorThread = new UsbMonitorThread();
-    mUsbMonitorThread->start();
-
-    connect(mUsbMonitorThread, SIGNAL(usbStatusChanged(quint16)), this, SLOT(usbStatusChanged(quint16)));
-#endif
-
-
-
-    prepareLanguages();
-    loadWindowState();
-
-    updateUsbDevices();
-}
-
-MainWindow::~MainWindow()
-{
-    if (mTemporaryDir)
-    {
-        delete mTemporaryDir;
-    }
-
-    if (mBurnThread)
-    {
-        mBurnThread->blockSignals(true);
-        mBurnThread->stop();
-        mBurnThread->wait();
-
-        delete mBurnThread;
-    }
-
-
-
-#ifdef Q_OS_LINUX
-    mUsbMonitorThread->stop();
-    mUsbMonitorThread->wait();
-
-    delete mUsbMonitorThread;
-#endif
-
-
-
-    saveWindowState();
-
-    delete ui;
-}
-
-void MainWindow::on_actionExit_triggered()
-{
-    close();
-}
-
-void MainWindow::on_actionAbout_triggered()
-{
-    AboutDialog dialog(this);
-    dialog.exec();
-}
-
-void MainWindow::on_startButton_clicked()
-{
-    if (mState == UsbBootMakerState::INITIAL)
-    {
-        if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok)
-        {
-            if (mTemporaryDir)
-            {
-                delete mTemporaryDir;
-            }
-
-
-
-            mTemporaryDir = new QTemporaryDir();
-
-            if (!mTemporaryDir->isValid())
-            {
-                addLog(tr("Failed to create temporary directory"));
-
-                delete mTemporaryDir;
-                mTemporaryDir = nullptr;
-
-                return;
-            }
-
-            qDebug() << "Downloading to temporary folder:" << mTemporaryDir->path();
-
-
-
-            ui->deviceComboBox->setEnabled(false);
-            ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier
-
-            mCurrentApplication = 0;
-
-            switchToState(UsbBootMakerState::GET_LATEST_VERSION);
-        }
-    }
-    else
-    {
-        resetToInitialState();
-    }
-}
-
-void MainWindow::languageToggled(bool checked)
-{
-    if (checked)
-    {
-        QAction *action = (QAction *)sender();
-
-
-
-        QString language = action->data().toString();
-
-        qDebug() << "Switching to language:" << language;
-
-
-
-        if (mTranslator->load(":/assets/translations/language_" + language)) // Ignore CppPunctuationVerifier
-        {
-            mLanguage = language;
-            QApplication::installTranslator(mTranslator);
-
-            ui->retranslateUi(this);
-
-
-
-            addLog(tr("Language switched to %1").arg(action->text()));
-        }
-        else
-        {
-            addLog(tr("Failed to switch language to %1").arg(action->text()));
-        }
-    }
-}
-
-void MainWindow::updateUsbDevices()
-{
-    mUpdateTimer->stop();
-
-
-
-    QList<UsbDeviceInfo *> usbDevices = getUsbDevices();
-
-    qDebug() << "";
-    qDebug() << "Found devices:" << usbDevices.length();
-
-    addLog(tr("Found devices: %1").arg(usbDevices.length()));
-
-
-
-    for (qint64 i = 0; i < ui->deviceComboBox->count(); ++i)
-    {
-        delete ui->deviceComboBox->itemData(i).value<UsbDeviceInfo *>();
-    }
-
-    ui->deviceComboBox->clear();
-
-
-
-    for (qint64 i = 0; i < usbDevices.length(); ++i)
-    {
-        UsbDeviceInfo *usbDevice = usbDevices.at(i);
-
-        QVariant data;
-        data.setValue(usbDevice);
-
-        ui->deviceComboBox->addItem(usbDevice->title, data);
-    }
-
-
-
-    ui->startButton->setEnabled(!usbDevices.isEmpty());
-}
-
-void MainWindow::usbStatusChanged(quint16 delay)
-{
-    if (!mUpdateTimer->isActive())
-    {
-        mUpdateTimer->start(delay);
-    }
-}
-
-void MainWindow::ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &/*errors*/)
-{
-    reply->ignoreSslErrors();
-}
-
-void MainWindow::latestVersionReplyFinished()
-{
-    QNetworkReply *reply  = (QNetworkReply *)sender();
-    QString        server = reply->url().host();
-
-
-
-    reply->deleteLater();
-
-    if (mReplies.remove(server) != 1)
-    {
-        qFatal("Unknown reply");
-    }
-
-
-
-    if (!reply->error())
-    {
-        qint64 delay = QDateTime::currentMSecsSinceEpoch() - mRequestTime;
-
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
-        QJsonObject   json         = jsonDocument.object();
-
-        if (json["status"].toString("") == "OK")
-        {
-            QJsonValue version = json["version"];
-
-            if (version.isUndefined())
-            {
-                addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
-            }
-            else
-            {
-                QJsonValue versionId   = version["id"];
-                QJsonValue versionCode = version["version"];
-                QJsonValue versionHash = version["hash"];
-
-                if (versionId.isUndefined())
-                {
-                    addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("id field absent")));
-                }
-                else
-                if (versionCode.isUndefined())
-                {
-                    addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));
-                }
-                else
-                if (versionHash.isUndefined())
-                {
-                    addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("hash field absent")));
-                }
-                else
-                {
-                    VersionInfo versionInfo;
-
-                    versionInfo.id      = versionId.toVariant().toULongLong();
-                    versionInfo.version = versionCode.toVariant().toULongLong();
-                    versionInfo.hash    = versionHash.toString("");
-                    versionInfo.server  = server;
-                    versionInfo.delay   = delay;
-
-                    mLatestVersions.insert(server, versionInfo);
-
-
-
-                    addLog(tr("Response received from server %1 in %2 ms. Version: %3").arg(server).arg(delay).arg(versionInfo.version));
-                }
-            }
-        }
-        else
-        {
-            QJsonValue message = json["message"];
-            QJsonValue details = json["details"];
-
-            QString messageStr = message.toString("");
-            QString detailsStr = details.toString("");
-
-            addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ')') : "")));
-        }
-    }
-    else
-    {
-        addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(reply->errorString()));
-    }
-
-
-
-    if (mReplies.isEmpty())
-    {
-        switchToState(UsbBootMakerState::GET_FILE_LIST);
-    }
-}
-
-void MainWindow::fileListReplyFinished()
-{
-    QNetworkReply *reply  = (QNetworkReply *)sender();
-    QString        server = reply->url().host();
-
-
-
-    reply->deleteLater();
-
-    if (mReplies.remove(server) != 1)
-    {
-        qFatal("Unknown reply");
-    }
-
-
-
-    if (!reply->error())
-    {
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
-        QJsonObject   json         = jsonDocument.object();
-
-        if (json["status"].toString("") == "OK")
-        {
-            QJsonValue version = json["version"];
-            QJsonValue files   = json["files"];
-
-            if (version.isUndefined())
-            {
-                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
-
-                abortReplies();
-                switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                return;
-            }
-            else
-            if (files.isUndefined())
-            {
-                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("files field absent")));
-
-                abortReplies();
-                switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                return;
-            }
-            else
-            {
-                QJsonValue versionId   = version["id"];
-                QJsonValue versionCode = version["version"];
-                QJsonValue versionHash = version["hash"];
-
-                if (versionId.isUndefined())
-                {
-                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));
-
-                    abortReplies();
-                    switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                    return;
-                }
-                else
-                if (versionCode.isUndefined())
-                {
-                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));
-
-                    abortReplies();
-                    switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                    return;
-                }
-                else
-                if (versionHash.isUndefined())
-                {
-                    addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));
-
-                    abortReplies();
-                    switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                    return;
-                }
-                else
-                {
-                    if (
-                        mSelectedVersionInfo.id != versionId.toVariant().toULongLong()
-                        ||
-                        mSelectedVersionInfo.version != versionCode.toVariant().toULongLong()
-                        ||
-                        mSelectedVersionInfo.hash != versionHash.toString("")
-                       )
-                    {
-                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));
-
-                        abortReplies();
-                        switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                        return;
-                    }
-
-
-
-                    quint64    resultHash[2] = { 0, 0 };
-                    QJsonArray filesArray    = files.toArray();
-
-                    for (qint64 i = 0; i < filesArray.size(); ++i)
-                    {
-                        QJsonValue fileHash = filesArray.at(i)["hash"];
-
-
-
-                        QByteArray fileHashBytes = QByteArray::fromHex(fileHash.toString("").toLatin1());
-
-                        if (fileHashBytes.length() != 16)
-                        {
-                            addLog(tr("File list received from server %1 did't match with stored value").arg(server));
-
-                            abortReplies();
-                            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                            return;
-                        }
-
-
-
-                        resultHash[0] ^= ((quint64 *)fileHashBytes.data())[0];
-                        resultHash[1] ^= ((quint64 *)fileHashBytes.data())[1];
-                    }
-
-
-
-                    if (mSelectedVersionInfo.hash != QString::fromLatin1(QByteArray((char *)resultHash, 16).toHex()))
-                    {
-                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));
-
-                        abortReplies();
-                        switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                        return;
-                    }
-
-
-
-                    mVersionFiles.clear();
-
-                    for (qint64 i = 0; i < filesArray.size(); ++i)
-                    {
-                        QJsonValue file = filesArray.at(i);
-
-                        QJsonValue fileDownloadName = file["download_name"];
-                        QJsonValue fileFileName     = file["filename"];
-                        QJsonValue fileHash         = file["hash"];
-
-
-
-                        if (
-                            fileDownloadName.isUndefined()
-                            ||
-                            fileFileName.isUndefined()
-                            ||
-                            fileHash.isUndefined()
-                           )
-                        {
-                            addLog(tr("File list received from server %1 did't match with stored value").arg(server));
-
-                            abortReplies();
-                            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                            return;
-                        }
-
-
-
-                        FileInfo fileInfo;
-
-                        fileInfo.downloadName = fileDownloadName.toString("");
-                        fileInfo.fileName     = fileFileName.toString("");
-                        fileInfo.hash         = fileHash.toString("");
-
-                        mVersionFiles.append(fileInfo);
-                    }
-
-
-
-                    addLog(tr("File list received from server %1").arg(server));
-                }
-            }
-        }
-        else
-        {
-            QJsonValue message = json["message"];
-            QJsonValue details = json["details"];
-
-            QString messageStr = message.toString("");
-            QString detailsStr = details.toString("");
-
-            addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(messageStr + (detailsStr != "" ? (" (" + detailsStr + ')') : "")));
-
-            abortReplies();
-            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-            return;
-        }
-    }
-    else
-    {
-        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(reply->errorString()));
-
-        abortReplies();
-        switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-        return;
-    }
-
-
-
-    if (mReplies.isEmpty())
-    {
-        switchToState(UsbBootMakerState::DOWNLOAD);
-    }
-}
-
-void MainWindow::downloadReplyFinished()
-{
-    QNetworkReply *reply    = (QNetworkReply *)sender();
-    QString        server   = reply->url().host();
-    FileInfo      *fileInfo = reply->property("fileinfo").value<FileInfo *>();
-
-
-
-    reply->deleteLater();
-
-    if (mReplies.remove(fileInfo->fileName) != 1)
-    {
-        qFatal("Unknown reply");
-    }
-
-
-
-    if (!reply->error())
-    {
-        addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->fileName).arg(server));
-
-
-
-        QString applicationDir = mTemporaryDir->path() + '/' + applications.at(mCurrentApplication);
-
-
-
-        qint64 index = fileInfo->fileName.lastIndexOf('/');
-
-        if (index < 0)
-        {
-            index = 0;
-        }
-
-        if (!QDir().mkpath(applicationDir + '/' + fileInfo->fileName.left(index)))
-        {
-            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-            abortReplies();
-            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-            return;
-        }
-
-
-
-        QByteArray content = reply->readAll();
-
-
-
-        QString filePath = applicationDir + '/' + fileInfo->fileName;
-        QFile file(filePath);
-
-        if (file.open(QIODevice::WriteOnly))
-        {
-            if (file.write(content) != content.length())
-            {
-                file.close();
-
-                addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-                abortReplies();
-                switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                return;
-            }
-
-            file.close();
-        }
-        else
-        {
-            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-            abortReplies();
-            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-            return;
-        }
-
-
-
-        if (fileInfo->downloadName.endsWith(".xz"))
-        {
-            QProcess process;
-
-            process.start("xzcat", QStringList() << filePath, QIODevice::ReadOnly);
-            process.waitForFinished(-1);
-
-
-
-            if (process.exitCode() == 0)
-            {
-                content = process.readAllStandardOutput();
-
-
-
-                QFile file(filePath);
-
-                if (file.open(QIODevice::WriteOnly))
-                {
-                    if (file.write(content) != content.length())
-                    {
-                        file.close();
-
-                        addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-                        abortReplies();
-                        switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                        return;
-                    }
-
-                    file.close();
-                }
-                else
-                {
-                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-                    abortReplies();
-                    switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                    return;
-                }
-            }
-            else
-            {
-                addLog(tr("Failed to decompress file %1").arg(fileInfo->fileName));
-
-                abortReplies();
-                switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-                return;
-            }
-        }
-        else
-        if (!fileInfo->downloadName.endsWith(".raw"))
-        {
-            qFatal("Unknown file format");
-        }
-
-
-
-        QCryptographicHash hash(QCryptographicHash::Md5);
-        hash.addData(content);
-
-        if (fileInfo->hash != QString::fromLatin1(hash.result().toHex()))
-        {
-            addLog(tr("Failed to store file %1").arg(fileInfo->fileName));
-
-            abortReplies();
-            switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-            return;
-        }
-    }
-    else
-    {
-        addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->fileName).arg(server).arg(reply->errorString()));
-
-        abortReplies();
-        switchToState(UsbBootMakerState::GET_FILE_LIST);
-
-        return;
-    }
-
-
-
-    if (mReplies.isEmpty())
-    {
-        ++mCurrentApplication;
-
-        if (mCurrentApplication >= applications.length())
-        {
-            switchToState(UsbBootMakerState::BURNING);
-        }
-        else
-        {
-            switchToState(UsbBootMakerState::GET_LATEST_VERSION);
-        }
-    }
-}
-
-void MainWindow::burnFinished()
-{
-    delete mBurnThread;
-    mBurnThread = nullptr;
-
-
-
-    switchToInitialState();
-    addLog(tr("Done"));
-}
-
-void MainWindow::addLog(const QString &text)
-{
-    ui->logTextEdit->append(text);
-}
-
-void MainWindow::burnProgress(quint8 current, quint8 maximum)
-{
-    ui->statusProgressBar->setValue(40 + 60 * current / maximum);
-}
-
-void MainWindow::prepareLanguages()
-{
-    QActionGroup *group = new QActionGroup(this);
-
-
-
-    QStringList languages = QDir(":/assets/translations").entryList(); // Ignore CppPunctuationVerifier
-
-    for (qint64 i = 0; i < languages.length(); ++i)
-    {
-        QString language = languages.at(i);
-
-        if (language.endsWith(".qm"))
-        {
-            language.remove(language.length() - 3, 3);
-        }
-        else
-        {
-            qFatal("Invalid file located in assets/translations folder: %s", language.toLocal8Bit().constData());
-        }
-
-        if (language.startsWith("language_"))
-        {
-            language.remove(0, 9);
-        }
-        else
-        {
-            qFatal("Invalid file located in assets/translations folder: %s", language.toLocal8Bit().constData());
-        }
-
-
-
-        QString languageName = QLocale(language).nativeLanguageName();
-        languageName[0]      = languageName.at(0).toUpper();
-
-        qDebug() << "Adding language:" << language << '|' << languageName;
-
-
-
-        QAction *languageItem = new QAction(languageName, this);
-
-        languageItem->setCheckable(true);
-        languageItem->setActionGroup(group);
-        languageItem->setData(language);
-
-        connect(languageItem, SIGNAL(toggled(bool)), this, SLOT(languageToggled(bool)));
-
-        ui->menuLanguage->addAction(languageItem);
-
-
-
-        mLanguageActions.insert(language, languageItem);
-    }
-}
-
-void MainWindow::switchToState(UsbBootMakerState state)
-{
-    mState = state;
-
-    switch (mState)
-    {
-        case UsbBootMakerState::GET_LATEST_VERSION: handleGetLatestVersionState(); break;
-        case UsbBootMakerState::GET_FILE_LIST:      handleGetFileListState();      break;
-        case UsbBootMakerState::DOWNLOAD:           handleDownloadState();         break;
-        case UsbBootMakerState::BURNING:            handleBurningState();          break;
-
-        case UsbBootMakerState::INITIAL:
-        {
-            qFatal("Unexpected state %u", (quint8)mState);
-        }
-        break;
-
-        default:
-        {
-            qFatal("Unknown state %u", (quint8)mState);
-        }
-        break;
-    }
-}
-
-void MainWindow::handleGetLatestVersionState()
-{
-    ui->statusProgressBar->setValue(5 + 35 * (0 + mCurrentApplication * 3) / applications.length() / 3);
-
-
-
-    QString application = applications.at(mCurrentApplication);
-
-    addLog("");
-    addLog(tr("Getting information about latest version of %1 from servers").arg(application));
-
-    mRequestTime = QDateTime::currentMSecsSinceEpoch();
-
-
-
-    for (qint64 i = 0; i < servers.length(); ++i)
-    {
-        const QString &server = servers.at(i);
-
-
-
-        QNetworkRequest request;
-        request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=latest&include_files=false")
-                            .arg(server)
-                            .arg(application)));
-
-        QNetworkReply *reply = mManager->get(request);
-
-        connect(reply, SIGNAL(finished()), this, SLOT(latestVersionReplyFinished()));
-
-
-
-        mReplies.insert(server, reply);
-    }
-}
-
-void MainWindow::handleGetFileListState()
-{
-    ui->statusProgressBar->setValue(5 + 35 * (1 + mCurrentApplication * 3) / applications.length() / 3);
-
-
-
-    if (mLatestVersions.isEmpty())
-    {
-        switchToInitialState();
-
-        addLog(tr("Latest version is unavailable"));
-
-
-
-        return;
-    }
-
-
-
-    QHash<quint64, QList<const VersionInfo *>> versionGroups;
-
-    // Fill versionGroups
-    {
-        QHashIterator<QString, VersionInfo> it(mLatestVersions);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-
-
-            const VersionInfo *versionInfo = &it.value();
-
-            versionGroups[versionInfo->version].append(versionInfo);
-        }
-    }
-
-
-
-    const QList<const VersionInfo *> *generalGroup = nullptr;
-
-    // Find version that more spread among servers
-    {
-        qint64 max = 0;
-
-
-
-        QHashIterator<quint64, QList<const VersionInfo *>> it(versionGroups);
-
-        while (it.hasNext())
-        {
-            it.next();
-
-
-
-            const QList<const VersionInfo *> *versions = &it.value();
-
-
-
-            const VersionInfo *firstVersionInfo = versions->constFirst();
-
-            for (qint64 j = 1; j < versions->length(); ++j)
-            {
-                const VersionInfo *versionInfo = versions->at(j);
-
-                if (
-                    versionInfo->id != firstVersionInfo->id
-                    ||
-                    versionInfo->version != firstVersionInfo->version
-                    ||
-                    versionInfo->hash != firstVersionInfo->hash
-                   )
-                {
-                    switchToInitialState();
-
-                    addLog(tr("Database is broken"));
-
-
-
-                    return;
-                }
-            }
-
-
-
-            if (versions->length() > max)
-            {
-                max          = versions->length();
-                generalGroup = versions;
-            }
-        }
-    }
-
-
-
-    const VersionInfo *selectedVersionInfo = generalGroup->at(0);
-    qint64             min                 = selectedVersionInfo->delay;
-
-    for (qint64 i = 1; i < generalGroup->length(); ++i)
-    {
-        if (generalGroup->at(i)->delay < min)
-        {
-            selectedVersionInfo = generalGroup->at(i);
-            min                 = selectedVersionInfo->delay;
-        }
-    }
-
-
-
-    mSelectedVersionInfo = *selectedVersionInfo;
-    mLatestVersions.remove(selectedVersionInfo->server);
-
-
-
-    QNetworkRequest request;
-    request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=%3&include_files=true")
-                        .arg(mSelectedVersionInfo.server)
-                        .arg(applications.at(mCurrentApplication))
-                        .arg(mSelectedVersionInfo.version)));
-
-    QNetworkReply *reply = mManager->get(request);
-
-    connect(reply, SIGNAL(finished()), this, SLOT(fileListReplyFinished()));
-
-
-
-    mReplies.insert(mSelectedVersionInfo.server, reply);
-}
-
-void MainWindow::handleDownloadState()
-{
-    ui->statusProgressBar->setValue(5 + 35 * (2 + mCurrentApplication * 3) / applications.length() / 3);
-
-
-
-    for (qint64 i = 0; i < mVersionFiles.length(); ++i)
-    {
-        FileInfo *fileInfo = &mVersionFiles[i];
-
-        QNetworkRequest request;
-        request.setUrl(QUrl(QString("https://%1/downloads/%2").arg(mSelectedVersionInfo.server).arg(fileInfo->downloadName)));
-
-        QNetworkReply *reply = mManager->get(request);
-
-
-
-        QVariant data;
-        data.setValue(fileInfo);
-
-        reply->setProperty("fileinfo", data);
-
-
-
-        connect(reply, SIGNAL(finished()), this, SLOT(downloadReplyFinished()));
-
-
-
-        mReplies.insert(fileInfo->fileName, reply);
-    }
-}
-
-void MainWindow::handleBurningState()
-{
-    ui->statusProgressBar->setValue(40);
-
-
-
-    addLog("");
-    addLog(tr("Making bootable USB flash drive on disk \"%1\"").arg(ui->deviceComboBox->currentText()));
-
-
-
-    mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>(), mTemporaryDir->path());
-    mBurnThread->start();
-
-    connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));
-    connect(mBurnThread, SIGNAL(progress(quint8, quint8)),  this, SLOT(burnProgress(quint8, quint8)));
-    connect(mBurnThread, SIGNAL(finished()),                this, SLOT(burnFinished()));
-}
-
-void MainWindow::resetToInitialState()
-{
-    addLog(tr("Operation terminated by user"));
-
-
-
-    switch (mState)
-    {
-        case UsbBootMakerState::GET_LATEST_VERSION:
-        case UsbBootMakerState::GET_FILE_LIST:
-        case UsbBootMakerState::DOWNLOAD:
-        {
-            abortReplies();
-        }
-        break;
-
-        case UsbBootMakerState::BURNING:
-        {
-            mBurnThread->blockSignals(true);
-            mBurnThread->stop();
-            mBurnThread->wait();
-
-            delete mBurnThread;
-            mBurnThread = nullptr;
-        }
-        break;
-
-        case UsbBootMakerState::INITIAL:
-        {
-            qFatal("Unexpected state %u", (quint8)mState);
-        }
-        break;
-
-        default:
-        {
-            qFatal("Unknown state %u", (quint8)mState);
-        }
-        break;
-    }
-
-
-
-    switchToInitialState();
-}
-
-void MainWindow::abortReplies()
-{
-    QHashIterator<QString, QNetworkReply *> it(mReplies);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-
-
-        QNetworkReply *reply = it.value();
-
-        reply->blockSignals(true);
-        reply->abort();
-
-        reply->deleteLater();
-    }
-
-    mReplies.clear();
-}
-
-void MainWindow::switchToInitialState()
-{
-    mState = UsbBootMakerState::INITIAL;
-    ui->statusProgressBar->setValue(0);
-
-    ui->deviceComboBox->setEnabled(true);
-    ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier
-}
-
-void MainWindow::saveWindowState()
-{
-    QSettings settings("NGOS", "usb_boot_maker");
-
-    settings.setValue("Language",               mLanguage);
-    settings.setValue("MainWindow/geometry",    saveGeometry());
-    settings.setValue("MainWindow/windowState", saveState());
-}
-
-void MainWindow::loadWindowState()
-{
-    QSettings settings("NGOS", "usb_boot_maker");
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    mLanguage =     settings.value("Language", QLocale::system().name()).toString(); // Ignore CppEqualAlignmentVerifier
-    restoreGeometry(settings.value("MainWindow/geometry").toByteArray());
-    restoreState(   settings.value("MainWindow/windowState").toByteArray());
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    mLanguage = mLanguage.left(mLanguage.indexOf('_'));
-
-    if (!mLanguageActions.contains(mLanguage))
-    {
-        mLanguage = "en";
-    }
-
-    mLanguageActions.value(mLanguage)->setChecked(true);
-}
+#include "mainwindow.h"                                                                                                                                                                                  // Colorize: green
+#include "ui_mainwindow.h"                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QActionGroup>                                                                                                                                                                                  // Colorize: green
+#include <QDateTime>                                                                                                                                                                                     // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QJsonArray>                                                                                                                                                                                    // Colorize: green
+#include <QJsonDocument>                                                                                                                                                                                 // Colorize: green
+#include <QJsonObject>                                                                                                                                                                                   // Colorize: green
+#include <QMessageBox>                                                                                                                                                                                   // Colorize: green
+#include <QNetworkRequest>                                                                                                                                                                               // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QSettings>                                                                                                                                                                                     // Colorize: green
+#include <QUrl>                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/main/aboutdialog.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/macro/applications.h>                                                                                                                                                   // Colorize: green
+#include <com/ngos/shared/common/macro/servers.h>                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QStringList servers =                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NGOS_MASTER_SERVER                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QStringList applications =                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NGOS_APPLICATION_BOOTLOADER,                                                                                                                                                                         // Colorize: green
+    NGOS_APPLICATION_INSTALLER                                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MainWindow::MainWindow(QWidget *parent)                                                                                                                                                                  // Colorize: green
+    : QMainWindow(parent)                                                                                                                                                                                // Colorize: green
+    , ui(new Ui::MainWindow())                                                                                                                                                                           // Colorize: green
+    , mTranslator(new QTranslator(this))                                                                                                                                                                 // Colorize: green
+    , mUpdateTimer(new QTimer(this))                                                                                                                                                                     // Colorize: green
+    , mManager(new QNetworkAccessManager(this))                                                                                                                                                          // Colorize: green
+    , mTemporaryDir(nullptr)                                                                                                                                                                             // Colorize: green
+    , mBurnThread(nullptr)                                                                                                                                                                               // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+    , mUsbMonitorThread(new UsbMonitorThread())                                                                                                                                                          // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    , mState(UsbBootMakerState::INITIAL)                                                                                                                                                                 // Colorize: green
+    , mRequestTime(0)                                                                                                                                                                                    // Colorize: green
+    , mReplies()                                                                                                                                                                                         // Colorize: green
+    , mLatestVersions()                                                                                                                                                                                  // Colorize: green
+    , mSelectedVersionInfo()                                                                                                                                                                             // Colorize: green
+    , mCurrentApplication(0)                                                                                                                                                                             // Colorize: green
+    , mVersionFiles()                                                                                                                                                                                    // Colorize: green
+    , mLanguage()                                                                                                                                                                                        // Colorize: green
+    , mLanguageActions()                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->setupUi(this);                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Setup mUpdateTimer                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mUpdateTimer->setSingleShot(true);                                                                                                                                                               // Colorize: green
+        connect(mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateUsbDevices()));                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Setup mManager                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        connect(mManager, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)), this, SLOT(ignoreSslErrors(QNetworkReply *, const QList<QSslError> &)));                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Setup mUsbMonitorThread                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+        connect(mUsbMonitorThread, SIGNAL(usbStatusChanged(quint16)), this, SLOT(usbStatusChanged(quint16)));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mUsbMonitorThread->start();                                                                                                                                                                      // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    prepareLanguages();                                                                                                                                                                                  // Colorize: green
+    loadWindowState();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    updateUsbDevices();                                                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MainWindow::~MainWindow()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Delete temporary directory                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mTemporaryDir != nullptr)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            delete mTemporaryDir;                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Terminate and delete burn thread                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mBurnThread != nullptr)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mBurnThread->blockSignals(true);                                                                                                                                                             // Colorize: green
+            mBurnThread->stop();                                                                                                                                                                         // Colorize: green
+            mBurnThread->wait();                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete mBurnThread;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Terminate and delete USB monitor thread                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+        mUsbMonitorThread->blockSignals(true);                                                                                                                                                           // Colorize: green
+        mUsbMonitorThread->stop();                                                                                                                                                                       // Colorize: green
+        mUsbMonitorThread->wait();                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        delete mUsbMonitorThread;                                                                                                                                                                        // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    saveWindowState();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    delete ui;                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionExit_triggered()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    close();                                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_actionAbout_triggered()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    AboutDialog dialog(this);                                                                                                                                                                            // Colorize: green
+    dialog.exec();                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::on_startButton_clicked()                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mState == UsbBootMakerState::INITIAL)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (QMessageBox::warning(this, tr("Format disk"), tr("Do you really want to format disk \"%1\"?\nAll data on the device will be destroyed!").arg(ui->deviceComboBox->currentText()), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok) == QMessageBox::Ok) // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Delete previous temporary directory if exists                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (mTemporaryDir != nullptr)                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    delete mTemporaryDir;                                                                                                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create new temporary directory                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mTemporaryDir = new QTemporaryDir();                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!mTemporaryDir->isValid())                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to create temporary directory"));                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    delete mTemporaryDir;                                                                                                                                                                // Colorize: green
+                    mTemporaryDir = nullptr;                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug() << "Downloading to temporary directory:" << mTemporaryDir->path();                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Setup UI controls                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ui->deviceComboBox->setEnabled(false);                                                                                                                                                   // Colorize: green
+                ui->startButton->setIcon(QIcon(":/assets/images/stop.png")); // Ignore CppPunctuationVerifier                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Prepare for first step                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mCurrentApplication = 0;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                switchToState(UsbBootMakerState::GET_LATEST_VERSION);                                                                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        resetToInitialState();                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::languageToggled(bool checked)                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (checked)                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QAction *action = (QAction *)sender();                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString language = action->data().toString();                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qDebug() << "Switching to language:" << language;                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Setup translator with new language                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (mTranslator->load(":/assets/translations/language_" + language)) // Ignore CppPunctuationVerifier                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                mLanguage = language;                                                                                                                                                                    // Colorize: green
+                QApplication::installTranslator(mTranslator);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ui->retranslateUi(this);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addLog(tr("Language switched to %1").arg(action->text()));                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                addLog(tr("Failed to switch language to %1").arg(action->text()));                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::updateUsbDevices()                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mUpdateTimer->stop();                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<UsbDeviceInfo *> usbDevices;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get USB devices                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        usbDevices = getUsbDevices();                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qDebug() << "";                                                                                                                                                                                  // Colorize: green
+        qDebug() << "Found devices:" << usbDevices.length();                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addLog(tr("Found devices: %1").arg(usbDevices.length()));                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clear deviceComboBox                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < ui->deviceComboBox->count(); ++i)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            delete ui->deviceComboBox->itemData(i).value<UsbDeviceInfo *>();                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ui->deviceComboBox->clear();                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill deviceComboBox                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < usbDevices.length(); ++i)                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            UsbDeviceInfo *usbDevice = usbDevices.at(i);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QVariant data;                                                                                                                                                                               // Colorize: green
+            data.setValue(usbDevice);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ui->deviceComboBox->addItem(usbDevice->title, data);                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ui->startButton->setEnabled(!usbDevices.isEmpty());                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::usbStatusChanged(quint16 delay)                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (!mUpdateTimer->isActive())                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mUpdateTimer->start(delay);                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &/*errors*/)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    reply->ignoreSslErrors();                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::latestVersionReplyFinished()                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QNetworkReply *reply  = (QNetworkReply *)sender();                                                                                                                                                   // Colorize: green
+    QString        server = reply->url().host();                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clean up reply                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        reply->deleteLater();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (mReplies.remove(server) != 1)                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unknown reply");                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Handle reply                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!reply->error())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 delay = QDateTime::currentMSecsSinceEpoch() - mRequestTime;                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());                                                                                                                      // Colorize: green
+            QJsonObject   json         = jsonDocument.object();                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (json["status"].toString("") == "OK")                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QJsonValue version = json["version"];                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (version.isUndefined())                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QJsonValue versionId   = version["id"];                                                                                                                                              // Colorize: green
+                    QJsonValue versionCode = version["version"];                                                                                                                                         // Colorize: green
+                    QJsonValue versionHash = version["hash"];                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (versionId.isUndefined())                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("id field absent")));                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (versionCode.isUndefined())                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("version field absent")));                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (versionHash.isUndefined())                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(tr("hash field absent")));                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Store version information received from server                                                                                                                                // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            VersionInfo versionInfo;                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            versionInfo.id      = versionId.toVariant().toLongLong();                                                                                                                    // Colorize: green
+                            versionInfo.version = versionCode.toVariant().toLongLong();                                                                                                                  // Colorize: green
+                            versionInfo.hash    = versionHash.toString("");                                                                                                                              // Colorize: green
+                            versionInfo.server  = server;                                                                                                                                                // Colorize: green
+                            versionInfo.delay   = delay;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            mLatestVersions.insert(server, versionInfo);                                                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        addLog(tr("Response received from server %1 in %2 ms. Version: %3").arg(server).arg(delay).arg(versionInfo.version));                                                            // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString message = json["message"].toString("");                                                                                                                                          // Colorize: green
+                QString details = json["details"].toString("");                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(message + (details != "" ? (" (" + details + ')') : "")));                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to get information about latest version from server %1: %2").arg(server).arg(reply->errorString()));                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Switch to next step when all replies are handled                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mReplies.isEmpty())                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::fileListReplyFinished()                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QNetworkReply *reply  = (QNetworkReply *)sender();                                                                                                                                                   // Colorize: green
+    QString        server = reply->url().host();                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clean up reply                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        reply->deleteLater();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (mReplies.remove(server) != 1)                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unknown reply");                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Handle reply                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!reply->error())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());                                                                                                                      // Colorize: green
+            QJsonObject   json         = jsonDocument.object();                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (json["status"].toString("") == "OK")                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QJsonValue version = json["version"];                                                                                                                                                    // Colorize: green
+                QJsonValue files   = json["files"];                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check JSON structure                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (version.isUndefined())                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (files.isUndefined())                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("files field absent")));                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QJsonValue versionId   = version["id"];                                                                                                                                              // Colorize: green
+                QJsonValue versionCode = version["version"];                                                                                                                                         // Colorize: green
+                QJsonValue versionHash = version["hash"];                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check JSON structure                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (versionId.isUndefined())                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("id field absent")));                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (versionCode.isUndefined())                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("version field absent")));                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (versionHash.isUndefined())                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check that version is still the same                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                // Colorize: green
+                    if (                                                                                                                                                                         // Colorize: green
+                        mSelectedVersionInfo.id != versionId.toVariant().toLongLong()                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                       // Colorize: green
+                        mSelectedVersionInfo.version != versionCode.toVariant().toLongLong()                                                                                                     // Colorize: green
+                        ||                                                                                                                                                                       // Colorize: green
+                        mSelectedVersionInfo.hash != versionHash.toString("")                                                                                                                    // Colorize: green
+                       )                                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                            // Colorize: green
+                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));                                                                               // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        abortReplies();                                                                                                                                                          // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        return;                                                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                QJsonArray filesArray    = files.toArray();                                                                                                                                      // Colorize: green
+                quint64    resultHash[2] = { 0, 0 };                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                // Calculate application hash from files                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                // Colorize: green
+                    for (qint64 i = 0; i < filesArray.size(); ++i)                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                            // Colorize: green
+                        QString fileHash = filesArray.at(i)["hash"].toString("");                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        QByteArray fileHashBytes = QByteArray::fromHex(fileHash.toLatin1());                                                                                                     // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        if (fileHashBytes.length() != 16)                                                                                                                                        // Colorize: green
+                        {                                                                                                                                                                        // Colorize: green
+                            addLog(tr("File list received from server %1 did't match with stored value").arg(server));                                                                           // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            abortReplies();                                                                                                                                                      // Colorize: green
+                            switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            return;                                                                                                                                                              // Colorize: green
+                        }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        quint64 *fileHashQuads = (quint64 *)fileHashBytes.data();                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        resultHash[0] ^= fileHashQuads[0];                                                                                                                                       // Colorize: green
+                        resultHash[1] ^= fileHashQuads[1];                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                // Check that application hash is the same as stored one                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                // Colorize: green
+                    if (mSelectedVersionInfo.hash != QString::fromLatin1(QByteArray((char *)resultHash, 16).toHex()))                                                                            // Colorize: green
+                    {                                                                                                                                                                            // Colorize: green
+                        addLog(tr("File list received from server %1 did't match with stored value").arg(server));                                                                               // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        abortReplies();                                                                                                                                                          // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        return;                                                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                mVersionFiles.clear();                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                // Fill list of files                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                // Colorize: green
+                    for (qint64 i = 0; i < filesArray.size(); ++i)                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                            // Colorize: green
+                        QJsonValue file = filesArray.at(i);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        QJsonValue fileDownloadName = file["download_name"];                                                                                                                     // Colorize: green
+                        QJsonValue fileFileName     = file["filename"];                                                                                                                          // Colorize: green
+                        QJsonValue fileHash         = file["hash"];                                                                                                                              // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        // Check JSON structure                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                        // Colorize: green
+                            if (fileDownloadName.isUndefined())                                                                                                                                  // Colorize: green
+                            {                                                                                                                                                                    // Colorize: green
+                                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("download_name field absent")));                                                      // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                abortReplies();                                                                                                                                                  // Colorize: green
+                                switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                return;                                                                                                                                                          // Colorize: green
+                            }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            if (fileFileName.isUndefined())                                                                                                                                      // Colorize: green
+                            {                                                                                                                                                                    // Colorize: green
+                                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("filename field absent")));                                                           // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                abortReplies();                                                                                                                                                  // Colorize: green
+                                switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                return;                                                                                                                                                          // Colorize: green
+                            }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            if (fileHash.isUndefined())                                                                                                                                          // Colorize: green
+                            {                                                                                                                                                                    // Colorize: green
+                                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(tr("hash field absent")));                                                               // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                abortReplies();                                                                                                                                                  // Colorize: green
+                                switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                return;                                                                                                                                                          // Colorize: green
+                            }                                                                                                                                                                    // Colorize: green
+                        }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                        // Store file information                                                                                                                                                // Colorize: green
+                        {                                                                                                                                                                        // Colorize: green
+                            FileInfo fileInfo;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            fileInfo.downloadName = fileDownloadName.toString("");                                                                                                               // Colorize: green
+                            fileInfo.fileName     = fileFileName.toString("");                                                                                                                   // Colorize: green
+                            fileInfo.hash         = fileHash.toString("");                                                                                                                       // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                            mVersionFiles.append(fileInfo);                                                                                                                                      // Colorize: green
+                        }                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                 // Colorize: green
+                addLog(tr("File list received from server %1").arg(server));                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString message = json["message"].toString("");                                                                                                                                          // Colorize: green
+                QString details = json["details"].toString("");                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(message + (details != "" ? (" (" + details + ')') : "")));                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                abortReplies();                                                                                                                                                                          // Colorize: green
+                switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to get file list from server %1: %2").arg(server).arg(reply->errorString()));                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            abortReplies();                                                                                                                                                                              // Colorize: green
+            switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Switch to next step when all replies are handled                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mReplies.isEmpty())                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switchToState(UsbBootMakerState::DOWNLOAD);                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::downloadReplyFinished()                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QNetworkReply *reply    = (QNetworkReply *)sender();                                                                                                                                                 // Colorize: green
+    QString        server   = reply->url().host();                                                                                                                                                       // Colorize: green
+    FileInfo      *fileInfo = reply->property("fileInfo").value<FileInfo *>();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clean up reply                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        reply->deleteLater();                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (mReplies.remove(fileInfo->fileName) != 1)                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unknown reply");                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Handle reply                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!reply->error())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Downloaded file %1 from server %2").arg(fileInfo->fileName).arg(server));                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString applicationDir = mTemporaryDir->path() + '/' + applications.at(mCurrentApplication);                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create folder for downloaded file                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint64 index = fileInfo->fileName.lastIndexOf('/');                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index < 0)                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    index = 0;                                                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!QDir().mkpath(applicationDir + '/' + fileInfo->fileName.left(index)))                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    abortReplies();                                                                                                                                                                      // Colorize: green
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QByteArray content = reply->readAll();                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create file                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString filePath = applicationDir + '/' + fileInfo->fileName;                                                                                                                            // Colorize: green
+                QFile file(filePath);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (file.open(QIODevice::WriteOnly))                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (file.write(content) != content.length())                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        file.close();                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    file.close();                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    abortReplies();                                                                                                                                                                      // Colorize: green
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Decompress file                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (fileInfo->downloadName.endsWith(".xz"))                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QProcess process;                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    process.start("xzcat", QStringList() << filePath, QIODevice::ReadOnly);                                                                                                              // Colorize: green
+                    process.waitForFinished(-1);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (process.exitCode() == 0)                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        content = process.readAllStandardOutput();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Create file                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QFile file(filePath);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (file.open(QIODevice::WriteOnly))                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (file.write(content) != content.length())                                                                                                                             // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    file.close();                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    abortReplies();                                                                                                                                                      // Colorize: green
+                                    switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    return;                                                                                                                                                              // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                file.close();                                                                                                                                                            // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                abortReplies();                                                                                                                                                          // Colorize: green
+                                switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                return;                                                                                                                                                                  // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addLog(tr("Failed to decompress file %1").arg(fileInfo->fileName));                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        abortReplies();                                                                                                                                                                  // Colorize: green
+                        switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (!fileInfo->downloadName.endsWith(".raw"))                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qFatal("Unknown file format");                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check file MD5 hash                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QCryptographicHash hash(QCryptographicHash::Md5);                                                                                                                                        // Colorize: green
+                hash.addData(content);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (fileInfo->hash != QString::fromLatin1(hash.result().toHex()))                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to store file %1").arg(fileInfo->fileName));                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    abortReplies();                                                                                                                                                                      // Colorize: green
+                    switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to download file %1 from server %2: %3").arg(fileInfo->fileName).arg(server).arg(reply->errorString()));                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            abortReplies();                                                                                                                                                                              // Colorize: green
+            switchToState(UsbBootMakerState::GET_FILE_LIST);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Switch to next step when all replies are handled                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mReplies.isEmpty())                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++mCurrentApplication;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (mCurrentApplication >= applications.length())                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                switchToState(UsbBootMakerState::BURNING);                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                switchToState(UsbBootMakerState::GET_LATEST_VERSION);                                                                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::burnFinished()                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    delete mBurnThread;                                                                                                                                                                                  // Colorize: green
+    mBurnThread = nullptr;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switchToInitialState();                                                                                                                                                                              // Colorize: green
+    addLog(tr("Done"));                                                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::burnProgress(quint8 current, quint8 maximum)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->statusProgressBar->setValue(40 + 60 * current / maximum);                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::addLog(const QString &text)                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->logTextEdit->append(text);                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::prepareLanguages()                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QActionGroup *group = new QActionGroup(this);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill menu with the list of languages from assets                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList languages = QDir(":/assets/translations").entryList(); // Ignore CppPunctuationVerifier                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < languages.length(); ++i)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString language = languages.at(i);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get language code from file name                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (language.endsWith(".qm"))                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    language.remove(language.length() - 3, 3);                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qFatal("Invalid file located in assets/translations folder: %s", language.toLocal8Bit().constData());                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (language.startsWith("language_"))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    language.remove(0, 9);                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qFatal("Invalid file located in assets/translations folder: %s", language.toLocal8Bit().constData());                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString languageName = QLocale(language).nativeLanguageName();                                                                                                                               // Colorize: green
+            languageName[0]      = languageName.at(0).toUpper();                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug() << "Adding language:" << language << '|' << languageName;                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Create menu item with language                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QAction *languageItem = new QAction(languageName, this);                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                languageItem->setCheckable(true);                                                                                                                                                        // Colorize: green
+                languageItem->setActionGroup(group);                                                                                                                                                     // Colorize: green
+                languageItem->setData(language);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                connect(languageItem, SIGNAL(toggled(bool)), this, SLOT(languageToggled(bool)));                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ui->menuLanguage->addAction(languageItem);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mLanguageActions.insert(language, languageItem);                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::switchToState(UsbBootMakerState state)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mState = state;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (mState)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case UsbBootMakerState::GET_LATEST_VERSION: handleGetLatestVersionState(); break;                                                                                                                // Colorize: green
+        case UsbBootMakerState::GET_FILE_LIST:      handleGetFileListState();      break;                                                                                                                // Colorize: green
+        case UsbBootMakerState::DOWNLOAD:           handleDownloadState();         break;                                                                                                                // Colorize: green
+        case UsbBootMakerState::BURNING:            handleBurningState();          break;                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case UsbBootMakerState::INITIAL:                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unexpected state %u", (quint8)mState);                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default:                                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unknown state %u", (quint8)mState);                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::handleGetLatestVersionState()                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->statusProgressBar->setValue(5 + 35 * (0 + mCurrentApplication * 3) / applications.length() / 3);                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString application = applications.at(mCurrentApplication);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    addLog("");                                                                                                                                                                                          // Colorize: green
+    addLog(tr("Getting information about latest version of %1 from servers").arg(application));                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mLatestVersions.clear();                                                                                                                                                                             // Colorize: green
+    mRequestTime = QDateTime::currentMSecsSinceEpoch();                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Send requests to servers in order to obtain latest application version from them                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < servers.length(); ++i)                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            const QString &server = servers.at(i);                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QNetworkRequest request;                                                                                                                                                                     // Colorize: green
+            request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=latest&include_files=false")                                                                               // Colorize: green
+                                .arg(server)                                                                                                                                                             // Colorize: green
+                                .arg(application)));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QNetworkReply *reply = mManager->get(request);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            connect(reply, SIGNAL(finished()), this, SLOT(latestVersionReplyFinished()));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mReplies.insert(server, reply);                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::handleGetFileListState()                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->statusProgressBar->setValue(5 + 35 * (1 + mCurrentApplication * 3) / applications.length() / 3);                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Terminate if no response received from any server                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mLatestVersions.isEmpty())                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            switchToInitialState();                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            addLog(tr("Latest version is unavailable"));                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QHash<qint64, QList<const VersionInfo *>> versionGroups;                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill versionGroups                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QHashIterator<QString, VersionInfo> it(mLatestVersions);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            const VersionInfo *versionInfo = &it.value();                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            versionGroups[versionInfo->version].append(versionInfo);                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QList<const VersionInfo *> *generalGroup = nullptr;                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Find version that more spread among servers                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 max = 0;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QHashIterator<qint64, QList<const VersionInfo *>> it(versionGroups);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            const QList<const VersionInfo *> *versions = &it.value();                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that all versions are the same                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                const VersionInfo *firstVersionInfo = versions->constFirst();                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = 1; j < versions->length(); ++j)                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    const VersionInfo *versionInfo = versions->at(j);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        versionInfo->id != firstVersionInfo->id                                                                                                                                          // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        versionInfo->version != firstVersionInfo->version                                                                                                                                // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        versionInfo->hash != firstVersionInfo->hash                                                                                                                                      // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        switchToInitialState();                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        addLog(tr("Database is broken"));                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (versions->length() > max)                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                max          = versions->length();                                                                                                                                                       // Colorize: green
+                generalGroup = versions;                                                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Find server with the minimum delay                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const VersionInfo *selectedVersionInfo = generalGroup->constFirst();                                                                                                                             // Colorize: green
+        qint64             min                 = selectedVersionInfo->delay;                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 1; i < generalGroup->length(); ++i)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (generalGroup->at(i)->delay < min)                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                selectedVersionInfo = generalGroup->at(i);                                                                                                                                               // Colorize: green
+                min                 = selectedVersionInfo->delay;                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mSelectedVersionInfo = *selectedVersionInfo;                                                                                                                                                     // Colorize: green
+        mLatestVersions.remove(mSelectedVersionInfo.server);                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Send request to server in order to get list of files                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QNetworkRequest request;                                                                                                                                                                         // Colorize: green
+        request.setUrl(QUrl(QString("https://%1/rest/app_versions.php?codename=%2&version=%3&include_files=true")                                                                                        // Colorize: green
+                            .arg(mSelectedVersionInfo.server)                                                                                                                                            // Colorize: green
+                            .arg(applications.at(mCurrentApplication))                                                                                                                                   // Colorize: green
+                            .arg(mSelectedVersionInfo.version)));                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QNetworkReply *reply = mManager->get(request);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        connect(reply, SIGNAL(finished()), this, SLOT(fileListReplyFinished()));                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mReplies.insert(mSelectedVersionInfo.server, reply);                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::handleDownloadState()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->statusProgressBar->setValue(5 + 35 * (2 + mCurrentApplication * 3) / applications.length() / 3);                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Send requests to server in order to download files                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mVersionFiles.length(); ++i)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            FileInfo *fileInfo = &mVersionFiles[i];                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QNetworkRequest request;                                                                                                                                                                     // Colorize: green
+            request.setUrl(QUrl(QString("https://%1/downloads/%2").arg(mSelectedVersionInfo.server).arg(fileInfo->downloadName)));                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QNetworkReply *reply = mManager->get(request);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QVariant data;                                                                                                                                                                               // Colorize: green
+            data.setValue(fileInfo);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            reply->setProperty("fileInfo", data);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            connect(reply, SIGNAL(finished()), this, SLOT(downloadReplyFinished()));                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mReplies.insert(fileInfo->fileName, reply);                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::handleBurningState()                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    ui->statusProgressBar->setValue(40);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    addLog("");                                                                                                                                                                                          // Colorize: green
+    addLog(tr("Making bootable USB flash drive on disk \"%1\"").arg(ui->deviceComboBox->currentText()));                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create and start burn thread                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mBurnThread = new BurnThread(ui->deviceComboBox->currentData().value<UsbDeviceInfo *>(), mTemporaryDir->path());                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        connect(mBurnThread, SIGNAL(logAdded(const QString &)), this, SLOT(addLog(const QString &)));                                                                                                    // Colorize: green
+        connect(mBurnThread, SIGNAL(progress(quint8, quint8)),  this, SLOT(burnProgress(quint8, quint8)));                                                                                               // Colorize: green
+        connect(mBurnThread, SIGNAL(finished()),                this, SLOT(burnFinished()));                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mBurnThread->start();                                                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::resetToInitialState()                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    addLog(tr("Operation terminated by user"));                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (mState)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case UsbBootMakerState::GET_LATEST_VERSION:                                                                                                                                                      // Colorize: green
+        case UsbBootMakerState::GET_FILE_LIST:                                                                                                                                                           // Colorize: green
+        case UsbBootMakerState::DOWNLOAD:                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            abortReplies();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case UsbBootMakerState::BURNING:                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mBurnThread->blockSignals(true);                                                                                                                                                             // Colorize: green
+            mBurnThread->stop();                                                                                                                                                                         // Colorize: green
+            mBurnThread->wait();                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete mBurnThread;                                                                                                                                                                          // Colorize: green
+            mBurnThread = nullptr;                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        case UsbBootMakerState::INITIAL:                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unexpected state %u", (quint8)mState);                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default:                                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qFatal("Unknown state %u", (quint8)mState);                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switchToInitialState();                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::abortReplies()                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Iterate over replies and abort them                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QHashIterator<QString, QNetworkReply *> it(mReplies);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (it.hasNext())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            it.next();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QNetworkReply *reply = it.value();                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            reply->blockSignals(true);                                                                                                                                                                   // Colorize: green
+            reply->abort();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            reply->deleteLater();                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mReplies.clear();                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::switchToInitialState()                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mState = UsbBootMakerState::INITIAL;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Setup UI controls                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ui->statusProgressBar->setValue(0);                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ui->deviceComboBox->setEnabled(true);                                                                                                                                                            // Colorize: green
+        ui->startButton->setIcon(QIcon(":/assets/images/start.png")); // Ignore CppPunctuationVerifier                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::saveWindowState()                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QSettings settings("NGOS", "usb_boot_maker");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Save settings                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        settings.setValue("Language",               mLanguage);                                                                                                                                          // Colorize: green
+        settings.setValue("MainWindow/geometry",    saveGeometry());                                                                                                                                     // Colorize: green
+        settings.setValue("MainWindow/windowState", saveState());                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MainWindow::loadWindowState()                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QSettings settings("NGOS", "usb_boot_maker");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Load settings                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                           // Colorize: green
+        mLanguage =     settings.value("Language", QLocale::system().name()).toString(); // Ignore CppEqualAlignmentVerifier                                                                             // Colorize: green
+        restoreGeometry(settings.value("MainWindow/geometry").toByteArray());                                                                                                                            // Colorize: green
+        restoreState(   settings.value("MainWindow/windowState").toByteArray());                                                                                                                         // Colorize: green
+        // Ignore CppAlignmentVerifier [END]                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Mark selected language menu item                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mLanguage = mLanguage.left(mLanguage.indexOf('_'));                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!mLanguageActions.contains(mLanguage))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mLanguage = "en";                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mLanguageActions.value(mLanguage)->setChecked(true);                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

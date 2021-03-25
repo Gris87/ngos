@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H
-
-
-
-#include <QString>
-
-
-
-struct VersionInfo
-{
-    quint64 id;
-    quint64 version;
-    QString hash;
-    QString server;
-    qint64  delay;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H                                                                                                                                             // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct VersionInfo                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64  id;                                                                                                                                                                                          // Colorize: green
+    qint64  version;                                                                                                                                                                                     // Colorize: green
+    QString hash;                                                                                                                                                                                        // Colorize: green
+    QString server;                                                                                                                                                                                      // Colorize: green
+    qint64  delay;                                                                                                                                                                                       // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_VERSIONINFO_H                                                                                                                                           // Colorize: green

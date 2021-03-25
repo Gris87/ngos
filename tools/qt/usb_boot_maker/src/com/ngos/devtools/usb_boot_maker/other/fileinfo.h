@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H
-
-
-
-#include <QString>
-
-
-
-struct FileInfo
-{
-    QString downloadName;
-    QString fileName;
-    QString hash;
-};
-
-Q_DECLARE_METATYPE(FileInfo *); // TEST: NO
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H                                                                                                                                                // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct FileInfo                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString downloadName;                                                                                                                                                                                // Colorize: green
+    QString fileName;                                                                                                                                                                                    // Colorize: green
+    QString hash;                                                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Q_DECLARE_METATYPE(FileInfo *); // TEST: NO                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_FILEINFO_H                                                                                                                                              // Colorize: green

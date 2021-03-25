@@ -1,16 +1,20 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H
-
-
-
-#define MIN_DISK_SIZE (8* 1024 * 1024)
-
-#define MAX_GPT_PARTITIONS   128
-#define DEFAULT_CLUSTER_SIZE 4096
-#define SECTOR_SIZE          512
-
-#define MBR_RESERVED 0x01B8
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H                                                                                                                                                 // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/macro/constants.h>                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define MIN_DISK_SIZE (8 * MB)                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define MAX_GPT_PARTITIONS   128                                                                                                                                                                         // Colorize: green
+#define DEFAULT_CLUSTER_SIZE 4096                                                                                                                                                                        // Colorize: green
+#define SECTOR_SIZE          512                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define MBR_RESERVED 0x01B8                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_DEFINES_H                                                                                                                                               // Colorize: green

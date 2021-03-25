@@ -1180,7 +1180,9 @@ src/os/shared/common/src/com/ngos/shared/common/inflate/inflatedecoder.h
 src/os/shared/common/src/com/ngos/shared/common/inflate/inflatefixedcodes.h
 src/os/shared/common/src/com/ngos/shared/common/log/assert.h
 src/os/shared/common/src/com/ngos/shared/common/log/log.h
+src/os/shared/common/src/com/ngos/shared/common/macro/applications.h
 src/os/shared/common/src/com/ngos/shared/common/macro/constants.h
+src/os/shared/common/src/com/ngos/shared/common/macro/servers.h
 src/os/shared/common/src/com/ngos/shared/common/macro/utils.h
 src/os/shared/common/src/com/ngos/shared/common/mbr/mbr.h
 src/os/shared/common/src/com/ngos/shared/common/mbr/mbrpartition.h

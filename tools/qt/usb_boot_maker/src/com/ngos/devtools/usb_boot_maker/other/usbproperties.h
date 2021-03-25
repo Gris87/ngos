@@ -1,29 +1,29 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H
-
-
-
-#include <Qt>
-
-#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>
-
-
-
-struct UsbProperties
-{
-    quint32  vid;
-    quint32  pid;
-    quint32  port;
-    UsbSpeed speed;
-    bool     isUSB;
-    bool     isSCSI;
-    bool     isCARD;
-    bool     isUASP;
-    bool     isVHD;
-    bool     isRemovable;
-    bool     isLowerSpeed;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct UsbProperties                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    quint32  vid;                                                                                                                                                                                        // Colorize: green
+    quint32  pid;                                                                                                                                                                                        // Colorize: green
+    quint32  port;                                                                                                                                                                                       // Colorize: green
+    UsbSpeed speed;                                                                                                                                                                                      // Colorize: green
+    bool     isUSB;                                                                                                                                                                                      // Colorize: green
+    bool     isSCSI;                                                                                                                                                                                     // Colorize: green
+    bool     isCARD;                                                                                                                                                                                     // Colorize: green
+    bool     isUASP;                                                                                                                                                                                     // Colorize: green
+    bool     isVHD;                                                                                                                                                                                      // Colorize: green
+    bool     isRemovable;                                                                                                                                                                                // Colorize: green
+    bool     isLowerSpeed;                                                                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBPROPERTIES_H                                                                                                                                         // Colorize: green

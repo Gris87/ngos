@@ -13,6 +13,10 @@
 enum class PciSubDevice100010E2: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
+    SUBDEVICE_10004000 = 0x10004000,
+    SUBDEVICE_10004010 = 0x10004010,
+    SUBDEVICE_10004020 = 0x10004020,
+    SUBDEVICE_100040B0 = 0x100040B0,
     SUBDEVICE_10281AE0 = 0x10281AE0,
     SUBDEVICE_10281AE1 = 0x10281AE1,
     SUBDEVICE_10281AE2 = 0x10281AE2,
@@ -36,6 +40,10 @@ inline const char8* enumToString(PciSubDevice100010E2 subDevice) // TEST: NO
     switch (subDevice)
     {
         case PciSubDevice100010E2::NONE:               return "NONE";
+        case PciSubDevice100010E2::SUBDEVICE_10004000: return "SUBDEVICE_10004000";
+        case PciSubDevice100010E2::SUBDEVICE_10004010: return "SUBDEVICE_10004010";
+        case PciSubDevice100010E2::SUBDEVICE_10004020: return "SUBDEVICE_10004020";
+        case PciSubDevice100010E2::SUBDEVICE_100040B0: return "SUBDEVICE_100040B0";
         case PciSubDevice100010E2::SUBDEVICE_10281AE0: return "SUBDEVICE_10281AE0";
         case PciSubDevice100010E2::SUBDEVICE_10281AE1: return "SUBDEVICE_10281AE1";
         case PciSubDevice100010E2::SUBDEVICE_10281AE2: return "SUBDEVICE_10281AE2";
@@ -76,6 +84,10 @@ inline const char8* enumToHumanString(PciSubDevice100010E2 subDevice) // TEST: N
 
     switch (subDevice)
     {
+        case PciSubDevice100010E2::SUBDEVICE_10004000: return "MegaRAID 9560-16i";
+        case PciSubDevice100010E2::SUBDEVICE_10004010: return "MegaRAID 9560-8i";
+        case PciSubDevice100010E2::SUBDEVICE_10004020: return "MegaRAID 9580-8i8e";
+        case PciSubDevice100010E2::SUBDEVICE_100040B0: return "MegaRAID 9562-16i";
         case PciSubDevice100010E2::SUBDEVICE_10281AE0: return "PERC H755 Adapter";
         case PciSubDevice100010E2::SUBDEVICE_10281AE1: return "PERC H755 Front";
         case PciSubDevice100010E2::SUBDEVICE_10281AE2: return "PERC H755N Front";

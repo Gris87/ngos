@@ -15,6 +15,7 @@ enum class PciDevice1414: u16 // Ignore CppEnumVerifier
     NONE        = 0,
     DEVICE_0001 = 0x0001,
     DEVICE_0002 = 0x0002,
+    DEVICE_008C = 0x008C,
     DEVICE_5353 = 0x5353,
     DEVICE_5801 = 0x5801,
     DEVICE_5802 = 0x5802,
@@ -42,6 +43,7 @@ inline const char8* enumToString(PciDevice1414 device) // TEST: NO
         case PciDevice1414::NONE:        return "NONE";
         case PciDevice1414::DEVICE_0001: return "DEVICE_0001";
         case PciDevice1414::DEVICE_0002: return "DEVICE_0002";
+        case PciDevice1414::DEVICE_008C: return "DEVICE_008C";
         case PciDevice1414::DEVICE_5353: return "DEVICE_5353";
         case PciDevice1414::DEVICE_5801: return "DEVICE_5801";
         case PciDevice1414::DEVICE_5802: return "DEVICE_5802";
@@ -86,6 +88,7 @@ inline const char8* enumToHumanString(PciDevice1414 device) // TEST: NO
     {
         case PciDevice1414::DEVICE_0001: return "MN-120 (ADMtek Centaur-C based)";
         case PciDevice1414::DEVICE_0002: return "MN-130 (ADMtek Centaur-P based)";
+        case PciDevice1414::DEVICE_008C: return "Basic Render Driver";
         case PciDevice1414::DEVICE_5353: return "Hyper-V virtual VGA";
         case PciDevice1414::DEVICE_5801: return "XMA Decoder (Xenon)";
         case PciDevice1414::DEVICE_5802: return "SATA Controller - CdRom (Xenon)";

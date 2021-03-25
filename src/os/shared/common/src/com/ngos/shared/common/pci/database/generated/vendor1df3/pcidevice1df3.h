@@ -24,7 +24,9 @@ enum class PciDevice1DF3: u16 // Ignore CppEnumVerifier
     DEVICE_0203 = 0x0203,
     DEVICE_0204 = 0x0204,
     DEVICE_0205 = 0x0205,
-    DEVICE_0206 = 0x0206
+    DEVICE_0206 = 0x0206,
+    DEVICE_0207 = 0x0207,
+    DEVICE_0208 = 0x0208
 };
 
 
@@ -44,6 +46,8 @@ inline const char8* enumToString(PciDevice1DF3 device) // TEST: NO
         case PciDevice1DF3::DEVICE_0204: return "DEVICE_0204";
         case PciDevice1DF3::DEVICE_0205: return "DEVICE_0205";
         case PciDevice1DF3::DEVICE_0206: return "DEVICE_0206";
+        case PciDevice1DF3::DEVICE_0207: return "DEVICE_0207";
+        case PciDevice1DF3::DEVICE_0208: return "DEVICE_0208";
 
         default: return "UNKNOWN";
     }
@@ -80,6 +84,8 @@ inline const char8* enumToHumanString(PciDevice1DF3 device) // TEST: NO
         case PciDevice1DF3::DEVICE_0204: return "ACE-NIC-NID Programmable Network Accelerator";
         case PciDevice1DF3::DEVICE_0205: return "ACE-NIC250 Programmable Network Accelerator";
         case PciDevice1DF3::DEVICE_0206: return "ACE-NIC200 Programmable Network Accelerator";
+        case PciDevice1DF3::DEVICE_0207: return "ACE-NIC50RN Programmable Network Accelerator";
+        case PciDevice1DF3::DEVICE_0208: return "ACE-NIC100RN Programmable Network Accelerator";
 
         default: return "Unknown device";
     }
@@ -101,6 +107,8 @@ inline const char8* enumToHumanString(PciDevice1DF3 device, u16 subsystemVendorI
         case PciDevice1DF3::DEVICE_0204: return enumToHumanString((PciSubDevice1DF30204)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DF3::DEVICE_0205: return enumToHumanString((PciSubDevice1DF30205)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1DF3::DEVICE_0206: return enumToHumanString((PciSubDevice1DF30206)(subsystemVendorID << 16 | subDeviceId));
+        case PciDevice1DF3::DEVICE_0207: return "Unknown device";
+        case PciDevice1DF3::DEVICE_0208: return "Unknown device";
 
         default: return "Unknown device";
     }

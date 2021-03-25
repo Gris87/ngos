@@ -1,98 +1,98 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H
-
-
-
-#include <QMainWindow>
-
-#include <QList>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QTemporaryDir>
-#include <QTimer>
-#include <QTranslator>
-
-#include <com/ngos/devtools/usb_boot_maker/other/fileinfo.h>
-#include <com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h>
-#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>
-#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>
-#include <com/ngos/devtools/usb_boot_maker/other/versioninfo.h>
-#include <com/ngos/devtools/usb_boot_maker/threads/burnthread.h>
-#include <com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h>
-
-
-
-namespace Ui
-{
-    class MainWindow;
-}
-
-
-
-class MainWindow: public QMainWindow
-{
-    Q_OBJECT
-
-public:
-    explicit MainWindow(QWidget *parent = nullptr); // TEST: NO
-    ~MainWindow(); // TEST: NO
-
-protected:
-    bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result); // TEST: NO // Ignore CppTypesVerifier
-
-private slots:
-    void on_actionExit_triggered(); // TEST: NO
-    void on_actionAbout_triggered(); // TEST: NO
-    void on_startButton_clicked(); // TEST: NO
-
-    void languageToggled(bool checked); // TEST: NO
-    void updateUsbDevices(); // TEST: NO
-    void usbStatusChanged(quint16 delay); // TEST: NO
-    void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO
-    void latestVersionReplyFinished(); // TEST: NO
-    void fileListReplyFinished(); // TEST: NO
-    void downloadReplyFinished(); // TEST: NO
-    void burnFinished(); // TEST: NO
-    void addLog(const QString &text); // TEST: NO
-    void burnProgress(quint8 current, quint8 maximum); // TEST: NO
-
-private:
-    void prepareLanguages(); // TEST: NO
-    QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO
-    void switchToState(UsbBootMakerState state); // TEST: NO
-    void handleGetLatestVersionState(); // TEST: NO
-    void handleGetFileListState(); // TEST: NO
-    void handleDownloadState(); // TEST: NO
-    void handleBurningState(); // TEST: NO
-    void resetToInitialState(); // TEST: NO
-    void abortReplies(); // TEST: NO
-    void switchToInitialState(); // TEST: NO
-
-    void saveWindowState(); // TEST: NO
-    void loadWindowState(); // TEST: NO
-
-    Ui::MainWindow                  *ui;
-    QTranslator                     *mTranslator;
-    QTimer                          *mUpdateTimer;
-    QNetworkAccessManager           *mManager;
-    QTemporaryDir                   *mTemporaryDir;
-    BurnThread                      *mBurnThread;
-
-#ifdef Q_OS_LINUX
-    UsbMonitorThread                *mUsbMonitorThread;
-#endif
-
-    UsbBootMakerState                mState;
-    qint64                           mRequestTime;
-    QHash<QString, QNetworkReply *>  mReplies;
-    QHash<QString, VersionInfo>      mLatestVersions;
-    VersionInfo                      mSelectedVersionInfo;
-    qint64                           mCurrentApplication;
-    QList<FileInfo>                  mVersionFiles;
-    QString                          mLanguage;
-    QHash<QString, QAction *>        mLanguageActions;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMainWindow>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+#include <QNetworkAccessManager>                                                                                                                                                                         // Colorize: green
+#include <QNetworkReply>                                                                                                                                                                                 // Colorize: green
+#include <QTemporaryDir>                                                                                                                                                                                 // Colorize: green
+#include <QTimer>                                                                                                                                                                                        // Colorize: green
+#include <QTranslator>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/fileinfo.h>                                                                                                                                             // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbbootmakerstate.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbspeed.h>                                                                                                                                             // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/versioninfo.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/threads/burnthread.h>                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h>                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+namespace Ui                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    class MainWindow;                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class MainWindow: public QMainWindow                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    explicit MainWindow(QWidget *parent = nullptr); // TEST: NO                                                                                                                                          // Colorize: green
+    ~MainWindow(); // TEST: NO                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override; // TEST: NO // Ignore CppTypesVerifier                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private slots:                                                                                                                                                                                           // Colorize: green
+    void on_actionExit_triggered(); // TEST: NO                                                                                                                                                          // Colorize: green
+    void on_actionAbout_triggered(); // TEST: NO                                                                                                                                                         // Colorize: green
+    void on_startButton_clicked(); // TEST: NO                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void languageToggled(bool checked); // TEST: NO                                                                                                                                                      // Colorize: green
+    void updateUsbDevices(); // TEST: NO                                                                                                                                                                 // Colorize: green
+    void usbStatusChanged(quint16 delay); // TEST: NO                                                                                                                                                    // Colorize: green
+    void ignoreSslErrors(QNetworkReply *reply, const QList<QSslError> &errors); // TEST: NO                                                                                                              // Colorize: green
+    void latestVersionReplyFinished(); // TEST: NO                                                                                                                                                       // Colorize: green
+    void fileListReplyFinished(); // TEST: NO                                                                                                                                                            // Colorize: green
+    void downloadReplyFinished(); // TEST: NO                                                                                                                                                            // Colorize: green
+    void burnFinished(); // TEST: NO                                                                                                                                                                     // Colorize: green
+    void burnProgress(quint8 current, quint8 maximum); // TEST: NO                                                                                                                                       // Colorize: green
+    void addLog(const QString &text); // TEST: NO                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    void prepareLanguages(); // TEST: NO                                                                                                                                                                 // Colorize: green
+    QList<UsbDeviceInfo *> getUsbDevices(); // TEST: NO                                                                                                                                                  // Colorize: green
+    void switchToState(UsbBootMakerState state); // TEST: NO                                                                                                                                             // Colorize: green
+    void handleGetLatestVersionState(); // TEST: NO                                                                                                                                                      // Colorize: green
+    void handleGetFileListState(); // TEST: NO                                                                                                                                                           // Colorize: green
+    void handleDownloadState(); // TEST: NO                                                                                                                                                              // Colorize: green
+    void handleBurningState(); // TEST: NO                                                                                                                                                               // Colorize: green
+    void resetToInitialState(); // TEST: NO                                                                                                                                                              // Colorize: green
+    void abortReplies(); // TEST: NO                                                                                                                                                                     // Colorize: green
+    void switchToInitialState(); // TEST: NO                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void saveWindowState(); // TEST: NO                                                                                                                                                                  // Colorize: green
+    void loadWindowState(); // TEST: NO                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Ui::MainWindow                  *ui;                                                                                                                                                                 // Colorize: green
+    QTranslator                     *mTranslator;                                                                                                                                                        // Colorize: green
+    QTimer                          *mUpdateTimer;                                                                                                                                                       // Colorize: green
+    QNetworkAccessManager           *mManager;                                                                                                                                                           // Colorize: green
+    QTemporaryDir                   *mTemporaryDir;                                                                                                                                                      // Colorize: green
+    BurnThread                      *mBurnThread;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+    UsbMonitorThread                *mUsbMonitorThread;                                                                                                                                                  // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    UsbBootMakerState                mState;                                                                                                                                                             // Colorize: green
+    qint64                           mRequestTime;                                                                                                                                                       // Colorize: green
+    QHash<QString, QNetworkReply *>  mReplies;              // Server => Reply or Filename => Reply                                                                                                      // Colorize: green
+    QHash<QString, VersionInfo>      mLatestVersions;       // Server => Version info                                                                                                                    // Colorize: green
+    VersionInfo                      mSelectedVersionInfo;                                                                                                                                               // Colorize: green
+    qint64                           mCurrentApplication;                                                                                                                                                // Colorize: green
+    QList<FileInfo>                  mVersionFiles;                                                                                                                                                      // Colorize: green
+    QString                          mLanguage;                                                                                                                                                          // Colorize: green
+    QHash<QString, QAction *>        mLanguageActions;      // Language => Action                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_MAIN_MAINWINDOW_H                                                                                                                                             // Colorize: green

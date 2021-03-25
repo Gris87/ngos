@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QSettings>
 
+#include <com/ngos/shared/common/macro/applications.h>
+
 
 
 BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)
@@ -29,18 +31,18 @@ void BurnThread::copyFiles(const QString &diskPath)
 
 
 
-    if (!copyFolder(mBinariesPath + "/com.ngos.bootloader", diskPath + "/EFI/BOOT"))
+    if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_BOOTLOADER, diskPath + "/EFI/BOOT"))
     {
-        addLog(tr("Failed to copy folder %1").arg("com.ngos.bootloader"));
+        addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_BOOTLOADER));
 
         stop();
 
         return;
     }
 
-    if (!copyFolder(mBinariesPath + "/com.ngos.installer", diskPath + "/EFI/NGOS"))
+    if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_INSTALLER, diskPath + "/EFI/NGOS"))
     {
-        addLog(tr("Failed to copy folder %1").arg("com.ngos.installer"));
+        addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_INSTALLER));
 
         stop();
 

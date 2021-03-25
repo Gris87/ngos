@@ -21,9 +21,15 @@ enum class PciSubDevice10026759: u32 // Ignore CppEnumVerifier
     SUBDEVICE_16423A67 = 0x16423A67,
     SUBDEVICE_16823280 = 0x16823280,
     SUBDEVICE_16823530 = 0x16823530,
+    SUBDEVICE_16825230 = 0x16825230,
+    SUBDEVICE_16826450 = 0x16826450,
     SUBDEVICE_174B7570 = 0x174B7570,
+    SUBDEVICE_174B8550 = 0x174B8550,
+    SUBDEVICE_174B8570 = 0x174B8570,
     SUBDEVICE_174BE142 = 0x174BE142,
     SUBDEVICE_174BE181 = 0x174BE181,
+    SUBDEVICE_1787A230 = 0x1787A230,
+    SUBDEVICE_1787A450 = 0x1787A450,
     SUBDEVICE_1B0A908F = 0x1B0A908F,
     SUBDEVICE_1B0A9090 = 0x1B0A9090,
     SUBDEVICE_1B0A9091 = 0x1B0A9091,
@@ -52,9 +58,15 @@ inline const char8* enumToString(PciSubDevice10026759 subDevice) // TEST: NO
         case PciSubDevice10026759::SUBDEVICE_16423A67: return "SUBDEVICE_16423A67";
         case PciSubDevice10026759::SUBDEVICE_16823280: return "SUBDEVICE_16823280";
         case PciSubDevice10026759::SUBDEVICE_16823530: return "SUBDEVICE_16823530";
+        case PciSubDevice10026759::SUBDEVICE_16825230: return "SUBDEVICE_16825230";
+        case PciSubDevice10026759::SUBDEVICE_16826450: return "SUBDEVICE_16826450";
         case PciSubDevice10026759::SUBDEVICE_174B7570: return "SUBDEVICE_174B7570";
+        case PciSubDevice10026759::SUBDEVICE_174B8550: return "SUBDEVICE_174B8550";
+        case PciSubDevice10026759::SUBDEVICE_174B8570: return "SUBDEVICE_174B8570";
         case PciSubDevice10026759::SUBDEVICE_174BE142: return "SUBDEVICE_174BE142";
         case PciSubDevice10026759::SUBDEVICE_174BE181: return "SUBDEVICE_174BE181";
+        case PciSubDevice10026759::SUBDEVICE_1787A230: return "SUBDEVICE_1787A230";
+        case PciSubDevice10026759::SUBDEVICE_1787A450: return "SUBDEVICE_1787A450";
         case PciSubDevice10026759::SUBDEVICE_1B0A908F: return "SUBDEVICE_1B0A908F";
         case PciSubDevice10026759::SUBDEVICE_1B0A9090: return "SUBDEVICE_1B0A9090";
         case PciSubDevice10026759::SUBDEVICE_1B0A9091: return "SUBDEVICE_1B0A9091";
@@ -100,9 +112,15 @@ inline const char8* enumToHumanString(PciSubDevice10026759 subDevice) // TEST: N
         case PciSubDevice10026759::SUBDEVICE_16423A67: return "Radeon HD 6570";
         case PciSubDevice10026759::SUBDEVICE_16823280: return "Radeon HD 7570";
         case PciSubDevice10026759::SUBDEVICE_16823530: return "Radeon HD 8550";
+        case PciSubDevice10026759::SUBDEVICE_16825230: return "Radeon R5 230 series";
+        case PciSubDevice10026759::SUBDEVICE_16826450: return "Radeon HD 6450 series";
         case PciSubDevice10026759::SUBDEVICE_174B7570: return "Radeon HD 7570";
+        case PciSubDevice10026759::SUBDEVICE_174B8550: return "Radeon HD8550 OEM";
+        case PciSubDevice10026759::SUBDEVICE_174B8570: return "Radeon HD8550 OEM";
         case PciSubDevice10026759::SUBDEVICE_174BE142: return "Radeon HD 6570";
         case PciSubDevice10026759::SUBDEVICE_174BE181: return "Radeon HD 6570";
+        case PciSubDevice10026759::SUBDEVICE_1787A230: return "Radeon R5 230 series";
+        case PciSubDevice10026759::SUBDEVICE_1787A450: return "Radeon HD 6450 series";
         case PciSubDevice10026759::SUBDEVICE_1B0A908F: return "Radeon HD 6570";
         case PciSubDevice10026759::SUBDEVICE_1B0A9090: return "Radeon HD 6570";
         case PciSubDevice10026759::SUBDEVICE_1B0A9091: return "Radeon HD 6570";

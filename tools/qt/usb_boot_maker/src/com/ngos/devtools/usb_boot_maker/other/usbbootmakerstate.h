@@ -1,51 +1,51 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H
-
-
-
-#include <Qt>
-#include <stdio.h>
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-enum class UsbBootMakerState: quint8
-{
-    INITIAL            = 0,
-    GET_LATEST_VERSION = 1,
-    GET_FILE_LIST      = 2,
-    DOWNLOAD           = 3,
-    BURNING            = 4
-};
-
-
-
-inline const char8* enumToString(UsbBootMakerState state) // TEST: NO
-{
-    switch (state)
-    {
-        case UsbBootMakerState::INITIAL:            return "INITIAL";
-        case UsbBootMakerState::GET_LATEST_VERSION: return "GET_LATEST_VERSION";
-        case UsbBootMakerState::GET_FILE_LIST:      return "GET_FILE_LIST";
-        case UsbBootMakerState::DOWNLOAD:           return "DOWNLOAD";
-        case UsbBootMakerState::BURNING:            return "BURNING";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(UsbBootMakerState state) // TEST: NO
-{
-    static char8 res[26];
-
-    sprintf(res, "0x%02X (%s)", (quint8)state, enumToString(state));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+#include <stdio.h>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class UsbBootMakerState: quint8                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    INITIAL            = 0,                                                                                                                                                                              // Colorize: green
+    GET_LATEST_VERSION = 1,                                                                                                                                                                              // Colorize: green
+    GET_FILE_LIST      = 2,                                                                                                                                                                              // Colorize: green
+    DOWNLOAD           = 3,                                                                                                                                                                              // Colorize: green
+    BURNING            = 4                                                                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(UsbBootMakerState state) // TEST: NO                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (state)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case UsbBootMakerState::INITIAL:            return "INITIAL";                                                                                                                                    // Colorize: green
+        case UsbBootMakerState::GET_LATEST_VERSION: return "GET_LATEST_VERSION";                                                                                                                         // Colorize: green
+        case UsbBootMakerState::GET_FILE_LIST:      return "GET_FILE_LIST";                                                                                                                              // Colorize: green
+        case UsbBootMakerState::DOWNLOAD:           return "DOWNLOAD";                                                                                                                                   // Colorize: green
+        case UsbBootMakerState::BURNING:            return "BURNING";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(UsbBootMakerState state) // TEST: NO                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    static char8 res[26];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (quint8)state, enumToString(state));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBBOOTMAKERSTATE_H                                                                                                                                     // Colorize: green

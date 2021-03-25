@@ -1,67 +1,54 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H
-
-
-
-#include <Qt>
-#include <stdio.h>
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-enum class UsbSpeed: quint8
-{
-    NONE           = 0,
-    LOW            = 1,
-    FULL           = 2,
-    HIGH           = 3,
-    SUPER_OR_LATER = 4
-};
-
-
-
-inline const char8* enumToString(UsbSpeed speed) // TEST: NO
-{
-    switch (speed)
-    {
-        case UsbSpeed::NONE:           return "NONE";
-        case UsbSpeed::LOW:            return "LOW";
-        case UsbSpeed::FULL:           return "FULL";
-        case UsbSpeed::HIGH:           return "HIGH";
-        case UsbSpeed::SUPER_OR_LATER: return "SUPER_OR_LATER";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(UsbSpeed speed) // TEST: NO
-{
-    static char8 res[22];
-
-    sprintf(res, "0x%02X (%s)", (quint8)speed, enumToString(speed));
-
-    return res;
-}
-
-
-
-inline const char8* enumToHumanString(UsbSpeed speed) // TEST: NO
-{
-    switch (speed)
-    {
-        case UsbSpeed::NONE:           return "NONE";
-        case UsbSpeed::LOW:            return "USB 1.0";
-        case UsbSpeed::FULL:           return "USB 1.1";
-        case UsbSpeed::HIGH:           return "USB 2.0";
-        case UsbSpeed::SUPER_OR_LATER: return "USB 3.0";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H                                                                                                                                                // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+#include <stdio.h>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class UsbSpeed: quint8                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE           = 0,                                                                                                                                                                                  // Colorize: green
+    LOW            = 1,                                                                                                                                                                                  // Colorize: green
+    FULL           = 2,                                                                                                                                                                                  // Colorize: green
+    HIGH           = 3,                                                                                                                                                                                  // Colorize: green
+    SUPER_OR_LATER = 4                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(UsbSpeed speed) // TEST: NO                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (speed)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case UsbSpeed::NONE:           return "NONE";                                                                                                                                                    // Colorize: green
+        case UsbSpeed::LOW:            return "LOW";                                                                                                                                                     // Colorize: green
+        case UsbSpeed::FULL:           return "FULL";                                                                                                                                                    // Colorize: green
+        case UsbSpeed::HIGH:           return "HIGH";                                                                                                                                                    // Colorize: green
+        case UsbSpeed::SUPER_OR_LATER: return "SUPER_OR_LATER";                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(UsbSpeed speed) // TEST: NO                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    static char8 res[22];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (quint8)speed, enumToString(speed));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_OTHER_USBSPEED_H                                                                                                                                              // Colorize: green

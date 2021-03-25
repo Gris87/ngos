@@ -757,7 +757,7 @@ bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
 
 void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -792,7 +792,7 @@ void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)
 
 void getUsbConnectionInfo(const HANDLE &deviceHandle, UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -808,7 +808,7 @@ void getUsbConnectionInfo(const HANDLE &deviceHandle, UsbProperties *props)
 
 void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceID, UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -856,7 +856,7 @@ void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceI
 
 bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QString deviceId, qint64 usbDriverIndex, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -960,7 +960,7 @@ bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePath
 
 void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -983,7 +983,7 @@ void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePat
 
 bool checkDeviceType(UsbProperties *props)
 {
-    Q_ASSERT(props);
+    Q_ASSERT(props != nullptr);
 
 
 
@@ -1096,9 +1096,9 @@ HANDLE getDiskHandle(DWORD diskNumber)
     return CreateFileA(diskPath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 }
 
-quint64 getDiskSize(DWORD diskNumber)
+qint64 getDiskSize(DWORD diskNumber)
 {
-    quint64 res = 0;
+    qint64 res = 0;
 
 
 
@@ -1131,19 +1131,19 @@ quint64 getDiskSize(DWORD diskNumber)
     return res;
 }
 
-QString diskSizeHumanReadable(quint64 diskSize)
+QString diskSizeHumanReadable(qint64 diskSize)
 {
     if (diskSize >= 1000000000000)
     {
-        return QString::number((quint64)floor(diskSize / 1000000000000.0)) + "TB";
+        return QString::number((qint64)floor(diskSize / 1000000000000.0)) + "TB";
     }
 
     if (diskSize >= 1000000000)
     {
-        return QString::number((quint64)floor(diskSize / 1000000000.0)) + "GB";
+        return QString::number((qint64)floor(diskSize / 1000000000.0)) + "GB";
     }
 
-    return QString::number((quint64)floor(diskSize / 1000000.0)) + "MB";
+    return QString::number((qint64)floor(diskSize / 1000000.0)) + "MB";
 }
 
 void getDiskLetters(DWORD diskNumber, char *letters)
@@ -1319,7 +1319,7 @@ void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *
 
 
 
-    quint64 diskSize = getDiskSize(diskNumber);
+    qint64 diskSize = getDiskSize(diskNumber);
     qDebug() << "        Disk size:" << (diskSize / 1000000.0) << "MB"; // Ignore CppAlignmentVerifier
 
     if (diskSize == 0)
@@ -1389,7 +1389,7 @@ void handleDiskDeviceInterfacePath(const QString &deviceInterfacePath, QList<Usb
 void handleDiskInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QList<UsbDeviceInfo *> *usbDevices)
 {
     Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(usbDevices);
+    Q_ASSERT(usbDevices    != nullptr);
 
 
 
