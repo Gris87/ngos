@@ -1,47 +1,47 @@
-#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H
-#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H
-
-
-
-#include <QThread>
-
-#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>
-
-
-
-class BurnThread: public QThread
-{
-    Q_OBJECT
-
-public:
-    BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath); // TEST: NO
-
-    void stop(); // TEST: NO
-
-    void copyFiles(const QString &diskPath); // TEST: NO
-    void createAutorun(const QString &diskPath); // TEST: NO
-
-    void addLog(const QString &text); // TEST: NO
-    void notifyProgress(quint8 current, quint8 maximum); // TEST: NO
-
-    const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO
-    bool isWorking() const; // TEST: NO
-
-protected:
-    void run() override; // TEST: NO
-
-private:
-    bool copyFolder(const QString &sourceFolder, const QString &destinationFolder); // TEST: NO
-
-    bool          mIsRunning;
-    UsbDeviceInfo mSelectedUsb;
-    QString       mBinariesPath;
-
-signals:
-    void logAdded(const QString &text); // TEST: NO
-    void progress(quint8 current, quint8 maximum); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H
+#ifndef COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QThread>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h>                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class BurnThread: public QThread                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_OBJECT                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath); // TEST: NO                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void stop(); // TEST: NO                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void copyFiles(const QString &diskPath); // TEST: NO                                                                                                                                                 // Colorize: green
+    void createAutorun(const QString &diskPath); // TEST: NO                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void addLog(const QString &text); // TEST: NO                                                                                                                                                        // Colorize: green
+    void notifyProgress(quint8 current, quint8 maximum); // TEST: NO                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const UsbDeviceInfo& getSelectedUsb() const; // TEST: NO                                                                                                                                             // Colorize: green
+    bool isWorking() const; // TEST: NO                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void run() override; // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    bool copyFolder(const QString &sourceFolder, const QString &destinationFolder); // TEST: NO                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool          mIsRunning;                                                                                                                                                                            // Colorize: green
+    UsbDeviceInfo mSelectedUsb;                                                                                                                                                                          // Colorize: green
+    QString       mBinariesPath;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+signals:                                                                                                                                                                                                 // Colorize: green
+    void logAdded(const QString &text); // TEST: NO                                                                                                                                                      // Colorize: green
+    void progress(quint8 current, quint8 maximum); // TEST: NO                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_USB_BOOT_MAKER_THREADS_BURNTHREAD_H                                                                                                                                          // Colorize: green

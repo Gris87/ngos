@@ -1,137 +1,160 @@
-#include "burnthread.h"
-
-#include <QDir>
-#include <QFile>
-#include <QSettings>
-
-#include <com/ngos/shared/common/macro/applications.h>
-
-
-
-BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)
-    : QThread()
-    , mIsRunning(true)
-    , mSelectedUsb()
-    , mBinariesPath(binariesPath)
-{
-    mSelectedUsb.diskNumber = deviceInfo->diskNumber;
-    mSelectedUsb.diskSize   = deviceInfo->diskSize;
-    mSelectedUsb.letters    = deviceInfo->letters;
-    mSelectedUsb.deviceName = deviceInfo->deviceName;
-}
-
-void BurnThread::stop()
-{
-    mIsRunning = false;
-}
-
-void BurnThread::copyFiles(const QString &diskPath)
-{
-    addLog(tr("Copying files to disk"));
-
-
-
-    if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_BOOTLOADER, diskPath + "/EFI/BOOT"))
-    {
-        addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_BOOTLOADER));
-
-        stop();
-
-        return;
-    }
-
-    if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_INSTALLER, diskPath + "/EFI/NGOS"))
-    {
-        addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_INSTALLER));
-
-        stop();
-
-        return;
-    }
-}
-
-void BurnThread::createAutorun(const QString &diskPath)
-{
-    addLog(tr("Create autorun.inf file"));
-
-
-
-    if (!QFile(":/assets/images/icon.ico").copy(diskPath + "/icon.ico"))
-    {
-        addLog(tr("Failed to copy file %1").arg(":/assets/images/icon.ico"));
-
-        stop();
-
-        return;
-    }
-
-
-
-    QSettings settings(diskPath + "/autorun.inf", QSettings::IniFormat);
-
-    settings.beginGroup("autorun");
-    settings.setValue("label", "NGOS installer boot flash");
-    settings.setValue("icon", "icon.ico");
-    settings.endGroup();
-}
-
-void BurnThread::addLog(const QString &text)
-{
-    emit logAdded(text);
-}
-
-void BurnThread::notifyProgress(quint8 current, quint8 maximum)
-{
-    emit progress(current, maximum);
-}
-
-const UsbDeviceInfo& BurnThread::getSelectedUsb() const
-{
-    return mSelectedUsb;
-}
-
-bool BurnThread::isWorking() const
-{
-    return mIsRunning;
-}
-
-bool BurnThread::copyFolder(const QString &sourceFolder, const QString &destinationFolder)
-{
-    if (!QDir().mkpath(destinationFolder))
-    {
-        addLog(tr("Failed to create folder %1").arg(destinationFolder));
-
-        return false;
-    }
-
-
-
-    QFileInfoList filesInfo = QDir(sourceFolder).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-    for (qint64 i = 0; i < filesInfo.length(); ++i)
-    {
-        const QFileInfo &fileInfo = filesInfo.at(i);
-
-        QString fileName    = fileInfo.fileName();
-        QString source      = sourceFolder + '/' + fileName;
-        QString destination = destinationFolder + '/' + fileName;
-
-        if (fileInfo.isDir())
-        {
-            return copyFolder(source, destination);
-        }
-        else
-        {
-            if (!QFile(source).copy(destination))
-            {
-                addLog(tr("Failed to copy file %1").arg(destination));
-
-                return false;
-            }
-        }
-    }
-
-
-
-    return true;
-}
+#include "burnthread.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QSettings>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/macro/applications.h>                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)                                                                                                                            // Colorize: green
+    : QThread()                                                                                                                                                                                          // Colorize: green
+    , mIsRunning(true)                                                                                                                                                                                   // Colorize: green
+    , mSelectedUsb()                                                                                                                                                                                     // Colorize: green
+    , mBinariesPath(binariesPath)                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Store information about selected USB                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        mSelectedUsb.diskNumber = deviceInfo->diskNumber;                                                                                                                                                // Colorize: green
+        mSelectedUsb.diskSize   = deviceInfo->diskSize;                                                                                                                                                  // Colorize: green
+        mSelectedUsb.letters    = deviceInfo->letters;                                                                                                                                                   // Colorize: green
+        mSelectedUsb.deviceName = deviceInfo->deviceName;                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::stop()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mIsRunning = false;                                                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::copyFiles(const QString &diskPath)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    addLog(tr("Copying files to disk"));                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Copy Bootloader folder to USB                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_BOOTLOADER, diskPath + "/EFI/BOOT"))                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_BOOTLOADER));                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            stop();                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Copy Installer folder to USB                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!copyFolder(mBinariesPath + "/" + NGOS_APPLICATION_INSTALLER, diskPath + "/EFI/NGOS"))                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to copy folder %1").arg(NGOS_APPLICATION_INSTALLER));                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            stop();                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::createAutorun(const QString &diskPath)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    addLog(tr("Create autorun.inf file"));                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Copy icon file to USB                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!QFile(":/assets/images/icon.ico").copy(diskPath + "/icon.ico"))                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to copy file %1").arg(":/assets/images/icon.ico"));                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            stop();                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create autorun.inf file                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QSettings settings(diskPath + "/autorun.inf", QSettings::IniFormat);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        settings.beginGroup("autorun");                                                                                                                                                                  // Colorize: green
+        settings.setValue("label", "NGOS installer boot flash");                                                                                                                                         // Colorize: green
+        settings.setValue("icon", "icon.ico");                                                                                                                                                           // Colorize: green
+        settings.endGroup();                                                                                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::addLog(const QString &text)                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    emit logAdded(text);                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::notifyProgress(quint8 current, quint8 maximum)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    emit progress(current, maximum);                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const UsbDeviceInfo& BurnThread::getSelectedUsb() const                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mSelectedUsb;                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BurnThread::isWorking() const                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mIsRunning;                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BurnThread::copyFolder(const QString &sourceFolder, const QString &destinationFolder)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Create destination folder                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!QDir().mkpath(destinationFolder))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addLog(tr("Failed to create folder %1").arg(destinationFolder));                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over files and copy them to destination folder                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFileInfoList filesInfo = QDir(sourceFolder).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < filesInfo.length(); ++i)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            const QFileInfo &fileInfo = filesInfo.at(i);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString fileName    = fileInfo.fileName();                                                                                                                                                   // Colorize: green
+            QString source      = sourceFolder + '/' + fileName;                                                                                                                                         // Colorize: green
+            QString destination = destinationFolder + '/' + fileName;                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (fileInfo.isDir())                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return copyFolder(source, destination);                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!QFile(source).copy(destination))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addLog(tr("Failed to copy file %1").arg(destination));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
