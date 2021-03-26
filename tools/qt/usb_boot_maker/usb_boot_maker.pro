@@ -1,6 +1,6 @@
 QT += core gui widgets network                                                                                                                                                                           # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-CONFIG += c++17                                                                                                                                                                                          # Colorize: green
+CONFIG += c++20                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 TARGET   = usb_boot_maker                                                                                                                                                                                # Colorize: green
 TEMPLATE = app                                                                                                                                                                                           # Colorize: green
