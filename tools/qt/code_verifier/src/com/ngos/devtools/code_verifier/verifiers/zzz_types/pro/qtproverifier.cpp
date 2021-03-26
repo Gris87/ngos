@@ -15,7 +15,7 @@
     "win32-msvc* {\n" \
     "    QMAKE_CXXFLAGS += /WX\n" \
     "} else {\n" \
-    "    QMAKE_CXXFLAGS += -Werror -Wno-address-of-packed-member -Wno-trigraphs\n" \
+    "    QMAKE_CXXFLAGS += -Wall -Werror\n" \
     "}\n" \
     "# Warnings as errors - END\n"
 

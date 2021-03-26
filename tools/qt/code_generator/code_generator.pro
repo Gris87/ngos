@@ -20,7 +20,7 @@ DEFINES += \
 win32-msvc* {
     QMAKE_CXXFLAGS += /WX
 } else {
-    QMAKE_CXXFLAGS += -Werror -Wno-address-of-packed-member -Wno-trigraphs
+    QMAKE_CXXFLAGS += -Wall -Werror
 }
 # Warnings as errors - END
 
