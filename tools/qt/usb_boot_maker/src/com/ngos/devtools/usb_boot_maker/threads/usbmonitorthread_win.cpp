@@ -1,28 +1,28 @@
-#include "usbmonitorthread.h"
-
-
-
-#ifdef Q_OS_WIN
-
-
-
-UsbMonitorThread::UsbMonitorThread()
-    : QThread()
-    , mIsRunning(true)
-{
-    // Nothing
-}
-
-void UsbMonitorThread::stop()
-{
-    mIsRunning = false;
-}
-
-void UsbMonitorThread::run()
-{
-    // Nothing
-}
-
-
-
-#endif // Q_OS_WIN
+#include "usbmonitorthread.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_WIN                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+UsbMonitorThread::UsbMonitorThread()                                                                                                                                                                     // Colorize: green
+    : QThread()                                                                                                                                                                                          // Colorize: green
+    , mIsRunning(true)                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void UsbMonitorThread::stop()                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mIsRunning = false;                                                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void UsbMonitorThread::run()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // Q_OS_WIN                                                                                                                                                                                       // Colorize: green

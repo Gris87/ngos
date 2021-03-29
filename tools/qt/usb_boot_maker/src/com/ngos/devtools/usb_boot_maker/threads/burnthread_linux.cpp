@@ -1,365 +1,419 @@
-#include "burnthread.h"
-
-
-
-#ifdef Q_OS_LINUX
-
-
-
-#include <QCoreApplication>
-#include <QDebug>
-#include <QDir>
-#include <QProcess>
-#include <QRegularExpression>
-#include <QTemporaryFile>
-
-#include <com/ngos/devtools/usb_boot_maker/other/defines.h>
-
-
-
-#define CHECK_IF_THREAD_TERMINATED(thread) \
-    if (!thread->isWorking()) \
-    { \
-        return; \
-    }
-
-
-
-#define CHECK_IF_TERMINATED() \
-    if (!mIsRunning) \
-    { \
-        goto out; \
-    }
-
-
-
-const QRegularExpression mountPointRegExp("^(.+) on (.+) type .+$");
-const QRegularExpression mountedRegExp("^Mounted .+ at (.+)\\.$");
-
-
-
-quint8 currentStep;
-
-void notifyNextStep(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    ++currentStep;
-
-    Q_ASSERT(currentStep <= 10);
-    thread->notifyProgress(currentStep, 10);
-}
-
-void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    QTemporaryFile tempFile;
-
-    tempFile.open();
-    QString tempFilePath = tempFile.fileName();
-    tempFile.close();
-
-
-
-    suProcess->write(QString(command + " > " + tempFilePath + '\n').toUtf8());
-    suProcess->write("echo \">>>>>> END <<<<<<\"\n");
-    suProcess->waitForBytesWritten(-1);
-    suProcess->waitForReadyRead(-1);
-
-    while (thread->isWorking())
-    {
-        QString line = suProcess->readLine().trimmed();
-
-        if (line == ">>>>>> END <<<<<<")
-        {
-            break;
-        }
-    }
-
-
-
-    tempFile.open();
-    QByteArray output = tempFile.readAll().trimmed();
-
-    if (!output.isEmpty())
-    {
-        qDebug() << "";
-        qDebug() << output.data();
-    }
-
-    tempFile.close();
-}
-
-void unmountVolumes(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    bool found = false;
-
-    QProcess process;
-    process.start("sh", QStringList() << "-c" << "mount | grep /dev/" + thread->getSelectedUsb().deviceName);
-    process.waitForFinished(-1);
-
-    while (process.canReadLine() && thread->isWorking())
-    {
-        QString line = process.readLine().trimmed();
-        qDebug() << line;
-
-
-
-        QRegularExpressionMatch match = mountPointRegExp.match(line);
-
-        if (match.hasMatch())
-        {
-            QString partition  = match.captured(1);
-            QString mountPoint = match.captured(2);
-
-            thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(mountPoint));
-
-
-
-            QProcess process2;
-            process2.start("udisksctl", QStringList() << "unmount" << "-b" << partition);
-            process2.waitForFinished(-1);
-
-            found = true;
-        }
-    }
-
-    if (!found)
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));
-    }
-}
-
-void clearGpt(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));
-
-
-
-    execWithSu(thread, suProcess, "sgdisk --zap-all /dev/" + thread->getSelectedUsb().deviceName);
-}
-
-void createPartition(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Creating GPT partition for UEFI"));
-
-
-
-    execWithSu(thread, suProcess, "sgdisk --new 1::-0 --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName); // Ignore CppPunctuationVerifier
-}
-
-void formatPartition(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));
-
-
-
-    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 -n \"NGOS BOOT\" /dev/" + thread->getSelectedUsb().deviceName + '1');
-}
-
-void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Writing protective MBR"));
-
-
-
-    QTemporaryFile tempFile;
-
-    tempFile.open();
-    QString tempFilePath = tempFile.fileName();
-    tempFile.close();
-
-
-
-    execWithSu(thread, suProcess, "dd if=/dev/" + thread->getSelectedUsb().deviceName + " of=" + tempFilePath + " bs=512 count=1");
-
-
-
-    tempFile.open();
-    QByteArray originalBuffer = tempFile.readAll();
-    tempFile.close();
-
-
-
-    if (originalBuffer.size() == SECTOR_SIZE)
-    {
-        QFile file(":/assets/binaries/protective_mbr.bin");
-
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";
-
-            thread->stop();
-
-            return;
-        }
-
-        QByteArray buffer = file.readAll();
-
-        file.close();
-
-
-
-        buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
-        buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");
-
-
-
-        tempFile.open();
-        tempFile.write(buffer);
-        tempFile.close();
-
-
-
-        execWithSu(thread, suProcess, "dd if=" + tempFilePath + " of=/dev/" + thread->getSelectedUsb().deviceName);
-    }
-}
-
-void formatDisk(BurnThread *thread, QProcess *suProcess)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    clearGpt(thread, suProcess);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    createPartition(thread, suProcess);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    formatPartition(thread, suProcess);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    writeProtectiveMbr(thread, suProcess);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-
-
-    thread->msleep(5000);
-}
-
-void mountVolume(BurnThread *thread, QProcess *suProcess, QString *diskPath)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-    Q_ASSERT(diskPath);
-
-
-
-    QProcess process;
-    process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + thread->getSelectedUsb().deviceName + '1');
-    process.waitForFinished(-1);
-
-
-
-    if (*diskPath == "")
-    {
-        QRegularExpressionMatch match = mountedRegExp.match(process.readAll());
-
-        if (match.hasMatch())
-        {
-            *diskPath = match.captured(1);
-        }
-    }
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));
-}
-
-void remountVolume(BurnThread *thread, QProcess *suProcess, const QString &diskPath)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(suProcess);
-
-
-
-    unmountVolumes(thread, suProcess);
-    mountVolume(thread, suProcess, (QString *)&diskPath);
-}
-
-void BurnThread::run()
-{
-    currentStep = 0;
-
-
-
-    QProcess suProcess;
-    suProcess.start("pkexec", QStringList() << "sh");
-    execWithSu(this, &suProcess, "echo \"root access granted\"");
-
-    QString diskPath;
-
-
-
-    unmountVolumes(this, &suProcess);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    formatDisk(this, &suProcess);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    mountVolume(this, &suProcess, &diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    copyFiles(diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    createAutorun(diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    remountVolume(this, &suProcess, diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-
-
-out:
-    suProcess.write(QString("kill -9 " + QString::number(suProcess.processId()) + '\n').toUtf8());
-    suProcess.waitForBytesWritten(-1);
-    suProcess.waitForReadyRead(-1);
-}
-
-
-
-#endif
+#include "burnthread.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+#include <QTemporaryFile>                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/defines.h>                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CHECK_IF_THREAD_TERMINATED(thread) \                                                                                                                                                             // Colorize: green
+    if (!thread->isWorking()) \                                                                                                                                                                          // Colorize: green
+    { \                                                                                                                                                                                                  // Colorize: green
+        return; \                                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define CHECK_IF_TERMINATED() \                                                                                                                                                                          // Colorize: green
+    if (!mIsRunning) \                                                                                                                                                                                   // Colorize: green
+    { \                                                                                                                                                                                                  // Colorize: green
+        goto out; \                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QRegularExpression mountPointRegExp("^(.+) on (.+) type .+$");                                                                                                                                     // Colorize: green
+const QRegularExpression mountedRegExp("^Mounted .+ at (.+)\\.$");                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+quint8 gCurrentBurnStep;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void notifyNextStep(BurnThread *thread)                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Increment step and send notification to UI                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ++gCurrentBurnStep;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Q_ASSERT(gCurrentBurnStep <= 10);                                                                                                                                                                // Colorize: green
+        thread->notifyProgress(gCurrentBurnStep, 10);                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void execWithSu(BurnThread *thread, QProcess *suProcess, QString command)                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QTemporaryFile tempFile;                                                                                                                                                                             // Colorize: green
+    QString        tempFilePath;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create temporary file                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile.open();                                                                                                                                                                                 // Colorize: green
+        tempFilePath = tempFile.fileName();                                                                                                                                                              // Colorize: green
+        tempFile.close();                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Write command to su process                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        suProcess->write(QString(command + " > " + tempFilePath + '\n').toUtf8());                                                                                                                       // Colorize: green
+        suProcess->write("echo \">>>>>> END <<<<<<\"\n");                                                                                                                                                // Colorize: green
+        suProcess->waitForBytesWritten(-1);                                                                                                                                                              // Colorize: green
+        suProcess->waitForReadyRead(-1);                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Wait for finish                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (thread->isWorking())                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = suProcess->readLine().trimmed();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line == ">>>>>> END <<<<<<")                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Put command output to debug console                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile.open();                                                                                                                                                                                 // Colorize: green
+        QByteArray output = tempFile.readAll().trimmed();                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!output.isEmpty())                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "";                                                                                                                                                                              // Colorize: green
+            qDebug() << output.data();                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        tempFile.close();                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void unmountVolumes(BurnThread *thread, QProcess *suProcess)                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QProcess process;                                                                                                                                                                                    // Colorize: green
+    process.start("sh", QStringList() << "-c" << "mount | grep /dev/" + thread->getSelectedUsb().deviceName);                                                                                            // Colorize: green
+    process.waitForFinished(-1);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool found = false;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse output and try to find disk volume                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (process.canReadLine() && thread->isWorking())                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = process.readLine().trimmed();                                                                                                                                                 // Colorize: green
+            qDebug() << line;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that output line is valid                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QRegularExpressionMatch match = mountPointRegExp.match(line);                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (match.hasMatch())                                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString partition  = match.captured(1);                                                                                                                                              // Colorize: green
+                    QString mountPoint = match.captured(2);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(mountPoint));                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QProcess process2;                                                                                                                                                                   // Colorize: green
+                    process2.start("udisksctl", QStringList() << "unmount" << "-b" << partition);                                                                                                        // Colorize: green
+                    process2.waitForFinished(-1);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    found = true;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!found)                                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void clearGpt(BurnThread *thread, QProcess *suProcess)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    execWithSu(thread, suProcess, "sgdisk --zap-all /dev/" + thread->getSelectedUsb().deviceName);                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void createPartition(BurnThread *thread, QProcess *suProcess)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Creating GPT partition for UEFI"));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    execWithSu(thread, suProcess, "sgdisk --new 1::-0 --typecode=1:0700 --change-name=1:\"Microsoft Basic Data\" /dev/" + thread->getSelectedUsb().deviceName); // Ignore CppPunctuationVerifier         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void formatPartition(BurnThread *thread, QProcess *suProcess)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    execWithSu(thread, suProcess, "mkfs.fat -F32 -s2 -n \"NGOS BOOT\" /dev/" + thread->getSelectedUsb().deviceName + '1');                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void writeProtectiveMbr(BurnThread *thread, QProcess *suProcess)                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Writing protective MBR"));                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QTemporaryFile tempFile;                                                                                                                                                                             // Colorize: green
+    QString        tempFilePath;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create temporary file                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile.open();                                                                                                                                                                                 // Colorize: green
+        tempFilePath = tempFile.fileName();                                                                                                                                                              // Colorize: green
+        tempFile.close();                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read first 512 bytes from device to temporary file                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        execWithSu(thread, suProcess, "dd if=/dev/" + thread->getSelectedUsb().deviceName + " of=" + tempFilePath + " bs=512 count=1");                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray originalBuffer;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read temporary file to buffer                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile.open();                                                                                                                                                                                 // Colorize: green
+        originalBuffer = tempFile.readAll();                                                                                                                                                             // Colorize: green
+        tempFile.close();                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (originalBuffer.size() == SECTOR_SIZE)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QByteArray buffer;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Read protective MBR from assets                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFile file(":/assets/binaries/protective_mbr.bin");                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!file.open(QIODevice::ReadOnly))                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                thread->stop();                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            buffer = file.readAll();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file.close();                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Replace part for protective MBR buffer related to partition table with original MBR from device                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));                                                                                                  // Colorize: green
+            buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write modified protective MBR to temporary file                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            tempFile.open();                                                                                                                                                                             // Colorize: green
+            tempFile.write(buffer);                                                                                                                                                                      // Colorize: green
+            tempFile.close();                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write 512 bytes from temporary file to device                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            execWithSu(thread, suProcess, "dd if=" + tempFilePath + " of=/dev/" + thread->getSelectedUsb().deviceName);                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void formatDisk(BurnThread *thread, QProcess *suProcess)                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    clearGpt(thread, suProcess);                                                                                                                                                                         // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    createPartition(thread, suProcess);                                                                                                                                                                  // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    formatPartition(thread, suProcess);                                                                                                                                                                  // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    writeProtectiveMbr(thread, suProcess);                                                                                                                                                               // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->msleep(5000);                                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void mountVolume(BurnThread *thread, QProcess *suProcess, QString *diskPath)                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(diskPath  != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QProcess process;                                                                                                                                                                                    // Colorize: green
+    process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + thread->getSelectedUsb().deviceName + '1');                                                                                 // Colorize: green
+    process.waitForFinished(-1);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (*diskPath == "")                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QRegularExpressionMatch match = mountedRegExp.match(process.readAll());                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            *diskPath = match.captured(1);                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void remountVolume(BurnThread *thread, QProcess *suProcess, QString *diskPath)                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread    != nullptr);                                                                                                                                                                      // Colorize: green
+    Q_ASSERT(suProcess != nullptr);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    unmountVolumes(thread, suProcess);                                                                                                                                                                   // Colorize: green
+    mountVolume(thread, suProcess, diskPath);                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::run()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    gCurrentBurnStep = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QProcess suProcess;                                                                                                                                                                                  // Colorize: green
+    suProcess.start("pkexec", QStringList() << "sh");                                                                                                                                                    // Colorize: green
+    execWithSu(this, &suProcess, "echo \"root access granted\"");                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString diskPath;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    unmountVolumes(this, &suProcess);                                                                                                                                                                    // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    formatDisk(this, &suProcess);                                                                                                                                                                        // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mountVolume(this, &suProcess, &diskPath);                                                                                                                                                            // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    copyFiles(diskPath);                                                                                                                                                                                 // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    createAutorun(diskPath);                                                                                                                                                                             // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    remountVolume(this, &suProcess, &diskPath);                                                                                                                                                          // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+out:                                                                                                                                                                                                     // Colorize: green
+    suProcess.write(QString("kill -9 " + QString::number(suProcess.processId()) + '\n').toUtf8());                                                                                                       // Colorize: green
+    suProcess.waitForBytesWritten(-1);                                                                                                                                                                   // Colorize: green
+    suProcess.waitForReadyRead(-1);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // Q_OS_LINUX                                                                                                                                                                                     // Colorize: green
