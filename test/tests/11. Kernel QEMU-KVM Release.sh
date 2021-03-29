@@ -98,7 +98,7 @@ ERRORS=` \
         -e "CRITICAL" \
         -e "FATAL" \
         -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \
-    ${LOG_PATH}                                                                                                                                                                                          # Colorize: green
+    ${LOG_PATH} \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
