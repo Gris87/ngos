@@ -32,7 +32,7 @@ echo ""                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \                                                                                                                                     # Colorize: green
+( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \
     qemu-system-x86_64 -display none -drive file=../../build/deployment/com.ngos.kernel/kernel.efi,format=raw -monitor stdio > /dev/null 2>&1                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green

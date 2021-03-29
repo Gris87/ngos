@@ -31,47 +31,47 @@ IFS=$'\n'                                                                       
                                                                                                                                                                                                          # Colorize: green
 echo -n "Amount of code lines without generated: "                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-wc -l ` \                                                                                                                                                                                                # Colorize: green
-        cat ngos.files | \                                                                                                                                                                               # Colorize: green
-            grep \                                                                                                                                                                                       # Colorize: green
-                -ve /generated/ \                                                                                                                                                                        # Colorize: green
-                -ve tools/tracers/assets/ \                                                                                                                                                              # Colorize: green
-                -ve \.bin$ \                                                                                                                                                                             # Colorize: green
-                -ve \.dll$ \                                                                                                                                                                             # Colorize: green
-                -ve \.exe$ \                                                                                                                                                                             # Colorize: green
-                -ve \.gpg$ \                                                                                                                                                                             # Colorize: green
-                -ve \.pem$ \                                                                                                                                                                             # Colorize: green
-                -ve \.auth$ \                                                                                                                                                                            # Colorize: green
-                -ve \.ttf$ \                                                                                                                                                                             # Colorize: green
-                -ve \.ico$ \                                                                                                                                                                             # Colorize: green
-                -ve \.png$ \                                                                                                                                                                             # Colorize: green
-                -ve \.jpg$ \                                                                                                                                                                             # Colorize: green
-                -ve \.gif$ \                                                                                                                                                                             # Colorize: green
-                -ve \.svg$ \                                                                                                                                                                             # Colorize: green
-    ` | \                                                                                                                                                                                                # Colorize: green
-    tail -n 1 | \                                                                                                                                                                                        # Colorize: green
+wc -l ` \
+        cat ngos.files | \
+            grep \
+                -ve /generated/ \
+                -ve tools/tracers/assets/ \
+                -ve \.bin$ \
+                -ve \.dll$ \
+                -ve \.exe$ \
+                -ve \.gpg$ \
+                -ve \.pem$ \
+                -ve \.auth$ \
+                -ve \.ttf$ \
+                -ve \.ico$ \
+                -ve \.png$ \
+                -ve \.jpg$ \
+                -ve \.gif$ \
+                -ve \.svg$ \
+    ` | \
+    tail -n 1 | \
     sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 echo -n "Amount of code lines with generated:    "                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-    wc -l ` \                                                                                                                                                                                            # Colorize: green
-            cat ngos.files | \                                                                                                                                                                           # Colorize: green
-                grep \                                                                                                                                                                                   # Colorize: green
-                    -ve tools/tracers/assets/ \                                                                                                                                                          # Colorize: green
-                    -ve \.bin$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.dll$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.exe$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.gpg$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.pem$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.auth$ \                                                                                                                                                                        # Colorize: green
-                    -ve \.ttf$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.ico$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.png$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.jpg$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.gif$ \                                                                                                                                                                         # Colorize: green
-                    -ve \.svg$ \                                                                                                                                                                         # Colorize: green
-        ` | \                                                                                                                                                                                            # Colorize: green
-        tail -n 1 | \                                                                                                                                                                                    # Colorize: green
+    wc -l ` \
+            cat ngos.files | \
+                grep \
+                    -ve tools/tracers/assets/ \
+                    -ve \.bin$ \
+                    -ve \.dll$ \
+                    -ve \.exe$ \
+                    -ve \.gpg$ \
+                    -ve \.pem$ \
+                    -ve \.auth$ \
+                    -ve \.ttf$ \
+                    -ve \.ico$ \
+                    -ve \.png$ \
+                    -ve \.jpg$ \
+                    -ve \.gif$ \
+                    -ve \.svg$ \
+        ` | \
+        tail -n 1 | \
         sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 IFS=${OLD_IFS}                                                                                                                                                                                           # Colorize: green

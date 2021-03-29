@@ -90,14 +90,14 @@ echo ""                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-ERRORS=` \                                                                                                                                                                                               # Colorize: green
-    grep \                                                                                                                                                                                               # Colorize: green
-        -E \                                                                                                                                                                                             # Colorize: green
-        -e "ASSERT" \                                                                                                                                                                                    # Colorize: green
-        -e "ERROR" \                                                                                                                                                                                     # Colorize: green
-        -e "CRITICAL" \                                                                                                                                                                                  # Colorize: green
-        -e "FATAL" \                                                                                                                                                                                     # Colorize: green
-        -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \                                                                                                                                # Colorize: green
+ERRORS=` \
+    grep \
+        -E \
+        -e "ASSERT" \
+        -e "ERROR" \
+        -e "CRITICAL" \
+        -e "FATAL" \
+        -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \
     ${LOG_PATH}                                                                                                                                                                                          # Colorize: green
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green

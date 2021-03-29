@@ -42,18 +42,18 @@ cd ${WORKING_DIR}/                                                              
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-DUPLICATES=` \                                                                                                                                                                                           # Colorize: green
-    cat ${ALL_INCLUDES} | sort | uniq -d | \                                                                                                                                                             # Colorize: green
-    grep \                                                                                                                                                                                               # Colorize: green
-        -ve "./build/gen/moc_predefs.h" \                                                                                                                                                                # Colorize: green
-        -ve "./build/gen/ui_aboutdialog.h" \                                                                                                                                                             # Colorize: green
-        -ve "./build/gen/ui_mainwindow.h" \                                                                                                                                                              # Colorize: green
-        -ve "./moc_predefs.h" \                                                                                                                                                                          # Colorize: green
-        -ve "./src/main/aboutdialog.h" \                                                                                                                                                                 # Colorize: green
-        -ve "./src/main/mainwindow.h" \                                                                                                                                                                  # Colorize: green
-        -ve "./src/other/global.h" \                                                                                                                                                                     # Colorize: green
-        -ve "./ui_aboutdialog.h" \                                                                                                                                                                       # Colorize: green
-        -ve "./ui_mainwindow.h" \                                                                                                                                                                        # Colorize: green
+DUPLICATES=` \
+    cat ${ALL_INCLUDES} | sort | uniq -d | \
+    grep \
+        -ve "./build/gen/moc_predefs.h" \
+        -ve "./build/gen/ui_aboutdialog.h" \
+        -ve "./build/gen/ui_mainwindow.h" \
+        -ve "./moc_predefs.h" \
+        -ve "./src/main/aboutdialog.h" \
+        -ve "./src/main/mainwindow.h" \
+        -ve "./src/other/global.h" \
+        -ve "./ui_aboutdialog.h" \
+        -ve "./ui_mainwindow.h" \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
