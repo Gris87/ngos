@@ -31,6 +31,12 @@
 
 
 
+#ifndef CM_GETIDLIST_FILTER_PRESENT
+#define CM_GETIDLIST_FILTER_PRESENT 0x00000100
+#endif
+
+
+
 const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, { 0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8 } };
 const GUID DISK_GUID    = { 0x53F56307, 0xB6BF, 0x11D0, { 0x94, 0xF2, 0x00, 0xA0, 0xC9, 0x1E, 0xFB, 0x8B } };
 
@@ -68,7 +74,7 @@ struct VOLUME_DISK_EXTENTS_REDEF
 
 
 
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) // Ignore CppTypesVerifier
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier
 {
     MSG *msg = (MSG *)message;
 

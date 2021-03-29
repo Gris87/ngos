@@ -124,7 +124,7 @@ typedef bool (__stdcall *FILE_SYSTEM_CALLBACK)(
 
 
 // Ignore CppAlignmentVerifier [BEGIN]
-typedef void (WINAPI *FormatEx_t)(
+typedef long long int (WINAPI *FormatEx_t)(
     WCHAR                *driveRoot,
     MEDIA_TYPE            mediaType,
     WCHAR                *fileSystemTypeName,
@@ -257,7 +257,7 @@ QString getLogicalName(BurnThread *thread)
 
 HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
 {
-    Q_ASSERT(thread);
+    Q_ASSERT(thread != nullptr);
 
 
 
@@ -520,7 +520,7 @@ qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSect
 
 QChar getUnusedDiskLetter()
 {
-    QChar res = 0;
+    QChar res;                                                                                       // Colorize: green
 
 
 
@@ -740,7 +740,8 @@ void createPartition(BurnThread *thread, HANDLE diskHandle)
 
 
 
-    DRIVE_LAYOUT_INFORMATION_EX driveLayout = { 0 };
+    DRIVE_LAYOUT_INFORMATION_EX driveLayout;
+    memset(&driveLayout, 0, sizeof(driveLayout));
 
     driveLayout.PartitionStyle = PARTITION_STYLE_GPT;
     driveLayout.PartitionCount = 1;
@@ -862,9 +863,9 @@ void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
 
 
 
-    FormatEx_t pfFormatEx = (FormatEx_t) GetProcAddress(moduleHandle, "FormatEx");
+    FormatEx_t pfFormatEx = reinterpret_cast<FormatEx_t>(reinterpret_cast<void *>(GetProcAddress(moduleHandle, "FormatEx")));
 
-    if (!pfFormatEx)
+    if (pfFormatEx == nullptr)
     {
         qCritical() << "GetProcAddress failed:" << GetLastError();
 

@@ -1,1 +1,2 @@
-IDI_ICON1               ICON    DISCARDABLE     "assets/images/icon.ico"
+IDI_ICON1 ICON DISCARDABLE "assets/images/icon.ico"
+1 24 "usb_boot_maker.exe.manifest"

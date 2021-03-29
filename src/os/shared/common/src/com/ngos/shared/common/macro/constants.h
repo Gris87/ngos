@@ -3,12 +3,12 @@
 
 
 
-#define KB (1ULL << 10)
-#define MB (1ULL << 20)
-#define GB (1ULL << 30)
-#define TB (1ULL << 40)
-#define PB (1ULL << 50)
-#define EB (1ULL << 60)
+#define KB (1LL << 10)
+#define MB (1LL << 20)
+#define GB (1LL << 30)
+#define TB (1LL << 40)
+#define PB (1LL << 50)
+#define EB (1LL << 60)
 
 
 
