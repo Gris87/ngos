@@ -1188,4 +1188,4 @@ void BurnThread::run()
 
 
 
-#endif
+#endif // Q_OS_WIN

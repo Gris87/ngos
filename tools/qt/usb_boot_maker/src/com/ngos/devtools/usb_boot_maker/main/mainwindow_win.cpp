@@ -1601,4 +1601,4 @@ QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
 
 
 
-#endif
+#endif // Q_OS_WIN

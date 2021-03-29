@@ -26,17 +26,17 @@ fi                                                                              
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-find -type f | \                                                                                                                                                                                         # Colorize: green
-    grep \                                                                                                                                                                                               # Colorize: green
-        -ve /.git/ \                                                                                                                                                                                     # Colorize: green
-        -ve /ngos.config$ \                                                                                                                                                                              # Colorize: green
-        -ve /ngos.creator$ \                                                                                                                                                                             # Colorize: green
-        -ve /ngos.creator.user$ \                                                                                                                                                                        # Colorize: green
-        -ve /ngos.files$ \                                                                                                                                                                               # Colorize: green
-        -ve /ngos.includes$ | \                                                                                                                                                                          # Colorize: green
-    git check-ignore --verbose --non-matching --stdin | \                                                                                                                                                # Colorize: green
-    grep -e "^::" | \                                                                                                                                                                                    # Colorize: green
-    cut -c 6- | \                                                                                                                                                                                        # Colorize: green
+find -type f | \
+    grep \
+        -ve /.git/ \
+        -ve /ngos.config$ \
+        -ve /ngos.creator$ \
+        -ve /ngos.creator.user$ \
+        -ve /ngos.files$ \
+        -ve /ngos.includes$ | \
+    git check-ignore --verbose --non-matching --stdin | \
+    grep -e "^::" | \
+    cut -c 6- | \
     sort > ngos.files                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
