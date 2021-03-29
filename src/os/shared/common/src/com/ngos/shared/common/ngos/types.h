@@ -21,10 +21,8 @@ typedef u64 enum_t;
 
 
 
-#ifdef __GNUC__
+#ifndef DEVTOOLS_APPLICATION
 typedef long unsigned int size_t;
-#else
-typedef unsigned long long size_t;
 #endif
 
 
