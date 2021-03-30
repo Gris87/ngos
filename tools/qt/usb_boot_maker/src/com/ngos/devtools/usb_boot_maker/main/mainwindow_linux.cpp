@@ -1,249 +1,288 @@
-#include "mainwindow.h"
-
-
-
-#ifdef Q_OS_LINUX
-
-
-
-#include <QDebug>
-#include <QProcess>
-#include <QRegularExpression>
-#include <QSettings>
-#include <QtMath>
-
-#include <com/ngos/devtools/usb_boot_maker/other/defines.h>
-
-
-
-const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");
-
-
-
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier
-{
-    return QMainWindow::nativeEvent(eventType, message, result);
-}
-
-QString diskSizeHumanReadable(quint64 diskSize)
-{
-    if (diskSize >= 1000000000000)
-    {
-        return QString::number((quint64)floor(diskSize / 1000000000000.0)) + "TB";
-    }
-
-    if (diskSize >= 1000000000)
-    {
-        return QString::number((quint64)floor(diskSize / 1000000000.0)) + "GB";
-    }
-
-    return QString::number((quint64)floor(diskSize / 1000000.0)) + "MB";
-}
-
-QString getDiskLabel(const QString &deviceName)
-{
-    quint8 partitionNumber = 0;
-
-    while (partitionNumber < 255)
-    {
-        ++partitionNumber;
-
-
-
-        QProcess process;
-        process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + deviceName + QString::number(partitionNumber));
-        process.waitForFinished(-1);
-
-
-
-        QProcess process2;
-        process2.start("sh", QStringList() << "-c" << "mount | grep /dev/" + deviceName + QString::number(partitionNumber));
-        process2.waitForFinished(-1);
-
-
-
-        QRegularExpressionMatch match = mountPointRegExp.match(process2.readLine().trimmed());
-
-        if (match.hasMatch())
-        {
-            QString mountPoint = match.captured(1);
-
-
-
-            QSettings settings(mountPoint + "/autorun.inf", QSettings::IniFormat);
-
-            settings.beginGroup("autorun");
-            QString res = settings.value("label", "").toString();
-            settings.endGroup();
-
-
-
-            if (res != "")
-            {
-                return res;
-            }
-        }
-
-
-
-        QProcess process3;
-        process3.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));
-        process3.waitForFinished(-1);
-
-
-
-        QString res;
-
-        while (process3.canReadLine())
-        {
-            QString line = process3.readLine().simplified();
-
-            if (line.startsWith("ID_FS_LABEL_ENC="))
-            {
-                res = line.mid(16);
-            }
-            else
-            if (line.startsWith("ID_FS_LABEL="))
-            {
-                if (res == "")
-                {
-                    res = line.mid(12);
-                }
-            }
-        }
-
-        if (res != "")
-        {
-            return res;
-        }
-    }
-
-
-
-    return "NO_LABEL";
-}
-
-void handleDisk(const QString &deviceName, quint64 diskSize, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(diskSize >= MIN_DISK_SIZE);
-    Q_ASSERT(usbDevices);
-
-
-
-    QProcess process;
-    process.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName);
-    process.waitForFinished(-1);
-
-
-
-    bool good = false;
-
-    while (process.canReadLine())
-    {
-        QString line = process.readLine().simplified();
-
-        if (line.startsWith("ID_BUS="))
-        {
-            QString bus = line.mid(7).toUpper();
-            qDebug() << "    Disk bus:" << bus; // Ignore CppAlignmentVerifier
-
-            if (bus == "USB")
-            {
-                good = true;
-            }
-
-            break;
-        }
-    }
-
-
-
-    if (good)
-    {
-        QString diskLabel = getDiskLabel(deviceName);
-        qDebug() << "    Disk label:" << diskLabel; // Ignore CppAlignmentVerifier
-
-
-
-        UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
-
-        deviceInfo->title      = QString("%1 (/dev/%2) [%3]").arg(diskLabel).arg(deviceName).arg(diskSizeHumanReadable(diskSize));
-        deviceInfo->diskNumber = 0;
-        deviceInfo->diskSize   = diskSize;
-        deviceInfo->letters    = "";
-        deviceInfo->deviceName = deviceName;
-
-        usbDevices->append(deviceInfo);
-
-
-
-        qDebug() << "";
-        qDebug() << "    Found USB device";
-    }
-    else
-    {
-        qDebug() << "";
-        qDebug() << "    Found non-USB non-removable device";
-    }
-}
-
-void updateDisks(QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(usbDevices);
-
-
-
-    QProcess process;
-    process.start("lsblk", QStringList() << "--noheadings" << "--nodeps" << "--bytes");
-    process.waitForFinished(-1);
-
-
-
-    while (process.canReadLine())
-    {
-        QString     line  = process.readLine().simplified();
-        QStringList parts = line.split(' ');
-
-        if (parts.length() > 5 && parts.at(5) == "disk")
-        {
-            bool    ok;
-            quint64 diskSize = parts.at(3).toULongLong(&ok);
-
-            if (ok)
-            {
-                QString deviceName = parts.at(0);
-
-                qDebug() << "";
-                qDebug().nospace() << "Disk found /dev/" << deviceName.toUtf8().data() << ' ' << diskSizeHumanReadable(diskSize).toUtf8().data();
-
-
-
-                if (diskSize >= MIN_DISK_SIZE)
-                {
-                    handleDisk(deviceName, diskSize, usbDevices);
-                }
-                else
-                {
-                    qCritical() << "Disk is too small:" << line;
-                }
-            }
-            else
-            {
-                qCritical() << "Failed to get size for disk:" << line;
-            }
-        }
-    }
-}
-
-QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
-{
-    QList<UsbDeviceInfo *> res;
-
-    updateDisks(&res);
-
-    return res;
-}
-
-
-
-#endif
+#include "mainwindow.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_LINUX                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+#include <QSettings>                                                                                                                                                                                     // Colorize: green
+#include <QtMath>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/defines.h>                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return QMainWindow::nativeEvent(eventType, message, result);                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString diskSizeHumanReadable(qint64 diskSize)                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (diskSize >= 1000000000000)                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return QString::number(diskSize / 1000000000000) + "TB";                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (diskSize >= 1000000000)                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return QString::number(diskSize / 1000000000) + "GB";                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return QString::number(diskSize / 1000000) + "MB";                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString getDiskLabel(const QString &deviceName)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    quint8 partitionNumber = 0;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (partitionNumber < 255)                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ++partitionNumber;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Try to mount partition of device                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QProcess process;                                                                                                                                                                            // Colorize: green
+            process.start("udisksctl", QStringList() << "mount" << "-b" << "/dev/" + deviceName + QString::number(partitionNumber));                                                                     // Colorize: green
+            process.waitForFinished(-1);                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QProcess process2;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check that partition mounted                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            process2.start("sh", QStringList() << "-c" << "mount | grep /dev/" + deviceName + QString::number(partitionNumber));                                                                         // Colorize: green
+            process2.waitForFinished(-1);                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check for mount point and take label from autorun.inf file if possible                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QRegularExpressionMatch match = mountPointRegExp.match(process2.readLine().trimmed());                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (match.hasMatch())                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString mountPoint = match.captured(1);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString res;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Take label from autorun.inf file                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QSettings settings(mountPoint + "/autorun.inf", QSettings::IniFormat);                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    settings.beginGroup("autorun");                                                                                                                                                      // Colorize: green
+                    res = settings.value("label", "").toString();                                                                                                                                        // Colorize: green
+                    settings.endGroup();                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (res != "")                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return res;                                                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QProcess process3;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Take info about partition                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            process3.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName + QString::number(partitionNumber));                                                         // Colorize: green
+            process3.waitForFinished(-1);                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Parse output and take label if possible                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString res;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (process3.canReadLine())                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString line = process3.readLine().simplified();                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (line.startsWith("ID_FS_LABEL_ENC="))                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    res = line.mid(16);                                                                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith("ID_FS_LABEL="))                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (res == "")                                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        res = line.mid(12);                                                                                                                                                              // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (res != "")                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return res;                                                                                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return "NO_LABEL";                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDisk(const QString &deviceName, qint64 diskSize, QList<UsbDeviceInfo *> *usbDevices)                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(diskSize   >= MIN_DISK_SIZE);                                                                                                                                                               // Colorize: green
+    Q_ASSERT(usbDevices != nullptr);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QProcess process;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Take info about device                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        process.start("udevadm", QStringList() << "info" << "--query=property" << "/dev/" + deviceName);                                                                                                 // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool isDeviceUsb = false;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is USB                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (process.canReadLine())                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = process.readLine().simplified();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.startsWith("ID_BUS="))                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString bus = line.mid(7).toUpper();                                                                                                                                                     // Colorize: green
+                qDebug() << "    Disk bus:" << bus; // Ignore CppAlignmentVerifier                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (bus == "USB")                                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    isDeviceUsb = true;                                                                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (isDeviceUsb)                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString diskLabel = getDiskLabel(deviceName);                                                                                                                                                    // Colorize: green
+        qDebug() << "    Disk label:" << diskLabel; // Ignore CppAlignmentVerifier                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add device info to result list                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            deviceInfo->title      = QString("%1 (/dev/%2) [%3]").arg(diskLabel).arg(deviceName).arg(diskSizeHumanReadable(diskSize));                                                                   // Colorize: green
+            deviceInfo->diskNumber = 0;                                                                                                                                                                  // Colorize: green
+            deviceInfo->diskSize   = diskSize;                                                                                                                                                           // Colorize: green
+            deviceInfo->letters    = "";                                                                                                                                                                 // Colorize: green
+            deviceInfo->deviceName = deviceName;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            usbDevices->append(deviceInfo);                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qDebug() << "";                                                                                                                                                                                  // Colorize: green
+        qDebug() << "    Found USB device";                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qDebug() << "";                                                                                                                                                                                  // Colorize: green
+        qDebug() << "    Found non-USB non-removable device";                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void updateDisks(QList<UsbDeviceInfo *> *usbDevices)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(usbDevices != nullptr);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QProcess process;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get list of devices                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        process.start("lsblk", QStringList() << "--noheadings" << "--nodeps" << "--bytes");                                                                                                              // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over devices and try to find USB devices                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (process.canReadLine())                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString     line  = process.readLine().simplified();                                                                                                                                         // Colorize: green
+            QStringList parts = line.split(' ');                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (parts.size() > 5 && parts.at(5) == "disk")                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                bool   ok;                                                                                                                                                                               // Colorize: green
+                qint64 diskSize = parts.at(3).toLongLong(&ok);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (ok)                                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString deviceName = parts.at(0);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    qDebug() << "";                                                                                                                                                                      // Colorize: green
+                    qDebug().nospace() << "Disk found /dev/" << deviceName.toUtf8().data() << ' ' << diskSizeHumanReadable(diskSize).toUtf8().data();                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (diskSize >= MIN_DISK_SIZE)                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        handleDisk(deviceName, diskSize, usbDevices);                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "Disk is too small:" << line;                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "Failed to get size for disk:" << line;                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<UsbDeviceInfo *> MainWindow::getUsbDevices()                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QList<UsbDeviceInfo *> res;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    updateDisks(&res);                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // Q_OS_LINUX                                                                                                                                                                                     // Colorize: green
