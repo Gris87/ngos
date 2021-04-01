@@ -93,6 +93,7 @@ SOURCES += \                                                                    
     src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp \                                                                                                                                           # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/main/mainwindow_linux.cpp \                                                                                                                                     # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/main/mainwindow_win.cpp \                                                                                                                                       # Colorize: green
+    src/com/ngos/devtools/usb_boot_maker/other/utils.cpp \
     src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp \                                                                                                                                        # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp \                                                                                                                                  # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp \                                                                                                                                    # Colorize: green
@@ -108,6 +109,7 @@ HEADERS += \                                                                    
     src/com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h \                                                                                                                                         # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/other/usbproperties.h \                                                                                                                                         # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/other/usbspeed.h \                                                                                                                                              # Colorize: green
+    src/com/ngos/devtools/usb_boot_maker/other/utils.h \
     src/com/ngos/devtools/usb_boot_maker/other/versioninfo.h \                                                                                                                                           # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/threads/burnthread.h \                                                                                                                                          # Colorize: green
     src/com/ngos/devtools/usb_boot_maker/threads/usbmonitorthread.h                                                                                                                                      # Colorize: green

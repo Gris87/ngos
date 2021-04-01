@@ -1,1604 +1,1859 @@
-#include "mainwindow.h"
-
-
-
-#ifdef Q_OS_WIN
-
-
-
-#include <QDebug>
-#include <QRegularExpression>
-#include <QSettings>
-#include <QTimer>
-#include <Windows.h>
-#include <cfgmgr32.h>
-#include <Dbt.h>
-#include <SetupAPI.h>
-#include <usbioctl.h>
-
-#include <com/ngos/devtools/usb_boot_maker/other/defines.h>
-#include <com/ngos/devtools/usb_boot_maker/other/usbproperties.h>
-
-
-
-#define NO_FLAGS           0
-#define ZERO_SIZE          0
-#define MEMBER_INDEX_FIRST 0
-
-#define USB_CARD_READER_INDEX 1
-#define UASPSTOR_INDEX        4
-#define SD_INDEX              1
-
-
-
-#ifndef CM_GETIDLIST_FILTER_PRESENT
-#define CM_GETIDLIST_FILTER_PRESENT 0x00000100
-#endif
-
-
-
-const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, { 0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8 } };
-const GUID DISK_GUID    = { 0x53F56307, 0xB6BF, 0x11D0, { 0x94, 0xF2, 0x00, 0xA0, 0xC9, 0x1E, 0xFB, 0x8B } };
-
-const QStringList usbStorageDrivers = QStringList()
-        // Standard MS USB storage driver
-        << "USBSTOR"
-        // USB card readers, with proprietary drivers (Realtek, etc...)
-        // Mostly "guessed" from https://carrona.org/dvrref.php // Ignore LinksVerifier
-        << "RTSUER" << "CMIUCR" << "EUCR"
-        // UASP Drivers *MUST* be listed after this, starting with "UASPSTOR"
-        // (which is Microsoft's native UASP driver for Windows 8 and later)
-        // as we use "UASPSTOR" as a delimiter
-        << "UASPSTOR" << "VUSBSTOR" << "ETRONSTOR" << "ASUSSTPT"
-    ;
-
-const QStringList genericStorageDrivers = QStringList()
-        // Generic storage drivers (Careful now!)
-        << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!
-        // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)
-        // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM
-        // Also https://carrona.org/dvrref.php // Ignore LinksVerifier
-        << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"
-    ;
-
-const QRegularExpression vidPidRegExp("^.+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+$");
-
-
-
-// Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
-struct VOLUME_DISK_EXTENTS_REDEF
-{
-    DWORD       numberOfDiskExtents;
-    DISK_EXTENT extents[8];
-};
-
-
-
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier
-{
-    MSG *msg = (MSG *)message;
-
-    switch (msg->message)
-    {
-        case WM_DEVICECHANGE:
-        {
-            switch (msg->wParam)
-            {
-                case DBT_DEVICEARRIVAL:
-                case DBT_DEVICEREMOVECOMPLETE:
-                case DBT_DEVNODES_CHANGED:
-                {
-                    usbStatusChanged(1000);
-                }
-                break;
-
-                default:
-                {
-                    qCritical() << "Unexpected wParam:" << msg->wParam;
-                }
-                break;
-            }
-        }
-        break;
-
-        default:
-        {
-            // Nothing
-        }
-        break;
-    }
-
-    return QMainWindow::nativeEvent(eventType, message, result);
-}
-
-void handleUsbHubChildren(const SP_DEVINFO_DATA &deviceInfoData, const QString &deviceInterfacePath, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
-{
-    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
-
-
-
-    DEVINST deviceInstance;
-
-    if (CM_Get_Child(&deviceInstance, deviceInfoData.DevInst, NO_FLAGS) == CR_SUCCESS)
-    {
-        wchar_t   deviceId[MAX_PATH];
-        CONFIGRET ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, NO_FLAGS);
-
-        if (ret == CR_SUCCESS)
-        {
-            QString deviceIdString = QString::fromWCharArray(deviceId);
-            qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier
-
-            deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
-
-
-
-            while (CM_Get_Sibling(&deviceInstance, deviceInstance, NO_FLAGS) == CR_SUCCESS)
-            {
-                ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, NO_FLAGS);
-
-                if (ret == CR_SUCCESS)
-                {
-                    QString deviceIdString = QString::fromWCharArray(deviceId);
-                    qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier
-
-                    deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);
-                }
-                else
-                {
-                    qWarning() << "CM_Get_Device_ID failed:" << ret;
-                }
-            }
-        }
-        else
-        {
-            qWarning() << "CM_Get_Device_ID failed:" << ret;
-        }
-    }
-    else
-    {
-        // qWarning() << "CM_Get_Child failed"; // Commented to avoid not interesting warnings
-    }
-}
-
-void handleUsbHubInterfaceData(const HDEVINFO &deviceInfoSet, const SP_DEVINFO_DATA &deviceInfoData, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
-
-
-
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, nullptr, ZERO_SIZE, &requiredSize, nullptr)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);
-
-        if (deviceInterfaceDetailData)
-        {
-            deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-            if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
-            {
-                QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                qDebug() << "    USB Hub path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
-
-
-
-                handleUsbHubChildren(deviceInfoData, deviceInterfacePath, deviceIdToDeviceInterfacePathHash);
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-            }
-
-
-
-            free(deviceInterfaceDetailData);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-    }
-}
-
-void handleUsbHub(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
-
-
-
-    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
-    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-
-
-    if (SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &USB_HUB_GUID, MEMBER_INDEX_FIRST, &deviceInterfaceData))
-    {
-        handleUsbHubInterfaceData(deviceInfoSet, deviceInfoData, deviceInterfaceData, deviceIdToDeviceInterfacePathHash);
-    }
-    else
-    {
-        qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();
-    }
-}
-
-void handleUsbHubs(const HDEVINFO &deviceInfoSet, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
-
-
-
-    SP_DEVINFO_DATA deviceInfoData;
-    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-
-
-    DWORD memberIndex = 0;
-
-    while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
-    {
-        qDebug().nospace() << "USB Hub #" << memberIndex << " found";
-
-
-
-        handleUsbHub(deviceInfoSet, deviceInfoData, deviceIdToDeviceInterfacePathHash);
-
-        ++memberIndex;
-    }
-}
-
-void updateUsbs(QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)
-{
-    Q_ASSERT(deviceIdToDeviceInterfacePathHash);
-
-
-
-    HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&USB_HUB_GUID, nullptr, nullptr, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-
-    if (deviceInfoSet != INVALID_HANDLE_VALUE)
-    {
-        handleUsbHubs(deviceInfoSet, deviceIdToDeviceInterfacePathHash);
-
-
-
-        if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))
-        {
-            qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();
-    }
-}
-
-void handleUsbStorageDriverDeviceIds(const QString &usbStorageDriver, char *buffer, QStringList &deviceIds)
-{
-    Q_ASSERT(buffer);
-
-
-
-    qDebug() << "";
-    qDebug() << "IDs belonging to" << usbStorageDriver;
-
-
-
-    char *deviceId = buffer;
-
-    while (*deviceId)
-    {
-        qDebug() << deviceId;
-
-
-
-        QString deviceIdString = QString::fromLatin1(deviceId);
-
-        deviceIds.append(deviceIdString);
-        deviceId += deviceIdString.length() + 1;
-    }
-}
-
-void handleUsbStorageDriverList(const QString &usbStorageDriver, ULONG listSize, QList<QStringList> *deviceIdList)
-{
-    Q_ASSERT(deviceIdList);
-
-
-
-    QStringList deviceIds;
-
-
-
-    if (listSize > 1)
-    {
-        char *buffer = (char *)malloc(listSize);
-
-        if (buffer)
-        {
-            CONFIGRET ret = CM_Get_Device_ID_ListA(usbStorageDriver.toLatin1().constData(), buffer, listSize, CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
-
-            if (ret == CR_SUCCESS)
-            {
-                handleUsbStorageDriverDeviceIds(usbStorageDriver, buffer, deviceIds);
-            }
-            else
-            {
-                qWarning() << "CM_Get_Device_ID_List failed:" << ret;
-            }
-
-
-
-            free(buffer);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-
-
-
-    deviceIdList->append(deviceIds);
-}
-
-void getDeviceIdList(QList<QStringList> *deviceIdList)
-{
-    Q_ASSERT(deviceIdList);
-
-
-
-    for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)
-    {
-        const QString &usbStorageDriver = usbStorageDrivers.at(i);
-        ULONG          listSize;
-
-
-
-        CONFIGRET ret = CM_Get_Device_ID_List_SizeA(&listSize, usbStorageDriver.toLatin1().constData(), CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);
-
-        if (ret == CR_SUCCESS)
-        {
-            handleUsbStorageDriverList(usbStorageDriver, listSize, deviceIdList);
-        }
-        else
-        {
-            qWarning() << "CM_Get_Device_ID_List_Size failed:" << ret;
-        }
-    }
-}
-
-void handleDiskEnumeratorName(const QString &enumeratorName, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    qint64 index = usbStorageDrivers.indexOf(enumeratorName);
-
-    if (index >= 0)
-    {
-        props->isUSB = true;
-
-        if (index >= USB_CARD_READER_INDEX && index < UASPSTOR_INDEX)
-        {
-            props->isCARD = true;
-        }
-    }
-
-
-
-    index = genericStorageDrivers.indexOf(enumeratorName);
-
-    if (index >= 0)
-    {
-        props->isSCSI = true;
-
-        if (index >= SD_INDEX)
-        {
-            props->isCARD = true;
-        }
-    }
-}
-
-void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, nullptr, nullptr, ZERO_SIZE, &requiredSize)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        BYTE *buffer = (BYTE *)malloc(requiredSize);
-
-        if (buffer)
-        {
-            DWORD propertyRegDataType;
-
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &propertyRegDataType, buffer, requiredSize, nullptr))
-            {
-                QString enumeratorName = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Disk enumerator:" << enumeratorName; // Ignore CppAlignmentVerifier
-
-
-
-                handleDiskEnumeratorName(enumeratorName, props);
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-            }
-
-
-
-            free(buffer);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-    }
-}
-
-void checkDiskIsVHDFromHardwareId(const QString &hardwareId, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    props->isVHD = hardwareId.contains("Arsenal_________Virtual_")
-                    ||
-                    hardwareId.contains("KernSafeVirtual_________")
-                    ||
-                    hardwareId.contains("Msft____Virtual_Disk____")
-                    ||
-                    hardwareId.contains("VMware__VMware_Virtual_S");
-}
-
-void checkDiskIsCardFromHardwareId(const QString &hardwareId, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    if (
-        !props->isCARD
-        &&
-        hardwareId.startsWith("SCSI\\Disk")
-        &&
-        (
-         hardwareId.contains("_SD_")
-         ||
-         hardwareId.contains("_SD&")
-         ||
-         hardwareId.contains("_SDHC_")
-         ||
-         hardwareId.contains("_SDHC&")
-         ||
-         hardwareId.contains("_MMC_")
-         ||
-         hardwareId.contains("_MMC&")
-         ||
-         hardwareId.contains("_MS_")
-         ||
-         hardwareId.contains("_MS&")
-         ||
-         hardwareId.contains("_MSPro_")
-         ||
-         hardwareId.contains("_MSPro&")
-         ||
-         hardwareId.contains("_xDPicture_")
-         ||
-         hardwareId.contains("_xDPicture&")
-         ||
-         hardwareId.contains("_O2Media_")
-         ||
-         hardwareId.contains("_O2Media&")
-        )
-       )
-    {
-        props->isCARD = true;
-    }
-}
-
-void handleDiskHardwareId(const QString &hardwareId, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    checkDiskIsVHDFromHardwareId(hardwareId, props);
-    checkDiskIsCardFromHardwareId(hardwareId, props);
-}
-
-void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, nullptr, nullptr, ZERO_SIZE, &requiredSize)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        BYTE *buffer = (BYTE *)malloc(requiredSize);
-
-        if (buffer)
-        {
-            DWORD propertyRegDataType;
-
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, &propertyRegDataType, buffer, requiredSize, nullptr))
-            {
-                QString hardwareId = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Hardware ID:" << hardwareId; // Ignore CppAlignmentVerifier
-
-
-
-                handleDiskHardwareId(hardwareId, props);
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-            }
-
-
-
-            free(buffer);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-    }
-}
-
-void handleDiskRemovalPolicy(DWORD removalPolicy, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    props->isRemovable = removalPolicy == CM_REMOVAL_POLICY_EXPECT_ORDERLY_REMOVAL
-                        ||
-                        removalPolicy == CM_REMOVAL_POLICY_EXPECT_SURPRISE_REMOVAL;
-}
-
-void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, nullptr, nullptr, ZERO_SIZE, &requiredSize)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        BYTE *buffer = (BYTE *)malloc(requiredSize);
-
-        if (buffer)
-        {
-            DWORD propertyRegDataType;
-
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, &propertyRegDataType, buffer, requiredSize, nullptr))
-            {
-                DWORD removalPolicy = *(DWORD *)buffer;
-                qDebug() << "    Removal policy:" << removalPolicy; // Ignore CppAlignmentVerifier
-
-
-
-                handleDiskRemovalPolicy(removalPolicy, props);
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-            }
-
-
-
-            free(buffer);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-    }
-}
-
-void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData)
-{
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, nullptr, nullptr, ZERO_SIZE, &requiredSize)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        BYTE *buffer = (BYTE *)malloc(requiredSize);
-
-        if (buffer)
-        {
-            DWORD propertyRegDataType;
-
-            if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, &propertyRegDataType, buffer, requiredSize, nullptr))
-            {
-                QString friendlyName = QString::fromWCharArray((wchar_t *)buffer);
-                qDebug() << "    Friendly name:" << friendlyName; // Ignore CppAlignmentVerifier
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-            }
-
-
-
-            free(buffer);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();
-    }
-}
-
-void getVidPidFromDeviceId(const QString &deviceId, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    QRegularExpressionMatch match = vidPidRegExp.match(deviceId);
-
-    if (match.hasMatch())
-    {
-        QString vid = match.captured(1);
-        QString pid = match.captured(2);
-
-
-
-        bool ok;
-
-        props->vid = vid.toUInt(&ok, 16);
-        Q_ASSERT(ok);
-
-        props->pid = pid.toUInt(&ok, 16);
-        Q_ASSERT(ok);
-
-
-
-        qDebug() << "    VID:" << vid << '(' << props->vid << ')';
-        qDebug() << "    PID:" << pid << '(' << props->pid << ')';
-    }
-    else
-    {
-        qWarning() << "Failed to find VID/PID for device id:" << deviceId;
-    }
-}
-
-bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)
-{
-    Q_ASSERT(props);
-
-
-
-    USB_NODE_CONNECTION_INFORMATION_EX connectionInfoEx;
-
-    DWORD size = sizeof(connectionInfoEx);
-    memset(&connectionInfoEx, 0, size);
-
-    connectionInfoEx.ConnectionIndex = (ULONG)props->port;
-
-
-
-    if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, &connectionInfoEx, size, &connectionInfoEx, size, &size, nullptr))
-    {
-        if (
-            connectionInfoEx.DeviceDescriptor.idVendor != 0
-            ||
-            connectionInfoEx.DeviceDescriptor.idProduct != 0
-           )
-        {
-            props->vid   = connectionInfoEx.DeviceDescriptor.idVendor;
-            props->pid   = connectionInfoEx.DeviceDescriptor.idProduct;
-            props->speed = (UsbSpeed)(connectionInfoEx.Speed + 1);
-
-            qDebug() << "    VID:"   << props->vid;
-            qDebug() << "    PID:"   << props->pid;
-            qDebug() << "    Speed:" << (quint64)props->speed;
-
-
-
-            return true;
-        }
-    }
-    else
-    {
-        qCritical() << "DeviceIoControl failed:" << GetLastError();
-    }
-
-
-
-    return false;
-}
-
-void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    USB_NODE_CONNECTION_INFORMATION_EX_V2 connectionInfoExV2;
-
-    DWORD size = sizeof(connectionInfoExV2);
-    memset(&connectionInfoExV2, 0, size);
-
-    connectionInfoExV2.ConnectionIndex              = (ULONG)props->port;
-    connectionInfoExV2.Length                       = size;
-    connectionInfoExV2.SupportedUsbProtocols.Usb300 = true;
-
-
-
-    if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX_V2, &connectionInfoExV2, size, &connectionInfoExV2, size, &size, nullptr))
-    {
-        if (connectionInfoExV2.Flags.DeviceIsOperatingAtSuperSpeedOrHigher)
-        {
-            props->speed = UsbSpeed::SUPER_OR_LATER;
-        }
-        else
-        if (connectionInfoExV2.Flags.DeviceIsSuperSpeedCapableOrHigher)
-        {
-            props->isLowerSpeed = true;
-        }
-    }
-    else
-    {
-        qCritical() << "DeviceIoControl failed:" << GetLastError();
-    }
-}
-
-void getUsbConnectionInfo(const HANDLE &deviceHandle, UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    if (getUsbConnectionInfoV1(deviceHandle, props))
-    {
-        getUsbConnectionInfoV2(deviceHandle, props);
-    }
-    else
-    {
-        qCritical() << "getUsbConnectionInfoV1 failed";
-    }
-}
-
-void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceID, UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    DEVINST deviceInstance;
-
-    CONFIGRET ret = CM_Locate_DevNodeA(&deviceInstance, deviceID.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);
-
-    if (ret == CR_SUCCESS)
-    {
-        props->port = 0;
-
-        DWORD size = sizeof(props->port);
-        ret        = CM_Get_DevNode_Registry_Property(deviceInstance, CM_DRP_ADDRESS, nullptr, &props->port, &size, NO_FLAGS);
-
-        if (ret == CR_SUCCESS)
-        {
-            HANDLE deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr);
-
-            if (deviceHandle != INVALID_HANDLE_VALUE)
-            {
-                getUsbConnectionInfo(deviceHandle, props);
-
-
-
-                if (!CloseHandle(deviceHandle))
-                {
-                    qCritical() << "CloseHandle failed:" << GetLastError();
-                }
-            }
-            else
-            {
-                qCritical() << "CreateFile failed:" << GetLastError();
-            }
-        }
-        else
-        {
-            qCritical() << "CM_Get_DevNode_Registry_Property failed:" << ret;
-        }
-    }
-    else
-    {
-        qCritical() << "CM_Locate_DevNode failed:" << ret;
-    }
-}
-
-bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QString deviceId, qint64 usbDriverIndex, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    DEVINST   parentDeviceInstance;
-    CONFIGRET ret = CM_Locate_DevNodeA(&parentDeviceInstance, deviceId.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);
-
-    if (ret == CR_SUCCESS)
-    {
-        DEVINST deviceInstance;
-
-        ret = CM_Get_Child(&deviceInstance, parentDeviceInstance, NO_FLAGS);
-
-        if (ret == CR_SUCCESS)
-        {
-            if (deviceInstance != deviceInfoData.DevInst)
-            {
-                while (CM_Get_Sibling(&deviceInstance, deviceInstance, 0) == CR_SUCCESS)
-                {
-                    if (deviceInstance == deviceInfoData.DevInst)
-                    {
-                        break;
-                    }
-                }
-
-                if (deviceInstance != deviceInfoData.DevInst)
-                {
-                    qCritical() << "Failed to find child device in parent";
-
-                    return false;
-                }
-            }
-
-
-
-            props->isUASP = (usbDriverIndex >= UASPSTOR_INDEX);
-
-            getVidPidFromDeviceId(deviceId, props);
-
-
-
-            QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
-            qDebug() << "    Device interface path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
-
-
-
-            if (deviceInterfacePath == "")
-            {
-                DEVINST grandparentDeviceInstance;
-                ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);
-
-                if (ret == CR_SUCCESS)
-                {
-                    wchar_t grandparentDeviceId[MAX_PATH];
-                    ret = CM_Get_Device_ID(grandparentDeviceInstance, grandparentDeviceId, MAX_PATH, NO_FLAGS);
-
-                    if (ret == CR_SUCCESS)
-                    {
-                        deviceId            = QString::fromWCharArray(grandparentDeviceId);
-                        deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");
-                    }
-                    else
-                    {
-                        qCritical() << "CM_Get_Device_ID failed:" << ret;
-                    }
-                }
-                else
-                {
-                    qCritical() << "CM_Get_Parent failed:" << ret;
-                }
-            }
-
-
-
-            if (deviceInterfacePath != "")
-            {
-                getUsbProperties(deviceInterfacePath, deviceId, props);
-            }
-            else
-            {
-                qWarning() << "Failed to get USB properties";
-            }
-
-
-
-            return true;
-        }
-        else
-        {
-            qCritical() << "CM_Get_Child failed:" << ret;
-        }
-    }
-    else
-    {
-        qCritical() << "CM_Locate_DevNode failed:" << ret;
-    }
-
-
-
-    return false;
-}
-
-void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    if (!props->isVHD)
-    {
-        for (qint64 i = 0; i < deviceIdList.length(); ++i)
-        {
-            const QStringList &deviceIds = deviceIdList.at(i);
-
-            for (qint64 j = 0; j < deviceIds.length(); ++j)
-            {
-                if (handleDeviceId(deviceIdToDeviceInterfacePathHash, deviceIds.at(j), i, deviceInfoData, props))
-                {
-                    return;
-                }
-            }
-        }
-    }
-}
-
-bool checkDeviceType(UsbProperties *props)
-{
-    Q_ASSERT(props != nullptr);
-
-
-
-    qDebug() << "";
-
-    if (props->isVHD)
-    {
-        qDebug() << "    Found VHD device";
-    }
-    else
-    if (
-        props->isCARD
-        &&
-        (
-         !props->isUSB
-         ||
-         (
-          props->vid == 0
-          &&
-          props->pid == 0
-         )
-        )
-       )
-    {
-        qDebug() << "    Found card reader device";
-    }
-    else
-    if (
-        !props->isUSB
-        &&
-        !props->isUASP
-        &&
-        props->isRemovable
-       )
-    {
-        qDebug() << "    Found non-USB removable device";
-
-        return false;
-    }
-    else
-    {
-        if (
-            !props->isUSB
-            &&
-            props->vid == 0
-            &&
-            props->pid == 0
-           )
-        {
-            qDebug() << "    Found non-USB non-removable device";
-
-            return false;
-        }
-
-
-
-        qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << enumToHumanString(props->speed) << (props->isUASP ? ")" : "") << " device"; // Ignore CppSingleCharVerifier
-
-        if (props->isLowerSpeed)
-        {
-            qDebug() << "    NOTE: This device is an USB 3.0 device operating at lower speed...";
-        }
-    }
-
-
-
-    return true;
-}
-
-DWORD getDiskNumber(const HANDLE &deviceHandle)
-{
-    VOLUME_DISK_EXTENTS_REDEF diskExtents;
-    STORAGE_DEVICE_NUMBER     deviceNumber;
-    DWORD                     size;
-
-
-
-    if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))
-    {
-        // qDebug() << "        NumberOfDiskExtents:" << diskExtents.NumberOfDiskExtents;
-
-        if (diskExtents.numberOfDiskExtents == 1)
-        {
-            return diskExtents.extents[0].DiskNumber;
-        }
-        else
-        {
-            qWarning() << "Ignoring disk since it belongs to RAID array";
-        }
-    }
-    else
-    if (DeviceIoControl(deviceHandle, IOCTL_STORAGE_GET_DEVICE_NUMBER, nullptr, ZERO_SIZE, &deviceNumber, sizeof(deviceNumber), &size, nullptr))
-    {
-        return deviceNumber.DeviceNumber;
-    }
-    else
-    {
-        qCritical() << "Failed to get device number";
-    }
-
-
-
-    return -1;
-}
-
-HANDLE getDiskHandle(DWORD diskNumber)
-{
-    QString diskPath = "\\\\.\\PhysicalDrive" + QString::number(diskNumber);
-
-    return CreateFileA(diskPath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-}
-
-qint64 getDiskSize(DWORD diskNumber)
-{
-    qint64 res = 0;
-
-
-
-    HANDLE diskHandle = getDiskHandle(diskNumber);
-
-    if (diskHandle != INVALID_HANDLE_VALUE)
-    {
-        DWORD size;
-        BYTE  geometry[256];
-
-        if (
-            DeviceIoControl(diskHandle, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, nullptr, ZERO_SIZE, geometry, sizeof(geometry), &size, nullptr)
-            &&
-            size > 0
-           )
-        {
-            res = ((DISK_GEOMETRY_EX *)geometry)->DiskSize.QuadPart;
-        }
-
-
-
-        if (!CloseHandle(diskHandle))
-        {
-            qCritical() << "CloseHandle failed:" << GetLastError();
-        }
-    }
-
-
-
-    return res;
-}
-
-QString diskSizeHumanReadable(qint64 diskSize)
-{
-    if (diskSize >= 1000000000000)
-    {
-        return QString::number(diskSize / 1000000000000) + "TB";
-    }
-
-    if (diskSize >= 1000000000)
-    {
-        return QString::number(diskSize / 1000000000) + "GB";
-    }
-
-    return QString::number(diskSize / 1000000) + "MB";
-}
-
-void getDiskLetters(DWORD diskNumber, char *letters)
-{
-    Q_ASSERT(letters);
-
-
-
-    char *curLetter = &letters[0];
-
-
-
-    char  drives[128];
-    DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
-
-    if (size > 0 && size <= sizeof(drives))
-    {
-        for (char *drive = drives; *drive; drive += strlen(drive) + 1)
-        {
-            drive[0] = QChar::toUpper(drive[0]);
-
-            if (drive[0] < 'A' || drive[0] > 'Z')
-            {
-                continue;
-            }
-
-
-
-            UINT driveType = GetDriveTypeA(drive);
-
-            if (
-                driveType != DRIVE_REMOVABLE
-                &&
-                driveType != DRIVE_FIXED
-               )
-            {
-                continue;
-            }
-
-
-
-            QString logicalDrivePath = QString("\\\\.\\%1:").arg(drive[0]);
-
-            HANDLE driveHandle = CreateFileA(logicalDrivePath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-
-            if (driveHandle != INVALID_HANDLE_VALUE)
-            {
-                if (getDiskNumber(driveHandle) == diskNumber)
-                {
-                    *curLetter = drive[0];
-                    ++curLetter;
-                }
-
-
-
-                if (!CloseHandle(driveHandle))
-                {
-                    qCritical() << "CloseHandle failed:" << GetLastError();
-                }
-            }
-        }
-    }
-    else
-    {
-        qCritical() << "size is invalid";
-    }
-
-
-
-    *curLetter = 0;
-}
-
-QString diskLettersHumanReadable(DWORD diskNumber, char *letters)
-{
-    if (letters[0] == 0)
-    {
-        return "Disk " + QString::number(diskNumber);
-    }
-
-
-
-    QString res;
-
-    for (char *letter = letters; *letter; ++letter)
-    {
-        if (letter != letters)
-        {
-            res += ' ';
-        }
-
-        res += QString("%1:").arg(*letter);
-    }
-
-    return res;
-}
-
-QString getDiskLabel(DWORD diskNumber, char *letters)
-{
-    if (letters[0] != 0)
-    {
-        QString autorunLabel;
-
-
-
-        HANDLE diskHandle = getDiskHandle(diskNumber);
-
-        if (diskHandle != INVALID_HANDLE_VALUE)
-        {
-            DWORD size;
-
-            if (DeviceIoControl(diskHandle, IOCTL_STORAGE_CHECK_VERIFY, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-            {
-                QSettings settings(QString("%1:/autorun.inf").arg(letters[0]), QSettings::IniFormat); // Ignore CppPunctuationVerifier
-
-                settings.beginGroup("autorun");
-                autorunLabel = settings.value("label", "").toString();
-                settings.endGroup();
-            }
-            else
-            {
-                qWarning() << "DeviceIoControl failed:" << GetLastError();
-            }
-
-
-
-            if (!CloseHandle(diskHandle))
-            {
-                qCritical() << "CloseHandle failed:" << GetLastError();
-            }
-        }
-
-
-
-        if (autorunLabel != "")
-        {
-            return autorunLabel;
-        }
-
-
-
-        wchar_t volumeLabel[MAX_PATH];
-        wchar_t diskPath[] = { (wchar_t)letters[0], ':', '\\', 0 };
-
-        if (GetVolumeInformation(diskPath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))
-        {
-            QString volumeLabelString = QString::fromWCharArray(volumeLabel);
-
-            if (volumeLabelString != "")
-            {
-                return volumeLabelString;
-            }
-        }
-        else
-        {
-            qWarning() << "DeviceIoControl failed:" << GetLastError();
-        }
-    }
-
-
-
-    return "NO_LABEL";
-}
-
-void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(deviceHandle != INVALID_HANDLE_VALUE);
-    Q_ASSERT(usbDevices);
-
-
-
-    DWORD diskNumber = getDiskNumber(deviceHandle);
-    qDebug() << "        Disk number:" << diskNumber; // Ignore CppAlignmentVerifier
-
-
-
-    qint64 diskSize = getDiskSize(diskNumber);
-    qDebug() << "        Disk size:" << (diskSize / 1000000) << "MB"; // Ignore CppAlignmentVerifier
-
-    if (diskSize == 0)
-    {
-        qCritical() << "Device without media";
-
-        return;
-    }
-
-    if (diskSize < MIN_DISK_SIZE)
-    {
-        qCritical() << "Disk is too small";
-
-        return;
-    }
-
-
-
-    char diskLetters[27];
-
-    getDiskLetters(diskNumber, diskLetters);
-    qDebug() << "        Disk letters:" << diskLetters; // Ignore CppAlignmentVerifier
-
-
-
-    QString diskLabel = getDiskLabel(diskNumber, diskLetters);
-    qDebug() << "        Disk label:" << diskLabel; // Ignore CppAlignmentVerifier
-
-
-
-    UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();
-
-    deviceInfo->title      = QString("%1 (%2) [%3]").arg(diskLabel).arg(diskLettersHumanReadable(diskNumber, diskLetters)).arg(diskSizeHumanReadable(diskSize));
-    deviceInfo->diskNumber = diskNumber;
-    deviceInfo->diskSize   = diskSize;
-    deviceInfo->letters    = diskLetters;
-    deviceInfo->deviceName = "";
-
-    usbDevices->append(deviceInfo);
-}
-
-void handleDiskDeviceInterfacePath(const QString &deviceInterfacePath, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(usbDevices);
-
-
-
-    HANDLE deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-
-    if (deviceHandle != INVALID_HANDLE_VALUE)
-    {
-        handleDiskDeviceHandle(deviceHandle, usbDevices);
-
-
-
-        if (!CloseHandle(deviceHandle))
-        {
-            qCritical() << "CloseHandle failed:" << GetLastError();
-        }
-    }
-    else
-    {
-        qCritical() << "CreateFile failed:" << GetLastError();
-    }
-}
-
-void handleDiskInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(usbDevices    != nullptr);
-
-
-
-    DWORD requiredSize;
-
-    if (
-        !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, nullptr, ZERO_SIZE, &requiredSize, nullptr)
-        &&
-        GetLastError() == ERROR_INSUFFICIENT_BUFFER
-       )
-    {
-        SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);
-
-        if (deviceInterfaceDetailData)
-        {
-            deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-            if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))
-            {
-                QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);
-                qDebug() << "        Disk path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier
-
-
-
-                handleDiskDeviceInterfacePath(deviceInterfacePath, usbDevices);
-            }
-            else
-            {
-                qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-            }
-
-
-
-            free(deviceInterfaceDetailData);
-        }
-        else
-        {
-            qCritical() << "malloc failed";
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();
-    }
-}
-
-void handleDiskInterfaces(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(usbDevices);
-
-
-
-    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
-    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-
-
-    DWORD memberIndex = 0;
-
-    do
-    {
-        if (!SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &DISK_GUID, memberIndex, &deviceInterfaceData))
-        {
-            if (GetLastError() == ERROR_NO_MORE_ITEMS)
-            {
-                qWarning() << "Device interface not found for the disk";
-            }
-            else
-            {
-                qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();
-            }
-
-            break;
-        }
-
-
-
-        qDebug() << "";
-        qDebug().nospace() << "    Disk interface #" << memberIndex << " found";
-
-
-
-        handleDiskInterfaceData(deviceInfoSet, deviceInterfaceData, usbDevices);
-
-        ++memberIndex;
-    } while(true);
-}
-
-void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(usbDevices);
-
-
-
-    UsbProperties props;
-    memset(&props, 0, sizeof(UsbProperties));
-
-
-
-    handleDiskEnumeratorName(deviceInfoSet, deviceInfoData, &props);
-
-    if (props.isUSB || props.isSCSI)
-    {
-        handleDiskHardwareId(deviceInfoSet, deviceInfoData, &props);
-        handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);
-        handleDiskFriendlyName(deviceInfoSet, deviceInfoData);
-
-        handleDeviceIds(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoData, &props);
-
-
-
-        if (checkDeviceType(&props))
-        {
-            handleDiskInterfaces(deviceInfoSet, deviceInfoData, usbDevices);
-        }
-    }
-    else
-    {
-        qDebug() << "    Ignoring this disk since it is not USB/SCSI disk";
-    }
-}
-
-void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);
-    Q_ASSERT(usbDevices);
-
-
-
-    SP_DEVINFO_DATA deviceInfoData;
-    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-
-
-    DWORD memberIndex = 0;
-
-    while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))
-    {
-        qDebug() << "";
-        qDebug().nospace() << "Disk #" << memberIndex << " found";
-
-
-
-        handleDisk(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, deviceInfoData, usbDevices);
-
-        ++memberIndex;
-    }
-}
-
-void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QList<UsbDeviceInfo *> *usbDevices)
-{
-    Q_ASSERT(usbDevices);
-
-
-
-    QList<QStringList> deviceIdList;
-
-    getDeviceIdList(&deviceIdList);
-
-
-
-    HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&DISK_GUID, nullptr, nullptr, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-
-    if (deviceInfoSet != INVALID_HANDLE_VALUE)
-    {
-        handleDisks(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, usbDevices);
-
-
-
-        if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))
-        {
-            qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();
-        }
-    }
-    else
-    {
-        qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();
-    }
-}
-
-QList<UsbDeviceInfo *> MainWindow::getUsbDevices()
-{
-    Q_ASSERT(USB_CARD_READER_INDEX == usbStorageDrivers.indexOf("USBSTOR") + 1);
-    Q_ASSERT(UASPSTOR_INDEX        == usbStorageDrivers.indexOf("UASPSTOR"));
-    Q_ASSERT(SD_INDEX              == genericStorageDrivers.indexOf("SD"));
-
-
-
-    QList<UsbDeviceInfo *> res;
-
-
-
-    QHash<QString, QString> deviceIdToDeviceInterfacePathHash;
-
-    updateUsbs(&deviceIdToDeviceInterfacePathHash);
-    updateDisks(deviceIdToDeviceInterfacePathHash, &res);
-
-
-
-    return res;
-}
-
-
-
-#endif // Q_OS_WIN
+#include "mainwindow.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_WIN                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+#include <QSettings>                                                                                                                                                                                     // Colorize: green
+#include <QTimer>                                                                                                                                                                                        // Colorize: green
+#include <Windows.h>                                                                                                                                                                                     // Colorize: green
+#include <cfgmgr32.h>                                                                                                                                                                                    // Colorize: green
+#include <Dbt.h>                                                                                                                                                                                         // Colorize: green
+#include <SetupAPI.h>                                                                                                                                                                                    // Colorize: green
+#include <usbioctl.h>                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/defines.h>                                                                                                                                              // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/usbproperties.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/utils.h>                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define NO_FLAGS           0                                                                                                                                                                             // Colorize: green
+#define ZERO_SIZE          0                                                                                                                                                                             // Colorize: green
+#define MEMBER_INDEX_FIRST 0                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define USB_CARD_READER_INDEX 1                                                                                                                                                                          // Colorize: green
+#define UASPSTOR_INDEX        4                                                                                                                                                                          // Colorize: green
+#define SD_INDEX              1                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifndef CM_GETIDLIST_FILTER_PRESENT                                                                                                                                                                      // Colorize: green
+#define CM_GETIDLIST_FILTER_PRESENT 0x00000100                                                                                                                                                           // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const GUID USB_HUB_GUID = { 0xF18A0E88, 0xC30C, 0x11D0, { 0x88, 0x15, 0x00, 0xA0, 0xC9, 0x06, 0xBE, 0xD8 } };                                                                                            // Colorize: green
+const GUID DISK_GUID    = { 0x53F56307, 0xB6BF, 0x11D0, { 0x94, 0xF2, 0x00, 0xA0, 0xC9, 0x1E, 0xFB, 0x8B } };                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QStringList usbStorageDrivers = QStringList()                                                                                                                                                      // Colorize: green
+        // Standard MS USB storage driver                                                                                                                                                                // Colorize: green
+        << "USBSTOR"                                                                                                                                                                                     // Colorize: green
+        // USB card readers, with proprietary drivers (Realtek, etc...)                                                                                                                                  // Colorize: green
+        // Mostly "guessed" from https://carrona.org/dvrref.php // Ignore LinksVerifier                                                                                                                  // Colorize: green
+        << "RTSUER" << "CMIUCR" << "EUCR"                                                                                                                                                                // Colorize: green
+        // UASP Drivers *MUST* be listed after this, starting with "UASPSTOR"                                                                                                                            // Colorize: green
+        // (which is Microsoft's native UASP driver for Windows 8 and later)                                                                                                                             // Colorize: green
+        // as we use "UASPSTOR" as a delimiter                                                                                                                                                           // Colorize: green
+        << "UASPSTOR" << "VUSBSTOR" << "ETRONSTOR" << "ASUSSTPT"                                                                                                                                         // Colorize: green
+    ;                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QStringList genericStorageDrivers = QStringList()                                                                                                                                                  // Colorize: green
+        // Generic storage drivers (Careful now!)                                                                                                                                                        // Colorize: green
+        << "SCSI" // << "STORAGE"   // "STORAGE" is used by 'Storage Spaces" and stuff => DANGEROUS!                                                                                                     // Colorize: green
+        // Non-USB card reader drivers - This list *MUST* start with "SD" (delimiter)                                                                                                                    // Colorize: green
+        // See http://itdoc.hitachi.co.jp/manuals/3021/30213B5200e/DMDS0094.HTM                                                                                                                          // Colorize: green
+        // Also https://carrona.org/dvrref.php // Ignore LinksVerifier                                                                                                                                   // Colorize: green
+        << "SD" << "PCISTOR" << "RTSOR" << "JMCR" << "JMCF" << "RIMMPTSK" << "RIMSPTSK" << "RIXDPTSK" << "TI21SONY" << "ESD7SK" << "ESM7SK" << "O2MD" << "O2SD" << "VIACR"                               // Colorize: green
+    ;                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QRegularExpression vidPidRegExp("^.+\\\\VID_([0-9a-fA-F]+)&PID_([0-9a-fA-F]+)\\\\.+$");                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Redefine VOLUME_DISK_EXTENTS from winioctl.h with more space for extents                                                                                                                              // Colorize: green
+struct VOLUME_DISK_EXTENTS_REDEF                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DWORD       numberOfDiskExtents;                                                                                                                                                                     // Colorize: green
+    DISK_EXTENT extents[8];                                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result) // Ignore CppTypesVerifier                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Refresh list of USB devices on USB connect/disconnect/update                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        MSG *msg = (MSG *)message;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        switch (msg->message)                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            case WM_DEVICECHANGE:                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                switch (msg->wParam)                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    case DBT_DEVICEARRIVAL:                                                                                                                                                              // Colorize: green
+                    case DBT_DEVICEREMOVECOMPLETE:                                                                                                                                                       // Colorize: green
+                    case DBT_DEVNODES_CHANGED:                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        usbStatusChanged(1000);                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    default:                                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "Unexpected wParam:" << msg->wParam;                                                                                                                              // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            default:                                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Nothing                                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return QMainWindow::nativeEvent(eventType, message, result);                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbHubChildren(const SP_DEVINFO_DATA &deviceInfoData, const QString &deviceInterfacePath, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash != nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DEVINST deviceInstance;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Take first child                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (CM_Get_Child(&deviceInstance, deviceInfoData.DevInst, NO_FLAGS) != CR_SUCCESS)                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // qWarning() << "CM_Get_Child failed"; // Commented to avoid not interesting warnings                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    wchar_t   deviceId[MAX_PATH];                                                                                                                                                                        // Colorize: green
+    CONFIGRET ret;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get device ID                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, NO_FLAGS);                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ret != CR_SUCCESS)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qWarning() << "CM_Get_Device_ID failed:" << ret;                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Insert device ID into hash                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString deviceIdString = QString::fromWCharArray(deviceId);                                                                                                                                      // Colorize: green
+        qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate children and handle them                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (CM_Get_Sibling(&deviceInstance, deviceInstance, NO_FLAGS) == CR_SUCCESS)                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Get device ID                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ret = CM_Get_Device_ID(deviceInstance, deviceId, MAX_PATH, NO_FLAGS);                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (ret != CR_SUCCESS)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qWarning() << "CM_Get_Device_ID failed:" << ret;                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Insert device ID into hash                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString deviceIdString = QString::fromWCharArray(deviceId);                                                                                                                              // Colorize: green
+                qDebug() << "        USB found:" << deviceIdString; // Ignore CppAlignmentVerifier                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                deviceIdToDeviceInterfacePathHash->insert(deviceIdString, deviceInterfacePath);                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbHubInterfaceData(const HDEVINFO &deviceInfoSet, const SP_DEVINFO_DATA &deviceInfoData, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash) // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet                     != INVALID_HANDLE_VALUE);                                                                                                                                 // Colorize: green
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash != nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get size for USB hub interface data, allocate space and put it in that space                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, nullptr, ZERO_SIZE, &requiredSize, nullptr)                                                                            // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (deviceInterfaceDetailData != nullptr)                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get USB hub interface data and handle USB children                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);                                                                                // Colorize: green
+                            qDebug() << "    USB Hub path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            handleUsbHubChildren(deviceInfoData, deviceInterfacePath, deviceIdToDeviceInterfacePathHash);                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();                                                                                                  // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(deviceInterfaceDetailData);                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbHub(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet                     != INVALID_HANDLE_VALUE);                                                                                                                                 // Colorize: green
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash != nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;                                                                                                                                                        // Colorize: green
+    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get USB hub interface data and handle it                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &USB_HUB_GUID, MEMBER_INDEX_FIRST, &deviceInterfaceData))                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handleUsbHubInterfaceData(deviceInfoSet, deviceInfoData, deviceInterfaceData, deviceIdToDeviceInterfacePathHash);                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbHubs(const HDEVINFO &deviceInfoSet, QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet                     != INVALID_HANDLE_VALUE);                                                                                                                                 // Colorize: green
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash != nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    SP_DEVINFO_DATA deviceInfoData;                                                                                                                                                                      // Colorize: green
+    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over USB hubs and handle each of them                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD memberIndex = 0;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug().nospace() << "USB Hub #" << memberIndex << " found";                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            handleUsbHub(deviceInfoSet, deviceInfoData, deviceIdToDeviceInterfacePathHash);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++memberIndex;                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void updateUsbs(QHash<QString, QString> *deviceIdToDeviceInterfacePathHash)                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceIdToDeviceInterfacePathHash != nullptr);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get set of USB hubs and handle them                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&USB_HUB_GUID, nullptr, nullptr, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (deviceInfoSet != INVALID_HANDLE_VALUE)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handleUsbHubs(deviceInfoSet, deviceIdToDeviceInterfacePathHash);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Delete set of USB hubs                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();                                                                                                             // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbStorageDriverDeviceIds(const QString &usbStorageDriver, char *buffer, QStringList *deviceIds)                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(buffer != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qDebug() << "";                                                                                                                                                                                      // Colorize: green
+    qDebug() << "IDs belonging to" << usbStorageDriver;                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    char *deviceId = buffer;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (*deviceId != 0)                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qDebug() << deviceId;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Append device ID to result                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString deviceIdString = QString::fromLatin1(deviceId);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            deviceIds->append(deviceIdString);                                                                                                                                                           // Colorize: green
+            deviceId += deviceIdString.length() + 1;                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleUsbStorageDriverList(const QString &usbStorageDriver, ULONG listSize, QList<QStringList> *deviceIdList)                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceIdList != nullptr);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList deviceIds;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Allocate space for list device IDs and handle them                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (listSize > 1)                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            char *buffer = (char *)malloc(listSize);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (buffer != nullptr)                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Get list of device IDs and handle them                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    CONFIGRET ret = CM_Get_Device_ID_ListA(usbStorageDriver.toLatin1().constData(), buffer, listSize, CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (ret == CR_SUCCESS)                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        handleUsbStorageDriverDeviceIds(usbStorageDriver, buffer, &deviceIds);                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qWarning() << "CM_Get_Device_ID_List failed:" << ret;                                                                                                                            // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                free(buffer);                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "malloc failed";                                                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    deviceIdList->append(deviceIds);                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getDeviceIdList(QList<QStringList> *deviceIdList)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceIdList != nullptr);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate USB storage drivers and handle list of drivers                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < usbStorageDrivers.length(); ++i)                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            const QString &usbStorageDriver = usbStorageDrivers.at(i);                                                                                                                                   // Colorize: green
+            ULONG          listSize;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            CONFIGRET ret = CM_Get_Device_ID_List_SizeA(&listSize, usbStorageDriver.toLatin1().constData(), CM_GETIDLIST_FILTER_SERVICE | CM_GETIDLIST_FILTER_PRESENT);                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (ret == CR_SUCCESS)                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handleUsbStorageDriverList(usbStorageDriver, listSize, deviceIdList);                                                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qWarning() << "CM_Get_Device_ID_List_Size failed:" << ret;                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskEnumeratorName(const QString &enumeratorName, UsbProperties *props)                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is USB                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index = usbStorageDrivers.indexOf(enumeratorName);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            props->isUSB = true;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that device is card reader                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (index >= USB_CARD_READER_INDEX && index < UASPSTOR_INDEX)                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    props->isCARD = true;                                                                                                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is SCSI                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index = genericStorageDrivers.indexOf(enumeratorName);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            props->isSCSI = true;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that device is card reader                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (index >= SD_INDEX)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    props->isCARD = true;                                                                                                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskEnumeratorName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get size for disk enumerator name, allocate space and put details in that space                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, nullptr, nullptr, ZERO_SIZE, &requiredSize)                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                BYTE *buffer = (BYTE *)malloc(requiredSize);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (buffer != nullptr)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get disk enumarator name and handle it                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        DWORD propertyRegDataType;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_ENUMERATOR_NAME, &propertyRegDataType, buffer, requiredSize, nullptr))                                // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString enumeratorName = QString::fromWCharArray((wchar_t *)buffer);                                                                                                         // Colorize: green
+                            qDebug() << "    Disk enumerator:" << enumeratorName; // Ignore CppAlignmentVerifier                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            handleDiskEnumeratorName(enumeratorName, props);                                                                                                                             // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(buffer);                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void checkDiskIsVHDFromHardwareId(const QString &hardwareId, UsbProperties *props)                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is virtual hard disk base on hardware ID                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        props->isVHD = hardwareId.contains("Arsenal_________Virtual_")                                                                                                                                   // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        hardwareId.contains("KernSafeVirtual_________")                                                                                                                                  // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        hardwareId.contains("Msft____Virtual_Disk____")                                                                                                                                  // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        hardwareId.contains("VMware__VMware_Virtual_S");                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void checkDiskIsCardFromHardwareId(const QString &hardwareId, UsbProperties *props)                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is card reader base on hardware ID                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !props->isCARD                                                                                                                                                                               // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            hardwareId.startsWith("SCSI\\Disk")                                                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             hardwareId.contains("_SD_")                                                                                                                                                                 // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_SD&")                                                                                                                                                                 // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_SDHC_")                                                                                                                                                               // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_SDHC&")                                                                                                                                                               // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MMC_")                                                                                                                                                                // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MMC&")                                                                                                                                                                // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MS_")                                                                                                                                                                 // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MS&")                                                                                                                                                                 // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MSPro_")                                                                                                                                                              // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_MSPro&")                                                                                                                                                              // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_xDPicture_")                                                                                                                                                          // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_xDPicture&")                                                                                                                                                          // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_O2Media_")                                                                                                                                                            // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             hardwareId.contains("_O2Media&")                                                                                                                                                            // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            props->isCARD = true;                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskHardwareId(const QString &hardwareId, UsbProperties *props)                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    checkDiskIsVHDFromHardwareId(hardwareId, props);                                                                                                                                                     // Colorize: green
+    checkDiskIsCardFromHardwareId(hardwareId, props);                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskHardwareId(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get size for disk hardware ID, allocate space and put it in that space                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, nullptr, nullptr, ZERO_SIZE, &requiredSize)                                                              // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                BYTE *buffer = (BYTE *)malloc(requiredSize);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (buffer != nullptr)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get disk hardware ID and handle it                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        DWORD propertyRegDataType;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_HARDWAREID, &propertyRegDataType, buffer, requiredSize, nullptr))                                     // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString hardwareId = QString::fromWCharArray((wchar_t *)buffer);                                                                                                             // Colorize: green
+                            qDebug() << "    Hardware ID:" << hardwareId; // Ignore CppAlignmentVerifier                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            handleDiskHardwareId(hardwareId, props);                                                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(buffer);                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskRemovalPolicy(DWORD removalPolicy, UsbProperties *props)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that device is removable                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        props->isRemovable = removalPolicy == CM_REMOVAL_POLICY_EXPECT_ORDERLY_REMOVAL                                                                                                                   // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            removalPolicy == CM_REMOVAL_POLICY_EXPECT_SURPRISE_REMOVAL;                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskRemovalPolicy(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get size for disk removal policy, allocate space and put it in that space                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, nullptr, nullptr, ZERO_SIZE, &requiredSize)                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                BYTE *buffer = (BYTE *)malloc(requiredSize);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (buffer != nullptr)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get disk removal policy and handle it                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        DWORD propertyRegDataType;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_REMOVAL_POLICY, &propertyRegDataType, buffer, requiredSize, nullptr))                                 // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            DWORD removalPolicy = *(DWORD *)buffer;                                                                                                                                      // Colorize: green
+                            qDebug() << "    Removal policy:" << removalPolicy; // Ignore CppAlignmentVerifier                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            handleDiskRemovalPolicy(removalPolicy, props);                                                                                                                               // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(buffer);                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskFriendlyName(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData)                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Get size for disk friendly name, allocate space and put it in that space                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, nullptr, nullptr, ZERO_SIZE, &requiredSize)                                                            // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                BYTE *buffer = (BYTE *)malloc(requiredSize);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (buffer != nullptr)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get disk friendly name and handle it                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        DWORD propertyRegDataType;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceRegistryProperty(deviceInfoSet, &deviceInfoData, SPDRP_FRIENDLYNAME, &propertyRegDataType, buffer, requiredSize, nullptr))                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString friendlyName = QString::fromWCharArray((wchar_t *)buffer);                                                                                                           // Colorize: green
+                            qDebug() << "    Friendly name:" << friendlyName; // Ignore CppAlignmentVerifier                                                                                             // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(buffer);                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceRegistryProperty failed:" << GetLastError();                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getVidPidFromDeviceId(const QString &deviceId, UsbProperties *props)                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get VID/PID from device ID                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QRegularExpressionMatch match = vidPidRegExp.match(deviceId);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString vid = match.captured(1);                                                                                                                                                             // Colorize: green
+            QString pid = match.captured(2);                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            bool ok;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            props->vid = vid.toUInt(&ok, 16);                                                                                                                                                            // Colorize: green
+            Q_ASSERT(ok);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            props->pid = pid.toUInt(&ok, 16);                                                                                                                                                            // Colorize: green
+            Q_ASSERT(ok);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug() << "    VID:" << vid << '(' << props->vid << ')';                                                                                                                                   // Colorize: green
+            qDebug() << "    PID:" << pid << '(' << props->pid << ')';                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qWarning() << "Failed to find VID/PID for device id:" << deviceId;                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool getUsbConnectionInfoV1(const HANDLE &deviceHandle, UsbProperties *props)                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    USB_NODE_CONNECTION_INFORMATION_EX connectionInfoEx;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DWORD size = sizeof(connectionInfoEx);                                                                                                                                                               // Colorize: green
+    memset(&connectionInfoEx, 0, size);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connectionInfoEx.ConnectionIndex = (ULONG)props->port;                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get USB speed                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX, &connectionInfoEx, size, &connectionInfoEx, size, &size, nullptr))                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                connectionInfoEx.DeviceDescriptor.idVendor != 0                                                                                                                                          // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                connectionInfoEx.DeviceDescriptor.idProduct != 0                                                                                                                                         // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                props->vid   = connectionInfoEx.DeviceDescriptor.idVendor;                                                                                                                               // Colorize: green
+                props->pid   = connectionInfoEx.DeviceDescriptor.idProduct;                                                                                                                              // Colorize: green
+                props->speed = (UsbSpeed)(connectionInfoEx.Speed + 1);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                qDebug() << "    VID:"   << props->vid;                                                                                                                                                  // Colorize: green
+                qDebug() << "    PID:"   << props->pid;                                                                                                                                                  // Colorize: green
+                qDebug() << "    Speed:" << (quint64)props->speed;                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return true;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "DeviceIoControl failed:" << GetLastError();                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getUsbConnectionInfoV2(const HANDLE &deviceHandle, UsbProperties *props)                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    USB_NODE_CONNECTION_INFORMATION_EX_V2 connectionInfoExV2;                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DWORD size = sizeof(connectionInfoExV2);                                                                                                                                                             // Colorize: green
+    memset(&connectionInfoExV2, 0, size);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    connectionInfoExV2.ConnectionIndex              = (ULONG)props->port;                                                                                                                                // Colorize: green
+    connectionInfoExV2.Length                       = size;                                                                                                                                              // Colorize: green
+    connectionInfoExV2.SupportedUsbProtocols.Usb300 = true;                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get USB speed                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (DeviceIoControl(deviceHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX_V2, &connectionInfoExV2, size, &connectionInfoExV2, size, &size, nullptr))                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (connectionInfoExV2.Flags.DeviceIsOperatingAtSuperSpeedOrHigher)                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                props->speed = UsbSpeed::SUPER_OR_LATER;                                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (connectionInfoExV2.Flags.DeviceIsSuperSpeedCapableOrHigher)                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                props->isLowerSpeed = true;                                                                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "DeviceIoControl failed:" << GetLastError();                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getUsbConnectionInfo(const HANDLE &deviceHandle, UsbProperties *props)                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (getUsbConnectionInfoV1(deviceHandle, props))                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        getUsbConnectionInfoV2(deviceHandle, props);                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "getUsbConnectionInfoV1 failed";                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getUsbProperties(const QString &deviceInterfacePath, const QString &deviceID, UsbProperties *props)                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DEVINST deviceInstance;                                                                                                                                                                              // Colorize: green
+    CONFIGRET ret;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get device instance by deviceID                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ret = CM_Locate_DevNodeA(&deviceInstance, deviceID.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ret != CR_SUCCESS)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CM_Locate_DevNode failed:" << ret;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get device address                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        props->port = 0;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        DWORD size = sizeof(props->port);                                                                                                                                                                // Colorize: green
+        ret        = CM_Get_DevNode_Registry_Property(deviceInstance, CM_DRP_ADDRESS, nullptr, &props->port, &size, NO_FLAGS);                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ret != CR_SUCCESS)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CM_Get_DevNode_Registry_Property failed:" << ret;                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE deviceHandle;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Open device interface as file                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr);                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (deviceHandle == INVALID_HANDLE_VALUE)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CreateFile failed:" << GetLastError();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    getUsbConnectionInfo(deviceHandle, props);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Close file                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!CloseHandle(deviceHandle))                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool handleDeviceId(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QString deviceId, qint64 usbDriverIndex, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DEVINST   parentDeviceInstance;                                                                                                                                                                      // Colorize: green
+    CONFIGRET ret;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get parent device instance                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ret = CM_Locate_DevNodeA(&parentDeviceInstance, deviceId.toLatin1().data(), CM_LOCATE_DEVNODE_NORMAL);                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ret != CR_SUCCESS)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CM_Locate_DevNode failed:" << ret;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that parent device instance contains required child device instance                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DEVINST deviceInstance;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ret = CM_Get_Child(&deviceInstance, parentDeviceInstance, NO_FLAGS);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ret == CR_SUCCESS)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (deviceInstance != deviceInfoData.DevInst)                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                while (CM_Get_Sibling(&deviceInstance, deviceInstance, NO_FLAGS) == CR_SUCCESS)                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (deviceInstance == deviceInfoData.DevInst)                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (deviceInstance != deviceInfoData.DevInst)                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "Failed to find child device in parent";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CM_Get_Child failed:" << ret;                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    props->isUASP = (usbDriverIndex >= UASPSTOR_INDEX);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    getVidPidFromDeviceId(deviceId, props);                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get device interface path and get USB properties base on it                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");                                                                                                             // Colorize: green
+        qDebug() << "    Device interface path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // If device interface path not found in hash then take it from grandparent                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (deviceInterfacePath == "")                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                DEVINST grandparentDeviceInstance;                                                                                                                                                       // Colorize: green
+                ret = CM_Get_Parent(&grandparentDeviceInstance, parentDeviceInstance, 0);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (ret == CR_SUCCESS)                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    wchar_t grandparentDeviceId[MAX_PATH];                                                                                                                                               // Colorize: green
+                    ret = CM_Get_Device_ID(grandparentDeviceInstance, grandparentDeviceId, MAX_PATH, NO_FLAGS);                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (ret == CR_SUCCESS)                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        deviceId            = QString::fromWCharArray(grandparentDeviceId);                                                                                                              // Colorize: green
+                        deviceInterfacePath = deviceIdToDeviceInterfacePathHash.value(deviceId, "");                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "CM_Get_Device_ID failed:" << ret;                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "CM_Get_Parent failed:" << ret;                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (deviceInterfacePath != "")                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            getUsbProperties(deviceInterfacePath, deviceId, props);                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qWarning() << "Failed to get USB properties";                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDeviceIds(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const SP_DEVINFO_DATA &deviceInfoData, UsbProperties *props)              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate device IDs and handle each of them                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!props->isVHD)                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (qint64 i = 0; i < deviceIdList.length(); ++i)                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                const QStringList &deviceIds = deviceIdList.at(i);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = 0; j < deviceIds.length(); ++j)                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (handleDeviceId(deviceIdToDeviceInterfacePathHash, deviceIds.at(j), i, deviceInfoData, props))                                                                                    // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool checkUsbDeviceType(UsbProperties *props)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(props != nullptr);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output device type and check that it is valid                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qDebug() << "";                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (props->isVHD)                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "    Found VHD device";                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            props->isCARD                                                                                                                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             !props->isUSB                                                                                                                                                                               // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             (                                                                                                                                                                                           // Colorize: green
+              props->vid == 0                                                                                                                                                                            // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              props->pid == 0                                                                                                                                                                            // Colorize: green
+             )                                                                                                                                                                                           // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "    Found card reader device";                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !props->isUSB                                                                                                                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !props->isUASP                                                                                                                                                                               // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            props->isRemovable                                                                                                                                                                           // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "    Found non-USB removable device";                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                !props->isUSB                                                                                                                                                                            // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                props->vid == 0                                                                                                                                                                          // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                props->pid == 0                                                                                                                                                                          // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qDebug() << "    Found non-USB non-removable device";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return false;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug().nospace() << "    Found " << (props->isUASP ? "UAS (" : "") << enumToHumanString(props->speed) << (props->isUASP ? ")" : "") << " device"; // Ignore CppSingleCharVerifier          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (props->isLowerSpeed)                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qDebug() << "    NOTE: This device is an USB 3.0 device operating at lower speed...";                                                                                                    // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DWORD getDiskNumber(const HANDLE &deviceHandle)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    VOLUME_DISK_EXTENTS_REDEF diskExtents;                                                                                                                                                               // Colorize: green
+    STORAGE_DEVICE_NUMBER     deviceNumber;                                                                                                                                                              // Colorize: green
+    DWORD                     size;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get disk number                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (diskExtents.numberOfDiskExtents == 1)                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return diskExtents.extents[0].DiskNumber;                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qWarning() << "Ignoring disk since it belongs to RAID array";                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (DeviceIoControl(deviceHandle, IOCTL_STORAGE_GET_DEVICE_NUMBER, nullptr, ZERO_SIZE, &deviceNumber, sizeof(deviceNumber), &size, nullptr))                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return deviceNumber.DeviceNumber;                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Failed to get device number";                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return -1;                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HANDLE getDiskHandle(DWORD diskNumber)                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString diskPath = "\\\\.\\PhysicalDrive" + QString::number(diskNumber);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return CreateFileA(diskPath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 getDiskSize(DWORD diskNumber)                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 res = 0;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE diskHandle;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get disk handle                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        diskHandle = getDiskHandle(diskNumber);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (diskHandle == INVALID_HANDLE_VALUE)                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return 0;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get disk size from disk geometry                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD size;                                                                                                                                                                                      // Colorize: green
+        BYTE  geometry[256];                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            DeviceIoControl(diskHandle, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, nullptr, ZERO_SIZE, geometry, sizeof(geometry), &size, nullptr)                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            size > 0                                                                                                                                                                                     // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            res = ((DISK_GEOMETRY_EX *)geometry)->DiskSize.QuadPart;                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Close handle                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!CloseHandle(diskHandle))                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void getDiskLetters(DWORD diskNumber, char *letters)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(letters != nullptr);                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    char *curLetter = letters;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get all configured drive letters                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        char  drives[128];                                                                                                                                                                               // Colorize: green
+        DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (size > 0 && size <= sizeof(drives))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (char *drive = drives; *drive != 0; drive += strlen(drive) + 1)                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Check that drive letter is valid                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    drive[0] = QChar::toUpper(drive[0]);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (drive[0] < 'A' || drive[0] > 'Z')                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        continue;                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check that drive is removable or fixed                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    UINT driveType = GetDriveTypeA(drive);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        driveType != DRIVE_REMOVABLE                                                                                                                                                     // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        driveType != DRIVE_FIXED                                                                                                                                                         // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        continue;                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Open logical drive as file and check that it belongs to the same disk number                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString logicalDrivePath = QString("\\\\.\\%1:").arg(drive[0]);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    HANDLE driveHandle = CreateFileA(logicalDrivePath.toLatin1().constData(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (driveHandle != INVALID_HANDLE_VALUE)                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (getDiskNumber(driveHandle) == diskNumber)                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            *curLetter = drive[0];                                                                                                                                                       // Colorize: green
+                            ++curLetter;                                                                                                                                                                 // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Close file                                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (!CloseHandle(driveHandle))                                                                                                                                               // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                  // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "size is invalid";                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    *curLetter = 0;                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString diskLettersHumanReadable(DWORD diskNumber, char *letters)                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // If no drive letter for the disk then return simple name base on disk number                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (letters[0] == 0)                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "Disk " + QString::number(diskNumber);                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString res;                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate letters and convert to human readable                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (char *letter = letters; *letter != 0; ++letter)                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (letter != letters)                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                res += ' ';                                                                                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            res += QString("%1:").arg(*letter);                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString getDiskLabel(DWORD diskNumber, char *letters)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Any disk volume should be mounted                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (letters[0] != 0)                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Take label from autorun.inf file                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString autorunLabel;                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Open disk as file and try to read autorun.inf file                                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    HANDLE diskHandle = getDiskHandle(diskNumber);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (diskHandle != INVALID_HANDLE_VALUE)                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Check that disk is storage                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            DWORD size;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                            if (DeviceIoControl(diskHandle, IOCTL_STORAGE_CHECK_VERIFY, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                // Take label from autorun.inf file                                                                                                                                          // Colorize: green
+                                {                                                                                                                                                                            // Colorize: green
+                                    QSettings settings(QString("%1:/autorun.inf").arg(letters[0]), QSettings::IniFormat); // Ignore CppPunctuationVerifier                                                   // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                    settings.beginGroup("autorun");                                                                                                                                          // Colorize: green
+                                    autorunLabel = settings.value("label", "").toString();                                                                                                                   // Colorize: green
+                                    settings.endGroup();                                                                                                                                                     // Colorize: green
+                                }                                                                                                                                                                            // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                qWarning() << "DeviceIoControl failed:" << GetLastError();                                                                                                               // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Close file                                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (!CloseHandle(diskHandle))                                                                                                                                                // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                  // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (autorunLabel != "")                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return autorunLabel;                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to get volume name from volume information                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                wchar_t volumeLabel[MAX_PATH];                                                                                                                                                           // Colorize: green
+                wchar_t diskPath[] = { (wchar_t)letters[0], ':', '\\', 0 };                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (GetVolumeInformation(diskPath, volumeLabel, sizeof(volumeLabel), nullptr, nullptr, nullptr, nullptr, ZERO_SIZE))                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString volumeLabelString = QString::fromWCharArray(volumeLabel);                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (volumeLabelString != "")                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        return volumeLabelString;                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qWarning() << "DeviceIoControl failed:" << GetLastError();                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return "NO_LABEL";                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskDeviceHandle(const HANDLE &deviceHandle, QList<UsbDeviceInfo *> *usbDevices)                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceHandle != INVALID_HANDLE_VALUE);                                                                                                                                                      // Colorize: green
+    Q_ASSERT(usbDevices   != nullptr);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DWORD diskNumber = getDiskNumber(deviceHandle);                                                                                                                                                      // Colorize: green
+    qDebug() << "        Disk number:" << diskNumber; // Ignore CppAlignmentVerifier                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 diskSize = getDiskSize(diskNumber);                                                                                                                                                           // Colorize: green
+    qDebug() << "        Disk size:" << (diskSize / 1000000) << "MB"; // Ignore CppAlignmentVerifier                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check disk size                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (diskSize == 0)                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Device without media";                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (diskSize < MIN_DISK_SIZE)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Disk is too small";                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    char diskLetters[27];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    getDiskLetters(diskNumber, diskLetters);                                                                                                                                                             // Colorize: green
+    qDebug() << "        Disk letters:" << diskLetters; // Ignore CppAlignmentVerifier                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString diskLabel = getDiskLabel(diskNumber, diskLetters);                                                                                                                                           // Colorize: green
+    qDebug() << "        Disk label:" << diskLabel; // Ignore CppAlignmentVerifier                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add device info to result list                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        UsbDeviceInfo *deviceInfo = new UsbDeviceInfo();                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        deviceInfo->title      = QString("%1 (%2) [%3]").arg(diskLabel).arg(diskLettersHumanReadable(diskNumber, diskLetters)).arg(bytesToString(diskSize));                                             // Colorize: green
+        deviceInfo->diskNumber = diskNumber;                                                                                                                                                             // Colorize: green
+        deviceInfo->diskSize   = diskSize;                                                                                                                                                               // Colorize: green
+        deviceInfo->letters    = diskLetters;                                                                                                                                                            // Colorize: green
+        deviceInfo->deviceName = "";                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        usbDevices->append(deviceInfo);                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskDeviceInterfacePath(const QString &deviceInterfacePath, QList<UsbDeviceInfo *> *usbDevices)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(usbDevices != nullptr);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE deviceHandle;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Open device interface as file                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        deviceHandle = CreateFileA(deviceInterfacePath.toLatin1().constData(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr); // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (deviceHandle == INVALID_HANDLE_VALUE)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CreateFile failed:" << GetLastError();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    handleDiskDeviceHandle(deviceHandle, usbDevices);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Close file                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!CloseHandle(deviceHandle))                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskInterfaceData(const HDEVINFO &deviceInfoSet, SP_DEVICE_INTERFACE_DATA &deviceInterfaceData, QList<UsbDeviceInfo *> *usbDevices)                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);                                                                                                                                                     // Colorize: green
+    Q_ASSERT(usbDevices    != nullptr);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get size for disk interface data, allocate space and put it in that space                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD requiredSize;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, nullptr, ZERO_SIZE, &requiredSize, nullptr)                                                                            // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            GetLastError() == ERROR_INSUFFICIENT_BUFFER                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Allocate space with required size                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                SP_DEVICE_INTERFACE_DETAIL_DATA_W *deviceInterfaceDetailData = (SP_DEVICE_INTERFACE_DETAIL_DATA_W *)malloc(requiredSize);                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (deviceInterfaceDetailData != nullptr)                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Get disk interface data and handle it                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (SetupDiGetDeviceInterfaceDetail(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, requiredSize, nullptr, nullptr))                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString deviceInterfacePath = QString::fromWCharArray(deviceInterfaceDetailData->DevicePath);                                                                                // Colorize: green
+                            qDebug() << "        Disk path:" << deviceInterfacePath; // Ignore CppAlignmentVerifier                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            handleDiskDeviceInterfacePath(deviceInterfacePath, usbDevices);                                                                                                              // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();                                                                                                  // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    free(deviceInterfaceDetailData);                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "malloc failed";                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetDeviceInterfaceDetail failed:" << GetLastError();                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDiskInterfaces(const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices)                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);                                                                                                                                                     // Colorize: green
+    Q_ASSERT(usbDevices    != nullptr);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    SP_DEVICE_INTERFACE_DATA deviceInterfaceData;                                                                                                                                                        // Colorize: green
+    deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate device interfaces and handle each of them                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD memberIndex = 0;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        do                                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!SetupDiEnumDeviceInterfaces(deviceInfoSet, &deviceInfoData, &DISK_GUID, memberIndex, &deviceInterfaceData))                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (GetLastError() == ERROR_NO_MORE_ITEMS)                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qWarning() << "Device interface not found for the disk";                                                                                                                             // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "SetupDiEnumDeviceInterfaces failed:" << GetLastError();                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug() << "";                                                                                                                                                                              // Colorize: green
+            qDebug().nospace() << "    Disk interface #" << memberIndex << " found";                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            handleDiskInterfaceData(deviceInfoSet, deviceInterfaceData, usbDevices);                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++memberIndex;                                                                                                                                                                               // Colorize: green
+        } while(true);                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDisk(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, SP_DEVINFO_DATA &deviceInfoData, QList<UsbDeviceInfo *> *usbDevices) // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(usbDevices != nullptr);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    UsbProperties props;                                                                                                                                                                                 // Colorize: green
+    memset(&props, 0, sizeof(UsbProperties));                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    handleDiskEnumeratorName(deviceInfoSet, deviceInfoData, &props);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that disk is USB/SCSI disk                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (props.isUSB || props.isSCSI)                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handleDiskHardwareId(   deviceInfoSet, deviceInfoData, &props);                                                                                                                              // Colorize: green
+            handleDiskRemovalPolicy(deviceInfoSet, deviceInfoData, &props);                                                                                                                              // Colorize: green
+            handleDiskFriendlyName( deviceInfoSet, deviceInfoData);                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            handleDeviceIds(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoData, &props);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (checkUsbDeviceType(&props))                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                handleDiskInterfaces(deviceInfoSet, deviceInfoData, usbDevices);                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "    Ignoring this disk since it is not USB/SCSI disk";                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void handleDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, const QList<QStringList> &deviceIdList, const HDEVINFO &deviceInfoSet, QList<UsbDeviceInfo *> *usbDevices)            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(deviceInfoSet != INVALID_HANDLE_VALUE);                                                                                                                                                     // Colorize: green
+    Q_ASSERT(usbDevices    != nullptr);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    SP_DEVINFO_DATA deviceInfoData;                                                                                                                                                                      // Colorize: green
+    deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over disks and handle each of them                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD memberIndex = 0;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (SetupDiEnumDeviceInfo(deviceInfoSet, memberIndex, &deviceInfoData))                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "";                                                                                                                                                                              // Colorize: green
+            qDebug().nospace() << "Disk #" << memberIndex << " found";                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            handleDisk(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, deviceInfoData, usbDevices);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++memberIndex;                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void updateDisks(const QHash<QString, QString> &deviceIdToDeviceInterfacePathHash, QList<UsbDeviceInfo *> *usbDevices)                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(usbDevices != nullptr);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<QStringList> deviceIdList;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    getDeviceIdList(&deviceIdList);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get set of disks and handle them                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        HDEVINFO deviceInfoSet = SetupDiGetClassDevs(&DISK_GUID, nullptr, nullptr, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (deviceInfoSet != INVALID_HANDLE_VALUE)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            handleDisks(deviceIdToDeviceInterfacePathHash, deviceIdList, deviceInfoSet, usbDevices);                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Delete set of disks                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!SetupDiDestroyDeviceInfoList(deviceInfoSet))                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "SetupDiDestroyDeviceInfoList failed:" << GetLastError();                                                                                                             // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetupDiGetClassDevs failed:" << GetLastError();                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<UsbDeviceInfo *> MainWindow::getUsbDevices()                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(USB_CARD_READER_INDEX == usbStorageDrivers.indexOf("USBSTOR") + 1);                                                                                                                         // Colorize: green
+    Q_ASSERT(UASPSTOR_INDEX        == usbStorageDrivers.indexOf("UASPSTOR"));                                                                                                                            // Colorize: green
+    Q_ASSERT(SD_INDEX              == genericStorageDrivers.indexOf("SD"));                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<UsbDeviceInfo *> res;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QHash<QString, QString> deviceIdToDeviceInterfacePathHash;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    updateUsbs(&deviceIdToDeviceInterfacePathHash);                                                                                                                                                      // Colorize: green
+    updateDisks(deviceIdToDeviceInterfacePathHash, &res);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // Q_OS_WIN                                                                                                                                                                                       // Colorize: green

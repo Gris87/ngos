@@ -1,1191 +1,1317 @@
-#include "burnthread.h"
-
-
-
-#ifdef Q_OS_WIN
-
-
-
-#include <QCoreApplication>
-#include <QDebug>
-#include <QFile>
-#include <Windows.h>
-
-#include <com/ngos/devtools/usb_boot_maker/other/defines.h>
-
-
-
-#define ZERO_SIZE 0
-
-#define DISK_ACCESS_RETRIES 150
-#define DISK_ACCESS_TIMEOUT 100
-
-#define WRITE_RETRIES 100
-#define WRITE_TIMEOUT 100
-
-
-
+#include "burnthread.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#ifdef Q_OS_WIN                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <Windows.h>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/usb_boot_maker/other/defines.h>                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ZERO_SIZE 0                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define DISK_ACCESS_RETRIES 150                                                                                                                                                                          // Colorize: green
+#define DISK_ACCESS_TIMEOUT 100                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define WRITE_RETRIES 100                                                                                                                                                                                // Colorize: green
+#define WRITE_TIMEOUT 100                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define CHECK_IF_THREAD_TERMINATED(thread) \
     if (!thread->isWorking()) \
     { \
         goto out; \
-    }
-
-
-
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define CHECK_IF_TERMINATED() \
     if (!mIsRunning) \
     { \
         return; \
-    }
-
-
-
-enum class LockDisk: quint8 // Ignore CppEnumVerifier
-{
-    NO,
-    YES
-};
-
-
-
-enum class Access: quint8 // Ignore CppEnumVerifier
-{
-    READ_ONLY,
-    READ_WRITE
-};
-
-
-
-enum class ShareWrite: quint8 // Ignore CppEnumVerifier
-{
-    NO,
-    YES
-};
-
-
-
-// Redefine VOLUME_DISK_EXTENTS from winioctl.h with the more space for Extents
-struct VOLUME_DISK_EXTENTS_REDEF
-{
-    DWORD       numberOfDiskExtents;
-    DISK_EXTENT extents[8];
-};
-
-
-
-enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8 // Ignore CppEnumVerifier
-{
-    FCC_PROGRESS,
-    FCC_DONE_WITH_STRUCTURE,
-    FCC_UNKNOWN2,
-    FCC_INCOMPATIBLE_FILE_SYSTEM,
-    FCC_UNKNOWN4,
-    FCC_UNKNOWN5,
-    FCC_ACCESS_DENIED,
-    FCC_MEDIA_WRITE_PROTECTED,
-    FCC_VOLUME_IN_USE,
-    FCC_CANT_QUICK_FORMAT,
-    FCC_UNKNOWNA,
-    FCC_DONE,
-    FCC_BAD_LABEL,
-    FCC_UNKNOWND,
-    FCC_OUTPUT,
-    FCC_STRUCTURE_PROGRESS,
-    FCC_CLUSTER_SIZE_TOO_SMALL,
-    FCC_CLUSTER_SIZE_TOO_BIG,
-    FCC_VOLUME_TOO_SMALL,
-    FCC_VOLUME_TOO_BIG,
-    FCC_NO_MEDIA_IN_DRIVE,
-    FCC_UNKNOWN15,
-    FCC_UNKNOWN16,
-    FCC_UNKNOWN17,
-    FCC_DEVICE_NOT_READY,
-    FCC_CHECKDISK_PROGRESS,
-    FCC_UNKNOWN1A,
-    FCC_UNKNOWN1B,
-    FCC_UNKNOWN1C,
-    FCC_UNKNOWN1D,
-    FCC_UNKNOWN1E,
-    FCC_UNKNOWN1F,
-    FCC_READ_ONLY_MODE
-};
-
-
-
-// Ignore CppAlignmentVerifier [BEGIN]
-typedef bool (__stdcall *FILE_SYSTEM_CALLBACK)(
-    FILE_SYSTEM_CALLBACK_COMMAND command,
-    ULONG                        action,
-    PVOID                        pData
-);
-// Ignore CppAlignmentVerifier [END]
-
-
-
-// Ignore CppAlignmentVerifier [BEGIN]
-typedef long long int (WINAPI *FormatEx_t)(
-    WCHAR                *driveRoot,
-    MEDIA_TYPE            mediaType,
-    WCHAR                *fileSystemTypeName,
-    WCHAR                *label,
-    BOOL                  quickFormat,
-    ULONG                 desiredUnitAllocationSize,
-    FILE_SYSTEM_CALLBACK  callback
-);
-// Ignore CppAlignmentVerifier [END]
-
-
-
-const GUID PARTITION_BASIC_DATA_GUID = { 0xEBD0A0A2L, 0xB9E5, 0x4433, { 0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7 } };
-
-
-
-QString getPhysicalName(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    return "\\\\.\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber);
-}
-
-QString getLogicalName(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    QString res;
-
-    char   volumeName[MAX_PATH];
-    HANDLE volumeHandle = INVALID_HANDLE_VALUE;
-
-    do
-    {
-        if (volumeHandle == INVALID_HANDLE_VALUE)
-        {
-            volumeHandle = FindFirstVolumeA(volumeName, sizeof(volumeName));
-
-            if (volumeHandle == INVALID_HANDLE_VALUE)
-            {
-                qCritical() << "FindFirstVolume failed:" << GetLastError();
-
-                thread->stop();
-
-                break;
-            }
-        }
-        else
-        {
-            if (!FindNextVolumeA(volumeHandle, volumeName, sizeof(volumeName)))
-            {
-                qCritical() << "FindNextVolume failed:" << GetLastError();
-
-                thread->stop();
-
-                break;
-            }
-        }
-
-
-
-        size_t len          = strlen(volumeName);
-        volumeName[len - 1] = 0;
-
-
-
-        HANDLE deviceHandle = CreateFileA(volumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-
-        if (deviceHandle == INVALID_HANDLE_VALUE)
-        {
-            qCritical() << "CreateFile failed:" << GetLastError();
-
-            continue;
-        }
-
-
-
-        VOLUME_DISK_EXTENTS_REDEF diskExtents;
-        DWORD                     size;
-
-        if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))
-        {
-            if ((diskExtents.numberOfDiskExtents >= 1) && (diskExtents.extents[0].DiskNumber == thread->getSelectedUsb().diskNumber))
-            {
-                res = volumeName;
-            }
-        }
-        else
-        {
-            qCritical() << "DeviceIoControl failed:" << GetLastError();
-        }
-
-
-
-        if (!CloseHandle(deviceHandle))
-        {
-            qCritical() << "CloseHandle failed:" << GetLastError();
-
-            continue;
-        }
-
-
-
-        if (res != "")
-        {
-            break;
-        }
-    } while(true);
-
-
-
-    if (volumeHandle != INVALID_HANDLE_VALUE)
-    {
-        if (!FindVolumeClose(volumeHandle))
-        {
-            qCritical() << "FindVolumeClose failed:" << GetLastError();
-
-            thread->stop();
-        }
-    }
-
-
-
-    return res;
-}
-
-HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
-{
-    Q_ASSERT(thread != nullptr);
-
-
-
-    HANDLE res = INVALID_HANDLE_VALUE;
-
-
-
-    for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
-    {
-        // Ignore CppAlignmentVerifier [BEGIN]
-        res = CreateFileA(path.toLatin1().data()
-                            , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)
-                            , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)
-                            , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        if (res != INVALID_HANDLE_VALUE)
-        {
-            break;
-        }
-
-
-
-        if (
-            GetLastError() != ERROR_ACCESS_DENIED
-            &&
-            GetLastError() != ERROR_SHARING_VIOLATION
-           )
-        {
-            break;
-        }
-
-
-
-        if (i == 0)
-        {
-            qDebug() << "Waiting for access to disk";
-        }
-        else
-        if (
-            shareWrite == ShareWrite::NO
-            &&
-            i > DISK_ACCESS_RETRIES / 3
-           )
-        {
-            qWarning() << "Could not obtain exclusive rights. Retrying with write sharing enabled...";
-
-            shareWrite = ShareWrite::YES;
-        }
-
-
-
-        QThread::msleep(DISK_ACCESS_TIMEOUT);
-    }
-
-
-
-    if (res == INVALID_HANDLE_VALUE)
-    {
-        qCritical() << "Could not open disk:" << GetLastError();
-
-        thread->stop();
-
-        return res;
-    }
-
-
-
-    if (writeAccess == Access::READ_WRITE)
-    {
-        qDebug().nospace() << "Disk opened for " << (shareWrite == ShareWrite::YES ? "shared" : "exclusive") << " write access";
-    }
-    else
-    {
-        qDebug() << "Disk opened for read-only access";
-    }
-
-
-
-    if (lockDisk == LockDisk::YES)
-    {
-        DWORD size;
-
-        if (DeviceIoControl(res, FSCTL_ALLOW_EXTENDED_DASD_IO, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-        {
-            qDebug() << "I/O boundary checks disabled";
-        }
-
-
-
-        for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)
-        {
-            if (DeviceIoControl(res, FSCTL_LOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-            {
-                return res;
-            }
-
-
-
-            QThread::msleep(DISK_ACCESS_TIMEOUT);
-        }
-
-
-
-        qCritical() << "Could not lock disk:" << GetLastError();
-
-        thread->stop();
-    }
-
-
-
-    return res;
-}
-
-HANDLE getPhysicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
-{
-    Q_ASSERT(thread);
-
-
-
-    return getHandle(thread, getPhysicalName(thread), lockDisk, writeAccess, shareWrite);
-}
-
-HANDLE getLogicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)
-{
-    Q_ASSERT(thread);
-
-
-
-    return getHandle(thread, getLogicalName(thread), lockDisk, writeAccess, shareWrite);
-}
-
-void unlockAndCloseHandle(BurnThread *thread, HANDLE handle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(handle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size;
-
-    if (!DeviceIoControl(handle, FSCTL_UNLOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not unlock disk:" << GetLastError();
-
-        thread->stop();
-    }
-
-    if (!CloseHandle(handle))
-    {
-        qCritical() << "CloseHandle failed:" << GetLastError();
-
-        thread->stop();
-    }
-}
-
-void waitForLogical(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    QThread::msleep(200);
-
-    while (thread->isWorking())
-    {
-        if (getLogicalName(thread) != "")
-        {
-            break;
-        }
-
-        QThread::msleep(DISK_ACCESS_TIMEOUT);
-    }
-}
-
-void refreshDiskLayout(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    DWORD size;
-
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not refresh disk layout:" << GetLastError();
-
-        thread->stop();
-    }
-}
-
-QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors)
-{
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector * SECTOR_SIZE;
-
-    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
-    {
-        qCritical() << "SetFilePointerEx failed:" << GetLastError();
-
-        return QByteArray();
-    }
-
-
-
-    DWORD size = numberOfSectors * SECTOR_SIZE;
-    QByteArray buffer(size, 0);
-
-    if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))
-    {
-        qCritical() << "ReadFile failed:" << GetLastError();
-
-        return QByteArray();
-    }
-
-
-
-    return buffer;
-}
-
-qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors, const QByteArray &buffer)
-{
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    LARGE_INTEGER ptr;
-    ptr.QuadPart = startSector * SECTOR_SIZE;
-
-    if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))
-    {
-        qCritical() << "SetFilePointerEx failed:" << GetLastError();
-
-        return -1;
-    }
-
-
-
-    DWORD size = numberOfSectors * SECTOR_SIZE;
-    Q_ASSERT(buffer.size() == size);
-
-    if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))
-    {
-        qCritical() << "WriteFile failed:" << GetLastError();
-
-        return -1;
-    }
-
-
-
-    return size;
-}
-
-QChar getUnusedDiskLetter()
-{
-    QChar res;                                                                                       // Colorize: green
-
-
-
-    QString drivesString;
-
-    char  drives[128];
-    DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);
-
-    if (size > 0 && size <= sizeof(drives))
-    {
-        for (char *drive = drives; *drive; drive += strlen(drive) + 1)
-        {
-            drive[0] = QChar::toUpper(drive[0]);
-
-            if (drive[0] < 'A' || drive[0] > 'Z')
-            {
-                continue;
-            }
-
-            drivesString += drive[0];
-        }
-    }
-    else
-    {
-        qCritical() << "size is invalid";
-    }
-
-
-
-    for (qint64 i = 'C'; i <= 'Z'; ++i)
-    {
-        if (!drivesString.contains((char) i))
-        {
-            res = (char) i;
-
-            break;
-        }
-    }
-
-
-
-    return res;
-}
-
-QString partitionSizeHumanReadable(quint64 partitionSize)
-{
-    if (partitionSize >= 1000000000000)
-    {
-        return QString::number((quint64)floor(partitionSize / 1000000000000.0)) + "TB";
-    }
-
-    if (partitionSize >= 1000000000)
-    {
-        return QString::number((quint64)floor(partitionSize / 1000000000.0)) + "GB";
-    }
-
-    return QString::number((quint64)floor(partitionSize / 1000000.0)) + "MB";
-}
-
-quint8 currentStep;
-
-void notifyNextStep(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    ++currentStep;
-
-    Q_ASSERT(currentStep <= 11);
-    thread->notifyProgress(currentStep, 11);
-}
-
-void unmountVolumes(BurnThread *thread, QString *targetDiskLetter)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(targetDiskLetter);
-
-
-
-    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
-
-    if (diskHandle == INVALID_HANDLE_VALUE)
-    {
-        thread->stop();
-
-        return;
-    }
-
-
-
-    if (!thread->isWorking())
-    {
-        unlockAndCloseHandle(thread, diskHandle);
-
-        return;
-    }
-
-
-
-    QString diskLetters = thread->getSelectedUsb().letters;
-
-    if (diskLetters != "")
-    {
-        for (qint64 i = 0; i < diskLetters.length(); ++i)
-        {
-            wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };
-
-            thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));
-
-            if (!DeleteVolumeMountPoint(diskPath))
-            {
-                qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
-
-                thread->stop();
-
-                break;
-            }
-        }
-
-        *targetDiskLetter = QString("%1:\\").arg(diskLetters.at(0));
-    }
-    else
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));
-
-        *targetDiskLetter = QString("%1:\\").arg(getUnusedDiskLetter());
-    }
-
-    qDebug().nospace() << "Disk will be mounted to " << targetDiskLetter->toLatin1().data();
-
-
-
-    unlockAndCloseHandle(thread, diskHandle);
-}
-
-void clearGpt(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    QByteArray buffer(SECTOR_SIZE, 0);
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));
-
-
-
-    qint64 sectorsCount = thread->getSelectedUsb().diskSize / SECTOR_SIZE;
-
-    for (qint64 i = 0; i < 34 && thread->isWorking(); ++i)
-    {
-        for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
-        {
-            if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)
-            {
-                break;
-            }
-            else
-            {
-                QThread::msleep(WRITE_TIMEOUT);
-            }
-        }
-    }
-
-    for (qint64 i = sectorsCount - 33; i < sectorsCount && thread->isWorking(); ++i)
-    {
-        for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)
-        {
-            if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)
-            {
-                break;
-            }
-            else
-            {
-                QThread::msleep(WRITE_TIMEOUT);
-            }
-        }
-    }
-}
-
-void initializeDisk(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{ 0 }} };
-    DWORD       size       = sizeof(createDisk);
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Initializing disk"));
-
-
-
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not delete disk layout:" << GetLastError();
-
-        thread->stop();
-    }
-
-
-
-    refreshDiskLayout(thread, diskHandle);
-}
-
-void createPartition(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Creating GPT partition for UEFI"));
-
-
-
-    DRIVE_LAYOUT_INFORMATION_EX driveLayout;
-    memset(&driveLayout, 0, sizeof(driveLayout));
-
-    driveLayout.PartitionStyle = PARTITION_STYLE_GPT;
-    driveLayout.PartitionCount = 1;
-
-    driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;
-    driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 * 1024 * 1024; // 1 MB
-    driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header
-    driveLayout.PartitionEntry[0].PartitionNumber          = 1;
-    driveLayout.PartitionEntry[0].RewritePartition         = true;
-
-    driveLayout.PartitionEntry[0].Gpt.PartitionType = PARTITION_BASIC_DATA_GUID;
-    CoCreateGuid(&driveLayout.PartitionEntry[0].Gpt.PartitionId);
-    QString("Microsoft Basic Data").toWCharArray(driveLayout.PartitionEntry[0].Gpt.Name);
-
-
-
-    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{ 0 }} };
-
-    CoCreateGuid(&createDisk.Gpt.DiskId);
-    createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;
-
-    driveLayout.Gpt.DiskId                        = createDisk.Gpt.DiskId;
-    driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 * SECTOR_SIZE;                                              // First 34 sectors reserved for Protective MBR and Primary GPT header
-    driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header
-    driveLayout.Gpt.MaxPartitionCount             = MAX_GPT_PARTITIONS;
-
-
-
-    DWORD size = sizeof(createDisk);
-
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))
-    {
-        qCritical() << "Could not reset disk layout:" << GetLastError();
-
-        thread->stop();
-    }
-
-
-
-    size = sizeof(driveLayout);
-
-    if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *)&driveLayout, size, nullptr, 0, &size, nullptr))
-    {
-        qCritical() << "Could not set disk layout:" << GetLastError();
-
-        thread->stop();
-    }
-
-
-
-    refreshDiskLayout(thread, diskHandle);
-}
-
-bool formatSuccessful;
-
-bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*action*/, PVOID /*pData*/)
-{
-    switch (command)
-    {
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_PROGRESS:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_STRUCTURE_PROGRESS:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE_WITH_STRUCTURE:
-        {
-            return true;
-        }
-        break;
-
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN2:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_INCOMPATIBLE_FILE_SYSTEM:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN4:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN5:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_ACCESS_DENIED:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_MEDIA_WRITE_PROTECTED:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_IN_USE:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CANT_QUICK_FORMAT:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWNA:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_BAD_LABEL:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWND:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_OUTPUT:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_SMALL:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_BIG:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_SMALL:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_BIG:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_NO_MEDIA_IN_DRIVE:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN15:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN16:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN17:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DEVICE_NOT_READY:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CHECKDISK_PROGRESS:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1A:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1B:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1C:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1D:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1E:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1F:
-        case FILE_SYSTEM_CALLBACK_COMMAND::FCC_READ_ONLY_MODE:
-        {
-            qCritical() << "Unexpected command:" << (quint8) command;
-        }
-        break;
-
-        default:
-        {
-            qCritical() << "Unknown command:" << (quint8) command;
-        }
-        break;
-    }
-
-    formatSuccessful = false;
-
-    return false;
-}
-
-void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(moduleHandle);
-
-
-
-    FormatEx_t pfFormatEx = reinterpret_cast<FormatEx_t>(reinterpret_cast<void *>(GetProcAddress(moduleHandle, "FormatEx")));
-
-    if (pfFormatEx == nullptr)
-    {
-        qCritical() << "GetProcAddress failed:" << GetLastError();
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    wchar_t volumeName[MAX_PATH] = { 0 };
-    wchar_t fsType[8]            = { 0 };
-    wchar_t label[16]            = { 0 };
-
-    getLogicalName(thread).toWCharArray(volumeName);
-    QString("FAT32").toWCharArray(fsType);
-    QString("NGOS BOOT").toWCharArray(label);
-
-
-
-    formatSuccessful = true;
-
-    pfFormatEx(volumeName, RemovableMedia, fsType, label, true, DEFAULT_CLUSTER_SIZE, formatExCallback);
-
-    if (!formatSuccessful)
-    {
-        thread->addLog(QCoreApplication::translate("BurnThread", "Disk formatting failed"));
-
-        thread->stop();
-
-        return;
-    }
-}
-
-void formatPartition(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));
-
-
-
-    HMODULE moduleHandle = LoadLibraryA("fmifs.dll");
-
-    if (moduleHandle != nullptr)
-    {
-        formatPartitionWithFmifs(thread, moduleHandle);
-
-        if (!FreeLibrary(moduleHandle))
-        {
-            qCritical() << "FreeLibrary failed:" << GetLastError();
-
-            thread->stop();
-        }
-    }
-    else
-    {
-        qCritical() << "LoadLibrary failed:" << GetLastError();
-
-        thread->stop();
-    }
-
-
-
-    refreshDiskLayout(thread, diskHandle);
-}
-
-void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Writing protective MBR"));
-
-
-
-    QByteArray originalBuffer;
-
-    for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
-    {
-        originalBuffer = readSectors(diskHandle, 0, 1);
-
-        if (originalBuffer.size() == SECTOR_SIZE)
-        {
-            break;
-        }
-        else
-        {
-            QThread::msleep(WRITE_TIMEOUT);
-        }
-    }
-
-
-
-    if (originalBuffer.size() == SECTOR_SIZE)
-    {
-        QFile file(":/assets/binaries/protective_mbr.bin");
-
-        if (!file.open(QIODevice::ReadOnly))
-        {
-            qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";
-
-            thread->stop();
-
-            return;
-        }
-
-        QByteArray buffer = file.readAll();
-
-        file.close();
-
-
-
-        buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));
-        buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");
-
-
-
-        for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)
-        {
-            if (writeSectors(diskHandle, 0, 1, buffer) == SECTOR_SIZE)
-            {
-                break;
-            }
-            else
-            {
-                QThread::msleep(WRITE_TIMEOUT);
-            }
-        }
-
-
-
-        refreshDiskLayout(thread, diskHandle);
-    }
-}
-
-void formatDisk(BurnThread *thread)
-{
-    Q_ASSERT(thread);
-
-
-
-    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_WRITE, ShareWrite::NO);
-
-    if (diskHandle == INVALID_HANDLE_VALUE)
-    {
-        thread->stop();
-
-        return;
-    }
-
-
-
-    HANDLE volumeHandle = getLogicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);
-
-    if (volumeHandle == INVALID_HANDLE_VALUE)
-    {
-        unlockAndCloseHandle(thread, diskHandle);
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    clearGpt(thread, diskHandle);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    initializeDisk(thread, diskHandle);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    createPartition(thread, diskHandle);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-
-
-    unlockAndCloseHandle(thread, volumeHandle);
-    volumeHandle = INVALID_HANDLE_VALUE;
-
-    waitForLogical(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-
-
-    formatPartition(thread, diskHandle);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    writeProtectiveMbr(thread, diskHandle);
-    notifyNextStep(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-    waitForLogical(thread);
-    CHECK_IF_THREAD_TERMINATED(thread);
-
-
-
-out:
-    unlockAndCloseHandle(thread, diskHandle);
-
-    if (volumeHandle != INVALID_HANDLE_VALUE)
-    {
-        unlockAndCloseHandle(thread, volumeHandle);
-    }
-}
-
-void mountVolumeByGuid(BurnThread *thread, QString *diskPath, const QString &volumeName)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskPath);
-
-
-
-    char  mountedLetters[27];
-    DWORD size;
-
-    if (
-        GetVolumePathNamesForVolumeNameA(volumeName.toLatin1().data(), mountedLetters, sizeof(mountedLetters), &size)
-        &&
-        size > 1
-       )
-    {
-        (*diskPath)[0] = mountedLetters[0];
-
-        thread->addLog(QCoreApplication::translate("BurnThread", "Disk already mounted to %1").arg(*diskPath));
-
-        return;
-    }
-
-
-
-    if (!SetVolumeMountPointA(diskPath->toLatin1().data(), volumeName.toLatin1().data()))
-    {
-        qCritical() << "SetVolumeMountPoint failed:" << GetLastError();
-
-        thread->addLog(QCoreApplication::translate("BurnThread", "Failed to mount disk"));
-
-        thread->stop();
-
-        return;
-    }
-}
-
-void mountVolume(BurnThread *thread, QString *diskPath)
-{
-    Q_ASSERT(thread);
-    Q_ASSERT(diskPath);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));
-
-
-
-    mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + '\\');
-}
-
-void remountVolume(BurnThread *thread, const QString &diskPath)
-{
-    Q_ASSERT(thread);
-
-
-
-    thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));
-
-    if (!DeleteVolumeMountPointA(diskPath.toLatin1().data()))
-    {
-        qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();
-
-        thread->stop();
-
-        return;
-    }
-
-
-
-    mountVolume(thread, (QString *)&diskPath);
-}
-
-void BurnThread::run()
-{
-    currentStep = 0;
-
-
-
-    QString diskPath;
-
-    unmountVolumes(this, &diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    formatDisk(this);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    mountVolume(this, &diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    copyFiles(diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    createAutorun(diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-
-    remountVolume(this, diskPath);
-    notifyNextStep(this);
-    CHECK_IF_TERMINATED();
-}
-
-
-
-#endif // Q_OS_WIN
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class LockDisk: quint8 // Ignore CppEnumVerifier                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NO,                                                                                                                                                                                                  // Colorize: green
+    YES                                                                                                                                                                                                  // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class Access: quint8 // Ignore CppEnumVerifier                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    READ_ONLY,                                                                                                                                                                                           // Colorize: green
+    READ_WRITE                                                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class ShareWrite: quint8 // Ignore CppEnumVerifier                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NO,                                                                                                                                                                                                  // Colorize: green
+    YES                                                                                                                                                                                                  // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class FILE_SYSTEM_CALLBACK_COMMAND: quint8 // Ignore CppEnumVerifier                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    FCC_PROGRESS,                                                                                                                                                                                        // Colorize: green
+    FCC_DONE_WITH_STRUCTURE,                                                                                                                                                                             // Colorize: green
+    FCC_UNKNOWN2,                                                                                                                                                                                        // Colorize: green
+    FCC_INCOMPATIBLE_FILE_SYSTEM,                                                                                                                                                                        // Colorize: green
+    FCC_UNKNOWN4,                                                                                                                                                                                        // Colorize: green
+    FCC_UNKNOWN5,                                                                                                                                                                                        // Colorize: green
+    FCC_ACCESS_DENIED,                                                                                                                                                                                   // Colorize: green
+    FCC_MEDIA_WRITE_PROTECTED,                                                                                                                                                                           // Colorize: green
+    FCC_VOLUME_IN_USE,                                                                                                                                                                                   // Colorize: green
+    FCC_CANT_QUICK_FORMAT,                                                                                                                                                                               // Colorize: green
+    FCC_UNKNOWNA,                                                                                                                                                                                        // Colorize: green
+    FCC_DONE,                                                                                                                                                                                            // Colorize: green
+    FCC_BAD_LABEL,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWND,                                                                                                                                                                                        // Colorize: green
+    FCC_OUTPUT,                                                                                                                                                                                          // Colorize: green
+    FCC_STRUCTURE_PROGRESS,                                                                                                                                                                              // Colorize: green
+    FCC_CLUSTER_SIZE_TOO_SMALL,                                                                                                                                                                          // Colorize: green
+    FCC_CLUSTER_SIZE_TOO_BIG,                                                                                                                                                                            // Colorize: green
+    FCC_VOLUME_TOO_SMALL,                                                                                                                                                                                // Colorize: green
+    FCC_VOLUME_TOO_BIG,                                                                                                                                                                                  // Colorize: green
+    FCC_NO_MEDIA_IN_DRIVE,                                                                                                                                                                               // Colorize: green
+    FCC_UNKNOWN15,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN16,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN17,                                                                                                                                                                                       // Colorize: green
+    FCC_DEVICE_NOT_READY,                                                                                                                                                                                // Colorize: green
+    FCC_CHECKDISK_PROGRESS,                                                                                                                                                                              // Colorize: green
+    FCC_UNKNOWN1A,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN1B,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN1C,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN1D,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN1E,                                                                                                                                                                                       // Colorize: green
+    FCC_UNKNOWN1F,                                                                                                                                                                                       // Colorize: green
+    FCC_READ_ONLY_MODE                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Redefine VOLUME_DISK_EXTENTS from winioctl.h with more space for extents                                                                                                                              // Colorize: green
+struct VOLUME_DISK_EXTENTS_REDEF                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    DWORD       numberOfDiskExtents;                                                                                                                                                                     // Colorize: green
+    DISK_EXTENT extents[8];                                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                                   // Colorize: green
+typedef bool (__stdcall *FILE_SYSTEM_CALLBACK)(                                                                                                                                                          // Colorize: green
+    FILE_SYSTEM_CALLBACK_COMMAND command,                                                                                                                                                                // Colorize: green
+    ULONG                        action,                                                                                                                                                                 // Colorize: green
+    PVOID                        pData                                                                                                                                                                   // Colorize: green
+);                                                                                                                                                                                                       // Colorize: green
+// Ignore CppAlignmentVerifier [END]                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                                   // Colorize: green
+typedef long long int (WINAPI *FormatEx_t)(                                                                                                                                                              // Colorize: green
+    WCHAR                *driveRoot,                                                                                                                                                                     // Colorize: green
+    MEDIA_TYPE            mediaType,                                                                                                                                                                     // Colorize: green
+    WCHAR                *fileSystemTypeName,                                                                                                                                                            // Colorize: green
+    WCHAR                *label,                                                                                                                                                                         // Colorize: green
+    BOOL                  quickFormat,                                                                                                                                                                   // Colorize: green
+    ULONG                 desiredUnitAllocationSize,                                                                                                                                                     // Colorize: green
+    FILE_SYSTEM_CALLBACK  callback                                                                                                                                                                       // Colorize: green
+);                                                                                                                                                                                                       // Colorize: green
+// Ignore CppAlignmentVerifier [END]                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const GUID PARTITION_BASIC_DATA_GUID = { 0xEBD0A0A2L, 0xB9E5, 0x4433, { 0x87, 0xC0, 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7 } };                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString getPhysicalName(BurnThread *thread)                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return "\\\\.\\PhysicalDrive" + QString::number(thread->getSelectedUsb().diskNumber);                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString getLogicalName(BurnThread *thread)                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString res;                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    char   volumeName[MAX_PATH];                                                                                                                                                                         // Colorize: green
+    HANDLE volumeHandle = INVALID_HANDLE_VALUE;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Iterate over volumes                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (volumeHandle == INVALID_HANDLE_VALUE)                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                volumeHandle = FindFirstVolumeA(volumeName, sizeof(volumeName));                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (volumeHandle == INVALID_HANDLE_VALUE)                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "FindFirstVolume failed:" << GetLastError();                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    thread->stop();                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!FindNextVolumeA(volumeHandle, volumeName, sizeof(volumeName)))                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qCritical() << "FindNextVolume failed:" << GetLastError();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    thread->stop();                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        size_t len          = strlen(volumeName);                                                                                                                                                        // Colorize: green
+        volumeName[len - 1] = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        HANDLE deviceHandle;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Open volume as file                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            deviceHandle = CreateFileA(volumeName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (deviceHandle == INVALID_HANDLE_VALUE)                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "CreateFile failed:" << GetLastError();                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check that current volume related to USB device. If it so then take volume name                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            VOLUME_DISK_EXTENTS_REDEF diskExtents;                                                                                                                                                       // Colorize: green
+            DWORD                     size;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (DeviceIoControl(deviceHandle, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, nullptr, ZERO_SIZE, &diskExtents, sizeof(diskExtents), &size, nullptr))                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if ((diskExtents.numberOfDiskExtents >= 1) && (diskExtents.extents[0].DiskNumber == thread->getSelectedUsb().diskNumber))                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    res = volumeName;                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "DeviceIoControl failed:" << GetLastError();                                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Close file                                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!CloseHandle(deviceHandle))                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res != "")                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Terminate volume iteration                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (volumeHandle != INVALID_HANDLE_VALUE)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!FindVolumeClose(volumeHandle))                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "FindVolumeClose failed:" << GetLastError();                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                thread->stop();                                                                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HANDLE getHandle(BurnThread *thread, const QString &path, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE res = INVALID_HANDLE_VALUE;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Try to get access to disk                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Open disk as file                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                   // Colorize: green
+                res = CreateFileA(path.toLatin1().data()                                                                                                                                                 // Colorize: green
+                                    , GENERIC_READ    | (writeAccess == Access::READ_WRITE ? GENERIC_WRITE    : 0)                                                                                       // Colorize: green
+                                    , FILE_SHARE_READ | (shareWrite  == ShareWrite::YES    ? FILE_SHARE_WRITE : 0)                                                                                       // Colorize: green
+                                    , nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);                                                                                                           // Colorize: green
+                // Ignore CppAlignmentVerifier [END]                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Terminate if successfull                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (res != INVALID_HANDLE_VALUE)                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Terminate if access denied                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    GetLastError() != ERROR_ACCESS_DENIED                                                                                                                                                // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    GetLastError() != ERROR_SHARING_VIOLATION                                                                                                                                            // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Log that we fail to get access to disk with first try or try without exclusive rights                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i == 0)                                                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qDebug() << "Waiting for access to disk";                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    shareWrite == ShareWrite::NO                                                                                                                                                         // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    i > DISK_ACCESS_RETRIES / 3                                                                                                                                                          // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qWarning() << "Could not obtain exclusive rights. Retrying with write sharing enabled...";                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    shareWrite = ShareWrite::YES;                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QThread::msleep(DISK_ACCESS_TIMEOUT);                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that disk openned                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (res == INVALID_HANDLE_VALUE)                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not open disk:" << GetLastError();                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return res;                                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Write that disk openned to debug console                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (writeAccess == Access::READ_WRITE)                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug().nospace() << "Disk opened for " << (shareWrite == ShareWrite::YES ? "shared" : "exclusive") << " write access";                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "Disk opened for read-only access";                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Lock disk                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (lockDisk == LockDisk::YES)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DWORD size;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Disable I/O boundary checks                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (DeviceIoControl(res, FSCTL_ALLOW_EXTENDED_DASD_IO, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qDebug() << "I/O boundary checks disabled";                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to lock                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 0; i < DISK_ACCESS_RETRIES && thread->isWorking(); ++i)                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (DeviceIoControl(res, FSCTL_LOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        return res;                                                                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QThread::msleep(DISK_ACCESS_TIMEOUT);                                                                                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qCritical() << "Could not lock disk:" << GetLastError();                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HANDLE getPhysicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return getHandle(thread, getPhysicalName(thread), lockDisk, writeAccess, shareWrite);                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HANDLE getLogicalHandle(BurnThread *thread, LockDisk lockDisk, Access writeAccess, ShareWrite shareWrite)                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return getHandle(thread, getLogicalName(thread), lockDisk, writeAccess, shareWrite);                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void unlockAndCloseHandle(BurnThread *thread, HANDLE handle)                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+    Q_ASSERT(handle != INVALID_HANDLE_VALUE);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Unlock handle                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD size;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!DeviceIoControl(handle, FSCTL_UNLOCK_VOLUME, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not unlock disk:" << GetLastError();                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Close handle                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!CloseHandle(handle))                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "CloseHandle failed:" << GetLastError();                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void waitForLogical(BurnThread *thread)                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QThread::msleep(200);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (thread->isWorking())                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (getLogicalName(thread) != "")                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QThread::msleep(DISK_ACCESS_TIMEOUT);                                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void refreshDiskLayout(BurnThread *thread, HANDLE diskHandle)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread     != nullptr);                                                                                                                                                                     // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Refresh disk layout                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD size;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!DeviceIoControl(diskHandle, IOCTL_DISK_UPDATE_PROPERTIES, nullptr, ZERO_SIZE, nullptr, ZERO_SIZE, &size, nullptr))                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not refresh disk layout:" << GetLastError();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QByteArray readSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors)                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set pointer to startSector                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        LARGE_INTEGER ptr;                                                                                                                                                                               // Colorize: green
+        ptr.QuadPart = startSector * SECTOR_SIZE;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetFilePointerEx failed:" << GetLastError();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return QByteArray();                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DWORD size = numberOfSectors * SECTOR_SIZE;                                                                                                                                                          // Colorize: green
+    QByteArray buffer(size, 0);                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read sectors from disk to buffer                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!ReadFile(diskHandle, buffer.data(), size, &size, nullptr))                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "ReadFile failed:" << GetLastError();                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return QByteArray();                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return buffer;                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 writeSectors(HANDLE diskHandle, quint64 startSector, quint64 numberOfSectors, const QByteArray &buffer)                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set pointer to startSector                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        LARGE_INTEGER ptr;                                                                                                                                                                               // Colorize: green
+        ptr.QuadPart = startSector * SECTOR_SIZE;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!SetFilePointerEx(diskHandle, ptr, nullptr, FILE_BEGIN))                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetFilePointerEx failed:" << GetLastError();                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return -1;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DWORD size = numberOfSectors * SECTOR_SIZE;                                                                                                                                                          // Colorize: green
+    Q_ASSERT(buffer.size() == size);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Write sectors from buffer to disk                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!WriteFile(diskHandle, buffer.constData(), size, &size, nullptr))                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "WriteFile failed:" << GetLastError();                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return -1;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return size;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QChar getUnusedDiskLetter()                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QChar res;                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString drivesString;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get all configured drive letters                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        char  drives[128];                                                                                                                                                                               // Colorize: green
+        DWORD size = GetLogicalDriveStringsA(sizeof(drives), drives);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (size > 0 && size <= sizeof(drives))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (char *drive = drives; *drive != 0; drive += strlen(drive) + 1)                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Check that drive letter is valid                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    drive[0] = QChar::toUpper(drive[0]);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (drive[0] < 'A' || drive[0] > 'Z')                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        continue;                                                                                                                                                                            // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                drivesString += drive[0];                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "size is invalid";                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that drive letter is free                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 'C'; i <= 'Z'; ++i)                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!drivesString.contains((char) i))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                res = (char) i;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+quint8 gCurrentBurnStep;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void notifyNextStep(BurnThread *thread)                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Increment step and send notification to UI                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ++gCurrentBurnStep;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Q_ASSERT(gCurrentBurnStep <= 11);                                                                                                                                                                // Colorize: green
+        thread->notifyProgress(gCurrentBurnStep, 11);                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void unmountVolumes(BurnThread *thread, QString *targetDiskLetter)                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread           != nullptr);                                                                                                                                                               // Colorize: green
+    Q_ASSERT(targetDiskLetter != nullptr);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (diskHandle == INVALID_HANDLE_VALUE)                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->stop();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over USB disk letters and unmount them                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (thread->isWorking())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString diskLetters = thread->getSelectedUsb().letters;                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (diskLetters != "")                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 0; i < diskLetters.length(); ++i)                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    wchar_t diskPath[] = { diskLetters.at(i).unicode(), ':', '\\', 0 };                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!DeleteVolumeMountPoint(diskPath))                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        thread->stop();                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                *targetDiskLetter = QString("%1:\\").arg(diskLetters.at(0));                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                thread->addLog(QCoreApplication::translate("BurnThread", "There is no any mounted disk volume"));                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                *targetDiskLetter = QString("%1:\\").arg(getUnusedDiskLetter());                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qDebug().nospace() << "Disk will be mounted to " << targetDiskLetter->toLatin1().data();                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    unlockAndCloseHandle(thread, diskHandle);                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void clearGpt(BurnThread *thread, HANDLE diskHandle)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread     != nullptr);                                                                                                                                                                     // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray buffer(SECTOR_SIZE, 0);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Clearing GPT"));                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clear first 34 sectors                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < 34 && thread->isWorking(); ++i)                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QThread::msleep(WRITE_TIMEOUT);                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Clear last 33 sectors                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 sectorsCount = thread->getSelectedUsb().diskSize / SECTOR_SIZE;                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = sectorsCount - 33; i < sectorsCount && thread->isWorking(); ++i)                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (qint64 j = 0; j < WRITE_RETRIES && thread->isWorking(); ++j)                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (writeSectors(diskHandle, i, 1, buffer) == SECTOR_SIZE)                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QThread::msleep(WRITE_TIMEOUT);                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void initializeDisk(BurnThread *thread, HANDLE diskHandle)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread     != nullptr);                                                                                                                                                                     // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    CREATE_DISK createDisk = { PARTITION_STYLE_RAW, {{ 0 }} };                                                                                                                                           // Colorize: green
+    DWORD       size       = sizeof(createDisk);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Initializing disk"));                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create raw disk                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not delete disk layout:" << GetLastError();                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    refreshDiskLayout(thread, diskHandle);                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void createPartition(BurnThread *thread, HANDLE diskHandle)                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread     != nullptr);                                                                                                                                                                     // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Creating GPT partition for UEFI"));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DRIVE_LAYOUT_INFORMATION_EX driveLayout;                                                                                                                                                             // Colorize: green
+    memset(&driveLayout, 0, sizeof(driveLayout));                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Initialize partition                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        driveLayout.PartitionStyle = PARTITION_STYLE_GPT;                                                                                                                                                // Colorize: green
+        driveLayout.PartitionCount = 1;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        driveLayout.PartitionEntry[0].PartitionStyle           = PARTITION_STYLE_GPT;                                                                                                                    // Colorize: green
+        driveLayout.PartitionEntry[0].StartingOffset.QuadPart  = 1 * MB;                                                                                                                                 // Colorize: green
+        driveLayout.PartitionEntry[0].PartitionLength.QuadPart = thread->getSelectedUsb().diskSize - driveLayout.PartitionEntry[0].StartingOffset.QuadPart - (33 * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header // Colorize: green
+        driveLayout.PartitionEntry[0].PartitionNumber          = 1;                                                                                                                                      // Colorize: green
+        driveLayout.PartitionEntry[0].RewritePartition         = true;                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        driveLayout.PartitionEntry[0].Gpt.PartitionType = PARTITION_BASIC_DATA_GUID;                                                                                                                     // Colorize: green
+        CoCreateGuid(&driveLayout.PartitionEntry[0].Gpt.PartitionId);                                                                                                                                    // Colorize: green
+        QString("Microsoft Basic Data").toWCharArray(driveLayout.PartitionEntry[0].Gpt.Name);                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    CREATE_DISK createDisk = { PARTITION_STYLE_GPT, {{ 0 }} };                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Initialize GPT information                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        CoCreateGuid(&createDisk.Gpt.DiskId);                                                                                                                                                            // Colorize: green
+        createDisk.Gpt.MaxPartitionCount = MAX_GPT_PARTITIONS;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        driveLayout.Gpt.DiskId                        = createDisk.Gpt.DiskId;                                                                                                                           // Colorize: green
+        driveLayout.Gpt.StartingUsableOffset.QuadPart = 34 * SECTOR_SIZE;                                              // First 34 sectors reserved for Protective MBR and Primary GPT header            // Colorize: green
+        driveLayout.Gpt.UsableLength.QuadPart         = thread->getSelectedUsb().diskSize - ((34 + 33) * SECTOR_SIZE); // Last 33 sectors reserved for Secondary GPT header                              // Colorize: green
+        driveLayout.Gpt.MaxPartitionCount             = MAX_GPT_PARTITIONS;                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create GPT disk                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD size = sizeof(createDisk);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!DeviceIoControl(diskHandle, IOCTL_DISK_CREATE_DISK, (BYTE *)&createDisk, size, nullptr, ZERO_SIZE, &size, nullptr))                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not reset disk layout:" << GetLastError();                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set GPT layout to disk                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        DWORD size = sizeof(driveLayout);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!DeviceIoControl(diskHandle, IOCTL_DISK_SET_DRIVE_LAYOUT_EX, (BYTE *)&driveLayout, size, nullptr, 0, &size, nullptr))                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "Could not set disk layout:" << GetLastError();                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    refreshDiskLayout(thread, diskHandle);                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool gFormatSuccessful;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool __stdcall formatExCallback(FILE_SYSTEM_CALLBACK_COMMAND command, DWORD /*action*/, PVOID /*pData*/)                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check that required commands received                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        switch (command)                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_PROGRESS:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_STRUCTURE_PROGRESS:                                                                                                                                   // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE:                                                                                                                                                 // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DONE_WITH_STRUCTURE:                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return true;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN2:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_INCOMPATIBLE_FILE_SYSTEM:                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN4:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN5:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_ACCESS_DENIED:                                                                                                                                        // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_MEDIA_WRITE_PROTECTED:                                                                                                                                // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_IN_USE:                                                                                                                                        // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CANT_QUICK_FORMAT:                                                                                                                                    // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWNA:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_BAD_LABEL:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWND:                                                                                                                                             // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_OUTPUT:                                                                                                                                               // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_SMALL:                                                                                                                               // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CLUSTER_SIZE_TOO_BIG:                                                                                                                                 // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_SMALL:                                                                                                                                     // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_VOLUME_TOO_BIG:                                                                                                                                       // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_NO_MEDIA_IN_DRIVE:                                                                                                                                    // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN15:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN16:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN17:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_DEVICE_NOT_READY:                                                                                                                                     // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_CHECKDISK_PROGRESS:                                                                                                                                   // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1A:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1B:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1C:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1D:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1E:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_UNKNOWN1F:                                                                                                                                            // Colorize: green
+            case FILE_SYSTEM_CALLBACK_COMMAND::FCC_READ_ONLY_MODE:                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Unexpected command:" << (quint8) command;                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            default:                                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Unknown command:" << (quint8) command;                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    gFormatSuccessful = false;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void formatPartitionWithFmifs(BurnThread *thread, HMODULE moduleHandle)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread       != nullptr);                                                                                                                                                                   // Colorize: green
+    Q_ASSERT(moduleHandle != nullptr);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FormatEx_t pfFormatEx = reinterpret_cast<FormatEx_t>(reinterpret_cast<void *>(GetProcAddress(moduleHandle, "FormatEx")));                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (pfFormatEx == nullptr)                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qCritical() << "GetProcAddress failed:" << GetLastError();                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        thread->stop();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    wchar_t volumeName[MAX_PATH] = { 0 };                                                                                                                                                                // Colorize: green
+    wchar_t fsType[8]            = { 0 };                                                                                                                                                                // Colorize: green
+    wchar_t label[16]            = { 0 };                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    getLogicalName(thread).toWCharArray(volumeName);                                                                                                                                                     // Colorize: green
+    QString("FAT32").toWCharArray(fsType);                                                                                                                                                               // Colorize: green
+    QString("NGOS BOOT").toWCharArray(label);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Format partition with fmifs.dll                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        gFormatSuccessful = true;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        pfFormatEx(volumeName, RemovableMedia, fsType, label, true, DEFAULT_CLUSTER_SIZE, formatExCallback);                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!gFormatSuccessful)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addLog(QCoreApplication::translate("BurnThread", "Disk formatting failed"));                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void formatPartition(BurnThread *thread, HANDLE diskHandle)                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Formatting partition to FAT32"));                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HMODULE moduleHandle = LoadLibraryA("fmifs.dll");                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Format partition with fmifs.dll                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (moduleHandle != nullptr)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            formatPartitionWithFmifs(thread, moduleHandle);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!FreeLibrary(moduleHandle))                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "FreeLibrary failed:" << GetLastError();                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                thread->stop();                                                                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "LoadLibrary failed:" << GetLastError();                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    refreshDiskLayout(thread, diskHandle);                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void writeProtectiveMbr(BurnThread *thread, HANDLE diskHandle)                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread     != nullptr);                                                                                                                                                                     // Colorize: green
+    Q_ASSERT(diskHandle != INVALID_HANDLE_VALUE);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Writing protective MBR"));                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray originalBuffer;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read first sector from disk                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            originalBuffer = readSectors(diskHandle, 0, 1);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (originalBuffer.size() == SECTOR_SIZE)                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QThread::msleep(WRITE_TIMEOUT);                                                                                                                                                          // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (originalBuffer.size() == SECTOR_SIZE)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QByteArray buffer;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Read protective MBR from assets                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFile file(":/assets/binaries/protective_mbr.bin");                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!file.open(QIODevice::ReadOnly))                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qCritical() << "Failed to open :/assets/binaries/protective_mbr.bin";                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                thread->stop();                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            buffer = file.readAll();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file.close();                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Replace part for protective MBR buffer related to partition table with original MBR from device                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            buffer.replace(MBR_RESERVED, SECTOR_SIZE - MBR_RESERVED, originalBuffer.mid(MBR_RESERVED));                                                                                                  // Colorize: green
+            buffer.replace(SECTOR_SIZE - 2, 2, "\x55\xAA");                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Write buffer to first disk sector                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            for (qint64 i = 0; i < WRITE_RETRIES && thread->isWorking(); ++i)                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (writeSectors(diskHandle, 0, 1, buffer) == SECTOR_SIZE)                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QThread::msleep(WRITE_TIMEOUT);                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        refreshDiskLayout(thread, diskHandle);                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void formatDisk(BurnThread *thread)                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE diskHandle = getPhysicalHandle(thread, LockDisk::YES, Access::READ_WRITE, ShareWrite::NO);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (diskHandle == INVALID_HANDLE_VALUE)                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->stop();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    HANDLE volumeHandle = getLogicalHandle(thread, LockDisk::YES, Access::READ_ONLY, ShareWrite::NO);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (volumeHandle == INVALID_HANDLE_VALUE)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        unlockAndCloseHandle(thread, diskHandle);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        thread->stop();                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    clearGpt(thread, diskHandle);                                                                                                                                                                        // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    initializeDisk(thread, diskHandle);                                                                                                                                                                  // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    createPartition(thread, diskHandle);                                                                                                                                                                 // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    unlockAndCloseHandle(thread, volumeHandle);                                                                                                                                                          // Colorize: green
+    volumeHandle = INVALID_HANDLE_VALUE;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    waitForLogical(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    formatPartition(thread, diskHandle);                                                                                                                                                                 // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    writeProtectiveMbr(thread, diskHandle);                                                                                                                                                              // Colorize: green
+    notifyNextStep(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    waitForLogical(thread);                                                                                                                                                                              // Colorize: green
+    CHECK_IF_THREAD_TERMINATED(thread);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+out:                                                                                                                                                                                                     // Colorize: green
+    unlockAndCloseHandle(thread, diskHandle);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (volumeHandle != INVALID_HANDLE_VALUE)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        unlockAndCloseHandle(thread, volumeHandle);                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void mountVolumeByGuid(BurnThread *thread, QString *diskPath, const QString &volumeName)                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread   != nullptr);                                                                                                                                                                       // Colorize: green
+    Q_ASSERT(diskPath != nullptr);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that volume already mounted                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        char  mountedLetters[27];                                                                                                                                                                        // Colorize: green
+        DWORD size;                                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            GetVolumePathNamesForVolumeNameA(volumeName.toLatin1().data(), mountedLetters, sizeof(mountedLetters), &size)                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            size > 1                                                                                                                                                                                     // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            (*diskPath)[0] = mountedLetters[0];                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->addLog(QCoreApplication::translate("BurnThread", "Disk already mounted to %1").arg(*diskPath));                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Mount volume                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!SetVolumeMountPointA(diskPath->toLatin1().data(), volumeName.toLatin1().data()))                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "SetVolumeMountPoint failed:" << GetLastError();                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->addLog(QCoreApplication::translate("BurnThread", "Failed to mount disk"));                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void mountVolume(BurnThread *thread, QString *diskPath)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread   != nullptr);                                                                                                                                                                       // Colorize: green
+    Q_ASSERT(diskPath != nullptr);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    thread->addLog(QCoreApplication::translate("BurnThread", "Mounting disk volume %1").arg(*diskPath));                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mountVolumeByGuid(thread, diskPath, getLogicalName(thread) + '\\');                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void remountVolume(BurnThread *thread, const QString &diskPath)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Unmount volume                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addLog(QCoreApplication::translate("BurnThread", "Unmounting disk volume %1").arg(diskPath));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!DeleteVolumeMountPointA(diskPath.toLatin1().data()))                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qCritical() << "DeleteVolumeMountPoint failed:" << GetLastError();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            thread->stop();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mountVolume(thread, (QString *)&diskPath);                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BurnThread::run()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    gCurrentBurnStep = 0;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString diskPath;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    unmountVolumes(this, &diskPath);                                                                                                                                                                     // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    formatDisk(this);                                                                                                                                                                                    // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mountVolume(this, &diskPath);                                                                                                                                                                        // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    copyFiles(diskPath);                                                                                                                                                                                 // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    createAutorun(diskPath);                                                                                                                                                                             // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    remountVolume(this, diskPath);                                                                                                                                                                       // Colorize: green
+    notifyNextStep(this);                                                                                                                                                                                // Colorize: green
+    CHECK_IF_TERMINATED();                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // Q_OS_WIN                                                                                                                                                                                       // Colorize: green
