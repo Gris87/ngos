@@ -22,59 +22,59 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="126"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="632"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1140"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="150"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="695"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1265"/>
         <source>Unmounting disk volume %1</source>
         <translation>Unmounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="140"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="648"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="168"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="711"/>
         <source>There is no any mounted disk volume</source>
         <translation>There is no any mounted disk volume</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="716"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="789"/>
         <source>Initializing disk</source>
         <translation>Initializing disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="165"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="739"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="193"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="815"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Creating GPT partition for UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="895"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="994"/>
         <source>Disk formatting failed</source>
         <translation>Disk formatting failed</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="179"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="909"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="207"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1009"/>
         <source>Formatting partition to FAT32</source>
         <translation>Formatting partition to FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="193"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="945"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="221"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1048"/>
         <source>Writing protective MBR</source>
         <translation>Writing protective MBR</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1101"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1220"/>
         <source>Disk already mounted to %1</source>
         <translation>Disk already mounted to %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1112"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1234"/>
         <source>Failed to mount disk</source>
         <translation>Failed to mount disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="303"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1127"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="357"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1250"/>
         <source>Mounting disk volume %1</source>
         <translation>Mounting disk volume %1</translation>
     </message>
@@ -106,8 +106,8 @@
         <translation>Create autorun.inf file</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="151"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="669"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="179"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="734"/>
         <source>Clearing GPT</source>
         <translation>Clearing GPT</translation>
     </message>

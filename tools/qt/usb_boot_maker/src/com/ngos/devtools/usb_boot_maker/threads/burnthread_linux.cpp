@@ -17,18 +17,18 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define CHECK_IF_THREAD_TERMINATED(thread) \                                                                                                                                                             // Colorize: green
-    if (!thread->isWorking()) \                                                                                                                                                                          // Colorize: green
-    { \                                                                                                                                                                                                  // Colorize: green
-        return; \                                                                                                                                                                                        // Colorize: green
+#define CHECK_IF_THREAD_TERMINATED(thread) \
+    if (!thread->isWorking()) \
+    { \
+        return; \
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define CHECK_IF_TERMINATED() \                                                                                                                                                                          // Colorize: green
-    if (!mIsRunning) \                                                                                                                                                                                   // Colorize: green
-    { \                                                                                                                                                                                                  // Colorize: green
-        goto out; \                                                                                                                                                                                      // Colorize: green
+#define CHECK_IF_TERMINATED() \
+    if (!mIsRunning) \
+    { \
+        goto out; \
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
