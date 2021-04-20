@@ -46,7 +46,7 @@ qint32 main(qint32 argc, char *argv[])
 
     QStringList arguments = app.arguments();
 
-    if (arguments.length() != 2)
+    if (arguments.size() != 2)
     {
         usage();
 
@@ -101,7 +101,7 @@ qint32 main(qint32 argc, char *argv[])
                 {
                     QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-                    for (qint64 i = 0; i < filesInfo.length(); ++i)
+                    for (qint64 i = 0; i < filesInfo.size(); ++i)
                     {
                         files.enqueue(filesInfo.at(i));
                     }
@@ -214,7 +214,7 @@ qint32 main(qint32 argc, char *argv[])
     QList<DocsMessageInfo> warnings;
     QList<DocsMessageInfo> errors;
 
-    for (qint64 i = 0; i < workers.length(); ++i)
+    for (qint64 i = 0; i < workers.size(); ++i)
     {
         DocsWorkerThread *worker = workers.at(i);
 
@@ -240,7 +240,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-        for (qint64 i = warnings.length() - 2; i >= 0; --i)
+        for (qint64 i = warnings.size() - 2; i >= 0; --i)
         {
             if (warnings.at(i) == warnings.at(i + 1))
             {
@@ -253,7 +253,7 @@ qint32 main(qint32 argc, char *argv[])
         Console::out("");
         Console::out("Warnings:");
 
-        for (qint64 i = 0; i < warnings.length(); ++i)
+        for (qint64 i = 0; i < warnings.size(); ++i)
         {
             Console::out(warnings.at(i).toString());
         }
@@ -267,7 +267,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-        for (qint64 i = errors.length() - 2; i >= 0; --i)
+        for (qint64 i = errors.size() - 2; i >= 0; --i)
         {
             if (errors.at(i) == errors.at(i + 1))
             {
@@ -280,7 +280,7 @@ qint32 main(qint32 argc, char *argv[])
         Console::err("");
         Console::err("Errors:");
 
-        for (qint64 i = 0; i < errors.length(); ++i)
+        for (qint64 i = 0; i < errors.size(); ++i)
         {
             Console::err(errors.at(i).toString());
         }
@@ -288,7 +288,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
         Console::err("");
-        Console::err(QString("%1 warnings. %2 errors").arg(warnings.length()).arg(errors.length()));
+        Console::err(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));
         Console::err("");
 
         return 1;
@@ -297,7 +297,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
     Console::out("");
-    Console::out(QString("%1 warnings. %2 errors").arg(warnings.length()).arg(errors.length()));
+    Console::out(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));
 
 
 

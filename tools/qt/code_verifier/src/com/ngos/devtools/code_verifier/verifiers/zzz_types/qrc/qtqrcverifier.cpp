@@ -52,7 +52,7 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
         {
             QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-            for (qint64 i = 0; i < filesInfo.length(); ++i)
+            for (qint64 i = 0; i < filesInfo.size(); ++i)
             {
                 files.enqueue(filesInfo.at(i));
             }
@@ -65,7 +65,7 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
                 !path.endsWith(".S")
                )
             {
-                expectedContent.append(QString("        <file>%1</file>\n").arg(path.mid(parentFolder.length()))); // Ignore CppAlignmentVerifier
+                expectedContent.append(QString("        <file>%1</file>\n").arg(path.mid(parentFolder.size()))); // Ignore CppAlignmentVerifier
             }
         }
     }

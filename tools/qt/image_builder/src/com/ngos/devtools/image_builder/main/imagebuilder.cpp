@@ -286,7 +286,7 @@ qint64 ImageBuilder::getPeHeaderLocation()
 {
     quint32 peHeaderLocation = readUInt32(0x3C);
 
-    if (peHeaderLocation < (quint32)mResultImage.length())
+    if (peHeaderLocation < (quint32)mResultImage.size())
     {
         if (readUInt32(peHeaderLocation) == PE_HEADER_SIGNATURE)
         {

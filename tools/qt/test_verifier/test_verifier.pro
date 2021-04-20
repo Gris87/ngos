@@ -1,71 +1,71 @@
-QT -= gui
-
-CONFIG += c++17 console
-CONFIG -= app_bundle
-
-TARGET = test_verifier
-TEMPLATE = app
-
-
-
-DEFINES += \
-    DEVTOOLS_APPLICATION \
-    _WIN32_WINNT=0x0A00
-
-
-
-# Warnings as errors - BEGIN
-win32-msvc* {
-    QMAKE_CXXFLAGS += /WX
-} else {
-    QMAKE_CXXFLAGS += -Wall -Werror
-}
-# Warnings as errors - END
-
-# Release optimization - BEGIN
-QMAKE_CFLAGS_RELEASE -= -O1
-QMAKE_CFLAGS_RELEASE -= -O2
-QMAKE_CFLAGS_RELEASE += -O3
-
-QMAKE_CXXFLAGS_RELEASE -= -O1
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3
-# Release optimization - END
-
-# Target dirs - BEGIN
-DESTDIR     = build/
-OBJECTS_DIR = build/gen
-MOC_DIR     = build/gen
-RCC_DIR     = build/gen
-UI_DIR      = build/gen
-# Target dirs - END
-
-
-
-INCLUDEPATH += \
-    src \                                   # /tools/qt/test_verifier/src
-    ../../../include \                      # /include
-    ../../../src/os/shared/common/src \     # /src/os/shared/common/src
-    ../shared/console/src                   # /tools/qt/shared/console/src
-
-
-
-include(../shared/console/console.pri)
-
-
-
-SOURCES += \
-    src/com/ngos/devtools/test_verifier/main.cpp \
-    src/com/ngos/devtools/test_verifier/other/testentry.cpp \
-    src/com/ngos/devtools/test_verifier/other/testmessageinfo.cpp \
-    src/com/ngos/devtools/test_verifier/other/teststructureentry.cpp \
-    src/com/ngos/devtools/test_verifier/threads/testverifythread.cpp \
-    src/com/ngos/devtools/test_verifier/threads/testworkerthread.cpp
-
-HEADERS += \
-    src/com/ngos/devtools/test_verifier/other/testentry.h \
-    src/com/ngos/devtools/test_verifier/other/testentrytype.h \
-    src/com/ngos/devtools/test_verifier/other/testmessageinfo.h \
-    src/com/ngos/devtools/test_verifier/other/teststructureentry.h \
-    src/com/ngos/devtools/test_verifier/threads/testverifythread.h \
-    src/com/ngos/devtools/test_verifier/threads/testworkerthread.h
+QT -= gui                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CONFIG += c++20 console                                                                                                                                                                                  # Colorize: green
+CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+TARGET   = test_verifier                                                                                                                                                                                 # Colorize: green
+TEMPLATE = app                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+DEFINES += \                                                                                                                                                                                             # Colorize: green
+    DEVTOOLS_APPLICATION \                                                                                                                                                                               # Colorize: green
+    _WIN32_WINNT=0x0A00                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Warnings as errors - BEGIN                                                                                                                                                                             # Colorize: green
+win32-msvc* {                                                                                                                                                                                            # Colorize: green
+    QMAKE_CXXFLAGS += /WX                                                                                                                                                                                # Colorize: green
+} else {                                                                                                                                                                                                 # Colorize: green
+    QMAKE_CXXFLAGS += -Wall -Werror                                                                                                                                                                      # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+# Warnings as errors - END                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Release optimization - BEGIN                                                                                                                                                                           # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O1                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O2                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE += -O3                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O1                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O2                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE += -O3                                                                                                                                                                            # Colorize: green
+# Release optimization - END                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Target dirs - BEGIN                                                                                                                                                                                    # Colorize: green
+DESTDIR     = build/                                                                                                                                                                                     # Colorize: green
+OBJECTS_DIR = build/gen                                                                                                                                                                                  # Colorize: green
+MOC_DIR     = build/gen                                                                                                                                                                                  # Colorize: green
+RCC_DIR     = build/gen                                                                                                                                                                                  # Colorize: green
+UI_DIR      = build/gen                                                                                                                                                                                  # Colorize: green
+# Target dirs - END                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    src \                                   # /tools/qt/test_verifier/src                                                                                                                                # Colorize: green
+    ../../../include \                      # /include                                                                                                                                                   # Colorize: green
+    ../../../src/os/shared/common/src \     # /src/os/shared/common/src                                                                                                                                  # Colorize: green
+    ../shared/console/src                   # /tools/qt/shared/console/src                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+include(../shared/console/console.pri)                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/test_verifier/main.cpp \                                                                                                                                                       # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/testentry.cpp \                                                                                                                                            # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/testmessageinfo.cpp \                                                                                                                                      # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/teststructureentry.cpp \                                                                                                                                   # Colorize: green
+    src/com/ngos/devtools/test_verifier/threads/testverifythread.cpp \                                                                                                                                   # Colorize: green
+    src/com/ngos/devtools/test_verifier/threads/testworkerthread.cpp                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/testentry.h \                                                                                                                                              # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/testentrytype.h \                                                                                                                                          # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/testmessageinfo.h \                                                                                                                                        # Colorize: green
+    src/com/ngos/devtools/test_verifier/other/teststructureentry.h \                                                                                                                                     # Colorize: green
+    src/com/ngos/devtools/test_verifier/threads/testverifythread.h \                                                                                                                                     # Colorize: green
+    src/com/ngos/devtools/test_verifier/threads/testworkerthread.h                                                                                                                                       # Colorize: green

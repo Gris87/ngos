@@ -1,64 +1,64 @@
-#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H
-#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H
-
-
-
-#include <Qt>
-#include <stdio.h>
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-enum class TestEntryType: quint8
-{
-    NONE              = 0,
-    INTERNAL_FUNCTION = 1,
-    DEFINE            = 2,
-    FUNCTION          = 3
-};
-
-
-
-inline const char8* enumToString(TestEntryType type) // TEST: NO
-{
-    switch (type)
-    {
-        case TestEntryType::NONE:              return "NONE";
-        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";
-        case TestEntryType::DEFINE:            return "DEFINE";
-        case TestEntryType::FUNCTION:          return "FUNCTION";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(TestEntryType type) // TEST: NO
-{
-    static char8 res[25];
-
-    sprintf(res, "0x%02X (%s)", (quint8)type, enumToString(type));
-
-    return res;
-}
-
-
-
-inline const char8* enumToHumanString(TestEntryType type) // TEST: NO
-{
-    switch (type)
-    {
-        case TestEntryType::NONE:              return "NONE";
-        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL FUNCTION";
-        case TestEntryType::DEFINE:            return "DEFINE";
-        case TestEntryType::FUNCTION:          return "FUNCTION";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H
+#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+#include <stdio.h>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class TestEntryType: quint8                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE              = 0,                                                                                                                                                                               // Colorize: green
+    INTERNAL_FUNCTION = 1,                                                                                                                                                                               // Colorize: green
+    DEFINE            = 2,                                                                                                                                                                               // Colorize: green
+    FUNCTION          = 3                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(TestEntryType type) // TEST: NO                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case TestEntryType::NONE:              return "NONE";                                                                                                                                            // Colorize: green
+        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL_FUNCTION";                                                                                                                               // Colorize: green
+        case TestEntryType::DEFINE:            return "DEFINE";                                                                                                                                          // Colorize: green
+        case TestEntryType::FUNCTION:          return "FUNCTION";                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(TestEntryType type) // TEST: NO                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    static char8 res[25];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%02X (%s)", (quint8)type, enumToString(type));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToHumanString(TestEntryType type) // TEST: NO                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case TestEntryType::NONE:              return "NONE";                                                                                                                                            // Colorize: green
+        case TestEntryType::INTERNAL_FUNCTION: return "INTERNAL FUNCTION";                                                                                                                               // Colorize: green
+        case TestEntryType::DEFINE:            return "DEFINE";                                                                                                                                          // Colorize: green
+        case TestEntryType::FUNCTION:          return "FUNCTION";                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                          // Colorize: green

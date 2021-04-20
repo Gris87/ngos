@@ -16,13 +16,13 @@ IndentSpacesVerifier::IndentSpacesVerifier()
 
 void IndentSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
 
 
-        for (qint64 j = 0; j < line.length(); ++j)
+        for (qint64 j = 0; j < line.size(); ++j)
         {
             QChar ch = line.at(j);
 

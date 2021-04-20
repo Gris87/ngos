@@ -12,7 +12,7 @@ PhpSwitchVerifier::PhpSwitchVerifier()
 
 void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpSwitchVerifier");
@@ -29,7 +29,7 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                 QString spaces = line.left(line.indexOf("switch ("));
 
                 if (
-                    i + 1 < lines.length()
+                    i + 1 < lines.size()
                     &&
                     lines.at(i + 1) == spaces + '{'
                    )
@@ -40,14 +40,14 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                     i = startLine;
 
-                    while (i < lines.length() && lines.at(i) != spaces + '}')
+                    while (i < lines.size() && lines.at(i) != spaces + '}')
                     {
                         ++i;
                     }
 
 
 
-                    if (i < lines.length())
+                    if (i < lines.size())
                     {
                         qint64 endLine = i - 1;
 
@@ -101,7 +101,7 @@ void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     }
 
                                     if (
-                                        index + 1 < switchLineTrimmed.length()
+                                        index + 1 < switchLineTrimmed.size()
                                         &&
                                         (
                                          switchLineTrimmed.at(index + 1) == '\''

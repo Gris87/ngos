@@ -27,7 +27,7 @@ void TestVerifyThread::pushTestStructureEntries(const QList<TestStructureEntry> 
     QMutexLocker lock(&sTestStructureEntriesMutex);
 
     sTestStructureEntries.append(entries);
-    sTestStructureEntriesSemaphore.release(entries.length());
+    sTestStructureEntriesSemaphore.release(entries.size());
 }
 
 void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)
@@ -35,7 +35,7 @@ void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)
     QMutexLocker lock(&sTestEntriesMutex);
 
     sTestEntries.append(entries);
-    sTestEntriesSemaphore.release(entries.length());
+    sTestEntriesSemaphore.release(entries.size());
 }
 
 TestStructureEntry TestVerifyThread::popTestStructureEntry()
@@ -228,7 +228,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
         {
             QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-            for (qint64 i = 0; i < filesInfo.length(); ++i)
+            for (qint64 i = 0; i < filesInfo.size(); ++i)
             {
                 files.enqueue(filesInfo.at(i));
             }
@@ -255,7 +255,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
 
                 if (!good)
                 {
-                    for (qint64 i = 0; i < lines.length(); ++i)
+                    for (qint64 i = 0; i < lines.size(); ++i)
                     {
                         QString line = lines.at(i).trimmed();
 
@@ -281,7 +281,7 @@ void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry
                 {
                     QString searchLine = "    TEST_CASE(\"" + entry.getName() + "\");";
 
-                    for (qint64 i = 0; i < lines.length(); ++i)
+                    for (qint64 i = 0; i < lines.size(); ++i)
                     {
                         if (lines.at(i) == searchLine)
                         {
@@ -406,7 +406,7 @@ void TestVerifyThread::processTestEntry(const TestEntry &entry)
         {
             QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-            for (qint64 i = 0; i < filesInfo.length(); ++i)
+            for (qint64 i = 0; i < filesInfo.size(); ++i)
             {
                 files.enqueue(filesInfo.at(i));
             }
@@ -453,7 +453,7 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i).trimmed();
 
@@ -477,7 +477,7 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
 
             if (expectedPath.endsWith(".h"))
             {
-                expectedPath.remove(expectedPath.length() - 2, 2);
+                expectedPath.remove(expectedPath.size() - 2, 2);
             }
 
             expectedPath = expectedPath.replace('/', '_');

@@ -41,7 +41,7 @@ bool NumberDecimalsGenerator::generate(const QString &path)
     {
         QString number = QString::number(qRound(i / 10.0)); // "/ 10.0" == "* 100 / 1000"
 
-        if (number.length() == 1)
+        if (number.size() == 1)
         {
             number = '0' + number;
         }

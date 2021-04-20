@@ -27,7 +27,7 @@ bool CommonGenerator::generateAll(const QString &path)
 
 
 
-    for (qint64 i = 0; i < sGenerators.length(); ++i)
+    for (qint64 i = 0; i < sGenerators.size(); ++i)
     {
         if (!sGenerators.at(i)->generate(path))
         {

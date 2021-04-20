@@ -34,7 +34,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
         if (relativePath.endsWith("README.md"))
         {
-            relativePath.remove(relativePath.length() - 9, 9);
+            relativePath.remove(relativePath.size() - 9, 9);
         }
         else
         {
@@ -45,13 +45,13 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
         if (relativePath.endsWith('/'))
         {
-            relativePath.remove(relativePath.length() - 1, 1);
+            relativePath.remove(relativePath.size() - 1, 1);
         }
 
 
 
         if (
-            !lines.length() // lines.length() <= 0
+            !lines.size() // lines.size() <= 0
             ||
             lines.at(0) != "NGOS"
            )
@@ -62,7 +62,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
         if (
-            lines.length() <= 1
+            lines.size() <= 1
             ||
             lines.at(1) != "===="
            )
@@ -73,7 +73,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
         if (
-            lines.length() <= 2
+            lines.size() <= 2
             ||
             lines.at(2) != ""
            )
@@ -86,7 +86,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
         QStringList pathParts = relativePath.split('/');
 
         if (
-            pathParts.length() == 1
+            pathParts.size() == 1
             &&
             pathParts.at(0) == ""
            )
@@ -101,7 +101,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
             QString sectionName;
 
-            for (qint64 i = 0; i < pathParts.length() - 1; ++i)
+            for (qint64 i = 0; i < pathParts.size() - 1; ++i)
             {
                 QString                 pathPart = pathParts.at(i);
                 QRegularExpressionMatch match    = mSectionIdRegExp.match(pathPart);
@@ -118,7 +118,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-            QString                 lastPathPart = pathParts.at(pathParts.length() - 1);
+            QString                 lastPathPart = pathParts.at(pathParts.size() - 1);
             QRegularExpressionMatch match        = mSectionIdRegExp.match(lastPathPart);
 
             if (match.hasMatch())
@@ -133,7 +133,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
             if (
-                lines.length() <= 3
+                lines.size() <= 3
                 ||
                 lines.at(3) != sectionName
                )
@@ -143,10 +143,10 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-            QString sectionHeader(sectionName.length(), '-');
+            QString sectionHeader(sectionName.size(), '-');
 
             if (
-                lines.length() <= 4
+                lines.size() <= 4
                 ||
                 lines.at(4) != sectionHeader
                )
@@ -157,7 +157,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
             if (
-                lines.length() <= 5
+                lines.size() <= 5
                 ||
                 lines.at(5) != ""
                )
@@ -171,7 +171,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
         QDir docDir(parentFolder);
         QStringList subFolders = docDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-        for (qint64 i = 0; i < subFolders.length(); ++i)
+        for (qint64 i = 0; i < subFolders.size(); ++i)
         {
             QString subFolder = subFolders.at(i);
 
@@ -186,7 +186,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
                 bool found = false;
 
-                for (qint64 j = startPos; j < lines.length(); ++j)
+                for (qint64 j = startPos; j < lines.size(); ++j)
                 {
                     QString line        = lines.at(j);
                     QString lineTrimmed = line.trimmed();
@@ -218,10 +218,10 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-            QString sectionHeader(sectionName.length(), '=');
+            QString sectionHeader(sectionName.size(), '=');
 
             if (
-                lines.length() <= 1
+                lines.size() <= 1
                 ||
                 lines.at(1) != sectionHeader
                )
@@ -232,7 +232,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
             if (
-                lines.length() <= 2
+                lines.size() <= 2
                 ||
                 lines.at(2) != ""
                )
@@ -248,7 +248,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-    for (qint64 i = startPos; i < lines.length(); ++i)
+    for (qint64 i = startPos; i < lines.size(); ++i)
     {
         QString line        = lines.at(i);
         QString lineTrimmed = line.trimmed();
@@ -263,7 +263,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
         {
             bool isHeader = true;
 
-            for (qint64 j = 1; j < lineTrimmed.length(); ++j)
+            for (qint64 j = 1; j < lineTrimmed.size(); ++j)
             {
                 if (lineTrimmed.at(j) != lineTrimmed.at(0))
                 {
@@ -281,7 +281,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
                 if (sectionName != "")
                 {
-                    QString sectionHeader(sectionName.length(), line.at(0));
+                    QString sectionHeader(sectionName.size(), line.at(0));
 
                     if (line != sectionHeader)
                     {
@@ -290,7 +290,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
 
-                    QString nextLine = i + 1 < lines.length() ? lines.at(i + 1) : "";
+                    QString nextLine = i + 1 < lines.size() ? lines.at(i + 1) : "";
 
                     if (nextLine == "")
                     {
@@ -373,7 +373,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
                             bool found = false;
 
-                            for (qint64 j = 0; j < anotherLines.length(); ++j)
+                            for (qint64 j = 0; j < anotherLines.size(); ++j)
                             {
                                 QString anotherLine = anotherLines.at(j).trimmed();
                                 QString sectionName;
@@ -393,19 +393,19 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
                                 }
                                 else
                                 if (
-                                    j < anotherLines.length() - 1
+                                    j < anotherLines.size() - 1
                                     &&
                                     (
                                      (
                                       anotherLines.at(j + 1).startsWith('-')
                                       &&
-                                      anotherLines.at(j + 1) == QString(anotherLine.length(), '-')
+                                      anotherLines.at(j + 1) == QString(anotherLine.size(), '-')
                                      )
                                      ||
                                      (
                                       anotherLines.at(j + 1).startsWith('=')
                                       &&
-                                      anotherLines.at(j + 1) == QString(anotherLine.length(), '=')
+                                      anotherLines.at(j + 1) == QString(anotherLine.size(), '=')
                                      )
                                     )
                                    )

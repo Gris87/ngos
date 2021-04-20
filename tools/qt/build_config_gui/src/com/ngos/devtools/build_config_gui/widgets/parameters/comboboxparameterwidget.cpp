@@ -41,7 +41,7 @@ ComboboxParameterWidget::ComboboxParameterWidget(const QString &id, const QHash<
 
     mOptionsList = metaValues.split(',');
 
-    for (qint64 i = 0; i < mOptionsList.length(); ++i)
+    for (qint64 i = 0; i < mOptionsList.size(); ++i)
     {
         QString &option = mOptionsList[i];
         option          = option.trimmed();
@@ -117,13 +117,13 @@ QString ComboboxParameterWidget::generatePrivateDetails()
 {
     qint64 maxLen = 0;
 
-    for (qint64 i = 0; i < mOptionsList.length(); ++i)
+    for (qint64 i = 0; i < mOptionsList.size(); ++i)
     {
         QString option = mOptionsList.at(i);
 
-        if (option.length() > maxLen)
+        if (option.size() > maxLen)
         {
-            maxLen = option.length();
+            maxLen = option.size();
         }
     }
 
@@ -131,7 +131,7 @@ QString ComboboxParameterWidget::generatePrivateDetails()
 
     QString values;
 
-    for (qint64 i = 0; i < mOptionsList.length(); ++i)
+    for (qint64 i = 0; i < mOptionsList.size(); ++i)
     {
         QString option = mOptionsList.at(i);
 
@@ -156,8 +156,8 @@ QString ComboboxParameterWidget::generatePrivateDetails()
 
 
 
-    QString defaultValue = QString("%1 - %2").arg(mDefault, -qMax(mDefault.length(), mValue.length()), QChar(' ')).arg(mOptionsDescriptions.value(mDefault)).replace(' ', "&nbsp;");
-    QString currentValue = QString("%1 - %2").arg(mValue,   -qMax(mDefault.length(), mValue.length()), QChar(' ')).arg(mOptionsDescriptions.value(mValue)).replace(' ',   "&nbsp;");
+    QString defaultValue = QString("%1 - %2").arg(mDefault, -qMax(mDefault.size(), mValue.size()), QChar(' ')).arg(mOptionsDescriptions.value(mDefault)).replace(' ', "&nbsp;");
+    QString currentValue = QString("%1 - %2").arg(mValue,   -qMax(mDefault.size(), mValue.size()), QChar(' ')).arg(mOptionsDescriptions.value(mValue)).replace(' ',   "&nbsp;");
 
 
 

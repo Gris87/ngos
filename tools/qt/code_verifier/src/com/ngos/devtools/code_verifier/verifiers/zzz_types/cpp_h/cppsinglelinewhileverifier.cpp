@@ -12,7 +12,7 @@ CppSingleLineWhileVerifier::CppSingleLineWhileVerifier()
 
 void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSingleLineWhileVerifier");
@@ -31,10 +31,10 @@ void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString 
                 do
                 {
                     ++i;
-                } while(i < lines.length() && lines.at(i) != spaces + "      )");
+                } while(i < lines.size() && lines.at(i) != spaces + "      )");
 
                 if (
-                    i >= lines.length() - 1
+                    i >= lines.size() - 1
                     ||
                     lines.at(i + 1) != spaces + '{'
                    )
@@ -50,10 +50,10 @@ void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString 
                 do
                 {
                     ++i;
-                } while(i < lines.length() && lines.at(i) != spaces + "      ) \\"  && lines.at(i) != spaces + "      )");
+                } while(i < lines.size() && lines.at(i) != spaces + "      ) \\"  && lines.at(i) != spaces + "      )");
 
                 if (
-                    i >= lines.length() - 1
+                    i >= lines.size() - 1
                     ||
                     (
                      lines.at(i + 1) != spaces + '{'
@@ -72,7 +72,7 @@ void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString 
                     QString spaces = line.left(line.indexOf("while ("));
 
                     if (
-                        i >= lines.length() - 1
+                        i >= lines.size() - 1
                         ||
                         lines.at(i + 1) != spaces + '{'
                        )
@@ -86,7 +86,7 @@ void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString 
                     QString spaces = line.left(line.indexOf("while ("));
 
                     if (
-                        i >= lines.length() - 1
+                        i >= lines.size() - 1
                         ||
                         (
                          lines.at(i + 1) != spaces + '{'

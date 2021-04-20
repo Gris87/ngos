@@ -21,7 +21,7 @@ BaseDocsVerifier::BaseDocsVerifier(quint64 verification)
 
 void BaseDocsVerifier::verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines)
 {
-    for (qint64 i = 0; i < sVerifiers.length(); ++i)
+    for (qint64 i = 0; i < sVerifiers.size(); ++i)
     {
         BaseDocsVerifier *verifier = sVerifiers.at(i);
 

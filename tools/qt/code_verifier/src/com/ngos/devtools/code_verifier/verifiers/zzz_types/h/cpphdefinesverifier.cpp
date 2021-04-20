@@ -17,14 +17,14 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 {
     qint64 fileHeaderOffset = 0;
 
-    while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))
+    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
     {
         ++fileHeaderOffset;
     }
 
 
 
-    if (lines.length() < 5 + fileHeaderOffset)
+    if (lines.size() < 5 + fileHeaderOffset)
     {
         worker->addError(path, -1, "Header file contains too few lines");
 
@@ -131,9 +131,9 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
         worker->addError(path, 1, QString("Expected \"#define %1\"").arg(defineName));
     }
 
-    if (lines.at(lines.length() - 2) != "#endif // " + defineName)
+    if (lines.at(lines.size() - 2) != "#endif // " + defineName)
     {
-        worker->addError(path, lines.length() - 2, QString("Expected \"#endif // %1\"").arg(defineName));
+        worker->addError(path, lines.size() - 2, QString("Expected \"#endif // %1\"").arg(defineName));
     }
 
     if (
@@ -148,14 +148,14 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
     }
 
     if (
-        lines.at(lines.length() - 3) != ""
+        lines.at(lines.size() - 3) != ""
         ||
-        lines.at(lines.length() - 4) != ""
+        lines.at(lines.size() - 4) != ""
         ||
-        lines.at(lines.length() - 5) != ""
+        lines.at(lines.size() - 5) != ""
        )
     {
-        worker->addError(path, lines.length() - 3, QString("Expected 3 blank lines before \"#endif // %1\"").arg(defineName));
+        worker->addError(path, lines.size() - 3, QString("Expected 3 blank lines before \"#endif // %1\"").arg(defineName));
     }
 }
 

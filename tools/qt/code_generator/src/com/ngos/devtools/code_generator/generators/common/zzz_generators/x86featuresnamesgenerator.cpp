@@ -36,7 +36,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
     QStringList features;
 
-    for (qint64 i = 0; i < originalLines.length(); ++i)
+    for (qint64 i = 0; i < originalLines.size(); ++i)
     {
         QString originalLine = originalLines.at(i).trimmed();
 
@@ -84,7 +84,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
     qint64  lastFeatureIndex = 0;
     QString lastFeatureWord  = "";
 
-    while (lastFeatureIndex < features.length())
+    while (lastFeatureIndex < features.size())
     {
         QString feature = features.at(lastFeatureIndex);
 

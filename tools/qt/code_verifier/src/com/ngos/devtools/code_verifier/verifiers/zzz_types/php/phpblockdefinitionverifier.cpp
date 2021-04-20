@@ -12,7 +12,7 @@ PhpBlockDefinitionVerifier::PhpBlockDefinitionVerifier()
 
 void PhpBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore PhpBlockDefinitionVerifier");
@@ -25,7 +25,7 @@ void PhpBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString 
         if (
             lineTrimmed.endsWith('{')
             &&
-            lineTrimmed.length() > 1
+            lineTrimmed.size() > 1
            )
         {
             worker->addError(path, i, "Code block should be started on the new line");

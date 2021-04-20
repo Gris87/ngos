@@ -122,7 +122,7 @@ inline bool validateChar(const QChar &ch, const QChar &chPrev1, const QChar &chN
 
 void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// CppArrayInitializationVerifier");
@@ -143,11 +143,11 @@ void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QStr
                 QChar ch      = index > 0 ? line.at(index - 1) : QChar(); // Ignore CppZeroConditionVerifier
                 QChar chNext1 = line.at(index);
 
-                for (qint64 j = index; j < line.length(); ++j)
+                for (qint64 j = index; j < line.size(); ++j)
                 {
                     chPrev1 = ch;
                     ch      = chNext1;
-                    chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();
+                    chNext1 = j < line.size() - 1 ? line.at(j + 1) : QChar();
 
 
 

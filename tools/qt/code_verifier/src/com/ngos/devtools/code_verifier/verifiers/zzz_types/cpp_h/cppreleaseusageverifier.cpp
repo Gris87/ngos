@@ -23,7 +23,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppReleaseUsageVerifier");
@@ -40,7 +40,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
              &&
              (
               (
-               i + 1 < lines.length()
+               i + 1 < lines.size()
                &&
                lines.at(i + 1).startsWith("#define")
                &&
@@ -48,7 +48,7 @@ void CppReleaseUsageVerifier::verify(CodeWorkerThread *worker, const QString &pa
               )
               ||
               (
-               i + 2 < lines.length()
+               i + 2 < lines.size()
                &&
                lines.at(i + 1).contains("_LD((\"")
                &&

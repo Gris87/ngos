@@ -100,13 +100,13 @@ bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
 
     lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString &line = lines[i];
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.length() - 1, 1);
+            line.remove(line.size() - 1, 1);
         }
     }
 
@@ -126,7 +126,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
         PciVendor *vendor = nullptr;
         PciDevice *device = nullptr;
 
-        while (i < lines.length())
+        while (i < lines.size())
         {
             QString line = lines.at(i);
 
@@ -253,7 +253,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
 
-    if (i >= lines.length())
+    if (i >= lines.size())
     {
         Console::err("Failed to parse PCI database");
 
@@ -267,7 +267,7 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
         PciBaseClass *baseClass = nullptr;
         PciSubClass  *subClass  = nullptr;
 
-        while (i < lines.length())
+        while (i < lines.size())
         {
             QString line = lines.at(i);
 
@@ -542,7 +542,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");
@@ -760,7 +760,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");
@@ -970,7 +970,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");
@@ -1149,7 +1149,7 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");
@@ -1448,7 +1448,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");
@@ -1663,7 +1663,7 @@ bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 v
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.length() - 1, 1);
+            previousLine.remove(previousLine.size() - 1, 1);
         }
 
         lines.append("};");

@@ -29,7 +29,7 @@ qint32 main(qint32 argc, char *argv[])
 
     QStringList arguments = app.arguments();
 
-    if (arguments.length() < 3)
+    if (arguments.size() < 3)
     {
         usage();
 
@@ -44,7 +44,7 @@ qint32 main(qint32 argc, char *argv[])
 
     bool reset = false;
 
-    if (arguments.length() > 2 && arguments.at(2) == "--reset")
+    if (arguments.size() > 2 && arguments.at(2) == "--reset")
     {
         reset = true;
     }
@@ -53,7 +53,7 @@ qint32 main(qint32 argc, char *argv[])
 
     QMap<QString, QString> parameters;
 
-    for (qint64 i = (reset ? 3 : 2); i < arguments.length(); ++i)
+    for (qint64 i = (reset ? 3 : 2); i < arguments.size(); ++i)
     {
         QString arg = arguments.at(i);
 

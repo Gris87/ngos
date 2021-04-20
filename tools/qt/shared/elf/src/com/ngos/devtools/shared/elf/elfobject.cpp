@@ -42,7 +42,7 @@ bool ElfObject::read(const QString &path, bool *isRunning)
 
 
 
-    if (mBytes.length() < (qint64)sizeof(*mHeader))
+    if (mBytes.size() < (qint64)sizeof(*mHeader))
     {
         qDebug() << "File is too small";
 
@@ -97,7 +97,7 @@ bool ElfObject::read(const QString &path, bool *isRunning)
 
 
 
-    for (qint64 i = 0; i < mProgramHeaderTableEntries.length(); ++i)
+    for (qint64 i = 0; i < mProgramHeaderTableEntries.size(); ++i)
     {
         ElfProgramHeaderTableEntry *entry = mProgramHeaderTableEntries.at(i);
 
@@ -117,7 +117,7 @@ bool ElfObject::read(const QString &path, bool *isRunning)
 
 
 
-    for (qint64 i = 0; i < mSectionHeaderTableEntries.length(); ++i)
+    for (qint64 i = 0; i < mSectionHeaderTableEntries.size(); ++i)
     {
         ElfSectionHeaderTableEntry *entry = mSectionHeaderTableEntries.at(i);
 
@@ -165,7 +165,7 @@ const QByteArray& ElfObject::getProgramBytes() const
 
 quint64 ElfObject::getFileSize() const
 {
-    return mBytes.length();
+    return mBytes.size();
 }
 
 const QList<ElfSectionHeaderTableEntry *>& ElfObject::getSections() const
@@ -272,7 +272,7 @@ bool ElfObject::verifyHeader()
 
 
     if (
-        mHeader->entryPoint >= (quint64)mBytes.length()
+        mHeader->entryPoint >= (quint64)mBytes.size()
         &&
         mHeader->entryPoint != 0xFFFFFFFF80000000
        )
@@ -284,7 +284,7 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (mHeader->programHeaderTableOffset >= (quint64)mBytes.length())
+    if (mHeader->programHeaderTableOffset >= (quint64)mBytes.size())
     {
         qDebug() << "ELF program header table offset is invalid";
 
@@ -293,7 +293,7 @@ bool ElfObject::verifyHeader()
 
 
 
-    if (mHeader->sectionHeaderTableOffset >= (quint64)mBytes.length())
+    if (mHeader->sectionHeaderTableOffset >= (quint64)mBytes.size())
     {
         qDebug() << "ELF section header table offset is invalid";
 

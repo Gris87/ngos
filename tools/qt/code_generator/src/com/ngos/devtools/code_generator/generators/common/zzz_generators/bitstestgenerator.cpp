@@ -43,7 +43,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
     lines.append("#include <buildconfig.h>");
     lines.append("#include <com/ngos/shared/uefibase/testengine.h>");
 
-    for (qint64 i = 0; i < bits.length(); ++i)
+    for (qint64 i = 0; i < bits.size(); ++i)
     {
         lines.append(QString("#include <%1>").arg(bits.at(i).includePath));
     }
@@ -63,7 +63,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
     lines.append("TEST_CASES(section0, generated_com_ngos_shared_common_types);");
     lines.append("{"); // Ignore CppSingleCharVerifier
 
-    for (qint64 i = 0; i < bits.length(); ++i)
+    for (qint64 i = 0; i < bits.size(); ++i)
     {
         const BitsStructure &structure = bits.at(i);
 
@@ -99,9 +99,9 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
         qint64 maximumFieldLength = 0;
 
-        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        for (qint64 j = 0; j < structure.fields.size(); ++j)
         {
-            qint64 fieldLength = structure.fields.at(j).name.length();
+            qint64 fieldLength = structure.fields.at(j).name.size();
 
             if (fieldLength > maximumFieldLength)
             {
@@ -111,7 +111,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
 
-        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        for (qint64 j = 0; j < structure.fields.size(); ++j)
         {
             const BitsField &field = structure.fields.at(j);
 
@@ -150,13 +150,13 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
         qint8 offset = 0;
 
-        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        for (qint64 j = 0; j < structure.fields.size(); ++j)
         {
             const BitsField &field = structure.fields.at(j);
 
 
 
-            lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);").arg(field.name).arg("", maximumFieldLength - field.name.length()).arg((value >> offset) & ((1ULL << field.length) - 1)));
+            lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);").arg(field.name).arg("", maximumFieldLength - field.name.size()).arg((value >> offset) & ((1ULL << field.length) - 1)));
 
             offset += field.length;
         }
@@ -169,7 +169,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
         offset = 0;
 
-        for (qint64 j = 0; j < structure.fields.length(); ++j)
+        for (qint64 j = 0; j < structure.fields.size(); ++j)
         {
             const BitsField &field = structure.fields.at(j);
 
@@ -197,7 +197,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
 
-            if (j < structure.fields.length() - 1)
+            if (j < structure.fields.size() - 1)
             {
                 addThreeBlankLines(lines);
             }
@@ -210,7 +210,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
 
-        if (i < bits.length() - 1)
+        if (i < bits.size() - 1)
         {
             addThreeBlankLines(lines);
         }
@@ -236,7 +236,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
     qint8       remainingLength = 8;
     qint8       offset          = structure.width;
 
-    for (qint64 i = structure.fields.length() - 1; i >= 0; --i)
+    for (qint64 i = structure.fields.size() - 1; i >= 0; --i)
     {
         const BitsField &field = structure.fields.at(i);
 
@@ -257,7 +257,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
 
 
 
-        while (fieldContent.length() > remainingLength)
+        while (fieldContent.size() > remainingLength)
         {
             if (remainingLength > 0)
             {
@@ -282,7 +282,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
 
 
 
-        qint8 freeSpaceLength = fieldContent.length() * 3 - 1;
+        qint8 freeSpaceLength = fieldContent.size() * 3 - 1;
 
         QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
         QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
@@ -292,7 +292,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
         contentLine.append(spaces2);
         contentLine.append("|"); // Ignore CppSingleCharVerifier
 
-        remainingLength -= fieldContent.length();
+        remainingLength -= fieldContent.size();
     }
 
     lines.append(QString("        // %1").arg(contentLine));
@@ -306,7 +306,7 @@ bool BitsTestGenerator::obtainBitsFromFolder(const QString &path, QList<BitsStru
 {
     QFileInfoList files = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-    for (qint64 i = 0; i < files.length(); ++i)
+    for (qint64 i = 0; i < files.size(); ++i)
     {
         QFileInfo file = files.at(i);
 
@@ -361,14 +361,14 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         lines[i] = lines.at(i).trimmed();
     }
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -389,7 +389,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
             {
                 ++j;
 
-                if (j >= lines.length())
+                if (j >= lines.size())
                 {
                     break;
                 }

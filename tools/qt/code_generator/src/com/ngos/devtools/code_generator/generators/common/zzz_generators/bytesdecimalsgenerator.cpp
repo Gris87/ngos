@@ -41,7 +41,7 @@ bool BytesDecimalsGenerator::generate(const QString &path)
     {
         QString number = QString::number(qRound(i / 10.240)); // "/ 10.240" == "* 100 / 1024"
 
-        if (number.length() == 1)
+        if (number.size() == 1)
         {
             number = '0' + number;
         }

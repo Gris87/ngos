@@ -22,7 +22,7 @@
         do \
         { \
             ++i; \
-        } while(i < lines.length() && !lines.at(i).contains(comment " [END]")); \
+        } while(i < lines.size() && !lines.at(i).contains(comment " [END]")); \
         \
         continue; \
     } \
@@ -48,7 +48,7 @@ protected:
 
     inline void removeComments(QString &line) // TEST: NO
     {
-        for (qint64 i = 0; i < line.length(); ++i)
+        for (qint64 i = 0; i < line.size(); ++i)
         {
             if (line.at(i) == '\\')
             {
@@ -61,7 +61,7 @@ protected:
             {
                 ++i;
 
-                while (i < line.length())
+                while (i < line.size())
                 {
                     if (line.at(i) == '\\')
                     {
@@ -98,7 +98,7 @@ protected:
 
     inline void removeStrings(QString &line) // TEST: NO
     {
-        for (qint64 i = 0; i < line.length(); ++i)
+        for (qint64 i = 0; i < line.size(); ++i)
         {
             if (line.at(i) == '\\')
             {
@@ -115,7 +115,7 @@ protected:
 
                 ++i;
 
-                while (i < line.length())
+                while (i < line.size())
                 {
                     if (line.at(i) == '\\')
                     {

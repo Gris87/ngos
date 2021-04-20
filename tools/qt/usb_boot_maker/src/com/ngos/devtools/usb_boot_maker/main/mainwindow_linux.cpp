@@ -17,7 +17,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$");                                                                                                                                       // Colorize: green
+const QRegularExpression mountPointRegExp("^.+ on (.+) type .+$"); // /dev/sda2 on /boot type ext4 (rw,relatime)                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

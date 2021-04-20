@@ -69,7 +69,7 @@ qint64 QMake::processInWorkingDirectory(const QString &workingDirectory, const Q
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i).trimmed();
 
@@ -90,7 +90,7 @@ qint64 QMake::processInWorkingDirectory(const QString &workingDirectory, const Q
 
 qint64 QMake::processLines(const QString &workingDirectory, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -117,14 +117,14 @@ qint64 QMake::processLines(const QString &workingDirectory, const QStringList &l
             {
                 do
                 {
-                    entryValue.remove(entryValue.length() - 1, 1);
+                    entryValue.remove(entryValue.size() - 1, 1);
                 } while(entryValue.endsWith('\\'));
 
                 entryValue = entryValue.trimmed();
 
                 ++i;
 
-                if (i < lines.length())
+                if (i < lines.size())
                 {
                     entryValue = entryValue + ' ' + lines.at(i);
                 }
@@ -215,7 +215,7 @@ qint64 QMake::parseEntry(const QString &workingDirectory, const QString &entryNa
     {
         QStringList &entryValues = mEntries[entryName];
 
-        for (qint64 i = 0; i < values.length(); ++i)
+        for (qint64 i = 0; i < values.size(); ++i)
         {
             entryValues.removeOne(values.at(i));
         }
@@ -495,14 +495,14 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     if (!defines.isEmpty())
     {
-        if (defines.length() > 1)
+        if (defines.size() > 1)
         {
             lines.append("");
             lines.append("DEFINES             = \\");
 
-            for (qint64 i = 0; i < defines.length(); ++i)
+            for (qint64 i = 0; i < defines.size(); ++i)
             {
-                lines.append("\t-D" + defines.at(i) + (i < defines.length() - 1 ? " \\" : ""));
+                lines.append("\t-D" + defines.at(i) + (i < defines.size() - 1 ? " \\" : ""));
             }
         }
         else
@@ -523,11 +523,11 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
         lines.append("# Includes:");
         lines.append("# .                               # " + workingDirectory);
 
-        for (qint64 i = 0; i < includes.length(); ++i)
+        for (qint64 i = 0; i < includes.size(); ++i)
         {
             QString include = includes.at(i);
 
-            lines.append(QString("# %1 %2 # %3").arg(include).arg("", 30 - include.length(), QChar(' ')).arg(QFileInfo(workingDirectory + '/' + include).absoluteFilePath()));
+            lines.append(QString("# %1 %2 # %3").arg(include).arg("", 30 - include.size(), QChar(' ')).arg(QFileInfo(workingDirectory + '/' + include).absoluteFilePath()));
         }
 
 
@@ -535,14 +535,14 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
         lines.append("INCLUDES            = \\");
         lines.append("\t-I . \\");
 
-        for (qint64 i = 0; i < includes.length(); ++i)
+        for (qint64 i = 0; i < includes.size(); ++i)
         {
-            lines.append("\t-I " + includes.at(i) + (i < includes.length() - 1 ? " \\" : ""));
+            lines.append("\t-I " + includes.at(i) + (i < includes.size() - 1 ? " \\" : ""));
         }
     }
     else
     {
-        if (defines.length() > 1)
+        if (defines.size() > 1)
         {
             lines.append("");
         }
@@ -600,7 +600,7 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
 
     const QStringList &sources = mEntries.value("SOURCES");
 
-    for (qint64 i = 0; i < sources.length(); ++i)
+    for (qint64 i = 0; i < sources.size(); ++i)
     {
         QString originalSource = sources.at(i);
         QString source         = originalSource;
@@ -609,12 +609,12 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
 
         if (source.endsWith(".cpp"))
         {
-            source.remove(source.length() - 4, 4);
+            source.remove(source.size() - 4, 4);
         }
         else
         if (source.endsWith(".S"))
         {
-            source.remove(source.length() - 2, 2);
+            source.remove(source.size() - 2, 2);
         }
         else
         {
@@ -633,7 +633,7 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
         QString object = "$(OUTPUT_DIR)/" + source + ".o";
 
         mSourceToObjectMap.insert(originalSource, object);
-        lines.append('\t' + object + (i < sources.length() - 1 ? " \\" : ""));
+        lines.append('\t' + object + (i < sources.size() - 1 ? " \\" : ""));
     }
 
 
@@ -664,13 +664,13 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
     QString     additionalLdDependencies = "";
     QStringList lFlags                   = mEntries.value("QMAKE_LFLAGS");
 
-    for (qint64 i = 0; i < lFlags.length(); ++i)
+    for (qint64 i = 0; i < lFlags.size(); ++i)
     {
         const QString &flag = lFlags.at(i);
 
         if (flag == "-T")
         {
-            if (i < lFlags.length() - 1)
+            if (i < lFlags.size() - 1)
             {
                 ++i;
 
@@ -772,7 +772,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
 
 
-    for (qint64 i = 0; i < threads.length(); ++i)
+    for (qint64 i = 0; i < threads.size(); ++i)
     {
         SearchDependenciesThread *thread = threads.at(i);
         thread->wait();
@@ -781,7 +781,7 @@ qint64 QMake::addApplicationBuildTargets(const QString &workingDirectory, const 
 
         QStringList errors = thread->getErrors();
 
-        for (qint64 j = 0; j < errors.length(); ++j)
+        for (qint64 j = 0; j < errors.size(); ++j)
         {
             Console::err(errors.at(j));
         }
@@ -898,7 +898,7 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
         QString assetsDependencies = resources.join(' ');
 
-        for (qint64 i = 0; i < resources.length(); ++i)
+        for (qint64 i = 0; i < resources.size(); ++i)
         {
             QString resource = resources.at(i);
             mMakefileDependencies.append(resource);
@@ -954,13 +954,13 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
                         // Ignore CppAlignmentVerifier [BEGIN]
                         assetsFile.write("                                                                                                           #\n");
-                        assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.size(), QChar(' ')).toUtf8());
                         assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
-                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).length() * 2), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).size() * 2), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
-                        assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());
-                        assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.length(), QChar(' ')).toUtf8());
-                        assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).length(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).size(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.size(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).size(), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write("# -------------------------------------------------------------------------------------------------------- # -----------------------------------------------------------------------------\n");
                         // Ignore CppAlignmentVerifier [END]

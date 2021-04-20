@@ -21,7 +21,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     QStringList block;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -102,7 +102,7 @@ void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QStrin
 {
     QStringList subfolders = QDir(parentFolder + '/' + path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-    for (qint64 i = 0; i < subfolders.length(); ++i)
+    for (qint64 i = 0; i < subfolders.size(); ++i)
     {
         QString subfolder     = subfolders.at(i);
         QString subfolderPath = path + '/' + subfolder;
@@ -138,7 +138,7 @@ void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QStrin
         {
             QStringList sharedSubfolders = QDir(parentFolder + '/' + subfolderPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-            for (qint64 j = 0; j < sharedSubfolders.length(); ++j)
+            for (qint64 j = 0; j < sharedSubfolders.size(); ++j)
             {
                 QString sharedSubfolder     = sharedSubfolders.at(j);
                 QString sharedSubfolderPath = subfolderPath + '/' + sharedSubfolder;

@@ -24,11 +24,11 @@ PhpEqualAlignmentVerifier::PhpEqualAlignmentVerifier()
 
 void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QList<EqualEntry> ranges;
 
-        for (; i < lines.length(); ++i) // Ignore CppForVerifier
+        for (; i < lines.size(); ++i) // Ignore CppForVerifier
         {
             QString line = lines.at(i);
             VERIFIER_IGNORE(line, "// Ignore PhpEqualAlignmentVerifier");
@@ -42,7 +42,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
             {
                 if (!ranges.isEmpty())
                 {
-                    for (qint64 j = 1; j < ranges.length(); ++j)
+                    for (qint64 j = 1; j < ranges.size(); ++j)
                     {
                         const EqualEntry &first   = ranges.constFirst();
                         const EqualEntry &current = ranges.at(j);
@@ -80,7 +80,7 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
 
 
-                    for (qint64 j = 0; j < ranges.length(); ++j)
+                    for (qint64 j = 0; j < ranges.size(); ++j)
                     {
                         const EqualEntry &current = ranges.at(j);
 
@@ -133,10 +133,10 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             EqualEntry equalEntry;
 
-            equalEntry.indent       = indent.length();
-            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
+            equalEntry.indent       = indent.size();
+            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.size() : -1;
             equalEntry.equalIndex   = match.capturedStart(5);
-            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
+            equalEntry.afterSpaces  = expression != "" ? afterSpaces.size() : -1;
             equalEntry.valueIndex   = match.capturedStart(7);
 
 

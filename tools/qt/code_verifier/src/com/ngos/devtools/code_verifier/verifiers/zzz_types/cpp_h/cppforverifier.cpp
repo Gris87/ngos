@@ -15,7 +15,7 @@ CppForVerifier::CppForVerifier()
 
 void CppForVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppForVerifier");
@@ -47,7 +47,7 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
         {
             QStringList fields = line.mid(index + 1, index2 - index - 1).split(';');
 
-            if (fields.length() == 3)
+            if (fields.size() == 3)
             {
                 QRegularExpressionMatch initMatch      = mInitRegexp.match(fields.at(0).trimmed());
                 QRegularExpressionMatch conditionMatch = mConditionRegexp.match(fields.at(1).trimmed());
@@ -109,7 +109,7 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 qint64 endRow = row + 1;
 
                 while (
-                       endRow < lines.length()
+                       endRow < lines.size()
                        &&
                        lines.at(endRow) != spaces + '}'
                        &&

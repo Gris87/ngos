@@ -39,13 +39,13 @@ qint32 main(qint32 argc, char *argv[])
     QString textElfPath;
     QString resultImagePath;
 
-    for (qint64 i = 1; i < arguments.length(); ++i)
+    for (qint64 i = 1; i < arguments.size(); ++i)
     {
         QString arg = arguments.at(i);
 
         if (arg == "-b")
         {
-            if (i >= arguments.length() - 1)
+            if (i >= arguments.size() - 1)
             {
                 usage();
 
@@ -67,7 +67,7 @@ qint32 main(qint32 argc, char *argv[])
         else
         if (arg == "-c")
         {
-            if (i >= arguments.length() - 1)
+            if (i >= arguments.size() - 1)
             {
                 usage();
 
@@ -89,7 +89,7 @@ qint32 main(qint32 argc, char *argv[])
         else
         if (arg == "-k")
         {
-            if (i >= arguments.length() - 1)
+            if (i >= arguments.size() - 1)
             {
                 usage();
 
@@ -111,7 +111,7 @@ qint32 main(qint32 argc, char *argv[])
         else
         if (arg == "-t")
         {
-            if (i >= arguments.length() - 1)
+            if (i >= arguments.size() - 1)
             {
                 usage();
 
@@ -133,7 +133,7 @@ qint32 main(qint32 argc, char *argv[])
         else
         if (arg == "-o")
         {
-            if (i >= arguments.length() - 1)
+            if (i >= arguments.size() - 1)
             {
                 usage();
 

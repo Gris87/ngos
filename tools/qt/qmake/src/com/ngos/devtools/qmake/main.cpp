@@ -25,7 +25,7 @@ qint32 main(qint32 argc, char *argv[])
 
     QStringList arguments = app.arguments();
 
-    if (arguments.length() < 2)
+    if (arguments.size() < 2)
     {
         usage();
 

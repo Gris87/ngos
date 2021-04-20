@@ -22,7 +22,7 @@ void QtPriVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
     qint64 formsIndex     = -1;
     qint64 distFilesIndex = -1;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -116,7 +116,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 {
     QStringList block;
 
-    for (qint64 i = startPos; i < lines.length(); ++i)
+    for (qint64 i = startPos; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -124,13 +124,13 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
         {
             if (line.endsWith(" \\"))
             {
-                block.append(line.left(line.length() - 2));
+                block.append(line.left(line.size() - 2));
             }
             else
             {
                 worker->addWarning(path, i, "Space character expected before \\");
 
-                block.append(line.left(line.length() - 1));
+                block.append(line.left(line.size() - 1));
             }
         }
         else
@@ -152,12 +152,12 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
     if (!block.isEmpty())
     {
-        for (qint64 i = 0; i < block.length(); ++i)
+        for (qint64 i = 0; i < block.size(); ++i)
         {
             QString file = block.at(i);
 
             if (
-                file.length() < 5
+                file.size() < 5
                 ||
                 !file.startsWith("    ")
                 ||
@@ -189,7 +189,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
         if (extension != "")
         {
-            for (qint64 i = 0; i < block.length(); ++i)
+            for (qint64 i = 0; i < block.size(); ++i)
             {
                 if (
                     !block.at(i).endsWith('.' + extension)
@@ -210,7 +210,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
         QString parentFolder = path.left(path.lastIndexOf('/') + 1);
 
-        for (qint64 i = 0; i < block.length(); ++i)
+        for (qint64 i = 0; i < block.size(); ++i)
         {
             if (!QFile::exists(parentFolder + '/' + block.at(i)))
             {
@@ -228,7 +228,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
         {
             QString blockList;
 
-            for (qint64 i = 0; i < block.length(); ++i)
+            for (qint64 i = 0; i < block.size(); ++i)
             {
                 if (i > 0)
                 {
@@ -265,7 +265,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                 {
                     QFileInfoList filesInfo = QDir(filePath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-                    for (qint64 i = 0; i < filesInfo.length(); ++i)
+                    for (qint64 i = 0; i < filesInfo.size(); ++i)
                     {
                         files.enqueue(filesInfo.at(i));
                     }
@@ -287,7 +287,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                         )
                        )
                     {
-                        relativePath = filePath.mid(parentFolder.length());
+                        relativePath = filePath.mid(parentFolder.size());
                     }
                 }
                 else
@@ -312,7 +312,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                         fileName != "Makefile"
                        )
                     {
-                        relativePath = filePath.mid(parentFolder.length());
+                        relativePath = filePath.mid(parentFolder.size());
                     }
                 }
 
@@ -335,7 +335,7 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
 
 
 
-    return block.length();
+    return block.size();
 }
 
 

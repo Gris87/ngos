@@ -45,7 +45,7 @@ void MdSpellVerifier::verify(DocsWorkerThread *worker, const QString &path, cons
     {
         QStringList spellLines = output.split('\n');
 
-        for (qint64 i = 0; i < spellLines.length(); ++i)
+        for (qint64 i = 0; i < spellLines.size(); ++i)
         {
             QString spellLine = spellLines.at(i);
 

@@ -57,7 +57,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     qint64 fileHeaderOffset = 0;
 
-    while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))
+    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
     {
         ++fileHeaderOffset;
     }
@@ -67,7 +67,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     qint64 startLine = -1;
     qint64 endLine   = -1;
 
-    for (qint64 i = fileHeaderOffset; i < lines.length(); ++i)
+    for (qint64 i = fileHeaderOffset; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -103,7 +103,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
               &&
               lines.at(fileHeaderOffset + 4) == ""
               &&
-              lines.at(lines.length() - 2).startsWith("#endif")
+              lines.at(lines.size() - 2).startsWith("#endif")
              )
             )
            )
@@ -220,7 +220,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                         QString includeFile   = line.mid(9).trimmed();
                         bool    globalInclude = includeFile.startsWith('<') && includeFile.endsWith('>');
 
-                        includeFile = includeFile.mid(1, includeFile.length() - 2);
+                        includeFile = includeFile.mid(1, includeFile.size() - 2);
 
 
 
@@ -338,7 +338,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
 
 
-            for (qint64 i = 0; i < blocks.length(); ++i)
+            for (qint64 i = 0; i < blocks.size(); ++i)
             {
                 QStringList block = blocks.at(i);
 
@@ -354,7 +354,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
 
 
-            for (qint64 i = 1; i < blockTypes.length(); ++i)
+            for (qint64 i = 1; i < blockTypes.size(); ++i)
             {
                 if (blockTypes.at(i - 1) > blockTypes.at(i))
                 {

@@ -1,253 +1,297 @@
-#include <QCoreApplication>
-#include <QDateTime>
-#include <QDir>
-#include <QFileInfo>
-#include <QList>
-#include <QProcess>
-#include <QQueue>
-
-#include <com/ngos/devtools/shared/console/console.h>
-#include <com/ngos/devtools/test_verifier/threads/testverifythread.h>
-#include <com/ngos/devtools/test_verifier/threads/testworkerthread.h>
-
-
-
-void usage()
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    Console::err(
-                "Usage: test_verifier PATH\n"
-                "    * PATH - path to folder"
-                );
-    // Ignore CppAlignmentVerifier [END]
-}
-
-bool isGitIgnored(const QString &workingDirectory, const QString &path)
-{
-    QProcess git;
-
-    git.setWorkingDirectory(workingDirectory);
-    git.start("git", QStringList() << "check-ignore" << path);
-
-    if (!git.waitForFinished(-1))
-    {
-        return false;
-    }
-
-    return !git.readAll().isEmpty();
-}
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-
-
-
-    QStringList arguments = app.arguments();
-
-    if (arguments.length() != 2)
-    {
-        usage();
-
-        return 2;
-    }
-
-
-
-    QString targetPath = arguments.at(1);
-
-
-
-    Console::out("Test verifier started");
-    Console::out("");
-    Console::out("Parameters:");
-    Console::out(QString("PATH = %1").arg(targetPath));
-    Console::out("");
-
-    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
-
-
-
-    QList<TestWorkerThread *> workers;
-
-    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
-    {
-        TestWorkerThread *worker = new TestWorkerThread();
-        worker->start();
-
-        workers.append(worker);
-    }
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(targetPath));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path     = file.absoluteFilePath();
-        QString fileName = file.fileName();
-
-
-
-        if (!isGitIgnored(file.dir().absolutePath(), path))
-        {
-            if (file.isDir())
-            {
-                if (fileName != ".git" && fileName != "test")
-                {
-                    QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-                    for (qint64 i = 0; i < filesInfo.length(); ++i)
-                    {
-                        files.enqueue(filesInfo.at(i));
-                    }
-                }
-            }
-            else
-            {
-                if (fileName.endsWith(".h"))
-                {
-                    TestWorkerThread::pushFile(path);
-                }
-            }
-        }
-    }
-
-
-
-    TestWorkerThread::noMoreFiles();
-
-
-
-    QList<TestVerifyThread *> verifiers;
-
-    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
-    {
-        TestVerifyThread *verifier = new TestVerifyThread();
-        verifier->start();
-
-        verifiers.append(verifier);
-    }
-
-
-
-    QList<TestStructureEntry> testStructureEntries;
-    QList<TestEntry>          testEntries;
-
-    for (qint64 i = 0; i < workers.length(); ++i)
-    {
-        TestWorkerThread *worker = workers.at(i);
-
-        worker->wait();
-
-        TestVerifyThread::pushTestStructureEntries(worker->getTestStructureEntries());
-        testStructureEntries.append(worker->getTestStructureEntries());
-
-        TestVerifyThread::pushTestEntries(worker->getTestEntries());
-        testEntries.append(worker->getTestEntries());
-
-        delete worker;
-    }
-
-
-
-    TestVerifyThread::noMoreTestStructureEntries();
-    TestVerifyThread::noMoreTestEntries();
-
-
-
-    Console::out(QString("%1 files verifed in %2 ms").arg(TestWorkerThread::getAmountOfFiles()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));
-
-
-
-    std::sort(testStructureEntries.begin(), testStructureEntries.end());
-
-    Console::out("");
-    Console::out("Found structure entries for testing:");
-
-    for (qint64 i = 0; i < testStructureEntries.length(); ++i)
-    {
-        Console::out(testStructureEntries.at(i).toString());
-    }
-
-    Console::out("");
-    Console::out(QString("Structure entries for testing: %1").arg(testStructureEntries.length()));
-
-
-
-    std::sort(testEntries.begin(), testEntries.end());
-
-    Console::out("");
-    Console::out("Found entries for testing:");
-
-    for (qint64 i = 0; i < testEntries.length(); ++i)
-    {
-        Console::out(testEntries.at(i).toString());
-    }
-
-    Console::out("");
-    Console::out(QString("Entries for testing: %1").arg(testEntries.length()));
-
-
-
-    QList<TestMessageInfo> messages;
-
-    for (qint64 i = 0; i < verifiers.length(); ++i)
-    {
-        TestVerifyThread *verifier = verifiers.at(i);
-
-        verifier->wait();
-        messages.append(verifier->getMessages());
-        delete verifier;
-    }
-
-
-
-    if (!messages.isEmpty())
-    {
-        std::sort(messages.begin(), messages.end());
-
-
-
-        Console::err("");
-        Console::err("Errors:");
-
-        for (qint64 i = 0; i < messages.length(); ++i)
-        {
-            Console::err(messages.at(i).toString());
-        }
-
-
-
-        quint64 amountOfBitsTests = 0;
-
-        for (qint64 i = 0; i < testStructureEntries.length(); ++i)
-        {
-            if (testStructureEntries.at(i).isBitsDefined())
-            {
-                ++amountOfBitsTests;
-            }
-        }
-
-
-
-        Console::err("");
-        Console::err(QString("Tests covered on %1 %").arg(100 - messages.length() * 100.0 / (testStructureEntries.length() + amountOfBitsTests + testEntries.length())));
-        Console::err("");
-
-        return 1;
-    }
-
-
-
-    Console::out("");
-    Console::out("Tests covered on 100 %");
-    Console::out("");
-
-
-
-    return 0;
-}
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDateTime>                                                                                                                                                                                     // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFileInfo>                                                                                                                                                                                     // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QQueue>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/test_verifier/threads/testverifythread.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/test_verifier/threads/testworkerthread.h>                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void usage()                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    Console::err(                                                                                                                                                                                        // Colorize: green
+                "Usage: test_verifier PATH\n"                                                                                                                                                            // Colorize: green
+                "    * PATH - path to folder"                                                                                                                                                            // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool isGitIgnored(const QString &workingDirectory, const QString &path)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QProcess git;                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    git.setWorkingDirectory(workingDirectory);                                                                                                                                                           // Colorize: green
+    git.start("git", QStringList() << "check-ignore" << path);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!git.waitForFinished(-1))                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return !git.readAll().isEmpty();                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCoreApplication app(argc, argv);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList arguments = app.arguments();                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check arguments                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (arguments.size() != 2)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            usage();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 2;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetPath = arguments.at(1);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output application info                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("Test verifier started");                                                                                                                                                           // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Parameters:");                                                                                                                                                                     // Colorize: green
+        Console::out(QString("PATH = %1").arg(targetPath));                                                                                                                                              // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<TestWorkerThread *> workers;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Start workers                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestWorkerThread *worker = new TestWorkerThread();                                                                                                                                           // Colorize: green
+            worker->start();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            workers.append(worker);                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over files in targetPath and push them to workers                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QQueue<QFileInfo> files;                                                                                                                                                                         // Colorize: green
+        files.enqueue(QFileInfo(targetPath));                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (!files.isEmpty())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFileInfo file = files.dequeue();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString path     = file.absoluteFilePath();                                                                                                                                                  // Colorize: green
+            QString fileName = file.fileName();                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!isGitIgnored(file.dir().absolutePath(), path))                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (file.isDir())                                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (fileName != ".git" && fileName != "test")                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        for (qint64 i = 0; i < filesInfo.size(); ++i)                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            files.enqueue(filesInfo.at(i));                                                                                                                                              // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (fileName.endsWith(".h"))                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        TestWorkerThread::pushFile(path);                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TestWorkerThread::noMoreFiles();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<TestVerifyThread *> verifiers;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Start verifiers                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestVerifyThread *verifier = new TestVerifyThread();                                                                                                                                         // Colorize: green
+            verifier->start();                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            verifiers.append(verifier);                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<TestStructureEntry> testStructureEntries;                                                                                                                                                      // Colorize: green
+    QList<TestEntry>          testEntries;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Wait for workers and push their results to verifiers                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < workers.size(); ++i)                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestWorkerThread *worker = workers.at(i);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            worker->wait();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TestVerifyThread::pushTestStructureEntries(worker->getTestStructureEntries());                                                                                                               // Colorize: green
+            testStructureEntries.append(worker->getTestStructureEntries());                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            TestVerifyThread::pushTestEntries(worker->getTestEntries());                                                                                                                                 // Colorize: green
+            testEntries.append(worker->getTestEntries());                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete worker;                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    TestVerifyThread::noMoreTestStructureEntries();                                                                                                                                                      // Colorize: green
+    TestVerifyThread::noMoreTestEntries();                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Print structure entries for testing                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        std::sort(testStructureEntries.begin(), testStructureEntries.end());                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Found structure entries for testing:");                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < testStructureEntries.size(); ++i)                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::out(testStructureEntries.at(i).toString());                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out(QString("Structure entries for testing: %1").arg(testStructureEntries.size()));                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Print entries for testing                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        std::sort(testEntries.begin(), testEntries.end());                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Found entries for testing:");                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < testEntries.size(); ++i)                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::out(testEntries.at(i).toString());                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out(QString("Entries for testing: %1").arg(testEntries.size()));                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<TestMessageInfo> messages;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Wait for verifiers and get messages from them                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < verifiers.size(); ++i)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestVerifyThread *verifier = verifiers.at(i);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            verifier->wait();                                                                                                                                                                            // Colorize: green
+            messages.append(verifier->getMessages());                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete verifier;                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // If there are some messages from verifiers then print them                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!messages.isEmpty())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            std::sort(messages.begin(), messages.end());                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Print errors                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err("");                                                                                                                                                                        // Colorize: green
+                Console::err("Errors:");                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 i = 0; i < messages.size(); ++i)                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(messages.at(i).toString());                                                                                                                                             // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            quint64 amountOfBitsTests = 0;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Calculate structures with bits                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 0; i < testStructureEntries.size(); ++i)                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (testStructureEntries.at(i).isBitsDefined())                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++amountOfBitsTests;                                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::err("");                                                                                                                                                                            // Colorize: green
+            Console::err(QString("Tests covered on %1 %").arg(100 - messages.size() * 100.0 / (testStructureEntries.size() + amountOfBitsTests + testEntries.size())));                            // Colorize: green
+            Console::err("");                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::out(QString("%1 files verified in %2 ms").arg(TestWorkerThread::getAmountOfFiles()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Everything is OK                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Tests covered on 100 %");                                                                                                                                                          // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out(QString("%1 files verified in %2 ms").arg(TestWorkerThread::getAmountOfFiles()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return 0;                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

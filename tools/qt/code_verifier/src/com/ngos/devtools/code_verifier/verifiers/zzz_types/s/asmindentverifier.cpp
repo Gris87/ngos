@@ -17,7 +17,7 @@ AsmIndentVerifier::AsmIndentVerifier()
 
 void AsmIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "# AsmIndentVerifier");
@@ -72,7 +72,7 @@ void AsmIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                 &&
                 !trimmedLine.startsWith("rep; ")
                 &&
-                i < lines.length() - 1
+                i < lines.size() - 1
                )
             {
                 if (

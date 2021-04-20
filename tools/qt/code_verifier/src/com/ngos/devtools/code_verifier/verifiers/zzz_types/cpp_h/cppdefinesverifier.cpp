@@ -25,7 +25,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     qint64 fileHeaderOffset = 0;
 
-    while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))
+    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
     {
         ++fileHeaderOffset;
     }
@@ -35,7 +35,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     qint64 startLine = -1;
     qint64 endLine   = -1;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -97,7 +97,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                     {
                         ++i;
 
-                        if (i >= lines.length())
+                        if (i >= lines.size())
                         {
                             break;
                         }
@@ -129,7 +129,7 @@ void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 {
                     bool multiline = !currentBlock.isEmpty();
 
-                    for (qint64 j = 0; j < currentBlock.length(); ++j)
+                    for (qint64 j = 0; j < currentBlock.size(); ++j)
                     {
                         if (!currentBlock.at(j).endsWith(" \\"))
                         {

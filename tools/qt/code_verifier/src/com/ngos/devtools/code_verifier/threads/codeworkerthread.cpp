@@ -122,13 +122,13 @@ void CodeWorkerThread::processFile(CodeFileInfo *fileInfo)
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString &line = lines[i];
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.length() - 1, 1);
+            line.remove(line.size() - 1, 1);
         }
     }
 

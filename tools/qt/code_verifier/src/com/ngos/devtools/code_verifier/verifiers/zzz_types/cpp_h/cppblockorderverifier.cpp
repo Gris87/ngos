@@ -21,7 +21,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
 {
     qint64 fileHeaderOffset = 0;
 
-    while (fileHeaderOffset < lines.length() && lines.at(fileHeaderOffset).startsWith("//"))
+    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
     {
         ++fileHeaderOffset;
     }
@@ -37,7 +37,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -77,7 +77,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
             {
                 ++i;
 
-                if (i >= lines.length())
+                if (i >= lines.size())
                 {
                     break;
                 }
@@ -156,7 +156,7 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
 
 
 
-    for (qint64 i = 1; i < blocks.length(); ++i)
+    for (qint64 i = 1; i < blocks.size(); ++i)
     {
         QStringList block = blocks.at(i - 1);
 
@@ -180,22 +180,22 @@ void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path
         }
 
         if (
-            block.length() < 4
+            block.size() < 4
             ||
-            block.at(block.length() - 1) != ""
+            block.at(block.size() - 1) != ""
             ||
-            block.at(block.length() - 2) != ""
+            block.at(block.size() - 2) != ""
             ||
-            block.at(block.length() - 3) != ""
+            block.at(block.size() - 3) != ""
             ||
-            block.at(block.length() - 4) == ""
+            block.at(block.size() - 4) == ""
            )
         {
             worker->addError(path, blockStarts.at(i), "Blocks should be separated by 3 blank lines");
         }
     }
 
-    for (qint64 i = 1; i < blockTypes.length(); ++i)
+    for (qint64 i = 1; i < blockTypes.size(); ++i)
     {
         if (blockTypes.at(i - 1) > blockTypes.at(i))
         {

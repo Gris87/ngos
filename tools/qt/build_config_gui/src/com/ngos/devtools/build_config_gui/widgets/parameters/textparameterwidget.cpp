@@ -33,14 +33,14 @@ TextParameterWidget::TextParameterWidget(const QString &id, const QHash<QString,
     QString newValue = mValue;
 
     if (
-        newValue.length() > 1
+        newValue.size() > 1
         &&
         newValue.startsWith('\"')
         &&
         newValue.endsWith('\"')
        )
     {
-        newValue = newValue.mid(1, newValue.length() - 2);
+        newValue = newValue.mid(1, newValue.size() - 2);
     }
 
 
@@ -62,14 +62,14 @@ void TextParameterWidget::setValue(const QString &value)
     QString newValue = value;
 
     if (
-        newValue.length() > 1
+        newValue.size() > 1
         &&
         newValue.startsWith('\"')
         &&
         newValue.endsWith('\"')
        )
     {
-        newValue = newValue.mid(1, newValue.length() - 2);
+        newValue = newValue.mid(1, newValue.size() - 2);
     }
 
     ParameterWidget::setValue('\"' + newValue + '\"');

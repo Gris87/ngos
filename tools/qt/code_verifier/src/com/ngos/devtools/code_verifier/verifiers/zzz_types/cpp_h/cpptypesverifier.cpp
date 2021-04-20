@@ -20,7 +20,7 @@ void CppTypesVerifier::verify(CodeWorkerThread *worker, const QString &path, con
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppTypesVerifier");

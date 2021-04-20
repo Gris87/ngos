@@ -36,7 +36,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
     QStringList bugs;
 
-    for (qint64 i = 0; i < originalLines.length(); ++i)
+    for (qint64 i = 0; i < originalLines.size(); ++i)
     {
         QString originalLine = originalLines.at(i).trimmed();
 
@@ -84,7 +84,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
     qint64  lastBugIndex = 0;
     QString lastBugWord  = "";
 
-    while (lastBugIndex < bugs.length())
+    while (lastBugIndex < bugs.size())
     {
         QString bug = bugs.at(lastBugIndex);
 

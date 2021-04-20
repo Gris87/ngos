@@ -192,7 +192,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i).trimmed();
 
@@ -201,7 +201,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
             line = line.mid(9).trimmed();
 
             if (
-                line.length() > 2
+                line.size() > 2
                 &&
                 (
                  (
@@ -218,7 +218,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                 )
                )
             {
-                QString includedFile = line.mid(1, line.length() - 2);
+                QString includedFile = line.mid(1, line.size() - 2);
 
 
 
@@ -238,7 +238,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                     {
                         bool found = false;
 
-                        for (qint64 j = 0; j < sIncludes.length(); ++j)
+                        for (qint64 j = 0; j < sIncludes.size(); ++j)
                         {
                             QString path = mWorkingDirectory + '/' + sIncludes.at(j) + '/' + includedFile;
 

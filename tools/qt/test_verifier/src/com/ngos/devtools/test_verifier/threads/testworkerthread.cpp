@@ -1,396 +1,458 @@
-#include "testworkerthread.h"
-
-#include <QFile>
-
-
-
-quint64     TestWorkerThread::sAmountOfFiles = 0;
-QStringList TestWorkerThread::sFiles;
-QMutex      TestWorkerThread::sFilesMutex;
-QSemaphore  TestWorkerThread::sFilesSemaphore;
-
-
-
-TestWorkerThread::TestWorkerThread()
-    : QThread()
-    , mTestStructureEntries()
-    , mTestEntries()
-    , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$")
-    , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator.+)\\([^)]*\\).*$")
-    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$")
-    , mBitsDefinitionRegExp("^ *\\w+ +\\w+ *: *\\d+;.*$")
-{
-    // Nothing
-}
-
-quint64 TestWorkerThread::getAmountOfFiles()
-{
-    return sAmountOfFiles - 1;
-}
-
-void TestWorkerThread::pushFile(const QString &path)
-{
-    QMutexLocker lock(&sFilesMutex);
-
-    ++sAmountOfFiles;
-    sFiles.append(path);
-    sFilesSemaphore.release();
-}
-
-QString TestWorkerThread::popFile()
-{
-    sFilesSemaphore.acquire();
-
-    {
-        QMutexLocker lock(&sFilesMutex);
-
-
-
-        QString res = sFiles.constFirst();
-
-        if (res == "")
-        {
-            sFilesSemaphore.release();
-        }
-        else
-        {
-            sFiles.removeFirst();
-        }
-
-        return res;
-    }
-}
-
-void TestWorkerThread::noMoreFiles()
-{
-    pushFile("");
-}
-
-const QList<TestStructureEntry>& TestWorkerThread::getTestStructureEntries() const
-{
-    return mTestStructureEntries;
-}
-
-const QList<TestEntry>& TestWorkerThread::getTestEntries() const
-{
-    return mTestEntries;
-}
-
-void TestWorkerThread::run()
-{
-    do
-    {
-        QString path = popFile();
-
-        if (path == "")
-        {
-            break;
-        }
-
-        processFile(path);
-    } while(true);
-}
-
-void TestWorkerThread::processFile(const QString &path)
-{
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.length(); ++i)
-    {
-        lines[i] = lines.at(i).trimmed();
-    }
-
-    processLines(path, lines);
-}
-
-void TestWorkerThread::processLines(const QString &path, const QStringList &lines)
-{
-    QString testModule = path.mid(path.lastIndexOf('/') + 1);
-
-
-
-    for (qint64 i = 0; i < lines.length(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line == '{')
-        {
-            if (i > 0)
-            {
-                QString prevLine1 = lines.at(i - 1);
-                QString prevLine2 = (i >= 2) ? lines.at(i - 2) : "";
-
-                if (
-                    !prevLine1.startsWith("#define ")
-                    &&
-                    !prevLine1.endsWith('\\')
-                    &&
-                    !prevLine1.startsWith("namespace")
-                    &&
-                    !prevLine1.startsWith("enum")
-                    &&
-                    !prevLine1.startsWith("union")
-                    &&
-                    !prevLine1.startsWith("struct")
-                    &&
-                    !prevLine1.startsWith("class")
-                   )
-                {
-                    qint64 lineNum = i - 1;
-
-
-
-                    quint64 level = 1;
-
-                    do
-                    {
-                        ++i;
-
-                        if (i >= lines.length())
-                        {
-                            break;
-                        }
-
-                        QString anotherLine = lines.at(i);
-
-                        if (anotherLine == '{')
-                        {
-                            ++level;
-                        }
-                        else
-                        if (anotherLine == '}')
-                        {
-                            --level;
-
-                            if (level <= 0)
-                            {
-                                break;
-                            }
-                        }
-                    } while(true);
-
-
-
-                    QRegularExpressionMatch match = mFunctionRegexp.match(prevLine1);
-
-                    if (match.hasMatch())
-                    {
-                        QString name = match.captured(1);
-
-                        addTestEntry(TestEntryType::INTERNAL_FUNCTION, path, lineNum, name, testModule, prevLine1, prevLine2);
-                    }
-                }
-            }
-        }
-        else
-        if (line.startsWith("#define "))
-        {
-            QRegularExpressionMatch match = mDefineRegexp.match(line);
-
-            if (match.hasMatch())
-            {
-                QString prevLine = (i >= 1) ? lines.at(i - 1) : "";
-
-                QString name       = match.captured(1);
-                QString parameters = match.captured(2);
-                QString value      = match.captured(3);
-
-                qint64 lineNum = i;
-
-
-
-                if (line.endsWith('\\'))
-                {
-                    do
-                    {
-                        ++i;
-
-                        if (i >= lines.length())
-                        {
-                            break;
-                        }
-
-                        QString anotherLine = lines.at(i);
-
-                        value += '\n';
-                        value += anotherLine;
-
-                        if (!anotherLine.endsWith('\\'))
-                        {
-                            break;
-                        }
-                    } while(true);
-                }
-
-
-
-                if (
-                    parameters != "..."
-                    &&
-                    !value.contains(';')
-                    &&
-                    !value.contains('{')
-                    &&
-                    !value.contains('}')
-                    &&
-                    value.contains('(')
-                    &&
-                    value.contains(')')
-                   )
-                {
-                    addTestEntry(TestEntryType::DEFINE, path, lineNum, name, testModule, line, prevLine);
-                }
-            }
-            else
-            {
-                if (line.endsWith('\\'))
-                {
-                    do
-                    {
-                        ++i;
-
-                        if (i >= lines.length())
-                        {
-                            break;
-                        }
-
-                        QString anotherLine = lines.at(i);
-
-                        if (!anotherLine.endsWith('\\'))
-                        {
-                            break;
-                        }
-                    } while(true);
-                }
-            }
-        }
-        else
-        if (line.contains(';'))
-        {
-            QRegularExpressionMatch match = mFunctionRegexp.match(line);
-
-            if (match.hasMatch())
-            {
-                QString prevLine = (i >= 1) ? lines.at(i - 1) : "";
-
-                QString name = match.captured(1);
-
-                addTestEntry(TestEntryType::FUNCTION, path, i, name, testModule, line, prevLine);
-            }
-        }
-        else
-        {
-            if (!path.contains("/tools/qt/"))
-            {
-                QRegularExpressionMatch match = mDefinitionRegExp.match(line);
-
-                if (match.hasMatch())
-                {
-                    QString name = match.captured(1);
-
-
-
-                    bool bitsDefined = false;
-
-
-
-                    qint64 level = 0;
-                    qint64 j     = i;
-
-                    do
-                    {
-                        ++j;
-
-                        if (j >= lines.length())
-                        {
-                            break;
-                        }
-
-                        QString anotherLine = lines.at(j);
-
-                        if (anotherLine == '{')
-                        {
-                            ++level;
-                        }
-                        else
-                        if (
-                            anotherLine == '}'
-                            ||
-                            anotherLine == "};"
-                            ||
-                            anotherLine == "} __attribute__((packed));"
-                           )
-                        {
-                            --level;
-
-                            if (level <= 0)
-                            {
-                                break;
-                            }
-                        }
-
-
-
-                        QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(anotherLine);
-
-                        if (match2.hasMatch())
-                        {
-                            bitsDefined = true;
-
-                            break;
-                        }
-                    } while(true);
-
-
-
-                    addTestStructureEntry(path, i, name, bitsDefined);
-                }
-            }
-        }
-    }
-}
-
-void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name, bool bitsDefined)
-{
-    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name, bitsDefined));
-}
-
-void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine)
-{
-    if (
-        !line.contains("// TEST: NO")
-        &&
-        !prevLine.startsWith("// TEST: NO")
-       )
-    {
-        qint64 index = line.lastIndexOf("// TEST: MODULE=");
-
-        if (index >= 0)
-        {
-            testModule = line.mid(index + 16);
-        }
-        else
-        {
-            index = prevLine.lastIndexOf("// TEST: MODULE=");
-
-            if (index >= 0)
-            {
-                testModule = prevLine.mid(index + 16);
-            }
-        }
-
-        mTestEntries.append(TestEntry(type, path, lineNum, name + "()", testModule));
-    }
-}
+#include "testworkerthread.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64      TestWorkerThread::sAmountOfFiles = 0;                                                                                                                                                        // Colorize: green
+QStringList TestWorkerThread::sFiles;                                                                                                                                                                    // Colorize: green
+QMutex      TestWorkerThread::sFilesMutex;                                                                                                                                                               // Colorize: green
+QSemaphore  TestWorkerThread::sFilesSemaphore;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TestWorkerThread::TestWorkerThread()                                                                                                                                                                     // Colorize: green
+    : QThread()                                                                                                                                                                                          // Colorize: green
+    , mTestStructureEntries()                                                                                                                                                                            // Colorize: green
+    , mTestEntries()                                                                                                                                                                                     // Colorize: green
+    , mDefineRegexp("^#define +(\\w+)\\(([^)]*)\\) +(.+)$") // #define MAX(a, b) a > b ? a : b                                                                                                           // Colorize: green
+    , mFunctionRegexp("^(?:(?:static|const|inline) +)*(?:\\w[\\w<,>*& ]* )?(~?\\w+|operator.+)\\([^)]*\\).*$") // [static ][const ][inline ] quint8 function(*)                                          // Colorize: green
+    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$") // struct A | class B | union C | enum [class ] D                                                                          // Colorize: green
+    , mBitsDefinitionRegExp("^ *\\w+ +\\w+ *: *\\d+;.*$") // quint8 bitEntry: 4;                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 TestWorkerThread::getAmountOfFiles()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return sAmountOfFiles - 1;                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::pushFile(const QString &path)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMutexLocker lock(&sFilesMutex);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ++sAmountOfFiles;                                                                                                                                                                                    // Colorize: green
+    sFiles.append(path);                                                                                                                                                                                 // Colorize: green
+    sFilesSemaphore.release();                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString TestWorkerThread::popFile()                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sFilesSemaphore.acquire();                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sFilesMutex);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString res = sFiles.constFirst();                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res == "")                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sFilesSemaphore.release();                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sFiles.removeFirst();                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::noMoreFiles()                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    pushFile("");                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<TestStructureEntry>& TestWorkerThread::getTestStructureEntries() const                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mTestStructureEntries;                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<TestEntry>& TestWorkerThread::getTestEntries() const                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mTestEntries;                                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::run()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString path = popFile();                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (path == "")                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        processFile(path);                                                                                                                                                                               // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::processFile(const QString &path)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Split content to lines and process them                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList lines = content.split('\n');                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines[i] = lines.at(i).trimmed();                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        processLines(path, lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::processLines(const QString &path, const QStringList &lines)                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString testModule = path.mid(path.lastIndexOf('/') + 1);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Process lines                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to parse line as function                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line == '{')                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (i > 0)                                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString prevLine1 = lines.at(i - 1);                                                                                                                                             // Colorize: green
+                        QString prevLine2 = (i >= 2) ? lines.at(i - 2) : "";                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            !prevLine1.startsWith("#define ")                                                                                                                                            // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.endsWith('\\')                                                                                                                                                    // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.startsWith("namespace")                                                                                                                                           // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.startsWith("enum")                                                                                                                                                // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.startsWith("union")                                                                                                                                               // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.startsWith("struct")                                                                                                                                              // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !prevLine1.startsWith("class")                                                                                                                                               // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qint64 lineNum = i - 1;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            // Skip lines in order to find end of function                                                                                                                               // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                qint64 level = 1;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                do                                                                                                                                                                       // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    ++i;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (i >= lines.size())                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    QString anotherLine = lines.at(i);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (anotherLine == '{')                                                                                                                                              // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        ++level;                                                                                                                                                         // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (anotherLine == '}')                                                                                                                                              // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        --level;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (level <= 0)                                                                                                                                                  // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            break;                                                                                                                                                       // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                } while(true);                                                                                                                                                           // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            QRegularExpressionMatch match = mFunctionRegexp.match(prevLine1);                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (match.hasMatch())                                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString name = match.captured(1);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                addTestEntry(TestEntryType::INTERNAL_FUNCTION, path, lineNum, name, testModule, prevLine1, prevLine2);                                                                   // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to parse line as definition                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("#define "))                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QRegularExpressionMatch match = mDefineRegexp.match(line);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (match.hasMatch())                                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString prevLine = (i >= 1) ? lines.at(i - 1) : "";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        QString name       = match.captured(1);                                                                                                                                          // Colorize: green
+                        QString parameters = match.captured(2);                                                                                                                                          // Colorize: green
+                        QString value      = match.captured(3);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        qint64 lineNum = i;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Skip multi-line definition                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (line.endsWith('\\'))                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                do                                                                                                                                                                       // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    ++i;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (i >= lines.size())                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    QString anotherLine = lines.at(i);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    value += '\n';                                                                                                                                                       // Colorize: green
+                                    value += anotherLine;                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!anotherLine.endsWith('\\'))                                                                                                                                     // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                } while(true);                                                                                                                                                           // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            parameters != "..."                                                                                                                                                          // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !value.contains(';')                                                                                                                                                         // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !value.contains('{')                                                                                                                                                         // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            !value.contains('}')                                                                                                                                                         // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            value.contains('(')                                                                                                                                                          // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            value.contains(')')                                                                                                                                                          // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            addTestEntry(TestEntryType::DEFINE, path, lineNum, name, testModule, line, prevLine);                                                                                        // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Skip multi-line definition                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (line.endsWith('\\'))                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                do                                                                                                                                                                       // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    ++i;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (i >= lines.size())                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    QString anotherLine = lines.at(i);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!anotherLine.endsWith('\\'))                                                                                                                                     // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                } while(true);                                                                                                                                                           // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to parse line as function declaration                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.contains(';'))                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QRegularExpressionMatch match = mFunctionRegexp.match(line);                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (match.hasMatch())                                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString prevLine = (i >= 1) ? lines.at(i - 1) : "";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        QString name = match.captured(1);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        addTestEntry(TestEntryType::FUNCTION, path, i, name, testModule, line, prevLine);                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Try to parse line as structure declaration                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!path.contains("/tools/qt/"))                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QRegularExpressionMatch match = mDefinitionRegExp.match(line);                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (match.hasMatch())                                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString name = match.captured(1);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        bool bitsDefined = false;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Iterate over structure declaration in order to find bit definition                                                                                                            // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            qint64 level = 0;                                                                                                                                                            // Colorize: green
+                            qint64 j     = i;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            do                                                                                                                                                                           // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString anotherLine;                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Iterate lines                                                                                                                                                         // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    ++j;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (j >= lines.size())                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    anotherLine = lines.at(j);                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (anotherLine == '{')                                                                                                                                              // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        ++level;                                                                                                                                                         // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (                                                                                                                                                                 // Colorize: green
+                                        anotherLine == '}'                                                                                                                                               // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        anotherLine == "};"                                                                                                                                              // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        anotherLine == "} __attribute__((packed));"                                                                                                                      // Colorize: green
+                                       )                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        --level;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (level <= 0)                                                                                                                                                  // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            break;                                                                                                                                                       // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Check that current line contain bit definition                                                                                                                        // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(anotherLine);                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (match2.hasMatch())                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        bitsDefined = true;                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            } while(true);                                                                                                                                                               // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        addTestStructureEntry(path, i, name, bitsDefined);                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::addTestStructureEntry(const QString &path, qint64 lineNum, const QString &name, bool bitsDefined)                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mTestStructureEntries.append(TestStructureEntry(path, lineNum, name, bitsDefined));                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestWorkerThread::addTestEntry(TestEntryType type, const QString &path, qint64 lineNum, const QString &name, QString testModule, const QString &line, const QString &prevLine)                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (                                                                                                                                                                                                 // Colorize: green
+        !line.contains("// TEST: NO")                                                                                                                                                                    // Colorize: green
+        &&                                                                                                                                                                                               // Colorize: green
+        !prevLine.startsWith("// TEST: NO")                                                                                                                                                              // Colorize: green
+       )                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Update testModule from current line comment or from previous line comment                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index = line.lastIndexOf("// TEST: MODULE=");                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (index >= 0)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                testModule = line.mid(index + 16);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                index = prevLine.lastIndexOf("// TEST: MODULE=");                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index >= 0)                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    testModule = prevLine.mid(index + 16);                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        mTestEntries.append(TestEntry(type, path, lineNum, name + "()", testModule));                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

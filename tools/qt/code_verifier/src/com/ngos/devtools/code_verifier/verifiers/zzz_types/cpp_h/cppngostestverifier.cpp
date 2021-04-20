@@ -67,7 +67,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
             {
                 QFileInfoList filesInfo = QDir(filePath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
 
-                for (qint64 i = 0; i < filesInfo.length(); ++i)
+                for (qint64 i = 0; i < filesInfo.size(); ++i)
                 {
                     files.enqueue(filesInfo.at(i));
                 }
@@ -87,7 +87,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
                     if (expectedPath.endsWith(".h"))
                     {
-                        expectedPath.remove(expectedPath.length() - 2, 2);
+                        expectedPath.remove(expectedPath.size() - 2, 2);
                     }
 
                     expectedPath = expectedPath.replace('/', '_');
@@ -115,7 +115,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
     }
     else
     {
-        for (qint64 i = 0; i < lines.length(); ++i)
+        for (qint64 i = 0; i < lines.size(); ++i)
         {
             QString line = lines.at(i);
             VERIFIER_IGNORE(line, "// Ignore CppNgosTestVerifier");
@@ -136,7 +136,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
                 if (expectedPath.endsWith(".h"))
                 {
-                    expectedPath.remove(expectedPath.length() - 2, 2);
+                    expectedPath.remove(expectedPath.size() - 2, 2);
                 }
 
                 expectedPath = expectedPath.replace('/', '_');

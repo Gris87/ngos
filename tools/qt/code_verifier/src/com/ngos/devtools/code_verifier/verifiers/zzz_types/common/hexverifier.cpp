@@ -26,7 +26,7 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -43,7 +43,7 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
 
                 if (hexTrimmed.startsWith('%'))
                 {
-                    if (hexTrimmed.at(hexTrimmed.length() - 1).isLetter())
+                    if (hexTrimmed.at(hexTrimmed.size() - 1).isLetter())
                     {
                         if (
                             hexTrimmed != "%p"
@@ -62,7 +62,7 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                     }
                     else
                     {
-                        for (qint64 j = 1; j < hexTrimmed.length(); ++j)
+                        for (qint64 j = 1; j < hexTrimmed.size(); ++j)
                         {
                             if (!hexTrimmed.at(j).isNumber())
                             {
@@ -76,19 +76,19 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                 else
                 {
                     if (
-                        hexTrimmed.length() != 2
+                        hexTrimmed.size() != 2
                         &&
-                        hexTrimmed.length() != 4
+                        hexTrimmed.size() != 4
                         &&
-                        hexTrimmed.length() != 8
+                        hexTrimmed.size() != 8
                         &&
-                        hexTrimmed.length() != 16
+                        hexTrimmed.size() != 16
                        )
                     {
                         worker->addError(path, i, QString("Hex length of %1 should be 2, 4, 8 or 16").arg(hex));
                     }
 
-                    for (qint64 j = 0; j < hexTrimmed.length(); ++j)
+                    for (qint64 j = 0; j < hexTrimmed.size(); ++j)
                     {
                         if (hexTrimmed.at(j).isLower())
                         {

@@ -59,13 +59,13 @@ void MainWindow::loadBuildConfigFile()
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString &line = lines[i];
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.length() - 1, 1);
+            line.remove(line.size() - 1, 1);
         }
     }
 
@@ -162,13 +162,13 @@ void MainWindow::on_actionSave_triggered()
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString &line = lines[i];
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.length() - 1, 1);
+            line.remove(line.size() - 1, 1);
         }
     }
 
@@ -187,7 +187,7 @@ void MainWindow::on_actionSave_triggered()
 
         bool found = false;
 
-        for (qint64 i = 0; i < lines.length(); ++i)
+        for (qint64 i = 0; i < lines.size(); ++i)
         {
             QString &line = lines[i];
 
@@ -195,9 +195,9 @@ void MainWindow::on_actionSave_triggered()
             {
                 found = true;
 
-                qint64 index = parameter.length() + 9;
+                qint64 index = parameter.size() + 9;
 
-                while (index < line.length() && line.at(index) == ' ')
+                while (index < line.size() && line.at(index) == ' ')
                 {
                     ++index;
                 }
@@ -295,7 +295,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -379,7 +379,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
                         QHash<QString, QString> metaInformation;
 
-                        for (qint64 j = 0; j < metaData.length(); ++j)
+                        for (qint64 j = 0; j < metaData.size(); ++j)
                         {
                             QString metaLine = metaData.at(j);
 
@@ -392,13 +392,13 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
                                 if (metaValue.endsWith('\\'))
                                 {
-                                    metaValue = metaValue.remove(metaValue.length() - 1, 1).trimmed();
+                                    metaValue = metaValue.remove(metaValue.size() - 1, 1).trimmed();
 
                                     do
                                     {
                                         ++j;
 
-                                        if (j >= metaData.length())
+                                        if (j >= metaData.size())
                                         {
                                             break;
                                         }
@@ -409,7 +409,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
                                         if (metaNextValue.endsWith('\\'))
                                         {
-                                            metaNextValue = metaNextValue.remove(metaNextValue.length() - 1, 1).trimmed();
+                                            metaNextValue = metaNextValue.remove(metaNextValue.size() - 1, 1).trimmed();
 
                                             metaValue.append('\n');
                                             metaValue.append(metaNextValue);
@@ -572,7 +572,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
 void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &parameters, const QStringList &parametersIds)
 {
-    for (qint64 i = 0; i < parametersIds.length(); ++i)
+    for (qint64 i = 0; i < parametersIds.size(); ++i)
     {
         QString                 id              = parametersIds.at(i);
         QHash<QString, QString> metaInformation = parameters.value(id);
@@ -612,7 +612,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
 
 
 
-        for (qint64 j = 1; j < categories.length(); ++j)
+        for (qint64 j = 1; j < categories.size(); ++j)
         {
             QString subCategory = categories.at(j).trimmed();
 

@@ -1,32 +1,32 @@
-#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H
-#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H
-
-
-
-#include <QString>
-
-
-
-class TestStructureEntry
-{
-public:
-    TestStructureEntry(const QString &path, qint64 line, const QString &name, bool bitsDefined); // TEST: NO
-
-    bool operator<(const TestStructureEntry &another) const; // TEST: NO
-
-    QString getPath() const; // TEST: NO
-    QString getName() const; // TEST: NO
-    bool isBitsDefined() const; // TEST: NO
-
-    QString toString() const; // TEST: NO
-
-private:
-    QString mPath;
-    qint64  mLine;
-    QString mName;
-    bool    mBitsDefined;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H
+#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class TestStructureEntry                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    TestStructureEntry(const QString &path, qint64 line, const QString &name, bool bitsDefined); // TEST: NO                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool operator<(const TestStructureEntry &another) const; // TEST: NO                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString getPath() const; // TEST: NO                                                                                                                                                                 // Colorize: green
+    QString getName() const; // TEST: NO                                                                                                                                                                 // Colorize: green
+    bool isBitsDefined() const; // TEST: NO                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString toString() const; // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QString mPath;                                                                                                                                                                                       // Colorize: green
+    qint64  mLine;                                                                                                                                                                                       // Colorize: green
+    QString mName;                                                                                                                                                                                       // Colorize: green
+    bool    mBitsDefined;                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTSTRUCTUREENTRY_H                                                                                                                                     // Colorize: green

@@ -14,7 +14,7 @@ void BlankLinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 {
     quint64 blockSize = 0;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -40,11 +40,11 @@ void BlankLinesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     {
         if (blockSize == 0)
         {
-            worker->addError(path, lines.length(), "No blank line at the end");
+            worker->addError(path, lines.size(), "No blank line at the end");
         }
         else
         {
-            worker->addError(path, lines.length(), "Too many blank lines at the end");
+            worker->addError(path, lines.size(), "Too many blank lines at the end");
         }
     }
 }

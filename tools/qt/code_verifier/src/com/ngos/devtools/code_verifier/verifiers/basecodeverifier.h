@@ -22,7 +22,7 @@
         do \
         { \
             ++i; \
-        } while(i < lines.length() && !lines.at(i).contains(comment " [END]")); \
+        } while(i < lines.size() && !lines.at(i).contains(comment " [END]")); \
         \
         continue; \
     } \

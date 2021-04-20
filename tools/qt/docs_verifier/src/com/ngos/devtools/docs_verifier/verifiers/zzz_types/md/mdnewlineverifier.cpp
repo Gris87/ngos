@@ -12,7 +12,7 @@ MdNewLineVerifier::MdNewLineVerifier()
 
 void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
 
@@ -23,7 +23,7 @@ void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, co
             do
             {
                 ++i;
-            } while(i < lines.length() && lines.at(i) != "```");
+            } while(i < lines.size() && lines.at(i) != "```");
 
             continue;
         }
@@ -45,7 +45,7 @@ void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, co
              !lineTrimmed.endsWith('>')
             )
             &&
-            i + 1 < lines.length()
+            i + 1 < lines.size()
             &&
             lines.at(i + 1) != ""
             &&

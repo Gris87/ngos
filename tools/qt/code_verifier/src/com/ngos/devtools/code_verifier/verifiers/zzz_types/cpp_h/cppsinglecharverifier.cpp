@@ -18,7 +18,7 @@ CppSingleCharVerifier::CppSingleCharVerifier()
 
 void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppSingleCharVerifier");
@@ -31,7 +31,7 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
             quint8 mode       = MODE_NORMAL;
             qint64 startQuote = -1;
 
-            for (qint64 j = 0; j < line.length(); ++j)
+            for (qint64 j = 0; j < line.size(); ++j)
             {
                 if (line.at(j) == '\"')
                 {

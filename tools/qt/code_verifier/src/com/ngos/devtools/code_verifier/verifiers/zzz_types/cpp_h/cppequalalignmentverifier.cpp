@@ -25,11 +25,11 @@ CppEqualAlignmentVerifier::CppEqualAlignmentVerifier()
 
 void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QList<EqualEntry> ranges;
 
-        for (; i < lines.length(); ++i) // Ignore CppForVerifier
+        for (; i < lines.size(); ++i) // Ignore CppForVerifier
         {
             QString line = lines.at(i);
             VERIFIER_IGNORE(line, "// Ignore CppEqualAlignmentVerifier");
@@ -47,7 +47,7 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
             {
                 if (!ranges.isEmpty())
                 {
-                    for (qint64 j = 1; j < ranges.length(); ++j)
+                    for (qint64 j = 1; j < ranges.size(); ++j)
                     {
                         const EqualEntry &first   = ranges.constFirst();
                         const EqualEntry &current = ranges.at(j);
@@ -98,7 +98,7 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
 
 
-                    for (qint64 j = 0; j < ranges.length(); ++j)
+                    for (qint64 j = 0; j < ranges.size(); ++j)
                     {
                         const EqualEntry &current = ranges.at(j);
 
@@ -171,11 +171,11 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             EqualEntry equalEntry;
 
-            equalEntry.indent       = indent.length() + (type == "" ? reference.length() - reference.trimmed().length() : 0);
+            equalEntry.indent       = indent.size() + (type == "" ? reference.size() - reference.trimmed().size() : 0);
             equalEntry.nameIndex    = type != "" ? match.capturedStart(5) : equalEntry.indent;
-            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
+            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.size() : -1;
             equalEntry.equalIndex   = match.capturedStart(8);
-            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
+            equalEntry.afterSpaces  = expression != "" ? afterSpaces.size() : -1;
             equalEntry.valueIndex   = match.capturedStart(10);
 
 

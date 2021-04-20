@@ -33,13 +33,13 @@ qint64 BuildConfigMaker::process()
 
     QStringList lines = content.split('\n');
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString &line = lines[i];
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.length() - 1, 1);
+            line.remove(line.size() - 1, 1);
         }
     }
 
@@ -49,7 +49,7 @@ qint64 BuildConfigMaker::process()
     {
         QString defaultValue;
 
-        for (qint64 i = 0; i < lines.length(); ++i)
+        for (qint64 i = 0; i < lines.size(); ++i)
         {
             QString &line = lines[i];
 
@@ -83,7 +83,7 @@ qint64 BuildConfigMaker::process()
 
         bool found = false;
 
-        for (qint64 i = 0; i < lines.length(); ++i)
+        for (qint64 i = 0; i < lines.size(); ++i)
         {
             QString &line = lines[i];
 
@@ -98,9 +98,9 @@ qint64 BuildConfigMaker::process()
 
 
 
-                qint64 index = parameter.length() + 9;
+                qint64 index = parameter.size() + 9;
 
-                while (index < line.length() && line.at(index) == ' ')
+                while (index < line.size() && line.at(index) == ' ')
                 {
                     ++index;
                 }

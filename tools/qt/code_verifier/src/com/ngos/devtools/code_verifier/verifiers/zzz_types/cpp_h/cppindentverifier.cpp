@@ -19,7 +19,7 @@ void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
     qint64 expectedPos = -1;
     qint64 level       = 0;
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE_REGION(lines, i, line, "// Ignore CppIndentVerifier");
@@ -27,7 +27,7 @@ void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
 
 
-        for (qint64 j = 0; j < line.length(); ++j)
+        for (qint64 j = 0; j < line.size(); ++j)
         {
             QChar ch = line.at(j);
 
@@ -50,7 +50,7 @@ void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                         if (tail == "if (" || tail == "while (")
                         {
-                            expectedPos = j + tail.length();
+                            expectedPos = j + tail.size();
 
                             level = 1;
                         }
@@ -65,7 +65,7 @@ void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                             {
                                 ++i;
 
-                                if (i >= lines.length())
+                                if (i >= lines.size())
                                 {
                                     break;
                                 }
@@ -81,7 +81,7 @@ void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     if (
                                         !
                                         (
-                                         anotherTail.length() > 1
+                                         anotherTail.size() > 1
                                          &&
                                          anotherTail.at(0) == ' '
                                          &&

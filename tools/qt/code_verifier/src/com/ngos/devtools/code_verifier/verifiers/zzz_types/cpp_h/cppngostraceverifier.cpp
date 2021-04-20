@@ -24,7 +24,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "// Ignore CppNgosTraceVerifier");
@@ -74,7 +74,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-                            for (qint64 j = 0; j < arguments.length(); ++j)
+                            for (qint64 j = 0; j < arguments.size(); ++j)
                             {
                                 QString argument = arguments.at(j).trimmed();
 
@@ -136,7 +136,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                 if (argument.endsWith("*/"))
                                 {
-                                    argument.remove(argument.length() - 2, 2);
+                                    argument.remove(argument.size() - 2, 2);
                                 }
 
 
@@ -153,7 +153,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                             n = i + 1;
 
-                            while (n < lines.length())
+                            while (n < lines.size())
                             {
                                 traceLine = lines.at(n).trimmed();
 
@@ -190,7 +190,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                 if (!arguments.isEmpty())
                                 {
-                                    QString parsedTrace = traceLine.mid(traceCommand.length() + 3);
+                                    QString parsedTrace = traceLine.mid(traceCommand.size() + 3);
 
 
 
@@ -205,14 +205,14 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                     if (index >= 0)
                                     {
-                                        parsedTrace.remove(index, parsedTrace.length() - index);
+                                        parsedTrace.remove(index, parsedTrace.size() - index);
 
 
 
                                         QStringList             parsedArguments = parsedTrace.split(',');
                                         QHash<QString, QString> parsedArgumentTypes;
 
-                                        for (qint64 j = 0; j < parsedArguments.length(); ++j)
+                                        for (qint64 j = 0; j < parsedArguments.size(); ++j)
                                         {
                                             QString parsedArgument = parsedArguments.at(j);
 
@@ -232,7 +232,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                         QString trace = traceCommand + "((\" | ";
 
-                                        for (qint64 j = 0; j < arguments.length(); ++j)
+                                        for (qint64 j = 0; j < arguments.size(); ++j)
                                         {
                                             QString argument = arguments.at(j);
 
@@ -248,7 +248,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                         trace += '\"';
 
-                                        for (qint64 j = 0; j < arguments.length(); ++j)
+                                        for (qint64 j = 0; j < arguments.size(); ++j)
                                         {
                                             QString argument = arguments.at(j);
 
@@ -289,7 +289,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                 {
                                     trace = traceCommand + "((\" | ";
 
-                                    for (qint64 j = 0; j < arguments.length(); ++j)
+                                    for (qint64 j = 0; j < arguments.size(); ++j)
                                     {
                                         QString argument = arguments.at(j);
 
@@ -304,7 +304,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                     trace += '\"';
 
-                                    for (qint64 j = 0; j < arguments.length(); ++j)
+                                    for (qint64 j = 0; j < arguments.size(); ++j)
                                     {
                                         QString argument = arguments.at(j);
 

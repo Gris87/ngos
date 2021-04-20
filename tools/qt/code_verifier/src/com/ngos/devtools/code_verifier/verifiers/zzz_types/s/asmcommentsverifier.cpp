@@ -16,7 +16,7 @@ AsmCommentsVerifier::AsmCommentsVerifier()
 
 void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    for (qint64 i = 0; i < lines.length(); ++i)
+    for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
         VERIFIER_IGNORE(line, "# AsmCommentsVerifier");
@@ -24,14 +24,14 @@ void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
 
 
-        if (line.length() > COMMENT_POS && line.at(COMMENT_POS) == '#')
+        if (line.size() > COMMENT_POS && line.at(COMMENT_POS) == '#')
         {
             QString left         = line.left(COMMENT_POS);
             QString right        = line.mid(COMMENT_POS + 1);
             QString leftTrimmed  = left.trimmed();
             QString rightTrimmed = right.trimmed();
 
-            if (leftTrimmed.length() < COMMENT_POS - 1)
+            if (leftTrimmed.size() < COMMENT_POS - 1)
             {
                 if (leftTrimmed != "" && !leftTrimmed.startsWith('#'))
                 {
@@ -97,7 +97,7 @@ void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
                  !lines.at(i - 1).endsWith('\\')
                 )
                 &&
-                i < lines.length() - 1
+                i < lines.size() - 1
                )
             {
                 worker->addError(path, i, QString("Comment absent in position %1").arg(COMMENT_POS));
