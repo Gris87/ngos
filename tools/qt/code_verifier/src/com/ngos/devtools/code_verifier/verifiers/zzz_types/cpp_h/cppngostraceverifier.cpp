@@ -136,7 +136,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                 if (argument.endsWith("*/"))
                                 {
-                                    argument.remove(argument.size() - 2, 2);
+                                    argument.remove(argument.length() - 2, 2);
                                 }
 
 
@@ -190,7 +190,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                 if (!arguments.isEmpty())
                                 {
-                                    QString parsedTrace = traceLine.mid(traceCommand.size() + 3);
+                                    QString parsedTrace = traceLine.mid(traceCommand.length() + 3);
 
 
 
@@ -205,7 +205,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                     if (index >= 0)
                                     {
-                                        parsedTrace.remove(index, parsedTrace.size() - index);
+                                        parsedTrace.remove(index, parsedTrace.length() - index);
 
 
 

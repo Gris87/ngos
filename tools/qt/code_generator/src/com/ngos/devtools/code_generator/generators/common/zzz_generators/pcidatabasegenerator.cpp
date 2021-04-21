@@ -106,7 +106,7 @@ bool PciDatabaseGenerator::prepareDatabase(QStringList &lines)
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.size() - 1, 1);
+            line.remove(line.length() - 1, 1);
         }
     }
 
@@ -542,7 +542,7 @@ bool PciDatabaseGenerator::generateBaseClassesFile(const QString &path, const Pc
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -760,7 +760,7 @@ bool PciDatabaseGenerator::generateSubClassesFile(const QString &path, quint8 ba
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -970,7 +970,7 @@ bool PciDatabaseGenerator::generateInterfacesFile(const QString &path, quint8 ba
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -1149,7 +1149,7 @@ bool PciDatabaseGenerator::generateVendorsFile(const QString &path, const PciVen
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -1448,7 +1448,7 @@ bool PciDatabaseGenerator::generateDevicesFile(const QString &path, quint16 vend
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");
@@ -1663,7 +1663,7 @@ bool PciDatabaseGenerator::generateSubDevicesFile(const QString &path, quint16 v
         // Remove ',' from the previous line
         {
             QString &previousLine = lines.last();
-            previousLine.remove(previousLine.size() - 1, 1);
+            previousLine.remove(previousLine.length() - 1, 1);
         }
 
         lines.append("};");

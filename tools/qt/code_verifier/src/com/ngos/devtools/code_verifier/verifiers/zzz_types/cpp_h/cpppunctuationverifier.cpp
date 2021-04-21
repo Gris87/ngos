@@ -133,7 +133,7 @@ void CppPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
 
 
         if (
-            line.size() > 1
+            line.length() > 1
             &&
             !line.contains("regexp", Qt::CaseInsensitive)
            )
@@ -143,12 +143,12 @@ void CppPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
             QChar chNext1 = line.at(0);
             QChar chNext2 = line.at(1);
 
-            for (qint64 j = 0; j < line.size(); ++j)
+            for (qint64 j = 0; j < line.length(); ++j)
             {
                 chPrev1 = ch;
                 ch      = chNext1;
                 chNext1 = chNext2;
-                chNext2 = j < line.size() - 2 ? line.at(j + 2) : QChar();
+                chNext2 = j < line.length() - 2 ? line.at(j + 2) : QChar();
 
 
 

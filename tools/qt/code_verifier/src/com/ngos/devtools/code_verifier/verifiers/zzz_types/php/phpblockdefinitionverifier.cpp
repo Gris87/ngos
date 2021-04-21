@@ -25,7 +25,7 @@ void PhpBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString 
         if (
             lineTrimmed.endsWith('{')
             &&
-            lineTrimmed.size() > 1
+            lineTrimmed.length() > 1
            )
         {
             worker->addError(path, i, "Code block should be started on the new line");

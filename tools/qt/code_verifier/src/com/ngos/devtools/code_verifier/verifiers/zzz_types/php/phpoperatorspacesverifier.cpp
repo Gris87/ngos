@@ -722,7 +722,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
 
 
 
-        if (line.size() > 1)
+        if (line.length() > 1)
         {
             QChar ch;
             QChar chPrev1;
@@ -730,9 +730,9 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
             QChar chPrev3;
             QChar chNext1 = line.at(0);
             QChar chNext2 = line.at(1);
-            QChar chNext3 = line.size() > 2 ? line.at(2) : QChar();
+            QChar chNext3 = line.length() > 2 ? line.at(2) : QChar();
 
-            for (qint64 j = 0; j < line.size(); ++j)
+            for (qint64 j = 0; j < line.length(); ++j)
             {
                 chPrev3 = chPrev2;
                 chPrev2 = chPrev1;
@@ -740,7 +740,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                 ch      = chNext1;
                 chNext1 = chNext2;
                 chNext2 = chNext3;
-                chNext3 = j < line.size() - 3 ? line.at(j + 3) : QChar();
+                chNext3 = j < line.length() - 3 ? line.at(j + 3) : QChar();
 
 
 
@@ -754,7 +754,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                     ch      = chNext1;
                     chNext1 = chNext2;
                     chNext2 = chNext3;
-                    chNext3 = j < line.size() - 3 ? line.at(j + 3) : QChar();
+                    chNext3 = j < line.length() - 3 ? line.at(j + 3) : QChar();
 
                     continue;
                 }
@@ -763,7 +763,7 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
                 {
                     ++j;
 
-                    while (j < line.size())
+                    while (j < line.length())
                     {
                         ch = line.at(j);
 
@@ -784,9 +784,9 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
 
                     chPrev1 = j >= 1                ? line.at(j - 1) : QChar();
                     chPrev2 = j >= 2                ? line.at(j - 2) : QChar();
-                    chNext1 = j < line.size() - 1 ? line.at(j + 1) : QChar();
-                    chNext2 = j < line.size() - 2 ? line.at(j + 2) : QChar();
-                    chNext3 = j < line.size() - 3 ? line.at(j + 3) : QChar();
+                    chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();
+                    chNext2 = j < line.length() - 2 ? line.at(j + 2) : QChar();
+                    chNext3 = j < line.length() - 3 ? line.at(j + 3) : QChar();
 
                     continue;
                 }

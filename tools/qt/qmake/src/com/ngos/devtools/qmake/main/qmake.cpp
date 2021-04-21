@@ -117,7 +117,7 @@ qint64 QMake::processLines(const QString &workingDirectory, const QStringList &l
             {
                 do
                 {
-                    entryValue.remove(entryValue.size() - 1, 1);
+                    entryValue.remove(entryValue.length() - 1, 1);
                 } while(entryValue.endsWith('\\'));
 
                 entryValue = entryValue.trimmed();
@@ -527,7 +527,7 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
         {
             QString include = includes.at(i);
 
-            lines.append(QString("# %1 %2 # %3").arg(include).arg("", 30 - include.size(), QChar(' ')).arg(QFileInfo(workingDirectory + '/' + include).absoluteFilePath()));
+            lines.append(QString("# %1 %2 # %3").arg(include).arg("", 30 - include.length(), QChar(' ')).arg(QFileInfo(workingDirectory + '/' + include).absoluteFilePath()));
         }
 
 
@@ -609,12 +609,12 @@ qint64 QMake::addApplicationObjectsDefinitions(const QString & /*workingDirector
 
         if (source.endsWith(".cpp"))
         {
-            source.remove(source.size() - 4, 4);
+            source.remove(source.length() - 4, 4);
         }
         else
         if (source.endsWith(".S"))
         {
-            source.remove(source.size() - 2, 2);
+            source.remove(source.length() - 2, 2);
         }
         else
         {
@@ -954,13 +954,13 @@ qint64 QMake::addResourcesBuildTargets(const QString &workingDirectory, QStringL
 
                         // Ignore CppAlignmentVerifier [BEGIN]
                         assetsFile.write("                                                                                                           #\n");
-                        assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.size(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .ascii  \"%1\" %2 # File %1\n").arg(asset).arg("", 91 - asset.length(), QChar(' ')).toUtf8());
                         assetsFile.write("    .byte   0                                                                                              # Terminate file name with zero\n");
-                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).size() * 2), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .quad   label_%1_end - label_%1_begin %2 # File size\n").arg(fileId).arg("", 68 - (QString::number(fileId).length() * 2), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
-                        assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).size(), QChar(' ')).toUtf8());
-                        assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.size(), QChar(' ')).toUtf8());
-                        assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).size(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("label_%1_begin: %2 # Begin of the file\n").arg(fileId).arg("", 92 - QString::number(fileId).length(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("    .incbin  \"%1\" %2 # Including bytes of the file\n").arg(assetPath).arg("", 90 - assetPath.length(), QChar(' ')).toUtf8());
+                        assetsFile.write(QString("label_%1_end: %2 # End of the file\n").arg(fileId).arg("", 94 - QString::number(fileId).length(), QChar(' ')).toUtf8());
                         assetsFile.write("                                                                                                           #\n");
                         assetsFile.write("# -------------------------------------------------------------------------------------------------------- # -----------------------------------------------------------------------------\n");
                         // Ignore CppAlignmentVerifier [END]

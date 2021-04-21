@@ -171,11 +171,11 @@ void CppEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             EqualEntry equalEntry;
 
-            equalEntry.indent       = indent.size() + (type == "" ? reference.size() - reference.trimmed().size() : 0);
+            equalEntry.indent       = indent.length() + (type == "" ? reference.length() - reference.trimmed().length() : 0);
             equalEntry.nameIndex    = type != "" ? match.capturedStart(5) : equalEntry.indent;
-            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.size() : -1;
+            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
             equalEntry.equalIndex   = match.capturedStart(8);
-            equalEntry.afterSpaces  = expression != "" ? afterSpaces.size() : -1;
+            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
             equalEntry.valueIndex   = match.capturedStart(10);
 
 

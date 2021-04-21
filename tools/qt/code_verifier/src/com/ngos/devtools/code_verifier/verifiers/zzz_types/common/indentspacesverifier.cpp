@@ -22,7 +22,7 @@ void IndentSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-        for (qint64 j = 0; j < line.size(); ++j)
+        for (qint64 j = 0; j < line.length(); ++j)
         {
             QChar ch = line.at(j);
 

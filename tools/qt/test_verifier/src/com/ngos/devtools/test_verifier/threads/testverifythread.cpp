@@ -477,7 +477,7 @@ bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, co
 
             if (expectedPath.endsWith(".h"))
             {
-                expectedPath.remove(expectedPath.size() - 2, 2);
+                expectedPath.remove(expectedPath.length() - 2, 2);
             }
 
             expectedPath = expectedPath.replace('/', '_');

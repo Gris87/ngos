@@ -87,7 +87,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
                     if (expectedPath.endsWith(".h"))
                     {
-                        expectedPath.remove(expectedPath.size() - 2, 2);
+                        expectedPath.remove(expectedPath.length() - 2, 2);
                     }
 
                     expectedPath = expectedPath.replace('/', '_');
@@ -136,7 +136,7 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
                 if (expectedPath.endsWith(".h"))
                 {
-                    expectedPath.remove(expectedPath.size() - 2, 2);
+                    expectedPath.remove(expectedPath.length() - 2, 2);
                 }
 
                 expectedPath = expectedPath.replace('/', '_');

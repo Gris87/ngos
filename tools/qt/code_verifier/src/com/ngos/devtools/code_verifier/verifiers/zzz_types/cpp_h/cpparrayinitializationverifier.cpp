@@ -143,11 +143,11 @@ void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QStr
                 QChar ch      = index > 0 ? line.at(index - 1) : QChar(); // Ignore CppZeroConditionVerifier
                 QChar chNext1 = line.at(index);
 
-                for (qint64 j = index; j < line.size(); ++j)
+                for (qint64 j = index; j < line.length(); ++j)
                 {
                     chPrev1 = ch;
                     ch      = chNext1;
-                    chNext1 = j < line.size() - 1 ? line.at(j + 1) : QChar();
+                    chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();
 
 
 

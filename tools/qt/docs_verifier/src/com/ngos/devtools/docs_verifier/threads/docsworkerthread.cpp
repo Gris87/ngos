@@ -128,7 +128,7 @@ void DocsWorkerThread::processFile(DocsFileInfo *fileInfo)
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.size() - 1, 1);
+            line.remove(line.length() - 1, 1);
         }
     }
 

@@ -23,7 +23,7 @@ void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, co
     {
         QString line = lines.at(i);
 
-        for (qint64 j = 0; j < line.size(); ++j)
+        for (qint64 j = 0; j < line.length(); ++j)
         {
             QChar   ch      = line.at(j);
             quint16 unicode = ch.unicode();

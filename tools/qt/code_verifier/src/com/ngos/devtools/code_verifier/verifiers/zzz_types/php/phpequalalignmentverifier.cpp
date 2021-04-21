@@ -133,10 +133,10 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
 
             EqualEntry equalEntry;
 
-            equalEntry.indent       = indent.size();
-            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.size() : -1;
+            equalEntry.indent       = indent.length();
+            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
             equalEntry.equalIndex   = match.capturedStart(5);
-            equalEntry.afterSpaces  = expression != "" ? afterSpaces.size() : -1;
+            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
             equalEntry.valueIndex   = match.capturedStart(7);
 
 

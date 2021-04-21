@@ -46,7 +46,7 @@ void BaseCodeVerifier::verify(CodeWorkerThread */*worker*/, const QString &/*pat
 
 void BaseCodeVerifier::removeComments(QString &line) // TEST: NO
 {
-    for (qint64 i = 0; i < line.size(); ++i)
+    for (qint64 i = 0; i < line.length(); ++i)
     {
         if (line.at(i) == '\\')
         {
@@ -59,7 +59,7 @@ void BaseCodeVerifier::removeComments(QString &line) // TEST: NO
         {
             ++i;
 
-            while (i < line.size())
+            while (i < line.length())
             {
                 if (line.at(i) == '\\')
                 {
@@ -96,7 +96,7 @@ void BaseCodeVerifier::removeComments(QString &line) // TEST: NO
 
 void BaseCodeVerifier::removeStrings(QString &line) // TEST: NO
 {
-    for (qint64 i = 0; i < line.size(); ++i)
+    for (qint64 i = 0; i < line.length(); ++i)
     {
         if (line.at(i) == '\\')
         {
@@ -113,7 +113,7 @@ void BaseCodeVerifier::removeStrings(QString &line) // TEST: NO
 
             ++i;
 
-            while (i < line.size())
+            while (i < line.length())
             {
                 if (line.at(i) == '\\')
                 {

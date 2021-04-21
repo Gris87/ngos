@@ -220,7 +220,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                         QString includeFile   = line.mid(9).trimmed();
                         bool    globalInclude = includeFile.startsWith('<') && includeFile.endsWith('>');
 
-                        includeFile = includeFile.mid(1, includeFile.size() - 2);
+                        includeFile = includeFile.mid(1, includeFile.length() - 2);
 
 
 

@@ -39,7 +39,7 @@ qint64 BuildConfigMaker::process()
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.size() - 1, 1);
+            line.remove(line.length() - 1, 1);
         }
     }
 
@@ -98,9 +98,9 @@ qint64 BuildConfigMaker::process()
 
 
 
-                qint64 index = parameter.size() + 9;
+                qint64 index = parameter.length() + 9;
 
-                while (index < line.size() && line.at(index) == ' ')
+                while (index < line.length() && line.at(index) == ' ')
                 {
                     ++index;
                 }

@@ -65,7 +65,7 @@ void MainWindow::loadBuildConfigFile()
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.size() - 1, 1);
+            line.remove(line.length() - 1, 1);
         }
     }
 
@@ -168,7 +168,7 @@ void MainWindow::on_actionSave_triggered()
 
         if (line.endsWith('\r'))
         {
-            line.remove(line.size() - 1, 1);
+            line.remove(line.length() - 1, 1);
         }
     }
 
@@ -195,9 +195,9 @@ void MainWindow::on_actionSave_triggered()
             {
                 found = true;
 
-                qint64 index = parameter.size() + 9;
+                qint64 index = parameter.length() + 9;
 
-                while (index < line.size() && line.at(index) == ' ')
+                while (index < line.length() && line.at(index) == ' ')
                 {
                     ++index;
                 }
@@ -392,7 +392,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
                                 if (metaValue.endsWith('\\'))
                                 {
-                                    metaValue = metaValue.remove(metaValue.size() - 1, 1).trimmed();
+                                    metaValue = metaValue.remove(metaValue.length() - 1, 1).trimmed();
 
                                     do
                                     {
@@ -409,7 +409,7 @@ void MainWindow::parseBuildConfigFile(const QStringList &lines)
 
                                         if (metaNextValue.endsWith('\\'))
                                         {
-                                            metaNextValue = metaNextValue.remove(metaNextValue.size() - 1, 1).trimmed();
+                                            metaNextValue = metaNextValue.remove(metaNextValue.length() - 1, 1).trimmed();
 
                                             metaValue.append('\n');
                                             metaValue.append(metaNextValue);

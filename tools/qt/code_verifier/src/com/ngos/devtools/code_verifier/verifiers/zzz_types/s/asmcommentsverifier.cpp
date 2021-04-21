@@ -24,14 +24,14 @@ void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
 
 
-        if (line.size() > COMMENT_POS && line.at(COMMENT_POS) == '#')
+        if (line.length() > COMMENT_POS && line.at(COMMENT_POS) == '#')
         {
             QString left         = line.left(COMMENT_POS);
             QString right        = line.mid(COMMENT_POS + 1);
             QString leftTrimmed  = left.trimmed();
             QString rightTrimmed = right.trimmed();
 
-            if (leftTrimmed.size() < COMMENT_POS - 1)
+            if (leftTrimmed.length() < COMMENT_POS - 1)
             {
                 if (leftTrimmed != "" && !leftTrimmed.startsWith('#'))
                 {

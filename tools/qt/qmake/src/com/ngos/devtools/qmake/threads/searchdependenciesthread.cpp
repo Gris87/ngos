@@ -201,7 +201,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
             line = line.mid(9).trimmed();
 
             if (
-                line.size() > 2
+                line.length() > 2
                 &&
                 (
                  (
@@ -218,7 +218,7 @@ bool SearchDependenciesThread::handleSource(const QString &source)
                 )
                )
             {
-                QString includedFile = line.mid(1, line.size() - 2);
+                QString includedFile = line.mid(1, line.length() - 2);
 
 
 

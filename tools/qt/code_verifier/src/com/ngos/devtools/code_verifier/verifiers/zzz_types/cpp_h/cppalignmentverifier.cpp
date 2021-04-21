@@ -22,7 +22,7 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
         qint64 startPos = 0;
 
-        while (startPos < line.size() && line.at(startPos) == ' ')
+        while (startPos < line.length() && line.at(startPos) == ' ')
         {
             ++startPos;
         }
@@ -34,7 +34,7 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
 
-        for (qint64 j = startPos + 1; j < line.size() - 1; ++j)
+        for (qint64 j = startPos + 1; j < line.length() - 1; ++j)
         {
             QChar ch      = line.at(j);
             QChar chPrev1 = line.at(j - 1);
@@ -188,7 +188,7 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                     QString scannedLine = lines.at(k);
 
-                    if (j < scannedLine.size() - 1)
+                    if (j < scannedLine.length() - 1)
                     {
                         qint64 n = j;
 
@@ -206,9 +206,9 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                         }
 
                         while (
-                               n < line.size()
+                               n < line.length()
                                &&
-                               n < scannedLine.size()
+                               n < scannedLine.length()
                                &&
                                (
                                 line.at(n) == ' '
@@ -233,9 +233,9 @@ void CppAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
 
                         if (
-                            n < line.size()
+                            n < line.length()
                             &&
-                            n < scannedLine.size()
+                            n < scannedLine.length()
                            )
                         {
                             if (

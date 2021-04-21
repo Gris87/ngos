@@ -31,7 +31,7 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
             quint8 mode       = MODE_NORMAL;
             qint64 startQuote = -1;
 
-            for (qint64 j = 0; j < line.size(); ++j)
+            for (qint64 j = 0; j < line.length(); ++j)
             {
                 if (line.at(j) == '\"')
                 {

@@ -27,7 +27,7 @@ void PhpIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
 
 
-        for (qint64 j = 0; j < line.size(); ++j)
+        for (qint64 j = 0; j < line.length(); ++j)
         {
             QChar ch = line.at(j);
 
@@ -50,7 +50,7 @@ void PhpIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
 
                         if (tail == "if (" || tail == "while (")
                         {
-                            expectedPos = j + tail.size();
+                            expectedPos = j + tail.length();
 
                             level = 1;
                         }
@@ -81,7 +81,7 @@ void PhpIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     if (
                                         !
                                         (
-                                         anotherTail.size() > 1
+                                         anotherTail.length() > 1
                                          &&
                                          anotherTail.at(0) == ' '
                                          &&

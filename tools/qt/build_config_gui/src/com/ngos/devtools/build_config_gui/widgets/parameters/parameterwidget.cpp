@@ -78,7 +78,7 @@ void ParameterWidget::handleValueChanged(const QHash<QString, ParameterWidget *>
 
             if (mEnabled.startsWith(id + " == "))
             {
-                QString value = mEnabled.mid(id.size() + 4).trimmed();
+                QString value = mEnabled.mid(id.length() + 4).trimmed();
 
                 setEnabled(value == it.value()->value());
 

@@ -101,7 +101,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     }
 
                                     if (
-                                        index + 1 < switchLineTrimmed.size()
+                                        index + 1 < switchLineTrimmed.length()
                                         &&
                                         switchLineTrimmed.at(index + 1) == '\''
                                        )
@@ -112,7 +112,7 @@ void CppSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                     }
 
                                     if (
-                                        index + 1 >= switchLineTrimmed.size()
+                                        index + 1 >= switchLineTrimmed.length()
                                         ||
                                         switchLineTrimmed.at(index + 1) != ':'
                                        )

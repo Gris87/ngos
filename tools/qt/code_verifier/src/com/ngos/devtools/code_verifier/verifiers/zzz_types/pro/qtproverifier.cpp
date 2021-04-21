@@ -189,13 +189,13 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
         {
             if (line.endsWith(" \\"))
             {
-                block.append(line.left(line.size() - 2));
+                block.append(line.left(line.length() - 2));
             }
             else
             {
                 worker->addWarning(path, i, "Space character expected before \\");
 
-                block.append(line.left(line.size() - 1));
+                block.append(line.left(line.length() - 1));
             }
         }
         else
@@ -222,7 +222,7 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
             QString file = block.at(i);
 
             if (
-                file.size() < 5
+                file.length() < 5
                 ||
                 !file.startsWith("    ")
                 ||
@@ -339,7 +339,7 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                         )
                        )
                     {
-                        relativePath = filePath.mid(parentFolder.size());
+                        relativePath = filePath.mid(parentFolder.length());
                     }
                 }
                 else
@@ -364,7 +364,7 @@ qint64 QtProVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                         fileName != "Makefile"
                        )
                     {
-                        relativePath = filePath.mid(parentFolder.size());
+                        relativePath = filePath.mid(parentFolder.length());
                     }
                 }
 
