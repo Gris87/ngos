@@ -1,55 +1,55 @@
-#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H
-#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H
-
-
-
-#include <QThread>
-
-#include <QMutex>
-#include <QRegularExpression>
-#include <QSemaphore>
-
-#include <com/ngos/devtools/test_verifier/other/testentry.h>
-#include <com/ngos/devtools/test_verifier/other/testmessageinfo.h>
-#include <com/ngos/devtools/test_verifier/other/teststructureentry.h>
-
-
-
-class TestVerifyThread: public QThread
-{
-public:
-    TestVerifyThread(); // TEST: NO
-
-    static void pushTestStructureEntries(const QList<TestStructureEntry> &entries); // TEST: NO
-    static void pushTestEntries(const QList<TestEntry> &entries); // TEST: NO
-    static TestStructureEntry popTestStructureEntry(); // TEST: NO
-    static TestEntry popTestEntry(); // TEST: NO
-    static void noMoreTestStructureEntries(); // TEST: NO
-    static void noMoreTestEntries(); // TEST: NO
-
-    const QList<TestMessageInfo>& getMessages() const; // TEST: NO
-
-protected:
-    void run() override; // TEST: NO
-
-private:
-    void processTestStructureEntry(const TestStructureEntry &entry); // TEST: NO
-    void processTestEntry(const TestEntry &entry); // TEST: NO
-    bool processTestEntryWithTestModule(const TestEntry &entry, const QString &path); // TEST: NO
-
-    void addMessage(const QString &path, const QString &message); // TEST: NO
-
-    static QList<TestStructureEntry> sTestStructureEntries;
-    static QMutex                    sTestStructureEntriesMutex;
-    static QSemaphore                sTestStructureEntriesSemaphore;
-    static QList<TestEntry>          sTestEntries;
-    static QMutex                    sTestEntriesMutex;
-    static QSemaphore                sTestEntriesSemaphore;
-    static QRegularExpression        sStructureSizeTestRegExp;
-
-    QList<TestMessageInfo> mMessages;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H
+#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QThread>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMutex>                                                                                                                                                                                        // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+#include <QSemaphore>                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/test_verifier/other/testentry.h>                                                                                                                                             // Colorize: green
+#include <com/ngos/devtools/test_verifier/other/testmessageinfo.h>                                                                                                                                       // Colorize: green
+#include <com/ngos/devtools/test_verifier/other/teststructureentry.h>                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class TestVerifyThread: public QThread                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    TestVerifyThread(); // TEST: NO                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static void pushTestStructureEntries(const QList<TestStructureEntry> &entries); // TEST: NO                                                                                                          // Colorize: green
+    static void pushTestEntries(const QList<TestEntry> &entries); // TEST: NO                                                                                                                            // Colorize: green
+    static TestStructureEntry popTestStructureEntry(); // TEST: NO                                                                                                                                       // Colorize: green
+    static TestEntry popTestEntry(); // TEST: NO                                                                                                                                                         // Colorize: green
+    static void noMoreTestStructureEntries(); // TEST: NO                                                                                                                                                // Colorize: green
+    static void noMoreTestEntries(); // TEST: NO                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QList<TestMessageInfo>& getMessages() const; // TEST: NO                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void run() override; // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    void processTestStructureEntry(const TestStructureEntry &entry); // TEST: NO                                                                                                                         // Colorize: green
+    void processTestEntry(const TestEntry &entry); // TEST: NO                                                                                                                                           // Colorize: green
+    bool processTestEntryWithTestModule(const TestEntry &entry, const QString &path); // TEST: NO                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void addMessage(const QString &path, const QString &message); // TEST: NO                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static QList<TestStructureEntry> sTestStructureEntries;                                                                                                                                              // Colorize: green
+    static QMutex                    sTestStructureEntriesMutex;                                                                                                                                         // Colorize: green
+    static QSemaphore                sTestStructureEntriesSemaphore;                                                                                                                                     // Colorize: green
+    static QList<TestEntry>          sTestEntries;                                                                                                                                                       // Colorize: green
+    static QMutex                    sTestEntriesMutex;                                                                                                                                                  // Colorize: green
+    static QSemaphore                sTestEntriesSemaphore;                                                                                                                                              // Colorize: green
+    static QRegularExpression        sStructureSizeTestRegExp;                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<TestMessageInfo> mMessages;                                                                                                                                                                    // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_THREADS_TESTVERIFYTHREAD_H                                                                                                                                     // Colorize: green

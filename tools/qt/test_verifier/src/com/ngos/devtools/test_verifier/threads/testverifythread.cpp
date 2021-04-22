@@ -1,516 +1,605 @@
-#include "testverifythread.h"
-
-#include <QDir>
-#include <QQueue>
-
-
-
-QList<TestStructureEntry> TestVerifyThread::sTestStructureEntries;
-QMutex                    TestVerifyThread::sTestStructureEntriesMutex;
-QSemaphore                TestVerifyThread::sTestStructureEntriesSemaphore;
-QList<TestEntry>          TestVerifyThread::sTestEntries;
-QMutex                    TestVerifyThread::sTestEntriesMutex;
-QSemaphore                TestVerifyThread::sTestEntriesSemaphore;
-QRegularExpression        TestVerifyThread::sStructureSizeTestRegExp("^TEST_ASSERT_EQUALS\\(sizeof\\((?:.*::)?(\\w+)(?:<.*)?\\), +\\d+\\);$");
-
-
-
-TestVerifyThread::TestVerifyThread()
-    : QThread()
-    , mMessages()
-{
-    // Nothing
-}
-
-void TestVerifyThread::pushTestStructureEntries(const QList<TestStructureEntry> &entries)
-{
-    QMutexLocker lock(&sTestStructureEntriesMutex);
-
-    sTestStructureEntries.append(entries);
-    sTestStructureEntriesSemaphore.release(entries.size());
-}
-
-void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)
-{
-    QMutexLocker lock(&sTestEntriesMutex);
-
-    sTestEntries.append(entries);
-    sTestEntriesSemaphore.release(entries.size());
-}
-
-TestStructureEntry TestVerifyThread::popTestStructureEntry()
-{
-    sTestStructureEntriesSemaphore.acquire();
-
-    {
-        QMutexLocker lock(&sTestStructureEntriesMutex);
-
-
-
-        TestStructureEntry res = sTestStructureEntries.constFirst();
-
-        if (res.getPath() == "")
-        {
-            sTestStructureEntriesSemaphore.release();
-        }
-        else
-        {
-            sTestStructureEntries.removeFirst();
-        }
-
-        return res;
-    }
-}
-
-TestEntry TestVerifyThread::popTestEntry()
-{
-    sTestEntriesSemaphore.acquire();
-
-    {
-        QMutexLocker lock(&sTestEntriesMutex);
-
-
-
-        TestEntry res = sTestEntries.constFirst();
-
-        if (res.getPath() == "")
-        {
-            sTestEntriesSemaphore.release();
-        }
-        else
-        {
-            sTestEntries.removeFirst();
-        }
-
-        return res;
-    }
-}
-
-void TestVerifyThread::noMoreTestStructureEntries()
-{
-    QList<TestStructureEntry> temp;
-    temp.append(TestStructureEntry("", -1, "", false));
-
-    pushTestStructureEntries(temp);
-}
-
-void TestVerifyThread::noMoreTestEntries()
-{
-    QList<TestEntry> temp;
-    temp.append(TestEntry(TestEntryType::DEFINE, "", -1, "", ""));
-
-    pushTestEntries(temp);
-}
-
-const QList<TestMessageInfo>& TestVerifyThread::getMessages() const
-{
-    return mMessages;
-}
-
-void TestVerifyThread::run()
-{
-    do
-    {
-        TestStructureEntry entry = popTestStructureEntry();
-
-        if (entry.getPath() == "")
-        {
-            break;
-        }
-
-        processTestStructureEntry(entry);
-    } while(true);
-
-
-
-    do
-    {
-        TestEntry entry = popTestEntry();
-
-        if (entry.getPath() == "")
-        {
-            break;
-        }
-
-        processTestEntry(entry);
-    } while(true);
-}
-
-void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry)
-{
-    QString testFolder;
-
-
-
-    qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
-
-    if (index < 0)
-    {
-        index = entry.getPath().lastIndexOf("/include/");
-    }
-
-
-
-    if (index >= 0)
-    {
-        QString parentFolder = entry.getPath().left(index);
-
-        do
-        {
-            if (QFile::exists(parentFolder + "/ngos.files"))
-            {
-                break;
-            }
-
-
-
-            index = parentFolder.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                addMessage(entry.getPath(), "Failed to get relative path");
-
-                return;
-            }
-
-            parentFolder = parentFolder.left(index);
-        } while(true);
-
-
-
-        testFolder = parentFolder + "/src/os/shared/uefibase/test";
-    }
-    else
-    {
-        index = entry.getPath().lastIndexOf("/src/");
-
-        if (index < 0)
-        {
-            addMessage(entry.getPath(), QString("Failed to get src folder for structure %1").arg(entry.getName()));
-
-            return;
-        }
-
-
-
-        testFolder = entry.getPath().left(index) + "/test";
-    }
-
-
-
-    if (!QDir(testFolder).exists())
-    {
-        addMessage(entry.getPath(), QString("Failed to get test folder for structure %1").arg(entry.getName()));
-
-        return;
-    }
-
-
-
-    bool good  = false;
-    bool good2 = !entry.isBitsDefined();
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(testFolder));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path     = file.absoluteFilePath();
-        QString fileName = file.fileName();
-
-
-
-        if (file.isDir())
-        {
-            QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-            for (qint64 i = 0; i < filesInfo.size(); ++i)
-            {
-                files.enqueue(filesInfo.at(i));
-            }
-        }
-        else
-        {
-            if (fileName == "types.h")
-            {
-                QFile file(path);
-
-                if (!file.open(QIODevice::ReadOnly))
-                {
-                    continue;
-                }
-
-                QString content = QString::fromUtf8(file.readAll());
-                file.close();
-
-
-
-                QStringList lines = content.split('\n');
-
-
-
-                if (!good)
-                {
-                    for (qint64 i = 0; i < lines.size(); ++i)
-                    {
-                        QString line = lines.at(i).trimmed();
-
-                        QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);
-
-                        if (match.hasMatch())
-                        {
-                            QString structureName = match.captured(1);
-
-                            if (structureName == entry.getName())
-                            {
-                                good = true;
-
-                                break;
-                            }
-                        }
-                    }
-                }
-
-
-
-                if (!good2)
-                {
-                    QString searchLine = "    TEST_CASE(\"" + entry.getName() + "\");";
-
-                    for (qint64 i = 0; i < lines.size(); ++i)
-                    {
-                        if (lines.at(i) == searchLine)
-                        {
-                            good2 = true;
-
-                            break;
-                        }
-                    }
-                }
-
-
-
-                if (good && good2)
-                {
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    if (!good)
-    {
-        addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));
-    }
-
-    if (!good2)
-    {
-        addMessage(entry.getPath(), QString("Test not found for bits of structure: %1").arg(entry.getName()));
-    }
-}
-
-void TestVerifyThread::processTestEntry(const TestEntry &entry)
-{
-    QString testFolder;
-
-
-
-    qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");
-
-    if (index < 0)
-    {
-        index = entry.getPath().lastIndexOf("/include/");
-    }
-
-
-
-    if (index >= 0)
-    {
-        QString parentFolder = entry.getPath().left(index);
-
-        do
-        {
-            if (QFile::exists(parentFolder + "/ngos.files"))
-            {
-                break;
-            }
-
-
-
-            index = parentFolder.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                addMessage(entry.getPath(), "Failed to get relative path");
-
-                return;
-            }
-
-            parentFolder = parentFolder.left(index);
-        } while(true);
-
-
-
-        testFolder = parentFolder + "/src/os/shared/uefibase/test";
-    }
-    else
-    {
-        index = entry.getPath().lastIndexOf("/src/");
-
-        if (index < 0)
-        {
-            addMessage(entry.getPath(), QString("Failed to get src folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));
-
-            return;
-        }
-
-
-
-        testFolder = entry.getPath().left(index) + "/test";
-    }
-
-
-
-    if (!QDir(testFolder).exists())
-    {
-        addMessage(entry.getPath(), QString("Failed to get test folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));
-
-        return;
-    }
-
-
-
-    bool good = false;
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(testFolder));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path     = file.absoluteFilePath();
-        QString fileName = file.fileName();
-
-
-
-        if (file.isDir())
-        {
-            QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-            for (qint64 i = 0; i < filesInfo.size(); ++i)
-            {
-                files.enqueue(filesInfo.at(i));
-            }
-        }
-        else
-        {
-            if (fileName == entry.getTestModule())
-            {
-                if (processTestEntryWithTestModule(entry, path))
-                {
-                    good = true;
-
-                    break;
-                }
-            }
-        }
-    }
-
-
-
-    if (!good)
-    {
-        addMessage(entry.getPath(), QString("Test not found for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));
-    }
-}
-
-bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, const QString &path)
-{
-    QString expectedPath;
-
-
-
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return false;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i).trimmed();
-
-        if (line.startsWith("TEST_CASES("))
-        {
-            QString testCasesPath = line.mid(11).trimmed();
-
-            testCasesPath = testCasesPath.mid(testCasesPath.lastIndexOf(',') + 1).trimmed();
-            testCasesPath = testCasesPath.left(testCasesPath.lastIndexOf(')')).trimmed();
-
-
-
-            expectedPath = path.mid(path.lastIndexOf("/test/") + 6);
-
-            qint64 index = expectedPath.indexOf("sections/");
-
-            if (index >= 0)
-            {
-                expectedPath = expectedPath.mid(expectedPath.indexOf('/', index + 9) + 1);
-            }
-
-            if (expectedPath.endsWith(".h"))
-            {
-                expectedPath.remove(expectedPath.length() - 2, 2);
-            }
-
-            expectedPath = expectedPath.replace('/', '_');
-
-
-
-            if (testCasesPath == expectedPath)
-            {
-                expectedPath = "";
-            }
-        }
-        else
-        if (
-            line.startsWith("TEST_CASE(\"")
-            &&
-            line.contains(entry.getName())
-           )
-        {
-            if (expectedPath != "")
-            {
-                addMessage(entry.getPath(), QString("Test found for %1 \"%2\", but the path in TEST_CASES macro is invalid. Expected path: %3").arg(entry.getFunctionOrMacro()).arg(entry.getName()).arg(expectedPath));
-            }
-
-            return true;
-        }
-    }
-
-
-
-    return false;
-}
-
-void TestVerifyThread::addMessage(const QString &path, const QString &message)
-{
-    mMessages.append(TestMessageInfo(path, message));
-}
+#include "testverifythread.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QQueue>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<TestStructureEntry> TestVerifyThread::sTestStructureEntries;                                                                                                                                       // Colorize: green
+QMutex                    TestVerifyThread::sTestStructureEntriesMutex;                                                                                                                                  // Colorize: green
+QSemaphore                TestVerifyThread::sTestStructureEntriesSemaphore;                                                                                                                              // Colorize: green
+QList<TestEntry>          TestVerifyThread::sTestEntries;                                                                                                                                                // Colorize: green
+QMutex                    TestVerifyThread::sTestEntriesMutex;                                                                                                                                           // Colorize: green
+QSemaphore                TestVerifyThread::sTestEntriesSemaphore;                                                                                                                                       // Colorize: green
+QRegularExpression        TestVerifyThread::sStructureSizeTestRegExp("^TEST_ASSERT_EQUALS\\(sizeof\\((?:.*::)?(\\w+)(?:<.*)?\\), +\\d+\\);$"); // TEST_ASSERT_EQUALS(sizeof([ABC::]MegaClass[<*>]), 16); // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TestVerifyThread::TestVerifyThread()                                                                                                                                                                     // Colorize: green
+    : QThread()                                                                                                                                                                                          // Colorize: green
+    , mMessages()                                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::pushTestStructureEntries(const QList<TestStructureEntry> &entries)                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMutexLocker lock(&sTestStructureEntriesMutex);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sTestStructureEntries.append(entries);                                                                                                                                                               // Colorize: green
+    sTestStructureEntriesSemaphore.release(entries.size());                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::pushTestEntries(const QList<TestEntry> &entries)                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMutexLocker lock(&sTestEntriesMutex);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sTestEntries.append(entries);                                                                                                                                                                        // Colorize: green
+    sTestEntriesSemaphore.release(entries.size());                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TestStructureEntry TestVerifyThread::popTestStructureEntry()                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sTestStructureEntriesSemaphore.acquire();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sTestStructureEntriesMutex);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TestStructureEntry res = sTestStructureEntries.constFirst();                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res.getPath() == "")                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sTestStructureEntriesSemaphore.release();                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sTestStructureEntries.removeFirst();                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+TestEntry TestVerifyThread::popTestEntry()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sTestEntriesSemaphore.acquire();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sTestEntriesMutex);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        TestEntry res = sTestEntries.constFirst();                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res.getPath() == "")                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sTestEntriesSemaphore.release();                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sTestEntries.removeFirst();                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::noMoreTestStructureEntries()                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QList<TestStructureEntry> temp;                                                                                                                                                                      // Colorize: green
+    temp.append(TestStructureEntry("", -1, "", false));                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    pushTestStructureEntries(temp);                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::noMoreTestEntries()                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QList<TestEntry> temp;                                                                                                                                                                               // Colorize: green
+    temp.append(TestEntry(TestEntryType::DEFINE, "", -1, "", ""));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    pushTestEntries(temp);                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<TestMessageInfo>& TestVerifyThread::getMessages() const                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mMessages;                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::run()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Process all test structure entries                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        do                                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestStructureEntry entry = popTestStructureEntry();                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entry.getPath() == "")                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            processTestStructureEntry(entry);                                                                                                                                                            // Colorize: green
+        } while(true);                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Process all test entries                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        do                                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            TestEntry entry = popTestEntry();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (entry.getPath() == "")                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            processTestEntry(entry);                                                                                                                                                                     // Colorize: green
+        } while(true);                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::processTestStructureEntry(const TestStructureEntry &entry)                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString testFolder;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Try to find test folder                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index < 0)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            index = entry.getPath().lastIndexOf("/include/");                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // If structure declared in some shared space then test folder is "ngos/src/os/shared/uefibase/test"                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString projectFolder;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get project root folder                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    projectFolder = entry.getPath().left(index);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (QFile::exists(projectFolder + "/ngos.files"))                                                                                                                                // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        index = projectFolder.lastIndexOf('/');                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index < 0)                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            addMessage(entry.getPath(), "Failed to get relative path");                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return;                                                                                                                                                                      // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        projectFolder = projectFolder.left(index);                                                                                                                                       // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                testFolder = projectFolder + "/src/os/shared/uefibase/test";                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // If structure declared in application local space then test folder should be found together with src folder                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                index = entry.getPath().lastIndexOf("/src/");                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index < 0)                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addMessage(entry.getPath(), QString("Failed to get src folder for structure %1").arg(entry.getName()));                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                testFolder = entry.getPath().left(index) + "/test";                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that test folder exists                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!QDir(testFolder).exists())                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addMessage(entry.getPath(), QString("Failed to get test folder for structure %1").arg(entry.getName()));                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool structureSizeGood = false;                                                                                                                                                                                  // Colorize: green
+    bool structureBitsGood = !entry.isBitsDefined();                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate files in test folder in order to find types.h file and try to parse it                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QQueue<QFileInfo> files;                                                                                                                                                                         // Colorize: green
+        files.enqueue(QFileInfo(testFolder));                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (!files.isEmpty())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFileInfo file = files.dequeue();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString path     = file.absoluteFilePath();                                                                                                                                                  // Colorize: green
+            QString fileName = file.fileName();                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (file.isDir())                                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 i = 0; i < filesInfo.size(); ++i)                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    files.enqueue(filesInfo.at(i));                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (fileName == "types.h")                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QStringList lines;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Read file lines                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QFile file(path);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (!file.open(QIODevice::ReadOnly))                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            continue;                                                                                                                                                                    // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        QString content = QString::fromUtf8(file.readAll());                                                                                                                             // Colorize: green
+                        file.close();                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        lines = content.split('\n');                                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Check that file contains structure size verification                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (!structureSizeGood)                                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                    // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString line = lines.at(i).trimmed();                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                QRegularExpressionMatch match = sStructureSizeTestRegExp.match(line);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (match.hasMatch())                                                                                                                                                    // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString structureName = match.captured(1);                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (structureName == entry.getName())                                                                                                                                // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        structureSizeGood = true;                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Check that file contains test case for the whole structure                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (!structureBitsGood)                                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString searchLine = "    TEST_CASE(\"" + entry.getName() + "\");";                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                    // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (lines.at(i) == searchLine)                                                                                                                                           // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    structureBitsGood = true;                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    break;                                                                                                                                                               // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Test is OK. No need to parse remaining files                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (structureSizeGood && structureBitsGood)                                                                                                                                                               // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add messages if something goes wrong                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!structureSizeGood)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addMessage(entry.getPath(), QString("Test not found for size of structure: %1").arg(entry.getName()));                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!structureBitsGood)                                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addMessage(entry.getPath(), QString("Test not found for bits of structure: %1").arg(entry.getName()));                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::processTestEntry(const TestEntry &entry)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString testFolder;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Try to find test folder                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index = entry.getPath().lastIndexOf("/src/os/shared/common/src/");                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index < 0)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            index = entry.getPath().lastIndexOf("/include/");                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // If function declared in some shared space then test folder is "ngos/src/os/shared/uefibase/test"                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString projectFolder;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get project root folder                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    projectFolder = entry.getPath().left(index);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (QFile::exists(projectFolder + "/ngos.files"))                                                                                                                                // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        index = projectFolder.lastIndexOf('/');                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index < 0)                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            addMessage(entry.getPath(), "Failed to get relative path");                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return;                                                                                                                                                                      // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        projectFolder = projectFolder.left(index);                                                                                                                                       // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                testFolder = projectFolder + "/src/os/shared/uefibase/test";                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // If function declared in application local space then test folder should be found together with src folder                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                index = entry.getPath().lastIndexOf("/src/");                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index < 0)                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addMessage(entry.getPath(), QString("Failed to get src folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                testFolder = entry.getPath().left(index) + "/test";                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that test folder exists                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!QDir(testFolder).exists())                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addMessage(entry.getPath(), QString("Failed to get test folder for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool good = false;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate files in test folder and parse them                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QQueue<QFileInfo> files;                                                                                                                                                                         // Colorize: green
+        files.enqueue(QFileInfo(testFolder));                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (!files.isEmpty())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFileInfo file = files.dequeue();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString path     = file.absoluteFilePath();                                                                                                                                                  // Colorize: green
+            QString fileName = file.fileName();                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (file.isDir())                                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 i = 0; i < filesInfo.size(); ++i)                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    files.enqueue(filesInfo.at(i));                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (fileName == entry.getTestModule())                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (processTestEntryWithTestModule(entry, path))                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        good = true;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add message if something goes wrong                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!good)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addMessage(entry.getPath(), QString("Test not found for %1: %2").arg(entry.getFunctionOrMacro()).arg(entry.getName()));                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool TestVerifyThread::processTestEntryWithTestModule(const TestEntry &entry, const QString &path)                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString expectedPath;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file lines                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString content = QString::fromUtf8(file.readAll());                                                                                                                                             // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i).trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check path specified in TEST_CASES macro                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (line.startsWith("TEST_CASES("))                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString testCasesPath;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get path specified in TEST_CASES macro                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    testCasesPath = line.mid(11).trimmed();                                                                                                                                              // Colorize: green
+                    testCasesPath = testCasesPath.mid(testCasesPath.lastIndexOf(',') + 1).trimmed();                                                                                                     // Colorize: green
+                    testCasesPath = testCasesPath.left(testCasesPath.lastIndexOf(')')).trimmed();                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get expected path                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    expectedPath = path.mid(path.lastIndexOf("/test/") + 6);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    qint64 index = expectedPath.indexOf("sections/");                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index >= 0)                                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        expectedPath = expectedPath.mid(expectedPath.indexOf('/', index + 9) + 1);                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (expectedPath.endsWith(".h"))                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        expectedPath.remove(expectedPath.length() - 2, 2);                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    expectedPath = expectedPath.replace('/', '_');                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check that path is correct                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (testCasesPath == expectedPath)                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        expectedPath = "";                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check that file contains tests related to current function                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                line.startsWith("TEST_CASE(\"")                                                                                                                                                          // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                line.contains(entry.getName())                                                                                                                                                           // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (expectedPath != "")                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addMessage(entry.getPath(), QString("Test found for %1 \"%2\", but the path in TEST_CASES macro is invalid. Expected path: %3").arg(entry.getFunctionOrMacro()).arg(entry.getName()).arg(expectedPath)); // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return true;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void TestVerifyThread::addMessage(const QString &path, const QString &message)                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mMessages.append(TestMessageInfo(path, message));                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
