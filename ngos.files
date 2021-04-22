@@ -5876,6 +5876,9 @@ tools/qt/shared/console/src/com/ngos/devtools/shared/console/console.h
 tools/qt/shared/elf/elf.pri
 tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.cpp
 tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.h
+tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.cpp
+tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.h
+tools/qt/shared/utils/utils.pri
 tools/qt/test_verifier/.gitignore
 tools/qt/test_verifier/README.md
 tools/qt/test_verifier/Screenshot.png
@@ -5926,6 +5929,8 @@ tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/usbbootmakers
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/usbdeviceinfo.h
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/usbproperties.h
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/usbspeed.h
+tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/utils.cpp
+tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/utils.h
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/other/versioninfo.h
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp
 tools/qt/usb_boot_maker/src/com/ngos/devtools/usb_boot_maker/threads/burnthread.h
