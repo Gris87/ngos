@@ -47,11 +47,13 @@ INCLUDEPATH += \
     src \                                   # /tools/qt/docs_verifier/src
     ../../../include \                      # /include
     ../../../src/os/shared/common/src \     # /src/os/shared/common/src
-    ../shared/console/src                   # /tools/qt/shared/console/src
+    ../shared/console/src \                 # /tools/qt/shared/console/src
+    ../shared/utils/src                     # /tools/qt/shared/utils/src
 
 
 
 include(../shared/console/console.pri)
+include(../shared/utils/utils.pri)
 
 
 

@@ -7,11 +7,6 @@ QTextStream Console::sStderr(stderr);
 
 
 
-Console::Console()
-{
-    // Nothing
-}
-
 void Console::out(const QString &text)
 {
     sStdout << text << Qt::endl;
@@ -22,4 +17,9 @@ void Console::err(const QString &text)
 {
     sStderr << text << Qt::endl;
     sStderr.flush();
+}
+
+Console::Console()
+{
+    // Nothing
 }

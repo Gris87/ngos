@@ -10,6 +10,7 @@
 #include <com/ngos/devtools/code_verifier/threads/codeworkerthread.h>
 #include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>
 #include <com/ngos/devtools/shared/console/console.h>
+#include <com/ngos/devtools/shared/utils/git.h>
 
 
 
@@ -21,21 +22,6 @@ void usage()
                 "    * PATH - path to file or folder"
                 );
     // Ignore CppAlignmentVerifier [END]
-}
-
-bool isGitIgnored(const QString &workingDirectory, const QString &path)
-{
-    QProcess git;
-
-    git.setWorkingDirectory(workingDirectory);
-    git.start("git", QStringList() << "check-ignore" << path);
-
-    if (!git.waitForFinished(-1))
-    {
-        return false;
-    }
-
-    return !git.readAll().isEmpty();
 }
 
 qint32 main(qint32 argc, char *argv[])
@@ -93,7 +79,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-        if (!isGitIgnored(file.dir().absolutePath(), path))
+        if (!GIT::isIgnored(file.dir().absolutePath(), path))
         {
             if (file.isDir())
             {

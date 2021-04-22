@@ -1,5 +1,5 @@
-SOURCES += \
-    $$PWD/src/com/ngos/devtools/shared/console/console.cpp
-
-HEADERS += \
-    $$PWD/src/com/ngos/devtools/shared/console/console.h
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/git.cpp                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/git.h                                                                                                                                                       # Colorize: green
