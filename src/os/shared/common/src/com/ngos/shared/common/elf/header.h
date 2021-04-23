@@ -19,7 +19,7 @@ struct ElfHeader
     u64                     entryPoint;
     u64                     programHeaderTableOffset;
     u64                     sectionHeaderTableOffset;
-    u32                     flags;
+    u32                     flags; // TODO: Flags?
     u16                     headerSize;
     u16                     programHeaderTableEntrySize;
     u16                     programHeaderTableEntryCount;

@@ -1,46 +1,46 @@
-#ifndef COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H
-#define COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H
-
-
-
-#include <QHash>
-#include <QList>
-#include <QString>
-
-#include <com/ngos/shared/common/elf/header.h>
-#include <com/ngos/shared/common/elf/programheadertableentry.h>
-#include <com/ngos/shared/common/elf/sectionheadertableentry.h>
-#include <com/ngos/shared/common/elf/symbol.h>
-
-
-
-class ElfObject
-{
-public:
-    ElfObject(); // TEST: NO
-
-    bool read(const QString &path, bool *isRunning = nullptr); // TEST: NO
-
-    const QByteArray& getProgramBytes() const; // TEST: NO
-    quint64 getFileSize() const; // TEST: NO
-    const QList<ElfSectionHeaderTableEntry *>& getSections() const; // TEST: NO
-    const QHash<QString, ElfSectionHeaderTableEntry *>& getSectionsMap() const; // TEST: NO
-    ElfSectionHeaderTableEntry* getSection(QString name); // TEST: NO
-    const QHash<QString, ElfSymbol *>& getSymbolMap() const; // TEST: NO
-    ElfSymbol* getSymbol(QString name); // TEST: NO
-
-private:
-    bool verifyHeader(); // TEST: NO
-
-    QByteArray                                    mBytes;
-    ElfHeader                                    *mHeader;
-    QList<ElfProgramHeaderTableEntry *>           mProgramHeaderTableEntries;
-    QList<ElfSectionHeaderTableEntry *>           mSectionHeaderTableEntries;
-    QByteArray                                    mProgramBytes;
-    QHash<QString, ElfSectionHeaderTableEntry *>  mNameToSectionMap;
-    QHash<QString, ElfSymbol *>                   mNameToSymbolMap;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H
+#ifndef COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H                                                                                                                                                         // Colorize: green
+#define COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QHash>                                                                                                                                                                                         // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/elf/header.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/elf/programheadertableentry.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/elf/sectionheadertableentry.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/shared/common/elf/symbol.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ElfObject                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    ElfObject(); // TEST: NO                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool read(const QString &path, bool *isRunning = nullptr); // TEST: NO                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QByteArray& getProgramBytes() const; // TEST: NO                                                                                                                                               // Colorize: green
+    quint64 getFileSize() const; // TEST: NO                                                                                                                                                             // Colorize: green
+    const QList<ElfSectionHeaderTableEntry *>& getSections() const; // TEST: NO                                                                                                                          // Colorize: green
+    const QHash<QString, ElfSectionHeaderTableEntry *>& getSectionsMap() const; // TEST: NO                                                                                                              // Colorize: green
+    ElfSectionHeaderTableEntry* getSection(QString name); // TEST: NO                                                                                                                                    // Colorize: green
+    const QHash<QString, ElfSymbol *>& getSymbolMap() const; // TEST: NO                                                                                                                                 // Colorize: green
+    ElfSymbol* getSymbol(QString name); // TEST: NO                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    bool verifyHeader(); // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray                                    mBytes;                                                                                                                                                // Colorize: green
+    ElfHeader                                    *mHeader;                                                                                                                                               // Colorize: green
+    QList<ElfProgramHeaderTableEntry *>           mProgramHeaderTableEntries;                                                                                                                            // Colorize: green
+    QList<ElfSectionHeaderTableEntry *>           mSectionHeaderTableEntries;                                                                                                                            // Colorize: green
+    QByteArray                                    mProgramBytes;                                                                                                                                         // Colorize: green
+    QHash<QString, ElfSectionHeaderTableEntry *>  mNameToSectionMap;                                                                                                                                     // Colorize: green
+    QHash<QString, ElfSymbol *>                   mNameToSymbolMap;                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_SHARED_ELF_ELFOBJECT_H                                                                                                                                                       // Colorize: green

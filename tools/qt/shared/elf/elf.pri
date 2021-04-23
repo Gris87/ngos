@@ -1,10 +1,10 @@
-INCLUDEPATH += \
-    $$PWD/../../../../include   # /include
-
-
-
-SOURCES += \
-    $$PWD/src/com/ngos/devtools/shared/elf/elfobject.cpp
-
-HEADERS += \
-    $$PWD/src/com/ngos/devtools/shared/elf/elfobject.h
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    $$PWD/../../../../include   # /include                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/elf/elfobject.cpp                                                                                                                                                 # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/elf/elfobject.h                                                                                                                                                   # Colorize: green

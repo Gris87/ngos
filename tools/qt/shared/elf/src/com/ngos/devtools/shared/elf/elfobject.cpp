@@ -1,369 +1,464 @@
-#include "elfobject.h"
-
-#include <QDebug>
-#include <QFile>
-
-
-
-ElfObject::ElfObject()
-    : mBytes()
-    , mHeader(nullptr)
-    , mProgramHeaderTableEntries()
-    , mSectionHeaderTableEntries()
-    , mProgramBytes()
-    , mNameToSectionMap()
-    , mNameToSymbolMap()
-{
-    // Nothing
-}
-
-bool ElfObject::read(const QString &path, bool *isRunning)
-{
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return false;
-    }
-
-    while (!file.atEnd() && (!isRunning || *isRunning))
-    {
-        mBytes.append(file.read(4096));
-    }
-
-    file.close();
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    if (mBytes.size() < (qint64)sizeof(*mHeader))
-    {
-        qDebug() << "File is too small";
-
-        return false;
-    }
-
-    mHeader = (ElfHeader *)mBytes.data();
-
-
-
-    if (!verifyHeader())
-    {
-        qDebug() << "ELF Header is invalid";
-
-        return false;
-    }
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    for (qint64 i = 0; i < mHeader->programHeaderTableEntryCount; ++i)
-    {
-        mProgramHeaderTableEntries.append((ElfProgramHeaderTableEntry *)((quint64)mBytes.data() + mHeader->programHeaderTableOffset + i * mHeader->programHeaderTableEntrySize));
-    }
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    for (qint64 i = 0; i < mHeader->sectionHeaderTableEntryCount; ++i)
-    {
-        mSectionHeaderTableEntries.append((ElfSectionHeaderTableEntry *)((quint64)mBytes.data() + mHeader->sectionHeaderTableOffset + i * mHeader->sectionHeaderTableEntrySize));
-    }
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    for (qint64 i = 0; i < mProgramHeaderTableEntries.size(); ++i)
-    {
-        ElfProgramHeaderTableEntry *entry = mProgramHeaderTableEntries.at(i);
-
-        mProgramBytes.append((char *)((quint64)mBytes.data() + entry->offset), entry->fileSize);
-    }
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    ElfSectionHeaderTableEntry *sectionWithNames = mSectionHeaderTableEntries.at(mHeader->sectionHeaderTableNamesIndex);
-
-
-
-    for (qint64 i = 0; i < mSectionHeaderTableEntries.size(); ++i)
-    {
-        ElfSectionHeaderTableEntry *entry = mSectionHeaderTableEntries.at(i);
-
-        mNameToSectionMap.insert(QString((char *)((quint64)mBytes.data() + sectionWithNames->offset + entry->nameOffset)), entry);
-    }
-
-
-
-    if (isRunning && !(*isRunning))
-    {
-        return true;
-    }
-
-
-
-    ElfSectionHeaderTableEntry *stringTable  = getSection(".strtab");
-    ElfSectionHeaderTableEntry *symbolsTable = getSection(".symtab");
-
-    if (stringTable && symbolsTable)
-    {
-        for (qint64 i = 0; i < (qint64)symbolsTable->size; i += sizeof(ElfSymbol))
-        {
-            ElfSymbol *symbol = (ElfSymbol *)((quint64)mBytes.data() + symbolsTable->offset + i);
-
-            mNameToSymbolMap.insert(QString((char *)((quint64)mBytes.data() + stringTable->offset + symbol->nameOffset)), symbol);
-        }
-
-
-
-        if (isRunning && !(*isRunning))
-        {
-            return true;
-        }
-    }
-
-
-
-    return true;
-}
-
-const QByteArray& ElfObject::getProgramBytes() const
-{
-    return mProgramBytes;
-}
-
-quint64 ElfObject::getFileSize() const
-{
-    return mBytes.size();
-}
-
-const QList<ElfSectionHeaderTableEntry *>& ElfObject::getSections() const
-{
-    return mSectionHeaderTableEntries;
-}
-
-const QHash<QString, ElfSectionHeaderTableEntry *>& ElfObject::getSectionsMap() const
-{
-    return mNameToSectionMap;
-}
-
-ElfSectionHeaderTableEntry* ElfObject::getSection(QString name)
-{
-    return mNameToSectionMap.value(name, nullptr);
-}
-
-const QHash<QString, ElfSymbol *>& ElfObject::getSymbolMap() const
-{
-    return mNameToSymbolMap;
-}
-
-ElfSymbol* ElfObject::getSymbol(QString name)
-{
-    return mNameToSymbolMap.value(name, nullptr);
-}
-
-bool ElfObject::verifyHeader()
-{
-    if (mHeader->identification.signature != ELF_SIGNATURE)
-    {
-        qDebug() << "ELF signature is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->identification.fileClass != ElfClass::CLASS_64)
-    {
-        qDebug() << "ELF file class is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->identification.fileData != ElfData::LEAST_SIGNIFICANT_BYTE)
-    {
-        qDebug() << "ELF file data is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->identification.version != ElfFileVersion::CURRENT)
-    {
-        qDebug() << "ELF file version is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->identification.osAbi != ElfOsAbi::SYSTEM_V)
-    {
-        qDebug() << "ELF OS ABI is invalid";
-
-        return false;
-    }
-
-
-
-    if (
-        mHeader->type != ElfType::EXECUTABLE
-        &&
-        mHeader->type != ElfType::DYNAMIC_LIBRARY
-       )
-    {
-        qDebug() << "ELF type is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->machine != ElfMachine::MACHINE_X86_64)
-    {
-        qDebug() << "ELF machine is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->version != ElfVersion::CURRENT)
-    {
-        qDebug() << "ELF file version is invalid";
-
-        return false;
-    }
-
-
-
-    if (
-        mHeader->entryPoint >= (quint64)mBytes.size()
-        &&
-        mHeader->entryPoint != 0xFFFFFFFF80000000
-       )
-    {
-        qDebug() << "ELF entry point is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->programHeaderTableOffset >= (quint64)mBytes.size())
-    {
-        qDebug() << "ELF program header table offset is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->sectionHeaderTableOffset >= (quint64)mBytes.size())
-    {
-        qDebug() << "ELF section header table offset is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->flags != 0)
-    {
-        qDebug() << "ELF flags is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->headerSize != 64 || mHeader->headerSize != sizeof(*mHeader))
-    {
-        qDebug() << "ELF header size is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->programHeaderTableEntrySize != sizeof(ElfProgramHeaderTableEntry))
-    {
-        qDebug() << "ELF program header table entry size is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->programHeaderTableEntryCount == 0)
-    {
-        qDebug() << "ELF number of program header table entries is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->sectionHeaderTableEntrySize != sizeof(ElfSectionHeaderTableEntry))
-    {
-        qDebug() << "ELF section header table entry size is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->sectionHeaderTableEntryCount == 0)
-    {
-        qDebug() << "ELF number of section header table entries is invalid";
-
-        return false;
-    }
-
-
-
-    if (mHeader->sectionHeaderTableNamesIndex >= mHeader->sectionHeaderTableEntryCount)
-    {
-        qDebug() << "ELF index of entry with section names is invalid";
-
-        return false;
-    }
-
-
-
-    return true;
-}
+#include "elfobject.h"                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ElfObject::ElfObject()                                                                                                                                                                                   // Colorize: green
+    : mBytes()                                                                                                                                                                                           // Colorize: green
+    , mHeader(nullptr)                                                                                                                                                                                   // Colorize: green
+    , mProgramHeaderTableEntries()                                                                                                                                                                       // Colorize: green
+    , mSectionHeaderTableEntries()                                                                                                                                                                       // Colorize: green
+    , mProgramBytes()                                                                                                                                                                                    // Colorize: green
+    , mNameToSectionMap()                                                                                                                                                                                // Colorize: green
+    , mNameToSymbolMap()                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ElfObject::read(const QString &path, bool *isRunning)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Read file to mBytes with 4K blocks                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (!file.atEnd() && (isRunning == nullptr || *isRunning))                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mBytes.append(file.read(4096));                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that file is big enough                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mBytes.size() < (qint64)sizeof(ElfHeader))                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "File is too small";                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    mHeader = (ElfHeader *)mBytes.data();                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Verify that ELF header is valid                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!verifyHeader())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF header is invalid";                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill program header table entries                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mHeader->programHeaderTableEntryCount; ++i)                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mProgramHeaderTableEntries.append((ElfProgramHeaderTableEntry *)(mBytes.data() + mHeader->programHeaderTableOffset + i * mHeader->programHeaderTableEntrySize));                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill section header table entries                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mHeader->sectionHeaderTableEntryCount; ++i)                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            mSectionHeaderTableEntries.append((ElfSectionHeaderTableEntry *)(mBytes.data() + mHeader->sectionHeaderTableOffset + i * mHeader->sectionHeaderTableEntrySize));                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get program bytes from program header table entries                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mProgramHeaderTableEntries.size(); ++i)                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ElfProgramHeaderTableEntry *entry = mProgramHeaderTableEntries.at(i);                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mProgramBytes.append(mBytes.data() + entry->offset, entry->fileSize);                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ElfSectionHeaderTableEntry *sectionWithNames = mSectionHeaderTableEntries.at(mHeader->sectionHeaderTableNamesIndex);                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Map sections with their names                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < mSectionHeaderTableEntries.size(); ++i)                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ElfSectionHeaderTableEntry *entry = mSectionHeaderTableEntries.at(i);                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            mNameToSectionMap.insert(QString(mBytes.data() + sectionWithNames->offset + entry->nameOffset), entry);                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check if process terminated                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (isRunning != nullptr && !(*isRunning))                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Map symbols with their names                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        ElfSectionHeaderTableEntry *stringTable  = getSection(".strtab");                                                                                                                                // Colorize: green
+        ElfSectionHeaderTableEntry *symbolsTable = getSection(".symtab");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (stringTable != nullptr && symbolsTable != nullptr)                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 offset = 0;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (offset < (qint64)symbolsTable->size)                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ElfSymbol *symbol = (ElfSymbol *)(mBytes.data() + symbolsTable->offset + offset);                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                mNameToSymbolMap.insert(QString(mBytes.data() + stringTable->offset + symbol->nameOffset), symbol);                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                offset += sizeof(ElfSymbol);                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QByteArray& ElfObject::getProgramBytes() const                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mProgramBytes;                                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+quint64 ElfObject::getFileSize() const                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mBytes.size();                                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<ElfSectionHeaderTableEntry *>& ElfObject::getSections() const                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mSectionHeaderTableEntries;                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QHash<QString, ElfSectionHeaderTableEntry *>& ElfObject::getSectionsMap() const                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mNameToSectionMap;                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ElfSectionHeaderTableEntry* ElfObject::getSection(QString name)                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mNameToSectionMap.value(name, nullptr);                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QHash<QString, ElfSymbol *>& ElfObject::getSymbolMap() const                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mNameToSymbolMap;                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ElfSymbol* ElfObject::getSymbol(QString name)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mNameToSymbolMap.value(name, nullptr);                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ElfObject::verifyHeader()                                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check ELF signature                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->identification.signature != ELF_SIGNATURE)                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF signature is invalid";                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF file class                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->identification.fileClass != ElfClass::CLASS_64)                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF file class is invalid";                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF file data                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->identification.fileData != ElfData::LEAST_SIGNIFICANT_BYTE)                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF file data is invalid";                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF file version                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->identification.version != ElfFileVersion::CURRENT)                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF file version is invalid";                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF OS ABI                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->identification.osAbi != ElfOsAbi::SYSTEM_V)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF OS ABI is invalid";                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF type                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            mHeader->type != ElfType::EXECUTABLE                                                                                                                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            mHeader->type != ElfType::DYNAMIC_LIBRARY                                                                                                                                                    // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF type is invalid";                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF machine                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->machine != ElfMachine::MACHINE_X86_64)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF machine is invalid";                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF version                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->version != ElfVersion::CURRENT)                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF version is invalid";                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF entry point                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            mHeader->entryPoint >= (quint64)mBytes.size()                                                                                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            mHeader->entryPoint != 0xFFFFFFFF80000000                                                                                                                                                    // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF entry point is invalid";                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF program header table offset                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->programHeaderTableOffset >= (quint64)mBytes.size())                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF program header table offset is invalid";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF section header table offset                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->sectionHeaderTableOffset >= (quint64)mBytes.size())                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF section header table offset is invalid";                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF flags                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->flags != 0)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF flags is invalid";                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF header size                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->headerSize != 64 || mHeader->headerSize != sizeof(ElfHeader))                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF header size is invalid";                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF program header table entry size                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->programHeaderTableEntrySize != sizeof(ElfProgramHeaderTableEntry))                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF program header table entry size is invalid";                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF number of program header table entries                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->programHeaderTableEntryCount <= 0)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF number of program header table entries is invalid";                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF section header table entry size                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->sectionHeaderTableEntrySize != sizeof(ElfSectionHeaderTableEntry))                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF section header table entry size is invalid";                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF number of section header table entries                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->sectionHeaderTableEntryCount == 0)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF number of section header table entries is invalid";                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check ELF index of entry with section names                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mHeader->sectionHeaderTableNamesIndex >= mHeader->sectionHeaderTableEntryCount)                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qDebug() << "ELF index of entry with section names is invalid";                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

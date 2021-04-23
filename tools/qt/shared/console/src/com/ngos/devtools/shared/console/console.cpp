@@ -1,25 +1,25 @@
-#include "console.h"
-
-
-
-QTextStream Console::sStdout(stdout);
-QTextStream Console::sStderr(stderr);
-
-
-
-void Console::out(const QString &text)
-{
-    sStdout << text << Qt::endl;
-    sStdout.flush();
-}
-
-void Console::err(const QString &text)
-{
-    sStderr << text << Qt::endl;
-    sStderr.flush();
-}
-
-Console::Console()
-{
-    // Nothing
-}
+#include "console.h"                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QTextStream Console::sStdout(stdout);                                                                                                                                                                    // Colorize: green
+QTextStream Console::sStderr(stderr);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void Console::out(const QString &text)                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sStdout << text << Qt::endl;                                                                                                                                                                         // Colorize: green
+    sStdout.flush();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void Console::err(const QString &text)                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sStderr << text << Qt::endl;                                                                                                                                                                         // Colorize: green
+    sStderr.flush();                                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Console::Console()                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
