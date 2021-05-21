@@ -28,12 +28,14 @@ fi                                                                              
                                                                                                                                                                                                          # Colorize: green
 find -type f | \
     grep \
-        -ve /.git/ \
-        -ve /ngos.config$ \
-        -ve /ngos.creator$ \
-        -ve /ngos.creator.user$ \
-        -ve /ngos.files$ \
-        -ve /ngos.includes$ | \
+        -ve "/.git/"              \
+        -ve "/ngos.cflags$"       \
+        -ve "/ngos.config$"       \
+        -ve "/ngos.creator$"      \
+        -ve "/ngos.creator.user$" \
+        -ve "/ngos.cxxflags$"     \
+        -ve "/ngos.files$"        \
+        -ve "/ngos.includes$" |   \
     git check-ignore --verbose --non-matching --stdin | \
     grep -e "^::" | \
     cut -c 6- | \

@@ -26,40 +26,36 @@ fi                                                                              
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+TOTAL_NUMBER_OF_FILES=0                                                                                                                                                                                  # Colorize: green
 TOTAL_NUMBER_OF_LINES=0                                                                                                                                                                                  # Colorize: green
 TOTAL_NOT_VERIFIED_LINES=0                                                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 while read file                                                                                                                                                                                          # Colorize: green
 do                                                                                                                                                                                                       # Colorize: green
     IGNORE_FILE=`echo "${file}" | grep      \
+                -ve "/generated/"           \
+                -ve "tools/tracers/assets/" \
                 -ve "\.auth$"               \
                 -ve "\.bin$"                \
-                -ve "\.DAT$"                \
                 -ve "\.dll$"                \
-                -ve "\.efi$"                \
                 -ve "\.exe$"                \
+                -ve "\.gif$"                \
                 -ve "\.gitignore$"          \
                 -ve "\.gpg$"                \
                 -ve "\.hex$"                \
                 -ve "\.ico$"                \
                 -ve "\.jpg$"                \
-                -ve "\.LOG$"                \
-                -ve "\.mui$"                \
-                -ve "\.patch$"              \
                 -ve "\.pem$"                \
                 -ve "\.png$"                \
                 -ve "\.qm$"                 \
                 -ve "\.rc$"                 \
-                -ve "\.stl$"                \
+                -ve "\.svg$"                \
                 -ve "\.ts$"                 \
                 -ve "\.ttf$"                \
                 -ve "\.ui$"                 \
                 -ve "\.vbox$"               \
                 -ve "^ngos.creator.shared$" \
                 -ve "Makefile$"             \
-                -ve "/generated/"           \
-                -ve "/BCD$"                 \
-                -ve "/\.config$"            \
                 -ve "/\.gdbinit$"           \
                 -ve "/\.htaccess$"          \
                 -ve "/\.spelling$"          \
@@ -100,11 +96,16 @@ do                                                                              
             fi                                                                                                                                                                                           # Colorize: green
         fi                                                                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
         TOTAL_NUMBER_OF_LINES=$((${TOTAL_NUMBER_OF_LINES} + ${NUMBER_OF_LINES}))                                                                                                                         # Colorize: green
+        TOTAL_NUMBER_OF_FILES=$((${TOTAL_NUMBER_OF_FILES} + 1))                                                                                                                                          # Colorize: green
     fi                                                                                                                                                                                                   # Colorize: green
 done < ngos.files                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-echo "${TOTAL_NOT_VERIFIED_LINES} of ${TOTAL_NUMBER_OF_LINES} lines not verified"                                                                                                                        # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo "${TOTAL_NOT_VERIFIED_LINES} of ${TOTAL_NUMBER_OF_LINES} lines not verified in ${TOTAL_NUMBER_OF_FILES} files"                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

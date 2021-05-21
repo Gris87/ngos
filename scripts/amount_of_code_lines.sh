@@ -34,45 +34,45 @@ echo -n "Amount of code lines without generated: "                              
 wc -l ` \
         cat ngos.files | \
             grep \
-                -ve /generated/ \
-                -ve tools/tracers/assets/ \
-                -ve \.bin$ \
-                -ve \.dll$ \
-                -ve \.exe$ \
-                -ve \.gpg$ \
-                -ve \.pem$ \
-                -ve \.auth$ \
-                -ve \.ttf$ \
-                -ve \.ico$ \
-                -ve \.png$ \
-                -ve \.jpg$ \
-                -ve \.gif$ \
-                -ve \.svg$ \
+                -ve "/generated/"           \
+                -ve "tools/tracers/assets/" \
+                -ve "\.auth$"               \
+                -ve "\.bin$"                \
+                -ve "\.dll$"                \
+                -ve "\.exe$"                \
+                -ve "\.gif$"                \
+                -ve "\.gpg$"                \
+                -ve "\.ico$"                \
+                -ve "\.jpg$"                \
+                -ve "\.pem$"                \
+                -ve "\.png$"                \
+                -ve "\.svg$"                \
+                -ve "\.ttf$"                \
     ` | \
     tail -n 1 | \
     sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 echo -n "Amount of code lines with generated:    "                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-    wc -l ` \
-            cat ngos.files | \
-                grep \
-                    -ve tools/tracers/assets/ \
-                    -ve \.bin$ \
-                    -ve \.dll$ \
-                    -ve \.exe$ \
-                    -ve \.gpg$ \
-                    -ve \.pem$ \
-                    -ve \.auth$ \
-                    -ve \.ttf$ \
-                    -ve \.ico$ \
-                    -ve \.png$ \
-                    -ve \.jpg$ \
-                    -ve \.gif$ \
-                    -ve \.svg$ \
-        ` | \
-        tail -n 1 | \
-        sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                  # Colorize: green
+wc -l ` \
+        cat ngos.files | \
+            grep \
+                -ve "tools/tracers/assets/" \
+                -ve "\.auth$"               \
+                -ve "\.bin$"                \
+                -ve "\.dll$"                \
+                -ve "\.exe$"                \
+                -ve "\.gif$"                \
+                -ve "\.gpg$"                \
+                -ve "\.ico$"                \
+                -ve "\.jpg$"                \
+                -ve "\.pem$"                \
+                -ve "\.png$"                \
+                -ve "\.svg$"                \
+                -ve "\.ttf$"                \
+    ` | \
+    tail -n 1 | \
+    sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 IFS=${OLD_IFS}                                                                                                                                                                                           # Colorize: green
                                                                                                                                                                                                          # Colorize: green
