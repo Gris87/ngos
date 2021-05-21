@@ -10,7 +10,7 @@
                                                                                                                                                                                                          # Colorize: green
 WORKING_DIR=`pwd`                                                                                                                                                                                        # Colorize: green
 PROJECT_INCLUDES=ngos.includes                                                                                                                                                                           # Colorize: green
-ALL_INCLUDES=/tmp/ngos_list_of_includes.txt                                                                                                                                                              # Colorize: green
+ALL_INCLUDES=/tmp/ngos_test_list_of_includes.txt                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -44,16 +44,16 @@ cd ${WORKING_DIR}/                                                              
                                                                                                                                                                                                          # Colorize: green
 DUPLICATES=` \
     cat ${ALL_INCLUDES} | sort | uniq -d | \
-    grep \
-        -ve "./build/gen/moc_predefs.h" \
-        -ve "./build/gen/ui_aboutdialog.h" \
-        -ve "./build/gen/ui_mainwindow.h" \
-        -ve "./moc_predefs.h" \
-        -ve "./src/main/aboutdialog.h" \
-        -ve "./src/main/mainwindow.h" \
-        -ve "./src/other/global.h" \
-        -ve "./ui_aboutdialog.h" \
-        -ve "./ui_mainwindow.h" \
+        grep \
+            -ve "./build/gen/moc_predefs.h"    \
+            -ve "./build/gen/ui_aboutdialog.h" \
+            -ve "./build/gen/ui_mainwindow.h"  \
+            -ve "./moc_predefs.h"              \
+            -ve "./src/main/aboutdialog.h"     \
+            -ve "./src/main/mainwindow.h"      \
+            -ve "./src/other/global.h"         \
+            -ve "./ui_aboutdialog.h"           \
+            -ve "./ui_mainwindow.h"            \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -65,8 +65,8 @@ if [ "${DUPLICATES}" != "" ]; then                                              
     exit 1                                                                                                                                                                                               # Colorize: green
 fi                                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 echo "OK"                                                                                                                                                                                                # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 exit 0                                                                                                                                                                                                   # Colorize: green

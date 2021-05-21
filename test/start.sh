@@ -14,7 +14,7 @@
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
 BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
-BUILD_LOG=/tmp/ngos_test.log                                                                                                                                                                             # Colorize: green
+BUILD_LOG=/tmp/ngos_test_build.log                                                                                                                                                                       # Colorize: green
 BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h                                                                                                                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

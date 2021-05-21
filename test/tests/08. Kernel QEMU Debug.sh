@@ -10,10 +10,10 @@
                                                                                                                                                                                                          # Colorize: green
 WORKING_DIR=`pwd`                                                                                                                                                                                        # Colorize: green
 BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
-BUILD_LOG=/tmp/ngos_test.log                                                                                                                                                                             # Colorize: green
+BUILD_LOG=/tmp/ngos_test_build.log                                                                                                                                                                       # Colorize: green
 BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig2.h                                                                                                                                                           # Colorize: green
-TEMP_LOG=/tmp/ngos_kernel.log                                                                                                                                                                            # Colorize: green
-LOG_PATH=../../tools/vm/qemu/logs/NGOS_dev.log                                                                                                                                                           # Colorize: green
+VM_LOG=/tmp/ngos_test_vm.log                                                                                                                                                                             # Colorize: green
+KERNEL_LOG=../../tools/vm/qemu/logs/NGOS_dev.log                                                                                                                                                         # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -63,13 +63,13 @@ echo ""                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 cd ../../tools/vm                                                                                                                                                                                        # Colorize: green
-./start_vm.sh qemu none > ${TEMP_LOG} 2>&1 &                                                                                                                                                             # Colorize: green
+./start_vm.sh qemu none > ${VM_LOG} 2>&1 &                                                                                                                                                               # Colorize: green
 cd ${WORKING_DIR}/                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 sleep 30                                                                                                                                                                                                 # Colorize: green
-cat ${TEMP_LOG}                                                                                                                                                                                          # Colorize: green
+cat ${VM_LOG}                                                                                                                                                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -98,7 +98,7 @@ ERRORS=` \
         -e "CRITICAL" \
         -e "FATAL" \
         -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \
-    ${LOG_PATH} \
+    ${KERNEL_LOG} \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -110,8 +110,8 @@ if [ "${ERRORS}" != "" ]; then                                                  
     exit 1                                                                                                                                                                                               # Colorize: green
 fi                                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 echo "OK"                                                                                                                                                                                                # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 exit 0                                                                                                                                                                                                   # Colorize: green
