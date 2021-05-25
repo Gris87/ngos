@@ -51,7 +51,7 @@ wc -l ` \
                 -ve "\.ttf$"                \
     ` | \
     tail -n 1 | \
-    sed -r "s/ *([0-9]+) .*/\1/g"                                                                                                                                                                        # Colorize: green
+    sed -r "s/ *([0-9]+).*/\1/g"                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 echo -n "Amount of code lines with generated:    "                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -74,7 +74,7 @@ wc -l ` \
                 -ve "\.ttf$"                \
     ` | \
     tail -n 1 | \
-    sed -r "s/ *([0-9]+) .*/\1/g"                                                                                                                                                                        # Colorize: green
+    sed -r "s/ *([0-9]+).*/\1/g"                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 IFS=${OLD_IFS}                                                                                                                                                                                           # Colorize: green
                                                                                                                                                                                                          # Colorize: green
