@@ -32,37 +32,37 @@ TOTAL_NOT_VERIFIED_LINES=0                                                      
                                                                                                                                                                                                          # Colorize: green
 while read file                                                                                                                                                                                          # Colorize: green
 do                                                                                                                                                                                                       # Colorize: green
-    IGNORE_FILE=`echo "${file}" | grep      \
-                -ve "/generated/"           \
-                -ve "tools/tracers/assets/" \
-                -ve "\.auth$"               \
-                -ve "\.bin$"                \
-                -ve "\.dll$"                \
-                -ve "\.exe$"                \
-                -ve "\.gif$"                \
-                -ve "\.gitignore$"          \
-                -ve "\.gpg$"                \
-                -ve "\.hex$"                \
-                -ve "\.ico$"                \
-                -ve "\.jpg$"                \
-                -ve "\.pem$"                \
-                -ve "\.png$"                \
-                -ve "\.qm$"                 \
-                -ve "\.rc$"                 \
-                -ve "\.svg$"                \
-                -ve "\.ts$"                 \
-                -ve "\.ttf$"                \
-                -ve "\.ui$"                 \
-                -ve "\.vbox$"               \
-                -ve "^ngos.creator.shared$" \
-                -ve "Makefile$"             \
-                -ve "/\.gdbinit$"           \
-                -ve "/\.htaccess$"          \
-                -ve "/\.spelling$"          \
+    IGNORE_FILE=`echo "${file}" | grep          \
+                    -ve "/generated/"           \
+                    -ve "tools/tracers/assets/" \
+                    -ve "\.auth$"               \
+                    -ve "\.bin$"                \
+                    -ve "\.dll$"                \
+                    -ve "\.exe$"                \
+                    -ve "\.gif$"                \
+                    -ve "\.gitignore$"          \
+                    -ve "\.gpg$"                \
+                    -ve "\.hex$"                \
+                    -ve "\.ico$"                \
+                    -ve "\.jpg$"                \
+                    -ve "\.pem$"                \
+                    -ve "\.png$"                \
+                    -ve "\.qm$"                 \
+                    -ve "\.rc$"                 \
+                    -ve "\.svg$"                \
+                    -ve "\.ts$"                 \
+                    -ve "\.ttf$"                \
+                    -ve "\.ui$"                 \
+                    -ve "\.vbox$"               \
+                    -ve "^ngos.creator.shared$" \
+                    -ve "Makefile$"             \
+                    -ve "/\.gdbinit$"           \
+                    -ve "/\.htaccess$"          \
+                    -ve "/\.spelling$"          \
     `                                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     if [ "${IGNORE_FILE}" != "" ]; then                                                                                                                                                                  # Colorize: green
-        FIRST_LINE=`        cat "${file}" | grep -m1 -n -ve "Colorize: green" -ve "^#!/bin/bash$" | cut -d : -f 1`                                                                                       # Colorize: green
+        FIRST_LINE=`        cat "${file}" | grep -m1 -n -ve "Colorize: green" -ve "^#!/bin/bash$" | sed -r "s/^([0-9]+):.*/\1/g"`                                                                        # Colorize: green
         NOT_VERIFIED_LINES=`cat "${file}" | grep        -ve "Colorize: green" | wc -l`                                                                                                                   # Colorize: green
         NUMBER_OF_LINES=`   cat "${file}" | wc -l`                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green

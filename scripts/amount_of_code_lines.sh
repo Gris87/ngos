@@ -46,11 +46,12 @@ wc -l ` \
                 -ve "\.jpg$"                \
                 -ve "\.pem$"                \
                 -ve "\.png$"                \
+                -ve "\.qm$"                 \
                 -ve "\.svg$"                \
                 -ve "\.ttf$"                \
     ` | \
     tail -n 1 | \
-    sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
+    sed -r "s/ *([0-9]+) .*/\1/g"                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 echo -n "Amount of code lines with generated:    "                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -68,11 +69,12 @@ wc -l ` \
                 -ve "\.jpg$"                \
                 -ve "\.pem$"                \
                 -ve "\.png$"                \
+                -ve "\.qm$"                 \
                 -ve "\.svg$"                \
                 -ve "\.ttf$"                \
     ` | \
     tail -n 1 | \
-    sed -s -E "s/ *([0-9]+) .*/\1/"                                                                                                                                                                      # Colorize: green
+    sed -r "s/ *([0-9]+) .*/\1/g"                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 IFS=${OLD_IFS}                                                                                                                                                                                           # Colorize: green
                                                                                                                                                                                                          # Colorize: green

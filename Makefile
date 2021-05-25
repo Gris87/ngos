@@ -97,7 +97,7 @@ tools:
 	qmake $@.pro || \
 	exit 1 ; \
 	\
-	for line in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
+	for line in `find -type d -maxdepth 1 2> /dev/null | sed -r "s/^\.\///g"` ; \
 	do \
 		if [ -f "$${line}/$${line}.pro" ]; then \
 			cd $${line} && \
@@ -106,7 +106,7 @@ tools:
 			qmake $${line}.pro || \
 			exit 1 ; \
 			\
-			for line2 in `find -type d -maxdepth 1 2> /dev/null | cut -c 3-` ; \
+			for line2 in `find -type d -maxdepth 1 2> /dev/null | sed -r "s/^\.\///g"` ; \
 			do \
 				if [ -f "$${line2}/$${line2}.pro" ]; then \
 					cd $${line2} && \

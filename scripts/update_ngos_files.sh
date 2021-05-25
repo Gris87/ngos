@@ -38,7 +38,7 @@ find -type f | \
         -ve "/ngos.includes$" |   \
     git check-ignore --verbose --non-matching --stdin | \
     grep -e "^::" | \
-    cut -c 6- | \
+    sed -r "s/^::\t\.\///g" | \
     sort > ngos.files                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
