@@ -72,6 +72,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e4170d.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41713.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41750.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41751.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41802.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41805.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor14e4/pcisubdevice14e41806.h>
@@ -355,6 +356,7 @@ enum class PciDevice14E4: u16 // Ignore CppEnumVerifier
     DEVICE_4410 = 0x4410,
     DEVICE_4411 = 0x4411,
     DEVICE_4412 = 0x4412,
+    DEVICE_4415 = 0x4415,
     DEVICE_441F = 0x441F,
     DEVICE_4420 = 0x4420,
     DEVICE_4421 = 0x4421,
@@ -694,6 +696,7 @@ inline const char8* enumToString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_4410: return "DEVICE_4410";
         case PciDevice14E4::DEVICE_4411: return "DEVICE_4411";
         case PciDevice14E4::DEVICE_4412: return "DEVICE_4412";
+        case PciDevice14E4::DEVICE_4415: return "DEVICE_4415";
         case PciDevice14E4::DEVICE_441F: return "DEVICE_441F";
         case PciDevice14E4::DEVICE_4420: return "DEVICE_4420";
         case PciDevice14E4::DEVICE_4421: return "DEVICE_4421";
@@ -1050,6 +1053,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device) // TEST: NO
         case PciDevice14E4::DEVICE_4410: return "BCM4413 iLine32 HomePNA 2.0";
         case PciDevice14E4::DEVICE_4411: return "BCM4413 V.90 56k modem";
         case PciDevice14E4::DEVICE_4412: return "BCM4412 10/100BaseT";
+        case PciDevice14E4::DEVICE_4415: return "BCM4359 802.11ac Dual-Band Wireless Network Controller";
         case PciDevice14E4::DEVICE_441F: return "BCM4361 802.11ac Dual-Band Wireless Network Controller";
         case PciDevice14E4::DEVICE_4420: return "BCM4361 802.11ac 2.4 GHz Wireless Network Controller";
         case PciDevice14E4::DEVICE_4421: return "BCM4361 802.11ac 5 GHz Wireless Network Controller";
@@ -1314,7 +1318,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_1712: return "Unknown device";
         case PciDevice14E4::DEVICE_1713: return enumToHumanString((PciSubDevice14E41713)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14E4::DEVICE_1750: return enumToHumanString((PciSubDevice14E41750)(subsystemVendorID << 16 | subDeviceId));
-        case PciDevice14E4::DEVICE_1751: return "Unknown device";
+        case PciDevice14E4::DEVICE_1751: return enumToHumanString((PciSubDevice14E41751)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice14E4::DEVICE_1752: return "Unknown device";
         case PciDevice14E4::DEVICE_1800: return "Unknown device";
         case PciDevice14E4::DEVICE_1801: return "Unknown device";
@@ -1391,6 +1395,7 @@ inline const char8* enumToHumanString(PciDevice14E4 device, u16 subsystemVendorI
         case PciDevice14E4::DEVICE_4410: return "Unknown device";
         case PciDevice14E4::DEVICE_4411: return "Unknown device";
         case PciDevice14E4::DEVICE_4412: return "Unknown device";
+        case PciDevice14E4::DEVICE_4415: return "Unknown device";
         case PciDevice14E4::DEVICE_441F: return "Unknown device";
         case PciDevice14E4::DEVICE_4420: return "Unknown device";
         case PciDevice14E4::DEVICE_4421: return "Unknown device";

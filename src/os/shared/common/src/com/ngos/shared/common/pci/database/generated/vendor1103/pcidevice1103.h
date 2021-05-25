@@ -47,7 +47,8 @@ enum class PciDevice1103: u16 // Ignore CppEnumVerifier
     DEVICE_3120 = 0x3120,
     DEVICE_3220 = 0x3220,
     DEVICE_3320 = 0x3320,
-    DEVICE_4310 = 0x4310
+    DEVICE_4310 = 0x4310,
+    DEVICE_7505 = 0x7505
 };
 
 
@@ -94,6 +95,7 @@ inline const char8* enumToString(PciDevice1103 device) // TEST: NO
         case PciDevice1103::DEVICE_3220: return "DEVICE_3220";
         case PciDevice1103::DEVICE_3320: return "DEVICE_3320";
         case PciDevice1103::DEVICE_4310: return "DEVICE_4310";
+        case PciDevice1103::DEVICE_7505: return "DEVICE_7505";
 
         default: return "UNKNOWN";
     }
@@ -157,6 +159,7 @@ inline const char8* enumToHumanString(PciDevice1103 device) // TEST: NO
         case PciDevice1103::DEVICE_3220: return "RocketRAID 3220";
         case PciDevice1103::DEVICE_3320: return "RocketRAID 3320";
         case PciDevice1103::DEVICE_4310: return "RocketRaid 4310";
+        case PciDevice1103::DEVICE_7505: return "SSD7505 PCIe Gen4 x16 4-Port M.2 NVMe RAID Controller";
 
         default: return "Unknown device";
     }
@@ -205,6 +208,7 @@ inline const char8* enumToHumanString(PciDevice1103 device, u16 subsystemVendorI
         case PciDevice1103::DEVICE_3220: return "Unknown device";
         case PciDevice1103::DEVICE_3320: return "Unknown device";
         case PciDevice1103::DEVICE_4310: return "Unknown device";
+        case PciDevice1103::DEVICE_7505: return "Unknown device";
 
         default: return "Unknown device";
     }

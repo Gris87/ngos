@@ -39,6 +39,7 @@ enum class PciSubDevice80861521: u32 // Ignore CppEnumVerifier
     SUBDEVICE_1093775B = 0x1093775B,
     SUBDEVICE_10A9802A = 0x10A9802A,
     SUBDEVICE_1137023E = 0x1137023E,
+    SUBDEVICE_15D90000 = 0x15D90000,
     SUBDEVICE_15D90652 = 0x15D90652,
     SUBDEVICE_17AA1074 = 0x17AA1074,
     SUBDEVICE_17AA4005 = 0x17AA4005,
@@ -97,6 +98,7 @@ inline const char8* enumToString(PciSubDevice80861521 subDevice) // TEST: NO
         case PciSubDevice80861521::SUBDEVICE_1093775B: return "SUBDEVICE_1093775B";
         case PciSubDevice80861521::SUBDEVICE_10A9802A: return "SUBDEVICE_10A9802A";
         case PciSubDevice80861521::SUBDEVICE_1137023E: return "SUBDEVICE_1137023E";
+        case PciSubDevice80861521::SUBDEVICE_15D90000: return "SUBDEVICE_15D90000";
         case PciSubDevice80861521::SUBDEVICE_15D90652: return "SUBDEVICE_15D90652";
         case PciSubDevice80861521::SUBDEVICE_17AA1074: return "SUBDEVICE_17AA1074";
         case PciSubDevice80861521::SUBDEVICE_17AA4005: return "SUBDEVICE_17AA4005";
@@ -172,6 +174,7 @@ inline const char8* enumToHumanString(PciSubDevice80861521 subDevice) // TEST: N
         case PciSubDevice80861521::SUBDEVICE_1093775B: return "PCIe-8237 Ethernet Adapter";
         case PciSubDevice80861521::SUBDEVICE_10A9802A: return "UV2-BaseIO dual-port GbE";
         case PciSubDevice80861521::SUBDEVICE_1137023E: return "1GigE I350 LOM";
+        case PciSubDevice80861521::SUBDEVICE_15D90000: return "AOC-SGP-i4";
         case PciSubDevice80861521::SUBDEVICE_15D90652: return "Dual Port i350 GbE MicroLP [AOC-CGP-i2]";
         case PciSubDevice80861521::SUBDEVICE_17AA1074: return "ThinkServer I350-T4 AnyFabric";
         case PciSubDevice80861521::SUBDEVICE_17AA4005: return "I350 Gigabit Network Connection";

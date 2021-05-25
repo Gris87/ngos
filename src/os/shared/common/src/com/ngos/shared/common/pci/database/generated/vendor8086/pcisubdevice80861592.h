@@ -14,6 +14,7 @@ enum class PciSubDevice80861592: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_113702BF = 0x113702BF,
+    SUBDEVICE_193D1050 = 0x193D1050,
     SUBDEVICE_80860001 = 0x80860001,
     SUBDEVICE_80860002 = 0x80860002,
     SUBDEVICE_80860004 = 0x80860004,
@@ -39,6 +40,7 @@ inline const char8* enumToString(PciSubDevice80861592 subDevice) // TEST: NO
     {
         case PciSubDevice80861592::NONE:               return "NONE";
         case PciSubDevice80861592::SUBDEVICE_113702BF: return "SUBDEVICE_113702BF";
+        case PciSubDevice80861592::SUBDEVICE_193D1050: return "SUBDEVICE_193D1050";
         case PciSubDevice80861592::SUBDEVICE_80860001: return "SUBDEVICE_80860001";
         case PciSubDevice80861592::SUBDEVICE_80860002: return "SUBDEVICE_80860002";
         case PciSubDevice80861592::SUBDEVICE_80860004: return "SUBDEVICE_80860004";
@@ -81,6 +83,7 @@ inline const char8* enumToHumanString(PciSubDevice80861592 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice80861592::SUBDEVICE_113702BF: return "E810CQDA2 2x100 GbE QSFP28 PCIe NIC";
+        case PciSubDevice80861592::SUBDEVICE_193D1050: return "NIC-ETH1060F-LP-2P 2x100GbE Ethernet PCIe Card";
         case PciSubDevice80861592::SUBDEVICE_80860001: return "Ethernet Network Adapter E810-C-Q1";
         case PciSubDevice80861592::SUBDEVICE_80860002: return "Ethernet Network Adapter E810-C-Q2";
         case PciSubDevice80861592::SUBDEVICE_80860004: return "Ethernet Network Adapter E810-C-Q2";

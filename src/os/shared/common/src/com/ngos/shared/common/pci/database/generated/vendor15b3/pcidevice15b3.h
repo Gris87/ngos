@@ -100,6 +100,10 @@ enum class PciDevice15B3: u16 // Ignore CppEnumVerifier
     DEVICE_1979 = 0x1979,
     DEVICE_197A = 0x197A,
     DEVICE_197B = 0x197B,
+    DEVICE_2020 = 0x2020,
+    DEVICE_2021 = 0x2021,
+    DEVICE_2023 = 0x2023,
+    DEVICE_2024 = 0x2024,
     DEVICE_4117 = 0x4117,
     DEVICE_5274 = 0x5274,
     DEVICE_5A44 = 0x5A44,
@@ -248,6 +252,10 @@ inline const char8* enumToString(PciDevice15B3 device) // TEST: NO
         case PciDevice15B3::DEVICE_1979: return "DEVICE_1979";
         case PciDevice15B3::DEVICE_197A: return "DEVICE_197A";
         case PciDevice15B3::DEVICE_197B: return "DEVICE_197B";
+        case PciDevice15B3::DEVICE_2020: return "DEVICE_2020";
+        case PciDevice15B3::DEVICE_2021: return "DEVICE_2021";
+        case PciDevice15B3::DEVICE_2023: return "DEVICE_2023";
+        case PciDevice15B3::DEVICE_2024: return "DEVICE_2024";
         case PciDevice15B3::DEVICE_4117: return "DEVICE_4117";
         case PciDevice15B3::DEVICE_5274: return "DEVICE_5274";
         case PciDevice15B3::DEVICE_5A44: return "DEVICE_5A44";
@@ -413,6 +421,10 @@ inline const char8* enumToHumanString(PciDevice15B3 device) // TEST: NO
         case PciDevice15B3::DEVICE_1979: return "MT2910 Family [ConnectX-7 PCIe Bridge]";
         case PciDevice15B3::DEVICE_197A: return "MT43162 Family [BlueField-3 Lx SoC PCIe Bridge]";
         case PciDevice15B3::DEVICE_197B: return "MT43244 Family [BlueField-3 SoC PCIe Bridge]";
+        case PciDevice15B3::DEVICE_2020: return "MT2892 Family [ConnectX-6 Dx Emulated PCIe Bridge]";
+        case PciDevice15B3::DEVICE_2021: return "MT42822 Family [BlueField-2 SoC Emulated PCIe Bridge]";
+        case PciDevice15B3::DEVICE_2023: return "MT2910 Family [ConnectX-7 Emulated PCIe Bridge]";
+        case PciDevice15B3::DEVICE_2024: return "MT43244 Family [BlueField-3 SoC Emulated PCIe Bridge]";
         case PciDevice15B3::DEVICE_4117: return "MT27712A0-FDCF-AE";
         case PciDevice15B3::DEVICE_5274: return "MT21108 InfiniBridge";
         case PciDevice15B3::DEVICE_5A44: return "MT23108 InfiniHost";
@@ -563,6 +575,10 @@ inline const char8* enumToHumanString(PciDevice15B3 device, u16 subsystemVendorI
         case PciDevice15B3::DEVICE_1979: return "Unknown device";
         case PciDevice15B3::DEVICE_197A: return "Unknown device";
         case PciDevice15B3::DEVICE_197B: return "Unknown device";
+        case PciDevice15B3::DEVICE_2020: return "Unknown device";
+        case PciDevice15B3::DEVICE_2021: return "Unknown device";
+        case PciDevice15B3::DEVICE_2023: return "Unknown device";
+        case PciDevice15B3::DEVICE_2024: return "Unknown device";
         case PciDevice15B3::DEVICE_4117: return enumToHumanString((PciSubDevice15B34117)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice15B3::DEVICE_5274: return "Unknown device";
         case PciDevice15B3::DEVICE_5A44: return "Unknown device";

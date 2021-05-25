@@ -29,6 +29,8 @@ enum class PciDevice1C2C: u16 // Ignore CppEnumVerifier
     DEVICE_00E1 = 0x00E1,
     DEVICE_00E3 = 0x00E3,
     DEVICE_00E5 = 0x00E5,
+    DEVICE_1000 = 0x1000,
+    DEVICE_1001 = 0x1001,
     DEVICE_A000 = 0xA000,
     DEVICE_A001 = 0xA001,
     DEVICE_A003 = 0xA003,
@@ -73,6 +75,8 @@ inline const char8* enumToString(PciDevice1C2C device) // TEST: NO
         case PciDevice1C2C::DEVICE_00E1: return "DEVICE_00E1";
         case PciDevice1C2C::DEVICE_00E3: return "DEVICE_00E3";
         case PciDevice1C2C::DEVICE_00E5: return "DEVICE_00E5";
+        case PciDevice1C2C::DEVICE_1000: return "DEVICE_1000";
+        case PciDevice1C2C::DEVICE_1001: return "DEVICE_1001";
         case PciDevice1C2C::DEVICE_A000: return "DEVICE_A000";
         case PciDevice1C2C::DEVICE_A001: return "DEVICE_A001";
         case PciDevice1C2C::DEVICE_A003: return "DEVICE_A003";
@@ -134,6 +138,8 @@ inline const char8* enumToHumanString(PciDevice1C2C device) // TEST: NO
         case PciDevice1C2C::DEVICE_00E1: return "PacketMover 2x100Gb [Tivoli]";
         case PciDevice1C2C::DEVICE_00E3: return "PacketMover 2x10Gb [Tivoli]";
         case PciDevice1C2C::DEVICE_00E5: return "PacketMover 2x10Gb [Corfu]";
+        case PciDevice1C2C::DEVICE_1000: return "SmartNIC N5010 4x100Gb";
+        case PciDevice1C2C::DEVICE_1001: return "SmartNIC N5011 w/2xE810 4x100Gb";
         case PciDevice1C2C::DEVICE_A000: return "FBC2CGG3 Capture 2x40Gb [Mango_02]";
         case PciDevice1C2C::DEVICE_A001: return "FBC2CGG3 Capture 2x100Gb [Mango_02]";
         case PciDevice1C2C::DEVICE_A003: return "FBC2CGG3 Capture 16x10Gb [Mango]";

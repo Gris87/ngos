@@ -31,6 +31,7 @@ enum class PciDevice1AF4: u16 // Ignore CppEnumVerifier
     DEVICE_1050 = 0x1050,
     DEVICE_1052 = 0x1052,
     DEVICE_1053 = 0x1053,
+    DEVICE_105A = 0x105A,
     DEVICE_1110 = 0x1110
 };
 
@@ -62,6 +63,7 @@ inline const char8* enumToString(PciDevice1AF4 device) // TEST: NO
         case PciDevice1AF4::DEVICE_1050: return "DEVICE_1050";
         case PciDevice1AF4::DEVICE_1052: return "DEVICE_1052";
         case PciDevice1AF4::DEVICE_1053: return "DEVICE_1053";
+        case PciDevice1AF4::DEVICE_105A: return "DEVICE_105A";
         case PciDevice1AF4::DEVICE_1110: return "DEVICE_1110";
 
         default: return "UNKNOWN";
@@ -110,6 +112,7 @@ inline const char8* enumToHumanString(PciDevice1AF4 device) // TEST: NO
         case PciDevice1AF4::DEVICE_1050: return "Virtio GPU";
         case PciDevice1AF4::DEVICE_1052: return "Virtio input";
         case PciDevice1AF4::DEVICE_1053: return "Virtio socket";
+        case PciDevice1AF4::DEVICE_105A: return "Virtio file system";
         case PciDevice1AF4::DEVICE_1110: return "Inter-VM shared memory";
 
         default: return "Unknown device";
@@ -143,6 +146,7 @@ inline const char8* enumToHumanString(PciDevice1AF4 device, u16 subsystemVendorI
         case PciDevice1AF4::DEVICE_1050: return "Unknown device";
         case PciDevice1AF4::DEVICE_1052: return "Unknown device";
         case PciDevice1AF4::DEVICE_1053: return "Unknown device";
+        case PciDevice1AF4::DEVICE_105A: return "Unknown device";
         case PciDevice1AF4::DEVICE_1110: return enumToHumanString((PciSubDevice1AF41110)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

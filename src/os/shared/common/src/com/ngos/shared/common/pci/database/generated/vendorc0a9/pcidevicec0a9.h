@@ -13,7 +13,8 @@
 enum class PciDeviceC0A9: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
-    DEVICE_2263 = 0x2263
+    DEVICE_2263 = 0x2263,
+    DEVICE_540A = 0x540A
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciDeviceC0A9 device) // TEST: NO
     {
         case PciDeviceC0A9::NONE:        return "NONE";
         case PciDeviceC0A9::DEVICE_2263: return "DEVICE_2263";
+        case PciDeviceC0A9::DEVICE_540A: return "DEVICE_540A";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciDeviceC0A9 device) // TEST: NO
     switch (device)
     {
         case PciDeviceC0A9::DEVICE_2263: return "P1 NVMe PCIe SSD";
+        case PciDeviceC0A9::DEVICE_540A: return "P2 NVMe PCIe SSD";
 
         default: return "Unknown device";
     }

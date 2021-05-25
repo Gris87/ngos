@@ -58,7 +58,7 @@ inline const char8* enumToHumanString(PciSubDevice1B211184 subDevice) // TEST: N
 
     switch (subDevice)
     {
-        case PciSubDevice1B211184::SUBDEVICE_18491184: return "ASM1184e PCIe Switch";
+        case PciSubDevice1B211184::SUBDEVICE_18491184: return "ASM1184e 4-Port PCIe x1 Gen2 Packet Switch";
 
         default: return "Unknown device";
     }

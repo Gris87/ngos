@@ -70,7 +70,7 @@ inline const char8* enumToHumanString(PciSubDevice80864140 subDevice) // TEST: N
     {
         case PciSubDevice80864140::SUBDEVICE_10282134: return "NVMe Datacenter SSD [Optane] SED 400GB 2.5\" U.2 (P5800X)";
         case PciSubDevice80864140::SUBDEVICE_10282135: return "NVMe Datacenter SSD [Optane] SED 800GB 2.5\" U.2 (P5800X)";
-        case PciSubDevice80864140::SUBDEVICE_10282136: return "NVMe Datacenter SSD [Optane] SED 1.6GB 2.5\" U.2 (P5800X)";
+        case PciSubDevice80864140::SUBDEVICE_10282136: return "NVMe Datacenter SSD [Optane] SED 1.6TB 2.5\" U.2 (P5800X)";
         case PciSubDevice80864140::SUBDEVICE_10282137: return "NVMe Datacenter SSD [Optane] 400GB 2.5\" U.2 (P5800X)";
         case PciSubDevice80864140::SUBDEVICE_10282138: return "NVMe Datacenter SSD [Optane] 800GB 2.5\" U.2 (P5800X)";
         case PciSubDevice80864140::SUBDEVICE_10282139: return "NVMe Datacenter SSD [Optane] 1.6TB 2.5\" U.2 (P5800X)";

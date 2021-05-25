@@ -13,8 +13,10 @@
 enum class PciDevice14C3: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_7612 = 0x7612,
     DEVICE_7630 = 0x7630,
-    DEVICE_7662 = 0x7662
+    DEVICE_7662 = 0x7662,
+    DEVICE_7915 = 0x7915
 };
 
 
@@ -28,8 +30,10 @@ inline const char8* enumToString(PciDevice14C3 device) // TEST: NO
     switch (device)
     {
         case PciDevice14C3::NONE:        return "NONE";
+        case PciDevice14C3::DEVICE_7612: return "DEVICE_7612";
         case PciDevice14C3::DEVICE_7630: return "DEVICE_7630";
         case PciDevice14C3::DEVICE_7662: return "DEVICE_7662";
+        case PciDevice14C3::DEVICE_7915: return "DEVICE_7915";
 
         default: return "UNKNOWN";
     }
@@ -60,8 +64,10 @@ inline const char8* enumToHumanString(PciDevice14C3 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice14C3::DEVICE_7612: return "MT7612E 802.11acbgn PCI Express Wireless Network Adapter";
         case PciDevice14C3::DEVICE_7630: return "MT7630e 802.11bgn Wireless Network Adapter";
         case PciDevice14C3::DEVICE_7662: return "MT7662E 802.11ac PCI Express Wireless Network Adapter";
+        case PciDevice14C3::DEVICE_7915: return "MT7915E 802.11ax PCI Express Wireless Network Adapter";
 
         default: return "Unknown device";
     }

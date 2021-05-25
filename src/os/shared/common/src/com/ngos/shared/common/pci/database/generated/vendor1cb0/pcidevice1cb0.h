@@ -6,6 +6,7 @@
 
 
 #include <com/ngos/shared/common/ngos/types.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1cb0/pcisubdevice1cb08266.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1cb0/pcisubdevice1cb0d000.h>
 #include <com/ngos/shared/common/printf/printf.h>
 
@@ -14,6 +15,7 @@
 enum class PciDevice1CB0: u16 // Ignore CppEnumVerifier
 {
     NONE        = 0,
+    DEVICE_8266 = 0x8266,
     DEVICE_D000 = 0xD000
 };
 
@@ -28,6 +30,7 @@ inline const char8* enumToString(PciDevice1CB0 device) // TEST: NO
     switch (device)
     {
         case PciDevice1CB0::NONE:        return "NONE";
+        case PciDevice1CB0::DEVICE_8266: return "DEVICE_8266";
         case PciDevice1CB0::DEVICE_D000: return "DEVICE_D000";
 
         default: return "UNKNOWN";
@@ -59,6 +62,7 @@ inline const char8* enumToHumanString(PciDevice1CB0 device) // TEST: NO
 
     switch (device)
     {
+        case PciDevice1CB0::DEVICE_8266: return "Andalusia Series SSD";
         case PciDevice1CB0::DEVICE_D000: return "Venice NVMe SSD";
 
         default: return "Unknown device";
@@ -75,6 +79,7 @@ inline const char8* enumToHumanString(PciDevice1CB0 device, u16 subsystemVendorI
 
     switch (device)
     {
+        case PciDevice1CB0::DEVICE_8266: return enumToHumanString((PciSubDevice1CB08266)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1CB0::DEVICE_D000: return enumToHumanString((PciSubDevice1CB0D000)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

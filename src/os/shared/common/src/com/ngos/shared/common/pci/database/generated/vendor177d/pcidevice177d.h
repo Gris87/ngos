@@ -24,6 +24,8 @@ enum class PciDevice177D: u16 // Ignore CppEnumVerifier
     DEVICE_0005 = 0x0005,
     DEVICE_0006 = 0x0006,
     DEVICE_0010 = 0x0010,
+    DEVICE_0011 = 0x0011,
+    DEVICE_0012 = 0x0012,
     DEVICE_0020 = 0x0020,
     DEVICE_0030 = 0x0030,
     DEVICE_0040 = 0x0040,
@@ -117,6 +119,8 @@ inline const char8* enumToString(PciDevice177D device) // TEST: NO
         case PciDevice177D::DEVICE_0005: return "DEVICE_0005";
         case PciDevice177D::DEVICE_0006: return "DEVICE_0006";
         case PciDevice177D::DEVICE_0010: return "DEVICE_0010";
+        case PciDevice177D::DEVICE_0011: return "DEVICE_0011";
+        case PciDevice177D::DEVICE_0012: return "DEVICE_0012";
         case PciDevice177D::DEVICE_0020: return "DEVICE_0020";
         case PciDevice177D::DEVICE_0030: return "DEVICE_0030";
         case PciDevice177D::DEVICE_0040: return "DEVICE_0040";
@@ -226,7 +230,9 @@ inline const char8* enumToHumanString(PciDevice177D device) // TEST: NO
         case PciDevice177D::DEVICE_0004: return "Octeon (and older) FIPS";
         case PciDevice177D::DEVICE_0005: return "Octeon CN38XX Network Processor Pass 3.x";
         case PciDevice177D::DEVICE_0006: return "RoHS";
-        case PciDevice177D::DEVICE_0010: return "Nitrox XL NPX";
+        case PciDevice177D::DEVICE_0010: return "CN15XX/CN16XX [Nitrox PX]";
+        case PciDevice177D::DEVICE_0011: return "CNN35XX [Nitrox III]";
+        case PciDevice177D::DEVICE_0012: return "CNN55XX [Nitrox V]";
         case PciDevice177D::DEVICE_0020: return "Octeon CN31XX Network Processor";
         case PciDevice177D::DEVICE_0030: return "Octeon CN30XX Network Processor";
         case PciDevice177D::DEVICE_0040: return "Octeon CN58XX Network Processor";
@@ -322,6 +328,8 @@ inline const char8* enumToHumanString(PciDevice177D device, u16 subsystemVendorI
         case PciDevice177D::DEVICE_0005: return "Unknown device";
         case PciDevice177D::DEVICE_0006: return "Unknown device";
         case PciDevice177D::DEVICE_0010: return "Unknown device";
+        case PciDevice177D::DEVICE_0011: return "Unknown device";
+        case PciDevice177D::DEVICE_0012: return "Unknown device";
         case PciDevice177D::DEVICE_0020: return "Unknown device";
         case PciDevice177D::DEVICE_0030: return "Unknown device";
         case PciDevice177D::DEVICE_0040: return "Unknown device";

@@ -14,7 +14,8 @@ enum class PciSubDevice10772432: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
     SUBDEVICE_103C7040 = 0x103C7040,
-    SUBDEVICE_10770137 = 0x10770137
+    SUBDEVICE_10770137 = 0x10770137,
+    SUBDEVICE_10770138 = 0x10770138
 };
 
 
@@ -30,6 +31,7 @@ inline const char8* enumToString(PciSubDevice10772432 subDevice) // TEST: NO
         case PciSubDevice10772432::NONE:               return "NONE";
         case PciSubDevice10772432::SUBDEVICE_103C7040: return "SUBDEVICE_103C7040";
         case PciSubDevice10772432::SUBDEVICE_10770137: return "SUBDEVICE_10770137";
+        case PciSubDevice10772432::SUBDEVICE_10770138: return "SUBDEVICE_10770138";
 
         default: return "UNKNOWN";
     }
@@ -61,7 +63,8 @@ inline const char8* enumToHumanString(PciSubDevice10772432 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice10772432::SUBDEVICE_103C7040: return "FC1142SR 4Gb 1-port PCIe Fibre Channel Host Bus Adapter [HPAE311A]";
-        case PciSubDevice10772432::SUBDEVICE_10770137: return "QLE2460 4 GB PCI-X Host-Bus-Adapter";
+        case PciSubDevice10772432::SUBDEVICE_10770137: return "QLE2460 Single-Port 4Gbps FC-to-PCI-X/PCIe Host Bus Adapter";
+        case PciSubDevice10772432::SUBDEVICE_10770138: return "QLE2462 Dual-Port 4Gbps FC-to-PCI-X/PCIe Host Bus Adapter";
 
         default: return "Unknown device";
     }

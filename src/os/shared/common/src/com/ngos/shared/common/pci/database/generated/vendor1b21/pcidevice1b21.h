@@ -9,6 +9,7 @@
 #include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b210612.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b211042.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b211080.h>
+#include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b211182.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b211184.h>
 #include <com/ngos/shared/common/pci/database/generated/vendor1b21/pcisubdevice1b212142.h>
 #include <com/ngos/shared/common/printf/printf.h>
@@ -24,6 +25,7 @@ enum class PciDevice1B21: u16 // Ignore CppEnumVerifier
     DEVICE_1042 = 0x1042,
     DEVICE_1080 = 0x1080,
     DEVICE_1142 = 0x1142,
+    DEVICE_1182 = 0x1182,
     DEVICE_1184 = 0x1184,
     DEVICE_1242 = 0x1242,
     DEVICE_1343 = 0x1343,
@@ -48,6 +50,7 @@ inline const char8* enumToString(PciDevice1B21 device) // TEST: NO
         case PciDevice1B21::DEVICE_1042: return "DEVICE_1042";
         case PciDevice1B21::DEVICE_1080: return "DEVICE_1080";
         case PciDevice1B21::DEVICE_1142: return "DEVICE_1142";
+        case PciDevice1B21::DEVICE_1182: return "DEVICE_1182";
         case PciDevice1B21::DEVICE_1184: return "DEVICE_1184";
         case PciDevice1B21::DEVICE_1242: return "DEVICE_1242";
         case PciDevice1B21::DEVICE_1343: return "DEVICE_1343";
@@ -89,7 +92,8 @@ inline const char8* enumToHumanString(PciDevice1B21 device) // TEST: NO
         case PciDevice1B21::DEVICE_1042: return "ASM1042 SuperSpeed USB Host Controller";
         case PciDevice1B21::DEVICE_1080: return "ASM1083/1085 PCIe to PCI Bridge";
         case PciDevice1B21::DEVICE_1142: return "ASM1042A USB 3.0 Host Controller";
-        case PciDevice1B21::DEVICE_1184: return "ASM1184e PCIe Switch Port";
+        case PciDevice1B21::DEVICE_1182: return "ASM1182e 2-Port PCIe x1 Gen2 Packet Switch";
+        case PciDevice1B21::DEVICE_1184: return "ASM1184e 4-Port PCIe x1 Gen2 Packet Switch";
         case PciDevice1B21::DEVICE_1242: return "ASM1142 USB 3.1 Host Controller";
         case PciDevice1B21::DEVICE_1343: return "ASM1143 USB 3.1 Host Controller";
         case PciDevice1B21::DEVICE_2142: return "ASM2142 USB 3.1 Host Controller";
@@ -115,6 +119,7 @@ inline const char8* enumToHumanString(PciDevice1B21 device, u16 subsystemVendorI
         case PciDevice1B21::DEVICE_1042: return enumToHumanString((PciSubDevice1B211042)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1080: return enumToHumanString((PciSubDevice1B211080)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1142: return "Unknown device";
+        case PciDevice1B21::DEVICE_1182: return enumToHumanString((PciSubDevice1B211182)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1184: return enumToHumanString((PciSubDevice1B211184)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1B21::DEVICE_1242: return "Unknown device";
         case PciDevice1B21::DEVICE_1343: return "Unknown device";

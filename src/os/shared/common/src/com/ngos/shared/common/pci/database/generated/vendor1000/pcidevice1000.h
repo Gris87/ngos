@@ -229,6 +229,7 @@ enum class PciDevice1000: u16 // Ignore CppEnumVerifier
     DEVICE_1960 = 0x1960,
     DEVICE_3050 = 0x3050,
     DEVICE_6001 = 0x6001,
+    DEVICE_C010 = 0xC010,
     DEVICE_C012 = 0xC012
 };
 
@@ -385,6 +386,7 @@ inline const char8* enumToString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_1960: return "DEVICE_1960";
         case PciDevice1000::DEVICE_3050: return "DEVICE_3050";
         case PciDevice1000::DEVICE_6001: return "DEVICE_6001";
+        case PciDevice1000::DEVICE_C010: return "DEVICE_C010";
         case PciDevice1000::DEVICE_C012: return "DEVICE_C012";
 
         default: return "UNKNOWN";
@@ -558,6 +560,7 @@ inline const char8* enumToHumanString(PciDevice1000 device) // TEST: NO
         case PciDevice1000::DEVICE_1960: return "MegaRAID";
         case PciDevice1000::DEVICE_3050: return "SAS2008 PCI-Express Fusion-MPT SAS-2";
         case PciDevice1000::DEVICE_6001: return "DX1 Multiformat Broadcast HD/SD Encoder/Decoder";
+        case PciDevice1000::DEVICE_C010: return "PEX88048 50 lane, 50 port, PCI Express Gen 4.0 ExpressFabric Platform";
         case PciDevice1000::DEVICE_C012: return "PEX880xx PCIe Gen 4 Switch";
 
         default: return "Unknown device";
@@ -716,6 +719,7 @@ inline const char8* enumToHumanString(PciDevice1000 device, u16 subsystemVendorI
         case PciDevice1000::DEVICE_1960: return enumToHumanString((PciSubDevice10001960)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice1000::DEVICE_3050: return "Unknown device";
         case PciDevice1000::DEVICE_6001: return "Unknown device";
+        case PciDevice1000::DEVICE_C010: return "Unknown device";
         case PciDevice1000::DEVICE_C012: return enumToHumanString((PciSubDevice1000C012)(subsystemVendorID << 16 | subDeviceId));
 
         default: return "Unknown device";

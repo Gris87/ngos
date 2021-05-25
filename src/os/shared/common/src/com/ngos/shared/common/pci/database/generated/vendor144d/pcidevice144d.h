@@ -93,7 +93,7 @@ inline const char8* enumToHumanString(PciDevice144D device) // TEST: NO
         case PciDevice144D::DEVICE_A802: return "NVMe SSD Controller SM951/PM951";
         case PciDevice144D::DEVICE_A804: return "NVMe SSD Controller SM961/PM961/SM963";
         case PciDevice144D::DEVICE_A808: return "NVMe SSD Controller SM981/PM981/PM983";
-        case PciDevice144D::DEVICE_A80A: return "NVMe SSD Controller PM9A1/980PRO";
+        case PciDevice144D::DEVICE_A80A: return "NVMe SSD Controller PM9A1/PM9A3/980PRO";
         case PciDevice144D::DEVICE_A820: return "NVMe SSD Controller 171X";
         case PciDevice144D::DEVICE_A821: return "NVMe SSD Controller 172X";
         case PciDevice144D::DEVICE_A822: return "NVMe SSD Controller 172Xa/172Xb";

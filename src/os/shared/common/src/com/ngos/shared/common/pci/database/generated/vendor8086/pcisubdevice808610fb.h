@@ -123,7 +123,7 @@ inline const char8* enumToHumanString(PciSubDevice808610FB subDevice) // TEST: N
         case PciSubDevice808610FB::SUBDEVICE_103C2159: return "Ethernet 10Gb 2-port 562i Adapter";
         case PciSubDevice808610FB::SUBDEVICE_108E7B11: return "Ethernet Server Adapter X520-2";
         case PciSubDevice808610FB::SUBDEVICE_1170004C: return "82599 DP 10G Mezzanine Adapter";
-        case PciSubDevice808610FB::SUBDEVICE_15D90611: return "AOC-STGN-I2S [REV 1.01]";
+        case PciSubDevice808610FB::SUBDEVICE_15D90611: return "AOC-STGN-i2S";
         case PciSubDevice808610FB::SUBDEVICE_173411A9: return "10 Gigabit Dual Port Network Connection";
         case PciSubDevice808610FB::SUBDEVICE_17AA1071: return "ThinkServer X520-2 AnyFabric";
         case PciSubDevice808610FB::SUBDEVICE_17AA4007: return "82599ES 10-Gigabit SFI/SFP+ Network Connection";

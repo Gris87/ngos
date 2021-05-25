@@ -68,7 +68,7 @@ inline const char8* enumToHumanString(PciDevice1E36 device) // TEST: NO
     {
         case PciDevice1E36::DEVICE_0001: return "T10 [CloudBlazer]";
         case PciDevice1E36::DEVICE_0002: return "T11 [CloudBlazer]";
-        case PciDevice1E36::DEVICE_0003: return "T10s [CloudBlazer]";
+        case PciDevice1E36::DEVICE_0003: return "T10(QSFP-DD) [CloudBlazer]";
         case PciDevice1E36::DEVICE_8011: return "I10 [CloudBlazer]";
         case PciDevice1E36::DEVICE_8012: return "I10L [CloudBlazer]";
 

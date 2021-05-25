@@ -17,6 +17,7 @@ enum class PciDevice17A0: u16 // Ignore CppEnumVerifier
     DEVICE_8083 = 0x8083,
     DEVICE_8084 = 0x8084,
     DEVICE_9750 = 0x9750,
+    DEVICE_9755 = 0x9755,
     DEVICE_E763 = 0xE763
 };
 
@@ -35,6 +36,7 @@ inline const char8* enumToString(PciDevice17A0 device) // TEST: NO
         case PciDevice17A0::DEVICE_8083: return "DEVICE_8083";
         case PciDevice17A0::DEVICE_8084: return "DEVICE_8084";
         case PciDevice17A0::DEVICE_9750: return "DEVICE_9750";
+        case PciDevice17A0::DEVICE_9755: return "DEVICE_9755";
         case PciDevice17A0::DEVICE_E763: return "DEVICE_E763";
 
         default: return "UNKNOWN";
@@ -70,6 +72,7 @@ inline const char8* enumToHumanString(PciDevice17A0 device) // TEST: NO
         case PciDevice17A0::DEVICE_8083: return "GL880 USB 1.1 UHCI controller";
         case PciDevice17A0::DEVICE_8084: return "GL880 USB 2.0 EHCI controller";
         case PciDevice17A0::DEVICE_9750: return "GL9750 SD Host Controller";
+        case PciDevice17A0::DEVICE_9755: return "GL9755 SD Host Controller";
         case PciDevice17A0::DEVICE_E763: return "GL9763E eMMC Controller";
 
         default: return "Unknown device";

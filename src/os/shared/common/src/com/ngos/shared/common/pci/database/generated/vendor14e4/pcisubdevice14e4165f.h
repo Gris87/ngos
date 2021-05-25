@@ -17,6 +17,7 @@ enum class PciSubDevice14E4165F: u32 // Ignore CppEnumVerifier
     SUBDEVICE_102808FD = 0x102808FD,
     SUBDEVICE_102808FF = 0x102808FF,
     SUBDEVICE_10280900 = 0x10280900,
+    SUBDEVICE_10280917 = 0x10280917,
     SUBDEVICE_103C1786 = 0x103C1786,
     SUBDEVICE_103C193D = 0x103C193D,
     SUBDEVICE_103C2133 = 0x103C2133,
@@ -39,6 +40,7 @@ inline const char8* enumToString(PciSubDevice14E4165F subDevice) // TEST: NO
         case PciSubDevice14E4165F::SUBDEVICE_102808FD: return "SUBDEVICE_102808FD";
         case PciSubDevice14E4165F::SUBDEVICE_102808FF: return "SUBDEVICE_102808FF";
         case PciSubDevice14E4165F::SUBDEVICE_10280900: return "SUBDEVICE_10280900";
+        case PciSubDevice14E4165F::SUBDEVICE_10280917: return "SUBDEVICE_10280917";
         case PciSubDevice14E4165F::SUBDEVICE_103C1786: return "SUBDEVICE_103C1786";
         case PciSubDevice14E4165F::SUBDEVICE_103C193D: return "SUBDEVICE_103C193D";
         case PciSubDevice14E4165F::SUBDEVICE_103C2133: return "SUBDEVICE_103C2133";
@@ -78,6 +80,7 @@ inline const char8* enumToHumanString(PciSubDevice14E4165F subDevice) // TEST: N
         case PciSubDevice14E4165F::SUBDEVICE_102808FD: return "PowerEdge R6515/R7515 LOM";
         case PciSubDevice14E4165F::SUBDEVICE_102808FF: return "PowerEdge Rx5xx LOM Board";
         case PciSubDevice14E4165F::SUBDEVICE_10280900: return "PowerEdge C6525 LOM";
+        case PciSubDevice14E4165F::SUBDEVICE_10280917: return "PowerEdge C6520 LOM";
         case PciSubDevice14E4165F::SUBDEVICE_103C1786: return "NC332T Adapter";
         case PciSubDevice14E4165F::SUBDEVICE_103C193D: return "NC332i Adapter";
         case PciSubDevice14E4165F::SUBDEVICE_103C2133: return "NC332i Adapter";

@@ -19,6 +19,7 @@ enum class PciDevice17CB: u16 // Ignore CppEnumVerifier
     DEVICE_0002 = 0x0002,
     DEVICE_0105 = 0x0105,
     DEVICE_0108 = 0x0108,
+    DEVICE_0109 = 0x0109,
     DEVICE_0300 = 0x0300,
     DEVICE_0301 = 0x0301,
     DEVICE_0302 = 0x0302,
@@ -43,6 +44,7 @@ inline const char8* enumToString(PciDevice17CB device) // TEST: NO
         case PciDevice17CB::DEVICE_0002: return "DEVICE_0002";
         case PciDevice17CB::DEVICE_0105: return "DEVICE_0105";
         case PciDevice17CB::DEVICE_0108: return "DEVICE_0108";
+        case PciDevice17CB::DEVICE_0109: return "DEVICE_0109";
         case PciDevice17CB::DEVICE_0300: return "DEVICE_0300";
         case PciDevice17CB::DEVICE_0301: return "DEVICE_0301";
         case PciDevice17CB::DEVICE_0302: return "DEVICE_0302";
@@ -83,10 +85,11 @@ inline const char8* enumToHumanString(PciDevice17CB device) // TEST: NO
         case PciDevice17CB::DEVICE_0001: return "AGN100 802.11 a/b/g True MIMO Wireless Card";
         case PciDevice17CB::DEVICE_0002: return "AGN300 802.11 a/b/g True MIMO Wireless Card";
         case PciDevice17CB::DEVICE_0105: return "MSM8998 PCIe Root Complex";
-        case PciDevice17CB::DEVICE_0108: return "SM8150/SA8195P PCIe Root Complex";
-        case PciDevice17CB::DEVICE_0300: return "MDM9x35 LTE Modem";
-        case PciDevice17CB::DEVICE_0301: return "MDM9640 PCIe Root Complex";
-        case PciDevice17CB::DEVICE_0302: return "MDM9x55 LTE Modem [Snapdragon X12]";
+        case PciDevice17CB::DEVICE_0108: return "SM8150 PCIe Root Complex";
+        case PciDevice17CB::DEVICE_0109: return "SA8195P PCIe Root Complex";
+        case PciDevice17CB::DEVICE_0300: return "MDM9x35 LTE Modem [Snapdragon X7]";
+        case PciDevice17CB::DEVICE_0301: return "MDM9x45 LTE Modem [Snapdragon X12]";
+        case PciDevice17CB::DEVICE_0302: return "MDM9x55 LTE Modem [Snapdragon X16]";
         case PciDevice17CB::DEVICE_0400: return "Datacenter Technologies QDF2432 PCI Express Root Port";
         case PciDevice17CB::DEVICE_0401: return "Datacenter Technologies QDF2400 PCI Express Root Port";
         case PciDevice17CB::DEVICE_1000: return "QCS405 PCIe Root Complex";
@@ -110,6 +113,7 @@ inline const char8* enumToHumanString(PciDevice17CB device, u16 subsystemVendorI
         case PciDevice17CB::DEVICE_0002: return enumToHumanString((PciSubDevice17CB0002)(subsystemVendorID << 16 | subDeviceId));
         case PciDevice17CB::DEVICE_0105: return "Unknown device";
         case PciDevice17CB::DEVICE_0108: return "Unknown device";
+        case PciDevice17CB::DEVICE_0109: return "Unknown device";
         case PciDevice17CB::DEVICE_0300: return "Unknown device";
         case PciDevice17CB::DEVICE_0301: return "Unknown device";
         case PciDevice17CB::DEVICE_0302: return "Unknown device";

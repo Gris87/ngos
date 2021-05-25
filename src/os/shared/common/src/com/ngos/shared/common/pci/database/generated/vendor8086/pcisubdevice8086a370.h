@@ -13,7 +13,8 @@
 enum class PciSubDevice8086A370: u32 // Ignore CppEnumVerifier
 {
     NONE               = 0,
-    SUBDEVICE_1A561552 = 0x1A561552
+    SUBDEVICE_1A561552 = 0x1A561552,
+    SUBDEVICE_80860034 = 0x80860034
 };
 
 
@@ -28,6 +29,7 @@ inline const char8* enumToString(PciSubDevice8086A370 subDevice) // TEST: NO
     {
         case PciSubDevice8086A370::NONE:               return "NONE";
         case PciSubDevice8086A370::SUBDEVICE_1A561552: return "SUBDEVICE_1A561552";
+        case PciSubDevice8086A370::SUBDEVICE_80860034: return "SUBDEVICE_80860034";
 
         default: return "UNKNOWN";
     }
@@ -59,6 +61,7 @@ inline const char8* enumToHumanString(PciSubDevice8086A370 subDevice) // TEST: N
     switch (subDevice)
     {
         case PciSubDevice8086A370::SUBDEVICE_1A561552: return "Killer(R) Wireless-AC 1550i Wireless Network Adapter (9560NGW)";
+        case PciSubDevice8086A370::SUBDEVICE_80860034: return "Wireless-AC 9560";
 
         default: return "Unknown device";
     }

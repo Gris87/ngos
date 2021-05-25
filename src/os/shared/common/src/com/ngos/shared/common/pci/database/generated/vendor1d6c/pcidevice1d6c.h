@@ -40,6 +40,9 @@ enum class PciDevice1D6C: u16 // Ignore CppEnumVerifier
     DEVICE_1017 = 0x1017,
     DEVICE_1018 = 0x1018,
     DEVICE_1019 = 0x1019,
+    DEVICE_101A = 0x101A,
+    DEVICE_101B = 0x101B,
+    DEVICE_101C = 0x101C,
     DEVICE_4200 = 0x4200
 };
 
@@ -79,6 +82,9 @@ inline const char8* enumToString(PciDevice1D6C device) // TEST: NO
         case PciDevice1D6C::DEVICE_1017: return "DEVICE_1017";
         case PciDevice1D6C::DEVICE_1018: return "DEVICE_1018";
         case PciDevice1D6C::DEVICE_1019: return "DEVICE_1019";
+        case PciDevice1D6C::DEVICE_101A: return "DEVICE_101A";
+        case PciDevice1D6C::DEVICE_101B: return "DEVICE_101B";
+        case PciDevice1D6C::DEVICE_101C: return "DEVICE_101C";
         case PciDevice1D6C::DEVICE_4200: return "DEVICE_4200";
 
         default: return "UNKNOWN";
@@ -135,6 +141,9 @@ inline const char8* enumToHumanString(PciDevice1D6C device) // TEST: NO
         case PciDevice1D6C::DEVICE_1017: return "AR-ARK-FX1 [Arkville 64B Multi-Homed Primary Endpoint]";
         case PciDevice1D6C::DEVICE_1018: return "AR-ARK-FX1 [Arkville 64B Multi-Homed Secondary Endpoint]";
         case PciDevice1D6C::DEVICE_1019: return "AR-ARK-FX1 [Arkville 64B Multi-Homed Tertiary Endpoint]";
+        case PciDevice1D6C::DEVICE_101A: return "AR-ARK-SRIOV-FX0 [Arkville 32B Primary Physical Function]";
+        case PciDevice1D6C::DEVICE_101B: return "AR-ARK-SRIOV-FX1 [Arkville 64B Primary Physical Function]";
+        case PciDevice1D6C::DEVICE_101C: return "AR-ARK-SRIOV-VF [Arkville Virtual Function]";
         case PciDevice1D6C::DEVICE_4200: return "A5PL-E1-10GETI [10 GbE Ethernet Traffic Instrument]";
 
         default: return "Unknown device";
@@ -176,6 +185,9 @@ inline const char8* enumToHumanString(PciDevice1D6C device, u16 subsystemVendorI
         case PciDevice1D6C::DEVICE_1017: return "Unknown device";
         case PciDevice1D6C::DEVICE_1018: return "Unknown device";
         case PciDevice1D6C::DEVICE_1019: return "Unknown device";
+        case PciDevice1D6C::DEVICE_101A: return "Unknown device";
+        case PciDevice1D6C::DEVICE_101B: return "Unknown device";
+        case PciDevice1D6C::DEVICE_101C: return "Unknown device";
         case PciDevice1D6C::DEVICE_4200: return "Unknown device";
 
         default: return "Unknown device";
