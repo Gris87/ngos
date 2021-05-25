@@ -2,7 +2,7 @@
                                                                                                                                                                                                          # Colorize: green
 # This script helps to simplify Git usage                                                                                                                                                                # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
-# Usage: ./push.sh                                                                                                                                                                                       # Colorize: green
+# Usage: ./scripts/push.sh                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

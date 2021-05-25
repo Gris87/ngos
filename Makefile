@@ -1,4 +1,4 @@
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" include/buildconfig.h | sed -r "s/  */ /g" | cut -d " " -f 3 | sed -r "s/OPTION_ARCH_//g" | tr "[:upper:]" "[:lower:]")
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]")
 
 OUTPUT_DIR   = build
 BUILD_CONFIG = include/buildconfig.h
@@ -114,6 +114,7 @@ tools:
 					lrelease $${line2}.pro && \
 					qmake $${line2}.pro || \
 					exit 1 ; \
+					\
 					cd .. ; \
 				fi \
 			done ; \

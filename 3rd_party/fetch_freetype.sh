@@ -15,7 +15,7 @@
 mkdir libs/                                                                                                                                                                                              # Colorize: green
 cd libs/                                                                                                                                                                                                 # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-FREETYPE_ZIP=`curl "https://download.savannah.gnu.org/releases/freetype/?C=M&O=D" 2> /dev/null | grep freetype-[0-9] | grep tar.xz\" | head -n 1 | cut -d \" -f 4`                                       # Colorize: green
+FREETYPE_ZIP=`curl "https://download.savannah.gnu.org/releases/freetype/?C=M&O=D" 2> /dev/null | grep freetype-[0-9] | grep tar.xz\" | head -n 1 | sed -r "s/.*href=\"(freetype-[0-9.]+.tar.xz)\".*/\1/g"` # Colorize: green
 wget "https://download.savannah.gnu.org/releases/freetype/${FREETYPE_ZIP}"                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 tar -xf freetype*.tar.xz                                                                                                                                                                                 # Colorize: green
