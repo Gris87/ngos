@@ -1554,7 +1554,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           00110101            |
         temp.base2 = 157;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-620AD99A05845ACB);
+        TEST_ASSERT_EQUALS(temp.value64, 0x9DF52665FA7BA535);
     }
     TEST_CASE_END();
 
@@ -4282,7 +4282,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           01101111            |
         // |     1000      |     1111      |
         // |  10   |        101111         |
-        temp.value64 = 0x-50105E0E1907051;
+        temp.value64 = 0xFAFEFA1F1E6F8FAF;
 
         TEST_ASSERT_EQUALS(temp.mcIndexPosition, 47);
         TEST_ASSERT_EQUALS(temp.__reserved,      62);
@@ -4300,7 +4300,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   |        010000         |
         temp.mcIndexPosition = 16;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-50105E0E1907070);
+        TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8F90);
 
 
 
@@ -4314,7 +4314,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  01   |        010000         |
         temp.__reserved = 1;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-50105E0E1907FB0);
+        TEST_ASSERT_EQUALS(temp.value64, 0xFAFEFA1F1E6F8050);
 
 
 
@@ -4490,7 +4490,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |           11001001            |
         // |           00110010            |
         // |  10   |        010101         |
-        temp.value64 = 0x-51E7466A5136CD6B;
+        temp.value64 = 0xAE18B995AEC93295;
 
         TEST_ASSERT_EQUALS(temp.mcOverlaySize,        21);
         TEST_ASSERT_EQUALS(temp.mcOverlayBaseAddress, 196015325227721930);
@@ -4507,7 +4507,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |  10   |        101010         |
         temp.mcOverlaySize = 42;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-51E7466A5136CD56);
+        TEST_ASSERT_EQUALS(temp.value64, 0xAE18B995AEC932AA);
 
 
 
@@ -5061,7 +5061,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |     0000      |     1010      |
         // | 0 |    101    |     1101      |
         // |       10010       |    100    |
-        temp.value64 = 0x-5C6608C280F5A26C;
+        temp.value64 = 0xA399F73D7F0A5D94;
 
         TEST_ASSERT_EQUALS(temp.encodedNumberOfBusNumberBits,  4);
         TEST_ASSERT_EQUALS(temp.__reserved,                    434);
@@ -5082,7 +5082,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       10010       |    011    |
         temp.encodedNumberOfBusNumberBits = 3;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-5C6608C280F5A26D);
+        TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A5D93);
 
 
 
@@ -5096,7 +5096,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01101       |    011    |
         temp.__reserved = 77;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-5C6608C280F5AD95);
+        TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A526B);
 
 
 
@@ -5110,7 +5110,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01101       |    011    |
         temp.functionNumber = 2;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-5C6608C280F5DD95);
+        TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F0A226B);
 
 
 
@@ -5124,7 +5124,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01101       |    011    |
         temp.deviceNumber = 11;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-5C6608C280FA5D95);
+        TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D7F05A26B);
 
 
 
@@ -5138,7 +5138,7 @@ TEST_CASES(section0, generated_com_ngos_shared_common_types);
         // |       01101       |    011    |
         temp.busNumber = 15;
 
-        TEST_ASSERT_EQUALS(temp.value64, 0x-5C6608C28F0A5D95);
+        TEST_ASSERT_EQUALS(temp.value64, 0xA399F73D70F5A26B);
 
 
 
