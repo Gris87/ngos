@@ -160,40 +160,63 @@ help:
 
 
 
-deployment: generate
+tool-build_config_gui:
+	bash -c "cd tools/qt/build_config_gui/ && lupdate -noobsolete build_config_gui.pro && lrelease build_config_gui.pro && qmake build_config_gui.pro && make -j`nproc`"
+
+tool-build_config_maker:
 	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+
+tool-code_generator:
+	bash -c "cd 3rd_party/ && make"
+	bash -c "cd tools/qt/code_generator/ && lupdate -noobsolete code_generator.pro && lrelease code_generator.pro && qmake code_generator.pro && make -j`nproc`"
+
+tool-code_verifier:
+	bash -c "cd tools/qt/code_verifier/ && lupdate -noobsolete code_verifier.pro && lrelease code_verifier.pro && qmake code_verifier.pro && make -j`nproc`"
+
+tool-docs_verifier:
+	bash -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
+
+tool-image_builder:
+	bash -c "cd tools/qt/image_builder/ && lupdate -noobsolete image_builder.pro && lrelease image_builder.pro && qmake image_builder.pro && make -j`nproc`"
+
+tool-qmake:
+	bash -c "cd tools/qt/qmake/ && lupdate -noobsolete qmake.pro && lrelease qmake.pro && qmake qmake.pro && make -j`nproc`"
+
+tool-test_verifier:
+	bash -c "cd tools/qt/test_verifier/ && lupdate -noobsolete test_verifier.pro && lrelease test_verifier.pro && qmake test_verifier.pro && make -j`nproc`"
+
+tool-usb_boot_maker:
+	bash -c "cd tools/qt/usb_boot_maker/ && lupdate -noobsolete usb_boot_maker.pro && lrelease usb_boot_maker.pro && qmake usb_boot_maker.pro && make -j`nproc`"
+
+
+
+deployment: tool-build_config_maker generate
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) --reset
 	$(MAKE) all
 
 
 
-config:
-	bash -c "cd tools/qt/build_config_gui/ && lupdate -noobsolete build_config_gui.pro && lrelease build_config_gui.pro && qmake build_config_gui.pro && make -j`nproc`"
+config: tool-build_config_gui
 	tools/qt/build_config_gui/build/build_config_gui
 
 
 
-generate:
-	bash -c "cd 3rd_party/ && make"
-	bash -c "cd tools/qt/code_generator/ && lupdate -noobsolete code_generator.pro && lrelease code_generator.pro && qmake code_generator.pro && make -j`nproc`"
+generate: tool-code_generator
 	tools/qt/code_generator/build/code_generator .
 
 
 
-verify:
-	bash -c "cd tools/qt/code_verifier/ && lupdate -noobsolete code_verifier.pro && lrelease code_verifier.pro && qmake code_verifier.pro && make -j`nproc`"
+verify: tool-code_verifier
 	tools/qt/code_verifier/build/code_verifier .
 
 
 
-verify-tests:
-	bash -c "cd tools/qt/test_verifier/ && lupdate -noobsolete test_verifier.pro && lrelease test_verifier.pro && qmake test_verifier.pro && make -j`nproc`"
+verify-tests: tool-test_verifier
 	tools/qt/test_verifier/build/test_verifier .
 
 
 
-verify-docs:
-	bash -c "cd tools/qt/docs_verifier/ && lupdate -noobsolete docs_verifier.pro && lrelease docs_verifier.pro && qmake docs_verifier.pro && make -j`nproc`"
+verify-docs: tool-docs_verifier
 	tools/qt/docs_verifier/build/docs_verifier .
 
 
@@ -203,29 +226,25 @@ test:
 
 
 
-debug:
-	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+debug: tool-build_config_maker
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
-release:
-	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+release: tool-build_config_maker
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_NO
 	$(MAKE) all
 
 
 
-test-debug:
-	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+test-debug: tool-build_config_maker
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_NO NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
 
 
-test-release:
-	bash -c "cd tools/qt/build_config_maker/ && lupdate -noobsolete build_config_maker.pro && lrelease build_config_maker.pro && qmake build_config_maker.pro && make -j`nproc`"
+test-release: tool-build_config_maker
 	tools/qt/build_config_maker/build/build_config_maker $(BUILD_CONFIG) NGOS_BUILD_RELEASE=OPTION_YES NGOS_BUILD_TEST_MODE=OPTION_YES
 	$(MAKE) all
 
