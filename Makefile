@@ -1,4 +1,4 @@
-ARCH = $(shell grep "define NGOS_BUILD_ARCH" include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]")
+ARCH = $(shell grep "define NGOS_BUILD_ARCH" include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]" | sed -r "s/x86_64/x64/g")
 
 OUTPUT_DIR   = build
 BUILD_CONFIG = include/buildconfig.h
@@ -17,7 +17,7 @@ SUBDIRS = \
 
 
 TARGET_APPS = \
-	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi \
+	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/boot$(ARCH).efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/devicemanager.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/cputest.efi \
 	$(OUTPUT_DIR)/deployment/com.ngos.bootloader/tools/memorytest.efi \
@@ -35,7 +35,7 @@ TARGET_APPS = \
 
 all: $(SUBDIRS) $(TARGET_APPS)
 
-$(OUTPUT_DIR)/deployment/com.ngos.bootloader/bootx64.efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
+$(OUTPUT_DIR)/deployment/com.ngos.bootloader/boot$(ARCH).efi: src/os/boot/build/boot.elf src/os/bootloader/build/bootloader.elf tools/qt/image_builder/build/image_builder
 	$(MKDIR) $(@D)
 	tools/qt/image_builder/build/image_builder -b src/os/boot/build/boot.elf -t src/os/bootloader/build/bootloader.elf -o $@.unsigned
 	./scripts/sign_uefi_application.sh $@.unsigned $@
