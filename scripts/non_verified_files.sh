@@ -40,35 +40,35 @@ do                                                                              
                     -ve "\.dll$"                \
                     -ve "\.exe$"                \
                     -ve "\.gif$"                \
-                    -ve "\.gitignore$"          \
                     -ve "\.gpg$"                \
-                    -ve "\.hex$"                \
                     -ve "\.ico$"                \
                     -ve "\.jpg$"                \
                     -ve "\.pem$"                \
                     -ve "\.png$"                \
                     -ve "\.qm$"                 \
-                    -ve "\.rc$"                 \
                     -ve "\.svg$"                \
-                    -ve "\.ts$"                 \
                     -ve "\.ttf$"                \
-                    -ve "\.ui$"                 \
-                    -ve "\.vbox$"               \
                     -ve "^ngos.creator.shared$" \
                     -ve "Makefile$"             \
-                    -ve "/\.gdbinit$"           \
-                    -ve "/\.htaccess$"          \
-                    -ve "/\.spelling$"          \
+                    -ve "\.gdbinit$"            \
+                    -ve "\.gitignore$"          \
+                    -ve "\.hex$"                \
+                    -ve "\.htaccess$"           \
+                    -ve "\.rc$"                 \
+                    -ve "\.spelling$"           \
+                    -ve "\.ts$"                 \
+                    -ve "\.ui$"                 \
+                    -ve "\.vbox$"               \
     `                                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     if [ "${IGNORE_FILE}" != "" ]; then                                                                                                                                                                  # Colorize: green
-        FIRST_LINE=`        cat "${file}" | grep -m1 -n -ve "Colorize: green" -ve "^#!/bin/bash$" | sed -r "s/^([0-9]+):.*/\1/g"`                                                                        # Colorize: green
+        FIRST_LINE=`        cat "${file}" | grep -m1 -n -ve "Colorize: green" -ve "^#!/bin/bash$" -ve " \\\\$" | sed -r "s/^([0-9]+):.*/\1/g"`                                                                        # Colorize: green
         NOT_VERIFIED_LINES=`cat "${file}" | grep        -ve "Colorize: green" | wc -l`                                                                                                                   # Colorize: green
         NUMBER_OF_LINES=`   cat "${file}" | wc -l`                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-        if [ "${FIRST_LINE}" != "" ]; then                                                                                                                                                               # Colorize: green
+        if [ ${NOT_VERIFIED_LINES} -ne 0 ]; then                                                                                                                                                               # Colorize: green
             SHELL_FILE=`echo "${file}" | grep -e "\.sh$"`                                                                                                                                                # Colorize: green
                                                                                                                                                                                                          # Colorize: green
             if [ "${SHELL_FILE}" != "" ]; then                                                                                                                                                           # Colorize: green
