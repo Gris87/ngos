@@ -32,33 +32,34 @@ TOTAL_NOT_VERIFIED_LINES=0                                                      
                                                                                                                                                                                                          # Colorize: green
 while read file                                                                                                                                                                                          # Colorize: green
 do                                                                                                                                                                                                       # Colorize: green
-    IGNORE_FILE=`echo "${file}" | grep          \
-                    -ve "/generated/"           \
-                    -ve "tools/tracers/assets/" \
-                    -ve "\.auth$"               \
-                    -ve "\.bin$"                \
-                    -ve "\.dll$"                \
-                    -ve "\.exe$"                \
-                    -ve "\.gif$"                \
-                    -ve "\.gpg$"                \
-                    -ve "\.ico$"                \
-                    -ve "\.jpg$"                \
-                    -ve "\.pem$"                \
-                    -ve "\.png$"                \
-                    -ve "\.qm$"                 \
-                    -ve "\.svg$"                \
-                    -ve "\.ttf$"                \
-                    -ve "^ngos.creator.shared$" \
-                    -ve "Makefile$"             \
-                    -ve "\.gdbinit$"            \
-                    -ve "\.gitignore$"          \
-                    -ve "\.hex$"                \
-                    -ve "\.htaccess$"           \
-                    -ve "\.rc$"                 \
-                    -ve "\.spelling$"           \
-                    -ve "\.ts$"                 \
-                    -ve "\.ui$"                 \
-                    -ve "\.vbox$"               \
+    IGNORE_FILE=`echo "${file}" | \
+                    grep \
+                        -ve "/generated/"           \
+                        -ve "tools/tracers/assets/" \
+                        -ve "\.auth$"               \
+                        -ve "\.bin$"                \
+                        -ve "\.dll$"                \
+                        -ve "\.exe$"                \
+                        -ve "\.gif$"                \
+                        -ve "\.gpg$"                \
+                        -ve "\.ico$"                \
+                        -ve "\.jpg$"                \
+                        -ve "\.pem$"                \
+                        -ve "\.png$"                \
+                        -ve "\.qm$"                 \
+                        -ve "\.svg$"                \
+                        -ve "\.ttf$"                \
+                        -ve "^ngos.creator.shared$" \
+                        -ve "Makefile$"             \
+                        -ve "\.gdbinit$"            \
+                        -ve "\.gitignore$"          \
+                        -ve "\.hex$"                \
+                        -ve "\.htaccess$"           \
+                        -ve "\.rc$"                 \
+                        -ve "\.spelling$"           \
+                        -ve "\.ts$"                 \
+                        -ve "\.ui$"                 \
+                        -ve "\.vbox$"               \
     `                                                                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     if [ "${IGNORE_FILE}" != "" ]; then                                                                                                                                                                  # Colorize: green
