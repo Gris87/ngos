@@ -8,7 +8,7 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-WORKING_DIR=`pwd`                                                                                                                                                                                        # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                        # Colorize: green
 PROJECT_INCLUDES=ngos.includes                                                                                                                                                                           # Colorize: green
 ALL_INCLUDES=/tmp/ngos_test_list_of_includes.txt                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -38,22 +38,16 @@ do                                                                              
     bash -c "cd \"${line}\" && find -type f -name \*.h" >> ${ALL_INCLUDES}                                                                                                                               # Colorize: green
 done                                                                                                                                                                                                     # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-cd ${WORKING_DIR}/                                                                                                                                                                                       # Colorize: green
+cd ${CURRENT_PATH}/                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 DUPLICATES=` \
     cat ${ALL_INCLUDES} | sort | uniq -d | \
         grep \
-            -ve "./build/gen/moc_predefs.h"    \
-            -ve "./build/gen/ui_aboutdialog.h" \
-            -ve "./build/gen/ui_mainwindow.h"  \
-            -ve "./moc_predefs.h"              \
-            -ve "./src/main/aboutdialog.h"     \
-            -ve "./src/main/mainwindow.h"      \
-            -ve "./src/other/global.h"         \
-            -ve "./ui_aboutdialog.h"           \
-            -ve "./ui_mainwindow.h"            \
+            -ve "./moc_predefs.h"       \
+            -ve "./ui_aboutdialog.h"    \
+            -ve "./ui_mainwindow.h"     \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
