@@ -8,6 +8,7 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+CURRENT_PATH=`pwd`                                                                                                                                                                                        # Colorize: green
 BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
 BUILD_LOG=/tmp/ngos_test_build.log                                                                                                                                                                       # Colorize: green
 BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h                                                                                                                                                           # Colorize: green
@@ -65,6 +66,7 @@ if [ $? -ne 0 ]; then                                                           
 fi                                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                                   # Colorize: green
+cd ${CURRENT_PATH}/                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -74,8 +76,10 @@ echo ""                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+ARCH=`grep "define NGOS_BUILD_ARCH" ../../include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]"`                                                          # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 ( sleep 3 ; echo "screendump ${QEMU_SCREENSHOT}" ; echo "quit" ) | \
-    qemu-system-x86_64 -display none -drive file=../../build/deployment/com.ngos.kernel/kernel.efi,format=raw -monitor stdio > /dev/null 2>&1                                                            # Colorize: green
+    qemu-system-${ARCH} -display none -drive file=../../build/deployment/com.ngos.kernel/kernel.efi,format=raw -monitor stdio > /dev/null 2>&1                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
     exit 1                                                                                                                                                                                               # Colorize: green
