@@ -2,7 +2,7 @@
                                                                                                                                                                                                          # Colorize: green
 # This script helps to create RAW disk image that can be used by VM                                                                                                                                      # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
-# Usage: ./make_hdd.sh [OS_TYPE]                                                                                                                                                                         # Colorize: green
+# Usage: ./make_hdd.sh HDD_SIZE [OS_TYPE]                                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -13,10 +13,26 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
-OS_TYPE=$1                                                                                                                                                                                               # Colorize: green
+HDD_SIZE=$1                                                                                                                                                                                               # Colorize: green
+OS_TYPE=$2                                                                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 SINGLE_IMAGE=1                                                                                                                                                                                           # Colorize: green
 BOOTLOADER_IMAGE=../../build/deployment/com.ngos.bootloader/*                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+#    VERIFICATION                                                                                                                                                                                        # Colorize: green
+###########################################################################################                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${HDD_SIZE}" == "" ]; then                                                                                                                                                                         # Colorize: green
+    echo "Please specify HDD size."                                                                                                                                                                      # Colorize: green
+    echo "    Usage: ./make_hdd.sh HDD_SIZE [OS_TYPE]"                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -55,7 +71,7 @@ mkdir -p ../../build/disks/ 2> /dev/null                                        
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-truncate --size 1G "../../build/disks/${VM_NAME}.img"                                                                                                                                                    # Colorize: green
+truncate --size ${HDD_SIZE} "../../build/disks/${VM_NAME}.img"                                                                                                                                           # Colorize: green
 sgdisk --zap-all \
     --new 1::+100M --typecode=1:EF00 --change-name=1:"UEFI System" \
     --new 2::-0 --typecode=2:8300 --change-name=2:"NGOS filesystem" \

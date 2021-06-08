@@ -2,7 +2,7 @@
                                                                                                                                                                                                          # Colorize: green
 # This script helps to start VM                                                                                                                                                                          # Colorize: green
 # Author: Maxim Shvecov                                                                                                                                                                                  # Colorize: green
-# Usage: ./start.sh RAM_SIZE [DISPLAY_TYPE] [OS_TYPE]                                                                                                                                                    # Colorize: green
+# Usage: ./start.sh RAM_SIZE HDD_SIZE [DISPLAY_TYPE] [OS_TYPE]                                                                                                                                                    # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -15,8 +15,9 @@
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
 RAM_SIZE=$1                                                                                                                                                                                              # Colorize: green
-DISPLAY_TYPE=$2                                                                                                                                                                                          # Colorize: green
-OS_TYPE=$3                                                                                                                                                                                               # Colorize: green
+HDD_SIZE=$2                                                                                                                                                                                              # Colorize: green
+DISPLAY_TYPE=$3                                                                                                                                                                                          # Colorize: green
+OS_TYPE=$4                                                                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -28,7 +29,16 @@ OS_TYPE=$3                                                                      
                                                                                                                                                                                                          # Colorize: green
 if [ "${RAM_SIZE}" == "" ]; then                                                                                                                                                                         # Colorize: green
     echo "Please specify RAM size."                                                                                                                                                                      # Colorize: green
-    echo "    Usage: ./start.sh RAM_SIZE [DISPLAY_TYPE] [OS_TYPE]"                                                                                                                                       # Colorize: green
+    echo "    Usage: ./start.sh RAM_SIZE HDD_SIZE [DISPLAY_TYPE] [OS_TYPE]"                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ "${HDD_SIZE}" == "" ]; then                                                                                                                                                                         # Colorize: green
+    echo "Please specify HDD size."                                                                                                                                                                      # Colorize: green
+    echo "    Usage: ./start.sh RAM_SIZE HDD_SIZE [DISPLAY_TYPE] [OS_TYPE]"                                                                                                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
     exit 1                                                                                                                                                                                               # Colorize: green
 fi                                                                                                                                                                                                       # Colorize: green
@@ -69,7 +79,7 @@ sleep 3                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 cd ../                                                                                                                                                                                                   # Colorize: green
-./make_hdd.sh ${OS_TYPE} || exit 1                                                                                                                                                                       # Colorize: green
+./make_hdd.sh ${HDD_SIZE} ${OS_TYPE} || exit 1                                                                                                                                                                       # Colorize: green
 cd ${CURRENT_PATH}/                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -81,10 +91,12 @@ rm "../../../build/disks/${VM_NAME}.img"                                        
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
+ARCH=`grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]"`                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 sudo virt-install --name ${VM_NAME}                                                     \
     --connect qemu:///system                                                            \
     --virt-type kvm                                                                     \
-    --arch=x86_64                                                                       \
+    --arch=${ARCH}                                                                      \
     --os-variant=none                                                                   \
     --ram ${RAM_SIZE}                                                                   \
     --vcpus 4,sockets=1,cores=2,threads=2                                               \
