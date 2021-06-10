@@ -13,6 +13,7 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
+TTY=/tmp/ngos_ttyS0_qemu_kvm                                                                                                                                                                                  # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
 RAM_SIZE=$1                                                                                                                                                                                              # Colorize: green
 HDD_SIZE=$2                                                                                                                                                                                              # Colorize: green
@@ -105,7 +106,7 @@ sudo virt-install --name ${VM_NAME}                                             
     --video=vga                                                                         \
     --network network=default,model=virtio                                              \
     --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none  \
-    --serial unix,path=/tmp/qemukvmttyS0                                                \
+    --serial unix,path=${TTY}                                                           \
     --boot uefi                                                                         \
     --qemu-commandline="-gdb tcp::1234"                                                 \
     --noautoconsole                                                                                                                                                                                      # Colorize: green
@@ -129,13 +130,13 @@ kill -9 ${NGOS_LOGGER_PID} > /dev/null 2>&1                                     
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-sudo socat unix-connect:/tmp/qemukvmttyS0 pty,link=/tmp/qemukvmttyS0-pty,raw,echo=0 &                                                                                                                    # Colorize: green
+sudo socat unix-connect:${TTY} pty,link=${TTY}-pty,raw,echo=0 &                                                                                                                    # Colorize: green
 sleep 1                                                                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 mkdir logs/ 2> /dev/null                                                                                                                                                                                 # Colorize: green
-sudo cat /tmp/qemukvmttyS0-pty > "logs/${VM_NAME}.log" &                                                                                                                                                 # Colorize: green
+sudo cat ${TTY}-pty > "logs/${VM_NAME}.log" &                                                                                                                                                 # Colorize: green
 sleep 1                                                                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 tail -f -n +1 "logs/${VM_NAME}.log" |                                                                                                                                                                    # Colorize: green
