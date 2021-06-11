@@ -16,10 +16,14 @@ BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)   
 {                                                                                                                                                                                                        // Colorize: green
     // Store information about selected USB                                                                                                                                                              // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        mSelectedUsb.diskNumber = deviceInfo->diskNumber;                                                                                                                                                // Colorize: green
-        mSelectedUsb.diskSize   = deviceInfo->diskSize;                                                                                                                                                  // Colorize: green
-        mSelectedUsb.letters    = deviceInfo->letters;                                                                                                                                                   // Colorize: green
-        mSelectedUsb.deviceName = deviceInfo->deviceName;                                                                                                                                                // Colorize: green
+        mSelectedUsb.diskSize = deviceInfo->diskSize;
+
+#ifdef Q_OS_WIN
+        mSelectedUsb.diskNumber = deviceInfo->diskNumber;
+        mSelectedUsb.letters    = deviceInfo->letters;
+#else
+        mSelectedUsb.deviceName = deviceInfo->deviceName;
+#endif
     }                                                                                                                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
