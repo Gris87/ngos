@@ -16,14 +16,13 @@ BurnThread::BurnThread(UsbDeviceInfo *deviceInfo, const QString binariesPath)   
 {                                                                                                                                                                                                        // Colorize: green
     // Store information about selected USB                                                                                                                                                              // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        mSelectedUsb.diskSize = deviceInfo->diskSize;
-
-#ifdef Q_OS_WIN
-        mSelectedUsb.diskNumber = deviceInfo->diskNumber;
-        mSelectedUsb.letters    = deviceInfo->letters;
-#else
-        mSelectedUsb.deviceName = deviceInfo->deviceName;
-#endif
+#ifdef Q_OS_WIN                                                                                                                                                                                          // Colorize: green
+        mSelectedUsb.diskNumber = deviceInfo->diskNumber;                                                                                                                                                // Colorize: green
+        mSelectedUsb.diskSize   = deviceInfo->diskSize;                                                                                                                                                  // Colorize: green
+        mSelectedUsb.letters    = deviceInfo->letters;                                                                                                                                                   // Colorize: green
+#else                                                                                                                                                                                                    // Colorize: green
+        mSelectedUsb.deviceName = deviceInfo->deviceName;                                                                                                                                                // Colorize: green
+#endif                                                                                                                                                                                                   // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green

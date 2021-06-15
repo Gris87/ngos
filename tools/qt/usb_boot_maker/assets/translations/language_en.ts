@@ -79,29 +79,29 @@
         <translation>Mounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="37"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="36"/>
         <source>Copying files to disk</source>
         <translation>Copying files to disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="45"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="59"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="44"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="58"/>
         <source>Failed to copy folder %1</source>
         <translation>Failed to copy folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="125"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="124"/>
         <source>Failed to create folder %1</source>
         <translation>Failed to create folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="78"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="153"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="77"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="152"/>
         <source>Failed to copy file %1</source>
         <translation>Failed to copy file %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="70"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="69"/>
         <source>Create autorun.inf file</source>
         <translation>Create autorun.inf file</translation>
     </message>
