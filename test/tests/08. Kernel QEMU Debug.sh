@@ -105,7 +105,7 @@ echo ""                                                                         
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-ERRORS=` \
+ERRORS=`cat ${KERNEL_LOG} | \
     grep \
         -E \
         -e "ASSERT" \
@@ -113,7 +113,6 @@ ERRORS=` \
         -e "CRITICAL" \
         -e "FATAL" \
         -e "Testing completed: [0-9]+ passed, ([0-9]{2,}|[1-9]) failed" \
-    ${KERNEL_LOG} \
 `                                                                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
