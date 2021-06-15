@@ -1,8 +1,8 @@
 QT -= gui
 
-CONFIG += c++17
+CONFIG += c++20
 
-TARGET = kernel
+TARGET   = kernel
 TEMPLATE = kernel
 
 RESOURCES += Resources.qrc
@@ -15,13 +15,13 @@ DEFINES += \
 
 
 INCLUDEPATH += \
-    src \                       # /src/os/kernel/src
-    test \                      # /src/os/kernel/test
-    ../shared/common/src \      # /src/os/shared/common/src
-    ../shared/uefibase/src \    # /src/os/shared/uefibase/src
-    ../shared/uefibase/test \   # /src/os/shared/uefibase/test
-    ../../../include \          # /include
-    ../../../include/stdinc     # /include/stdinc
+    src \                       # src/os/kernel/src
+    test \                      # src/os/kernel/test
+    ../shared/common/src \      # src/os/shared/common/src
+    ../shared/uefibase/src \    # src/os/shared/uefibase/src
+    ../shared/uefibase/test \   # src/os/shared/uefibase/test
+    ../../../include \          # include
+    ../../../include/stdinc     # include/stdinc
 
 
 

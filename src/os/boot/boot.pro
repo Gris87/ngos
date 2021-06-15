@@ -1,8 +1,8 @@
 QT -= gui
 
-CONFIG += c++17
+CONFIG += c++20
 
-TARGET = boot
+TARGET   = boot
 TEMPLATE = uefi
 
 

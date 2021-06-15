@@ -1,10 +1,10 @@
 QT -= gui
 QT += network
 
-CONFIG += c++17 console
+CONFIG += c++20 console
 CONFIG -= app_bundle
 
-TARGET = code_generator
+TARGET   = code_generator
 TEMPLATE = app
 
 RESOURCES += Resources.qrc
@@ -46,12 +46,12 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src \                                       # /tools/qt/code_generator/src
-    ../../../3rd_party/libs/freetype/include \  # /3rd_party/libs/freetype/include
-    ../../../include \                          # /include
-    ../../../src/os/configure/src \             # /src/os/configure/src
-    ../../../src/os/shared/common/src \         # /src/os/shared/common/src
-    ../shared/console/src                       # /tools/qt/shared/console/src
+    src \                                       # tools/qt/code_generator/src
+    ../../../3rd_party/libs/freetype/include \  # 3rd_party/libs/freetype/include
+    ../../../include \                          # include
+    ../../../src/os/configure/src \             # src/os/configure/src
+    ../../../src/os/shared/common/src \         # src/os/shared/common/src
+    ../shared/console/src                       # tools/qt/shared/console/src
 
 
 

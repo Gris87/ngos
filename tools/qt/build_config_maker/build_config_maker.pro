@@ -1,9 +1,9 @@
 QT -= gui
 
-CONFIG += c++17 console
+CONFIG += c++20 console
 CONFIG -= app_bundle
 
-TARGET = build_config_maker
+TARGET   = build_config_maker
 TEMPLATE = app
 
 
@@ -43,8 +43,8 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src \                   # /tools/qt/build_config_maker/src
-    ../shared/console/src   # /tools/qt/shared/console/src
+    src \                   # tools/qt/build_config_maker/src
+    ../shared/console/src   # tools/qt/shared/console/src
 
 
 

@@ -384,6 +384,11 @@ qint64 QMake::generateApplicationMakefile(const QString &workingDirectory, const
 
     const QStringList &config = mEntries.value("CONFIG");
 
+    if (config.contains("c++20"))
+    {
+        lines.append("CPP_STANDARD        = -std=c++20");
+    }
+    else
     if (config.contains("c++17"))
     {
         lines.append("CPP_STANDARD        = -std=c++17");

@@ -1,9 +1,9 @@
 QT -= gui
 
-CONFIG += c++17 console
+CONFIG += c++20 console
 CONFIG -= app_bundle
 
-TARGET = qmake
+TARGET   = qmake
 TEMPLATE = app
 
 
@@ -43,9 +43,9 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src \                   # /tools/qt/qmake/src
-    ../../../include \      # /include
-    ../shared/console/src   # /tools/qt/shared/console/src
+    src \                   # tools/qt/qmake/src
+    ../../../include \      # include
+    ../shared/console/src   # tools/qt/shared/console/src
 
 
 

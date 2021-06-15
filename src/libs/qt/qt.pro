@@ -1,6 +1,6 @@
 QT -= gui                                                                                                                                                                                                # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-CONFIG += c++17 console                                                                                                                                                                                  # Colorize: green
+CONFIG += c++20 console                                                                                                                                                                                  # Colorize: green
 CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 TARGET   = qt                                                                                                                                                                                            # Colorize: green

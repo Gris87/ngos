@@ -1,8 +1,8 @@
 QT += core gui widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
-TARGET = build_config_gui
+TARGET   = build_config_gui
 TEMPLATE = app
 
 RC_FILE    = Resources.rc
@@ -45,7 +45,7 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src     # /tools/qt/build_config_gui/src
+    src     # tools/qt/build_config_gui/src
 
 
 

@@ -1,9 +1,9 @@
 QT -= gui
 
-CONFIG += c++17 console
+CONFIG += c++20 console
 CONFIG -= app_bundle
 
-TARGET = code_verifier
+TARGET   = code_verifier
 TEMPLATE = app
 
 
@@ -43,11 +43,11 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src \                                   # /tools/qt/code_verifier/src
-    ../../../include \                      # /include
-    ../../../src/os/shared/common/src \     # /src/os/shared/common/src
-    ../shared/console/src \                 # /tools/qt/shared/console/src
-    ../shared/utils/src                     # /tools/qt/shared/utils/src
+    src \                                   # tools/qt/code_verifier/src
+    ../../../include \                      # include
+    ../../../src/os/shared/common/src \     # src/os/shared/common/src
+    ../shared/console/src \                 # tools/qt/shared/console/src
+    ../shared/utils/src                     # tools/qt/shared/utils/src
 
 
 

@@ -1,5 +1,5 @@
 INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
-    $$PWD/../../../../include   # /include                                                                                                                                                               # Colorize: green
+    $$PWD/../../../../include   # include                                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

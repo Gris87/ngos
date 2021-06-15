@@ -1,9 +1,9 @@
 QT -= gui
 
-CONFIG += c++17 console
+CONFIG += c++20 console
 CONFIG -= app_bundle
 
-TARGET = image_builder
+TARGET   = image_builder
 TEMPLATE = app
 
 
@@ -43,12 +43,12 @@ UI_DIR      = build/gen
 
 
 INCLUDEPATH += \
-    src \                                   # /tools/qt/image_builder/src
-    ../../../include \                      # /include
-    ../../../src/os/configure/src \         # /src/os/configure/src
-    ../../../src/os/shared/common/src \     # /src/os/shared/common/src
-    ../shared/console/src \                 # /tools/qt/shared/console/src
-    ../shared/elf/src                       # /tools/qt/shared/elf/src
+    src \                                   # tools/qt/image_builder/src
+    ../../../include \                      # include
+    ../../../src/os/configure/src \         # src/os/configure/src
+    ../../../src/os/shared/common/src \     # src/os/shared/common/src
+    ../shared/console/src \                 # tools/qt/shared/console/src
+    ../shared/elf/src                       # tools/qt/shared/elf/src
 
 
 
