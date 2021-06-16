@@ -9,6 +9,9 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                        # Colorize: green
+BUILD_CONFIG=include/buildconfig.h                                                                                                                                                                       # Colorize: green
+BUILD_LOG=/tmp/ngos_test_build.log                                                                                                                                                                       # Colorize: green
+BUILD_CFG_BACKUP=/tmp/ngos_test_buildconfig.h                                                                                                                                                           # Colorize: green
 PROJECT_INCLUDES=ngos.includes                                                                                                                                                                           # Colorize: green
 ALL_INCLUDES=/tmp/ngos_test_list_of_includes.txt                                                                                                                                                         # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -23,6 +26,51 @@ ALL_INCLUDES=/tmp/ngos_test_list_of_includes.txt                                
 echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
 echo -e "\e[36m             Test: Unique file names\e[0m"                                                                                                                                                # Colorize: green
 echo -e "\e[36m==================================================\e[0m"                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- Building --------------------\e[0m"                                                                                                                                  # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cd ../../                                                                                                                                                                                                # Colorize: green
+cp ${BUILD_CONFIG} ${BUILD_CFG_BACKUP}                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+make tool-build_config_maker > ${BUILD_LOG} 2>&1                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
+    cat ${BUILD_LOG}                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                               # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+tools/qt/build_config_maker/build/build_config_maker ${BUILD_CONFIG} --reset \
+    NGOS_BUILD_RELEASE=OPTION_NO \
+    NGOS_BUILD_TEST_MODE=OPTION_YES > ${BUILD_LOG} 2>&1                                                                                                         # Colorize: green
+make test-debug >> ${BUILD_LOG} 2>&1                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+if [ $? -ne 0 ]; then                                                                                                                                                                                    # Colorize: green
+    cat ${BUILD_LOG}                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                               # Colorize: green
+    cd ${CURRENT_PATH}/                                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+    exit 1                                                                                                                                                                                               # Colorize: green
+fi                                                                                                                                                                                                       # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+cp ${BUILD_CFG_BACKUP} ${BUILD_CONFIG}                                                                                                                                                                   # Colorize: green
+cd ${CURRENT_PATH}/                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
+echo -e "\e[33m-------------------- Checking --------------------\e[0m"                                                                                                                                  # Colorize: green
+echo ""                                                                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
@@ -42,15 +90,7 @@ cd ${CURRENT_PATH}/                                                             
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-DUPLICATES=` \
-    cat ${ALL_INCLUDES} | sort | uniq -d | \
-        grep \
-            -ve "./moc_predefs.h"       \
-            -ve "./ui_aboutdialog.h"    \
-            -ve "./ui_mainwindow.h"     \
-`                                                                                                                                                                                                        # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
-                                                                                                                                                                                                         # Colorize: green
+DUPLICATES=`cat ${ALL_INCLUDES} | sort | uniq -d`                                                                                                                                                        # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 if [ "${DUPLICATES}" != "" ]; then                                                                                                                                                                       # Colorize: green
     echo "Duplicate file names:"                                                                                                                                                                         # Colorize: green

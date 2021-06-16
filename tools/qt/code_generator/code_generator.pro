@@ -37,16 +37,17 @@ QMAKE_CXXFLAGS_RELEASE += -O3
 
 # Target dirs - BEGIN
 DESTDIR     = build/
-OBJECTS_DIR = build/gen
-MOC_DIR     = build/gen
-RCC_DIR     = build/gen
-UI_DIR      = build/gen
+OBJECTS_DIR = build/gen/$$TARGET/objs
+MOC_DIR     = build/gen/$$TARGET/moc
+RCC_DIR     = build/gen/$$TARGET/rcc
+UI_DIR      = build/gen/$$TARGET/ui
 # Target dirs - END
 
 
 
 INCLUDEPATH += \
     src \                                       # tools/qt/code_generator/src
+    build/gen \                                 # tools/qt/code_generator/build/gen
     ../../../3rd_party/libs/freetype/include \  # 3rd_party/libs/freetype/include
     ../../../include \                          # include
     ../../../src/os/configure/src \             # src/os/configure/src

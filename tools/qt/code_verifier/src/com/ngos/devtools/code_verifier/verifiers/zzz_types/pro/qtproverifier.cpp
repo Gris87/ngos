@@ -37,10 +37,10 @@
 #define TARGET_DIRS \
     "# Target dirs - BEGIN\n" \
     "DESTDIR     = build/\n" \
-    "OBJECTS_DIR = build/gen\n" \
-    "MOC_DIR     = build/gen\n" \
-    "RCC_DIR     = build/gen\n" \
-    "UI_DIR      = build/gen\n" \
+    "OBJECTS_DIR = build/gen/$$TARGET/objs\n" \
+    "MOC_DIR     = build/gen/$$TARGET/moc\n" \
+    "RCC_DIR     = build/gen/$$TARGET/rcc\n" \
+    "UI_DIR      = build/gen/$$TARGET/ui\n" \
     "# Target dirs - END\n"
 // Ignore CppAlignmentVerifier [END]
 

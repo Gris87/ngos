@@ -1,5 +1,5 @@
 #include "aboutdialog.h"                                                                                                                                                                                 // Colorize: green
-#include "ui_aboutdialog.h"                                                                                                                                                                              // Colorize: green
+#include "usb_boot_maker/ui/ui_aboutdialog.h"                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

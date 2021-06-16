@@ -1,5 +1,5 @@
 #include "mainwindow.h"                                                                                                                                                                                  // Colorize: green
-#include "ui_mainwindow.h"                                                                                                                                                                               // Colorize: green
+#include "usb_boot_maker/ui/ui_mainwindow.h"                                                                                                                                                                               // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #include <QActionGroup>                                                                                                                                                                                  // Colorize: green
 #include <QDateTime>                                                                                                                                                                                     // Colorize: green

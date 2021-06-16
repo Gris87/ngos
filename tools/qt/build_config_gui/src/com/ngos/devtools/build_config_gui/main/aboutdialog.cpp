@@ -1,5 +1,5 @@
 #include "aboutdialog.h"
-#include "ui_aboutdialog.h"
+#include "build_config_gui/ui/ui_aboutdialog.h"
 
 
 
