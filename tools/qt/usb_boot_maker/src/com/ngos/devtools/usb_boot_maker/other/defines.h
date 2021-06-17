@@ -10,7 +10,7 @@
 #define MIN_DISK_SIZE (8 * MB)                                                                                                                                                                           // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #define MAX_GPT_PARTITIONS   128                                                                                                                                                                         // Colorize: green
-#define DEFAULT_CLUSTER_SIZE 4096                                                                                                                                                                        // Colorize: green
+#define DEFAULT_CLUSTER_SIZE (4 * KB)                                                                                                                                                                    // Colorize: green
 #define SECTOR_SIZE          512                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #define MBR_RESERVED 0x01B8                                                                                                                                                                              // Colorize: green
