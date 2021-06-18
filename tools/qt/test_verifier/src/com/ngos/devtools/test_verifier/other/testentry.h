@@ -1,38 +1,38 @@
-#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H                                                                                                                                                // Colorize: green
-#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H                                                                                                                                                // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-#include <QString>                                                                                                                                                                                       // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-#include <com/ngos/devtools/test_verifier/other/testentrytype.h>                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-class TestEntry                                                                                                                                                                                          // Colorize: green
-{                                                                                                                                                                                                        // Colorize: green
-public:                                                                                                                                                                                                  // Colorize: green
-    TestEntry(TestEntryType type, const QString &path, qint64 line, const QString &name, const QString &testModule); // TEST: NO                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-    bool operator<(const TestEntry &another) const; // TEST: NO                                                                                                                                          // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-    QString getFunctionOrMacro() const; // TEST: NO                                                                                                                                                      // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-    TestEntryType getType() const; // TEST: NO                                                                                                                                                           // Colorize: green
-    QString getPath() const; // TEST: NO                                                                                                                                                                 // Colorize: green
-    QString getName() const; // TEST: NO                                                                                                                                                                 // Colorize: green
-    QString getTestModule() const; // TEST: NO                                                                                                                                                           // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-    QString toString() const; // TEST: NO                                                                                                                                                                // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-private:                                                                                                                                                                                                 // Colorize: green
-    TestEntryType mType;                                                                                                                                                                                 // Colorize: green
-    QString       mPath;                                                                                                                                                                                 // Colorize: green
-    qint64        mLine;                                                                                                                                                                                 // Colorize: green
-    QString       mName;                                                                                                                                                                                 // Colorize: green
-    QString       mTestModule;                                                                                                                                                                           // Colorize: green
-};                                                                                                                                                                                                       // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H                                                                                                                                              // Colorize: green
+#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H
+#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H
+
+
+
+#include <QString>
+
+#include <com/ngos/devtools/test_verifier/other/testentrytype.h>
+
+
+
+class TestEntry
+{
+public:
+    TestEntry(TestEntryType type, const QString &path, qint64 line, const QString &name, const QString &testModule); // TEST: NO
+
+    bool operator<(const TestEntry &another) const; // TEST: NO
+
+    QString getFunctionOrMacro() const; // TEST: NO
+
+    TestEntryType getType() const; // TEST: NO
+    QString getPath() const; // TEST: NO
+    QString getName() const; // TEST: NO
+    QString getTestModule() const; // TEST: NO
+
+    QString toString() const; // TEST: NO
+
+private:
+    TestEntryType mType;
+    QString       mPath;
+    qint64        mLine;
+    QString       mName;
+    QString       mTestModule;
+};
+
+
+
+#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRY_H

@@ -24,7 +24,7 @@
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="151"/>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="716"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1295"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1296"/>
         <source>Unmounting disk volume %1</source>
         <translation>Unmounting disk volume %1</translation>
     </message>
@@ -79,29 +79,29 @@
         <translation>Mounting disk volume %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="36"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="40"/>
         <source>Copying files to disk</source>
         <translation>Copying files to disk</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="44"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="58"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="48"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="62"/>
         <source>Failed to copy folder %1</source>
         <translation>Failed to copy folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="124"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="146"/>
         <source>Failed to create folder %1</source>
         <translation>Failed to create folder %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="77"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="151"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="85"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="173"/>
         <source>Failed to copy file %1</source>
         <translation>Failed to copy file %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="69"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="77"/>
         <source>Create autorun.inf file</source>
         <translation>Create autorun.inf file</translation>
     </message>
