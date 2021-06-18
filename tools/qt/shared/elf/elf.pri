@@ -1,5 +1,5 @@
 INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
-    $$PWD/../../../../include   # include                                                                                                                                                               # Colorize: green
+    $$PWD/../../../../src/os/shared/common/src   # src/os/shared/common/src                                                                                                                              # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
