@@ -6,7 +6,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 ElfObject::ElfObject()                                                                                                                                                                                   // Colorize: green
-    : mBytes                                                                                                                                                                                             // Colorize: green
+    : mBytes()                                                                                                                                                                                           // Colorize: green
     , mProgramBytes()                                                                                                                                                                                    // Colorize: green
     , mNameToSectionMap()                                                                                                                                                                                // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
