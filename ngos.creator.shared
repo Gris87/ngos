@@ -682,7 +682,7 @@
                 <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes" />
                 <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable">make</value>
                 <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run make</value>
-                <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Tool - Test Verifier</value>
+                <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Tool - Tests Verifier</value>
                 <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
                 <value type="QString" key="RunConfiguration.Arguments">verify-tests</value>
                 <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>

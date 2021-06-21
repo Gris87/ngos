@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
-#define COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
+#ifndef COM_NGOS_DEVTOOLS_TESTS_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_TESTS_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -61,4 +61,4 @@ inline const char8* enumToHumanString(TestEntryType type) // TEST: NO           
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#endif // COM_NGOS_DEVTOOLS_TEST_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                          // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_TESTS_VERIFIER_OTHER_TESTENTRYTYPE_H                                                                                                                                          // Colorize: green

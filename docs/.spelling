@@ -278,7 +278,7 @@ sizeOfImage
 sizeOfOptionalHeader
 splitted
 src
-test_verifier
+tests_verifier
 text.elf
 timestamp
 ttyS0

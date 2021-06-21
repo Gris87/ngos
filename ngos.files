@@ -50,7 +50,7 @@ docs/0. Intro/7. Tools/02. Image builder/Image structure.png
 docs/0. Intro/7. Tools/02. Image builder/README.md
 docs/0. Intro/7. Tools/03. Code generator/README.md
 docs/0. Intro/7. Tools/04. Code verifier/README.md
-docs/0. Intro/7. Tools/05. Test verifier/README.md
+docs/0. Intro/7. Tools/05. Tests verifier/README.md
 docs/0. Intro/7. Tools/06. Docs verifier/README.md
 docs/0. Intro/7. Tools/07. Build config maker/README.md
 docs/0. Intro/7. Tools/08. Build config GUI/README.md
@@ -5894,22 +5894,22 @@ tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.h
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.cpp
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.h
 tools/qt/shared/utils/utils.pri
-tools/qt/test_verifier/.gitignore
-tools/qt/test_verifier/README.md
-tools/qt/test_verifier/Screenshot.png
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/main.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/testentry.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/testentry.h
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/testentrytype.h
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/testmessageinfo.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/testmessageinfo.h
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/teststructureentry.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/other/teststructureentry.h
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/threads/testverifythread.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/threads/testverifythread.h
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/threads/testworkerthread.cpp
-tools/qt/test_verifier/src/com/ngos/devtools/test_verifier/threads/testworkerthread.h
-tools/qt/test_verifier/test_verifier.pro
+tools/qt/tests_verifier/.gitignore
+tools/qt/tests_verifier/README.md
+tools/qt/tests_verifier/Screenshot.png
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/main.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/testentry.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/testentry.h
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/testentrytype.h
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/testmessageinfo.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/testmessageinfo.h
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/teststructureentry.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/other/teststructureentry.h
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testverifythread.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testverifythread.h
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testworkerthread.cpp
+tools/qt/tests_verifier/src/com/ngos/devtools/tests_verifier/threads/testworkerthread.h
+tools/qt/tests_verifier/tests_verifier.pro
 tools/qt/usb_boot_maker/.gitignore
 tools/qt/usb_boot_maker/assets/binaries/protective_mbr.bin
 tools/qt/usb_boot_maker/assets/binaries/protective_mbr.S
