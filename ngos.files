@@ -51,10 +51,11 @@ docs/0. Intro/7. Tools/02. Image builder/README.md
 docs/0. Intro/7. Tools/03. Code generator/README.md
 docs/0. Intro/7. Tools/04. Code verifier/README.md
 docs/0. Intro/7. Tools/05. Tests verifier/README.md
-docs/0. Intro/7. Tools/06. Docs verifier/README.md
-docs/0. Intro/7. Tools/07. Build config maker/README.md
-docs/0. Intro/7. Tools/08. Build config GUI/README.md
-docs/0. Intro/7. Tools/09. USB boot maker/README.md
+docs/0. Intro/7. Tools/06. Specs verifier/README.md
+docs/0. Intro/7. Tools/07. Docs verifier/README.md
+docs/0. Intro/7. Tools/08. Build config maker/README.md
+docs/0. Intro/7. Tools/09. Build config GUI/README.md
+docs/0. Intro/7. Tools/10. USB boot maker/README.md
 docs/0. Intro/7. Tools/README.md
 docs/0. Intro/8. Scripts/README.md
 docs/0. Intro/README.md
@@ -5894,6 +5895,11 @@ tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.h
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.cpp
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.h
 tools/qt/shared/utils/utils.pri
+tools/qt/specs_verifier/.gitignore
+tools/qt/specs_verifier/README.md
+tools/qt/specs_verifier/Screenshot.png
+tools/qt/specs_verifier/specs_verifier.pro
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/main.cpp
 tools/qt/tests_verifier/.gitignore
 tools/qt/tests_verifier/README.md
 tools/qt/tests_verifier/Screenshot.png
