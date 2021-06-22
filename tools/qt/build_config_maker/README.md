@@ -7,4 +7,4 @@ build_config_maker
 
 Build config maker is special editor tool for [include/buildconfig.h](../../../include/buildconfig.h) file with command line interface.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/07.%20Build%20config%20maker/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/08.%20Build%20config%20maker/README.md).

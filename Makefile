@@ -145,13 +145,15 @@ help:
 	@echo "    tool-docs_verifier      - Build docs_verifier tool"
 	@echo "    tool-image_builder      - Build image_builder tool"
 	@echo "    tool-qmake              - Build qmake tool"
+	@echo "    tool-specs_verifier     - Build specs_verifier tool"
 	@echo "    tool-tests_verifier     - Build tests_verifier tool"
 	@echo "    tool-usb_boot_maker     - Build usb_boot_maker tool"
 	@echo "    deployment              - Prepare binaries for deployment"
 	@echo "    config                  - Build and run build_config_gui tool in order to update build configuration"
 	@echo "    generate                - Build and run code_generator tool in order to update generated files"
-	@echo "    verify                  - Build and run code_verifier tool in order to verify the source code"
+	@echo "    verify-code             - Build and run code_verifier tool in order to verify the source code"
 	@echo "    verify-tests            - Build and run tests_verifier tool in order to verify test coverage"
+	@echo "    verify-specs            - Build and run specs_verifier tool in order to verify code with specifications"
 	@echo "    verify-docs             - Build and run docs_verifier tool in order to verify documents"
 	@echo "    test                    - Perform kernel testing"
 	@echo "    debug                   - Build the source code in debug mode"
@@ -191,6 +193,9 @@ tool-image_builder:
 tool-qmake:
 	bash -c "cd tools/qt/qmake/ && lupdate -noobsolete qmake.pro && lrelease qmake.pro && qmake qmake.pro && make -j`nproc`"
 
+tool-specs_verifier:
+	bash -c "cd tools/qt/specs_verifier/ && lupdate -noobsolete specs_verifier.pro && lrelease specs_verifier.pro && qmake specs_verifier.pro && make -j`nproc`"
+
 tool-tests_verifier:
 	bash -c "cd tools/qt/tests_verifier/ && lupdate -noobsolete tests_verifier.pro && lrelease tests_verifier.pro && qmake tests_verifier.pro && make -j`nproc`"
 
@@ -215,13 +220,18 @@ generate: tool-code_generator
 
 
 
-verify: tool-code_verifier
+verify-code: tool-code_verifier
 	tools/qt/code_verifier/build/code_verifier .
 
 
 
 verify-tests: tool-tests_verifier
 	tools/qt/tests_verifier/build/tests_verifier .
+
+
+
+verify-specs: tool-specs_verifier
+	tools/qt/specs_verifier/build/specs_verifier .
 
 
 

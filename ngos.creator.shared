@@ -492,7 +492,7 @@
                 <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run make</value>
                 <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Tool - Code Verifier</value>
                 <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-                <value type="QString" key="RunConfiguration.Arguments">verify</value>
+                <value type="QString" key="RunConfiguration.Arguments">verify-code</value>
                 <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
                 <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
                 <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

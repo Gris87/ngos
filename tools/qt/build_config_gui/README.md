@@ -7,4 +7,4 @@ build_config_gui
 
 Build config GUI is special editor tool for [include/buildconfig.h](../../../include/buildconfig.h) file.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/08.%20Build%20config%20GUI/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/09.%20Build%20config%20GUI/README.md).

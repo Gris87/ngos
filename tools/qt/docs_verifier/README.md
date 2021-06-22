@@ -7,4 +7,4 @@ docs_verifier
 
 Docs verifier tool is special tool for verifying that documents are valid.
 
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/06.%20Docs%20verifier/README.md).
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/07.%20Docs%20verifier/README.md).

@@ -50,6 +50,8 @@ tools/qt/qmake/src/
 tools/qt/shared/console/src/
 tools/qt/shared/elf/src/
 tools/qt/shared/utils/src/
+tools/qt/specs_verifier/build/gen/
+tools/qt/specs_verifier/src/
 tools/qt/tests_verifier/build/gen/
 tools/qt/tests_verifier/src/
 tools/qt/usb_boot_maker/build/gen/
