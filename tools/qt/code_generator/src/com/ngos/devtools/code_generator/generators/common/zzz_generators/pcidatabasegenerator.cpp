@@ -6,7 +6,6 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QProcess>
-#include <QTemporaryDir>
 #include <QTemporaryFile>
 
 #include <com/ngos/devtools/shared/console/console.h>

@@ -1,4 +1,5 @@
 QT -= gui                                                                                                                                                                                                # Colorize: green
+QT += network                                                                                                                                                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 CONFIG += c++20 console                                                                                                                                                                                  # Colorize: green
 CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green

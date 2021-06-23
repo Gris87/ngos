@@ -1,18 +1,148 @@
-#include "elfspecverifier.h"
-
-
-
-ElfSpecVerifier::ElfSpecVerifier()
-    : SpecVerifier()
-{
-    // Nothing
-}
-
-void ElfSpecVerifier::verify(const QString & /*path*/)
-{
-    // Nothing
-}
-
-
-
-ElfSpecVerifier elfSpecVerifierInstance;
+#include "elfspecverifier.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QEventLoop>
+#include <QFile>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QProcess>
+#include <QTemporaryDir>                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ELF_SPECIFICATION_URL "https://refspecs.linuxfoundation.org/elf/elf.pdf"                                                                                                                         // Colorize: green
+#define ELF_PDF               "elf.pdf"                                                                                                                         // Colorize: green
+#define ELF_TXT               "elf.txt"                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ElfSpecVerifier::ElfSpecVerifier()                                                                                                                                                                       // Colorize: green
+    : SpecVerifier()                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::verify(SpecVerifyThread *thread)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QTemporaryDir tempDir;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create temporary directory                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!tempDir.isValid())                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to create temporary directory for ELF specification");                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Download specification                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QNetworkRequest request;                                                                                                                                                                         // Colorize: green
+        request.setUrl(QUrl(ELF_SPECIFICATION_URL));                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QNetworkAccessManager  manager;                                                                                                                                                                  // Colorize: green
+        QNetworkReply         *reply = manager.get(request);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QEventLoop waitLoop;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QObject::connect(reply, SIGNAL(finished()),                                 &waitLoop, SLOT(quit()));                                                                                            // Colorize: green
+        QObject::connect(reply, SIGNAL(errorOccurred(QNetworkReply::NetworkError)), &waitLoop, SLOT(quit()));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        waitLoop.exec();                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (statusCode.toInt() != 200)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError(QString("Failed to get ELF specification from: %1").arg(ELF_SPECIFICATION_URL));                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete reply;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QByteArray content = reply->readAll();                                                                                                                                                           // Colorize: green
+        delete reply;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QFile file(tempDir.path() + "/" + ELF_PDF);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::WriteOnly))                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to create temporary file for ELF specification");                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        file.write(content);                                                                                                                                                                             // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Convert PDF to text                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QProcess process;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        process.setWorkingDirectory(tempDir.path());                                                                                                                                                     // Colorize: green
+        process.start("pdftotext", QStringList() << ELF_PDF << ELF_TXT);                                                                                                                             // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString specContent;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read specification text                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(tempDir.path() + "/" + ELF_TXT);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to open ELF specification");                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        specContent = QString::fromUtf8(file.readAll());                                                                                                                                                 // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    checkWithSpecification(thread, specContent);                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::checkWithSpecification(SpecVerifyThread *thread, const QString &specContent)                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    checkElfHeader(thread, specContent);                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::checkElfHeader(SpecVerifyThread *thread, const QString &specContent)                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ElfSpecVerifier elfSpecVerifierInstance;                                                                                                                                                                 // Colorize: green
