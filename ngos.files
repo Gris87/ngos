@@ -5900,6 +5900,12 @@ tools/qt/specs_verifier/README.md
 tools/qt/specs_verifier/Screenshot.png
 tools/qt/specs_verifier/specs_verifier.pro
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/main.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/specverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/specverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/threads/specverifythread.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/threads/specverifythread.h
 tools/qt/tests_verifier/.gitignore
 tools/qt/tests_verifier/README.md
 tools/qt/tests_verifier/Screenshot.png
