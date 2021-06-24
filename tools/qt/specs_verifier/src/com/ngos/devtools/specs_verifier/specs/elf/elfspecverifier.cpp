@@ -1,25 +1,36 @@
 #include "elfspecverifier.h"                                                                                                                                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <QEventLoop>
-#include <QFile>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QProcess>
+#include <QDebug>                                                                                                                                                                                          // Colorize: green
+#include <QEventLoop>                                                                                                                                                                                    // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QNetworkAccessManager>                                                                                                                                                                         // Colorize: green
+#include <QNetworkReply>                                                                                                                                                                                 // Colorize: green
+#include <QNetworkRequest>                                                                                                                                                                               // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
 #include <QTemporaryDir>                                                                                                                                                                                 // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define ELF_SPECIFICATION_URL "https://refspecs.linuxfoundation.org/elf/elf.pdf"                                                                                                                         // Colorize: green
-#define ELF_PDF               "elf.pdf"                                                                                                                         // Colorize: green
-#define ELF_TXT               "elf.txt"                                                                                                                         // Colorize: green
+#define ELF_SPECIFICATION_URL "https://www.uclibc.org/docs/elf-64-gen.pdf" // Version 1.5                                                                                                          // Colorize: green
+#define ELF_PDF               "elf.pdf"                                                                                                                                                                  // Colorize: green
+#define ELF_TXT               "elf.txt"                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                          // Colorize: green
+#define ELF_HEADER_H "src/os/shared/common/src/com/ngos/shared/common/elf/header.h"                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 ElfSpecVerifier::ElfSpecVerifier()                                                                                                                                                                       // Colorize: green
     : SpecVerifier()                                                                                                                                                                                     // Colorize: green
+    , mElfTypeToNgosTypeMap()                                                                                                                                                                            // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    // Nothing                                                                                                                                                                                           // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Addr",    "u64");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Off",     "u64");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Half",    "u16");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Word",    "u32");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Sword",   "i32");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Xword",   "u64");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("Elf64_Sxword",  "i64");                                                                                                                                                // Colorize: green
+    mElfTypeToNgosTypeMap.insert("unsigned char", "u8");                                                                                                                                                 // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 void ElfSpecVerifier::verify(SpecVerifyThread *thread)                                                                                                                                                   // Colorize: green
@@ -141,6 +152,230 @@ void ElfSpecVerifier::checkElfHeader(SpecVerifyThread *thread, const QString &sp
 {                                                                                                                                                                                                        // Colorize: green
     Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
     Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+
+
+
+    QString headerText = "typedef struct\n"
+                        "{\n"
+                        "unsigned char\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "Elf64_Word\n"
+                        "Elf64_Addr\n"
+                        "Elf64_Off\n"
+                        "Elf64_Off\n"
+                        "Elf64_Word\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "Elf64_Half\n"
+                        "} Elf64_Ehdr;\n"
+                        "Figure 2. ELF-64 Header\n"
+                        "\n"
+                        "e_ident[16];\n"
+                        "e_type;\n"
+                        "e_machine;\n"
+                        "e_version;\n"
+                        "e_entry;\n"
+                        "e_phoff;\n"
+                        "e_shoff;\n"
+                        "e_flags;\n"
+                        "e_ehsize;\n"
+                        "e_phentsize;\n"
+                        "e_phnum;\n"
+                        "e_shentsize;\n"
+                        "e_shnum;\n"
+                        "e_shstrndx;";
+
+
+
+    // Check that specification contains required text
+    {
+        if (!specContent.contains(headerText))
+        {
+            thread->addError("ELF header specification didn't match with the stored one");
+
+            return;
+        }
+    }
+
+
+
+    QStringList lines = headerText.split('\n');
+    qint64      i     = 0;
+
+
+
+    // Skip lines
+    {
+        while (i < lines.size() && lines.at(i) != "{")
+        {
+            ++i;
+        }
+
+        if (i >= lines.size())
+        {
+            thread->addError("Failed to parse ELF header specification");
+
+            return;
+        }
+
+        ++i;
+    }
+
+
+
+    QStringList fieldTypes;
+
+    // Get field types
+    {
+        while (i < lines.size() && lines.at(i) != "} Elf64_Ehdr;")
+        {
+            fieldTypes.append(lines.at(i));
+
+            ++i;
+        }
+
+        if (i >= lines.size())
+        {
+            thread->addError("Failed to parse ELF header specification");
+
+            return;
+        }
+
+        ++i;
+
+        if (
+            i >= lines.size() - 1
+            ||
+            lines.at(i) != "Figure 2. ELF-64 Header"
+            ||
+            lines.at(i + 1) != ""
+           )
+        {
+            thread->addError("Failed to parse ELF header specification");
+
+            return;
+        }
+
+        i += 2;
+    }
+
+
+
+    QStringList fieldNames;
+
+    // Get field names
+    {
+        while (i < lines.size())
+        {
+            fieldNames.append(lines.at(i));
+
+            ++i;
+        }
+    }
+
+
+
+    if (fieldTypes.size() != fieldNames.size())
+    {
+        thread->addError("Failed to parse ELF header specification");
+
+        return;
+    }
+
+
+
+    QHash<QString, QString> elfFieldNamesToNgosFieldNames; // ELF field name => NGOS field name
+
+    // Fill elfFieldNamesToNgosFieldNames
+    {
+        elfFieldNamesToNgosFieldNames.insert("e_ident[16]", "identification");
+        elfFieldNamesToNgosFieldNames.insert("e_type",      "type");
+        elfFieldNamesToNgosFieldNames.insert("e_machine",   "machine");
+        elfFieldNamesToNgosFieldNames.insert("e_version",   "version");
+        elfFieldNamesToNgosFieldNames.insert("e_entry",     "entryPoint");
+        elfFieldNamesToNgosFieldNames.insert("e_phoff",     "programHeaderTableOffset");
+        elfFieldNamesToNgosFieldNames.insert("e_shoff",     "sectionHeaderTableOffset");
+        elfFieldNamesToNgosFieldNames.insert("e_flags",     "flags");
+        elfFieldNamesToNgosFieldNames.insert("e_ehsize",    "headerSize");
+        elfFieldNamesToNgosFieldNames.insert("e_phentsize", "programHeaderTableEntrySize");
+        elfFieldNamesToNgosFieldNames.insert("e_phnum",     "programHeaderTableEntryCount");
+        elfFieldNamesToNgosFieldNames.insert("e_shentsize", "sectionHeaderTableEntrySize");
+        elfFieldNamesToNgosFieldNames.insert("e_shnum",     "sectionHeaderTableEntryCount");
+        elfFieldNamesToNgosFieldNames.insert("e_shstrndx",  "sectionHeaderTableNamesIndex");
+    }
+
+
+
+    QStringList headerLines;
+
+    // Prepare lines for comparing with source code
+    {
+        headerLines.append("struct ElfHeader");
+        headerLines.append("{");
+
+        for (i = 0; i < fieldTypes.size(); ++i)
+        {
+            QString type = mElfTypeToNgosTypeMap.value(fieldTypes.at(i), "");
+
+            if (type == "")
+            {
+                thread->addError(QString("Failed to convert ELF type: %1").arg(fieldTypes.at(i)));
+
+                return;
+            }
+
+
+
+            QString fieldName = fieldNames.at(i);
+
+            if (!fieldName.endsWith(';'))
+            {
+                thread->addError(QString("Unexpected ELF field name: %1").arg(fieldName));
+
+                return;
+            }
+
+            fieldName.remove(fieldName.length() - 1, 1);
+
+
+
+            QString name = elfFieldNamesToNgosFieldNames.value(fieldName, "");
+
+            if (name == "")
+            {
+                thread->addError(QString("Failed to convert ELF field name: %1").arg(fieldName));
+
+                return;
+            }
+
+
+
+            headerLines.append(QString("    %1 %2;").arg(type, -23, QChar(' ')).arg(name));
+        }
+
+        headerLines.append("};");
+    }
+
+
+
+    // Replace well known types for fields
+    {
+        headerLines.replaceInStrings("    u8                      identification;", "    ElfHeaderIdentification identification;");
+        headerLines.replaceInStrings("    u16                     type;",           "    ElfType                 type;");
+        headerLines.replaceInStrings("    u16                     machine;",        "    ElfMachine              machine;");
+        headerLines.replaceInStrings("    u32                     version;",        "    ElfVersion              version;");
+    }
+
+
+
+    if (!checkLinesInFile(headerLines, thread->getPath() + "/" + ELF_HEADER_H))
+    {
+        thread->addError("Failed to check ELF header with specifications");
+    }
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
