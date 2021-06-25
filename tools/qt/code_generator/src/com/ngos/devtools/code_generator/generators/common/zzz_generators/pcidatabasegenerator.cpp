@@ -208,12 +208,12 @@ bool PciDatabaseGenerator::parseDatabase(const QStringList &lines, PciBaseClasse
 
 
             line.remove(0, 6);
-            line.replace(QChar(0x2010), QChar('-')); // Replace some strange '-' character
-            line.replace(QChar(0x2013), QChar('-')); // Replace some strange '-' character
-            line.replace(QChar(0x00AE), QChar('*')); // Replace some strange '*' character
-            line.replace(QChar(0x00D7), QChar('x')); // Replace some strange 'x' character
-            line.replace(QChar(0x00B2), "^2");       // Replace '^2' character
-            line.replace(QChar(0x2076), "^6");       // Replace '^6' character
+            line.replace(QChar(0x2010), QChar('-')); // Replace hyphen character
+            line.replace(QChar(0x2013), QChar('-')); // Replace en dash character
+            line.replace(QChar(0x00AE), "(R)");      // Replace registered sign character
+            line.replace(QChar(0x00D7), QChar('x')); // Replace multiplication sign 'x' character
+            line.replace(QChar(0x00B2), "^2");       // Replace superscript two character
+            line.replace(QChar(0x2076), "^6");       // Replace superscript six character
             line.replace("\"", "\\\"");              // Ignore CppSingleCharVerifier
             line.replace(",", ", ");                 // Ignore CppSingleCharVerifier
             line.replace(":", ": ");                 // Ignore CppSingleCharVerifier

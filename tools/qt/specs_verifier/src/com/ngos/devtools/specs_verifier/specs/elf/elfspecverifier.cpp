@@ -1,6 +1,6 @@
 #include "elfspecverifier.h"                                                                                                                                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#include <QDebug>                                                                                                                                                                                          // Colorize: green
+#include <QDebug>                                                                                                                                                                                        // Colorize: green
 #include <QEventLoop>                                                                                                                                                                                    // Colorize: green
 #include <QFile>                                                                                                                                                                                         // Colorize: green
 #include <QNetworkAccessManager>                                                                                                                                                                         // Colorize: green
@@ -11,11 +11,12 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define ELF_SPECIFICATION_URL "https://www.uclibc.org/docs/elf-64-gen.pdf" // Version 1.5                                                                                                          // Colorize: green
+#define ELF_SPECIFICATION_URL "https://www.uclibc.org/docs/elf-64-gen.pdf" // Version 1.5                                                                                                                // Colorize: green
 #define ELF_PDF               "elf.pdf"                                                                                                                                                                  // Colorize: green
 #define ELF_TXT               "elf.txt"                                                                                                                                                                  // Colorize: green
-                                                                                                                                                                                                          // Colorize: green
-#define ELF_HEADER_H "src/os/shared/common/src/com/ngos/shared/common/elf/header.h"                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ELF_HEADER_H                "src/os/shared/common/src/com/ngos/shared/common/elf/header.h"                                                                                                                      // Colorize: green
+#define ELF_HEADER_IDENTIFICATION_H "src/os/shared/common/src/com/ngos/shared/common/elf/headeridentification.h"                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -35,7 +36,7 @@ ElfSpecVerifier::ElfSpecVerifier()                                              
                                                                                                                                                                                                          // Colorize: green
 void ElfSpecVerifier::verify(SpecVerifyThread *thread)                                                                                                                                                   // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
-    Q_ASSERT(thread != nullptr);                                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(thread != nullptr);                                                                                                                                                                         // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -90,7 +91,7 @@ void ElfSpecVerifier::verify(SpecVerifyThread *thread)                          
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-        QFile file(tempDir.path() + "/" + ELF_PDF);                                                                                                                                                         // Colorize: green
+        QFile file(tempDir.path() + "/" + ELF_PDF);                                                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         if (!file.open(QIODevice::WriteOnly))                                                                                                                                                            // Colorize: green
         {                                                                                                                                                                                                // Colorize: green
@@ -110,8 +111,8 @@ void ElfSpecVerifier::verify(SpecVerifyThread *thread)                          
         QProcess process;                                                                                                                                                                                // Colorize: green
                                                                                                                                                                                                          // Colorize: green
         process.setWorkingDirectory(tempDir.path());                                                                                                                                                     // Colorize: green
-        process.start("pdftotext", QStringList() << ELF_PDF << ELF_TXT);                                                                                                                             // Colorize: green
-        process.waitForFinished(-1);                                                                                                                                                                    // Colorize: green
+        process.start("pdftotext", QStringList() << ELF_PDF << ELF_TXT);                                                                                                                                 // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                     // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -135,6 +136,16 @@ void ElfSpecVerifier::verify(SpecVerifyThread *thread)                          
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+    // Replace some unicode characters                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        specContent.replace(QChar(0x201C), QChar('\"')); // Replace left double quotation mark                                                                                                           // Colorize: green
+        specContent.replace(QChar(0x201D), QChar('\"')); // Replace right double quotation mark                                                                                                          // Colorize: green
+        specContent.replace(QChar(0x2018), QChar('\'')); // Replace left single quotation mark                                                                                                           // Colorize: green
+        specContent.replace(QChar(0x2019), QChar('\'')); // Replace right double quotation mark                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
     checkWithSpecification(thread, specContent);                                                                                                                                                         // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -145,237 +156,515 @@ void ElfSpecVerifier::checkWithSpecification(SpecVerifyThread *thread, const QSt
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+    QString versionText;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init versionText                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        versionText = "ELF-64 Object File Format\n"                                                                                                                                                      // Colorize: green
+                    "Version 1.5 Draft 2\n"                                                                                                                                                              // Colorize: green
+                    "May 27, 1998";                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(versionText))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF specification version didn't match with the stored one");                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
     checkElfHeader(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfHeaderIdentification(thread, specContent);                                                                                                                                                                 // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 void ElfSpecVerifier::checkElfHeader(SpecVerifyThread *thread, const QString &specContent)                                                                                                               // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
     Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
-
-
-
-    QString headerText = "typedef struct\n"
-                        "{\n"
-                        "unsigned char\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "Elf64_Word\n"
-                        "Elf64_Addr\n"
-                        "Elf64_Off\n"
-                        "Elf64_Off\n"
-                        "Elf64_Word\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "Elf64_Half\n"
-                        "} Elf64_Ehdr;\n"
-                        "Figure 2. ELF-64 Header\n"
-                        "\n"
-                        "e_ident[16];\n"
-                        "e_type;\n"
-                        "e_machine;\n"
-                        "e_version;\n"
-                        "e_entry;\n"
-                        "e_phoff;\n"
-                        "e_shoff;\n"
-                        "e_flags;\n"
-                        "e_ehsize;\n"
-                        "e_phentsize;\n"
-                        "e_phnum;\n"
-                        "e_shentsize;\n"
-                        "e_shnum;\n"
-                        "e_shstrndx;";
-
-
-
-    // Check that specification contains required text
-    {
-        if (!specContent.contains(headerText))
-        {
-            thread->addError("ELF header specification didn't match with the stored one");
-
-            return;
-        }
-    }
-
-
-
-    QStringList lines = headerText.split('\n');
-    qint64      i     = 0;
-
-
-
-    // Skip lines
-    {
-        while (i < lines.size() && lines.at(i) != "{")
-        {
-            ++i;
-        }
-
-        if (i >= lines.size())
-        {
-            thread->addError("Failed to parse ELF header specification");
-
-            return;
-        }
-
-        ++i;
-    }
-
-
-
-    QStringList fieldTypes;
-
-    // Get field types
-    {
-        while (i < lines.size() && lines.at(i) != "} Elf64_Ehdr;")
-        {
-            fieldTypes.append(lines.at(i));
-
-            ++i;
-        }
-
-        if (i >= lines.size())
-        {
-            thread->addError("Failed to parse ELF header specification");
-
-            return;
-        }
-
-        ++i;
-
-        if (
-            i >= lines.size() - 1
-            ||
-            lines.at(i) != "Figure 2. ELF-64 Header"
-            ||
-            lines.at(i + 1) != ""
-           )
-        {
-            thread->addError("Failed to parse ELF header specification");
-
-            return;
-        }
-
-        i += 2;
-    }
-
-
-
-    QStringList fieldNames;
-
-    // Get field names
-    {
-        while (i < lines.size())
-        {
-            fieldNames.append(lines.at(i));
-
-            ++i;
-        }
-    }
-
-
-
-    if (fieldTypes.size() != fieldNames.size())
-    {
-        thread->addError("Failed to parse ELF header specification");
-
-        return;
-    }
-
-
-
-    QHash<QString, QString> elfFieldNamesToNgosFieldNames; // ELF field name => NGOS field name
-
-    // Fill elfFieldNamesToNgosFieldNames
-    {
-        elfFieldNamesToNgosFieldNames.insert("e_ident[16]", "identification");
-        elfFieldNamesToNgosFieldNames.insert("e_type",      "type");
-        elfFieldNamesToNgosFieldNames.insert("e_machine",   "machine");
-        elfFieldNamesToNgosFieldNames.insert("e_version",   "version");
-        elfFieldNamesToNgosFieldNames.insert("e_entry",     "entryPoint");
-        elfFieldNamesToNgosFieldNames.insert("e_phoff",     "programHeaderTableOffset");
-        elfFieldNamesToNgosFieldNames.insert("e_shoff",     "sectionHeaderTableOffset");
-        elfFieldNamesToNgosFieldNames.insert("e_flags",     "flags");
-        elfFieldNamesToNgosFieldNames.insert("e_ehsize",    "headerSize");
-        elfFieldNamesToNgosFieldNames.insert("e_phentsize", "programHeaderTableEntrySize");
-        elfFieldNamesToNgosFieldNames.insert("e_phnum",     "programHeaderTableEntryCount");
-        elfFieldNamesToNgosFieldNames.insert("e_shentsize", "sectionHeaderTableEntrySize");
-        elfFieldNamesToNgosFieldNames.insert("e_shnum",     "sectionHeaderTableEntryCount");
-        elfFieldNamesToNgosFieldNames.insert("e_shstrndx",  "sectionHeaderTableNamesIndex");
-    }
-
-
-
-    QStringList headerLines;
-
-    // Prepare lines for comparing with source code
-    {
-        headerLines.append("struct ElfHeader");
-        headerLines.append("{");
-
-        for (i = 0; i < fieldTypes.size(); ++i)
-        {
-            QString type = mElfTypeToNgosTypeMap.value(fieldTypes.at(i), "");
-
-            if (type == "")
-            {
-                thread->addError(QString("Failed to convert ELF type: %1").arg(fieldTypes.at(i)));
-
-                return;
-            }
-
-
-
-            QString fieldName = fieldNames.at(i);
-
-            if (!fieldName.endsWith(';'))
-            {
-                thread->addError(QString("Unexpected ELF field name: %1").arg(fieldName));
-
-                return;
-            }
-
-            fieldName.remove(fieldName.length() - 1, 1);
-
-
-
-            QString name = elfFieldNamesToNgosFieldNames.value(fieldName, "");
-
-            if (name == "")
-            {
-                thread->addError(QString("Failed to convert ELF field name: %1").arg(fieldName));
-
-                return;
-            }
-
-
-
-            headerLines.append(QString("    %1 %2;").arg(type, -23, QChar(' ')).arg(name));
-        }
-
-        headerLines.append("};");
-    }
-
-
-
-    // Replace well known types for fields
-    {
-        headerLines.replaceInStrings("    u8                      identification;", "    ElfHeaderIdentification identification;");
-        headerLines.replaceInStrings("    u16                     type;",           "    ElfType                 type;");
-        headerLines.replaceInStrings("    u16                     machine;",        "    ElfMachine              machine;");
-        headerLines.replaceInStrings("    u32                     version;",        "    ElfVersion              version;");
-    }
-
-
-
-    if (!checkLinesInFile(headerLines, thread->getPath() + "/" + ELF_HEADER_H))
-    {
-        thread->addError("Failed to check ELF header with specifications");
-    }
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString headerText;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init headerText                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        headerText = "typedef struct\n"                                                                                                                                                                  // Colorize: green
+                    "{\n"                                                                                                                                                                                // Colorize: green
+                    "unsigned char\n"                                                                                                                                                                    // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Word\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Addr\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Off\n"                                                                                                                                                                        // Colorize: green
+                    "Elf64_Off\n"                                                                                                                                                                        // Colorize: green
+                    "Elf64_Word\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "Elf64_Half\n"                                                                                                                                                                       // Colorize: green
+                    "} Elf64_Ehdr;\n"                                                                                                                                                                    // Colorize: green
+                    "Figure 2. ELF-64 Header\n"                                                                                                                                                          // Colorize: green
+                    "\n"                                                                                                                                                                                 // Colorize: green
+                    "e_ident[16];\n"                                                                                                                                                                     // Colorize: green
+                    "e_type;\n"                                                                                                                                                                          // Colorize: green
+                    "e_machine;\n"                                                                                                                                                                       // Colorize: green
+                    "e_version;\n"                                                                                                                                                                       // Colorize: green
+                    "e_entry;\n"                                                                                                                                                                         // Colorize: green
+                    "e_phoff;\n"                                                                                                                                                                         // Colorize: green
+                    "e_shoff;\n"                                                                                                                                                                         // Colorize: green
+                    "e_flags;\n"                                                                                                                                                                         // Colorize: green
+                    "e_ehsize;\n"                                                                                                                                                                        // Colorize: green
+                    "e_phentsize;\n"                                                                                                                                                                     // Colorize: green
+                    "e_phnum;\n"                                                                                                                                                                         // Colorize: green
+                    "e_shentsize;\n"                                                                                                                                                                     // Colorize: green
+                    "e_shnum;\n"                                                                                                                                                                         // Colorize: green
+                    "e_shstrndx;";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(headerText))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF header specification didn't match with the stored one");                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines = headerText.split('\n');                                                                                                                                                          // Colorize: green
+    qint64      i     = 0;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip lines                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (lines.at(1) != "{")                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to parse ELF header specification");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        i = 2;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList fieldTypes;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get field types                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (i < lines.size() && lines.at(i) != "} Elf64_Ehdr;")                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            fieldTypes.append(lines.at(i));                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++i;                                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (i >= lines.size())                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to parse ELF header specification");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++i;                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            i >= lines.size() - 1                                                                                                                                                                        // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(i) != "Figure 2. ELF-64 Header"                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(i + 1) != ""                                                                                                                                                                        // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to parse ELF header specification");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        i += 2;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList fieldNames;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get field names                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (i < lines.size())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            fieldNames.append(lines.at(i));                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++i;                                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (fieldTypes.size() != fieldNames.size())                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to parse ELF header specification");                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QHash<QString, QString> elfFieldNamesToNgosFieldNames; // ELF field name => NGOS field name                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Fill elfFieldNamesToNgosFieldNames                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_ident[16]", "identification");                                                                                                                           // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_type",      "type");                                                                                                                                     // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_machine",   "machine");                                                                                                                                  // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_version",   "version");                                                                                                                                  // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_entry",     "entryPoint");                                                                                                                               // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_phoff",     "programHeaderTableOffset");                                                                                                                 // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_shoff",     "sectionHeaderTableOffset");                                                                                                                 // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_flags",     "flags");                                                                                                                                    // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_ehsize",    "headerSize");                                                                                                                               // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_phentsize", "programHeaderTableEntrySize");                                                                                                              // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_phnum",     "programHeaderTableEntryCount");                                                                                                             // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_shentsize", "sectionHeaderTableEntrySize");                                                                                                              // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_shnum",     "sectionHeaderTableEntryCount");                                                                                                             // Colorize: green
+        elfFieldNamesToNgosFieldNames.insert("e_shstrndx",  "sectionHeaderTableNamesIndex");                                                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList headerLines;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Prepare lines for comparing with source code                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        headerLines.append("struct ElfHeader");                                                                                                                                                          // Colorize: green
+        headerLines.append("{");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (i = 0; i < fieldTypes.size(); ++i)                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString type = mElfTypeToNgosTypeMap.value(fieldTypes.at(i), "");                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (type == "")                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                thread->addError(QString("Failed to convert ELF type: %1").arg(fieldTypes.at(i)));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString fieldName = fieldNames.at(i);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!fieldName.endsWith(';'))                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                thread->addError(QString("Unexpected ELF field name: %1").arg(fieldName));                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            fieldName.remove(fieldName.length() - 1, 1);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString name = elfFieldNamesToNgosFieldNames.value(fieldName, "");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (name == "")                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                thread->addError(QString("Failed to convert ELF field name: %1").arg(fieldName));                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            headerLines.append(QString("    %1 %2;").arg(type, -23, QChar(' ')).arg(name));                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        headerLines.append("};");                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Replace well known types for fields                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        headerLines.replaceInStrings("    u8                      identification;", "    ElfHeaderIdentification identification;");                                                                      // Colorize: green
+        headerLines.replaceInStrings("    u16                     type;",           "    ElfType                 type;");                                                                                // Colorize: green
+        headerLines.replaceInStrings("    u16                     machine;",        "    ElfMachine              machine;");                                                                             // Colorize: green
+        headerLines.replaceInStrings("    u32                     version;",        "    ElfVersion              version;");                                                                             // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFile(headerLines, thread->getPath() + "/" + ELF_HEADER_H))                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF header with specification");                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::checkElfHeaderIdentification(SpecVerifyThread *thread, const QString &specContent)                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString identificationText;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init identificationText                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        identificationText = "e_ident identify the file as an ELF object file, and provide information\n"                                                                                                // Colorize: green
+                            "about the data representation of the object file structures. The bytes of this\n"                                                                                           // Colorize: green
+                            "array that have defined meanings are detailed below. The remaining bytes\n"                                                                                                 // Colorize: green
+                            "are reserved for future use, and should be set to zero. Each byte of the\n"                                                                                                 // Colorize: green
+                            "array is indexed symbolically using the names in the Table 2.\n"                                                                                                            // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Table 2. ELF Identification, e_ident\n"                                                                                                                                     // Colorize: green
+                            "Name\n"                                                                                                                                                                     // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Value\n"                                                                                                                                                                    // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Purpose\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_MAG0\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "0\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "File identification\n"                                                                                                                                                      // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_MAG1\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "1\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_MAG2\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "2\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_MAG3\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "3\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_CLASS\n"                                                                                                                                                                 // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "4\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "File class\n"                                                                                                                                                               // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_DATA\n"                                                                                                                                                                  // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "5\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Data encoding\n"                                                                                                                                                            // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_VERSION\n"                                                                                                                                                               // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "6\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "File version\n"                                                                                                                                                             // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_OSABI\n"                                                                                                                                                                 // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "7\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "OS/ABI identification\n"                                                                                                                                                    // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_ABIVERSION\n"                                                                                                                                                            // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "8\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "ABI version\n"                                                                                                                                                              // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_PAD\n"                                                                                                                                                                   // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "9\n"                                                                                                                                                                        // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Start of padding bytes\n"                                                                                                                                                   // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "EI_NIDENT\n"                                                                                                                                                                // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "16\n"                                                                                                                                                                       // Colorize: green
+                            "\n"                                                                                                                                                                         // Colorize: green
+                            "Size of e_ident[]";                                                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(identificationText))                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF header identification specification didn't match with the stored one");                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines = identificationText.split('\n');                                                                                                                                                          // Colorize: green
+    qint64      i     = 0;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip lines                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (lines.at(11) != "Purpose" || lines.at(12) != "")                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("Failed to parse ELF header identification specification");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        i = 13;                                                                                                                                                                                           // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList fields;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get fields                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (i < lines.size())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            fields.append(line);                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.startsWith("EI_MAG") && line != "EI_MAG0")                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                i += 4;                                                                                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                i += 6;                                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList identificationLines;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Prepare lines for comparing with source code                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        identificationLines.append("struct ElfHeaderIdentification");                                                                                                                                    // Colorize: green
+        identificationLines.append("{");                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            fields.at(0) == "EI_MAG0"                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            fields.at(1) == "EI_MAG1"                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            fields.at(2) == "EI_MAG2"                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            fields.at(3) == "EI_MAG3"                                                                                                                                                                    // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            identificationLines.append("    u32            signature;");                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 4; i < fields.size(); ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString field = fields.at(i);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_CLASS")                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    ElfClass       fileClass;");                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_DATA")                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    ElfData        fileData;");                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_VERSION")                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    ElfFileVersion version;");                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_OSABI")                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    ElfOsAbi       osAbi;");                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_ABIVERSION")                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    u8             abiVersion;");                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field == "EI_PAD")                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                identificationLines.append("    u8             __pad[7];");                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (field != "EI_NIDENT")                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                thread->addError(QString("Unknown field found in ELF header identification specification: %1").arg(field));                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        identificationLines.append("} __attribute__((packed));");                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList fileLines = readLinesFromFile(thread->getPath() + "/" + ELF_HEADER_IDENTIFICATION_H);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFileLines(identificationLines, fileLines))                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF header identification with specification");                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString magicNumberText;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init magicNumberText                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        magicNumberText = "e_ident[EI_MAG0] through e_ident[EI_MAG3] contain a \"magic number,\"\n"                                                                                                        // Colorize: green
+                            "identifying the file as an ELF object file. They contain the characters '\\x7f',\n"                                                                                          // Colorize: green
+                            "'E', 'L', and 'F', respectively.";                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(magicNumberText))                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF header magic number specification didn't match with the stored one");                                                                                                  // Colorize: green
+            thread->addError(specContent);                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList magicNumberLines;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    magicNumberLines.append("#define ELF_SIGNATURE 0x464C457F // 0x7F + ELF");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFileLines(magicNumberLines, fileLines))                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF header magic number with specification");                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

@@ -21,8 +21,8 @@ struct ElfHeaderIdentification
     ElfData        fileData;
     ElfFileVersion version;
     ElfOsAbi       osAbi;
-
-    u64            __pad;
+    u8             abiVersion;
+    u8             __pad[7];
 } __attribute__((packed));
 
 

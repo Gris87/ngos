@@ -25,6 +25,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_LVVV(("header->identification.fileData      = %s",        enumToFullString(header->identification.fileData)));
         EARLY_LVVV(("header->identification.version       = %s",        enumToFullString(header->identification.version)));
         EARLY_LVVV(("header->identification.osAbi         = %s",        enumToFullString(header->identification.osAbi)));
+        EARLY_LVVV(("header->identification.abiVersion    = %u",        header->identification.abiVersion));
         EARLY_LVVV(("header->type                         = %s",        enumToFullString(header->type)));
         EARLY_LVVV(("header->machine                      = %s",        enumToFullString(header->machine)));
         EARLY_LVVV(("header->version                      = %s",        enumToFullString(header->version)));
@@ -46,6 +47,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_TEST_ASSERT(header->identification.fileData      == ElfData::LEAST_SIGNIFICANT_BYTE,          0);
         EARLY_TEST_ASSERT(header->identification.version       == ElfFileVersion::CURRENT,                  0);
         EARLY_TEST_ASSERT(header->identification.osAbi         == ElfOsAbi::SYSTEM_V,                       0);
+        EARLY_TEST_ASSERT(header->identification.abiVersion    == 0,                                        0);
         EARLY_TEST_ASSERT(header->type                         == ElfType::EXECUTABLE,                      0);
         EARLY_TEST_ASSERT(header->machine                      == ElfMachine::MACHINE_X86_64,               0);
         EARLY_TEST_ASSERT(header->version                      == ElfVersion::CURRENT,                      0);
