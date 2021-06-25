@@ -17,6 +17,11 @@
                                                                                                                                                                                                          // Colorize: green
 #define ELF_HEADER_H                "src/os/shared/common/src/com/ngos/shared/common/elf/header.h"                                                                                                                      // Colorize: green
 #define ELF_HEADER_IDENTIFICATION_H "src/os/shared/common/src/com/ngos/shared/common/elf/headeridentification.h"                                                                                                                      // Colorize: green
+#define ELF_CLASS_H                 "src/os/shared/common/src/com/ngos/shared/common/elf/class.h"                                                                                                                      // Colorize: green
+#define ELF_DATA_H                  "src/os/shared/common/src/com/ngos/shared/common/elf/data.h"                                                                                                                      // Colorize: green
+#define ELF_FILE_VERSION_H          "src/os/shared/common/src/com/ngos/shared/common/elf/fileversion.h"                                                                                                                      // Colorize: green
+#define ELF_VERSION_H               "src/os/shared/common/src/com/ngos/shared/common/elf/version.h"                                                                                                                      // Colorize: green
+#define ELF_OS_ABI_H                "src/os/shared/common/src/com/ngos/shared/common/elf/osabi.h"                                                                                                                      // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -138,10 +143,10 @@ void ElfSpecVerifier::verify(SpecVerifyThread *thread)                          
                                                                                                                                                                                                          // Colorize: green
     // Replace some unicode characters                                                                                                                                                                   // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        specContent.replace(QChar(0x201C), QChar('\"')); // Replace left double quotation mark                                                                                                           // Colorize: green
-        specContent.replace(QChar(0x201D), QChar('\"')); // Replace right double quotation mark                                                                                                          // Colorize: green
         specContent.replace(QChar(0x2018), QChar('\'')); // Replace left single quotation mark                                                                                                           // Colorize: green
         specContent.replace(QChar(0x2019), QChar('\'')); // Replace right double quotation mark                                                                                                          // Colorize: green
+        specContent.replace(QChar(0x201C), QChar('\"')); // Replace left double quotation mark                                                                                                           // Colorize: green
+        specContent.replace(QChar(0x201D), QChar('\"')); // Replace right double quotation mark                                                                                                          // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -181,6 +186,11 @@ void ElfSpecVerifier::checkWithSpecification(SpecVerifyThread *thread, const QSt
                                                                                                                                                                                                          // Colorize: green
     checkElfHeader(thread, specContent);                                                                                                                                                                 // Colorize: green
     checkElfHeaderIdentification(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfClass(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfData(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfFileVersion(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfVersion(thread, specContent);                                                                                                                                                                 // Colorize: green
+    checkElfOsAbi(thread, specContent);                                                                                                                                                                 // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 void ElfSpecVerifier::checkElfHeader(SpecVerifyThread *thread, const QString &specContent)                                                                                                               // Colorize: green
@@ -659,13 +669,254 @@ void ElfSpecVerifier::checkElfHeaderIdentification(SpecVerifyThread *thread, con
                                                                                                                                                                                                          // Colorize: green
     QStringList magicNumberLines;                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    magicNumberLines.append("#define ELF_SIGNATURE 0x464C457F // 0x7F + ELF");                                                                                                                           // Colorize: green
-                                                                                                                                                                                                         // Colorize: green
-    if (!checkLinesInFileLines(magicNumberLines, fileLines))                                                                                                                                          // Colorize: green
+    // Prepare lines for comparing with source code                                                                                                                                                                          // Colorize: green
     {                                                                                                                                                                                                    // Colorize: green
-        thread->addError("Failed to check ELF header magic number with specification");                                                                                                               // Colorize: green
+        magicNumberLines.append("#define ELF_SIGNATURE 0x464C457F // 0x7F + ELF");                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFileLines(magicNumberLines, fileLines))                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF header magic number with specification");                                                                                                                  // Colorize: green
     }                                                                                                                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::checkElfClass(SpecVerifyThread *thread, const QString &specContent)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+
+
+    QString classText;
+
+    // Init classText
+    {
+        classText = "Table 3. Object File Classes, e_ident[EI_CLASS]\n"
+                    "Name\n"
+                    "\n"
+                    "Value\n"
+                    "\n"
+                    "Meaning\n"
+                    "\n"
+                    "ELFCLASS32\n"
+                    "\n"
+                    "1\n"
+                    "\n"
+                    "32-bit objects\n"
+                    "\n"
+                    "ELFCLASS64\n"
+                    "\n"
+                    "2\n"
+                    "\n"
+                    "64-bit objects";
+    }
+
+
+
+    // Check that specification contains required text
+    {
+        if (!specContent.contains(classText))
+        {
+            thread->addError("ELF class specification didn't match with the stored one");
+
+            return;
+        }
+    }
+}
+
+void ElfSpecVerifier::checkElfData(SpecVerifyThread *thread, const QString &specContent)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+
+
+    QString dataText;
+
+    // Init dataText
+    {
+        dataText = "Table 4. Data Encodings, e_ident[EI_DATA]\n"
+                    "Name\n"
+                    "\n"
+                    "Value\n"
+                    "\n"
+                    "Meaning\n"
+                    "\n"
+                    "ELFDATA2LSB\n"
+                    "\n"
+                    "1\n"
+                    "\n"
+                    "Object file data structures are littleendian\n"
+                    "\n"
+                    "ELFDATA2MSB\n"
+                    "\n"
+                    "2\n"
+                    "\n"
+                    "Object file data structures are bigendian";
+    }
+
+
+
+    // Check that specification contains required text
+    {
+        if (!specContent.contains(dataText))
+        {
+            thread->addError("ELF data specification didn't match with the stored one");
+
+            return;
+        }
+    }
+}
+
+void ElfSpecVerifier::checkElfFileVersion(SpecVerifyThread *thread, const QString &specContent)                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString versionText;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init versionText                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        versionText = "e_ident[EI_VERSION] identifies the version of the object file format.\n"                                                                                                          // Colorize: green
+                        "Currently, this field has the value EV_CURRENT, which is defined with the\n"                                                                                                    // Colorize: green
+                        "value 1.";                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(versionText))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF file version specification didn't match with the stored one");                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList versionLines;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Prepare lines for comparing with source code                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        versionLines.append("enum class ElfFileVersion: u8");                                                                                                                                            // Colorize: green
+        versionLines.append("{");                                                                                                                                                                        // Colorize: green
+        versionLines.append("    NONE    = 0,");                                                                                                                                                         // Colorize: green
+        versionLines.append("    CURRENT = 1");                                                                                                                                                          // Colorize: green
+        versionLines.append("};");                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFile(versionLines, thread->getPath() + "/" + ELF_FILE_VERSION_H))                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF file version with specification");                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ElfSpecVerifier::checkElfVersion(SpecVerifyThread *thread, const QString &specContent)                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Q_ASSERT(thread      != nullptr);                                                                                                                                                                    // Colorize: green
+    Q_ASSERT(specContent != "");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString versionText;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Init versionText                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        versionText = "e_version identifies the version of the object file format. Currently, this\n"                                                                                                    // Colorize: green
+                        "field has the value EV_CURRENT, which is defined with the value 1.";                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that specification contains required text                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!specContent.contains(versionText))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            thread->addError("ELF version specification didn't match with the stored one");                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList versionLines;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Prepare lines for comparing with source code                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        versionLines.append("enum class ElfVersion: u32");                                                                                                                                                // Colorize: green
+        versionLines.append("{");                                                                                                                                                                        // Colorize: green
+        versionLines.append("    NONE    = 0,");                                                                                                                                                         // Colorize: green
+        versionLines.append("    CURRENT = 1");                                                                                                                                                          // Colorize: green
+        versionLines.append("};");                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!checkLinesInFile(versionLines, thread->getPath() + "/" + ELF_VERSION_H))                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        thread->addError("Failed to check ELF version with specification");                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+
+void ElfSpecVerifier::checkElfOsAbi(SpecVerifyThread *thread, const QString &specContent)
+{
+    Q_ASSERT(thread      != nullptr);
+    Q_ASSERT(specContent != "");
+
+
+
+    QString osAbiText;
+
+    // Init osAbiText
+    {
+        osAbiText = "Table 5. Operating System and ABI Identifiers, e_ident[EI_OSABI]\n"
+                    "Name\n"
+                    "\n"
+                    "Value\n"
+                    "\n"
+                    "Meaning\n"
+                    "\n"
+                    "ELFOSABI_SYSV\n"
+                    "\n"
+                    "0\n"
+                    "\n"
+                    "System V ABI\n"
+                    "\n"
+                    "ELFOSABI_HPUX\n"
+                    "\n"
+                    "1\n"
+                    "\n"
+                    "HP-UX operating system\n"
+                    "\n"
+                    "ELFOSABI_STANDALONE\n"
+                    "\n"
+                    "255\n"
+                    "\n"
+                    "Standalone (embedded)\n"
+                    "application";
+    }
+
+
+
+    // Check that specification contains required text
+    {
+        if (!specContent.contains(osAbiText))
+        {
+            thread->addError("ELF OS ABI specification didn't match with the stored one");
+
+            return;
+        }
+    }
+}
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
