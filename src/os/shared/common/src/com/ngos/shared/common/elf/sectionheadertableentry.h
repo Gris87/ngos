@@ -13,7 +13,7 @@ struct ElfSectionHeaderTableEntry
     u32             nameOffset;
     ElfSectionType  type;
     ElfSectionFlags flags;
-    address_t       virtualAddress;
+    u64             virtualAddress;
     u64             offset;
     u64             size;
     u32             link;
