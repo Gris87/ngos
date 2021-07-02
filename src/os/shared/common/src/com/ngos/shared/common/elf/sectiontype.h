@@ -8,10 +8,6 @@
 
 
 
-#define ELF_SECTION_TYPE_OS_LOW 0x60000000
-
-
-
 enum class ElfSectionType: u32
 {
     NONE           = 0,
