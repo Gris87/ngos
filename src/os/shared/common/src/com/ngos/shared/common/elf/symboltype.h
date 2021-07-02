@@ -8,13 +8,6 @@
 
 
 
-#define ELF_SYMBOL_TYPE_OS_LOW         10
-#define ELF_SYMBOL_TYPE_OS_HIGH        12
-#define ELF_SYMBOL_TYPE_PROCESSOR_LOW  13
-#define ELF_SYMBOL_TYPE_PROCESSOR_HIGH 15
-
-
-
 enum class ElfSymbolType: u8
 {
     NOTYPE  = 0,

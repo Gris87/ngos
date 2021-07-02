@@ -8,13 +8,6 @@
 
 
 
-#define ELF_SYMBOL_BIND_OS_LOW         10
-#define ELF_SYMBOL_BIND_OS_HIGH        12
-#define ELF_SYMBOL_BIND_PROCESSOR_LOW  13
-#define ELF_SYMBOL_BIND_PROCESSOR_HIGH 15
-
-
-
 enum class ElfSymbolBind: u8
 {
     LOCAL  = 0,
