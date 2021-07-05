@@ -508,7 +508,7 @@ inline NgosStatus lzmaSetStateLiteral(LzmaState *state)
         *state = (LzmaState)((u8)(*state) - 6);
     }
 
-    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
+    // EARLY_LVVV(("*state = %s", enumToFullString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -526,7 +526,7 @@ inline NgosStatus lzmaSetStateMatch(LzmaState *state)
 
     *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_MATCH : LzmaState::NONLITERAL_MATCH;
 
-    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
+    // EARLY_LVVV(("*state = %s", enumToFullString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -544,7 +544,7 @@ inline NgosStatus lzmaSetStateLongRepeat(LzmaState *state)
 
     *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_LONGREPEAT : LzmaState::NONLITERAL_REPEAT;
 
-    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
+    // EARLY_LVVV(("*state = %s", enumToFullString(*state))); // Commented to avoid too frequent logs
 
 
 
@@ -562,7 +562,7 @@ inline NgosStatus lzmaSetStateShortRepeat(LzmaState *state)
 
     *state = (u8)(*state) < LITERAL_STATES ? LzmaState::LITERAL_SHORTREPEAT : LzmaState::NONLITERAL_REPEAT;
 
-    // EARLY_LVVV(("*state = %u (%s)", *state, lzmaStateToString(*state))); // Commented to avoid too frequent logs
+    // EARLY_LVVV(("*state = %s", enumToFullString(*state))); // Commented to avoid too frequent logs
 
 
 

@@ -1,5 +1,5 @@
-#ifndef COM_NGOS_SHARED_COMMON_ELF_RELA_H
-#define COM_NGOS_SHARED_COMMON_ELF_RELA_H
+#ifndef COM_NGOS_SHARED_COMMON_ELF_REL_H
+#define COM_NGOS_SHARED_COMMON_ELF_REL_H
 
 
 
@@ -8,7 +8,7 @@
 
 
 
-struct ElfRela
+struct ElfRel
 {
     u64 offset;
 
@@ -22,10 +22,8 @@ struct ElfRela
 
         u64 info;
     };
-
-    i64 addend;
 };
 
 
 
-#endif // COM_NGOS_SHARED_COMMON_ELF_RELA_H
+#endif // COM_NGOS_SHARED_COMMON_ELF_REL_H

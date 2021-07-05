@@ -146,8 +146,9 @@
 #include <com/ngos/shared/common/elf/header.h>
 #include <com/ngos/shared/common/elf/headeridentification.h>
 #include <com/ngos/shared/common/elf/programheadertableentry.h>
+#include <com/ngos/shared/common/elf/rel.h>
 #include <com/ngos/shared/common/elf/rela.h>
-#include <com/ngos/shared/common/elf/relatype.h>
+#include <com/ngos/shared/common/elf/relocationtype.h>
 #include <com/ngos/shared/common/elf/sectionheadertableentry.h>
 #include <com/ngos/shared/common/elf/symbol.h>
 #include <com/ngos/shared/common/fpu/fpu.h>
@@ -1501,8 +1502,9 @@ TEST_CASES(section0, com_ngos_shared_common_types);
         TEST_ASSERT_EQUALS(sizeof(ElfProgramFlag),                                                    4);
         TEST_ASSERT_EQUALS(sizeof(ElfProgramHeaderTableEntry),                                        56);
         TEST_ASSERT_EQUALS(sizeof(ElfProgramType),                                                    4);
+        TEST_ASSERT_EQUALS(sizeof(ElfRel),                                                            16);
         TEST_ASSERT_EQUALS(sizeof(ElfRela),                                                           24);
-        TEST_ASSERT_EQUALS(sizeof(ElfRelaType),                                                       4);
+        TEST_ASSERT_EQUALS(sizeof(ElfRelocationType),                                                 4);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionFlag),                                                    8);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionHeaderTableEntry),                                        64);
         TEST_ASSERT_EQUALS(sizeof(ElfSectionType),                                                    4);

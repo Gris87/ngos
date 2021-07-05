@@ -1405,7 +1405,7 @@ NgosStatus Png::unfilterLine(u8 *inLine, u8 *outLine, u8 *previousLine, PngFilte
 
 
 
-    // COMMON_LVVV(("filterType = %u (%s)", filterType, pngFilterTypeToString(filterType))); // Commented to avoid too frequent logs
+    // COMMON_LVVV(("filterType = %s", enumToFullString(filterType))); // Commented to avoid too frequent logs
 
 
 

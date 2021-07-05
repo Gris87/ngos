@@ -1010,8 +1010,9 @@ src/os/shared/common/src/com/ngos/shared/common/elf/osabi.h
 src/os/shared/common/src/com/ngos/shared/common/elf/programflags.h
 src/os/shared/common/src/com/ngos/shared/common/elf/programheadertableentry.h
 src/os/shared/common/src/com/ngos/shared/common/elf/programtype.h
+src/os/shared/common/src/com/ngos/shared/common/elf/rel.h
 src/os/shared/common/src/com/ngos/shared/common/elf/rela.h
-src/os/shared/common/src/com/ngos/shared/common/elf/relatype.h
+src/os/shared/common/src/com/ngos/shared/common/elf/relocationtype.h
 src/os/shared/common/src/com/ngos/shared/common/elf/sectionflags.h
 src/os/shared/common/src/com/ngos/shared/common/elf/sectionheadertableentry.h
 src/os/shared/common/src/com/ngos/shared/common/elf/sectiontype.h

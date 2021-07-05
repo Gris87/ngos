@@ -259,8 +259,9 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/elf/programflags.h \
     $$PWD/src/com/ngos/shared/common/elf/programheadertableentry.h \
     $$PWD/src/com/ngos/shared/common/elf/programtype.h \
+    $$PWD/src/com/ngos/shared/common/elf/rel.h \
     $$PWD/src/com/ngos/shared/common/elf/rela.h \
-    $$PWD/src/com/ngos/shared/common/elf/relatype.h \
+    $$PWD/src/com/ngos/shared/common/elf/relocationtype.h \
     $$PWD/src/com/ngos/shared/common/elf/sectionflags.h \
     $$PWD/src/com/ngos/shared/common/elf/sectionheadertableentry.h \
     $$PWD/src/com/ngos/shared/common/elf/sectiontype.h \

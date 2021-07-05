@@ -4,7 +4,7 @@
 #include <com/ngos/shared/common/early/earlylog.h>
 #include <com/ngos/shared/common/elf/programheadertableentry.h>
 #include <com/ngos/shared/common/elf/rela.h>
-#include <com/ngos/shared/common/elf/relatype.h>
+#include <com/ngos/shared/common/elf/relocationtype.h>
 #include <com/ngos/shared/common/elf/sectionheadertableentry.h>
 #include <com/ngos/shared/common/memory/memory.h>
 
@@ -144,16 +144,16 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
     {
         ElfSectionHeaderTableEntry *sectionHeader = (ElfSectionHeaderTableEntry *)((u64)header + header->sectionHeaderTableOffset + i * header->sectionHeaderTableEntrySize);
 
-        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",    i, sectionHeader->nameOffset));                                          // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->type           = %u (%s)",   i, sectionHeader->type, elfSectionTypeToString(sectionHeader->type)));   // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016llX", i, sectionHeader->flags));                                               // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016llX", i, sectionHeader->virtualAddress));                                      // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016llX", i, sectionHeader->offset));                                              // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",        i, sectionHeader->size));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",        i, sectionHeader->link));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",        i, sectionHeader->info));                                                // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",        i, sectionHeader->align));                                               // Commented to avoid too frequent logs
-        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",        i, sectionHeader->entrySize));                                           // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->nameOffset     = 0x%08X",    i, sectionHeader->nameOffset));             // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->type           = %s",        i, enumToFullString(sectionHeader->type))); // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->flags          = 0x%016llX", i, sectionHeader->flags));                  // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->virtualAddress = 0x%016llX", i, sectionHeader->virtualAddress));         // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->offset         = 0x%016llX", i, sectionHeader->offset));                 // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->size           = %u",        i, sectionHeader->size));                   // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->link           = %u",        i, sectionHeader->link));                   // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->info           = %u",        i, sectionHeader->info));                   // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->align          = %u",        i, sectionHeader->align));                  // Commented to avoid too frequent logs
+        // EARLY_LVVV(("sectionHeader[%d]->entrySize      = %u",        i, sectionHeader->entrySize));              // Commented to avoid too frequent logs
 
 
 
@@ -168,40 +168,40 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
             {
                 ElfRela &rela = relas[j];
 
-                // EARLY_LVVV(("relas[%d].offset = 0x%016llX", j, rela.offset));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].info   = 0x%016llX", j, rela.info));                                 // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].addend = 0x%016llX", j, rela.addend));                               // Commented to avoid too frequent logs
-                // EARLY_LVVV(("relas[%d].type   = %u (%s)",   j, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].offset = 0x%016llX", j, rela.offset));                 // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].info   = 0x%016llX", j, rela.info));                   // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].addend = 0x%016llX", j, rela.addend));                 // Commented to avoid too frequent logs
+                // EARLY_LVVV(("relas[%d].type   = %s",        j, enumToFullString(rela.type))); // Commented to avoid too frequent logs
 
                 if (rela.offset >= 0xFFFFFFFF80000000)
                 {
                     switch (rela.type)
                     {
-                        case ElfRelaType::D32:
+                        case ElfRelocationType::D32:
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelocationType::D32)  at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
 
                             *(u32 *)relaAddress += delta;
                         }
                         break;
 
-                        case ElfRelaType::D32S:
+                        case ElfRelocationType::D32S:
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelocationType::D32S) at 0x%p:         0x%08X =>         0x%08X", relaAddress, *(u32 *)relaAddress, *(u32 *)relaAddress + delta));
 
                             *(u32 *)relaAddress += delta;
                         }
                         break;
 
-                        case ElfRelaType::D64:
+                        case ElfRelocationType::D64:
                         {
                             u64 relaAddress = physicalAddress + (rela.offset - 0xFFFFFFFF80000000);
 
-                            EARLY_LVV(("Handling RELA entry(ElfRelaType::D64)  at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
+                            EARLY_LVV(("Handling RELA entry(ElfRelocationType::D64)  at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(u64 *)relaAddress, *(u64 *)relaAddress + delta));
 
                             *(u64 *)relaAddress += delta;
                         }
@@ -209,7 +209,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
 
                         default:
                         {
-                            // EARLY_LVV(("Ignoring RELA entry with the type %u (%s)", rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
+                            // EARLY_LVV(("Ignoring RELA entry with the type %s", enumToFullString(rela.type))); // Commented to avoid too frequent logs
                         }
                         break;
                     }
@@ -218,7 +218,7 @@ NgosStatus handleRelocations(ElfHeader *header, u64 physicalAddress, u64 virtual
         }
         else
         {
-            // EARLY_LVV(("Ignoring section header with the type %u (%s)", sectionHeader->type, elfSectionTypeToString(sectionHeader->type))); // Commented to avoid too frequent logs
+            // EARLY_LVV(("Ignoring section header with the type %s", enumToFullString(sectionHeader->type))); // Commented to avoid too frequent logs
         }
     }
 

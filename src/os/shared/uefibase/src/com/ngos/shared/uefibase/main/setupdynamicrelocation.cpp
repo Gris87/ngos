@@ -1,7 +1,7 @@
 #include "setupdynamicrelocation.h"
 
 #include <com/ngos/shared/common/elf/rela.h>
-#include <com/ngos/shared/common/elf/relatype.h>
+#include <com/ngos/shared/common/elf/relocationtype.h>
 #include <com/ngos/shared/uefibase/uefi/uefiassert.h>
 #include <com/ngos/shared/uefibase/uefi/uefilog.h>
 
@@ -29,18 +29,18 @@ NgosStatus setupDynamicRelocation(address_t kernelLocation)
     {
         ElfRela &rela = relas[i];
 
-        // UEFI_LVVV(("relas[%d].offset = 0x%016llX", i, rela.offset));                               // Commented to avoid too frequent logs
-        // UEFI_LVVV(("relas[%d].info   = 0x%016llX", i, rela.info));                                 // Commented to avoid too frequent logs
-        // UEFI_LVVV(("relas[%d].addend = 0x%016llX", i, rela.addend));                               // Commented to avoid too frequent logs
-        // UEFI_LVVV(("relas[%d].type   = %u (%s)",   i, rela.type, elfRelaTypeToString(rela.type))); // Commented to avoid too frequent logs
+        // UEFI_LVVV(("relas[%d].offset = 0x%016llX", i, rela.offset));                 // Commented to avoid too frequent logs
+        // UEFI_LVVV(("relas[%d].info   = 0x%016llX", i, rela.info));                   // Commented to avoid too frequent logs
+        // UEFI_LVVV(("relas[%d].addend = 0x%016llX", i, rela.addend));                 // Commented to avoid too frequent logs
+        // UEFI_LVVV(("relas[%d].type   = %s",        i, enumToFullString(rela.type))); // Commented to avoid too frequent logs
 
-        UEFI_TEST_ASSERT(rela.type == ElfRelaType::RELATIVE, NgosStatus::ASSERTION);
+        UEFI_TEST_ASSERT(rela.type == ElfRelocationType::RELATIVE, NgosStatus::ASSERTION);
 
 
 
         address_t relaAddress = kernelLocation + rela.offset;
 
-        UEFI_LVV(("Handling RELA entry(ElfRelaType::RELATIVE) at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(address_t *)relaAddress, kernelLocation + rela.addend));
+        UEFI_LVV(("Handling RELA entry(ElfRelocationType::RELATIVE) at 0x%p: 0x%016llX => 0x%016llX", relaAddress, *(address_t *)relaAddress, kernelLocation + rela.addend));
 
         *(address_t *)relaAddress = kernelLocation + rela.addend;
     }
