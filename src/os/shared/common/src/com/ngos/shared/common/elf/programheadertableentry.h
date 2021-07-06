@@ -13,8 +13,8 @@ struct ElfProgramHeaderTableEntry
     ElfProgramType  type;
     ElfProgramFlags flags;
     u64             offset;
-    address_t       virtualAddress;
-    address_t       physicalAddress;
+    u64             virtualAddress;
+    u64             physicalAddress;
     u64             fileSize;
     u64             memorySize;
     u64             align;

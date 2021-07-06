@@ -8,22 +8,15 @@
 
 
 
-#define ELF_PROGRAM_TYPE_OS_LOW         0x60000000
-#define ELF_PROGRAM_TYPE_OS_HIGH        0x6FFFFFFF
-#define ELF_PROGRAM_TYPE_PROCESSOR_LOW  0x70000000
-#define ELF_PROGRAM_TYPE_PROCESSOR_HIGH 0x7FFFFFFF
-
-
-
 enum class ElfProgramType: u32
 {
-    NONE       = 0,
-    LOAD       = 0x00000001,
-    DYNAMIC    = 0x00000002,
-    INTERP     = 0x00000003,
-    NOTE       = 0x00000004,
-    SHLIB      = 0x00000005,
-    PHDR       = 0x00000006
+    NONE    = 0,
+    LOAD    = 0x00000001,
+    DYNAMIC = 0x00000002,
+    INTERP  = 0x00000003,
+    NOTE    = 0x00000004,
+    SHLIB   = 0x00000005,
+    PHDR    = 0x00000006
 };
 
 
