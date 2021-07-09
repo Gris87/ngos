@@ -1002,6 +1002,8 @@ src/os/shared/common/src/com/ngos/shared/common/early/earlyassert.h
 src/os/shared/common/src/com/ngos/shared/common/early/earlylog.h
 src/os/shared/common/src/com/ngos/shared/common/elf/class.h
 src/os/shared/common/src/com/ngos/shared/common/elf/data.h
+src/os/shared/common/src/com/ngos/shared/common/elf/dynamic.h
+src/os/shared/common/src/com/ngos/shared/common/elf/dynamictag.h
 src/os/shared/common/src/com/ngos/shared/common/elf/fileversion.h
 src/os/shared/common/src/com/ngos/shared/common/elf/header.h
 src/os/shared/common/src/com/ngos/shared/common/elf/headeridentification.h

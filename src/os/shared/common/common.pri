@@ -251,6 +251,8 @@ HEADERS += \
     $$PWD/src/com/ngos/shared/common/early/earlylog.h \
     $$PWD/src/com/ngos/shared/common/elf/class.h \
     $$PWD/src/com/ngos/shared/common/elf/data.h \
+    $$PWD/src/com/ngos/shared/common/elf/dynamic.h \
+    $$PWD/src/com/ngos/shared/common/elf/dynamictag.h \
     $$PWD/src/com/ngos/shared/common/elf/fileversion.h \
     $$PWD/src/com/ngos/shared/common/elf/header.h \
     $$PWD/src/com/ngos/shared/common/elf/headeridentification.h \
