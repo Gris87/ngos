@@ -5594,17 +5594,18 @@ src/src.pro
 test/.gitignore
 test/start.sh
 test/tests/01. Code verification.sh
-test/tests/02. Test verification.sh
-test/tests/03. Docs verification.sh
-test/tests/04. Unique file names.sh
-test/tests/05. Symbols size.sh
-test/tests/06. BIOS bootloader.sh
-test/tests/07. Position-independent executable.sh
-test/tests/08. Kernel QEMU Debug.sh
-test/tests/09. Kernel QEMU-KVM Debug.sh
-test/tests/10. Kernel QEMU Release.sh
-test/tests/11. Kernel QEMU-KVM Release.sh
-test/tests/12. Build all parameters.sh
+test/tests/02. Tests verification.sh
+test/tests/03. Specs verification.sh
+test/tests/04. Docs verification.sh
+test/tests/05. Unique file names.sh
+test/tests/06. Symbols size.sh
+test/tests/07. BIOS bootloader.sh
+test/tests/08. Position-independent executable.sh
+test/tests/09. Kernel QEMU Debug.sh
+test/tests/10. Kernel QEMU-KVM Debug.sh
+test/tests/11. Kernel QEMU Release.sh
+test/tests/12. Kernel QEMU-KVM Release.sh
+test/tests/13. Build all parameters.sh
 test/tests/assets/BIOS_screen.png
 test/tests/assets/PIE_memory.dmp.hex
 TODO.md
