@@ -32,7 +32,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_LVVV(("header->entryPoint                   = 0x%016llX", header->entryPoint));
         EARLY_LVVV(("header->programHeaderTableOffset     = %u",        header->programHeaderTableOffset));
         EARLY_LVVV(("header->sectionHeaderTableOffset     = %u",        header->sectionHeaderTableOffset));
-        EARLY_LVVV(("header->flags                        = %u",        header->flags));
+        EARLY_LVVV(("header->flags                        = %s",        flagsToFullString(header->flags)));
         EARLY_LVVV(("header->headerSize                   = %u",        header->headerSize));
         EARLY_LVVV(("header->programHeaderTableEntrySize  = %u",        header->programHeaderTableEntrySize));
         EARLY_LVVV(("header->programHeaderTableEntryCount = %u",        header->programHeaderTableEntryCount));
@@ -54,7 +54,7 @@ u64 getElfMemorySize(ElfHeader *header)
         EARLY_TEST_ASSERT(header->entryPoint                   == 0xFFFFFFFF80000000,                       0);
         EARLY_TEST_ASSERT(header->programHeaderTableOffset     == 64,                                       0);
         EARLY_TEST_ASSERT(header->sectionHeaderTableOffset     >= 2000000,                                  0);
-        EARLY_TEST_ASSERT(header->flags                        == 0,                                        0);
+        EARLY_TEST_ASSERT(header->flags                        == FLAGS(ElfHeaderFlag::NONE),               0);
         EARLY_TEST_ASSERT(header->headerSize                   == sizeof(ElfHeader),                        0);
         EARLY_TEST_ASSERT(header->programHeaderTableEntrySize  == sizeof(ElfProgramHeaderTableEntry),       0);
         EARLY_TEST_ASSERT(header->programHeaderTableEntryCount == 1,                                        0);

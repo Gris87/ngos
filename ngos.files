@@ -1006,6 +1006,7 @@ src/os/shared/common/src/com/ngos/shared/common/elf/dynamic.h
 src/os/shared/common/src/com/ngos/shared/common/elf/dynamictag.h
 src/os/shared/common/src/com/ngos/shared/common/elf/fileversion.h
 src/os/shared/common/src/com/ngos/shared/common/elf/header.h
+src/os/shared/common/src/com/ngos/shared/common/elf/headerflags.h
 src/os/shared/common/src/com/ngos/shared/common/elf/headeridentification.h
 src/os/shared/common/src/com/ngos/shared/common/elf/machine.h
 src/os/shared/common/src/com/ngos/shared/common/elf/osabi.h

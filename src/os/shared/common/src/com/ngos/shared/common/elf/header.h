@@ -3,6 +3,7 @@
 
 
 
+#include <com/ngos/shared/common/elf/headerflags.h>
 #include <com/ngos/shared/common/elf/headeridentification.h>
 #include <com/ngos/shared/common/elf/machine.h>
 #include <com/ngos/shared/common/elf/type.h>
@@ -19,7 +20,7 @@ struct ElfHeader
     u64                     entryPoint;
     u64                     programHeaderTableOffset;
     u64                     sectionHeaderTableOffset;
-    u32                     flags; // TODO: Flags?
+    ElfHeaderFlags          flags;
     u16                     headerSize;
     u16                     programHeaderTableEntrySize;
     u16                     programHeaderTableEntryCount;

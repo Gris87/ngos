@@ -10,7 +10,7 @@
 
 enum class ElfDynamicTag: u64
 {
-    NULL         = 0,
+    NONE         = 0,
     NEEDED       = 1,
     PLTRELSZ     = 2,
     PLTGOT       = 3,
@@ -51,7 +51,7 @@ inline const char8* enumToString(ElfDynamicTag tag) // TEST: NO
 
     switch (tag)
     {
-        case ElfDynamicTag::NULL:  return "NULL";
+        case ElfDynamicTag::NONE:  return "NONE";
 
         default: return "UNKNOWN";
     }
