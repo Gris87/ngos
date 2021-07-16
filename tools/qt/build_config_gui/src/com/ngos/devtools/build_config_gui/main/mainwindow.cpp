@@ -583,7 +583,7 @@ void MainWindow::buildParameters(const QHash<QString, QHash<QString, QString>> &
         QString metaType     = metaInformation.value("Type");
 
         QStringList categories  = metaCategory.split("->");
-        QString     topCategory = categories.first().trimmed();
+        QString     topCategory = categories.constFirst().trimmed();
 
 
 

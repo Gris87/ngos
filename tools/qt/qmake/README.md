@@ -1,10 +1,10 @@
-qmake
-=====
-
-<p align="center">
-    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/qmake/Screenshot.png?raw=true" alt="Screenshot"/>
-</p>
-
-We are using own qmake tool that parses pro files and generates required optimal Makefiles.
-
-Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/01.%20QMake/README.md).
+qmake                                                                                                                                                                                                    // Colorize: green
+=====                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+<p align="center">                                                                                                                                                                                       // Colorize: green
+    <img src="https://github.com/Gris87/ngos/blob/master/tools/qt/qmake/Screenshot.png?raw=true" alt="Screenshot"/>                                                                                      // Colorize: green
+</p>                                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+We are using own qmake tool that parses pro files and generates required optimal Makefiles.                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Please read [for more details](../../../docs/0.%20Intro/7.%20Tools/01.%20QMake/README.md).                                                                                                               // Colorize: green

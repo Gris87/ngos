@@ -1,298 +1,305 @@
-#include "searchdependenciesthread.h"
-
-#include <QFile>
-#include <QFileInfo>
-#include <QIODevice>
-
-
-
-QStringList                   SearchDependenciesThread::sIncludes;
-QSet<QString>                 SearchDependenciesThread::sSources;
-qint64                        SearchDependenciesThread::sNumberOfThreads;
-qint64                        SearchDependenciesThread::sNumberOfBlockedThreads;
-QHash<QString, QSet<QString>> SearchDependenciesThread::sDependencies;
-QMutex                        SearchDependenciesThread::sSourcesMutex;
-QSemaphore                    SearchDependenciesThread::sSourcesSemaphore;
-
-
-
-SearchDependenciesThread::SearchDependenciesThread(const QString &workingDirectory)
-    : mWorkingDirectory(workingDirectory)
-    , mErrors()
-{
-    // Nothing
-}
-
-void SearchDependenciesThread::init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads)
-{
-    sIncludes               = includes;
-    sSources                = QSet<QString>(sources.begin(), sources.end());
-    sNumberOfThreads        = numberOfThreads;
-    sNumberOfBlockedThreads = 0;
-
-    sSourcesSemaphore.release(sSources.size());
-}
-
-QString SearchDependenciesThread::takeSource()
-{
-    bool skipSemaphore = false;
-
-    {
-        QMutexLocker lock(&sSourcesMutex);
-
-        ++sNumberOfBlockedThreads;
-
-        if (
-            sNumberOfBlockedThreads >= sNumberOfThreads
-            &&
-            sSources.size() <= 0
-           )
-        {
-            skipSemaphore = true;
-        }
-    }
-
-    if (!skipSemaphore)
-    {
-        sSourcesSemaphore.acquire();
-    }
-
-
-
-    {
-        QMutexLocker lock(&sSourcesMutex);
-
-        if (!sSources.isEmpty())
-        {
-            --sNumberOfBlockedThreads;
-
-            QString res = *sSources.constBegin();
-            sSources.erase(sSources.constBegin());
-
-            return res;
-        }
-
-        sSourcesSemaphore.release();
-
-        return "";
-    }
-}
-
-void SearchDependenciesThread::addDependencies(const QString &source, const QSet<QString> &dependencies)
-{
-    QMutexLocker lock(&sSourcesMutex);
-
-    sDependencies.insert(source, dependencies);
-
-
-
-    QSetIterator<QString> it(dependencies);
-
-    while (it.hasNext())
-    {
-        const QString &dependency = it.next();
-
-        if (
-            !sSources.contains(dependency)
-            &&
-            !sDependencies.contains(dependency)
-           )
-        {
-            sSources.insert(dependency);
-            sSourcesSemaphore.release();
-        }
-    }
-}
-
-QHash<QString, QSet<QString>> SearchDependenciesThread::buildDependenciesMap()
-{
-    QHash<QString, QSet<QString>> res;
-
-    QHashIterator<QString, QSet<QString>> it(sDependencies);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-        buildDependenciesForSource(it.key(), res);
-    }
-
-    return res;
-}
-
-QSet<QString> SearchDependenciesThread::buildDependenciesForSource(const QString &source, QHash<QString, QSet<QString>> &dependenciesMap)
-{
-    if (dependenciesMap.contains(source))
-    {
-        return dependenciesMap.value(source);
-    }
-
-
-
-    QSet<QString> res = sDependencies.value(source);
-
-    dependenciesMap.insert(source, res); // Insert here to avoid infinite loops
-
-
-
-    QSet<QString> newDependencies;
-
-
-
-    QSetIterator<QString> it(res);
-
-    while (it.hasNext())
-    {
-        newDependencies.unite(buildDependenciesForSource(it.next(), dependenciesMap));
-    }
-
-
-
-    res.unite(newDependencies);
-    dependenciesMap.insert(source, res);
-
-
-
-    return res;
-}
-
-void SearchDependenciesThread::addError(const QString &error)
-{
-    mErrors.append(error);
-}
-
-const QStringList& SearchDependenciesThread::getErrors() const
-{
-    return mErrors;
-}
-
-bool SearchDependenciesThread::handleSource(const QString &source)
-{
-    QString fileName = source.startsWith('/') ? source : (mWorkingDirectory + '/' + source);
-
-
-
-    QFile file(fileName);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        addError(QString("Failed to read file \"%1\"").arg(fileName));
-
-        return false;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QSet<QString> dependencies;
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i).trimmed();
-
-        if (line.startsWith("#include "))
-        {
-            line = line.mid(9).trimmed();
-
-            if (
-                line.length() > 2
-                &&
-                (
-                 (
-                  line.startsWith('\"')
-                  &&
-                  line.endsWith('\"')
-                 )
-                 ||
-                 (
-                  line.startsWith('<')
-                  &&
-                  line.endsWith('>')
-                 )
-                )
-               )
-            {
-                QString includedFile = line.mid(1, line.length() - 2);
-
-
-
-                QString parentFolder = fileName.left(fileName.lastIndexOf('/') + 1);
-
-                if (QFile::exists(parentFolder + includedFile))
-                {
-                    dependencies.insert(QFileInfo(parentFolder + includedFile).absoluteFilePath());
-                }
-                else
-                {
-                    if (QFile::exists(mWorkingDirectory + '/' + includedFile))
-                    {
-                        dependencies.insert(QFileInfo(mWorkingDirectory + '/' + includedFile).absoluteFilePath());
-                    }
-                    else
-                    {
-                        bool found = false;
-
-                        for (qint64 j = 0; j < sIncludes.size(); ++j)
-                        {
-                            QString path = mWorkingDirectory + '/' + sIncludes.at(j) + '/' + includedFile;
-
-                            if (QFile::exists(path))
-                            {
-                                found = true;
-
-                                dependencies.insert(QFileInfo(path).absoluteFilePath());
-
-                                break;
-                            }
-                        }
-
-                        if (
-                            !found
-                            &&
-                            includedFile != "com/ngos/kernel/other/brk/brk.h"
-                            &&
-                            includedFile != "com/ngos/kernel/other/ioremap/ioremap.h"
-                            &&
-                            includedFile != "com/ngos/kernel/other/uefi/uefi.h"
-                           )
-                        {
-                            addError(QString("Failed to find included file \"%1\"").arg(includedFile));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    addDependencies(source, dependencies);
-
-
-
-    return true;
-}
-
-void SearchDependenciesThread::run()
-{
-    do
-    {
-        QString source = takeSource();
-
-        if (source == "")
-        {
-            break;
-        }
-
-        if (!handleSource(source))
-        {
-            addDependencies(source, QSet<QString>());
-        }
-    } while(true);
-}
+#include "searchdependenciesthread.h"                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QFileInfo>                                                                                                                                                                                     // Colorize: green
+#include <QIODevice>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QStringList                   SearchDependenciesThread::sIncludes;                                                                                                                                       // Colorize: green
+QSet<QString>                 SearchDependenciesThread::sSources;                                                                                                                                        // Colorize: green
+qint64                        SearchDependenciesThread::sNumberOfThreads;                                                                                                                                // Colorize: green
+qint64                        SearchDependenciesThread::sNumberOfBlockedThreads;                                                                                                                         // Colorize: green
+QHash<QString, QSet<QString>> SearchDependenciesThread::sDependencies;                                                                                                                                   // Colorize: green
+QMutex                        SearchDependenciesThread::sSourcesMutex;                                                                                                                                   // Colorize: green
+QSemaphore                    SearchDependenciesThread::sSourcesSemaphore;                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+SearchDependenciesThread::SearchDependenciesThread(const QString &workingDirectory)                                                                                                                      // Colorize: green
+    : mWorkingDirectory(workingDirectory)                                                                                                                                                                // Colorize: green
+    , mErrors()                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void SearchDependenciesThread::init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads)                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sIncludes               = includes;                                                                                                                                                                  // Colorize: green
+    sSources                = QSet<QString>(sources.begin(), sources.end());                                                                                                                             // Colorize: green
+    sNumberOfThreads        = numberOfThreads;                                                                                                                                                           // Colorize: green
+    sNumberOfBlockedThreads = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sSourcesSemaphore.release(sSources.size());                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString SearchDependenciesThread::takeSource()                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    bool skipSemaphore = false;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Increase amount of blocked threads and skip semaphore if there are no more threads and sources                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sSourcesMutex);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        ++sNumberOfBlockedThreads;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            sNumberOfBlockedThreads >= sNumberOfThreads                                                                                                                                                  // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            sSources.isEmpty()                                                                                                                                                                           // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            skipSemaphore = true;                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!skipSemaphore)                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        sSourcesSemaphore.acquire();                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Return path to source and decrease amount of blocked threads                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sSourcesMutex);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!sSources.isEmpty())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            --sNumberOfBlockedThreads;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString res = *sSources.constBegin();                                                                                                                                                        // Colorize: green
+            sSources.erase(sSources.constBegin());                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return res;                                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        sSourcesSemaphore.release();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return "";                                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void SearchDependenciesThread::addDependencies(const QString &source, const QSet<QString> &dependencies)                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMutexLocker lock(&sSourcesMutex);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sDependencies.insert(source, dependencies);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QSetIterator<QString> it(dependencies);                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const QString &dependency = it.next();                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !sSources.contains(dependency)                                                                                                                                                               // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !sDependencies.contains(dependency)                                                                                                                                                          // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sSources.insert(dependency);                                                                                                                                                                 // Colorize: green
+            sSourcesSemaphore.release();                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QHash<QString, QSet<QString>> SearchDependenciesThread::buildDependenciesMap()                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QHash<QString, QSet<QString>> res;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QHashIterator<QString, QSet<QString>> it(sDependencies);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        buildDependenciesForSource(it.key(), res);                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QSet<QString> SearchDependenciesThread::buildDependenciesForSource(const QString &source, QHash<QString, QSet<QString>> &dependenciesMap)                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (dependenciesMap.contains(source))                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return dependenciesMap.value(source);                                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QSet<QString> res = sDependencies.value(source);                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    dependenciesMap.insert(source, res); // Insert here to avoid infinite loops                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QSet<QString> newDependencies;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QSetIterator<QString> it(res);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        newDependencies.unite(buildDependenciesForSource(it.next(), dependenciesMap));                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res.unite(newDependencies);                                                                                                                                                                          // Colorize: green
+    dependenciesMap.insert(source, res);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void SearchDependenciesThread::addError(const QString &error)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mErrors.append(error);                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QStringList& SearchDependenciesThread::getErrors() const                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mErrors;                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool SearchDependenciesThread::handleSource(const QString &source)                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString fileName = source.startsWith('/') ? source : (mWorkingDirectory + '/' + source);                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(fileName);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addError(QString("Failed to read file \"%1\"").arg(fileName));                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QSet<QString> dependencies;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over lines and find set of dependencies                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList lines = content.split('\n');                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i).trimmed();                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.startsWith("#include "))                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line = line.mid(9).trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    line.length() >= 2                                                                                                                                                                    // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    (                                                                                                                                                                                    // Colorize: green
+                     (                                                                                                                                                                                   // Colorize: green
+                      line.startsWith('\"')                                                                                                                                                              // Colorize: green
+                      &&                                                                                                                                                                                 // Colorize: green
+                      line.endsWith('\"')                                                                                                                                                                // Colorize: green
+                     )                                                                                                                                                                                   // Colorize: green
+                     ||                                                                                                                                                                                  // Colorize: green
+                     (                                                                                                                                                                                   // Colorize: green
+                      line.startsWith('<')                                                                                                                                                               // Colorize: green
+                      &&                                                                                                                                                                                 // Colorize: green
+                      line.endsWith('>')                                                                                                                                                                 // Colorize: green
+                     )                                                                                                                                                                                   // Colorize: green
+                    )                                                                                                                                                                                    // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString includedFile = line.mid(1, line.length() - 2);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Try find absolute file path for the included file                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString parentFolder = fileName.left(fileName.lastIndexOf('/') + 1);                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (QFile::exists(parentFolder + includedFile))                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            dependencies.insert(QFileInfo(parentFolder + includedFile).absoluteFilePath());                                                                                              // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (QFile::exists(mWorkingDirectory + '/' + includedFile))                                                                                                                   // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                dependencies.insert(QFileInfo(mWorkingDirectory + '/' + includedFile).absoluteFilePath());                                                                               // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                bool found = false;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                for (qint64 j = 0; j < sIncludes.size(); ++j)                                                                                                                            // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString path = mWorkingDirectory + '/' + sIncludes.at(j) + '/' + includedFile;                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (QFile::exists(path))                                                                                                                                             // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        found = true;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        dependencies.insert(QFileInfo(path).absoluteFilePath());                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (                                                                                                                                                                     // Colorize: green
+                                    !found                                                                                                                                                               // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    includedFile != "com/ngos/kernel/other/brk/brk.h"   // TODO: Why?                                                                                                    // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    includedFile != "com/ngos/kernel/other/ioremap/ioremap.h"                                                                                                            // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    includedFile != "com/ngos/kernel/other/uefi/uefi.h"                                                                                                                  // Colorize: green
+                                   )                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    addError(QString("Failed to find included file \"%1\"").arg(includedFile));                                                                                          // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    addDependencies(source, dependencies);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void SearchDependenciesThread::run()                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString source = takeSource();                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (source == "")                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!handleSource(source))                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            addDependencies(source, QSet<QString>());                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

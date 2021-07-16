@@ -287,12 +287,12 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             if (values.contains("NONE"))
                             {
-                                if (values.first() != "NONE")
+                                if (values.constFirst() != "NONE")
                                 {
                                     worker->addError(path, i, "Enum value NONE should be first");
                                 }
 
-                                if (valuesNumeric.first() != '0')
+                                if (valuesNumeric.constFirst() != '0')
                                 {
                                     worker->addError(path, i, "Numeric value of NONE should be zero");
                                 }
@@ -467,15 +467,15 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             if (values.contains("NONE"))
                             {
                                 if (
-                                    values.first() != "NONE"
+                                    values.constFirst() != "NONE"
                                     &&
-                                    values.first() != "NULL"
+                                    values.constFirst() != "NULL"
                                    )
                                 {
                                     worker->addError(path, i, "Enum value NONE should be first");
                                 }
 
-                                if (valuesNumeric.first() != '0')
+                                if (valuesNumeric.constFirst() != '0')
                                 {
                                     worker->addError(path, i, "Numeric value of NONE should be zero");
                                 }
@@ -486,15 +486,15 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                     valuesNumeric.isEmpty()
                                     ||
                                     (
-                                     valuesNumeric.first() != '0'
+                                     valuesNumeric.constFirst() != '0'
                                      &&
-                                     valuesNumeric.first() != "0x00"
+                                     valuesNumeric.constFirst() != "0x00"
                                      &&
-                                     valuesNumeric.first() != "0x0000"
+                                     valuesNumeric.constFirst() != "0x0000"
                                      &&
-                                     valuesNumeric.first() != "0x00000000"
+                                     valuesNumeric.constFirst() != "0x00000000"
                                      &&
-                                     valuesNumeric.first() != "0x0000000000000000"
+                                     valuesNumeric.constFirst() != "0x0000000000000000"
                                     )
                                    )
                                 {

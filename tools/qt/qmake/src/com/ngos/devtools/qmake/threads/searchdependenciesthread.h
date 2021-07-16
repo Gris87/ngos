@@ -1,49 +1,49 @@
-#ifndef COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H
-#define COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H
-
-
-
-#include <QThread>
-
-#include <QHash>
-#include <QMutex>
-#include <QSemaphore>
-#include <QSet>
-
-
-
-class SearchDependenciesThread: public QThread
-{
-public:
-    SearchDependenciesThread(const QString &workingDirectory); // TEST: NO
-
-    static void init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads); // TEST: NO
-    static QString takeSource(); // TEST: NO
-    static void addDependencies(const QString &source, const QSet<QString> &dependencies); // TEST: NO
-    static QHash<QString, QSet<QString>> buildDependenciesMap(); // TEST: NO
-    static QSet<QString> buildDependenciesForSource(const QString &source, QHash<QString, QSet<QString>> &dependenciesMap); // TEST: NO
-
-    void addError(const QString &error); // TEST: NO
-    const QStringList& getErrors() const; // TEST: NO
-
-    bool handleSource(const QString &source); // TEST: NO
-
-protected:
-    void run() override; // TEST: NO
-
-private:
-    static QStringList                   sIncludes;
-    static QSet<QString>                 sSources;
-    static qint64                        sNumberOfThreads;
-    static qint64                        sNumberOfBlockedThreads;
-    static QHash<QString, QSet<QString>> sDependencies;
-    static QMutex                        sSourcesMutex;
-    static QSemaphore                    sSourcesSemaphore;
-
-    QString     mWorkingDirectory;
-    QStringList mErrors;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H
+#ifndef COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QThread>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QHash>                                                                                                                                                                                         // Colorize: green
+#include <QMutex>                                                                                                                                                                                        // Colorize: green
+#include <QSemaphore>                                                                                                                                                                                    // Colorize: green
+#include <QSet>                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class SearchDependenciesThread: public QThread                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    SearchDependenciesThread(const QString &workingDirectory); // TEST: NO                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static void init(const QStringList &includes, const QStringList &sources, qint64 numberOfThreads); // TEST: NO                                                                                       // Colorize: green
+    static QString takeSource(); // TEST: NO                                                                                                                                                             // Colorize: green
+    static void addDependencies(const QString &source, const QSet<QString> &dependencies); // TEST: NO                                                                                                   // Colorize: green
+    static QHash<QString, QSet<QString>> buildDependenciesMap(); // TEST: NO                                                                                                                             // Colorize: green
+    static QSet<QString> buildDependenciesForSource(const QString &source, QHash<QString, QSet<QString>> &dependenciesMap); // TEST: NO                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void addError(const QString &error); // TEST: NO                                                                                                                                                     // Colorize: green
+    const QStringList& getErrors() const; // TEST: NO                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool handleSource(const QString &source); // TEST: NO                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void run() override; // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static QStringList                   sIncludes;                                                                                                                                                      // Colorize: green
+    static QSet<QString>                 sSources;                                                                                                                                                       // Colorize: green
+    static qint64                        sNumberOfThreads;                                                                                                                                               // Colorize: green
+    static qint64                        sNumberOfBlockedThreads;                                                                                                                                        // Colorize: green
+    static QHash<QString, QSet<QString>> sDependencies;                                                                                                                                                  // Colorize: green
+    static QMutex                        sSourcesMutex;                                                                                                                                                  // Colorize: green
+    static QSemaphore                    sSourcesSemaphore;                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString     mWorkingDirectory;                                                                                                                                                                       // Colorize: green
+    QStringList mErrors;                                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_QMAKE_THREADS_SEARCHDEPENDENCIESTHREAD_H                                                                                                                                     // Colorize: green

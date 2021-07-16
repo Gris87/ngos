@@ -1,41 +1,42 @@
-#ifndef COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H
-#define COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H
-
-
-
-#include <QRegularExpression>
-
-
-
-class QMake
-{
-public:
-    QMake(const QString &pathToProFile); // TEST: NO
-
-    qint64 process(); // TEST: NO
-
-private:
-    qint64 processInWorkingDirectory(const QString &workingDirectory, const QString &proFileName); // TEST: NO
-    qint64 processLines(const QString &workingDirectory, const QStringList &lines); // TEST: NO
-    qint64 parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue); // TEST: NO
-    qint64 generateMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 generateSubdirsMakefile(const QString &workingDirectory); // TEST: NO
-    qint64 generateApplicationMakefile(const QString &workingDirectory, const QString &templateValue); // TEST: NO
-    qint64 addApplicationObjectsDefinitions(const QString &workingDirectory, QStringList &lines); // TEST: NO
-    qint64 addApplicationBuildTargets(const QString &workingDirectory, const QString &templateValue, QStringList &lines); // TEST: NO
-    qint64 addResourcesBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO
-    qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO
-
-    QString                     mPathToProFile;
-    QRegularExpression          mCommentRegexp;
-    QRegularExpression          mEntryRegexp;
-    QRegularExpression          mEntryValueRegexp;
-    QRegularExpression          mIncludeRegexp;
-    QHash<QString, QStringList> mEntries;
-    QMap<QString, QString>      mSourceToObjectMap;
-    QStringList                 mMakefileDependencies;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H
+#ifndef COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H                                                                                                                                                             // Colorize: green
+#define COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class QMake                                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    QMake(const QString &pathToProFile); // TEST: NO                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 process(); // TEST: NO                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    qint64 processInWorkingDirectory(const QString &workingDirectory, const QString &proFileName); // TEST: NO                                                                                           // Colorize: green
+    qint64 processLines(const QString &workingDirectory, const QStringList &lines); // TEST: NO                                                                                                          // Colorize: green
+    qint64 parseEntry(const QString &workingDirectory, const QString &entryName, const QString &entryOperator, const QString &entryValue); // TEST: NO                                                   // Colorize: green
+    qint64 generateMakefile(const QString &workingDirectory); // TEST: NO                                                                                                                                // Colorize: green
+    qint64 generateSubdirsMakefile(const QString &workingDirectory); // TEST: NO                                                                                                                         // Colorize: green
+    qint64 generateApplicationMakefile(const QString &workingDirectory, const QString &templateValue); // TEST: NO                                                                                       // Colorize: green
+    qint64 addApplicationObjectsDefinitions(QStringList &lines); // TEST: NO                                                                                            // Colorize: green
+    qint64 addApplicationBuildTargets(const QString &workingDirectory, const QString &templateValue, QStringList &lines); // TEST: NO                                                                    // Colorize: green
+    qint64 addResourcesBuildTargets(const QString &workingDirectory, QStringList &lines); // TEST: NO                                                                                                    // Colorize: green
+    qint64 save(const QString &workingDirectory, const QStringList &lines, const QString &phony = ""); // TEST: NO                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static QRegularExpression sCommentRegexp;                                                                                                                                                            // Colorize: green
+    static QRegularExpression sEntryRegexp;                                                                                                                                                              // Colorize: green
+    static QRegularExpression sEntryValueRegexp;                                                                                                                                                         // Colorize: green
+    static QRegularExpression sIncludeRegexp;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString                     mPathToProFile;                                                                                                                                                          // Colorize: green
+    QHash<QString, QStringList> mEntries;               // Entry => Entry values                                                                                                                         // Colorize: green
+    QMap<QString, QString>      mSourceToObjectMap;     // CPP file => Object file                                                                                                                       // Colorize: green
+    QStringList                 mMakefileDependencies;                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_QMAKE_MAIN_QMAKE_H                                                                                                                                                           // Colorize: green
