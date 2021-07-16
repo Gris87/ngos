@@ -17,7 +17,7 @@ public:
 private:
     QString                mBuildConfigPath;
     bool                   mReset;
-    QMap<QString, QString> mParameters;
+    QMap<QString, QString> mParameters; // Parameter => Value
 };
 
 

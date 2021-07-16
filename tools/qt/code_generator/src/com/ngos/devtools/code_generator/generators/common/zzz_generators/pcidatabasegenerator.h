@@ -10,8 +10,8 @@
 
 
 
-typedef QMap<quint8,  PciBaseClass> PciBaseClasses;
-typedef QMap<quint16, PciVendor>    PciVendors;
+typedef QMap<quint8,  PciBaseClass> PciBaseClasses;     // PCI Base Class ID => PCI Base Class
+typedef QMap<quint16, PciVendor>    PciVendors;         // PCI Vendor ID     => PCI Vendor
 
 
 

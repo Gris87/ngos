@@ -51,7 +51,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    QMap<QString, QString> parameters;
+    QMap<QString, QString> parameters;  // Parameter => Value
 
     for (qint64 i = (reset ? 3 : 2); i < arguments.size(); ++i)
     {

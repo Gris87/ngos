@@ -13,7 +13,7 @@
 struct PciBaseClass
 {
     QString                   description;
-    QMap<quint8, PciSubClass> subClasses;
+    QMap<quint8, PciSubClass> subClasses;   // PCI Sub Class ID => PCI Sub Class
 };
 
 

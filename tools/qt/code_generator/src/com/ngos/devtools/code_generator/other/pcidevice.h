@@ -13,7 +13,7 @@
 struct PciDevice
 {
     QString                     description;
-    QMap<quint32, PciSubDevice> subdevices;
+    QMap<quint32, PciSubDevice> subdevices;     // PCI Sub Device ID => PCI Sub Device
 };
 
 

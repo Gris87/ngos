@@ -13,7 +13,7 @@
 struct PciVendor
 {
     QString                  description;
-    QMap<quint16, PciDevice> devices;
+    QMap<quint16, PciDevice> devices;       // PCI Device ID => PCI Device
 };
 
 
