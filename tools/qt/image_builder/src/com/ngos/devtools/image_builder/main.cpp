@@ -29,7 +29,7 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    QStringList arguments = app.arguments();
+    const QStringList &arguments = app.arguments();
 
 
 
