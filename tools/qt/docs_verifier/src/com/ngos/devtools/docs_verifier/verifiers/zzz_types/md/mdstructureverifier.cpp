@@ -51,7 +51,7 @@ void MdStructureVerifier::verify(DocsWorkerThread *worker, const QString &path, 
 
 
         if (
-            lines.size() <= 0
+            lines.isEmpty()
             ||
             lines.at(0) != "NGOS"
            )
