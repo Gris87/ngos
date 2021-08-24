@@ -10,6 +10,7 @@
 #include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
 #include <com/ngos/shared/common/ngos/linkage.h>                                                                                                                                                         // Colorize: green
 #include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/devtools/shared/utils/string.h>                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green

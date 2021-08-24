@@ -5904,6 +5904,8 @@ tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.cpp
 tools/qt/shared/elf/src/com/ngos/devtools/shared/elf/elfobject.h
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.cpp
 tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/git.h
+tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/string.cpp
+tools/qt/shared/utils/src/com/ngos/devtools/shared/utils/string.h
 tools/qt/shared/utils/utils.pri
 tools/qt/specs_verifier/.gitignore
 tools/qt/specs_verifier/README.md

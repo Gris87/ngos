@@ -1,5 +1,7 @@
 SOURCES += \                                                                                                                                                                                             # Colorize: green
-    $$PWD/src/com/ngos/devtools/shared/utils/git.cpp                                                                                                                                                     # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/git.cpp \                                                                                                                                                   # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/string.cpp                                                                                                                                                  # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 HEADERS += \                                                                                                                                                                                             # Colorize: green
-    $$PWD/src/com/ngos/devtools/shared/utils/git.h                                                                                                                                                       # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/git.h \                                                                                                                                                     # Colorize: green
+    $$PWD/src/com/ngos/devtools/shared/utils/string.h                                                                                                                                                    # Colorize: green
