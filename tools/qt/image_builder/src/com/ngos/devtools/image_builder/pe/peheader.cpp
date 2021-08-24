@@ -1,76 +1,111 @@
-#include "peheader.h"
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void PEHeader::print()
-{
-    Console::out("PE Header:");
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    Console::out(QString("    signature: 0x%1 (%2%3\\%4\\%5)")
-                    .arg(       signature,              8, 16, QChar('0'))
-                    .arg((char)(signature       & 0xFF))
-                    .arg((char)(signature >> 8  & 0xFF))
-                    .arg(       signature >> 16 & 0xFF, 0, 16, QChar('0'))
-                    .arg(       signature >> 24 & 0xFF, 0, 16, QChar('0'))
-                );
-    // Ignore CppAlignmentVerifier [END]
-
-    Console::out("");
-
-
-
-    coffHeader.print();
-    optHeader.print();
-
-    for (qint64 i = 0; i < NUMBER_OF_SECTIONS; ++i)
-    {
-        if (QString(sections[i].name) != "")
-        {
-            sections[i].print();
-        }
-    }
-}
-
-bool PEHeader::verify()
-{
-    if (signature != PE_HEADER_SIGNATURE)
-    {
-        // Ignore CppAlignmentVerifier [BEGIN]
-        Console::err(QString("Wrong PE Header signature: 0x%1 (%2%3\\%4\\%5)")
-                        .arg(       signature,              8, 16, QChar('0'))
-                        .arg((char)(signature       & 0xFF))
-                        .arg((char)(signature >> 8  & 0xFF))
-                        .arg(       signature >> 16 & 0xFF, 0, 16, QChar('0'))
-                        .arg(       signature >> 24 & 0xFF, 0, 16, QChar('0'))
-                    );
-        // Ignore CppAlignmentVerifier [END]
-
-        return false;
-    }
-
-    if (!coffHeader.verify())
-    {
-        return false;
-    }
-
-    if (!optHeader.verify())
-    {
-        return false;
-    }
-
-    for (qint64 i = 0; i < NUMBER_OF_SECTIONS; ++i)
-    {
-        if (QString(sections[i].name) != "")
-        {
-            if (!sections[i].verify())
-            {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
+#include "peheader.h"                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PEHeader::print()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Output PE header                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("PE Header:");                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Output signature                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            char *signatureBytes = (char *)&signature;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            Console::out(QString("    signature: 0x%1 (%2%3\\%4\\%5)")                                                                                                                                   // Colorize: green
+                            .arg(signature,         8, 16, QChar('0'))                                                                                                                                   // Colorize: green
+                            .arg(signatureBytes[3])                                                                                                                                                      // Colorize: green
+                            .arg(signatureBytes[2])                                                                                                                                                      // Colorize: green
+                            .arg(signatureBytes[1], 0, 16, QChar('0'))                                                                                                                                   // Colorize: green
+                            .arg(signatureBytes[0], 0, 16, QChar('0'))                                                                                                                                   // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    coffHeader.print();                                                                                                                                                                                  // Colorize: green
+    optHeader.print();                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output sections                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < (qint64)Section::MAXIMUM; ++i)                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (QString(sections[i].name) != "")                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                sections[i].print();                                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PEHeader::verify()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check signature                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (signature != PE_HEADER_SIGNATURE)                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            char *signatureBytes = (char *)&signature;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            Console::err(QString("Wrong PE Header signature: 0x%1 (%2%3\\%4\\%5)")                                                                                                                       // Colorize: green
+                            .arg(signature,         8, 16, QChar('0'))                                                                                                                           // Colorize: green
+                            .arg(signatureBytes[3])                                                                                                                                             // Colorize: green
+                            .arg(signatureBytes[2])                                                                                                                                             // Colorize: green
+                            .arg(signatureBytes[1], 0, 16, QChar('0'))                                                                                                                           // Colorize: green
+                            .arg(signatureBytes[0], 0, 16, QChar('0'))                                                                                                                           // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check COFF header                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!coffHeader.verify())                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check PE optional header                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!optHeader.verify())                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sections                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < (qint64)Section::MAXIMUM; ++i)                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (QString(sections[i].name) != "")                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!sections[i].verify())                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

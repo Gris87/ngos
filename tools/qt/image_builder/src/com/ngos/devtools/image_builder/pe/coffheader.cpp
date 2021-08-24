@@ -1,83 +1,121 @@
-#include "coffheader.h"
-
-#include <com/ngos/devtools/image_builder/pe/peoptheader.h>
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void COFFHeader::print()
-{
-    Console::out("COFF Header:");
-
-    Console::out(QString("    machine:              0x%1").arg(machine,              4, 16, QChar('0')));
-    Console::out(QString("    numberOfSections:     0x%1").arg(numberOfSections,     4, 16, QChar('0')));
-    Console::out(QString("    timeDateStamp:        0x%1").arg(timeDateStamp,        8, 16, QChar('0')));
-    Console::out(QString("    pointerToSymbolTable: 0x%1").arg(pointerToSymbolTable, 8, 16, QChar('0')));
-    Console::out(QString("    numberOfSymbols:      0x%1").arg(numberOfSymbols,      8, 16, QChar('0')));
-    Console::out(QString("    sizeOfOptionalHeader: 0x%1").arg(sizeOfOptionalHeader, 4, 16, QChar('0')));
-    Console::out(QString("    characteristics:      0x%1").arg(characteristics,      4, 16, QChar('0')));
-
-    Console::out("");
-}
-
-bool COFFHeader::verify()
-{
-    if (machine != IMAGE_MACHINE_X64)
-    {
-        Console::err(QString("Wrong COFF Header machine: 0x%1").arg(machine, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (
-        numberOfSections != NUMBER_OF_SECTIONS
-        &&
-        numberOfSections != NUMBER_OF_SECTIONS - 1
-       )
-    {
-        Console::err(QString("Wrong COFF Header numberOfSections: 0x%1").arg(numberOfSections, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (timeDateStamp != 0)
-    {
-        Console::err(QString("Wrong COFF Header timeDateStamp: 0x%1").arg(timeDateStamp, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (pointerToSymbolTable != 0)
-    {
-        Console::err(QString("Wrong COFF Header pointerToSymbolTable: 0x%1").arg(pointerToSymbolTable, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (numberOfSymbols != 0)
-    {
-        Console::err(QString("Wrong COFF Header numberOfSymbols: 0x%1").arg(numberOfSymbols, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfOptionalHeader != sizeof(PEOptHeader))
-    {
-        Console::err(QString("Wrong COFF Header sizeOfOptionalHeader: 0x%1").arg(sizeOfOptionalHeader, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (
-        characteristics != (IMAGE_FILE_DEBUG_STRIPPED
-                            | IMAGE_FILE_LINE_NUMS_STRIPPED
-                            | IMAGE_FILE_EXECUTABLE_IMAGE)
-       )
-    {
-        Console::err(QString("Wrong COFF Header characteristics: 0x%1").arg(characteristics, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    return true;
-}
+#include "coffheader.h"                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/image_builder/other/section.h>                                                                                                                                               // Colorize: green
+#include <com/ngos/devtools/image_builder/pe/peoptheader.h>                                                                                                                                              // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void COFFHeader::print()                                                                                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Console::out("COFF Header:");                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out(QString("    machine:              %1").arg(enumToFullString(machine)));                                                                                                                // Colorize: green
+    Console::out(QString("    numberOfSections:     0x%1").arg(numberOfSections,     4, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    timeDateStamp:        0x%1").arg(timeDateStamp,        8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    pointerToSymbolTable: 0x%1").arg(pointerToSymbolTable, 8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    numberOfSymbols:      0x%1").arg(numberOfSymbols,      8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    sizeOfOptionalHeader: 0x%1").arg(sizeOfOptionalHeader, 4, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    characteristics:      %1").arg(flagsToFullString(characteristics)));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out("");                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool COFFHeader::verify()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check machine                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (machine != COFFHeaderMachine::X64)                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header machine: %1").arg(enumToFullString(machine)));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check numberOfSections                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            numberOfSections != (quint64)Section::MAXIMUM                                                                                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            numberOfSections != (quint64)Section::MAXIMUM - 1                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header numberOfSections: 0x%1").arg(numberOfSections, 4, 16, QChar('0')));                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check timeDateStamp                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (timeDateStamp != 0)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header timeDateStamp: 0x%1").arg(timeDateStamp, 8, 16, QChar('0')));                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check pointerToSymbolTable                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (pointerToSymbolTable != 0)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header pointerToSymbolTable: 0x%1").arg(pointerToSymbolTable, 8, 16, QChar('0')));                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check numberOfSymbols                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (numberOfSymbols != 0)                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header numberOfSymbols: 0x%1").arg(numberOfSymbols, 8, 16, QChar('0')));                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfOptionalHeader                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfOptionalHeader != sizeof(PEOptHeader))                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header sizeOfOptionalHeader: 0x%1").arg(sizeOfOptionalHeader, 4, 16, QChar('0')));                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check characteristics                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            characteristics != FLAGS(                                                                                                                                                                    // Colorize: green
+                COFFHeaderCharacteristicsFlag::DEBUG_STRIPPED                                                                                                                                            // Colorize: green
+                , COFFHeaderCharacteristicsFlag::LINE_NUMS_STRIPPED                                                                                                                                      // Colorize: green
+                , COFFHeaderCharacteristicsFlag::EXECUTABLE_IMAGE                                                                                                                                        // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong COFF Header characteristics: %1").arg(flagsToFullString(characteristics)));                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

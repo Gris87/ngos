@@ -1,249 +1,263 @@
-#include <QCoreApplication>
-#include <QDateTime>
-#include <QString>
-
-#include <com/ngos/devtools/image_builder/main/imagebuilder.h>
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void usage()
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    Console::err(
-                "Usage: image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF -k PATH_TO_KERNEL_ELF | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE\n"
-                "    * -b PATH_TO_BOOT_ELF      - specify path to boot.elf file\n"
-                "    * -c PATH_TO_CONFIGURE_ELF - specify path to configure.elf file\n"
-                "    * -k PATH_TO_KERNEL_ELF    - specify path to kernel.elf file\n"
-                "    * -t PATH_TO_TEXT_ELF      - specify path to text.elf file\n"
-                "    * -o PATH_TO_RESULT_IMAGE  - specify path to result image\n"
-                "\n" // Ignore CppSingleCharVerifier
-                "If you specify argument \"-t PATH_TO_TEXT_ELF\" it will replace existing .configure section and .kernel section in boot.elf file with a single .text section"
-                );
-    // Ignore CppAlignmentVerifier [END]
-}
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-
-
-
-    const QStringList &arguments = app.arguments();
-
-
-
-    QString bootElfPath;
-    QString configureElfPath;
-    QString kernelElfPath;
-    QString textElfPath;
-    QString resultImagePath;
-
-    for (qint64 i = 1; i < arguments.size(); ++i)
-    {
-        QString arg = arguments.at(i);
-
-        if (arg == "-b")
-        {
-            if (i >= arguments.size() - 1)
-            {
-                usage();
-
-                Console::err(QString("Additional argument missing for %1").arg(arg));
-
-                return 1;
-            }
-
-            if (bootElfPath != "")
-            {
-                Console::err("PATH_TO_BOOT_ELF is already specified");
-
-                return 1;
-            }
-
-            ++i;
-            bootElfPath = arguments.at(i);
-        }
-        else
-        if (arg == "-c")
-        {
-            if (i >= arguments.size() - 1)
-            {
-                usage();
-
-                Console::err(QString("Additional argument missing for %1").arg(arg));
-
-                return 1;
-            }
-
-            if (configureElfPath != "")
-            {
-                Console::err("PATH_TO_CONFIGURE_ELF is already specified");
-
-                return 1;
-            }
-
-            ++i;
-            configureElfPath = arguments.at(i);
-        }
-        else
-        if (arg == "-k")
-        {
-            if (i >= arguments.size() - 1)
-            {
-                usage();
-
-                Console::err(QString("Additional argument missing for %1").arg(arg));
-
-                return 1;
-            }
-
-            if (kernelElfPath != "")
-            {
-                Console::err("PATH_TO_KERNEL_ELF is already specified");
-
-                return 1;
-            }
-
-            ++i;
-            kernelElfPath = arguments.at(i);
-        }
-        else
-        if (arg == "-t")
-        {
-            if (i >= arguments.size() - 1)
-            {
-                usage();
-
-                Console::err(QString("Additional argument missing for %1").arg(arg));
-
-                return 1;
-            }
-
-            if (textElfPath != "")
-            {
-                Console::err("PATH_TO_TEXT_ELF is already specified");
-
-                return 1;
-            }
-
-            ++i;
-            textElfPath = arguments.at(i);
-        }
-        else
-        if (arg == "-o")
-        {
-            if (i >= arguments.size() - 1)
-            {
-                usage();
-
-                Console::err(QString("Additional argument missing for %1").arg(arg));
-
-                return 1;
-            }
-
-            if (resultImagePath != "")
-            {
-                Console::err("PATH_TO_RESULT_IMAGE is already specified");
-
-                return 1;
-            }
-
-            ++i;
-            resultImagePath = arguments.at(i);
-        }
-        else
-        {
-            usage();
-
-            Console::err(QString("Unknown argument: %1").arg(arg));
-
-            return 1;
-        }
-    }
-
-
-
-    Console::out("Image builder started");
-    Console::out("");
-    Console::out("Parameters:");
-    Console::out(QString("PATH_TO_BOOT_ELF      = %1").arg(bootElfPath));
-    Console::out(QString("PATH_TO_CONFIGURE_ELF = %1").arg(configureElfPath));
-    Console::out(QString("PATH_TO_KERNEL_ELF    = %1").arg(kernelElfPath));
-    Console::out(QString("PATH_TO_TEXT_ELF      = %1").arg(textElfPath));
-    Console::out(QString("PATH_TO_RESULT_IMAGE  = %1").arg(resultImagePath));
-    Console::out("");
-
-    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
-
-
-
-    if (bootElfPath == "")
-    {
-        usage();
-
-        Console::err("PATH_TO_BOOT_ELF is not specified");
-
-        return 1;
-    }
-
-
-
-    if (textElfPath == "")
-    {
-        if (configureElfPath == "")
-        {
-            usage();
-
-            Console::err("PATH_TO_CONFIGURE_ELF is not specified");
-
-            return 1;
-        }
-
-
-
-        if (kernelElfPath == "")
-        {
-            usage();
-
-            Console::err("PATH_TO_KERNEL_ELF is not specified");
-
-            return 1;
-        }
-    }
-    else
-    {
-        if (configureElfPath != "")
-        {
-            Console::err("PATH_TO_CONFIGURE_ELF ignored");
-        }
-
-
-
-        if (kernelElfPath != "")
-        {
-            Console::err("PATH_TO_KERNEL_ELF ignored");
-        }
-    }
-
-
-
-    if (resultImagePath == "")
-    {
-        usage();
-
-        Console::err("PATH_TO_RESULT_IMAGE is not specified");
-
-        return 1;
-    }
-
-
-
-    ImageBuilder imageBuilder(bootElfPath, configureElfPath, kernelElfPath, textElfPath, resultImagePath);
-    qint64 res = imageBuilder.process();
-
-    Console::out(QString("Image built in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));
-    Console::out("");
-
-    return res;
-}
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDateTime>                                                                                                                                                                                     // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/image_builder/main/imagebuilder.h>                                                                                                                                           // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void usage()                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    Console::err(                                                                                                                                                                                        // Colorize: green
+                "Usage: image_builder -b PATH_TO_BOOT_ELF (-c PATH_TO_CONFIGURE_ELF -k PATH_TO_KERNEL_ELF | -t PATH_TO_TEXT_ELF) -o PATH_TO_RESULT_IMAGE\n"                                              // Colorize: green
+                "    * -b PATH_TO_BOOT_ELF      - specify path to boot.elf file\n"                                                                                                                       // Colorize: green
+                "    * -c PATH_TO_CONFIGURE_ELF - specify path to configure.elf file\n"                                                                                                                  // Colorize: green
+                "    * -k PATH_TO_KERNEL_ELF    - specify path to kernel.elf file\n"                                                                                                                     // Colorize: green
+                "    * -t PATH_TO_TEXT_ELF      - specify path to text.elf file\n"                                                                                                                       // Colorize: green
+                "    * -o PATH_TO_RESULT_IMAGE  - specify path to result image\n"                                                                                                                        // Colorize: green
+                "\n" // Ignore CppSingleCharVerifier                                                                                                                                                     // Colorize: green
+                "If you specify argument \"-t PATH_TO_TEXT_ELF\" it will replace existing .configure section and .kernel section in boot.elf file with a single .text section"                           // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCoreApplication app(argc, argv);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QStringList &arguments = app.arguments();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString bootElfPath;                                                                                                                                                                                 // Colorize: green
+    QString configureElfPath;                                                                                                                                                                            // Colorize: green
+    QString kernelElfPath;                                                                                                                                                                               // Colorize: green
+    QString textElfPath;                                                                                                                                                                                 // Colorize: green
+    QString resultImagePath;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get arguments                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 1; i < arguments.size(); ++i)                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString arg = arguments.at(i);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (arg == "-b")                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i >= arguments.size() - 1)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    usage();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    Console::err(QString("Additional argument missing for %1").arg(arg));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (bootElfPath != "")                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("PATH_TO_BOOT_ELF is already specified");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                bootElfPath = arguments.at(i);                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (arg == "-c")                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i >= arguments.size() - 1)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    usage();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    Console::err(QString("Additional argument missing for %1").arg(arg));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (configureElfPath != "")                                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("PATH_TO_CONFIGURE_ELF is already specified");                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                configureElfPath = arguments.at(i);                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (arg == "-k")                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i >= arguments.size() - 1)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    usage();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    Console::err(QString("Additional argument missing for %1").arg(arg));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (kernelElfPath != "")                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("PATH_TO_KERNEL_ELF is already specified");                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                kernelElfPath = arguments.at(i);                                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (arg == "-t")                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i >= arguments.size() - 1)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    usage();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    Console::err(QString("Additional argument missing for %1").arg(arg));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (textElfPath != "")                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("PATH_TO_TEXT_ELF is already specified");                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                textElfPath = arguments.at(i);                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (arg == "-o")                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (i >= arguments.size() - 1)                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    usage();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    Console::err(QString("Additional argument missing for %1").arg(arg));                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (resultImagePath != "")                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("PATH_TO_RESULT_IMAGE is already specified");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return 1;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                resultImagePath = arguments.at(i);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                usage();                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                Console::err(QString("Unknown argument: %1").arg(arg));                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return 1;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output application info                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("Image builder started");                                                                                                                                                           // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Parameters:");                                                                                                                                                                     // Colorize: green
+        Console::out(QString("PATH_TO_BOOT_ELF      = %1").arg(bootElfPath));                                                                                                                            // Colorize: green
+        Console::out(QString("PATH_TO_CONFIGURE_ELF = %1").arg(configureElfPath));                                                                                                                       // Colorize: green
+        Console::out(QString("PATH_TO_KERNEL_ELF    = %1").arg(kernelElfPath));                                                                                                                          // Colorize: green
+        Console::out(QString("PATH_TO_TEXT_ELF      = %1").arg(textElfPath));                                                                                                                            // Colorize: green
+        Console::out(QString("PATH_TO_RESULT_IMAGE  = %1").arg(resultImagePath));                                                                                                                        // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check arguments                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (bootElfPath == "")                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            usage();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::err("PATH_TO_BOOT_ELF is not specified");                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (textElfPath == "")                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (configureElfPath == "")                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                usage();                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                Console::err("PATH_TO_CONFIGURE_ELF is not specified");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return 1;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (kernelElfPath == "")                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                usage();                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                Console::err("PATH_TO_KERNEL_ELF is not specified");                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return 1;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (configureElfPath != "")                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err("PATH_TO_CONFIGURE_ELF ignored");                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (kernelElfPath != "")                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err("PATH_TO_KERNEL_ELF ignored");                                                                                                                                              // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (resultImagePath == "")                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            usage();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::err("PATH_TO_RESULT_IMAGE is not specified");                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ImageBuilder imageBuilder(bootElfPath, configureElfPath, kernelElfPath, textElfPath, resultImagePath);                                                                                               // Colorize: green
+    qint64 res = imageBuilder.process();                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output final messages                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out(QString("Image built in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));                                                                                              // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

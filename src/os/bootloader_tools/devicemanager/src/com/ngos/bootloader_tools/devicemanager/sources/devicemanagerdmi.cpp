@@ -193,11 +193,11 @@ NgosStatus DeviceManagerDMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
             if (entryV21)
             {
-                // UEFI_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                // UEFI_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAGS(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (entryV23)
                 {
-                    // UEFI_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                    // UEFI_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAGS(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (entryV24)
                     {

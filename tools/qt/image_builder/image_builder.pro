@@ -1,76 +1,81 @@
-QT -= gui
-
-CONFIG += c++20 console
-CONFIG -= app_bundle
-
-TARGET   = image_builder
-TEMPLATE = app
-
-
-
-DEFINES += \
-    DEVTOOLS_APPLICATION \
-    _WIN32_WINNT=0x0A00
-
-
-
-# Warnings as errors - BEGIN
-win32-msvc* {
-    QMAKE_CXXFLAGS += /WX
-} else {
-    QMAKE_CXXFLAGS += -Wall -Werror
-}
-# Warnings as errors - END
-
-# Release optimization - BEGIN
-QMAKE_CFLAGS_RELEASE -= -O1
-QMAKE_CFLAGS_RELEASE -= -O2
-QMAKE_CFLAGS_RELEASE += -O3
-
-QMAKE_CXXFLAGS_RELEASE -= -O1
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3
-# Release optimization - END
-
-# Target dirs - BEGIN
-DESTDIR     = build/
-OBJECTS_DIR = build/gen/$$TARGET/objs
-MOC_DIR     = build/gen/$$TARGET/moc
-RCC_DIR     = build/gen/$$TARGET/rcc
-UI_DIR      = build/gen/$$TARGET/ui
-# Target dirs - END
-
-
-
-INCLUDEPATH += \
-    src \                                   # tools/qt/image_builder/src
-    build/gen \                             # tools/qt/image_builder/build/gen
-    ../../../include \                      # include
-    ../../../src/os/configure/src \         # src/os/configure/src
-    ../../../src/os/shared/common/src \     # src/os/shared/common/src
-    ../shared/console/src \                 # tools/qt/shared/console/src
-    ../shared/elf/src                       # tools/qt/shared/elf/src
-
-
-
-include(../shared/console/console.pri)
-include(../shared/elf/elf.pri)
-
-
-
-SOURCES += \
-    src/com/ngos/devtools/image_builder/main.cpp \
-    src/com/ngos/devtools/image_builder/main/imagebuilder.cpp \
-    src/com/ngos/devtools/image_builder/pe/coffheader.cpp \
-    src/com/ngos/devtools/image_builder/pe/datadirectory.cpp \
-    src/com/ngos/devtools/image_builder/pe/imagesectionheader.cpp \
-    src/com/ngos/devtools/image_builder/pe/peheader.cpp \
-    src/com/ngos/devtools/image_builder/pe/peoptheader.cpp
-
-HEADERS += \
-    src/com/ngos/devtools/image_builder/main/imagebuilder.h \
-    src/com/ngos/devtools/image_builder/pe/coffheader.h \
-    src/com/ngos/devtools/image_builder/pe/datadirectory.h \
-    src/com/ngos/devtools/image_builder/pe/imagesectionheader.h \
-    src/com/ngos/devtools/image_builder/pe/peheader.h \
-    src/com/ngos/devtools/image_builder/pe/peoptheader.h
+QT -= gui                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CONFIG += c++20 console                                                                                                                                                                                  # Colorize: green
+CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+TARGET   = image_builder                                                                                                                                                                                 # Colorize: green
+TEMPLATE = app                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+DEFINES += \                                                                                                                                                                                             # Colorize: green
+    DEVTOOLS_APPLICATION \                                                                                                                                                                               # Colorize: green
+    _WIN32_WINNT=0x0A00                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Warnings as errors - BEGIN                                                                                                                                                                             # Colorize: green
+win32-msvc* {                                                                                                                                                                                            # Colorize: green
+    QMAKE_CXXFLAGS += /WX                                                                                                                                                                                # Colorize: green
+} else {                                                                                                                                                                                                 # Colorize: green
+    QMAKE_CXXFLAGS += -Wall -Werror                                                                                                                                                                      # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+# Warnings as errors - END                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Release optimization - BEGIN                                                                                                                                                                           # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O1                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O2                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE += -O3                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O1                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O2                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE += -O3                                                                                                                                                                            # Colorize: green
+# Release optimization - END                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Target dirs - BEGIN                                                                                                                                                                                    # Colorize: green
+DESTDIR     = build/                                                                                                                                                                                     # Colorize: green
+OBJECTS_DIR = build/gen/$$TARGET/objs                                                                                                                                                                    # Colorize: green
+MOC_DIR     = build/gen/$$TARGET/moc                                                                                                                                                                     # Colorize: green
+RCC_DIR     = build/gen/$$TARGET/rcc                                                                                                                                                                     # Colorize: green
+UI_DIR      = build/gen/$$TARGET/ui                                                                                                                                                                      # Colorize: green
+# Target dirs - END                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    src \                                   # tools/qt/image_builder/src                                                                                                                                 # Colorize: green
+    build/gen \                             # tools/qt/image_builder/build/gen                                                                                                                           # Colorize: green
+    ../../../include \                      # include                                                                                                                                                    # Colorize: green
+    ../../../src/os/configure/src \         # src/os/configure/src                                                                                                                                       # Colorize: green
+    ../../../src/os/shared/common/src \     # src/os/shared/common/src                                                                                                                                   # Colorize: green
+    ../shared/console/src \                 # tools/qt/shared/console/src                                                                                                                                # Colorize: green
+    ../shared/elf/src                       # tools/qt/shared/elf/src                                                                                                                                    # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+include(../shared/console/console.pri)                                                                                                                                                                   # Colorize: green
+include(../shared/elf/elf.pri)                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/image_builder/main.cpp \                                                                                                                                                       # Colorize: green
+    src/com/ngos/devtools/image_builder/main/imagebuilder.cpp \                                                                                                                                          # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/coffheader.cpp \                                                                                                                                              # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/datadirectory.cpp \                                                                                                                                           # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/imagesectionheader.cpp \                                                                                                                                      # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/peheader.cpp \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/peoptheader.cpp                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/image_builder/main/imagebuilder.h \                                                                                                                                            # Colorize: green
+    src/com/ngos/devtools/image_builder/other/coffheadercharacteristicsflags.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/other/coffheadermachine.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/other/imagesectionheadercharacteristicsflags.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/other/peoptheadersubsystem.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/other/section.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/coffheader.h \                                                                                                                                                # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/datadirectory.h \                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/imagesectionheader.h \                                                                                                                                        # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/peheader.h \                                                                                                                                                  # Colorize: green
+    src/com/ngos/devtools/image_builder/pe/peoptheader.h                                                                                                                                                 # Colorize: green

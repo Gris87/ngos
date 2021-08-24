@@ -1,73 +1,58 @@
-#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H
-#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H
-
-
-
-#include <Qt>
-
-#include <com/ngos/devtools/image_builder/pe/datadirectory.h>
-
-
-
-#define NUMBER_OF_RVA_AND_SIZES 6
-
-#define IMAGE_NT_OPTIONAL_HDR32_MAGIC 0x010B // 32 bit executable image.
-#define IMAGE_NT_OPTIONAL_HDR64_MAGIC 0x020B // 64 bit executable image
-#define IMAGE_ROM_OPTIONAL_HDR_MAGIC  0x0107 // ROM image
-
-#define IMAGE_SUBSYSTEM_UNKNOWN                  0  // Unknown subsystem
-#define IMAGE_SUBSYSTEM_NATIVE                   1  // No subsystem required (device drivers and native system processes)
-#define IMAGE_SUBSYSTEM_WINDOWS_GUI              2  // Windows graphical user interface (GUI) subsystem
-#define IMAGE_SUBSYSTEM_WINDOWS_CUI              3  // Windows character-mode user interface (CUI) subsystem
-#define IMAGE_SUBSYSTEM_OS2_CUI                  5  // OS/2 CUI subsystem
-#define IMAGE_SUBSYSTEM_POSIX_CUI                7  // POSIX CUI subsystem
-#define IMAGE_SUBSYSTEM_WINDOWS_CE_GUI           9  // Windows CE system
-#define IMAGE_SUBSYSTEM_UEFI_APPLICATION         10 // Unified Extensible Firmware Interface (UEFI) application
-#define IMAGE_SUBSYSTEM_UEFI_BOOT_SERVICE_DRIVER 11 // UEFI driver with boot services
-#define IMAGE_SUBSYSTEM_UEFI_RUNTIME_DRIVER      12 // UEFI driver with run-time services
-#define IMAGE_SUBSYSTEM_UEFI_ROM                 13 // UEFI ROM image
-#define IMAGE_SUBSYSTEM_XBOX                     14 // Xbox system
-#define IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION 16 // Boot application
-
-
-
-struct PEOptHeader
-{
-    quint16       signature;
-    quint8        majorLinkerVersion;
-    quint8        minorLinkerVersion;
-    quint32       sizeOfCode;
-    quint32       sizeOfInitializedData;
-    quint32       sizeOfUninitializedData;
-    quint32       addressOfEntryPoint;
-    quint32       baseOfCode;
-    quint64       imageBase;
-    quint32       sectionAlignment;
-    quint32       fileAlignment;
-    quint16       majorOSVersion;
-    quint16       minorOSVersion;
-    quint16       majorImageVersion;
-    quint16       minorImageVersion;
-    quint16       majorSubsystemVersion;
-    quint16       minorSubsystemVersion;
-    quint32       win32VersionValue;
-    quint32       sizeOfImage;
-    quint32       sizeOfHeaders;
-    quint32       checksum;
-    quint16       subsystem;
-    quint16       dllCharacteristics;
-    quint64       sizeOfStackReserve;
-    quint64       sizeOfStackCommit;
-    quint64       sizeOfHeapReserve;
-    quint64       sizeOfHeapCommit;
-    quint32       loaderFlags;
-    quint32       numberOfRvaAndSizes;
-    DataDirectory dataDirectories[NUMBER_OF_RVA_AND_SIZES];
-
-    void print(); // TEST: NO
-    bool verify(); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H
+#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H                                                                                                                                                 // Colorize: green
+#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/image_builder/other/peoptheadersubsystem.h>                                                                                                                                  // Colorize: green
+#include <com/ngos/devtools/image_builder/pe/datadirectory.h>                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define NUMBER_OF_RVA_AND_SIZES 6                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define PE_OPTIONAL_HEADER_SIGNATURE 0x020B // 64 bit executable image                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct PEOptHeader                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    void print(); // TEST: NO                                                                                                                                                                            // Colorize: green
+    bool verify(); // TEST: NO                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    quint16              signature;                                                                                                                                                                      // Colorize: green
+    quint8               majorLinkerVersion;                                                                                                                                                             // Colorize: green
+    quint8               minorLinkerVersion;                                                                                                                                                             // Colorize: green
+    quint32              sizeOfCode;                                                                                                                                                                     // Colorize: green
+    quint32              sizeOfInitializedData;                                                                                                                                                          // Colorize: green
+    quint32              sizeOfUninitializedData;                                                                                                                                                        // Colorize: green
+    quint32              addressOfEntryPoint;                                                                                                                                                            // Colorize: green
+    quint32              baseOfCode;                                                                                                                                                                     // Colorize: green
+    quint64              imageBase;                                                                                                                                                                      // Colorize: green
+    quint32              sectionAlignment;                                                                                                                                                               // Colorize: green
+    quint32              fileAlignment;                                                                                                                                                                  // Colorize: green
+    quint16              majorOSVersion;                                                                                                                                                                 // Colorize: green
+    quint16              minorOSVersion;                                                                                                                                                                 // Colorize: green
+    quint16              majorImageVersion;                                                                                                                                                              // Colorize: green
+    quint16              minorImageVersion;                                                                                                                                                              // Colorize: green
+    quint16              majorSubsystemVersion;                                                                                                                                                          // Colorize: green
+    quint16              minorSubsystemVersion;                                                                                                                                                          // Colorize: green
+    quint32              win32VersionValue;                                                                                                                                                              // Colorize: green
+    quint32              sizeOfImage;                                                                                                                                                                    // Colorize: green
+    quint32              sizeOfHeaders;                                                                                                                                                                  // Colorize: green
+    quint32              checksum;                                                                                                                                                                       // Colorize: green
+    PEOptHeaderSubsystem subsystem;                                                                                                                                                                      // Colorize: green
+    quint16              dllCharacteristics;                                                                                                                                                             // Colorize: green
+    quint64              sizeOfStackReserve;                                                                                                                                                             // Colorize: green
+    quint64              sizeOfStackCommit;                                                                                                                                                              // Colorize: green
+    quint64              sizeOfHeapReserve;                                                                                                                                                              // Colorize: green
+    quint64              sizeOfHeapCommit;                                                                                                                                                               // Colorize: green
+    quint32              loaderFlags;                                                                                                                                                                    // Colorize: green
+    quint32              numberOfRvaAndSizes;                                                                                                                                                            // Colorize: green
+    DataDirectory        dataDirectories[NUMBER_OF_RVA_AND_SIZES];                                                                                                                                       // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_PEOPTHEADER_H                                                                                                                                               // Colorize: green

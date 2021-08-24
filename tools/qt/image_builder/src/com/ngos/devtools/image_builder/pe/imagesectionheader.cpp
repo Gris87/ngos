@@ -1,318 +1,191 @@
-#include "imagesectionheader.h"
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void ImageSectionHeader::print()
-{
-    Console::out("Image Section Header:");
-
-    Console::out(QString("    name:                 %1").arg(name));
-    Console::out(QString("    misc.virtualSize:     0x%1").arg(misc.virtualSize,     8, 16, QChar('0')));
-    Console::out(QString("    virtualAddress:       0x%1").arg(virtualAddress,       8, 16, QChar('0')));
-    Console::out(QString("    sizeOfRawData:        0x%1").arg(sizeOfRawData,        8, 16, QChar('0')));
-    Console::out(QString("    pointerToRawData:     0x%1").arg(pointerToRawData,     8, 16, QChar('0')));
-    Console::out(QString("    pointerToRelocations: 0x%1").arg(pointerToRelocations, 8, 16, QChar('0')));
-    Console::out(QString("    pointerToLinenumbers: 0x%1").arg(pointerToLinenumbers, 8, 16, QChar('0')));
-    Console::out(QString("    numberOfRelocations:  0x%1").arg(numberOfRelocations,  4, 16, QChar('0')));
-    Console::out(QString("    numberOfLineNumbers:  0x%1").arg(numberOfLineNumbers,  4, 16, QChar('0')));
-    Console::out(QString("    characteristics:      0x%1").arg(characteristics,      8, 16, QChar('0')));
-
-    Console::out("");
-}
-
-bool ImageSectionHeader::verify()
-{
-    if (QString(name) == ".reloc")
-    {
-        if (misc.virtualSize <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 misc.virtualSize: 0x%2").arg(name).arg(misc.virtualSize, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (virtualAddress <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 virtualAddress: 0x%2").arg(name).arg(virtualAddress, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (sizeOfRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 sizeOfRawData: 0x%2").arg(name).arg(sizeOfRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRawData: 0x%2").arg(name).arg(pointerToRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToLinenumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfLineNumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (
-            characteristics != (IMAGE_SCN_MEM_READ
-                                | IMAGE_SCN_MEM_DISCARDABLE
-                                | IMAGE_SCN_ALIGN_1BYTES
-                                | IMAGE_SCN_CNT_INITIALIZED_DATA)
-           )
-        {
-            Console::err(QString("Wrong Image Section Header %1 characteristics: 0x%2").arg(name).arg(characteristics, 8, 16, QChar('0')));
-
-            return false;
-        }
-    }
-    else
-    if (QString(name) == ".config")
-    {
-        if (misc.virtualSize <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 misc.virtualSize: 0x%2").arg(name).arg(misc.virtualSize, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (virtualAddress <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 virtualAddress: 0x%2").arg(name).arg(virtualAddress, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (sizeOfRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 sizeOfRawData: 0x%2").arg(name).arg(sizeOfRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRawData: 0x%2").arg(name).arg(pointerToRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToLinenumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfLineNumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (
-            characteristics != (IMAGE_SCN_MEM_READ
-                                | IMAGE_SCN_MEM_EXECUTE
-                                | IMAGE_SCN_ALIGN_16BYTES
-                                | IMAGE_SCN_CNT_CODE)
-           )
-        {
-            Console::err(QString("Wrong Image Section Header %1 characteristics: 0x%2").arg(name).arg(characteristics, 8, 16, QChar('0')));
-
-            return false;
-        }
-    }
-    else
-    if (QString(name) == ".kernel")
-    {
-        if (misc.virtualSize <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 misc.virtualSize: 0x%2").arg(name).arg(misc.virtualSize, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (virtualAddress <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 virtualAddress: 0x%2").arg(name).arg(virtualAddress, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (sizeOfRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 sizeOfRawData: 0x%2").arg(name).arg(sizeOfRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRawData: 0x%2").arg(name).arg(pointerToRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToLinenumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfLineNumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (
-            characteristics != (IMAGE_SCN_MEM_READ
-                                | IMAGE_SCN_MEM_EXECUTE
-                                | IMAGE_SCN_ALIGN_1BYTES
-                                | IMAGE_SCN_CNT_CODE)
-           )
-        {
-            Console::err(QString("Wrong Image Section Header %1 characteristics: 0x%2").arg(name).arg(characteristics, 8, 16, QChar('0')));
-
-            return false;
-        }
-    }
-    else
-    if (QString(name) == ".text")
-    {
-        if (misc.virtualSize <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 misc.virtualSize: 0x%2").arg(name).arg(misc.virtualSize, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (virtualAddress <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 virtualAddress: 0x%2").arg(name).arg(virtualAddress, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (sizeOfRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 sizeOfRawData: 0x%2").arg(name).arg(sizeOfRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRawData <= 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRawData: 0x%2").arg(name).arg(pointerToRawData, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (pointerToLinenumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfRelocations != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (numberOfLineNumbers != 0)
-        {
-            Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));
-
-            return false;
-        }
-
-        if (
-            characteristics != (IMAGE_SCN_MEM_READ
-                                | IMAGE_SCN_MEM_EXECUTE
-                                | IMAGE_SCN_ALIGN_16BYTES
-                                | IMAGE_SCN_CNT_CODE)
-           )
-        {
-            Console::err(QString("Wrong Image Section Header %1 characteristics: 0x%2").arg(name).arg(characteristics, 8, 16, QChar('0')));
-
-            return false;
-        }
-    }
-    else
-    {
-        Console::err(QString("Wrong Image Section Header name: %1").arg(name));
-
-        return false;
-    }
-
-    return true;
-}
+#include "imagesectionheader.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void ImageSectionHeader::print()                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Console::out("Image Section Header:");                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out(QString("    name:                 %1").arg(name));                                                                                                                                     // Colorize: green
+    Console::out(QString("    misc.virtualSize:     0x%1").arg(misc.virtualSize,     8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    virtualAddress:       0x%1").arg(virtualAddress,       8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    sizeOfRawData:        0x%1").arg(sizeOfRawData,        8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    pointerToRawData:     0x%1").arg(pointerToRawData,     8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    pointerToRelocations: 0x%1").arg(pointerToRelocations, 8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    pointerToLinenumbers: 0x%1").arg(pointerToLinenumbers, 8, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    numberOfRelocations:  0x%1").arg(numberOfRelocations,  4, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    numberOfLineNumbers:  0x%1").arg(numberOfLineNumbers,  4, 16, QChar('0')));                                                                                                // Colorize: green
+    Console::out(QString("    characteristics:      %1").arg(flagsToFullString(characteristics)));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out("");                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ImageSectionHeader::verify()                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (QString(name) == ".reloc")                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return verifySection(FLAGS(                                                                                                                                                                      // Colorize: green
+                                ImageSectionHeaderCharacteristicsFlag::MEM_READ                                                                                                                          // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::MEM_DISCARDABLE                                                                                                                 // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::ALIGN_1BYTES                                                                                                                    // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::CNT_INITIALIZED_DATA                                                                                                            // Colorize: green
+                            ));                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (QString(name) == ".config")                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return verifySection(FLAGS(                                                                                                                                                                      // Colorize: green
+                                ImageSectionHeaderCharacteristicsFlag::MEM_READ                                                                                                                          // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::MEM_EXECUTE                                                                                                                     // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::ALIGN_16BYTES                                                                                                                   // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::CNT_CODE                                                                                                                        // Colorize: green
+                            ));                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (QString(name) == ".kernel")                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return verifySection(FLAGS(                                                                                                                                                                      // Colorize: green
+                                ImageSectionHeaderCharacteristicsFlag::MEM_READ                                                                                                                          // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::MEM_EXECUTE                                                                                                                     // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::ALIGN_1BYTES                                                                                                                    // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::CNT_CODE                                                                                                                        // Colorize: green
+                            ));                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (QString(name) == ".text")                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return verifySection(FLAGS(                                                                                                                                                                      // Colorize: green
+                                ImageSectionHeaderCharacteristicsFlag::MEM_READ                                                                                                                          // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::MEM_EXECUTE                                                                                                                     // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::ALIGN_16BYTES                                                                                                                   // Colorize: green
+                                , ImageSectionHeaderCharacteristicsFlag::CNT_CODE                                                                                                                        // Colorize: green
+                            ));                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::err(QString("Wrong Image Section Header name: %1").arg(name));                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ImageSectionHeader::verifySection(ImageSectionHeaderCharacteristicsFlags expectedCharacteristics)                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check virtualSize                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (misc.virtualSize <= 0)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 misc.virtualSize: 0x%2").arg(name).arg(misc.virtualSize, 8, 16, QChar('0')));                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check virtualAddress                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (virtualAddress <= 0)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 virtualAddress: 0x%2").arg(name).arg(virtualAddress, 8, 16, QChar('0')));                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfRawData                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfRawData <= 0)                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 sizeOfRawData: 0x%2").arg(name).arg(sizeOfRawData, 8, 16, QChar('0')));                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check pointerToRawData                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (pointerToRawData <= 0)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 pointerToRawData: 0x%2").arg(name).arg(pointerToRawData, 8, 16, QChar('0')));                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check pointerToRelocations                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (pointerToRelocations != 0)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 pointerToRelocations: 0x%2").arg(name).arg(pointerToRelocations, 8, 16, QChar('0')));                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check pointerToLinenumbers                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (pointerToLinenumbers != 0)                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 pointerToLinenumbers: 0x%2").arg(name).arg(pointerToLinenumbers, 8, 16, QChar('0')));                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check numberOfRelocations                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (numberOfRelocations != 0)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 numberOfRelocations: 0x%2").arg(name).arg(numberOfRelocations, 4, 16, QChar('0')));                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check numberOfLineNumbers                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (numberOfLineNumbers != 0)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 numberOfLineNumbers: 0x%2").arg(name).arg(numberOfLineNumbers, 4, 16, QChar('0')));                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check characteristics                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (characteristics != expectedCharacteristics)                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Image Section Header %1 characteristics: %2").arg(name).arg(flagsToFullString(characteristics)));                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

@@ -1,264 +1,420 @@
-#include "peoptheader.h"
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void PEOptHeader::print()
-{
-    Console::out("PE Optional Header:");
-    Console::out(QString("    signature:               0x%1").arg(signature,               4,  16, QChar('0')));
-    Console::out(QString("    majorLinkerVersion:      0x%1").arg(majorLinkerVersion,      2,  16, QChar('0')));
-    Console::out(QString("    minorLinkerVersion:      0x%1").arg(minorLinkerVersion,      2,  16, QChar('0')));
-    Console::out(QString("    sizeOfCode:              0x%1").arg(sizeOfCode,              8,  16, QChar('0')));
-    Console::out(QString("    sizeOfInitializedData:   0x%1").arg(sizeOfInitializedData,   8,  16, QChar('0')));
-    Console::out(QString("    sizeOfUninitializedData: 0x%1").arg(sizeOfUninitializedData, 8,  16, QChar('0')));
-    Console::out(QString("    addressOfEntryPoint:     0x%1").arg(addressOfEntryPoint,     8,  16, QChar('0')));
-    Console::out(QString("    baseOfCode:              0x%1").arg(baseOfCode,              8,  16, QChar('0')));
-    Console::out(QString("    imageBase:               0x%1").arg(imageBase,               16, 16, QChar('0')));
-    Console::out(QString("    sectionAlignment:        0x%1").arg(sectionAlignment,        8,  16, QChar('0')));
-    Console::out(QString("    fileAlignment:           0x%1").arg(fileAlignment,           8,  16, QChar('0')));
-    Console::out(QString("    majorOSVersion:          0x%1").arg(majorOSVersion,          4,  16, QChar('0')));
-    Console::out(QString("    minorOSVersion:          0x%1").arg(minorOSVersion,          4,  16, QChar('0')));
-    Console::out(QString("    majorImageVersion:       0x%1").arg(majorImageVersion,       4,  16, QChar('0')));
-    Console::out(QString("    minorImageVersion:       0x%1").arg(minorImageVersion,       4,  16, QChar('0')));
-    Console::out(QString("    majorSubsystemVersion:   0x%1").arg(majorSubsystemVersion,   4,  16, QChar('0')));
-    Console::out(QString("    minorSubsystemVersion:   0x%1").arg(minorSubsystemVersion,   4,  16, QChar('0')));
-    Console::out(QString("    win32VersionValue:       0x%1").arg(win32VersionValue,       8,  16, QChar('0')));
-    Console::out(QString("    sizeOfImage:             0x%1").arg(sizeOfImage,             8,  16, QChar('0')));
-    Console::out(QString("    sizeOfHeaders:           0x%1").arg(sizeOfHeaders,           8,  16, QChar('0')));
-    Console::out(QString("    checksum:                0x%1").arg(checksum,                8,  16, QChar('0')));
-    Console::out(QString("    subsystem:               0x%1").arg(subsystem,               4,  16, QChar('0')));
-    Console::out(QString("    dllCharacteristics:      0x%1").arg(dllCharacteristics,      4,  16, QChar('0')));
-    Console::out(QString("    sizeOfStackReserve:      0x%1").arg(sizeOfStackReserve,      16, 16, QChar('0')));
-    Console::out(QString("    sizeOfStackCommit:       0x%1").arg(sizeOfStackCommit,       16, 16, QChar('0')));
-    Console::out(QString("    sizeOfHeapReserve:       0x%1").arg(sizeOfHeapReserve,       16, 16, QChar('0')));
-    Console::out(QString("    sizeOfHeapCommit:        0x%1").arg(sizeOfHeapCommit,        16, 16, QChar('0')));
-    Console::out(QString("    loaderFlags:             0x%1").arg(loaderFlags,             8,  16, QChar('0')));
-    Console::out(QString("    numberOfRvaAndSizes:     0x%1").arg(numberOfRvaAndSizes,     8,  16, QChar('0')));
-    Console::out("");
-
-
-
-    for (qint64 i = 0; i < NUMBER_OF_RVA_AND_SIZES; ++i)
-    {
-        dataDirectories[i].print();
-    }
-}
-
-bool PEOptHeader::verify()
-{
-    if (signature != IMAGE_NT_OPTIONAL_HDR64_MAGIC)
-    {
-        Console::err(QString("Wrong PE Optional Header signature: 0x%1").arg(signature, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (majorLinkerVersion != 0x0E)
-    {
-        Console::err(QString("Wrong PE Optional Header majorLinkerVersion: 0x%1").arg(majorLinkerVersion, 2, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (minorLinkerVersion != 0x0A)
-    {
-        Console::err(QString("Wrong PE Optional Header minorLinkerVersion: 0x%1").arg(minorLinkerVersion, 2, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfCode != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfCode: 0x%1").arg(sizeOfCode, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfInitializedData != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfInitializedData: 0x%1").arg(sizeOfInitializedData, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfUninitializedData != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfUninitializedData: 0x%1").arg(sizeOfUninitializedData, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (addressOfEntryPoint <= 0)
-    {
-        Console::err(QString("Wrong PE Optional Header addressOfEntryPoint: 0x%1").arg(addressOfEntryPoint, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (baseOfCode != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header baseOfCode: 0x%1").arg(baseOfCode, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (imageBase != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header imageBase: 0x%1").arg(imageBase, 16, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sectionAlignment != 0x40)
-    {
-        Console::err(QString("Wrong PE Optional Header sectionAlignment: 0x%1").arg(sectionAlignment, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (fileAlignment != 0x40)
-    {
-        Console::err(QString("Wrong PE Optional Header fileAlignment: 0x%1").arg(fileAlignment, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (majorOSVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header majorOSVersion: 0x%1").arg(majorOSVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (minorOSVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header minorOSVersion: 0x%1").arg(minorOSVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (majorImageVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header majorImageVersion: 0x%1").arg(majorImageVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (minorImageVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header minorImageVersion: 0x%1").arg(minorImageVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (majorSubsystemVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header majorSubsystemVersion: 0x%1").arg(majorSubsystemVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (minorSubsystemVersion != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header minorSubsystemVersion: 0x%1").arg(minorSubsystemVersion, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (win32VersionValue != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header win32VersionValue: 0x%1").arg(win32VersionValue, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfImage <= 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfImage: 0x%1").arg(sizeOfImage, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfHeaders != 0x0200)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfHeaders: 0x%1").arg(sizeOfHeaders, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (checksum != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header checksum: 0x%1").arg(checksum, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (subsystem != IMAGE_SUBSYSTEM_UEFI_APPLICATION)
-    {
-        Console::err(QString("Wrong PE Optional Header subsystem: 0x%1").arg(subsystem, 4, 16, QChar('0')));
-        return false;
-    }
-
-    if (dllCharacteristics != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header dllCharacteristics: 0x%1").arg(dllCharacteristics, 4, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfStackReserve != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfStackReserve: 0x%1").arg(sizeOfStackReserve, 16, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfStackCommit != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfStackCommit: 0x%1").arg(sizeOfStackCommit, 16, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfHeapReserve != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfHeapReserve: 0x%1").arg(sizeOfHeapReserve, 16, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (sizeOfHeapCommit != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header sizeOfHeapCommit: 0x%1").arg(sizeOfHeapCommit, 16, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (loaderFlags != 0)
-    {
-        Console::err(QString("Wrong PE Optional Header loaderFlags: 0x%1").arg(loaderFlags, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (numberOfRvaAndSizes != NUMBER_OF_RVA_AND_SIZES)
-    {
-        Console::err(QString("Wrong PE Optional Header numberOfRvaAndSizes: 0x%1").arg(numberOfRvaAndSizes, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-
-
-    for (qint64 i = 0; i < NUMBER_OF_RVA_AND_SIZES; ++i)
-    {
-        if (!dataDirectories[i].verify())
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
+#include "peoptheader.h"                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PEOptHeader::print()                                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Output PE Optional Header                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("PE Optional Header:");                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out(QString("    signature:               0x%1").arg(signature,               4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    majorLinkerVersion:      0x%1").arg(majorLinkerVersion,      2,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    minorLinkerVersion:      0x%1").arg(minorLinkerVersion,      2,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfCode:              0x%1").arg(sizeOfCode,              8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfInitializedData:   0x%1").arg(sizeOfInitializedData,   8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfUninitializedData: 0x%1").arg(sizeOfUninitializedData, 8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    addressOfEntryPoint:     0x%1").arg(addressOfEntryPoint,     8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    baseOfCode:              0x%1").arg(baseOfCode,              8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    imageBase:               0x%1").arg(imageBase,               16, 16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sectionAlignment:        0x%1").arg(sectionAlignment,        8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    fileAlignment:           0x%1").arg(fileAlignment,           8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    majorOSVersion:          0x%1").arg(majorOSVersion,          4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    minorOSVersion:          0x%1").arg(minorOSVersion,          4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    majorImageVersion:       0x%1").arg(majorImageVersion,       4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    minorImageVersion:       0x%1").arg(minorImageVersion,       4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    majorSubsystemVersion:   0x%1").arg(majorSubsystemVersion,   4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    minorSubsystemVersion:   0x%1").arg(minorSubsystemVersion,   4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    win32VersionValue:       0x%1").arg(win32VersionValue,       8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfImage:             0x%1").arg(sizeOfImage,             8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfHeaders:           0x%1").arg(sizeOfHeaders,           8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    checksum:                0x%1").arg(checksum,                8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    subsystem:               0x%1").arg(subsystem,               4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    dllCharacteristics:      0x%1").arg(dllCharacteristics,      4,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfStackReserve:      0x%1").arg(sizeOfStackReserve,      16, 16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfStackCommit:       0x%1").arg(sizeOfStackCommit,       16, 16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfHeapReserve:       0x%1").arg(sizeOfHeapReserve,       16, 16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    sizeOfHeapCommit:        0x%1").arg(sizeOfHeapCommit,        16, 16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    loaderFlags:             0x%1").arg(loaderFlags,             8,  16, QChar('0')));                                                                                     // Colorize: green
+        Console::out(QString("    numberOfRvaAndSizes:     0x%1").arg(numberOfRvaAndSizes,     8,  16, QChar('0')));                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output data directories                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < NUMBER_OF_RVA_AND_SIZES; ++i)                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            dataDirectories[i].print();                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool PEOptHeader::verify()                                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check signature                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (signature != PE_OPTIONAL_HEADER_SIGNATURE)                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header signature: 0x%1").arg(signature, 4, 16, QChar('0')));                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check majorLinkerVersion                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (majorLinkerVersion != 0x0E)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header majorLinkerVersion: 0x%1").arg(majorLinkerVersion, 2, 16, QChar('0')));                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check minorLinkerVersion                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (minorLinkerVersion != 0x0A)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header minorLinkerVersion: 0x%1").arg(minorLinkerVersion, 2, 16, QChar('0')));                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfCode                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfCode != 0)                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfCode: 0x%1").arg(sizeOfCode, 8, 16, QChar('0')));                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfInitializedData                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfInitializedData != 0)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfInitializedData: 0x%1").arg(sizeOfInitializedData, 8, 16, QChar('0')));                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfUninitializedData                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfUninitializedData != 0)                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfUninitializedData: 0x%1").arg(sizeOfUninitializedData, 8, 16, QChar('0')));                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check addressOfEntryPoint                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (addressOfEntryPoint <= 0)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header addressOfEntryPoint: 0x%1").arg(addressOfEntryPoint, 8, 16, QChar('0')));                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check baseOfCode                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (baseOfCode != 0)                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header baseOfCode: 0x%1").arg(baseOfCode, 8, 16, QChar('0')));                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check imageBase                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (imageBase != 0)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header imageBase: 0x%1").arg(imageBase, 16, 16, QChar('0')));                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sectionAlignment                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sectionAlignment != 0x40)                                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sectionAlignment: 0x%1").arg(sectionAlignment, 8, 16, QChar('0')));                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check fileAlignment                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (fileAlignment != 0x40)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header fileAlignment: 0x%1").arg(fileAlignment, 8, 16, QChar('0')));                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check majorOSVersion                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (majorOSVersion != 0)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header majorOSVersion: 0x%1").arg(majorOSVersion, 4, 16, QChar('0')));                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check minorOSVersion                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (minorOSVersion != 0)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header minorOSVersion: 0x%1").arg(minorOSVersion, 4, 16, QChar('0')));                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check majorImageVersion                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (majorImageVersion != 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header majorImageVersion: 0x%1").arg(majorImageVersion, 4, 16, QChar('0')));                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check minorImageVersion                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (minorImageVersion != 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header minorImageVersion: 0x%1").arg(minorImageVersion, 4, 16, QChar('0')));                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check majorSubsystemVersion                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (majorSubsystemVersion != 0)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header majorSubsystemVersion: 0x%1").arg(majorSubsystemVersion, 4, 16, QChar('0')));                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check minorSubsystemVersion                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (minorSubsystemVersion != 0)                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header minorSubsystemVersion: 0x%1").arg(minorSubsystemVersion, 4, 16, QChar('0')));                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check win32VersionValue                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (win32VersionValue != 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header win32VersionValue: 0x%1").arg(win32VersionValue, 8, 16, QChar('0')));                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfImage                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfImage <= 0)                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfImage: 0x%1").arg(sizeOfImage, 8, 16, QChar('0')));                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfHeaders                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfHeaders != 0x0200)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfHeaders: 0x%1").arg(sizeOfHeaders, 8, 16, QChar('0')));                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check checksum                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (checksum != 0)                                                                                                                                                                               // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header checksum: 0x%1").arg(checksum, 8, 16, QChar('0')));                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check subsystem                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (subsystem != PEOptHeaderSubsystem::UEFI_APPLICATION)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header subsystem: 0x%1").arg(subsystem, 4, 16, QChar('0')));                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check dllCharacteristics                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (dllCharacteristics != 0)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header dllCharacteristics: 0x%1").arg(dllCharacteristics, 4, 16, QChar('0')));                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfStackReserve                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfStackReserve != 0)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfStackReserve: 0x%1").arg(sizeOfStackReserve, 16, 16, QChar('0')));                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfStackCommit                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfStackCommit != 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfStackCommit: 0x%1").arg(sizeOfStackCommit, 16, 16, QChar('0')));                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfHeapReserve                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfHeapReserve != 0)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfHeapReserve: 0x%1").arg(sizeOfHeapReserve, 16, 16, QChar('0')));                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check sizeOfHeapCommit                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (sizeOfHeapCommit != 0)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header sizeOfHeapCommit: 0x%1").arg(sizeOfHeapCommit, 16, 16, QChar('0')));                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check loaderFlags                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (loaderFlags != 0)                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header loaderFlags: 0x%1").arg(loaderFlags, 8, 16, QChar('0')));                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check numberOfRvaAndSizes                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (numberOfRvaAndSizes != NUMBER_OF_RVA_AND_SIZES)                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong PE Optional Header numberOfRvaAndSizes: 0x%1").arg(numberOfRvaAndSizes, 8, 16, QChar('0')));                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check data directories                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < NUMBER_OF_RVA_AND_SIZES; ++i)                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!dataDirectories[i].verify())                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return false;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

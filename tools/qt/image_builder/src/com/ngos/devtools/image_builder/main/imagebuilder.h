@@ -1,63 +1,62 @@
-#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H
-#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H
-
-
-
-#include <QString>
-
-#include <com/ngos/devtools/image_builder/pe/peheader.h>
-#include <com/ngos/devtools/shared/elf/elfobject.h>
-
-
-
-class ImageBuilder
-{
-public:
-    ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &textElfPath, const QString &resultImagePath); // TEST: NO
-
-    qint64 process(); // TEST: NO
-
-private:
-    bool writeResultImage(); // TEST: NO
-    qint64 getPeHeaderLocation(); // TEST: NO
-    PEHeader* getPeHeader(qint64 offset); // TEST: NO
-    bool updatePEOptHeader(); // TEST: NO
-    bool updateRelocSection(); // TEST: NO
-    bool updateConfigSection(); // TEST: NO
-    bool updateKernelSection(); // TEST: NO
-
-    quint8 readUInt8(qint64 offset); // TEST: NO
-    quint16 readUInt16(qint64 offset); // TEST: NO
-    quint32 readUInt32(qint64 offset); // TEST: NO
-    quint64 readUInt64(qint64 offset); // TEST: NO
-
-    void writeUInt8(qint64 offset, quint8 value); // TEST: NO
-    void writeUInt16(qint64 offset, quint16 value); // TEST: NO
-    void writeUInt32(qint64 offset, quint32 value); // TEST: NO
-    void writeUInt64(qint64 offset, quint64 value); // TEST: NO
-
-    QString     mBootElfPath;
-    QString     mConfigureElfPath;
-    QString     mKernelElfPath;
-    QString     mTextElfPath;
-    QString     mResultImagePath;
-    ElfObject   mBootElfObject;
-    ElfObject   mConfigureElfObject;
-    ElfObject   mKernelElfObject;
-    QByteArray  mKernelElf;
-    QByteArray  mResultImage;
-    QByteArray  mRelocSection;
-    PEHeader   *mPEHeader;
-    qint64      mBootStart;
-    qint64      mBootEnd;
-    qint64      mRelocStart;
-    qint64      mRelocEnd;
-    qint64      mConfigStart;
-    qint64      mConfigEnd;
-    qint64      mKernelStart;
-    qint64      mKernelEnd;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H
+#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H                                                                                                                                              // Colorize: green
+#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/image_builder/pe/peheader.h>                                                                                                                                                 // Colorize: green
+#include <com/ngos/devtools/shared/elf/elfobject.h>                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ImageBuilder                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    ImageBuilder(const QString &bootElfPath, const QString &configureElfPath, const QString &kernelElfPath, const QString &textElfPath, const QString &resultImagePath); // TEST: NO                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 process(); // TEST: NO                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    bool writeResultImage(); // TEST: NO                                                                                                                                                                 // Colorize: green
+    qint32 getPeHeaderLocation(); // TEST: NO                                                                                                                                                            // Colorize: green
+    PEHeader* getPeHeader(qint32 offset); // TEST: NO                                                                                                                                                    // Colorize: green
+    bool updatePEOptHeader(); // TEST: NO                                                                                                                                                                // Colorize: green
+    bool updateRelocSection(); // TEST: NO                                                                                                                                                               // Colorize: green
+    bool updateConfigSection(); // TEST: NO                                                                                                                                                              // Colorize: green
+    bool updateKernelSection(); // TEST: NO                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    quint8 readUInt8(qint64 offset); // TEST: NO                                                                                                                                                         // Colorize: green
+    quint16 readUInt16(qint64 offset); // TEST: NO                                                                                                                                                       // Colorize: green
+    quint32 readUInt32(qint64 offset); // TEST: NO                                                                                                                                                       // Colorize: green
+    quint64 readUInt64(qint64 offset); // TEST: NO                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void writeUInt8(qint64 offset, quint8 value); // TEST: NO                                                                                                                                            // Colorize: green
+    void writeUInt16(qint64 offset, quint16 value); // TEST: NO                                                                                                                                          // Colorize: green
+    void writeUInt32(qint64 offset, quint32 value); // TEST: NO                                                                                                                                          // Colorize: green
+    void writeUInt64(qint64 offset, quint64 value); // TEST: NO                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString     mBootElfPath;                                                                                                                                                                            // Colorize: green
+    QString     mConfigureElfPath;                                                                                                                                                                       // Colorize: green
+    QString     mKernelElfPath;                                                                                                                                                                          // Colorize: green
+    QString     mTextElfPath;                                                                                                                                                                            // Colorize: green
+    QString     mResultImagePath;                                                                                                                                                                        // Colorize: green
+    ElfObject   mBootElfObject;                                                                                                                                                                          // Colorize: green
+    ElfObject   mConfigureElfObject;                                                                                                                                                                     // Colorize: green
+    ElfObject   mKernelElfObject;                                                                                                                                                                        // Colorize: green
+    QByteArray  mKernelElf;                                                                                                                                                                              // Colorize: green
+    QByteArray  mResultImage;                                                                                                                                                                            // Colorize: green
+    PEHeader   *mPEHeader;                                                                                                                                                                               // Colorize: green
+    qint64      mBootStart;                                                                                                                                                                              // Colorize: green
+    qint64      mBootEnd;                                                                                                                                                                                // Colorize: green
+    qint64      mRelocStart;                                                                                                                                                                             // Colorize: green
+    qint64      mRelocEnd;                                                                                                                                                                               // Colorize: green
+    qint64      mConfigStart;                                                                                                                                                                            // Colorize: green
+    qint64      mConfigEnd;                                                                                                                                                                              // Colorize: green
+    qint64      mKernelStart;                                                                                                                                                                            // Colorize: green
+    qint64      mKernelEnd;                                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_MAIN_IMAGEBUILDER_H                                                                                                                                            // Colorize: green

@@ -638,11 +638,11 @@ NgosStatus DMI::saveDmiBiosEntry(DmiBiosEntry *entry)
 
             if (entryV21)
             {
-                // COMMON_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAG(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                // COMMON_TEST_ASSERT(entryV21->biosCharacteristicsExtensionBiosReserved == FLAGS(DmiBiosCharacteristicsBiosReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
                 if (entryV23)
                 {
-                    // COMMON_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAG(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+                    // COMMON_TEST_ASSERT(entryV23->biosCharacteristicsExtensionSystemReserved == FLAGS(DmiBiosCharacteristicsSystemReservedFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
 
                     if (entryV24)
                     {

@@ -187,7 +187,7 @@
 // Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, type) \
     { \
-        if (!flags) \
+        if (flags == 0) \
         { \
             return "NONE"; \
         } \
@@ -209,7 +209,7 @@
             { \
                 const char8 *flagString = flagToString((type)flag); \
                 \
-                if (!strcmp(flagString, "UNKNOWN")) \
+                if (strcmp(flagString, "UNKNOWN") == 0) \
                 { \
                     ++unknownCount; \
                 } \
@@ -229,7 +229,7 @@
         \
         \
         \
-        if (unknownCount) \
+        if (unknownCount != 0) \
         { \
             if (cur != start) \
             { \
@@ -257,7 +257,7 @@
     { \
         char8 *cur = res + sprintf(res, typeFormat " (", flags); \
         \
-        if (!flags) \
+        if (flags == 0) \
         { \
             strapp(cur, "NONE)"); \
             \
@@ -278,7 +278,7 @@
             { \
                 const char8 *flagString = flagToString((type)flag); \
                 \
-                if (!strcmp(flagString, "UNKNOWN")) \
+                if (strcmp(flagString, "UNKNOWN") == 0) \
                 { \
                     ++unknownCount; \
                 } \
@@ -298,7 +298,7 @@
         \
         \
         \
-        if (unknownCount) \
+        if (unknownCount != 0) \
         { \
             if (cur != start) \
             { \

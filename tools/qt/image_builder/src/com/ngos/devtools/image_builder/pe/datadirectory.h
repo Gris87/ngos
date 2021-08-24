@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H
-#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H
-
-
-
-#include <Qt>
-
-
-
-struct DataDirectory
-{
-    quint32 virtualAddress;
-    quint32 size;
-
-    void print(); // TEST: NO
-    bool verify(); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H
+#ifndef COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct DataDirectory                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    void print(); // TEST: NO                                                                                                                                                                            // Colorize: green
+    bool verify(); // TEST: NO                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    quint32 virtualAddress;                                                                                                                                                                              // Colorize: green
+    quint32 size;                                                                                                                                                                                        // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_IMAGE_BUILDER_PE_DATADIRECTORY_H                                                                                                                                             // Colorize: green

@@ -160,15 +160,15 @@ NgosStatus UefiPointerDevices::initAbsolutePointerDevices()
 
 
 
-        // UEFI_TEST_ASSERT(sAbsolutePointersCount                   == 1,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput       != nullptr,                                          NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == 0,                                                NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxX == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxY == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxZ == 65536,                                            NgosStatus::ASSERTION); // Commented due to value variation
-        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->attributes   == FLAG(UefiAbsolutePointerModeAttributeFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointersCount                   == 1,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->waitForInput       != nullptr,                                           NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinX == 0,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinY == 0,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMinZ == 0,                                                 NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxX == 65536,                                             NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxY == 65536,                                             NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->absoluteMaxZ == 65536,                                             NgosStatus::ASSERTION); // Commented due to value variation
+        // UEFI_TEST_ASSERT(sAbsolutePointers[0]->mode->attributes   == FLAGS(UefiAbsolutePointerModeAttributeFlag::NONE), NgosStatus::ASSERTION); // Commented due to value variation
     }
 
 

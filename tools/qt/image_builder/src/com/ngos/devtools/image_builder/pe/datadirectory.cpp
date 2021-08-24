@@ -1,34 +1,44 @@
-#include "datadirectory.h"
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void DataDirectory::print()
-{
-    Console::out("Data Directory:");
-
-    Console::out(QString("    virtualAddress: 0x%1").arg(virtualAddress, 8, 16, QChar('0')));
-    Console::out(QString("    size:           0x%1").arg(size,           8, 16, QChar('0')));
-
-    Console::out("");
-}
-
-bool DataDirectory::verify()
-{
-    if (virtualAddress != 0)
-    {
-        Console::err(QString("Wrong Data Directory virtualAddress: 0x%1").arg(virtualAddress, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    if (size != 0)
-    {
-        Console::err(QString("Wrong Data Directory size: 0x%1").arg(size, 8, 16, QChar('0')));
-
-        return false;
-    }
-
-    return true;
-}
+#include "datadirectory.h"                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void DataDirectory::print()                                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    Console::out("Data Directory:");                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out(QString("    virtualAddress: 0x%1").arg(virtualAddress, 8, 16, QChar('0')));                                                                                                            // Colorize: green
+    Console::out(QString("    size:           0x%1").arg(size,           8, 16, QChar('0')));                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out("");                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool DataDirectory::verify()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check virtualAddress                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (virtualAddress != 0)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Data Directory virtualAddress: 0x%1").arg(virtualAddress, 8, 16, QChar('0')));                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check size                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (size != 0)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Wrong Data Directory size: 0x%1").arg(size, 8, 16, QChar('0')));                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
