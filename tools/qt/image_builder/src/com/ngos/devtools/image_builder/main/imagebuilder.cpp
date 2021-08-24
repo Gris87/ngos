@@ -12,7 +12,7 @@
 #define SECTION_ALIGNMENT  0x40                                                                                                                                                                          // Colorize: green
 #define RELOC_SECTION_SIZE SECTION_ALIGNMENT                                                                                                                                                             // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define TEXT_SECTION_NAME 0x000000747865742E //.text                                                                                                                                                     // Colorize: green
+#define TEXT_SECTION_NAME 0x000000747865742E // .text                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
