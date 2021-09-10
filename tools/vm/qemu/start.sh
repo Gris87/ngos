@@ -13,7 +13,8 @@
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
-TTY=/tmp/ngos_ttyS0_qemu                                                                                                                                                                                  # Colorize: green
+TTY=/tmp/ngos_ttyS0_qemu                                                                                                                                                                                 # Colorize: green
+DISKS_PATH=../../../build/disks                                                                                                                                                                          # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
 RAM_SIZE=$1                                                                                                                                                                                              # Colorize: green
 HDD_SIZE=$2                                                                                                                                                                                              # Colorize: green
@@ -79,30 +80,30 @@ cd ${CURRENT_PATH}/                                                             
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-mkdir -p ../../../build/disks/ 2> /dev/null                                                                                                                                                              # Colorize: green
-sudo rm "../../../build/disks/${VM_NAME}.raw" 2> /dev/null                                                                                                                                               # Colorize: green
-qemu-img convert -O raw "../../../build/disks/${VM_NAME}.img" "../../../build/disks/${VM_NAME}.raw" 2> /dev/null                                                                                         # Colorize: green
-rm "../../../build/disks/${VM_NAME}.img"                                                                                                                                                                 # Colorize: green
+mkdir -p ${DISKS_PATH} 2> /dev/null                                                                                                                                                              # Colorize: green
+sudo rm "${DISKS_PATH}/${VM_NAME}.raw" 2> /dev/null                                                                                                                                               # Colorize: green
+qemu-img convert -O raw "${DISKS_PATH}/${VM_NAME}.img" "${DISKS_PATH}/${VM_NAME}.raw" 2> /dev/null                                                                                         # Colorize: green
+rm "${DISKS_PATH}/${VM_NAME}.img"                                                                                                                                                                 # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
 ARCH=`grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]"`                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-sudo virt-install --name ${VM_NAME}                                                     \
-    --connect qemu:///system                                                            \
-    --virt-type qemu                                                                    \
-    --arch=${ARCH}                                                                      \
-    --os-variant=none                                                                   \
-    --ram ${RAM_SIZE}                                                                   \
-    --vcpus 4,sockets=1,cores=2,threads=2                                               \
-    --cpu Icelake-Client,+la57                                                          \
-    --graphics ${DISPLAY_TYPE}                                                          \
-    --video=vga                                                                         \
-    --network network=default,model=virtio                                              \
-    --disk path="../../../build/disks/${VM_NAME}.raw",format=raw,bus=virtio,cache=none  \
-    --serial unix,path=${TTY}                                                           \
-    --boot uefi                                                                         \
-    --qemu-commandline="-gdb tcp::1234"                                                 \
+sudo virt-install --name ${VM_NAME}                                             \
+    --connect qemu:///system                                                    \
+    --virt-type qemu                                                            \
+    --arch=${ARCH}                                                              \
+    --os-variant=none                                                           \
+    --ram ${RAM_SIZE}                                                           \
+    --vcpus 4,sockets=1,cores=2,threads=2                                       \
+    --cpu Icelake-Client,+la57                                                  \
+    --graphics ${DISPLAY_TYPE}                                                  \
+    --video=vga                                                                 \
+    --network network=default,model=virtio                                      \
+    --disk path="${DISKS_PATH}/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
+    --serial unix,path=${TTY}                                                   \
+    --boot uefi                                                                 \
+    --qemu-commandline="-gdb tcp::1234"                                         \
     --noautoconsole                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
