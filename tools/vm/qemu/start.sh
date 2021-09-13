@@ -89,21 +89,21 @@ rm "${PATH_TO_DISKS}/${VM_NAME}.img"                                            
                                                                                                                                                                                                          # Colorize: green
 ARCH=`grep "define NGOS_BUILD_ARCH" ../../../include/buildconfig.h | sed -r "s/.*OPTION_ARCH_([a-zA-Z0-9_]+).*/\1/g" | tr "[:upper:]" "[:lower:]"`                                                       # Colorize: green
                                                                                                                                                                                                          # Colorize: green
-sudo virt-install --name ${VM_NAME}                                             \
-    --connect qemu:///system                                                    \
-    --virt-type qemu                                                            \
-    --arch=${ARCH}                                                              \
-    --os-variant=none                                                           \
-    --ram ${RAM_SIZE}                                                           \
-    --vcpus 4,sockets=1,cores=2,threads=2                                       \
-    --cpu Icelake-Client,+la57                                                  \
-    --graphics ${DISPLAY_TYPE}                                                  \
-    --video=vga                                                                 \
-    --network network=default,model=virtio                                      \
-    --disk path="${PATH_TO_DISKS}/${VM_NAME}.raw",format=raw,bus=virtio,cache=none \
-    --serial unix,path=${TTY}                                                   \
-    --boot uefi                                                                 \
-    --qemu-commandline="-gdb tcp::1234"                                         \
+sudo virt-install --name ${VM_NAME}                                                 \
+    --connect qemu:///system                                                        \
+    --virt-type qemu                                                                \
+    --arch=${ARCH}                                                                  \
+    --os-variant=none                                                               \
+    --ram ${RAM_SIZE}                                                               \
+    --vcpus 4,sockets=1,cores=2,threads=2                                           \
+    --cpu Icelake-Client,+la57                                                      \
+    --graphics ${DISPLAY_TYPE}                                                      \
+    --video=vga                                                                     \
+    --network network=default,model=virtio                                          \
+    --disk path="${PATH_TO_DISKS}/${VM_NAME}.raw",format=raw,bus=virtio,cache=none  \
+    --serial unix,path=${TTY}                                                       \
+    --boot uefi                                                                     \
+    --qemu-commandline="-gdb tcp::1234"                                             \
     --noautoconsole                                                                                                                                                                                      # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
