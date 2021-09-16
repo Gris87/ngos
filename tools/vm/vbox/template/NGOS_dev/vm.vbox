@@ -48,7 +48,7 @@
                 <Adapter slot="7" type="Am79C973"/>
             </Network>
             <UART>
-                <Port slot="0" enabled="true" IOBase="0x03F8" IRQ="4" server="true" path="/tmp/ngos_ttyS0_vbox" hostMode="HostPipe"/>
+                <Port slot="0" enabled="true" IOBase="0x03F8" IRQ="4" server="true" path="__TTY__" hostMode="HostPipe"/>
             </UART>
             <AudioAdapter driver="Pulse" enabled="true"/>
             <GuestProperties>

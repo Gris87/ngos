@@ -14,7 +14,7 @@
                                                                                                                                                                                                          # Colorize: green
 CURRENT_PATH=`pwd`                                                                                                                                                                                       # Colorize: green
 PATH_TO_DISKS=${CURRENT_PATH}/../../../build/disks                                                                                                                                                          # Colorize: green
-TTY=/tmp/ngos_ttyS0_qemu                                                                                                                                                                                 # Colorize: green
+TTY=`mktemp -t ngos_ttyS0_qemu_XXXX`                                                                                                                                                                     # Colorize: green
 VM_NAME="NGOS_dev"                                                                                                                                                                                       # Colorize: green
 RAM_SIZE=$1                                                                                                                                                                                              # Colorize: green
 HDD_SIZE=$2                                                                                                                                                                                              # Colorize: green
