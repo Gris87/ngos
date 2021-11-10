@@ -23,7 +23,7 @@ qint64 BuildConfigMaker::process()
     {
         Console::err(QString("Failed to read file \"%1\"").arg(mBuildConfigPath));
 
-        return 2;
+        return 1;
     }
 
     QString content = QString::fromUtf8(file.readAll());
@@ -126,7 +126,7 @@ qint64 BuildConfigMaker::process()
         {
             Console::err(QString("Parameter \"%1\" not found").arg(parameter));
 
-            return 3;
+            return 1;
         }
     }
 
@@ -140,7 +140,7 @@ qint64 BuildConfigMaker::process()
         {
             Console::err(QString("Failed to write file \"%1\"").arg(mBuildConfigPath));
 
-            return 4;
+            return 1;
         }
 
         file.write(newContent.toUtf8());

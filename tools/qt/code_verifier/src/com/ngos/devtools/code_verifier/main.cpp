@@ -36,7 +36,7 @@ qint32 main(qint32 argc, char *argv[])
     {
         usage();
 
-        return 2;
+        return 1;
     }
 
 

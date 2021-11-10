@@ -35,7 +35,7 @@ void MdSpellVerifier::verify(DocsWorkerThread *worker, const QString &path, cons
 
     process.setWorkingDirectory(parentFolder);
     process.start("mdspell", QStringList() << "--en-us" << "-n" << "-r" << path);
-    process.waitForFinished();
+    process.waitForFinished(-1);
 
 
 

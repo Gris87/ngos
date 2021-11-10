@@ -55,7 +55,7 @@ qint32 main(qint32 argc, char *argv[])
     {
         Console::err("PATH is invalid");
 
-        return 2;
+        return 1;
     }
 
 
@@ -70,7 +70,7 @@ qint32 main(qint32 argc, char *argv[])
         !UsbBootMakerGenerator::generateAll(targetPath)
        )
     {
-        return 3;
+        return 1;
     }
 
 
