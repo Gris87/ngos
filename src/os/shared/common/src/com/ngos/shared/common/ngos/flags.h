@@ -184,22 +184,33 @@
 
 
 
-// Ignore CppAlignmentVerifier [BEGIN]
-#define FLAGS_TO_STRING(res, flags, type) \
+#define __FLAGS_TO_STRING_START_PART(flags, res, cur) \
     { \
         if (flags == 0) \
         { \
             return "NONE"; \
         } \
         \
-        char8 *cur = res; \
-        *cur       = 0; \
+        cur  = res; \
+        *cur = 0; \
+    }
+
+#define __FLAGS_TO_FULL_STRING_START_PART(flags, res, cur, typeFormat) \
+    { \
+        cur = res + sprintf(res, typeFormat " (", flags); \
         \
-        char8 *start = cur; \
-        \
-        \
-        \
-        u8 unknownCount = 0; \
+        if (flags == 0) \
+        { \
+            strapp(cur, "NONE)"); \
+            \
+            return res; \
+        } \
+    }
+
+#define __FLAGS_TO_STRING_COMMON_PART(start, cur, unknownCount, flags, type) \
+    { \
+        start        = cur; \
+        unknownCount = 0; \
         \
         for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
         { \
@@ -226,9 +237,10 @@
                 } \
             } \
         } \
-        \
-        \
-        \
+    }
+
+#define __FLAGS_TO_STRING_END_PART(start, cur, unknownCount) \
+    { \
         if (unknownCount != 0) \
         { \
             if (cur != start) \
@@ -248,56 +260,9 @@
             } \
         } \
     }
-// Ignore CppAlignmentVerifier [END]
 
-
-
-// Ignore CppAlignmentVerifier [BEGIN]
-#define FLAGS_TO_FULL_STRING(res, flags, type, typeFormat) \
+#define __FLAGS_TO_FULL_STRING_END_PART(start, cur, unknownCount) \
     { \
-        char8 *cur = res + sprintf(res, typeFormat " (", flags); \
-        \
-        if (flags == 0) \
-        { \
-            strapp(cur, "NONE)"); \
-            \
-            return res; \
-        } \
-        \
-        char8 *start = cur; \
-        \
-        \
-        \
-        u8 unknownCount = 0; \
-        \
-        for (i64 i = 0; i < (i64)(sizeof(flags) * 8); ++i) \
-        { \
-            enum_t flag = (1ULL << i); \
-            \
-            if (flags & flag) \
-            { \
-                const char8 *flagString = flagToString((type)flag); \
-                \
-                if (strcmp(flagString, "UNKNOWN") == 0) \
-                { \
-                    ++unknownCount; \
-                } \
-                else \
-                { \
-                    if (cur != start) \
-                    { \
-                        cur = strapp(cur, " | "); \
-                    } \
-                    \
-                    \
-                    \
-                    cur = strapp(cur, flagString); \
-                } \
-            } \
-        } \
-        \
-        \
-        \
         if (unknownCount != 0) \
         { \
             if (cur != start) \
@@ -321,6 +286,33 @@
             cur[0] = ')'; \
             cur[1] = 0; \
         } \
+    }
+
+// Ignore CppAlignmentVerifier [BEGIN]
+#define FLAGS_TO_STRING(res, flags, type) \
+    { \
+        char8 *start; \
+        char8 *cur; \
+        u8     unknownCount; \
+        \
+        __FLAGS_TO_STRING_START_PART(flags, res, cur); \
+        __FLAGS_TO_STRING_COMMON_PART(start, cur, unknownCount, flags, type); \
+        __FLAGS_TO_STRING_END_PART(start, cur, unknownCount); \
+    }
+// Ignore CppAlignmentVerifier [END]
+
+
+
+// Ignore CppAlignmentVerifier [BEGIN]
+#define FLAGS_TO_FULL_STRING(res, flags, type, typeFormat) \
+    { \
+        char8 *start; \
+        char8 *cur; \
+        u8     unknownCount; \
+        \
+        __FLAGS_TO_FULL_STRING_START_PART(flags, res, cur, typeFormat); \
+        __FLAGS_TO_STRING_COMMON_PART(start, cur, unknownCount, flags, type); \
+        __FLAGS_TO_FULL_STRING_END_PART(start, cur, unknownCount); \
     }
 // Ignore CppAlignmentVerifier [END]
 
