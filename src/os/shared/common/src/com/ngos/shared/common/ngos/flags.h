@@ -288,7 +288,6 @@
         } \
     }
 
-// Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_STRING(res, flags, type) \
     { \
         char8 *start; \
@@ -299,11 +298,9 @@
         __FLAGS_TO_STRING_COMMON_PART(start, cur, unknownCount, flags, type); \
         __FLAGS_TO_STRING_END_PART(start, cur, unknownCount); \
     }
-// Ignore CppAlignmentVerifier [END]
 
 
 
-// Ignore CppAlignmentVerifier [BEGIN]
 #define FLAGS_TO_FULL_STRING(res, flags, type, typeFormat) \
     { \
         char8 *start; \
@@ -314,7 +311,6 @@
         __FLAGS_TO_STRING_COMMON_PART(start, cur, unknownCount, flags, type); \
         __FLAGS_TO_FULL_STRING_END_PART(start, cur, unknownCount); \
     }
-// Ignore CppAlignmentVerifier [END]
 
 
 
