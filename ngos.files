@@ -5914,6 +5914,8 @@ tools/qt/specs_verifier/specs_verifier.pro
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/main.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/elf/elfspecverifier.h
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/pe/pespecverifier.cpp
+tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/pe/pespecverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/specverifier.cpp
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/specs/specverifier.h
 tools/qt/specs_verifier/src/com/ngos/devtools/specs_verifier/threads/specverifythread.cpp
