@@ -90,9 +90,9 @@ coff_header:                                                                    
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
 optional_header:                                                                # Label for PE Optional Header
-                                                                                # struct PEOptionalHeader
+                                                                                # struct PeOptionalHeader
                                                                                 # {
-    .word   0x020B  # PE32+ format                                              #     short signature;                                      # Magic number 0x020B for identifing PE format for 64 bit system
+    .word   0x020B  # PE32+ format                                              #     short magic;                                          # Magic number 0x020B for identifing PE format for 64 bit system
     .byte   0x0E    # Some modern                                               #     char majorLinkerVersion;                              # The major version number of the linker.
     .byte   0x0A    # linker version                                            #     char minorLinkerVersion;                              # The minor version number of the linker.
     .long   0       # Ignored                                                   #     long sizeOfCode;                                      # The size of the code section, in bytes, or the sum of all such sections if there are multiple code sections.
@@ -103,8 +103,8 @@ optional_header:                                                                
     .quad   0       # Ignored                                                   #     long long imageBase;                                  # The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows CE where it is 0x00010000.
     .long   0x40    # 64                                                        #     long sectionAlignment;                                # The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the fileAlignment member. The default value is the page size for the system.
     .long   0x40    # 64                                                        #     long fileAlignment;                                   # The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between 512 and 64K (inclusive). The default is 512. If the sectionAlignment member is less than the system page size, this member must be the same as sectionAlignment.
-    .word   0       # Ignored                                                   #     short majorOSVersion;                                 # The major version number of the required operating system.
-    .word   0       # Ignored                                                   #     short minorOSVersion;                                 # The minor version number of the required operating system.
+    .word   0       # Ignored                                                   #     short majorOperatingSystemVersion;                    # The major version number of the required operating system.
+    .word   0       # Ignored                                                   #     short minorOperatingSystemVersion;                    # The minor version number of the required operating system.
     .word   0       # Ignored                                                   #     short majorImageVersion;                              # The major version number of the image.
     .word   0       # Ignored                                                   #     short minorImageVersion;                              # The minor version number of the image.
     .word   0       # Ignored                                                   #     short majorSubsystemVersion;                          # The major version number of the subsystem.
