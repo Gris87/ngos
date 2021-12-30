@@ -90,7 +90,7 @@ coff_header:                                                                    
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
 optional_header:                                                                # Label for PE Optional Header
-                                                                                # struct PEOptHeader
+                                                                                # struct PEOptionalHeader
                                                                                 # {
     .word   0x020B  # PE32+ format                                              #     short signature;                                      # Magic number 0x020B for identifing PE format for 64 bit system
     .byte   0x0E    # Some modern                                               #     char majorLinkerVersion;                              # The major version number of the linker.

@@ -5874,7 +5874,7 @@ tools/qt/image_builder/src/com/ngos/devtools/image_builder/main/imagebuilder.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/coffheadercharacteristicsflags.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/coffheadermachine.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/imagesectionheadercharacteristicsflags.h
-tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/peoptheadersubsystem.h
+tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/peoptionalheadersubsystem.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/other/section.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/coffheader.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/coffheader.h
@@ -5884,8 +5884,8 @@ tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/imagesectionheader
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/imagesectionheader.h
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peheader.cpp
 tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peheader.h
-tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptheader.cpp
-tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptheader.h
+tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptionalheader.cpp
+tools/qt/image_builder/src/com/ngos/devtools/image_builder/pe/peoptionalheader.h
 tools/qt/qmake/.gitignore
 tools/qt/qmake/qmake.pro
 tools/qt/qmake/README.md
