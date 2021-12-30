@@ -112,7 +112,7 @@ optional_header:                                                                
     .long   0       # Reserved                                                  #     long win32VersionValue;                               # This member is reserved and must be 0.
     .long   0       # To be filled by image_builder                             #     long sizeOfImage;                                     # The size of the image, in bytes, including all headers. Must be a multiple of sectionAlignment.
     .long   0x0200  # Say UEFI to skip 0x0200 bytes                             #     long sizeOfHeaders;                                   # Total size of all headers.
-    .long   0       # Ignored                                                   #     long checksum;                                        # The image file checksum.
+    .long   0       # Ignored                                                   #     long checkSum;                                        # The image file checksum.
     .word   0x0A    # UEFI application                                          #     short subsystem;                                      # The subsystem that will be invoked to run the executable      # 0x0A == UEFI application
     .word   0       # Ignored                                                   #     short dllCharacteristics;                             # The DLL characteristics of the image.
     .quad   0       # Ignored                                                   #     long long sizeOfStackReserve;                         # The number of bytes to reserve for the stack. Only the memory specified by the sizeOfStackCommit member is committed at load time; the rest is made available one page at a time until this reserve size is reached.
