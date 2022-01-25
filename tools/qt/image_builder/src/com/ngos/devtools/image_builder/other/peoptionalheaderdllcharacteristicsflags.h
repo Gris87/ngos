@@ -18,7 +18,7 @@ typedef quint16 pe_optional_header_dll_characteristics_flags;
 
 enum class PeOptionalHeaderDllCharacteristicsFlag: pe_optional_header_dll_characteristics_flags
 {
-    NONE                    = 0,
+    NONE                  = 0,
     HIGH_ENTROPY_VA       = (1ULL << 5),  // Image can handle a high entropy 64-bit virtual address space.
     DYNAMIC_BASE          = (1ULL << 6),  // DLL can be relocated at load time.
     FORCE_INTEGRITY       = (1ULL << 7),  // Code Integrity checks are enforced.
