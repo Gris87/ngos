@@ -7,8 +7,8 @@
                                                                                                                                                                                                          // Colorize: green
 #include <com/ngos/devtools/image_builder/other/section.h>                                                                                                                                               // Colorize: green
 #include <com/ngos/devtools/image_builder/pe/coffheader.h>                                                                                                                                               // Colorize: green
-#include <com/ngos/devtools/image_builder/pe/sectionheader.h>                                                                                                                                       // Colorize: green
 #include <com/ngos/devtools/image_builder/pe/peoptionalheader.h>                                                                                                                                              // Colorize: green
+#include <com/ngos/devtools/image_builder/pe/sectionheader.h>                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
