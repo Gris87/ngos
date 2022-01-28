@@ -151,63 +151,51 @@ optional_header:                                                                
 # ----------------------------------------------------------------------------- # -----------------------------------------------------------------------------
                                                                                 #
 section_table:                                                                  # Label for section table
-                                                                                # struct IMAGE_SECTION_HEADER
+                                                                                # struct SectionHeader
                                                                                 # {
-    .ascii  ".reloc\0\0"    # UEFI application must be                          #     char  name[8];
-                            # relocatable                                       #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x42100040  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_DISCARDABLE                           # }
-                        # | IMAGE_SCN_ALIGN_1BYTES                              #
-                        # | IMAGE_SCN_CNT_INITIALIZED_DATA                      #
-                                                                                # struct IMAGE_SECTION_HEADER
+    .ascii  ".reloc\0\0"    # UEFI application must be relocatable              #     char  name[8];
+    .long   0               # To be filled by image_builder                     #     long  virtualSize;
+    .long   0               # To be filled by image_builder                     #     long  virtualAddress;
+    .long   0               # To be filled by image_builder                     #     long  sizeOfRawData;
+    .long   0               # To be filled by image_builder                     #     long  pointerToRawData;
+    .long   0               # Ignored                                           #     long  pointerToRelocations;
+    .long   0               # Ignored                                           #     long  pointerToLinenumbers;
+    .word   0               # Ignored                                           #     short numberOfRelocations;
+    .word   0               # Ignored                                           #     short numberOfLineNumbers;
+    .long   0x42100040      #   IMAGE_SCN_MEM_READ                              #     long  characteristics;
+                            # | IMAGE_SCN_MEM_DISCARDABLE                       # }
+                            # | IMAGE_SCN_ALIGN_1BYTES                          #
+                            # | IMAGE_SCN_CNT_INITIALIZED_DATA                  #
+                                                                                # struct SectionHeader
                                                                                 # {
     .ascii  ".config\0"                                                         #     char  name[8];
-                                                                                #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x60500020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_EXECUTE                               # }
-                        # | IMAGE_SCN_ALIGN_16BYTES                             #
-                        # | IMAGE_SCN_CNT_CODE                                  #
-                                                                                # struct IMAGE_SECTION_HEADER
+    .long   0               # To be filled by image_builder                     #     long  virtualSize;
+    .long   0               # To be filled by image_builder                     #     long  virtualAddress;
+    .long   0               # To be filled by image_builder                     #     long  sizeOfRawData;
+    .long   0               # To be filled by image_builder                     #     long  pointerToRawData;
+    .long   0               # Ignored                                           #     long  pointerToRelocations;
+    .long   0               # Ignored                                           #     long  pointerToLinenumbers;
+    .word   0               # Ignored                                           #     short numberOfRelocations;
+    .word   0               # Ignored                                           #     short numberOfLineNumbers;
+    .long   0x60500020      #   IMAGE_SCN_MEM_READ                              #     long  characteristics;
+                            # | IMAGE_SCN_MEM_EXECUTE                           # }
+                            # | IMAGE_SCN_ALIGN_16BYTES                         #
+                            # | IMAGE_SCN_CNT_CODE                              #
+                                                                                # struct SectionHeader
                                                                                 # {
     .ascii  ".kernel\0"                                                         #     char  name[8];
-                                                                                #     union
-                                                                                #     {
-                                                                                #         long physicalAddress;
-                                                                                #         long virtualSize;
-    .long   0           # To be filled by image_builder                         #     } misc;
-    .long   0           # To be filled by image_builder                         #     long  virtualAddress;
-    .long   0           # To be filled by image_builder                         #     long  sizeOfRawData;
-    .long   0           # To be filled by image_builder                         #     long  pointerToRawData;
-    .long   0           # Ignored                                               #     long  pointerToRelocations;
-    .long   0           # Ignored                                               #     long  pointerToLinenumbers;
-    .word   0           # Ignored                                               #     short numberOfRelocations;
-    .word   0           # Ignored                                               #     short numberOfLineNumbers;
-    .long   0x60100020  #   IMAGE_SCN_MEM_READ                                  #     long  characteristics;
-                        # | IMAGE_SCN_MEM_EXECUTE                               # }
-                        # | IMAGE_SCN_ALIGN_1BYTES                              #
-                        # | IMAGE_SCN_CNT_CODE                                  #
+    .long   0               # To be filled by image_builder                     #     long  virtualSize;
+    .long   0               # To be filled by image_builder                     #     long  virtualAddress;
+    .long   0               # To be filled by image_builder                     #     long  sizeOfRawData;
+    .long   0               # To be filled by image_builder                     #     long  pointerToRawData;
+    .long   0               # Ignored                                           #     long  pointerToRelocations;
+    .long   0               # Ignored                                           #     long  pointerToLinenumbers;
+    .word   0               # Ignored                                           #     short numberOfRelocations;
+    .word   0               # Ignored                                           #     short numberOfLineNumbers;
+    .long   0x60100020      #   IMAGE_SCN_MEM_READ                              #     long  characteristics;
+                            # | IMAGE_SCN_MEM_EXECUTE                           # }
+                            # | IMAGE_SCN_ALIGN_1BYTES                          #
+                            # | IMAGE_SCN_CNT_CODE                              #
                                                                                 #
 # ============================================================================= # =============================================================================
                                                                                 #
