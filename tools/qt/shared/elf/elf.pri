@@ -1,5 +1,6 @@
 INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
-    $$PWD/../../../../src/os/shared/common/src   # src/os/shared/common/src                                                                                                                              # Colorize: green
+    $$PWD/../../../../src/os/shared/common/src \    # src/os/shared/common/src                                                                                                                           # Colorize: green
+    $$PWD/src                                       # tools/qt/shared/elf/src                                                                                                                            # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green
                                                                                                                                                                                                          # Colorize: green

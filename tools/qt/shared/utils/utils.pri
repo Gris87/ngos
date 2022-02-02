@@ -1,3 +1,8 @@
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    $$PWD/src   # tools/qt/shared/utils/src                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 SOURCES += \                                                                                                                                                                                             # Colorize: green
     $$PWD/src/com/ngos/devtools/shared/utils/git.cpp \                                                                                                                                                   # Colorize: green
     $$PWD/src/com/ngos/devtools/shared/utils/string.cpp                                                                                                                                                  # Colorize: green

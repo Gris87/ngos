@@ -43,12 +43,10 @@ UI_DIR      = build/gen/$$TARGET/ui
 
 
 INCLUDEPATH += \
-    src \                                   # tools/qt/code_verifier/src
-    build/gen \                             # tools/qt/code_verifier/build/gen
-    ../../../include \                      # include
-    ../../../src/os/shared/common/src \     # src/os/shared/common/src
-    ../shared/console/src \                 # tools/qt/shared/console/src
-    ../shared/utils/src                     # tools/qt/shared/utils/src
+    src \                               # tools/qt/code_verifier/src
+    build/gen \                         # tools/qt/code_verifier/build/gen
+    ../../../include \                  # include
+    ../../../src/os/shared/common/src   # src/os/shared/common/src
 
 
 

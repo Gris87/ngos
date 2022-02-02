@@ -1,3 +1,8 @@
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    $$PWD/src   # tools/qt/shared/console/src                                                                                                                                                            # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
 SOURCES += \                                                                                                                                                                                             # Colorize: green
     $$PWD/src/com/ngos/devtools/shared/console/console.cpp                                                                                                                                               # Colorize: green
                                                                                                                                                                                                          # Colorize: green

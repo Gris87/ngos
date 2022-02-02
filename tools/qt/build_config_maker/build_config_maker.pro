@@ -43,9 +43,8 @@ UI_DIR      = build/gen/$$TARGET/ui
 
 
 INCLUDEPATH += \
-    src \                   # tools/qt/build_config_maker/src
-    build/gen \             # tools/qt/build_config_maker/build/gen
-    ../shared/console/src   # tools/qt/shared/console/src
+    src \       # tools/qt/build_config_maker/src
+    build/gen   # tools/qt/build_config_maker/build/gen
 
 
 

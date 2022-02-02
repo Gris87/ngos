@@ -51,8 +51,7 @@ INCLUDEPATH += \
     ../../../3rd_party/libs/freetype/include \  # 3rd_party/libs/freetype/include
     ../../../include \                          # include
     ../../../src/os/configure/src \             # src/os/configure/src
-    ../../../src/os/shared/common/src \         # src/os/shared/common/src
-    ../shared/console/src                       # tools/qt/shared/console/src
+    ../../../src/os/shared/common/src           # src/os/shared/common/src
 
 
 
