@@ -26,9 +26,9 @@ quint64 DocsWorkerThread::getAmountOfFiles()
     return sAmountOfFiles - 1;
 }
 
-void DocsWorkerThread::pushFile(const QString &path, DocsVerificationFileType verifications)
+void DocsWorkerThread::pushFile(const QString &path, DocsVerificationFileType verificationFileType)
 {
-    pushFile(new DocsFileInfo(path, verifications));
+    pushFile(new DocsFileInfo(path, verificationFileType));
 }
 
 void DocsWorkerThread::pushFile(DocsFileInfo *fileInfo)

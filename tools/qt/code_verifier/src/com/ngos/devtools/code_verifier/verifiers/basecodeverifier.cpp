@@ -3,7 +3,7 @@
 
 
 QList<BaseCodeVerifier *> BaseCodeVerifier::sVerifiers;
-quint64                   BaseCodeVerifier::sAmountOfVerifications = 0;
+quint64                   BaseCodeVerifier::sAmountOfChecks = 0;
 
 
 
@@ -29,14 +29,14 @@ void BaseCodeVerifier::verifyAll(CodeWorkerThread *worker, CodeFileInfo *fileInf
         {
             verifier->verify(worker, fileInfo->getPath(), content, lines);
 
-            ++sAmountOfVerifications;
+            ++sAmountOfChecks;
         }
     }
 }
 
-quint64 BaseCodeVerifier::getAmountOfVerifications()
+quint64 BaseCodeVerifier::getAmountOfChecks()
 {
-    return sAmountOfVerifications;
+    return sAmountOfChecks;
 }
 
 void BaseCodeVerifier::verify(CodeWorkerThread */*worker*/, const QString &/*path*/, const QString &/*content*/, const QStringList &/*lines*/)

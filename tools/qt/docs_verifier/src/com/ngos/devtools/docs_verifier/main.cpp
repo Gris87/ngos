@@ -1,301 +1,340 @@
-#include <QCoreApplication>
-#include <QDateTime>
-#include <QDir>
-#include <QFileInfo>
-#include <QList>
-#include <QProcess>
-#include <QQueue>
-
-#include <com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h>
-#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>
-#include <com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h>
-#include <com/ngos/devtools/shared/console/console.h>
-#include <com/ngos/devtools/shared/utils/git.h>
-
-
-
-void usage()
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    Console::err(
-                "Usage: docs_verifier PATH\n"
-                "    * PATH - path to file or folder"
-                );
-    // Ignore CppAlignmentVerifier [END]
-}
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-
-
-
-    const QStringList &arguments = app.arguments();
-
-    if (arguments.size() != 2)
-    {
-        usage();
-
-        return 1;
-    }
-
-
-
-    QString targetPath = arguments.at(1);
-
-
-
-    Console::out("Docs verifier started");
-    Console::out("");
-    Console::out("Parameters:");
-    Console::out(QString("PATH = %1").arg(targetPath));
-    Console::out("");
-
-    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
-
-
-
-    QList<DocsWorkerThread *> workers;
-
-    for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)
-    {
-        DocsWorkerThread *worker = new DocsWorkerThread();
-        worker->start();
-
-        workers.append(worker);
-    }
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(targetPath));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path     = file.absoluteFilePath();
-        QString fileName = file.fileName();
-
-
-
-        if (!GIT::isIgnored(file.dir().absolutePath(), path))
-        {
-            if (file.isDir())
-            {
-                if (fileName != ".git" && !path.contains("tools/tracers/assets") && !path.contains("scripts/prerequisites"))
-                {
-                    QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-                    for (qint64 i = 0; i < filesInfo.size(); ++i)
-                    {
-                        files.enqueue(filesInfo.at(i));
-                    }
-                }
-            }
-            else
-            {
-                if (fileName.endsWith(".md"))
-                {
-                    DocsWorkerThread::pushFile(path, DocsVerificationFileType::MD);
-                }
-                else
-                if (
-                    fileName.endsWith(".cpp")
-                    ||
-                    fileName.endsWith(".h")
-                    ||
-                    fileName.endsWith(".S")
-                    ||
-                    fileName.endsWith(".php")
-                    ||
-                    fileName == "Makefile"
-                    ||
-                    fileName.endsWith(".pro")
-                    ||
-                    fileName.endsWith(".pri")
-                    ||
-                    fileName.endsWith(".ld")
-                    ||
-                    fileName.endsWith(".sh")
-                    ||
-                    fileName.endsWith(".includes")
-                    ||
-                    fileName.endsWith(".xml")
-                    ||
-                    fileName.endsWith(".ts")
-                    ||
-                    fileName.endsWith(".vbox")
-                    ||
-                    fileName.endsWith(".creator.shared")
-                    ||
-                    fileName.endsWith(".ui")
-                    ||
-                    fileName.endsWith(".qrc")
-                    ||
-                    fileName.endsWith(".txt")
-                    ||
-                    fileName.endsWith(".sql")
-                    ||
-                    fileName.endsWith(".rc")
-                    ||
-                    fileName.endsWith(".config")
-                    ||
-                    fileName.endsWith(".files")
-                   )
-                {
-                    DocsWorkerThread::pushFile(path, DocsVerificationFileType::TEXT);
-                }
-                else
-                if (
-                    !fileName.endsWith(".creator")
-                    &&
-                    !fileName.endsWith(".creator.user")
-                    &&
-                    !fileName.endsWith(".patch")
-                    &&
-                    !fileName.endsWith(".qm")
-                    &&
-                    !fileName.endsWith(".bin")
-                    &&
-                    !fileName.endsWith(".dll")
-                    &&
-                    !fileName.endsWith(".exe")
-                    &&
-                    !fileName.endsWith(".hex")
-                    &&
-                    !fileName.endsWith(".gpg")
-                    &&
-                    !fileName.endsWith(".pem")
-                    &&
-                    !fileName.endsWith(".auth")
-                    &&
-                    !fileName.endsWith(".ttf")
-                    &&
-                    !fileName.endsWith(".ico")
-                    &&
-                    !fileName.endsWith(".png")
-                    &&
-                    !fileName.endsWith(".jpg")
-                    &&
-                    !fileName.endsWith(".gif")
-                    &&
-                    !fileName.endsWith(".svg")
-                    &&
-                    !file.isExecutable()
-                   )
-                {
-                    Console::err(QString("Unexpected file extension: %1").arg(path));
-                }
-            }
-        }
-    }
-
-
-
-    DocsWorkerThread::noMoreFiles();
-
-
-
-    QList<DocsMessageInfo> warnings;
-    QList<DocsMessageInfo> errors;
-
-    for (qint64 i = 0; i < workers.size(); ++i)
-    {
-        DocsWorkerThread *worker = workers.at(i);
-
-
-
-        worker->wait();
-
-        warnings.append(worker->getWarnings());
-        errors.append(worker->getErrors());
-
-        delete worker;
-    }
-
-
-
-    Console::out(QString("%1 files verified with %2 verifications in %3 ms").arg(DocsWorkerThread::getAmountOfFiles()).arg(BaseDocsVerifier::getAmountOfVerifications()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));
-
-
-
-    if (!warnings.isEmpty())
-    {
-        std::sort(warnings.begin(), warnings.end());
-
-
-
-        for (qint64 i = warnings.size() - 2; i >= 0; --i)
-        {
-            if (warnings.at(i) == warnings.at(i + 1))
-            {
-                warnings.removeAt(i);
-            }
-        }
-
-
-
-        Console::out("");
-        Console::out("Warnings:");
-
-        for (qint64 i = 0; i < warnings.size(); ++i)
-        {
-            Console::out(warnings.at(i).toString());
-        }
-    }
-
-
-
-    if (!errors.isEmpty())
-    {
-        std::sort(errors.begin(), errors.end());
-
-
-
-        for (qint64 i = errors.size() - 2; i >= 0; --i)
-        {
-            if (errors.at(i) == errors.at(i + 1))
-            {
-                errors.removeAt(i);
-            }
-        }
-
-
-
-        Console::err("");
-        Console::err("Errors:");
-
-        for (qint64 i = 0; i < errors.size(); ++i)
-        {
-            Console::err(errors.at(i).toString());
-        }
-
-
-
-        Console::err("");
-        Console::err(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));
-        Console::err("");
-
-        return 1;
-    }
-
-
-
-    Console::out("");
-    Console::out(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));
-
-
-
-    if (warnings.isEmpty())
-    {
-        Console::out("");
-        Console::out("Everything is OK");
-    }
-
-    Console::out("");
-
-
-
-    return 0;
-}
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDateTime>                                                                                                                                                                                     // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFileInfo>                                                                                                                                                                                     // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QQueue>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h>                                                                                                                              // Colorize: green
+#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>                                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h>                                                                                                                                  // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/shared/utils/git.h>                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void usage()                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    Console::err(                                                                                                                                                                                        // Colorize: green
+                "Usage: docs_verifier PATH\n"                                                                                                                                                            // Colorize: green
+                "    * PATH - path to file or folder"                                                                                                                                                    // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCoreApplication app(argc, argv);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QStringList &arguments = app.arguments();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check arguments                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (arguments.size() != 2)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            usage();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetPath = arguments.at(1);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output application info                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("Docs verifier started");                                                                                                                                                           // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Parameters:");                                                                                                                                                                     // Colorize: green
+        Console::out(QString("PATH = %1").arg(targetPath));                                                                                                                                              // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<DocsWorkerThread *> workers;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Start workers                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < QThread::idealThreadCount(); ++i)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DocsWorkerThread *worker = new DocsWorkerThread();                                                                                                                                           // Colorize: green
+            worker->start();                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            workers.append(worker);                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Iterate over files in targetPath and push them to workers                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QQueue<QFileInfo> files;                                                                                                                                                                             // Colorize: green
+        files.enqueue(QFileInfo(targetPath));                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+        while (!files.isEmpty())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                    // Colorize: green
+            QFileInfo file = files.dequeue();                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            QString path     = file.absoluteFilePath();                                                                                                                                                      // Colorize: green
+            QString fileName = file.fileName();                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            if (!GIT::isIgnored(file.dir().absolutePath(), path))                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                if (file.isDir())                                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    if (                                                                                                                                                                                     // Colorize: green
+                        fileName != ".git"                                                                                                                                                                   // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !path.contains("tools/tracers/assets")                                                                                                                                               // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !path.contains("scripts/prerequisites")                                                                                                                                              // Colorize: green
+                       )                                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                         // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                        for (qint64 i = 0; i < filesInfo.size(); ++i)                                                                                                                                        // Colorize: green
+                        {                                                                                                                                                                                    // Colorize: green
+                            files.enqueue(filesInfo.at(i));                                                                                                                                                  // Colorize: green
+                        }                                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+                else                                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    if (fileName.endsWith(".md"))                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        DocsWorkerThread::pushFile(path, DocsVerificationFileType::MD);                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                    else                                                                                                                                                                                     // Colorize: green
+                    if (                                                                                                                                                                                     // Colorize: green
+                        fileName.endsWith(".cpp")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".h")                                                                                                                                                              // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".S")                                                                                                                                                              // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".php")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName == "Makefile"                                                                                                                                                               // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".pro")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".pri")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".ld")                                                                                                                                                             // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".sh")                                                                                                                                                             // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".includes")                                                                                                                                                       // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".xml")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".ts")                                                                                                                                                             // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".vbox")                                                                                                                                                           // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".manifest")                                                                                                                                                       // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".creator.shared")                                                                                                                                                 // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".ui")                                                                                                                                                             // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".qrc")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".txt")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".sql")                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".rc")                                                                                                                                                             // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".config")                                                                                                                                                         // Colorize: green
+                        ||                                                                                                                                                                                   // Colorize: green
+                        fileName.endsWith(".files")                                                                                                                                                          // Colorize: green
+                       )                                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        DocsWorkerThread::pushFile(path, DocsVerificationFileType::TEXT);                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                    else                                                                                                                                                                                     // Colorize: green
+                    if (                                                                                                                                                                                     // Colorize: green
+                        !fileName.endsWith(".creator")                                                                                                                                                       // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".creator.user")                                                                                                                                                  // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".cflags")                                                                                                                                                        // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".cxxflags")                                                                                                                                                      // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".patch")                                                                                                                                                         // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".qm")                                                                                                                                                            // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".bin")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".dll")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".exe")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".hex")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".gpg")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".pem")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".auth")                                                                                                                                                          // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".ttf")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".ico")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".png")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".jpg")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".gif")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !fileName.endsWith(".svg")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !file.isExecutable()                                                                                                                                                                 // Colorize: green
+                       )                                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        Console::err(QString("Unexpected file extension: %1").arg(path));                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    DocsWorkerThread::noMoreFiles();                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<DocsMessageInfo> warnings;                                                                                                                                                                     // Colorize: green
+    QList<DocsMessageInfo> errors;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Wait for workers and get warnings and errors                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < workers.size(); ++i)                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            DocsWorkerThread *worker = workers.at(i);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            worker->wait();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            warnings.append(worker->getWarnings());                                                                                                                                                      // Colorize: green
+            errors.append(worker->getErrors());                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            delete worker;                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    Console::out(QString("%1 files verified with %2 checks in %3 ms")                                                                                                                                    // Colorize: green
+                         .arg(DocsWorkerThread::getAmountOfFiles())                                                                                                                                      // Colorize: green
+                         .arg(BaseDocsVerifier::getAmountOfChecks())                                                                                                                                     // Colorize: green
+                         .arg(QDateTime::currentMSecsSinceEpoch() - startTime));                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Print warnings                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!warnings.isEmpty())                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                    // Colorize: green
+            std::sort(warnings.begin(), warnings.end());                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            for (qint64 i = warnings.size() - 2; i >= 0; --i)                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                if (warnings.at(i) == warnings.at(i + 1))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    warnings.removeAt(i);                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            Console::out("");                                                                                                                                                                                // Colorize: green
+            Console::out("Warnings:");                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            for (qint64 i = 0; i < warnings.size(); ++i)                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                Console::out(warnings.at(i).toString());                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Print errors                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!errors.isEmpty())                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                    // Colorize: green
+            std::sort(errors.begin(), errors.end());                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            for (qint64 i = errors.size() - 2; i >= 0; --i)                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                if (errors.at(i) == errors.at(i + 1))                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    errors.removeAt(i);                                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            Console::err("");                                                                                                                                                                                // Colorize: green
+            Console::err("Errors:");                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            for (qint64 i = 0; i < errors.size(); ++i)                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                Console::err(errors.at(i).toString());                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            Console::err("");                                                                                                                                                                                // Colorize: green
+            Console::err(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));                                                                                                         // Colorize: green
+            Console::err("");                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Everything is OK                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out(QString("%1 warnings. %2 errors").arg(warnings.size()).arg(errors.size()));                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (warnings.isEmpty())                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::out("");                                                                                                                                                                            // Colorize: green
+            Console::out("Everything is OK");                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return 0;                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

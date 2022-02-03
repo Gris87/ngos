@@ -1,51 +1,51 @@
-#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H
-#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H
-
-
-
-#include <Qt>
-#include <stdio.h>
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#define VERIFICATION_ANY_FILE_TYPE 0xFFFFFFFFFFFFFFFF
-
-
-
-enum class DocsVerificationFileType: quint64
-{
-    NONE = 0,
-    TEXT = (1ULL << 0),
-    MD   = (1ULL << 1)
-};
-
-
-
-inline const char8* enumToString(DocsVerificationFileType type) // TEST: NO
-{
-    switch (type)
-    {
-        case DocsVerificationFileType::NONE: return "NONE";
-        case DocsVerificationFileType::TEXT: return "TEXT";
-        case DocsVerificationFileType::MD:   return "MD";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(DocsVerificationFileType type) // TEST: NO
-{
-    static char8 res[29];
-
-    sprintf(res, "0x%016llX (%s)", (quint64)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H
+#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+#include <stdio.h>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define VERIFICATION_ANY_FILE_TYPE 0xFFFFFFFFFFFFFFFF                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class DocsVerificationFileType: quint64                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE = 0,                                                                                                                                                                                            // Colorize: green
+    TEXT = (1ULL << 0),                                                                                                                                                                                  // Colorize: green
+    MD   = (1ULL << 1)                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(DocsVerificationFileType type) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case DocsVerificationFileType::NONE: return "NONE";                                                                                                                                              // Colorize: green
+        case DocsVerificationFileType::TEXT: return "TEXT";                                                                                                                                              // Colorize: green
+        case DocsVerificationFileType::MD:   return "MD";                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(DocsVerificationFileType type) // TEST: NO                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    static char8 res[29];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%016llX (%s)", (quint64)type, enumToString(type));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_OTHER_DOCSVERIFICATIONFILETYPE_H                                                                                                                               // Colorize: green

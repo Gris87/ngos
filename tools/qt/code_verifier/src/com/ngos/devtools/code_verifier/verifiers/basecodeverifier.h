@@ -41,7 +41,7 @@ public:
 
     static void verifyAll(CodeWorkerThread *worker, CodeFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO
 
-    static quint64 getAmountOfVerifications(); // TEST: NO
+    static quint64 getAmountOfChecks(); // TEST: NO
 
 protected:
     virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
@@ -54,7 +54,7 @@ protected:
 
 private:
     static QList<BaseCodeVerifier *> sVerifiers;
-    static quint64                   sAmountOfVerifications;
+    static quint64                   sAmountOfChecks;
 
     quint64 mVerification;
 };

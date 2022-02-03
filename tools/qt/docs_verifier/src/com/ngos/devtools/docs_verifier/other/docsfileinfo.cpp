@@ -1,20 +1,20 @@
-#include "docsfileinfo.h"
-
-
-
-DocsFileInfo::DocsFileInfo(const QString &path, DocsVerificationFileType verificationFileType)
-    : mPath(path)
-    , mVerificationFileType(verificationFileType)
-{
-    // Nothing
-}
-
-QString DocsFileInfo::getPath() const
-{
-    return mPath;
-}
-
-DocsVerificationFileType DocsFileInfo::getVerificationFileType() const
-{
-    return mVerificationFileType;
-}
+#include "docsfileinfo.h"                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DocsFileInfo::DocsFileInfo(const QString &path, DocsVerificationFileType verificationFileType)                                                                                                           // Colorize: green
+    : mPath(path)                                                                                                                                                                                        // Colorize: green
+    , mVerificationFileType(verificationFileType)                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString DocsFileInfo::getPath() const                                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mPath;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+DocsVerificationFileType DocsFileInfo::getVerificationFileType() const                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mVerificationFileType;                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

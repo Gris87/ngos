@@ -41,7 +41,7 @@ public:
 
     static void verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO
 
-    static quint64 getAmountOfVerifications(); // TEST: NO
+    static quint64 getAmountOfChecks(); // TEST: NO
 
 protected:
     virtual void verify(DocsWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
@@ -143,7 +143,7 @@ protected:
 
 private:
     static QList<BaseDocsVerifier *> sVerifiers;
-    static quint64                   sAmountOfVerifications;
+    static quint64                   sAmountOfChecks;
 
     quint64 mVerification;
 };

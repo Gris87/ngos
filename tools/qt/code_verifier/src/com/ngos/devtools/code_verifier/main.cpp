@@ -152,6 +152,8 @@ qint32 main(qint32 argc, char *argv[])
                     ||
                     fileName.endsWith(".vbox")
                     ||
+                    fileName.endsWith(".manifest")
+                    ||
                     fileName.endsWith(".creator.shared")
                    )
                 {
@@ -189,6 +191,10 @@ qint32 main(qint32 argc, char *argv[])
                     !fileName.endsWith(".creator")
                     &&
                     !fileName.endsWith(".creator.user")
+                    &&
+                    !fileName.endsWith(".cflags")
+                    &&
+                    !fileName.endsWith(".cxxflags")
                     &&
                     !fileName.endsWith(".patch")
                     &&
@@ -254,7 +260,10 @@ qint32 main(qint32 argc, char *argv[])
 
 
 
-    Console::out(QString("%1 files verified with %2 verifications in %3 ms").arg(CodeWorkerThread::getAmountOfFiles()).arg(BaseCodeVerifier::getAmountOfVerifications()).arg(QDateTime::currentMSecsSinceEpoch() - startTime));
+    Console::out(QString("%1 files verified with %2 checks in %3 ms")
+                         .arg(CodeWorkerThread::getAmountOfFiles())
+                         .arg(BaseCodeVerifier::getAmountOfChecks())
+                         .arg(QDateTime::currentMSecsSinceEpoch() - startTime));
 
 
 
