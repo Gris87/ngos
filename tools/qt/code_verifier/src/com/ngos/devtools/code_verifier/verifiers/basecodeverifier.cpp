@@ -39,11 +39,6 @@ quint64 BaseCodeVerifier::getAmountOfChecks()
     return sAmountOfChecks;
 }
 
-void BaseCodeVerifier::verify(CodeWorkerThread */*worker*/, const QString &/*path*/, const QString &/*content*/, const QStringList &/*lines*/)
-{
-    // Nothing
-}
-
 void BaseCodeVerifier::removeComments(QString &line) // TEST: NO
 {
     for (qint64 i = 0; i < line.length(); ++i)

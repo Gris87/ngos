@@ -1,45 +1,40 @@
-#include "basedocsverifier.h"
-
-
-
-QList<BaseDocsVerifier *> BaseDocsVerifier::sVerifiers;
-quint64                   BaseDocsVerifier::sAmountOfChecks = 0;
-
-
-
-BaseDocsVerifier::BaseDocsVerifier(DocsVerificationFileType verification)
-    : BaseDocsVerifier((quint64)verification)
-{
-    // Nothing
-}
-
-BaseDocsVerifier::BaseDocsVerifier(quint64 verification)
-    : mVerification(verification)
-{
-    sVerifiers.append(this);
-}
-
-void BaseDocsVerifier::verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines)
-{
-    for (qint64 i = 0; i < sVerifiers.size(); ++i)
-    {
-        BaseDocsVerifier *verifier = sVerifiers.at(i);
-
-        if ((quint64)fileInfo->getVerificationFileType() & verifier->mVerification)
-        {
-            verifier->verify(worker, fileInfo->getPath(), content, lines);
-
-            ++sAmountOfChecks;
-        }
-    }
-}
-
-quint64 BaseDocsVerifier::getAmountOfChecks()
-{
-    return sAmountOfChecks;
-}
-
-void BaseDocsVerifier::verify(DocsWorkerThread */*worker*/, const QString &/*path*/, const QString &/*content*/, const QStringList &/*lines*/)
-{
-    // Nothing
-}
+#include "basedocsverifier.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<BaseDocsVerifier *> BaseDocsVerifier::sVerifiers;                                                                                                                                                  // Colorize: green
+qint64                    BaseDocsVerifier::sAmountOfChecks = 0;                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BaseDocsVerifier::BaseDocsVerifier(DocsVerificationFileType verification)                                                                                                                                // Colorize: green
+    : BaseDocsVerifier((qint64)verification)                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BaseDocsVerifier::BaseDocsVerifier(qint64 verification)                                                                                                                                                  // Colorize: green
+    : mVerification(verification)                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sVerifiers.append(this);                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BaseDocsVerifier::verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < sVerifiers.size(); ++i)                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        BaseDocsVerifier *verifier = sVerifiers.at(i);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (((qint64)fileInfo->getVerificationFileType() & verifier->mVerification) != 0)                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            verifier->verify(worker, fileInfo->getPath(), content, lines);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++sAmountOfChecks;                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 BaseDocsVerifier::getAmountOfChecks()                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return sAmountOfChecks;                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

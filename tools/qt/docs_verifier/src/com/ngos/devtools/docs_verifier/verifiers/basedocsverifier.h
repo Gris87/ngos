@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H
-#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H
-
-
-
-#include <QList>
-
-#include <com/ngos/devtools/docs_verifier/other/docsfileinfo.h>
-#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>
-
-
-
+#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H                                                                                                                                     // Colorize: green
+#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/docs_verifier/other/docsfileinfo.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/docs_verifier/threads/docsworkerthread.h>                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define VERIFIER_IGNORE(line, comment) \
     if (line.contains(comment)) \
     { \
         continue; \
-    }
-
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define VERIFIER_IGNORE_REGION(lines, i, line, comment) \
     if (line.contains(comment " [BEGIN]")) \
     { \
@@ -29,125 +29,144 @@
     else \
     { \
         VERIFIER_IGNORE(line, comment) \
-    }
-
-
-
-class BaseDocsVerifier
-{
-public:
-    BaseDocsVerifier(DocsVerificationFileType verification); // TEST: NO
-    BaseDocsVerifier(quint64 verification); // TEST: NO
-
-    static void verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO
-
-    static quint64 getAmountOfChecks(); // TEST: NO
-
-protected:
-    virtual void verify(DocsWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
-
-    inline void removeComments(QString &line) // TEST: NO
-    {
-        for (qint64 i = 0; i < line.length(); ++i)
-        {
-            if (line.at(i) == '\\')
-            {
-                ++i;
-
-                continue;
-            }
-
-            if (line.at(i) == '\"')
-            {
-                ++i;
-
-                while (i < line.length())
-                {
-                    if (line.at(i) == '\\')
-                    {
-                        i += 2;
-
-                        continue;
-                    }
-
-                    if (line.at(i) == '\"')
-                    {
-                        break;
-                    }
-
-                    ++i;
-                }
-
-                continue;
-            }
-
-            if (
-                i > 0
-                &&
-                line.at(i - 1) == '/'
-                &&
-                line.at(i) == '/'
-               )
-            {
-                line = line.left(i - 1);
-
-                break;
-            }
-        }
-    }
-
-    inline void removeStrings(QString &line) // TEST: NO
-    {
-        for (qint64 i = 0; i < line.length(); ++i)
-        {
-            if (line.at(i) == '\\')
-            {
-                ++i;
-
-                continue;
-            }
-
-            if (line.at(i) == '\"')
-            {
-                qint64 startIndex = i;
-
-
-
-                ++i;
-
-                while (i < line.length())
-                {
-                    if (line.at(i) == '\\')
-                    {
-                        i += 2;
-
-                        continue;
-                    }
-
-                    if (line.at(i) == '\"')
-                    {
-                        break;
-                    }
-
-                    ++i;
-                }
-
-
-
-                line.remove(startIndex, i - startIndex + 1);
-
-                i = startIndex - 1;
-            }
-        }
-    }
-
-private:
-    static QList<BaseDocsVerifier *> sVerifiers;
-    static quint64                   sAmountOfChecks;
-
-    quint64 mVerification;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class BaseDocsVerifier                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    BaseDocsVerifier(DocsVerificationFileType verification); // TEST: NO                                                                                                                                 // Colorize: green
+    BaseDocsVerifier(qint64 verification); // TEST: NO                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static void verifyAll(DocsWorkerThread *worker, DocsFileInfo *fileInfo, const QString &content, const QStringList &lines); // TEST: NO                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static qint64 getAmountOfChecks(); // TEST: NO                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    virtual void verify(DocsWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) = 0; // TEST: NO                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    inline void removeComments(QString &line) // TEST: NO                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < line.length(); ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Skip escaped character                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.at(i) == '\\')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Skip "text"                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.at(i) == '\"')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    while (i < line.length())                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (line.at(i) == '\\')                                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            i += 2;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            continue;                                                                                                                                                                    // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (line.at(i) == '\"')                                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        ++i;                                                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // If we found single line comment then remove it and terminate                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    i > 0                                                                                                                                                                                // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    line.at(i - 1) == '/'                                                                                                                                                                // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    line.at(i) == '/'                                                                                                                                                                    // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    line = line.left(i - 1);                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    inline void removeStrings(QString &line) // TEST: NO                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < line.length(); ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Skip escaped character                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.at(i) == '\\')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // If we found "text" then remove it                                                                                                                                                         // Colorize: green
+            if (line.at(i) == '\"')                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint64 startIndex = i;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (i < line.length())                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (line.at(i) == '\\')                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        i += 2;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        continue;                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (line.at(i) == '\"')                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                line.remove(startIndex, i - startIndex + 1);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                i = startIndex - 1;                                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static QList<BaseDocsVerifier *> sVerifiers;                                                                                                                                                         // Colorize: green
+    static qint64                    sAmountOfChecks;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 mVerification;                                                                                                                                                                                // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_BASEDOCSVERIFIER_H                                                                                                                                   // Colorize: green

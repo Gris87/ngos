@@ -44,7 +44,7 @@ public:
     static quint64 getAmountOfChecks(); // TEST: NO
 
 protected:
-    virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines); // TEST: NO
+    virtual void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) = 0; // TEST: NO
 
     void removeComments(QString &line); // TEST: NO
     void removeStrings(QString &line); // TEST: NO
