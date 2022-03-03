@@ -21,7 +21,7 @@ DEFINES += \
 win32-msvc* {
     QMAKE_CXXFLAGS += /WX
 } else {
-    QMAKE_CXXFLAGS += -Wall -Werror
+    QMAKE_CXXFLAGS += -Wall -Wextra -Werror
 }
 # Warnings as errors - END
 

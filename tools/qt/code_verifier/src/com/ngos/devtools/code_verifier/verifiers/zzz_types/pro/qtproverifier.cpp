@@ -15,7 +15,7 @@
     "win32-msvc* {\n" \
     "    QMAKE_CXXFLAGS += /WX\n" \
     "} else {\n" \
-    "    QMAKE_CXXFLAGS += -Wall -Werror\n" \
+    "    QMAKE_CXXFLAGS += -Wall -Wextra -Werror\n" \
     "}\n" \
     "# Warnings as errors - END\n"
 

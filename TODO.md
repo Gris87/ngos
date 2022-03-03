@@ -150,3 +150,4 @@ Generic:                                                                        
 - Valgrind                                                                                                                                                                                               // Colorize: green
 - Jenkins                                                                                                                                                                                                // Colorize: green
 - Bug tracker (Redmine)                                                                                                                                                                                  // Colorize: green
+- https://github.com/include-what-you-use/include-what-you-use                                                                                                                                           // Colorize: green
