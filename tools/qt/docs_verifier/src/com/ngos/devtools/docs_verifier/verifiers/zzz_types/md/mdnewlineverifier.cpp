@@ -1,94 +1,89 @@
-#include "mdnewlineverifier.h"
-
-#include <com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h>
-
-
-
-MdNewLineVerifier::MdNewLineVerifier()
-    : BaseDocsVerifier(DocsVerificationFileType::MD)
-{
-    // Nothing
-}
-
-void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-
-
-        if (line.startsWith("```"))
-        {
-            do
-            {
-                ++i;
-            } while(i < lines.size() && lines.at(i) != "```");
-
-            continue;
-        }
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-        bool shouldEndsWithBr = false;
-
-
-
-        if (
-            line != ""
-            &&
-            (
-             !lineTrimmed.startsWith('<')
-             ||
-             !lineTrimmed.endsWith('>')
-            )
-            &&
-            i + 1 < lines.size()
-            &&
-            lines.at(i + 1) != ""
-            &&
-            !lines.at(i + 1).trimmed().startsWith("* ")
-            &&
-            !lines.at(i + 1).trimmed().startsWith("- ")
-            &&
-            !lines.at(i + 1).startsWith("==")
-            &&
-            !lines.at(i + 1).startsWith("--")
-            &&
-            !lines.at(i + 1).startsWith("| ")
-           )
-        {
-            shouldEndsWithBr = true;
-        }
-
-
-
-        if (shouldEndsWithBr)
-        {
-            if (line.contains("<br/>"))
-            {
-                if (!line.endsWith("<br/>"))
-                {
-                    worker->addWarning(path, i, "Single new line means nothing for MD. You have to use <br/>");
-                }
-            }
-            else
-            {
-                worker->addWarning(path, i, "Single new line means nothing for MD. You have to use <br/>");
-            }
-        }
-        else
-        {
-            if (line.contains("<br/>"))
-            {
-                worker->addWarning(path, i, "<br/> should be removed");
-            }
-        }
-    }
-}
-
-
-
-MdNewLineVerifier mdNewLineVerifierInstance;
+#include "mdnewlineverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/docs_verifier/other/docsverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MdNewLineVerifier::MdNewLineVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseDocsVerifier(DocsVerificationFileType::MD)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void MdNewLineVerifier::verify(DocsWorkerThread *worker, const QString &path, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Skip code blocks                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (line.startsWith("```"))                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                do                                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                } while(i < lines.size() && lines.at(i) != "```");                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        bool shouldEndsWithBr;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check if we need to end line with <br/>                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString lineTrimmed = line.trimmed();                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            shouldEndsWithBr = line != ""                                                                                                                                                                // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                (                                                                                                                                                                        // Colorize: green
+                                 !lineTrimmed.startsWith('<')                                                                                                                                            // Colorize: green
+                                 ||                                                                                                                                                                      // Colorize: green
+                                 !lineTrimmed.endsWith('>')                                                                                                                                              // Colorize: green
+                                )                                                                                                                                                                        // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                i + 1 < lines.size()                                                                                                                                                     // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                lines.at(i + 1) != ""                                                                                                                                                    // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !lines.at(i + 1).trimmed().startsWith("* ")                                                                                                                              // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !lines.at(i + 1).trimmed().startsWith("- ")                                                                                                                              // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !lines.at(i + 1).startsWith("==")                                                                                                                                        // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !lines.at(i + 1).startsWith("--")                                                                                                                                        // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !lines.at(i + 1).startsWith("| ");                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Check if we have <br/> at the end or not                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (shouldEndsWithBr)                                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!line.endsWith("<br/>"))                                                                                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addWarning(path, i, "Single new line means nothing for MD. You have to use <br/>");                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.contains("<br/>"))                                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addWarning(path, i, "<br/> should be removed");                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+MdNewLineVerifier mdNewLineVerifierInstance;                                                                                                                                                             // Colorize: green

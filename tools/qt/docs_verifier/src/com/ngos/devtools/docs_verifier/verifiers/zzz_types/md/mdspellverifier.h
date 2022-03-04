@@ -1,20 +1,24 @@
-#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H
-#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H
-
-
-
-#include <com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h>
-
-
-
-class MdSpellVerifier: public BaseDocsVerifier
-{
-public:
-    MdSpellVerifier(); // TEST: NO
-
-    void verify(DocsWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H
+#ifndef COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H                                                                                                                         // Colorize: green
+#define COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/docs_verifier/verifiers/basedocsverifier.h>                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class MdSpellVerifier: public BaseDocsVerifier                                                                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    MdSpellVerifier(); // TEST: NO                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void verify(DocsWorkerThread *worker, const QString &path, const QStringList &lines) override; // TEST: NO                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QString getDocsFolder(const QString &path) const;                                                                                                                                                    // Colorize: green
+    QString runMdSpell(const QString &workingDir, const QString &path) const;                                                                                                                            // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_DOCS_VERIFIER_VERIFIERS_ZZZ_TYPES_MD_MDSPELLVERIFIER_H                                                                                                                       // Colorize: green
