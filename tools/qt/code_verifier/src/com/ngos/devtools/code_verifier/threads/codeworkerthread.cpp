@@ -1,138 +1,148 @@
-#include "codeworkerthread.h"
-
-#include <QFile>
-
-#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>
-
-
-
-quint64               CodeWorkerThread::sAmountOfFiles = 0;
-QList<CodeFileInfo *> CodeWorkerThread::sFiles;
-QMutex                CodeWorkerThread::sFilesMutex;
-QSemaphore            CodeWorkerThread::sFilesSemaphore;
-
-
-
-CodeWorkerThread::CodeWorkerThread()
-    : QThread()
-    , mWarnings()
-    , mErrors()
-{
-    // Nothing
-}
-
-quint64 CodeWorkerThread::getAmountOfFiles()
-{
-    return sAmountOfFiles - 1;
-}
-
-void CodeWorkerThread::pushFile(const QString &path, CodeVerificationFileType verificationFileType)
-{
-    pushFile(new CodeFileInfo(path, verificationFileType));
-}
-
-void CodeWorkerThread::pushFile(CodeFileInfo *fileInfo)
-{
-    QMutexLocker lock(&sFilesMutex);
-
-    ++sAmountOfFiles;
-    sFiles.append(fileInfo);
-    sFilesSemaphore.release();
-}
-
-CodeFileInfo* CodeWorkerThread::popFile()
-{
-    sFilesSemaphore.acquire();
-
-    {
-        QMutexLocker lock(&sFilesMutex);
-
-
-
-        CodeFileInfo *res = sFiles.constFirst();
-
-        if (res == nullptr)
-        {
-            sFilesSemaphore.release();
-        }
-        else
-        {
-            sFiles.removeFirst();
-        }
-
-        return res;
-    }
-}
-
-void CodeWorkerThread::noMoreFiles()
-{
-    pushFile(nullptr);
-}
-
-void CodeWorkerThread::addWarning(const QString &path, qint64 line, const QString &warning)
-{
-    mWarnings.append(CodeMessageInfo(path, line, warning));
-}
-
-void CodeWorkerThread::addError(const QString &path, qint64 line, const QString &error)
-{
-    mErrors.append(CodeMessageInfo(path, line, error));
-}
-
-const QList<CodeMessageInfo>& CodeWorkerThread::getWarnings() const
-{
-    return mWarnings;
-}
-
-const QList<CodeMessageInfo>& CodeWorkerThread::getErrors() const
-{
-    return mErrors;
-}
-
-void CodeWorkerThread::run()
-{
-    do
-    {
-        CodeFileInfo *fileInfo = popFile();
-
-        if (fileInfo == nullptr)
-        {
-            break;
-        }
-
-        processFile(fileInfo);
-
-        delete fileInfo;
-    } while(true);
-}
-
-void CodeWorkerThread::processFile(CodeFileInfo *fileInfo)
-{
-    QFile file(fileInfo->getPath());
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString &line = lines[i];
-
-        if (line.endsWith('\r'))
-        {
-            line.remove(line.length() - 1, 1);
-        }
-    }
-
-
-
-    BaseCodeVerifier::verifyAll(this, fileInfo, content, lines);
-}
+#include "codeworkerthread.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64                CodeWorkerThread::sAmountOfFiles = 0;                                                                                                                                              // Colorize: green
+QList<CodeFileInfo *> CodeWorkerThread::sFiles;                                                                                                                                                          // Colorize: green
+QMutex                CodeWorkerThread::sFilesMutex;                                                                                                                                                     // Colorize: green
+QSemaphore            CodeWorkerThread::sFilesSemaphore;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CodeWorkerThread::CodeWorkerThread()                                                                                                                                                                     // Colorize: green
+    : QThread()                                                                                                                                                                                          // Colorize: green
+    , mWarnings()                                                                                                                                                                                        // Colorize: green
+    , mErrors()                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 CodeWorkerThread::getAmountOfFiles()                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return sAmountOfFiles - 1;                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::pushFile(const QString &path, CodeVerificationFileType verificationFileType)                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    pushFile(new CodeFileInfo(path, verificationFileType));                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::pushFile(CodeFileInfo *fileInfo)                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QMutexLocker lock(&sFilesMutex);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    ++sAmountOfFiles;                                                                                                                                                                                    // Colorize: green
+    sFiles.append(fileInfo);                                                                                                                                                                             // Colorize: green
+    sFilesSemaphore.release();                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CodeFileInfo* CodeWorkerThread::popFile()                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sFilesSemaphore.acquire();                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMutexLocker lock(&sFilesMutex);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        CodeFileInfo *res = sFiles.constFirst();                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (res == nullptr)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sFilesSemaphore.release();                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            sFiles.removeFirst();                                                                                                                                                                        // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return res;                                                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::noMoreFiles()                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    pushFile(nullptr);                                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::addWarning(const QString &path, qint64 line, const QString &warning)                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mWarnings.append(CodeMessageInfo(path, line, warning));                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::addError(const QString &path, qint64 line, const QString &error)                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    mErrors.append(CodeMessageInfo(path, line, error));                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<CodeMessageInfo>& CodeWorkerThread::getWarnings() const                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mWarnings;                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const QList<CodeMessageInfo>& CodeWorkerThread::getErrors() const                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mErrors;                                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::run()                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        CodeFileInfo *fileInfo = popFile();                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (fileInfo == nullptr)                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        processFile(fileInfo);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        delete fileInfo;                                                                                                                                                                                 // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CodeWorkerThread::processFile(CodeFileInfo *fileInfo)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(fileInfo->getPath());                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Split content to lines                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.endsWith('\r'))                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.remove(line.length() - 1, 1);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    BaseCodeVerifier::verifyAll(this, fileInfo, content, lines);                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

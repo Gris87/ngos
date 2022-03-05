@@ -1,27 +1,27 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H
-
-
-
-#include <QString>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-class CodeFileInfo
-{
-public:
-    CodeFileInfo(const QString &path, CodeVerificationFileType verificationFileType); // TEST: NO
-
-    QString getPath() const; // TEST: NO
-    CodeVerificationFileType getVerificationFileType() const; // TEST: NO
-
-private:
-    QString                  mPath;
-    CodeVerificationFileType mVerificationFileType;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H                                                                                                                                             // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class CodeFileInfo                                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    CodeFileInfo(const QString &path, CodeVerificationFileType verificationFileType); // TEST: NO                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QString& getPath() const; // TEST: NO                                                                                                                                                                 // Colorize: green
+    CodeVerificationFileType getVerificationFileType() const; // TEST: NO                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QString                  mPath;                                                                                                                                                                      // Colorize: green
+    CodeVerificationFileType mVerificationFileType;                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEFILEINFO_H                                                                                                                                           // Colorize: green

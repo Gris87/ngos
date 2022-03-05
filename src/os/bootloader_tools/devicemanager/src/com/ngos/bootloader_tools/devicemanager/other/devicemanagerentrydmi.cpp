@@ -53,7 +53,19 @@ bool DeviceManagerEntryDMI::operator<(const DeviceManagerEntryDMI &another) cons
 
 
 
-    return mHandle < another.mHandle;
+    if (mHandle < another.mHandle)
+    {
+        return true;
+    }
+    else
+    if (mHandle > another.mHandle)
+    {
+        return false;
+    }
+
+
+
+    return false;
 }
 
 NgosStatus DeviceManagerEntryDMI::setType(DmiEntryType type)

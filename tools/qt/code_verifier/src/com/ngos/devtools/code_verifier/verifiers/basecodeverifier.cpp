@@ -1,218 +1,237 @@
-#include "basecodeverifier.h"
-
-
-
-QList<BaseCodeVerifier *> BaseCodeVerifier::sVerifiers;
-quint64                   BaseCodeVerifier::sAmountOfChecks = 0;
-
-
-
-BaseCodeVerifier::BaseCodeVerifier(CodeVerificationFileType verification)
-    : BaseCodeVerifier((quint64)verification)
-{
-    // Nothing
-}
-
-BaseCodeVerifier::BaseCodeVerifier(quint64 verification)
-    : mVerification(verification)
-{
-    sVerifiers.append(this);
-}
-
-void BaseCodeVerifier::verifyAll(CodeWorkerThread *worker, CodeFileInfo *fileInfo, const QString &content, const QStringList &lines)
-{
-    for (qint64 i = 0; i < sVerifiers.size(); ++i)
-    {
-        BaseCodeVerifier *verifier = sVerifiers.at(i);
-
-        if ((quint64)fileInfo->getVerificationFileType() & verifier->mVerification)
-        {
-            verifier->verify(worker, fileInfo->getPath(), content, lines);
-
-            ++sAmountOfChecks;
-        }
-    }
-}
-
-quint64 BaseCodeVerifier::getAmountOfChecks()
-{
-    return sAmountOfChecks;
-}
-
-void BaseCodeVerifier::removeComments(QString &line) // TEST: NO
-{
-    for (qint64 i = 0; i < line.length(); ++i)
-    {
-        if (line.at(i) == '\\')
-        {
-            ++i;
-
-            continue;
-        }
-
-        if (line.at(i) == '\"')
-        {
-            ++i;
-
-            while (i < line.length())
-            {
-                if (line.at(i) == '\\')
-                {
-                    i += 2;
-
-                    continue;
-                }
-
-                if (line.at(i) == '\"')
-                {
-                    break;
-                }
-
-                ++i;
-            }
-
-            continue;
-        }
-
-        if (
-            i > 0
-            &&
-            line.at(i - 1) == '/'
-            &&
-            line.at(i) == '/'
-           )
-        {
-            line = line.left(i - 1);
-
-            break;
-        }
-    }
-}
-
-void BaseCodeVerifier::removeStrings(QString &line) // TEST: NO
-{
-    for (qint64 i = 0; i < line.length(); ++i)
-    {
-        if (line.at(i) == '\\')
-        {
-            ++i;
-
-            continue;
-        }
-
-        if (line.at(i) == '\"')
-        {
-            qint64 startIndex = i;
-
-
-
-            ++i;
-
-            while (i < line.length())
-            {
-                if (line.at(i) == '\\')
-                {
-                    i += 2;
-
-                    continue;
-                }
-
-                if (line.at(i) == '\"')
-                {
-                    break;
-                }
-
-                ++i;
-            }
-
-
-
-            line.remove(startIndex, i - startIndex + 1);
-
-            i = startIndex - 1;
-        }
-    }
-}
-
-QString BaseCodeVerifier::logPrefixFromPath(const QString &path)
-{
-    if (path.contains("/src/os/bootloader/"))
-    {
-        return "UEFI";
-    }
-    else
-    if (path.contains("/src/os/bootloader_tools/"))
-    {
-        return "UEFI";
-    }
-    else
-    if (path.contains("/src/os/configure/"))
-    {
-        if (path.contains("uefi/"))
-        {
-            return "UEFI";
-        }
-        else
-        if (path.contains("early/"))
-        {
-            return "EARLY";
-        }
-        else
-        if (path.endsWith("/src/os/configure/src/com/ngos/configure/main.cpp"))
-        {
-            return "UEFI";
-        }
-    }
-    else
-    if (path.contains("/src/os/installer/"))
-    {
-        return "UEFI";
-    }
-    else
-    if (path.contains("/src/os/kernel/"))
-    {
-        if (path.contains("early/"))
-        {
-            return "EARLY";
-        }
-        else
-        if (path.endsWith("/src/os/kernel/src/com/ngos/kernel/main.cpp"))
-        {
-            return "EARLY";
-        }
-        else
-        {
-            return "COMMON";
-        }
-    }
-    else
-    if (path.contains("/src/os/shared/uefibase/"))
-    {
-        return "UEFI";
-    }
-    else
-    if (path.contains("/src/os/shared/common/"))
-    {
-        if (
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlyassert.h")
-            ||
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlylog.h")
-           )
-        {
-            return "EARLY";
-        }
-        else
-        {
-            return "COMMON";
-        }
-    }
-
-    return "";
-}
-
-QString BaseCodeVerifier::traceCommandFromPath(const QString &path)
-{
-    QString res = logPrefixFromPath(path);
-
-    return res == "" ? "" : (res + "_LT");
-}
+#include "basecodeverifier.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<BaseCodeVerifier *> BaseCodeVerifier::sVerifiers;                                                                                                                                                  // Colorize: green
+qint64                    BaseCodeVerifier::sAmountOfChecks = 0;                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BaseCodeVerifier::BaseCodeVerifier(CodeVerificationFileType verification)                                                                                                                                // Colorize: green
+    : BaseCodeVerifier((qint64)verification)                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BaseCodeVerifier::BaseCodeVerifier(qint64 verification)                                                                                                                                                  // Colorize: green
+    : mVerification(verification)                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sVerifiers.append(this);                                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BaseCodeVerifier::verifyAll(CodeWorkerThread *worker, CodeFileInfo *fileInfo, const QString &content, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < sVerifiers.size(); ++i)                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        BaseCodeVerifier *verifier = sVerifiers.at(i);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (((qint64)fileInfo->getVerificationFileType() & verifier->mVerification) != 0)                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            verifier->verify(worker, fileInfo->getPath(), content, lines);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++sAmountOfChecks;                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 BaseCodeVerifier::getAmountOfChecks()                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return sAmountOfChecks;                                                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BaseCodeVerifier::removeComments(QString &line)                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < line.length(); ++i)                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Skip escaped character                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (line.at(i) == '\\')                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Skip "text"                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (line.at(i) == '\"')                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (i < line.length())                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (line.at(i) == '\\')                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        i += 2;                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        continue;                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (line.at(i) == '\"')                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // If we found single line comment then remove it and terminate                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                i > 0                                                                                                                                                                                    // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                line.at(i - 1) == '/'                                                                                                                                                                    // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                line.at(i) == '/'                                                                                                                                                                        // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line = line.left(i - 1);                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BaseCodeVerifier::removeStrings(QString &line)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < line.length(); ++i)                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Skip escaped character                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (line.at(i) == '\\')                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // If we found "text" then remove it                                                                                                                                                             // Colorize: green
+        if (line.at(i) == '\"')                                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 startIndex = i;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++i;                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (i < line.length())                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.at(i) == '\\')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    i += 2;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (line.at(i) == '\"')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    break;                                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                ++i;                                                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            line.remove(startIndex, i - startIndex + 1);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            i = startIndex - 1;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString BaseCodeVerifier::logPrefixFromPath(const QString &path)                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (path.contains("/src/os/bootloader/"))                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "UEFI";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/bootloader_tools/"))                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "UEFI";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/configure/"))                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (path.contains("uefi/"))                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "UEFI";                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (path.contains("early/"))                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "EARLY";                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (path.endsWith("/src/os/configure/src/com/ngos/configure/main.cpp"))                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "UEFI";                                                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/installer/"))                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "UEFI";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/kernel/"))                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (path.contains("early/"))                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "EARLY";                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (path.endsWith("/src/os/kernel/src/com/ngos/kernel/main.cpp"))                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "EARLY";                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "COMMON";                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/shared/uefibase/"))                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return "UEFI";                                                                                                                                                                                   // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (path.contains("/src/os/shared/common/"))                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlyassert.h")                                                                                                        // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/early/earlylog.h")                                                                                                           // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "EARLY";                                                                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return "COMMON";                                                                                                                                                                             // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return "";                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString BaseCodeVerifier::traceCommandFromPath(const QString &path)                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString res = logPrefixFromPath(path);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res == "" ? "" : (res + "_LT");                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

@@ -1,72 +1,87 @@
-#include "codemessageinfo.h"
-
-
-
-CodeMessageInfo::CodeMessageInfo(const QString &path, qint64 line, const QString &message)
-    : mPath(path)
-    , mLine(line)
-    , mMessage(message)
-{
-    // Nothing
-}
-
-bool CodeMessageInfo::operator<(const CodeMessageInfo &another) const
-{
-    if (mPath < another.mPath)
-    {
-        return true;
-    }
-    else
-    if (mPath > another.mPath)
-    {
-        return false;
-    }
-
-
-
-    if (mLine < another.mLine)
-    {
-        return true;
-    }
-    else
-    if (mLine > another.mLine)
-    {
-        return false;
-    }
-
-
-
-    return mMessage < another.mMessage;
-}
-
-bool CodeMessageInfo::operator==(const CodeMessageInfo &another) const
-{
-    if (mLine != another.mLine)
-    {
-        return false;
-    }
-
-    if (mPath != another.mPath)
-    {
-        return false;
-    }
-
-    if (mMessage != another.mMessage)
-    {
-        return false;
-    }
-
-    return true;
-}
-
-QString CodeMessageInfo::toString() const
-{
-    if (mLine >= 0)
-    {
-        return QString("%1:%2 | %3").arg(mPath).arg(mLine + 1).arg(mMessage);
-    }
-    else
-    {
-        return QString("%1 | %2").arg(mPath).arg(mMessage);
-    }
-}
+#include "codemessageinfo.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CodeMessageInfo::CodeMessageInfo(const QString &path, qint64 line, const QString &message)                                                                                                               // Colorize: green
+    : mPath(path)                                                                                                                                                                                        // Colorize: green
+    , mLine(line)                                                                                                                                                                                        // Colorize: green
+    , mMessage(message)                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool CodeMessageInfo::operator<(const CodeMessageInfo &another) const                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Compare mPath                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mPath < another.mPath)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mPath > another.mPath)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Compare mLine                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mLine < another.mLine)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mLine > another.mLine)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Compare mMessage                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mMessage < another.mMessage)                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (mMessage > another.mMessage)                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool CodeMessageInfo::operator==(const CodeMessageInfo &another) const                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return mLine == another.mLine                                                                                                                                                                        // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            mPath == another.mPath                                                                                                                                                                       // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            mMessage == another.mMessage;                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QString CodeMessageInfo::toString() const                                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (mLine >= 0)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return QString("%1:%2 | %3")                                                                                                                                                                     // Colorize: green
+                        .arg(mPath)                                                                                                                                                                      // Colorize: green
+                        .arg(mLine + 1)                                                                                                                                                                  // Colorize: green
+                        .arg(mMessage);                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return QString("%1 | %2")                                                                                                                                                                        // Colorize: green
+                        .arg(mPath)                                                                                                                                                                      // Colorize: green
+                        .arg(mMessage);                                                                                                                                                                  // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

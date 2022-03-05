@@ -28,6 +28,8 @@ struct OsInfo
             return false;
         }
 
+
+
         if (type < another.type)
         {
             return true;
@@ -38,7 +40,23 @@ struct OsInfo
             return false;
         }
 
-        return strcmpi(path, another.path) < 0;
+
+
+        i64 match = strcmpi(path, another.path);
+
+        if (match < 0)
+        {
+            return true;
+        }
+
+        if (match > 0)
+        {
+            return false;
+        }
+
+
+
+        return false;
     }
 };
 

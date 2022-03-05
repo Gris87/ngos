@@ -1,114 +1,114 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H
-
-
-
-#include <Qt>
-#include <stdio.h>
-
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-#define VERIFICATION_ANY_FILE_TYPE 0xFFFFFFFFFFFFFFFF
-
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H                                                                                                                                 // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <Qt>                                                                                                                                                                                            // Colorize: green
+#include <stdio.h>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define VERIFICATION_ANY_FILE_TYPE 0xFFFFFFFFFFFFFFFF                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 #define VERIFICATION_COMMON_CPP \
-    ( \
-        (quint64)CodeVerificationFileType::CPP \
-        | (quint64)CodeVerificationFileType::H \
-    )
-
-#define VERIFICATION_AVOID_TABS \
-    ( \
-        (quint64)CodeVerificationFileType::TEXT \
-        | (quint64)CodeVerificationFileType::CPP \
-        | (quint64)CodeVerificationFileType::H \
-        | (quint64)CodeVerificationFileType::S \
-        | (quint64)CodeVerificationFileType::PHP \
-        | (quint64)CodeVerificationFileType::PRO \
-        | (quint64)CodeVerificationFileType::PRI \
-        | (quint64)CodeVerificationFileType::LD \
-        | (quint64)CodeVerificationFileType::SH \
-        | (quint64)CodeVerificationFileType::INCLUDES \
-        | (quint64)CodeVerificationFileType::XML \
-        | (quint64)CodeVerificationFileType::UI \
-        | (quint64)CodeVerificationFileType::QRC \
-    )
-
-#define VERIFICATION_INDENT_SPACES \
-    ( \
-        (quint64)CodeVerificationFileType::PRO \
-        | (quint64)CodeVerificationFileType::PRI \
-        | (quint64)CodeVerificationFileType::LD \
-        | (quint64)CodeVerificationFileType::SH \
-        | (quint64)CodeVerificationFileType::INCLUDES \
-        | (quint64)CodeVerificationFileType::XML \
-        | (quint64)CodeVerificationFileType::QRC \
-    )
-
-#define VERIFICATION_INDENT_TABS \
-    ( \
-        (quint64)CodeVerificationFileType::MAKEFILE \
-    )
-
-
-
-enum class CodeVerificationFileType: quint64
-{
-    NONE     = 0,
-    TEXT     = (1ULL << 0),
-    CPP      = (1ULL << 1),
-    H        = (1ULL << 2),
-    S        = (1ULL << 3),
-    PHP      = (1ULL << 4),
-    MAKEFILE = (1ULL << 5),
-    PRO      = (1ULL << 6),
-    PRI      = (1ULL << 7),
-    LD       = (1ULL << 8),
-    SH       = (1ULL << 9),
-    INCLUDES = (1ULL << 10),
-    XML      = (1ULL << 11),
-    UI       = (1ULL << 12),
-    QRC      = (1ULL << 13)
-};
-
-
-
-inline const char8* enumToString(CodeVerificationFileType type) // TEST: NO
-{
-    switch (type)
-    {
-        case CodeVerificationFileType::NONE:     return "NONE";
-        case CodeVerificationFileType::TEXT:     return "TEXT";
-        case CodeVerificationFileType::CPP:      return "CPP";
-        case CodeVerificationFileType::H:        return "H"; // Ignore CppSingleCharVerifier
-        case CodeVerificationFileType::S:        return "S"; // Ignore CppSingleCharVerifier
-        case CodeVerificationFileType::PHP:      return "PHP";
-        case CodeVerificationFileType::MAKEFILE: return "MAKEFILE";
-        case CodeVerificationFileType::PRO:      return "PRO";
-        case CodeVerificationFileType::PRI:      return "PRI";
-        case CodeVerificationFileType::LD:       return "LD";
-        case CodeVerificationFileType::SH:       return "SH";
-        case CodeVerificationFileType::INCLUDES: return "INCLUDES";
-        case CodeVerificationFileType::XML:      return "XML";
-        case CodeVerificationFileType::UI:       return "UI";
-        case CodeVerificationFileType::QRC:      return "QRC";
-
-        default: return "UNKNOWN";
-    }
-}
-
-
-
-inline const char8* enumToFullString(CodeVerificationFileType type) // TEST: NO
-{
-    static char8 res[30];
-
-    sprintf(res, "0x%016llX (%s)", (quint64)type, enumToString(type));
-
-    return res;
-}
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H
+    FLAGS( \
+        CodeVerificationFileType::CPP, \
+        CodeVerificationFileType::H \
+    )                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define VERIFICATION_AVOID_TABS \                                                                                                                                                                        // Colorize: green
+    FLAGS( \
+        CodeVerificationFileType::TEXT, \
+        CodeVerificationFileType::CPP, \
+        CodeVerificationFileType::H, \
+        CodeVerificationFileType::S, \
+        CodeVerificationFileType::PHP, \
+        CodeVerificationFileType::PRO, \
+        CodeVerificationFileType::PRI, \
+        CodeVerificationFileType::LD, \
+        CodeVerificationFileType::SH, \
+        CodeVerificationFileType::INCLUDES, \
+        CodeVerificationFileType::XML, \
+        CodeVerificationFileType::UI, \
+        CodeVerificationFileType::QRC \
+    )                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define VERIFICATION_INDENT_SPACES \                                                                                                                                                                     // Colorize: green
+    FLAGS( \
+        CodeVerificationFileType::PRO, \
+        CodeVerificationFileType::PRI, \
+        CodeVerificationFileType::LD, \
+        CodeVerificationFileType::SH, \
+        CodeVerificationFileType::INCLUDES, \
+        CodeVerificationFileType::XML, \
+        CodeVerificationFileType::QRC \
+    )                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define VERIFICATION_INDENT_TABS \                                                                                                                                                                       // Colorize: green
+    FLAGS( \
+        CodeVerificationFileType::MAKEFILE \
+    )                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class CodeVerificationFileType: quint64                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE     = 0,                                                                                                                                                                                        // Colorize: green
+    TEXT     = (1ULL << 0),                                                                                                                                                                              // Colorize: green
+    CPP      = (1ULL << 1),                                                                                                                                                                              // Colorize: green
+    H        = (1ULL << 2),                                                                                                                                                                              // Colorize: green
+    S        = (1ULL << 3),                                                                                                                                                                              // Colorize: green
+    PHP      = (1ULL << 4),                                                                                                                                                                              // Colorize: green
+    MAKEFILE = (1ULL << 5),                                                                                                                                                                              // Colorize: green
+    PRO      = (1ULL << 6),                                                                                                                                                                              // Colorize: green
+    PRI      = (1ULL << 7),                                                                                                                                                                              // Colorize: green
+    LD       = (1ULL << 8),                                                                                                                                                                              // Colorize: green
+    SH       = (1ULL << 9),                                                                                                                                                                              // Colorize: green
+    INCLUDES = (1ULL << 10),                                                                                                                                                                             // Colorize: green
+    XML      = (1ULL << 11),                                                                                                                                                                             // Colorize: green
+    UI       = (1ULL << 12),                                                                                                                                                                             // Colorize: green
+    QRC      = (1ULL << 13)                                                                                                                                                                              // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToString(CodeVerificationFileType type) // TEST: NO                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    switch (type)                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case CodeVerificationFileType::NONE:     return "NONE";                                                                                                                                          // Colorize: green
+        case CodeVerificationFileType::TEXT:     return "TEXT";                                                                                                                                          // Colorize: green
+        case CodeVerificationFileType::CPP:      return "CPP";                                                                                                                                           // Colorize: green
+        case CodeVerificationFileType::H:        return "H"; // Ignore CppSingleCharVerifier                                                                                                             // Colorize: green
+        case CodeVerificationFileType::S:        return "S"; // Ignore CppSingleCharVerifier                                                                                                             // Colorize: green
+        case CodeVerificationFileType::PHP:      return "PHP";                                                                                                                                           // Colorize: green
+        case CodeVerificationFileType::MAKEFILE: return "MAKEFILE";                                                                                                                                      // Colorize: green
+        case CodeVerificationFileType::PRO:      return "PRO";                                                                                                                                           // Colorize: green
+        case CodeVerificationFileType::PRI:      return "PRI";                                                                                                                                           // Colorize: green
+        case CodeVerificationFileType::LD:       return "LD";                                                                                                                                            // Colorize: green
+        case CodeVerificationFileType::SH:       return "SH";                                                                                                                                            // Colorize: green
+        case CodeVerificationFileType::INCLUDES: return "INCLUDES";                                                                                                                                      // Colorize: green
+        case CodeVerificationFileType::XML:      return "XML";                                                                                                                                           // Colorize: green
+        case CodeVerificationFileType::UI:       return "UI";                                                                                                                                            // Colorize: green
+        case CodeVerificationFileType::QRC:      return "QRC";                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return "UNKNOWN";                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline const char8* enumToFullString(CodeVerificationFileType type) // TEST: NO                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    static char8 res[30];                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    sprintf(res, "0x%016llX (%s)", (quint64)type, enumToString(type));                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_OTHER_CODEVERIFICATIONFILETYPE_H                                                                                                                               // Colorize: green

@@ -1,50 +1,50 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H
-
-
-
-#include <QThread>
-
-#include <QMutex>
-#include <QSemaphore>
-
-#include <com/ngos/devtools/code_verifier/other/codefileinfo.h>
-#include <com/ngos/devtools/code_verifier/other/codemessageinfo.h>
-
-
-
-class CodeWorkerThread: public QThread
-{
-public:
-    CodeWorkerThread(); // TEST: NO
-
-    static quint64 getAmountOfFiles(); // TEST: NO
-    static void pushFile(const QString &path, CodeVerificationFileType verificationFileType); // TEST: NO
-    static void pushFile(CodeFileInfo *fileInfo); // TEST: NO
-    static CodeFileInfo* popFile(); // TEST: NO
-    static void noMoreFiles(); // TEST: NO
-
-    void addWarning(const QString &path, qint64 line, const QString &warning); // TEST: NO
-    void addError(const QString &path, qint64 line, const QString &error); // TEST: NO
-
-    const QList<CodeMessageInfo>& getWarnings() const; // TEST: NO
-    const QList<CodeMessageInfo>& getErrors() const; // TEST: NO
-
-protected:
-    void run() override; // TEST: NO
-
-private:
-    void processFile(CodeFileInfo *fileInfo); // TEST: NO
-
-    static quint64               sAmountOfFiles;
-    static QList<CodeFileInfo *> sFiles;
-    static QMutex                sFilesMutex;
-    static QSemaphore            sFilesSemaphore;
-
-    QList<CodeMessageInfo> mWarnings;
-    QList<CodeMessageInfo> mErrors;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H                                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QThread>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMutex>                                                                                                                                                                                        // Colorize: green
+#include <QSemaphore>                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codefileinfo.h>                                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codemessageinfo.h>                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class CodeWorkerThread: public QThread                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    CodeWorkerThread(); // TEST: NO                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static qint64 getAmountOfFiles(); // TEST: NO                                                                                                                                                        // Colorize: green
+    static void pushFile(const QString &path, CodeVerificationFileType verificationFileType); // TEST: NO                                                                                                // Colorize: green
+    static void pushFile(CodeFileInfo *fileInfo); // TEST: NO                                                                                                                                            // Colorize: green
+    static CodeFileInfo* popFile(); // TEST: NO                                                                                                                                                          // Colorize: green
+    static void noMoreFiles(); // TEST: NO                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void addWarning(const QString &path, qint64 line, const QString &warning); // TEST: NO                                                                                                               // Colorize: green
+    void addError(const QString &path, qint64 line, const QString &error); // TEST: NO                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QList<CodeMessageInfo>& getWarnings() const; // TEST: NO                                                                                                                                       // Colorize: green
+    const QList<CodeMessageInfo>& getErrors() const; // TEST: NO                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void run() override; // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    void processFile(CodeFileInfo *fileInfo); // TEST: NO                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static qint64                sAmountOfFiles;                                                                                                                                                         // Colorize: green
+    static QList<CodeFileInfo *> sFiles;                                                                                                                                                                 // Colorize: green
+    static QMutex                sFilesMutex;                                                                                                                                                            // Colorize: green
+    static QSemaphore            sFilesSemaphore;                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<CodeMessageInfo> mWarnings;                                                                                                                                                                    // Colorize: green
+    QList<CodeMessageInfo> mErrors;                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_THREADS_CODEWORKERTHREAD_H                                                                                                                                     // Colorize: green
