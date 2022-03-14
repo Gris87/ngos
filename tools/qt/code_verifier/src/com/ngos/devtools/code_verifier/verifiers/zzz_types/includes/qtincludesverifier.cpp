@@ -31,14 +31,18 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
             {
                 if (!QDir(QDir::homePath() + '/' + line.mid(2)).exists())
                 {
-                    worker->addWarning(path, i, QString("Path %1 not found").arg(line));
+                    worker->addWarning(path, i, QString("Path %1 not found")
+                                                        .arg(line)
+                                       );
                 }
             }
             else
             {
                 if (!QDir(parentFolder + '/' + line).exists())
                 {
-                    worker->addWarning(path, i, QString("Path %1 not found").arg(line));
+                    worker->addWarning(path, i, QString("Path %1 not found")
+                                                        .arg(line)
+                                       );
                 }
             }
 
@@ -71,7 +75,9 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     if (block != blockOriginal)
     {
-        worker->addWarning(path, -1, QString("Includes should be sorted:\n%1").arg(block.join('\n')));
+        worker->addWarning(path, -1, QString("Includes should be sorted:\n%1")
+                                                .arg(block.join('\n'))
+                           );
     }
 
 
@@ -94,7 +100,9 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
 
     if (block != blockTarget)
     {
-        worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1").arg(blockTarget.join('\n')));
+        worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1")
+                                                .arg(blockTarget.join('\n'))
+                           );
     }
 }
 

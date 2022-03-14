@@ -795,7 +795,10 @@ void PhpOperatorSpacesVerifier::verify(CodeWorkerThread *worker, const QString &
 
                 if (!validateChar(ch, chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3))
                 {
-                    worker->addError(path, i, QString("Whitespace is missing for operator '%1' in position %2").arg(ch).arg(j + 1));
+                    worker->addError(path, i, QString("Whitespace is missing for operator '%1' in position %2")
+                                                         .arg(ch)
+                                                         .arg(j + 1)
+                                     );
                 }
 
 

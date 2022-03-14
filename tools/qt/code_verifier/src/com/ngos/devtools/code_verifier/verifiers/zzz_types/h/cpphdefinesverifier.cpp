@@ -123,17 +123,23 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
     if (lines.at(fileHeaderOffset + 0) != "#ifndef " + defineName)
     {
-        worker->addError(path, 0, QString("Expected \"#ifndef %1\"").arg(defineName));
+        worker->addError(path, 0, QString("Expected \"#ifndef %1\"")
+                                            .arg(defineName)
+                         );
     }
 
     if (lines.at(fileHeaderOffset + 1) != "#define " + defineName)
     {
-        worker->addError(path, 1, QString("Expected \"#define %1\"").arg(defineName));
+        worker->addError(path, 1, QString("Expected \"#define %1\"")
+                                            .arg(defineName)
+                         );
     }
 
     if (lines.at(lines.size() - 2) != "#endif // " + defineName)
     {
-        worker->addError(path, lines.size() - 2, QString("Expected \"#endif // %1\"").arg(defineName));
+        worker->addError(path, lines.size() - 2, QString("Expected \"#endif // %1\"")
+                                                            .arg(defineName)
+                         );
     }
 
     if (
@@ -144,7 +150,9 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
         lines.at(fileHeaderOffset + 4) != ""
        )
     {
-        worker->addError(path, 2, QString("Expected 3 blank lines after \"#define %1\"").arg(defineName));
+        worker->addError(path, 2, QString("Expected 3 blank lines after \"#define %1\"")
+                                            .arg(defineName)
+                         );
     }
 
     if (
@@ -155,7 +163,9 @@ void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, 
         lines.at(lines.size() - 5) != ""
        )
     {
-        worker->addError(path, lines.size() - 3, QString("Expected 3 blank lines before \"#endif // %1\"").arg(defineName));
+        worker->addError(path, lines.size() - 3, QString("Expected 3 blank lines before \"#endif // %1\"")
+                                                            .arg(defineName)
+                         );
     }
 }
 

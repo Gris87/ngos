@@ -22,7 +22,9 @@ bool ConfigureGenerator::generateAll(const QString &path)
 
     if (!QDir(configurePath).exists())
     {
-        Console::err(QString("%1 not found").arg(configurePath));
+        Console::err(QString("%1 not found")
+                                .arg(configurePath)
+                     );
 
         return false;
     }

@@ -22,59 +22,59 @@
 <context>
     <name>BurnThread</name>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="151"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="716"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1296"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="155"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="717"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1305"/>
         <source>Unmounting disk volume %1</source>
         <translation>Отключение тома диска %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="169"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="732"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="175"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="736"/>
         <source>There is no any mounted disk volume</source>
         <translation>Не подключен ни один том диска</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="807"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="812"/>
         <source>Initializing disk</source>
         <translation>Инициализация диска</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="194"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="836"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="200"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="841"/>
         <source>Creating GPT partition for UEFI</source>
         <translation>Создание раздела GPT для UEFI</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1010"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1015"/>
         <source>Disk formatting failed</source>
         <translation>Не удалось отформатировать диск</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="208"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1026"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="214"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1031"/>
         <source>Formatting partition to FAT32</source>
         <translation>Форматирование раздела в FAT32</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="222"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1065"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="228"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1070"/>
         <source>Writing protective MBR</source>
         <translation>Создание записи MBR для GPT</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1250"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1255"/>
         <source>Disk already mounted to %1</source>
         <translation>Диск уже подключен к %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1264"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1271"/>
         <source>Failed to mount disk</source>
         <translation>Не удалось подключить диск</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="364"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1280"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="370"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="1287"/>
         <source>Mounting disk volume %1</source>
         <translation>Подключение тома диска %1</translation>
     </message>
@@ -85,29 +85,29 @@
     </message>
     <message>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="48"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="62"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="64"/>
         <source>Failed to copy folder %1</source>
         <translation>Не удалось скопировать папку %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="146"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="152"/>
         <source>Failed to create folder %1</source>
         <translation>Не удалось создать папку %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="85"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="173"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="89"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="181"/>
         <source>Failed to copy file %1</source>
         <translation>Не удалось скопировать файл %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="77"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread.cpp" line="81"/>
         <source>Create autorun.inf file</source>
         <translation>Создание файла autorun.inf</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="180"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="755"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_linux.cpp" line="186"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/threads/burnthread_win.cpp" line="760"/>
         <source>Clearing GPT</source>
         <translation>Очистка GPT</translation>
     </message>
@@ -160,7 +160,7 @@
         <translation>О программе (F1)</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="173"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="176"/>
         <source>Format disk</source>
         <translation>Форматирование диска</translation>
     </message>
@@ -172,154 +172,154 @@ All data on the device will be destroyed!</source>
 Это действие удалит все данные с устройства!</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="191"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="194"/>
         <source>Failed to create temporary directory</source>
         <translation>Не удалось создать временную директорию</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="253"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="256"/>
         <source>Language switched to %1</source>
         <translation>Язык изменен на %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="257"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="262"/>
         <source>Failed to switch language to %1</source>
         <translation>Не удалось изменить язык на %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="278"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="285"/>
         <source>Found devices: %1</source>
         <translation>Найдено устройств: %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="360"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="370"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="375"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="380"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="408"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="413"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="369"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="382"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="390"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="398"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="433"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="441"/>
         <source>Failed to get information about latest version from server %1: %2</source>
         <translation>Не удалось получить информацию о последней версии с сервера %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="360"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="375"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="465"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="506"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="371"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="392"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="498"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="548"/>
         <source>version field absent</source>
         <translation>поле version отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="370"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="496"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="384"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="535"/>
         <source>id field absent</source>
         <translation>поле id отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="380"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="516"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="635"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="400"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="561"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="695"/>
         <source>hash field absent</source>
         <translation>поле hash отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="398"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="419"/>
         <source>Response received from server %1 in %2 ms. Version: %3</source>
         <translation>Получен ответ от сервера %1 за %2 мс. Версия: %3</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="465"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="475"/>
         <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="496"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="506"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="516"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="615"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="625"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="635"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="668"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="678"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="509"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="533"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="546"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="559"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="667"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="680"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="693"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="731"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="744"/>
         <source>Failed to get file list from server %1: %2</source>
         <translation>Не удалось получить список файлов с сервера %1: %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="475"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="511"/>
         <source>files field absent</source>
         <translation>поле files отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="537"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="563"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="586"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="583"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="611"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="636"/>
         <source>File list received from server %1 did&apos;t match with stored value</source>
         <translation>Список файлов, полученный с сервера %1, не соответствует сохраненному</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="615"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="669"/>
         <source>download_name field absent</source>
         <translation>поле download_name отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="625"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="682"/>
         <source>filename field absent</source>
         <translation>поле filename отсутствует</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="661"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="722"/>
         <source>File list received from server %1</source>
         <translation>Список файлов получен с сервера %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="722"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="791"/>
         <source>Downloaded file %1 from server %2</source>
         <translation>Скачан файл %1 с сервера %2</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="741"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="767"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="779"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="817"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="829"/>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="864"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="813"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="841"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="855"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="895"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="909"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="948"/>
         <source>Failed to store file %1</source>
         <translation>Не удалось сохранить файл %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="840"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="922"/>
         <source>Failed to decompress file %1</source>
         <translation>Не удалось распаковать файл %1</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="875"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="961"/>
         <source>Failed to download file %1 from server %2: %3</source>
         <translation>Не удалось скачать файл %1 с сервера %2: %3</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1068"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1167"/>
         <source>Latest version is unavailable</source>
         <translation>Последняя версия недоступна</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1136"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1235"/>
         <source>Database is broken</source>
         <translation>База данных неисправна</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1239"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1354"/>
         <source>Making bootable USB flash drive on disk &quot;%1&quot;</source>
         <translation>Создание загрузочного USB флеш диска на устройстве &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="912"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1002"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1025"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1115"/>
         <source>Getting information about latest version of %1 from servers</source>
         <translation>Получение информации о последней версии %1 от серверов</translation>
     </message>
     <message>
-        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1257"/>
+        <location filename="../../src/com/ngos/devtools/usb_boot_maker/main/mainwindow.cpp" line="1374"/>
         <source>Operation terminated by user</source>
         <translation>Операция прекращена пользователем</translation>
     </message>

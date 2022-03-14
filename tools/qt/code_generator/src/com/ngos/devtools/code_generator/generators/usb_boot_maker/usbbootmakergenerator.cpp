@@ -22,7 +22,9 @@ bool UsbBootMakerGenerator::generateAll(const QString &path)
 
     if (!QDir(usbBootMakerPath).exists())
     {
-        Console::err(QString("%1 not found").arg(usbBootMakerPath));
+        Console::err(QString("%1 not found")
+                                .arg(usbBootMakerPath)
+                     );
 
         return false;
     }

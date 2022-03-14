@@ -81,7 +81,9 @@ void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path
 
                             default:
                             {
-                                Console::err(QString("Unknown mode %1").arg((qint64)mode));
+                                Console::err(QString("Unknown mode %1")
+                                                        .arg((qint64)mode)
+                                             );
                             }
                             break;
                         }

@@ -65,7 +65,9 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
                 !path.endsWith(".S")
                )
             {
-                expectedContent.append(QString("        <file>%1</file>\n").arg(path.mid(parentFolder.length()))); // Ignore CppAlignmentVerifier
+                expectedContent.append(QString("        <file>%1</file>\n")
+                                                .arg(path.mid(parentFolder.length()))
+                                       );
             }
         }
     }
@@ -79,7 +81,9 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
 
     if (content != expectedContent)
     {
-        worker->addError(path, -1, QString("Expected file content:\n%1").arg(expectedContent));
+        worker->addError(path, -1, QString("Expected file content:\n%1")
+                                            .arg(expectedContent)
+                         );
     }
 }
 

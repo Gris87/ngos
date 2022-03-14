@@ -24,7 +24,9 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        Console::err(QString("Failed to open file: %1").arg(path + ORIGINAL_FILE_PATH));
+        Console::err(QString("Failed to open file: %1")
+                                .arg(path + ORIGINAL_FILE_PATH)
+                     );
 
         return false;
     }
@@ -94,7 +96,9 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
         if (!match.hasMatch())
         {
-            Console::err(QString("Bug declaration is invalid: %1").arg(bug));
+            Console::err(QString("Bug declaration is invalid: %1")
+                                    .arg(bug)
+                         );
 
             return false;
         }
@@ -126,14 +130,18 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
         if (!ok)
         {
-            Console::err(QString("Bug declaration is invalid: %1").arg(bug));
+            Console::err(QString("Bug declaration is invalid: %1")
+                                    .arg(bug)
+                         );
 
             return false;
         }
 
         if (bit < 0 || bit >= 32)
         {
-            Console::err(QString("bit is invalid for bug: %1").arg(bug));
+            Console::err(QString("bit is invalid for bug: %1")
+                                    .arg(bug)
+                         );
 
             return false;
         }
@@ -149,7 +157,9 @@ bool X86BugsNamesGenerator::generate(const QString &path)
                     lines.append("");
                 }
 
-                lines.append(QString("    // word %1").arg(currentWord));
+                lines.append(QString("    // word %1")
+                                        .arg(currentWord)
+                             );
                 lines.append("");
 
                 lines.append(wordBlock);
@@ -164,13 +174,21 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
             for (qint64 i = 0; i < 32; ++i)
             {
-                wordBlock.append(QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"\";").arg(bugWord).arg(i).arg('=', i > 9 ? 1 : 2, QChar(' ')));
+                wordBlock.append(QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"\";")
+                                         .arg(bugWord)
+                                         .arg(i)
+                                         .arg('=', i > 9 ? 1 : 2, QChar(' '))
+                                 );
             }
         }
 
 
 
-        wordBlock[bit] = QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"%4\";").arg(bugWord).arg(bit).arg('=', bit > 9 ? 1 : 2, QChar(' ')).arg(bugName);
+        wordBlock[bit] = QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"%4\";")
+                                    .arg(bugWord)
+                                    .arg(bit)
+                                    .arg('=', bit > 9 ? 1 : 2, QChar(' '))
+                                    .arg(bugName);
 
 
 
@@ -185,7 +203,9 @@ bool X86BugsNamesGenerator::generate(const QString &path)
         lines.append("");
     }
 
-    lines.append(QString("    // word %1").arg(currentWord));
+    lines.append(QString("    // word %1")
+                            .arg(currentWord)
+                 );
     lines.append("");
 
     lines.append(wordBlock);

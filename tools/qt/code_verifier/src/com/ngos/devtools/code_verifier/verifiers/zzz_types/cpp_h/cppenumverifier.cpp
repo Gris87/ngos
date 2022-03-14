@@ -160,7 +160,8 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     for (qint64 j = 0; j < values.size(); ++j)
                     {
                         const QString &value    = values.at(j);
-                        QString        spaces   = QString("%1").arg("", maxValueLength - value.length(), QChar(' '));
+                        QString        spaces   = QString("%1")
+                                                            .arg("", maxValueLength - value.length(), QChar(' '));
                         QString        comment  = value.length() > 1 ? "" : " // Ignore CppSingleCharVerifier";
                         QString        valueStr = value.startsWith('_') ? value.mid(1) : value;
 
@@ -175,7 +176,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                     if (!content.contains(toStringFunction))
                     {
-                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
+                                                            .arg(toStringFunction)
+                                         );
                     }
                     // Ignore CppAlignmentVerifier [END]
 
@@ -206,7 +209,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (enumType != expectedEnumType)
                         {
-                            worker->addError(path, i, QString("Enum should use type %1 for flags").arg(expectedEnumType));
+                            worker->addError(path, i, QString("Enum should use type %1 for flags")
+                                                                .arg(expectedEnumType)
+                                             );
                         }
 
 
@@ -219,7 +224,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                             lines.at(i + 2) != expectedFlagsDefinition
                            )
                         {
-                            worker->addError(path, i, QString("Flags definition not found: %1").arg(expectedFlagsDefinition));
+                            worker->addError(path, i, QString("Flags definition not found: %1")
+                                                                .arg(expectedFlagsDefinition)
+                                             );
                         }
 
 
@@ -268,12 +275,16 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                 }
                                 else
                                 {
-                                    worker->addError(path, i, QString("Enum type %1 definition not found for flags").arg(expectedEnumType));
+                                    worker->addError(path, i, QString("Enum type %1 definition not found for flags")
+                                                                        .arg(expectedEnumType)
+                                                     );
                                 }
                             }
                             else
                             {
-                                worker->addError(path, i, QString("Enum type %1 definition not found for flags").arg(expectedEnumType));
+                                worker->addError(path, i, QString("Enum type %1 definition not found for flags")
+                                                                    .arg(expectedEnumType)
+                                                 );
                             }
                         }
 
@@ -352,7 +363,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (!content.contains(toStringFunction))
                         {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
+                                                                .arg(toStringFunction)
+                                             );
                         }
                         // Ignore CppAlignmentVerifier [END]
 
@@ -379,7 +392,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (!content.contains(toStringFunction))
                         {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
+                                                                .arg(toStringFunction)
+                                             );
                         }
                         // Ignore CppAlignmentVerifier [END]
 
@@ -406,7 +421,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (!content.contains(toStringFunction))
                         {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
+                                                                .arg(toStringFunction)
+                                             );
                         }
                         // Ignore CppAlignmentVerifier [END]
                     }
@@ -531,7 +548,9 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
 
                         if (!content.contains(toStringFunction))
                         {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1").arg(toStringFunction));
+                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
+                                                                .arg(toStringFunction)
+                                             );
                         }
                         // Ignore CppAlignmentVerifier [END]
                     }

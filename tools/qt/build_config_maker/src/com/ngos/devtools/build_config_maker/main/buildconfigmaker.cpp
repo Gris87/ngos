@@ -21,7 +21,9 @@ qint64 BuildConfigMaker::process()
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        Console::err(QString("Failed to read file \"%1\"").arg(mBuildConfigPath));
+        Console::err(QString("Failed to read file \"%1\"")
+                     .arg(mBuildConfigPath)
+                     );
 
         return 1;
     }
@@ -124,7 +126,9 @@ qint64 BuildConfigMaker::process()
 
         if (!found)
         {
-            Console::err(QString("Parameter \"%1\" not found").arg(parameter));
+            Console::err(QString("Parameter \"%1\" not found")
+                         .arg(parameter)
+                         );
 
             return 1;
         }
@@ -138,7 +142,9 @@ qint64 BuildConfigMaker::process()
     {
         if (!file.open(QIODevice::WriteOnly))
         {
-            Console::err(QString("Failed to write file \"%1\"").arg(mBuildConfigPath));
+            Console::err(QString("Failed to write file \"%1\"")
+                         .arg(mBuildConfigPath)
+                         );
 
             return 1;
         }
@@ -148,11 +154,15 @@ qint64 BuildConfigMaker::process()
 
 
 
-        Console::out(QString("%1 file updated").arg(mBuildConfigPath));
+        Console::out(QString("%1 file updated")
+                     .arg(mBuildConfigPath)
+                     );
     }
     else
     {
-        Console::out(QString("%1 file is up to date").arg(mBuildConfigPath));
+        Console::out(QString("%1 file is up to date")
+                     .arg(mBuildConfigPath)
+                     );
     }
 
 

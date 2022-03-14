@@ -48,13 +48,20 @@ bool HexCharsGenerator::generate(const QString &path)
                 line.append(", ");
             }
 
-            line.append(QString("0x%1%2").arg((quint8)digits[j], 2, 16, QChar('0')).arg((quint8)digits[i], 2, 16, QChar('0')));
+            line.append(QString("0x%1%2")
+                                .arg((quint8)digits[j], 2, 16, QChar('0'))
+                                .arg((quint8)digits[i], 2, 16, QChar('0'))
+                        );
 
             comment.append(digits[i]);
             comment.append(digits[j]);
         }
 
-        lines.append(QString("    %1%2 // %3").arg(line).arg(i < 15 ? ',' : ' ').arg(comment));
+        lines.append(QString("    %1%2 // %3")
+                             .arg(line)
+                             .arg(i < 15 ? ',' : ' ')
+                             .arg(comment)
+                     );
     }
 
     lines.append("};");

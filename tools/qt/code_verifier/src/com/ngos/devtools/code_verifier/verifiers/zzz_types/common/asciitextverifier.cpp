@@ -1,24 +1,27 @@
-#include "asciitextverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-AsciiTextVerifier::AsciiTextVerifier()
-    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-{
-    // Nothing
-}
-
-void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    if (path.endsWith(".ts"))
-    {
-        return;
-    }
-
-
-
+#include "asciitextverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AsciiTextVerifier::AsciiTextVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Check any file except ts files                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (path.endsWith(".ts"))                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
     for (qint64 i = 0; i < lines.size(); ++i)
     {
         QString line = lines.at(i);
@@ -38,7 +41,10 @@ void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                 unicode != '\t'
                )
             {
-                worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)").arg(ch).arg(unicode, 4, 16, QChar('0')));
+                worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)")
+                                 .arg(ch)
+                                 .arg(unicode, 4, 16, QChar('0'))
+                                 );
             }
         }
     }

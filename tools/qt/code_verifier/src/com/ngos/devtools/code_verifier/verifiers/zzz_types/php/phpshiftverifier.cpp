@@ -30,7 +30,9 @@ void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, con
 
             if (isPowerOf2(match.captured(1)))
             {
-                worker->addWarning(path, i, QString("%1 can be replaced with shift").arg(match.captured(0)));
+                worker->addWarning(path, i, QString("%1 can be replaced with shift")
+                                                    .arg(match.captured(0))
+                                   );
             }
         }
     }

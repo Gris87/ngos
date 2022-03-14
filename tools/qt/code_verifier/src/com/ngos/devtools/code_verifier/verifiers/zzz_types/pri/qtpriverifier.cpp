@@ -238,7 +238,9 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                 blockList.append("    $$PWD/" + block.at(i));
             }
 
-            worker->addWarning(path, startPos, QString("Files should be sorted or duplicates need to remove:\n%1").arg(blockList));
+            worker->addWarning(path, startPos, QString("Files should be sorted or duplicates need to remove:\n%1")
+                                                        .arg(blockList)
+                               );
         }
 
 
@@ -322,7 +324,9 @@ qint64 QtPriVerifier::verifyFilesBlock(CodeWorkerThread *worker, const QString &
                 {
                     if (!block.contains(relativePath))
                     {
-                        worker->addError(path, startPos, QString("File absent: $$PWD/%1").arg(relativePath));
+                        worker->addError(path, startPos, QString("File absent: $$PWD/%1")
+                                                                    .arg(relativePath)
+                                         );
                     }
                 }
             }

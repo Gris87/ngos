@@ -153,7 +153,10 @@ void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QStr
 
                     if (!validateChar(ch, chPrev1, chNext1))
                     {
-                        worker->addWarning(path, i, QString("Whitespace is missing after '%1' character in position %2").arg(ch).arg(j + 1));
+                        worker->addWarning(path, i, QString("Whitespace is missing after '%1' character in position %2")
+                                                               .arg(ch)
+                                                               .arg(j + 1)
+                                           );
                     }
                 }
             }

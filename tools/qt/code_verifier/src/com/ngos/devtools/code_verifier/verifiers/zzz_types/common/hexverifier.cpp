@@ -57,7 +57,11 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                             hexTrimmed != "%016llX"
                            )
                         {
-                            worker->addError(path, i, QString("Unexpected hex format %1. ").arg(hex) + "Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016llX");
+                            QString message = QString("Unexpected hex format %1. ")
+                                                        .arg(hex);
+                            message += "Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016llX";
+
+                            worker->addError(path, i, message);
                         }
                     }
                     else
@@ -66,7 +70,9 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                         {
                             if (!hexTrimmed.at(j).isNumber())
                             {
-                                worker->addError(path, i, QString("Only numeric symbols are allowed in format %1").arg(hex));
+                                worker->addError(path, i, QString("Only numeric symbols are allowed in format %1")
+                                                                    .arg(hex)
+                                                 );
 
                                 break;
                             }
@@ -85,14 +91,18 @@ void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QS
                         hexTrimmed.length() != 16
                        )
                     {
-                        worker->addError(path, i, QString("Hex length of %1 should be 2, 4, 8 or 16").arg(hex));
+                        worker->addError(path, i, QString("Hex length of %1 should be 2, 4, 8 or 16")
+                                                            .arg(hex)
+                                         );
                     }
 
                     for (qint64 j = 0; j < hexTrimmed.length(); ++j)
                     {
                         if (hexTrimmed.at(j).isLower())
                         {
-                            worker->addError(path, i, QString("Capital letters should be used for hex %1").arg(hex));
+                            worker->addError(path, i, QString("Capital letters should be used for hex %1")
+                                                                .arg(hex)
+                                             );
 
                             break;
                         }

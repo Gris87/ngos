@@ -41,7 +41,9 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
 
     if (!QFile(asmPath).exists())
     {
-        Console::err(QString("File %1 not found").arg(asmPath));
+        Console::err(QString("File %1 not found")
+                                .arg(asmPath)
+                     );
 
         return false;
     }
@@ -54,7 +56,10 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
 
     if (process.exitCode() != 0)
     {
-        Console::err(QString("Failed to compile %1:\n%2").arg(asmPath).arg(QString::fromUtf8(process.readAllStandardError())));
+        Console::err(QString("Failed to compile %1:\n%2")
+                             .arg(asmPath)
+                             .arg(QString::fromUtf8(process.readAllStandardError()))
+                     );
 
         return false;
     }
@@ -66,7 +71,10 @@ bool ProtectiveMbrGenerator::generate(const QString &path)
 
     if (process.exitCode() != 0)
     {
-        Console::err(QString("Failed to compile %1:\n%2").arg(asmPath).arg(QString::fromUtf8(process.readAllStandardError())));
+        Console::err(QString("Failed to compile %1:\n%2")
+                             .arg(asmPath)
+                             .arg(QString::fromUtf8(process.readAllStandardError()))
+                     );
 
         return false;
     }

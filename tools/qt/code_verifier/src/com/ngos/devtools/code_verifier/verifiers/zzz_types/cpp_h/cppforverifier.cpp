@@ -57,17 +57,23 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
                 if (!initMatch.hasMatch())
                 {
-                    worker->addError(path, row, QString("Unexpected initialization field: %1").arg(fields.at(0).trimmed()));
+                    worker->addError(path, row, QString("Unexpected initialization field: %1")
+                                                        .arg(fields.at(0).trimmed())
+                                     );
                 }
 
                 if (!conditionMatch.hasMatch())
                 {
-                    worker->addError(path, row, QString("Unexpected condition field: %1").arg(fields.at(1).trimmed()));
+                    worker->addError(path, row, QString("Unexpected condition field: %1")
+                                                        .arg(fields.at(1).trimmed())
+                                     );
                 }
 
                 if (!stepMatch.hasMatch())
                 {
-                    worker->addError(path, row, QString("Unexpected step field: %1").arg(fields.at(2).trimmed()));
+                    worker->addError(path, row, QString("Unexpected step field: %1")
+                                                        .arg(fields.at(2).trimmed())
+                                     );
                 }
 
 
@@ -83,14 +89,18 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
                 if (conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)
                 {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
+                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
+                                                        .arg(varName)
+                                     );
                 }
 
 
 
                 if (stepMatch.captured(1) != varName)
                 {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1").arg(varName));
+                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
+                                                        .arg(varName)
+                                     );
                 }
 
 

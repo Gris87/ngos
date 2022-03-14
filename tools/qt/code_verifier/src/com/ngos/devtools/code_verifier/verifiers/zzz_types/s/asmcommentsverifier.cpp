@@ -100,7 +100,9 @@ void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, 
                 i < lines.size() - 1
                )
             {
-                worker->addError(path, i, QString("Comment absent in position %1").arg(COMMENT_POS));
+                worker->addError(path, i, QString("Comment absent in position %1")
+                                                    .arg(COMMENT_POS)
+                                 );
             }
         }
     }

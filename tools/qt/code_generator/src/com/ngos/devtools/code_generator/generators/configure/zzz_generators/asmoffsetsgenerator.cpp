@@ -10,7 +10,10 @@
 
 
 #define ADD_ASM_OFFSET(name, align, type, field) \
-        lines.append(QString("#define %1 0x%2").arg(#name, -align, QChar(' ')).arg((quint64)(&((type *)nullptr)->field), 8, 16, QChar('0')));
+        lines.append(QString("#define %1 0x%2") \
+                                .arg(#name, -align, QChar(' ')) \
+                                .arg((quint64)(&((type *)nullptr)->field), 8, 16, QChar('0')) \
+                    );
 
 
 

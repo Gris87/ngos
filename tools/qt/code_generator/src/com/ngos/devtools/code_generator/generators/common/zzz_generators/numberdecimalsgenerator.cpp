@@ -57,7 +57,10 @@ bool NumberDecimalsGenerator::generate(const QString &path)
         {
             lastNumber = number;
 
-            lines.append(QString("    \".%1\" // %2").arg(number).arg(i));
+            lines.append(QString("    \".%1\" // %2")
+                                 .arg(number)
+                                 .arg(i)
+                         );
 
             curIndex += 3;
         }
@@ -80,11 +83,17 @@ bool NumberDecimalsGenerator::generate(const QString &path)
     {
         if (i < 5)
         {
-            lines.append(QString("    \"\", // %1").arg(i));
+            lines.append(QString("    \"\", // %1")
+                                 .arg(i)
+                         );
         }
         else
         {
-            lines.append(QString("    &numberDecimalsFull[%1]%2 // %3").arg(decimalIndecies[i]).arg(i < 995 ? "," : "").arg(i)); // Ignore CppSingleCharVerifier
+            lines.append(QString("    &numberDecimalsFull[%1]%2 // %3")
+                                 .arg(decimalIndecies[i])
+                                 .arg(i < 995 ? "," : "") // Ignore CppSingleCharVerifier
+                                 .arg(i)
+                         );
         }
     }
 

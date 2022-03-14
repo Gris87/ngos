@@ -7,6 +7,7 @@
 #include <stdio.h>                                                                                                                                                                                       // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 #include <com/ngos/shared/common/ngos/flags.h>                                                                                                                                                           // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                            // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
@@ -18,7 +19,7 @@
         CodeVerificationFileType::H \
     )                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define VERIFICATION_AVOID_TABS \                                                                                                                                                                        // Colorize: green
+#define VERIFICATION_AVOID_TABS \
     FLAGS( \
         CodeVerificationFileType::TEXT, \
         CodeVerificationFileType::CPP, \
@@ -35,7 +36,7 @@
         CodeVerificationFileType::QRC \
     )                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define VERIFICATION_INDENT_SPACES \                                                                                                                                                                     // Colorize: green
+#define VERIFICATION_INDENT_SPACES \
     FLAGS( \
         CodeVerificationFileType::PRO, \
         CodeVerificationFileType::PRI, \
@@ -46,7 +47,7 @@
         CodeVerificationFileType::QRC \
     )                                                                                                                                                                                                    // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-#define VERIFICATION_INDENT_TABS \                                                                                                                                                                       // Colorize: green
+#define VERIFICATION_INDENT_TABS \
     FLAGS( \
         CodeVerificationFileType::MAKEFILE \
     )                                                                                                                                                                                                    // Colorize: green

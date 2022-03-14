@@ -183,12 +183,16 @@ void PhpAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                 line.at(n) == ' '
                                )
                             {
-                                worker->addWarning(path, k, QString("Alignment is invalid in position %1").arg(j + 1));
+                                worker->addWarning(path, k, QString("Alignment is invalid in position %1")
+                                                                    .arg(j + 1)
+                                                   );
                             }
                         }
                         else
                         {
-                            worker->addError(path, k, QString("Unexpected behavior during alignment verification in position %1").arg(j + 1));
+                            worker->addError(path, k, QString("Unexpected behavior during alignment verification in position %1")
+                                                                .arg(j + 1)
+                                             );
                         }
                     }
                 }

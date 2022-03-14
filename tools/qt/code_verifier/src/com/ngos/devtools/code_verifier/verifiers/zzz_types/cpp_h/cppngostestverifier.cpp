@@ -110,7 +110,9 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
         if (!content.contains(expectedContent))
         {
-            worker->addError(path, -1, QString("Expected lines not found:\n%1").arg(expectedContent));
+            worker->addError(path, -1, QString("Expected lines not found:\n%1")
+                                                .arg(expectedContent)
+                             );
         }
     }
     else
@@ -147,7 +149,9 @@ void CppNgosTestVerifier::verify(CodeWorkerThread *worker, const QString &path, 
 
                 if (line != expectedLine)
                 {
-                    worker->addError(path, i, QString("Expected line: %1").arg(expectedLine));
+                    worker->addError(path, i, QString("Expected line: %1")
+                                                        .arg(expectedLine)
+                                     );
                 }
 
 

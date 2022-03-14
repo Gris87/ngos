@@ -22,7 +22,9 @@ bool AssetsGenerator::generateAll(const QString &path)
 
     if (!QDir(osPath).exists())
     {
-        Console::err(QString("%1 not found").arg(osPath));
+        Console::err(QString("%1 not found")
+                     .arg(osPath)
+                     );
 
         return false;
     }

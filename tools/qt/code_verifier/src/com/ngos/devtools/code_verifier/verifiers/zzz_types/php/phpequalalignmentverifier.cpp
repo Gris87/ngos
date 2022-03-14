@@ -163,12 +163,16 @@ void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &
             {
                 if (beforeSpaces == "")
                 {
-                    worker->addError(path, i, QString("Space not found before equal sign at position %1").arg(equalEntry.equalIndex));
+                    worker->addError(path, i, QString("Space not found before equal sign at position %1")
+                                                        .arg(equalEntry.equalIndex)
+                                     );
                 }
 
                 if (afterSpaces == "")
                 {
-                    worker->addError(path, i, QString("Space not found after equal sign at position %1").arg(equalEntry.valueIndex));
+                    worker->addError(path, i, QString("Space not found after equal sign at position %1")
+                                                        .arg(equalEntry.valueIndex)
+                                     );
                 }
             }
 

@@ -81,7 +81,9 @@ qint32 main(qint32 argc, char *argv[])
     Console::out("Build config maker started");
     Console::out("");
     Console::out("Parameters:");
-    Console::out(QString("PATH_TO_BUILDCONFIG_H = %1").arg(buildConfigPath));
+    Console::out(QString("PATH_TO_BUILDCONFIG_H = %1")
+                 .arg(buildConfigPath)
+                 );
 
 
 
@@ -98,7 +100,10 @@ qint32 main(qint32 argc, char *argv[])
     {
         it.next();
 
-        Console::out(QString("%1 = %2").arg(it.key()).arg(it.value()));
+        Console::out(QString("%1 = %2")
+                     .arg(it.key())
+                     .arg(it.value())
+                     );
     }
 
     Console::out("");
@@ -112,7 +117,9 @@ qint32 main(qint32 argc, char *argv[])
     qint64 res = maker.process();
 
     Console::out("");
-    Console::out(QString("Build config modified in %1 ms").arg(QDateTime::currentMSecsSinceEpoch() - startTime));
+    Console::out(QString("Build config modified in %1 ms")
+                 .arg(QDateTime::currentMSecsSinceEpoch() - startTime)
+                 );
     Console::out("");
 
 

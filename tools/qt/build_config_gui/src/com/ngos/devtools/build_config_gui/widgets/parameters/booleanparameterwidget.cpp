@@ -129,9 +129,13 @@ QString BooleanParameterWidget::generatePrivateDetails()
     QString defaultValue;
     QString currentValue;
 
-    QString trueValue  = QString("true  - %1").arg(mTrueDescription).replace(' ',  "&nbsp;");
-    QString falseValue = QString("false - %1").arg(mFalseDescription).replace(' ', "&nbsp;");
+    QString trueValue  = QString("true  - %1")
+                                    .arg(mTrueDescription);
+    QString falseValue = QString("false - %1")
+                                    .arg(mFalseDescription);
 
+    trueValue  = trueValue.replace(' ',  "&nbsp;");
+    falseValue = falseValue.replace(' ', "&nbsp;");
 
 
     if (mValue == mTrueValue)
