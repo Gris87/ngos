@@ -81,9 +81,7 @@ qint32 main(qint32 argc, char *argv[])
     Console::out("Build config maker started");
     Console::out("");
     Console::out("Parameters:");
-    Console::out(QString("PATH_TO_BUILDCONFIG_H = %1")
-                            .arg(buildConfigPath)
-    );
+    Console::out(QString("PATH_TO_BUILDCONFIG_H = %1").arg(buildConfigPath));
 
 
 

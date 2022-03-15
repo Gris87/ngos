@@ -44,9 +44,7 @@ qint32 main(qint32 argc, char *argv[])
     Console::out("Code generator started");
     Console::out("");
     Console::out("Parameters:");
-    Console::out(QString("PATH = %1")
-                            .arg(targetPath)
-    );
+    Console::out(QString("PATH = %1").arg(targetPath));
     Console::out("");
 
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
