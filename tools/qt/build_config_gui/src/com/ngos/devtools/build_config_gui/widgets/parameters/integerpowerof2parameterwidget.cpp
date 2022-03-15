@@ -94,10 +94,9 @@ IntegerPowerOf2ParameterWidget::IntegerPowerOf2ParameterWidget(const QString &id
 
         if (value >= minimumValue)
         {
-            QString valueHex = QString("0x%1")
-                                        .arg(value, 16, 16, QChar('0'));
-
-            mOptionsList.append(valueHex);
+            mOptionsList.append(QString("0x%1")
+                                        .arg(value, 16, 16, QChar('0'))
+            );
         }
 
         value <<= 1;

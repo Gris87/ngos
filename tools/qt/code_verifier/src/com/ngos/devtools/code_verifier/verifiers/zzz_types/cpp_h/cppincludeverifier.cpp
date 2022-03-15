@@ -350,7 +350,7 @@ void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 {
                     worker->addWarning(path, blockStarts.at(i), QString("Includes should be sorted or duplicates need to remove:\n%1")
                                                                         .arg(block.join('\n'))
-                                       );
+                    );
                 }
             }
 

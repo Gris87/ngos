@@ -155,9 +155,9 @@ void CppPunctuationVerifier::verify(CodeWorkerThread *worker, const QString &pat
                 if (!validateChar(ch, chPrev1, chNext1, chNext2))
                 {
                     worker->addWarning(path, i, QString("Whitespace is missing after '%1' character in position %2")
-                                                           .arg(ch)
-                                                           .arg(j + 1)
-                                       );
+                                                        .arg(ch)
+                                                        .arg(j + 1)
+                    );
                 }
 
 

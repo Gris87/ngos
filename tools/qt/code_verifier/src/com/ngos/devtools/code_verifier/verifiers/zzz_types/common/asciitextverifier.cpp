@@ -42,9 +42,9 @@ void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                )
             {
                 worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)")
-                                 .arg(ch)
-                                 .arg(unicode, 4, 16, QChar('0'))
-                                 );
+                                                    .arg(ch)
+                                                    .arg(unicode, 4, 16, QChar('0'))
+                );
             }
         }
     }

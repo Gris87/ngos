@@ -178,7 +178,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                     {
                         worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
                                                             .arg(toStringFunction)
-                                         );
+                        );
                     }
                     // Ignore CppAlignmentVerifier [END]
 
@@ -211,7 +211,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Enum should use type %1 for flags")
                                                                 .arg(expectedEnumType)
-                                             );
+                            );
                         }
 
 
@@ -226,7 +226,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Flags definition not found: %1")
                                                                 .arg(expectedFlagsDefinition)
-                                             );
+                            );
                         }
 
 
@@ -277,14 +277,14 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                                 {
                                     worker->addError(path, i, QString("Enum type %1 definition not found for flags")
                                                                         .arg(expectedEnumType)
-                                                     );
+                                    );
                                 }
                             }
                             else
                             {
                                 worker->addError(path, i, QString("Enum type %1 definition not found for flags")
                                                                     .arg(expectedEnumType)
-                                                 );
+                                );
                             }
                         }
 
@@ -365,7 +365,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
                                                                 .arg(toStringFunction)
-                                             );
+                            );
                         }
                         // Ignore CppAlignmentVerifier [END]
 
@@ -394,7 +394,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
                                                                 .arg(toStringFunction)
-                                             );
+                            );
                         }
                         // Ignore CppAlignmentVerifier [END]
 
@@ -423,7 +423,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
                                                                 .arg(toStringFunction)
-                                             );
+                            );
                         }
                         // Ignore CppAlignmentVerifier [END]
                     }
@@ -550,7 +550,7 @@ void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, cons
                         {
                             worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
                                                                 .arg(toStringFunction)
-                                             );
+                            );
                         }
                         // Ignore CppAlignmentVerifier [END]
                     }

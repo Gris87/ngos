@@ -24,7 +24,7 @@ bool UsbBootMakerGenerator::generateAll(const QString &path)
     {
         Console::err(QString("%1 not found")
                                 .arg(usbBootMakerPath)
-                     );
+        );
 
         return false;
     }

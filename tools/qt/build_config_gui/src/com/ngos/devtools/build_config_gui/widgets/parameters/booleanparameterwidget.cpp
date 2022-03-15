@@ -138,6 +138,7 @@ QString BooleanParameterWidget::generatePrivateDetails()
     falseValue = falseValue.replace(' ', "&nbsp;");
 
 
+
     if (mValue == mTrueValue)
     {
         currentValue = trueValue;

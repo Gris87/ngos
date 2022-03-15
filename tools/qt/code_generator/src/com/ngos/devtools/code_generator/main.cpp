@@ -46,7 +46,7 @@ qint32 main(qint32 argc, char *argv[])
     Console::out("Parameters:");
     Console::out(QString("PATH = %1")
                             .arg(targetPath)
-                 );
+    );
     Console::out("");
 
     qint64 startTime = QDateTime::currentMSecsSinceEpoch();
@@ -80,11 +80,11 @@ qint32 main(qint32 argc, char *argv[])
     Console::out("");
     Console::out(QString("%1 files generated")
                             .arg(Generator::getNumberOfGeneratedFiles())
-                 );
+    );
     Console::out("");
     Console::out(QString("Code generation completed in %1 ms")
                             .arg(QDateTime::currentMSecsSinceEpoch() - startTime)
-                 );
+    );
     Console::out("");
 
 

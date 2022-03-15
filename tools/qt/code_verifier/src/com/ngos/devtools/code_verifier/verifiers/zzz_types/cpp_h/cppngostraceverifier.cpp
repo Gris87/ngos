@@ -267,7 +267,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                         {
                                             worker->addError(path, n, QString("Trace command is invalid. Expected: \"%1\"")
                                                                                 .arg(trace)
-                                                             );
+                                            );
                                         }
                                     }
                                     else
@@ -281,7 +281,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                     {
                                         worker->addError(path, n, QString("Trace command should be \"%1((\"\"));\"")
                                                                             .arg(traceCommand)
-                                                         );
+                                        );
                                     }
                                 }
                             }
@@ -327,7 +327,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
 
                                 worker->addError(path, i + 1, QString("Trace command not found at the beginning of the function: \"%1\"")
                                                                         .arg(trace)
-                                                 );
+                                );
                             }
                         }
                         else

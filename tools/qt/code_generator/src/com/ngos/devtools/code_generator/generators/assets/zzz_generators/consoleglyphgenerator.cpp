@@ -49,8 +49,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
     if (error)
     {
         Console::err(QString("Failed to initialize FreeType library. Error: %1")
-                     .arg(error)
-                     );
+                                .arg(error)
+        );
 
         return false;
     }
@@ -62,8 +62,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
     if (error)
     {
         Console::err(QString("Failed to load face from memory. Error: %1")
-                     .arg(error)
-                     );
+                                .arg(error)
+        );
 
         return false;
     }
@@ -75,8 +75,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
     if (error)
     {
         Console::err(QString("Failed to change font size. Error: %1")
-                     .arg(error)
-                     );
+                                .arg(error)
+        );
 
         return false;
     }
@@ -120,9 +120,9 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
         if (error)
         {
             Console::err(QString("Failed to load glyph for char 0x%1. Error: %2")
-                         .arg(i, 2, 16, QChar('0'))
-                         .arg(error)
-                         );
+                                    .arg(i, 2, 16, QChar('0'))
+                                    .arg(error)
+            );
 
             continue;
         }
@@ -134,9 +134,9 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
         if (error)
         {
             Console::err(QString("Failed to render glyph for char 0x%1. Error: %2")
-                         .arg(i, 2, 16, QChar('0'))
-                         .arg(error)
-                         );
+                                    .arg(i, 2, 16, QChar('0'))
+                                    .arg(error)
+            );
 
             continue;
         }
@@ -158,8 +158,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
     if (error)
     {
         Console::err(QString("Failed to free face. Error: %1")
-                     .arg(error)
-                     );
+                                .arg(error)
+        );
 
         return false;
     }
@@ -171,8 +171,8 @@ bool ConsoleGlyphGenerator::generate(const QString &path)
     if (error)
     {
         Console::err(QString("Failed to free FreeType library. Error: %1")
-                     .arg(error)
-                     );
+                                .arg(error)
+        );
 
         return false;
     }

@@ -56,7 +56,7 @@ bool Generator::save(const QString &path, const QStringList &lines)
                 {
                     Console::err(QString("Failed to get relative path for \"%1\"")
                                             .arg(path)
-                                 );
+                    );
 
                     return false;
                 }
@@ -69,7 +69,7 @@ bool Generator::save(const QString &path, const QStringList &lines)
                 {
                     Console::err(QString("Failed to get relative path for \"%1\"")
                                             .arg(path)
-                                 );
+                    );
 
                     return false;
                 }
@@ -90,7 +90,7 @@ bool Generator::save(const QString &path, const QStringList &lines)
                     {
                         Console::err(QString("Failed to get relative path for \"%1\"")
                                                 .arg(path)
-                                     );
+                        );
 
                         return false;
                     }
@@ -117,7 +117,7 @@ bool Generator::save(const QString &path, const QStringList &lines)
                 {
                     Console::err(QString("Failed to get relative path for \"%1\"")
                                             .arg(path)
-                                 );
+                    );
 
                     return false;
                 }
@@ -166,9 +166,9 @@ bool Generator::save(const QString &path, const QStringList &lines)
     if (!QDir().mkpath(folder))
     {
         Console::err(QString("Failed to create folder \"%1\" for file \"%2\"")
-                             .arg(folder)
-                             .arg(path)
-                     );
+                                .arg(folder)
+                                .arg(path)
+        );
 
         return false;
     }
@@ -207,7 +207,7 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
         {
             Console::err(QString("Failed to create file \"%1\"")
                                     .arg(path)
-                         );
+            );
 
             return false;
         }
@@ -219,7 +219,7 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
 
         Console::out(QString("Generated file: %1")
                                 .arg(path)
-                     );
+        );
 
         ++sNumberOfGeneratedFiles;
     }
@@ -227,7 +227,7 @@ bool Generator::save(const QString &path, const QByteArray &bytes)
     {
         Console::out(QString("Generated file: %1 [up-to-date]")
                                 .arg(path, -120, QChar(' '))
-                     );
+        );
     }
 
 

@@ -24,7 +24,7 @@ bool ConfigureGenerator::generateAll(const QString &path)
     {
         Console::err(QString("%1 not found")
                                 .arg(configurePath)
-                     );
+        );
 
         return false;
     }

@@ -59,21 +59,21 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 {
                     worker->addError(path, row, QString("Unexpected initialization field: %1")
                                                         .arg(fields.at(0).trimmed())
-                                     );
+                    );
                 }
 
                 if (!conditionMatch.hasMatch())
                 {
                     worker->addError(path, row, QString("Unexpected condition field: %1")
                                                         .arg(fields.at(1).trimmed())
-                                     );
+                    );
                 }
 
                 if (!stepMatch.hasMatch())
                 {
                     worker->addError(path, row, QString("Unexpected step field: %1")
                                                         .arg(fields.at(2).trimmed())
-                                     );
+                    );
                 }
 
 
@@ -91,7 +91,7 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1")
                                                         .arg(varName)
-                                     );
+                    );
                 }
 
 
@@ -100,7 +100,7 @@ qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
                 {
                     worker->addError(path, row, QString("Invalid variable usage. Expected %1")
                                                         .arg(varName)
-                                     );
+                    );
                 }
 
 

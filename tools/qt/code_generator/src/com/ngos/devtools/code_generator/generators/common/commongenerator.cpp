@@ -21,8 +21,8 @@ bool CommonGenerator::generateAll(const QString &path)
     if (!QDir(path).exists())
     {
         Console::err(QString("%1 not found")
-                     .arg(path)
-                     );
+                                .arg(path)
+        );
 
         return false;
     }

@@ -67,7 +67,7 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
             {
                 expectedContent.append(QString("        <file>%1</file>\n")
                                                 .arg(path.mid(parentFolder.length()))
-                                       );
+                );
             }
         }
     }
@@ -83,7 +83,7 @@ void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const 
     {
         worker->addError(path, -1, QString("Expected file content:\n%1")
                                             .arg(expectedContent)
-                         );
+        );
     }
 }
 

@@ -32,7 +32,7 @@ void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, con
             {
                 worker->addWarning(path, i, QString("%1 can be replaced with shift")
                                                     .arg(match.captured(0))
-                                   );
+                );
             }
         }
     }

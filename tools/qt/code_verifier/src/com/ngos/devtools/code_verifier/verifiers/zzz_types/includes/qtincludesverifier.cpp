@@ -33,7 +33,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 {
                     worker->addWarning(path, i, QString("Path %1 not found")
                                                         .arg(line)
-                                       );
+                    );
                 }
             }
             else
@@ -42,7 +42,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
                 {
                     worker->addWarning(path, i, QString("Path %1 not found")
                                                         .arg(line)
-                                       );
+                    );
                 }
             }
 
@@ -77,7 +77,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     {
         worker->addWarning(path, -1, QString("Includes should be sorted:\n%1")
                                                 .arg(block.join('\n'))
-                           );
+        );
     }
 
 
@@ -102,7 +102,7 @@ void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, c
     {
         worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1")
                                                 .arg(blockTarget.join('\n'))
-                           );
+        );
     }
 }
 

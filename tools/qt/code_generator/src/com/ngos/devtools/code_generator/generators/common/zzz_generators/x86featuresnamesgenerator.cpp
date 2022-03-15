@@ -26,7 +26,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
     {
         Console::err(QString("Failed to open file: %1")
                                 .arg(path + ORIGINAL_FILE_PATH)
-                     );
+        );
 
         return false;
     }
@@ -98,7 +98,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
         {
             Console::err(QString("Feature declaration is invalid: %1")
                                     .arg(feature)
-                         );
+            );
 
             return false;
         }
@@ -132,7 +132,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
         {
             Console::err(QString("Feature declaration is invalid: %1")
                                     .arg(feature)
-                         );
+            );
 
             return false;
         }
@@ -141,7 +141,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
         {
             Console::err(QString("bit is invalid for feature: %1")
                                     .arg(feature)
-                         );
+            );
 
             return false;
         }
@@ -159,7 +159,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
                 lines.append(QString("    // word %1")
                                         .arg(currentWord)
-                             );
+                );
                 lines.append("");
 
                 lines.append(wordBlock);
@@ -175,10 +175,10 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
             for (qint64 i = 0; i < 32; ++i)
             {
                 wordBlock.append(QString("    x86FeaturesNames[WORD_BIT(%1, %2)] %3 \"\";")
-                                         .arg(featureWord)
-                                         .arg(i)
-                                         .arg('=', i > 9 ? 1 : 2, QChar(' '))
-                                 );
+                                            .arg(featureWord)
+                                            .arg(i)
+                                            .arg('=', i > 9 ? 1 : 2, QChar(' '))
+                );
             }
         }
 
@@ -205,7 +205,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
     lines.append(QString("    // word %1")
                             .arg(currentWord)
-                 );
+    );
     lines.append("");
 
     lines.append(wordBlock);

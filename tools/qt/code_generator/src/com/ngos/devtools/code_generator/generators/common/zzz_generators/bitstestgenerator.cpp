@@ -47,7 +47,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
     {
         lines.append(QString("#include <%1>")
                                 .arg(bits.at(i).includePath)
-                     );
+        );
     }
 
     lines.sort();
@@ -74,7 +74,7 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
         // Ignore CppAlignmentVerifier [BEGIN]
         lines.append(QString("    TEST_CASE(\"%1\");")
                                 .arg(structure.name)
-                     );
+        );
         lines.append("    {");
         // Ignore CppAlignmentVerifier [END]
 
@@ -82,13 +82,13 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
         lines.append(QString("        %1 temp;")
                                 .arg(structure.name)
-                     );
+        );
 
         addThreeBlankLines(lines);
 
         lines.append(QString("        // %1:")
                                 .arg(structure.name)
-                     );
+        );
 
 
 
@@ -124,10 +124,10 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
             const BitsField &field = structure.fields.at(j);
 
             lines.append(QString("        // %1 : %2 '%3'")
-                                 .arg(field.name, -maximumFieldLength)
-                                 .arg(field.length, -2)
-                                 .arg(sFieldShortcuts[j])
-                         );
+                                    .arg(field.name, -maximumFieldLength)
+                                    .arg(field.length, -2)
+                                    .arg(sFieldShortcuts[j])
+            );
         }
 
         addThreeBlankLines(lines);
@@ -156,9 +156,9 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
         }
 
         lines.append(QString("        temp.value%1 = 0x%2;")
-                             .arg(structure.width)
-                             .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
-                     );
+                                .arg(structure.width)
+                                .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
+        );
         lines.append("");
 
 
@@ -172,10 +172,10 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
             lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);")
-                                 .arg(field.name)
-                                 .arg("", maximumFieldLength - field.name.length())
-                                 .arg((value >> offset) & ((1ULL << field.length) - 1))
-                         );
+                                    .arg(field.name)
+                                    .arg("", maximumFieldLength - field.name.length())
+                                    .arg((value >> offset) & ((1ULL << field.length) - 1))
+            );
 
             offset += field.length;
         }
@@ -211,14 +211,14 @@ bool BitsTestGenerator::generateTests(const QString &path, const QString &destin
 
 
             lines.append(QString("        temp.%1 = %2;")
-                                 .arg(field.name)
-                                 .arg(newValue)
-                         );
+                                    .arg(field.name)
+                                    .arg(newValue)
+            );
             lines.append("");
             lines.append(QString("        TEST_ASSERT_EQUALS(temp.value%1, 0x%2);")
-                                 .arg(structure.width)
-                                 .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
-                         );
+                                    .arg(structure.width)
+                                    .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
+            );
 
 
 
@@ -302,7 +302,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
 
             lines.append(QString("        // %1")
                                     .arg(contentLine)
-                         );
+            );
 
             contentLine     = "|"; // Ignore CppSingleCharVerifier
             remainingLength = 8;
@@ -325,7 +325,7 @@ bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStru
 
     lines.append(QString("        // %1")
                             .arg(contentLine)
-                 );
+    );
 
 
 
@@ -472,7 +472,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                     {
                         Console::err(QString("Failed to parse bits length in line: %1")
                                                 .arg(anotherLine)
-                                     );
+                        );
 
                         return false;
                     }
@@ -503,7 +503,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                     {
                         Console::err(QString("Failed to get relative path for \"%1\"")
                                                 .arg(path)
-                                     );
+                        );
 
                         return false;
                     }
@@ -565,7 +565,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                 {
                     Console::err(QString("Failed to get value attribute for structure %1")
                                             .arg(structure.name)
-                                 );
+                    );
 
                     return false;
                 }
@@ -576,7 +576,7 @@ bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStruct
                 {
                     Console::err(QString("Total length of bits doesn't match to bits width for structure %1")
                                             .arg(structure.name)
-                                 );
+                    );
 
                     return false;
                 }
