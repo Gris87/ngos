@@ -1,28 +1,28 @@
-#include "whitespaceverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-WhitespaceVerifier::WhitespaceVerifier()
-    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-{
-    // Nothing
-}
-
-void WhitespaceVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line.endsWith(' ') || line.endsWith('\t'))
-        {
-            worker->addWarning(path, i, "Trailing whitespaces found");
-        }
-    }
-}
-
-
-
-WhitespaceVerifier whitespaceVerifierInstance;
+#include "whitespaceverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+WhitespaceVerifier::WhitespaceVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void WhitespaceVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line.endsWith(' ') || line.endsWith('\t'))                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, i, "Trailing whitespaces found");                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+WhitespaceVerifier whitespaceVerifierInstance;                                                                                                                                                           // Colorize: green

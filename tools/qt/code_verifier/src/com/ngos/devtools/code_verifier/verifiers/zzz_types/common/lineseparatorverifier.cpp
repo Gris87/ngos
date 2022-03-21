@@ -1,23 +1,23 @@
-#include "lineseparatorverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-LineSeparatorVerifier::LineSeparatorVerifier()
-    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-{
-    // Nothing
-}
-
-void LineSeparatorVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &/*lines*/)
-{
-    if (content.contains('\r'))
-    {
-        worker->addError(path, -1, "Incorrect line separator detected");
-    }
-}
-
-
-
-LineSeparatorVerifier lineSeparatorVerifierInstance;
+#include "lineseparatorverifier.h"                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+LineSeparatorVerifier::LineSeparatorVerifier()                                                                                                                                                           // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void LineSeparatorVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &/*lines*/)                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (content.contains('\r'))                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        worker->addError(path, -1, "Incorrect line separator detected");                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+LineSeparatorVerifier lineSeparatorVerifierInstance;                                                                                                                                                     // Colorize: green

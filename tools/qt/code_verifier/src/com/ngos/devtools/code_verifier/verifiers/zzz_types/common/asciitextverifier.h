@@ -10,7 +10,7 @@
 class AsciiTextVerifier: public BaseCodeVerifier                                                                                                                                                         // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
 public:                                                                                                                                                                                                  // Colorize: green
-    AsciiTextVerifier(); // TEST: NO                                                                                                                                                                     // Cowlorize: green
+    AsciiTextVerifier(); // TEST: NO                                                                                                                                                                     // Colorize: green
                                                                                                                                                                                                          // Colorize: green
     void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO                                                                   // Colorize: green
 };                                                                                                                                                                                                       // Colorize: green

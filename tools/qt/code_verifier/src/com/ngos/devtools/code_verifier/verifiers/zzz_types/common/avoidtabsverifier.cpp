@@ -1,28 +1,28 @@
-#include "avoidtabsverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-AvoidTabsVerifier::AvoidTabsVerifier()
-    : BaseCodeVerifier(VERIFICATION_AVOID_TABS)
-{
-    // Nothing
-}
-
-void AvoidTabsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line.contains('\t'))
-        {
-            worker->addError(path, i, "Tab found");
-        }
-    }
-}
-
-
-
-AvoidTabsVerifier avoidTabsVerifierInstance;
+#include "avoidtabsverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AvoidTabsVerifier::AvoidTabsVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_AVOID_TABS)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void AvoidTabsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line.contains('\t'))                                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, i, "Tab found");                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AvoidTabsVerifier avoidTabsVerifierInstance;                                                                                                                                                             // Colorize: green

@@ -10,6 +10,19 @@ AsciiTextVerifier::AsciiTextVerifier()                                          
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
                                                                                                                                                                                                          // Colorize: green
+inline bool isAscii(QChar ch)                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    quint16 unicode = ch.unicode();                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return unicode == '\t'                                                                                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+                unicode >= 0x20                                                                                                                                                                          // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                unicode <= 0x7F                                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
 void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Check any file except ts files                                                                                                                                                                    // Colorize: green
@@ -22,34 +35,25 @@ void AsciiTextVerifier::verify(CodeWorkerThread *worker, const QString &path, co
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        for (qint64 j = 0; j < line.length(); ++j)
-        {
-            QChar   ch      = line.at(j);
-            quint16 unicode = ch.unicode();
-
-            if (
-                (
-                 unicode < 0x20
-                 ||
-                 unicode > 0x7F
-                )
-                &&
-                unicode != '\t'
-               )
-            {
-                worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)")
-                                                    .arg(ch)
-                                                    .arg(unicode, 4, 16, QChar('0'))
-                );
-            }
-        }
-    }
-}
-
-
-
-AsciiTextVerifier asciiTextVerifierInstance;
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 j = 0; j < line.length(); ++j)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QChar ch = line.at(j);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!isAscii(ch))                                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, QString("Non-ascii character found: %1 (0x%2)")                                                                                                                // Colorize: green
+                                                    .arg(ch)                                                                                                                                             // Colorize: green
+                                                    .arg(ch.unicode(), 4, 16, QChar('0'))                                                                                                                // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AsciiTextVerifier asciiTextVerifierInstance;                                                                                                                                                             // Colorize: green

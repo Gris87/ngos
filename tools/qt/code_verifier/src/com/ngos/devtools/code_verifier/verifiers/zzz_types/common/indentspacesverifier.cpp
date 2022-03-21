@@ -1,51 +1,51 @@
-#include "indentspacesverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-#define SPACE_INDENT 4
-
-
-
-IndentSpacesVerifier::IndentSpacesVerifier()
-    : BaseCodeVerifier(VERIFICATION_INDENT_SPACES)
-{
-    // Nothing
-}
-
-void IndentSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-
-
-        for (qint64 j = 0; j < line.length(); ++j)
-        {
-            QChar ch = line.at(j);
-
-            if (ch != ' ')
-            {
-                if (ch == '\t')
-                {
-                    worker->addError(path, i, "Combination of tabs and spaces in indent");
-                }
-                else
-                {
-                    if (j % SPACE_INDENT != 0)
-                    {
-                        worker->addError(path, i, "Invalid indentation");
-                    }
-                }
-
-                break;
-            }
-        }
-    }
-}
-
-
-
-IndentSpacesVerifier indentSpacesVerifierInstance;
+#include "indentspacesverifier.h"                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define SPACE_INDENT 4                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+IndentSpacesVerifier::IndentSpacesVerifier()                                                                                                                                                             // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_INDENT_SPACES)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void IndentSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 j = 0; j < line.length(); ++j)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QChar ch = line.at(j);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (ch != ' ')                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (ch == '\t')                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Combination of tabs and spaces in indent");                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (j % SPACE_INDENT != 0)                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Invalid indentation");                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+IndentSpacesVerifier indentSpacesVerifierInstance;                                                                                                                                                       // Colorize: green

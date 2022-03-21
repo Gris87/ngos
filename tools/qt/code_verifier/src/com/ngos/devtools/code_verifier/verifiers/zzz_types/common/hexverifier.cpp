@@ -1,118 +1,127 @@
-#include "hexverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-HexVerifier::HexVerifier()
-    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-    , mHexRegExp("0x(?:[0-9a-fA-F]+|%\\w+)")
-{
-    // Nothing
-}
-
-void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    if (
-        path.contains("/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/")
-        ||
-        path.endsWith("/src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h")
-        ||
-        path.endsWith("/tools/tracers/linux.sh")
-       )
-    {
-        return;
-    }
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (!line.contains("https://0xax.gitbooks.io"))
-        {
-            QRegularExpressionMatchIterator matches = mHexRegExp.globalMatch(line);
-
-            while (matches.hasNext())
-            {
-                QRegularExpressionMatch match = matches.next();
-
-                QString hex        = match.captured(0);
-                QString hexTrimmed = hex.mid(2);
-
-                if (hexTrimmed.startsWith('%'))
-                {
-                    if (hexTrimmed.at(hexTrimmed.length() - 1).isLetter())
-                    {
-                        if (
-                            hexTrimmed != "%p"
-                            &&
-                            hexTrimmed != "%02X"
-                            &&
-                            hexTrimmed != "%04X"
-                            &&
-                            hexTrimmed != "%08X"
-                            &&
-                            hexTrimmed != "%016llX"
-                           )
-                        {
-                            QString message = QString("Unexpected hex format %1. ")
-                                                        .arg(hex);
-                            message += "Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016llX";
-
-                            worker->addError(path, i, message);
-                        }
-                    }
-                    else
-                    {
-                        for (qint64 j = 1; j < hexTrimmed.length(); ++j)
-                        {
-                            if (!hexTrimmed.at(j).isNumber())
-                            {
-                                worker->addError(path, i, QString("Only numeric symbols are allowed in format %1")
-                                                                    .arg(hex)
-                                );
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (
-                        hexTrimmed.length() != 2
-                        &&
-                        hexTrimmed.length() != 4
-                        &&
-                        hexTrimmed.length() != 8
-                        &&
-                        hexTrimmed.length() != 16
-                       )
-                    {
-                        worker->addError(path, i, QString("Hex length of %1 should be 2, 4, 8 or 16")
-                                                            .arg(hex)
-                        );
-                    }
-
-                    for (qint64 j = 0; j < hexTrimmed.length(); ++j)
-                    {
-                        if (hexTrimmed.at(j).isLower())
-                        {
-                            worker->addError(path, i, QString("Capital letters should be used for hex %1")
-                                                                .arg(hex)
-                            );
-
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-HexVerifier hexVerifierInstance;
+#include "hexverifier.h"                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HexVerifier::HexVerifier()                                                                                                                                                                               // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)                                                                                                                                                       // Colorize: green
+    , mHexRegExp("0x(?:[0-9a-fA-F]+|%\\w+)")                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void HexVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Do not check specific files                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.contains("/src/os/shared/common/src/com/ngos/shared/common/pci/database/generated/")                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/com/ngos/shared/common/printf/printf.h")                                                              // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/tools/tracers/linux.sh")                                                                                                                                                     // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!line.contains("https://0xax.gitbooks.io"))                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QRegularExpressionMatchIterator matches = mHexRegExp.globalMatch(line);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (matches.hasNext())                                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QRegularExpressionMatch match = matches.next();                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString hex        = match.captured(0);                                                                                                                                                  // Colorize: green
+                QString hexTrimmed = hex.mid(2);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (hexTrimmed.startsWith('%'))                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Check for printf or QString.arg() format                                                                                                                                          // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (hexTrimmed.at(hexTrimmed.length() - 1).isLetter())                                                                                                                           // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                hexTrimmed != "%p"                                                                                                                                                       // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                hexTrimmed != "%02X"                                                                                                                                                     // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                hexTrimmed != "%04X"                                                                                                                                                     // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                hexTrimmed != "%08X"                                                                                                                                                     // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                hexTrimmed != "%016llX"                                                                                                                                                  // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString message = QString("Unexpected hex format %1. ")                                                                                                                  // Colorize: green
+                                                            .arg(hex);                                                                                                                                   // Colorize: green
+                                message += "Expecting for: 0x%p, 0x%02X, 0x%04X, 0x%08X, 0x%016llX";                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                worker->addError(path, i, message);                                                                                                                                      // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            for (qint64 j = 1; j < hexTrimmed.length(); ++j)                                                                                                                             // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (!hexTrimmed.at(j).isNumber())                                                                                                                                        // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addError(path, i, QString("Only numeric symbols are allowed in format %1")                                                                                   // Colorize: green
+                                                                        .arg(hex)                                                                                                                        // Colorize: green
+                                    );                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    break;                                                                                                                                                               // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Check for HEX constant                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            hexTrimmed.length() != 2                                                                                                                                                     // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            hexTrimmed.length() != 4                                                                                                                                                     // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            hexTrimmed.length() != 8                                                                                                                                                     // Colorize: green
+                            &&                                                                                                                                                                           // Colorize: green
+                            hexTrimmed.length() != 16                                                                                                                                                    // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, QString("Hex length of %1 should be 2, 4, 8 or 16")                                                                                                // Colorize: green
+                                                                .arg(hex)                                                                                                                                // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        for (qint64 j = 0; j < hexTrimmed.length(); ++j)                                                                                                                                 // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (hexTrimmed.at(j).isLower())                                                                                                                                              // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, QString("Capital letters should be used for hex %1")                                                                                           // Colorize: green
+                                                                    .arg(hex)                                                                                                                            // Colorize: green
+                                );                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                break;                                                                                                                                                                   // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+HexVerifier hexVerifierInstance;                                                                                                                                                                         // Colorize: green

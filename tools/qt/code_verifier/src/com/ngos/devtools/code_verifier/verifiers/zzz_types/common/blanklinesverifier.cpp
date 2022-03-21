@@ -1,54 +1,62 @@
-#include "blanklinesverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-BlankLinesVerifier::BlankLinesVerifier()
-    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)
-{
-    // Nothing
-}
-
-void BlankLinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    quint64 blockSize = 0;
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line == "")
-        {
-            ++blockSize;
-        }
-        else
-        {
-            if (blockSize > 0)
-            {
-                if (blockSize != 1 && blockSize != 3)
-                {
-                    worker->addWarning(path, i - 1, "Invalid amount of blank lines. Only 1 or 3 blank lines allowed");
-                }
-
-                blockSize = 0;
-            }
-        }
-    }
-
-    if (blockSize != 1)
-    {
-        if (blockSize == 0)
-        {
-            worker->addError(path, lines.size(), "No blank line at the end");
-        }
-        else
-        {
-            worker->addError(path, lines.size(), "Too many blank lines at the end");
-        }
-    }
-}
-
-
-
-BlankLinesVerifier blankLinesVerifierInstance;
+#include "blanklinesverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BlankLinesVerifier::BlankLinesVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_ANY_FILE_TYPE)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void BlankLinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    quint64 blockSize = 0;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for amount of continuous blank lines                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line == "")                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                ++blockSize;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (blockSize > 0)                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (blockSize != 1 && blockSize != 3)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, i - 1, "Invalid amount of blank lines. Only 1 or 3 blank lines allowed");                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    blockSize = 0;                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for blank lines at the file end                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (blockSize != 1)                                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (blockSize == 0)                                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, lines.size(), "No blank line at the end");                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, lines.size(), "Too many blank lines at the end");                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BlankLinesVerifier blankLinesVerifierInstance;                                                                                                                                                           // Colorize: green
