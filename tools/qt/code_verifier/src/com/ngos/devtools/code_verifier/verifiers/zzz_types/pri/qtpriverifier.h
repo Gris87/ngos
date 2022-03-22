@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H
-
-
-
-#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>
-
-
-
-class QtPriVerifier: public BaseCodeVerifier
-{
-public:
-    QtPriVerifier(); // TEST: NO
-
-    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO
-    qint64 verifyFilesBlock(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 startPos, const QString &extension); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H                                                                                                                          // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class QtPriVerifier: public BaseCodeVerifier                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    QtPriVerifier(); // TEST: NO                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO                                                                   // Colorize: green
+    qint64 verifyFilesBlock(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 startPos, const QString &extension); // TEST: NO                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRI_QTPRIVERIFIER_H                                                                                                                        // Colorize: green

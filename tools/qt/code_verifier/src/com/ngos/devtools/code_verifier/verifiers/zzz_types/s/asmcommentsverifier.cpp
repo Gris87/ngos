@@ -1,113 +1,118 @@
-#include "asmcommentsverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-#define COMMENT_POS 80
-
-
-
-AsmCommentsVerifier::AsmCommentsVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::S)
-{
-    // Nothing
-}
-
-void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "# AsmCommentsVerifier");
-        // removeComments(line); // Can't remove comments
-
-
-
-        if (line.length() > COMMENT_POS && line.at(COMMENT_POS) == '#')
-        {
-            QString left         = line.left(COMMENT_POS);
-            QString right        = line.mid(COMMENT_POS + 1);
-            QString leftTrimmed  = left.trimmed();
-            QString rightTrimmed = right.trimmed();
-
-            if (leftTrimmed.length() < COMMENT_POS - 1)
-            {
-                if (leftTrimmed != "" && !leftTrimmed.startsWith('#'))
-                {
-                    if (rightTrimmed == "")
-                    {
-                        worker->addError(path, i, "Comment absent");
-                    }
-                    else
-                    if (rightTrimmed.startsWith('?'))
-                    {
-                        worker->addWarning(path, i, "Comment should be updated");
-                    }
-                }
-            }
-            else
-            {
-                if (line.startsWith('#'))
-                {
-                    if (left == "# ----------------------------------------------------------------------------- ")
-                    {
-                        if (right != " -----------------------------------------------------------------------------")
-                        {
-                            worker->addError(path, i, "Unexpected comment");
-                        }
-                    }
-                    else
-                    if (left == "# ============================================================================= ")
-                    {
-                        if (right != " =============================================================================")
-                        {
-                            worker->addError(path, i, "Unexpected comment");
-                        }
-                    }
-                    else
-                    {
-                        worker->addError(path, i, "Too long code");
-                    }
-                }
-                else
-                {
-                    worker->addError(path, i, "Too long code");
-                }
-            }
-        }
-        else
-        {
-            if (
-                !line.startsWith("#include ")
-                &&
-                !line.startsWith("#if")
-                &&
-                !line.startsWith("#else")
-                &&
-                !line.startsWith("#elif")
-                &&
-                !line.startsWith("#endif")
-                &&
-                !line.endsWith('\\')
-                &&
-                (
-                 i <= 0
-                 ||
-                 !lines.at(i - 1).endsWith('\\')
-                )
-                &&
-                i < lines.size() - 1
-               )
-            {
-                worker->addError(path, i, QString("Comment absent in position %1")
-                                                    .arg(COMMENT_POS)
-                );
-            }
-        }
-    }
-}
-
-
-
-AsmCommentsVerifier asmCommentsVerifierInstance;
+#include "asmcommentsverifier.h"                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define COMMENT_POS 80                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AsmCommentsVerifier::AsmCommentsVerifier()                                                                                                                                                               // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::S)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool isAsmPreprocessing(const QString &line)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return line.startsWith("#include ")                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith("#if")                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith("#else")                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith("#elif")                                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith("#endif");                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void AsmCommentsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "# AsmCommentsVerifier");                                                                                                                                                  // Colorize: green
+        // removeComments(line); // Can't remove comments                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line.length() > COMMENT_POS && line.at(COMMENT_POS) == '#')                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString left         = line.left(COMMENT_POS);                                                                                                                                               // Colorize: green
+            QString right        = line.mid(COMMENT_POS + 1);                                                                                                                                            // Colorize: green
+            QString leftTrimmed  = left.trimmed();                                                                                                                                                       // Colorize: green
+            QString rightTrimmed = right.trimmed();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (leftTrimmed.length() < COMMENT_POS - 1)                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (leftTrimmed != "" && !leftTrimmed.startsWith('#'))                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (rightTrimmed == "")                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Comment absent");                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (rightTrimmed.startsWith('?'))                                                                                                                                                    // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, i, "Comment should be updated");                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith('#'))                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (left == "# ----------------------------------------------------------------------------- ")                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (right != " -----------------------------------------------------------------------------")                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Unexpected comment");                                                                                                                             // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (left == "# ============================================================================= ")                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (right != " =============================================================================")                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Unexpected comment");                                                                                                                             // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Too long code");                                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Too long code");                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                i < lines.size() - 1                                                                                                                                                                     // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                !isAsmPreprocessing(line)                                                                                                                                                                // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                !line.endsWith('\\')                                                                                                                                                                     // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                (                                                                                                                                                                                        // Colorize: green
+                 i <= 0                                                                                                                                                                                  // Colorize: green
+                 ||                                                                                                                                                                                      // Colorize: green
+                 !lines.at(i - 1).endsWith('\\')                                                                                                                                                         // Colorize: green
+                )                                                                                                                                                                                        // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, QString("Comment absent in position %1")                                                                                                                       // Colorize: green
+                                                    .arg(COMMENT_POS)                                                                                                                                    // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AsmCommentsVerifier asmCommentsVerifierInstance;                                                                                                                                                         // Colorize: green

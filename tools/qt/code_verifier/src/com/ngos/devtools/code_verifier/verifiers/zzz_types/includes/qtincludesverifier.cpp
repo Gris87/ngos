@@ -1,170 +1,181 @@
-#include "qtincludesverifier.h"
-
-#include <QDir>
-#include <QFile>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-QtIncludesVerifier::QtIncludesVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::INCLUDES)
-{
-    // Nothing
-}
-
-void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    QString parentFolder = path.left(path.lastIndexOf('/') + 1);
-
-
-
-    QStringList block;
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line != "")
-        {
-            if (line.startsWith("~/"))
-            {
-                if (!QDir(QDir::homePath() + '/' + line.mid(2)).exists())
-                {
-                    worker->addWarning(path, i, QString("Path %1 not found")
-                                                        .arg(line)
-                    );
-                }
-            }
-            else
-            {
-                if (!QDir(parentFolder + '/' + line).exists())
-                {
-                    worker->addWarning(path, i, QString("Path %1 not found")
-                                                        .arg(line)
-                    );
-                }
-            }
-
-
-
-            if (!line.startsWith("~/Qt/"))
-            {
-                block.append(line);
-
-                if (
-                    !line.contains("include/")
-                    &&
-                    !line.endsWith("/src/")
-                    &&
-                    !line.endsWith("/test/")
-                    &&
-                    !line.endsWith("/build/gen/")
-                   )
-                {
-                    worker->addWarning(path, i, "Invalid path included");
-                }
-            }
-        }
-    }
-
-
-
-    QStringList blockOriginal = block;
-    block.sort();
-
-    if (block != blockOriginal)
-    {
-        worker->addWarning(path, -1, QString("Includes should be sorted:\n%1")
-                                                .arg(block.join('\n'))
-        );
-    }
-
-
-
-    QStringList blockTarget;
-
-    blockTarget.append("3rd_party/libs/freetype/include/");
-    blockTarget.append("include/");
-    blockTarget.append("include/stdinc/");
-
-    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/apps");
-    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/libs");
-    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os");
-    addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os/bootloader_tools");
-    addSubfoldersWithQtPro(blockTarget, parentFolder, "tools/qt");
-
-    blockTarget.sort();
-
-
-
-    if (block != blockTarget)
-    {
-        worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1")
-                                                .arg(blockTarget.join('\n'))
-        );
-    }
-}
-
-void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QString &parentFolder, const QString &path)
-{
-    QStringList subfolders = QDir(parentFolder + '/' + path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-    for (qint64 i = 0; i < subfolders.size(); ++i)
-    {
-        QString subfolder     = subfolders.at(i);
-        QString subfolderPath = path + '/' + subfolder;
-
-        QFile proFile(parentFolder + '/' + subfolderPath + '/' + subfolder + ".pro");
-
-
-
-        if (proFile.exists())
-        {
-            if (QDir(parentFolder + '/' + subfolderPath + "/src").exists())
-            {
-                block.append(subfolderPath + "/src/");
-            }
-
-            if (QDir(parentFolder + '/' + subfolderPath + "/test").exists())
-            {
-                block.append(subfolderPath + "/test/");
-            }
-
-            if (proFile.open(QIODevice::ReadOnly))
-            {
-                if (proFile.readAll().contains("QT += core gui widgets"))
-                {
-                    block.append(subfolderPath + "/build/gen/");
-                }
-
-                proFile.close();
-            }
-        }
-        else
-        if (subfolder == "shared")
-        {
-            QStringList sharedSubfolders = QDir(parentFolder + '/' + subfolderPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-            for (qint64 j = 0; j < sharedSubfolders.size(); ++j)
-            {
-                QString sharedSubfolder     = sharedSubfolders.at(j);
-                QString sharedSubfolderPath = subfolderPath + '/' + sharedSubfolder;
-
-                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/src").exists())
-                {
-                    block.append(sharedSubfolderPath + "/src/");
-                }
-
-                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/test").exists())
-                {
-                    block.append(sharedSubfolderPath + "/test/");
-                }
-            }
-        }
-    }
-}
-
-
-
-QtIncludesVerifier qtIncludesVerifierInstance;
+#include "qtincludesverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QtIncludesVerifier::QtIncludesVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::INCLUDES)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void QtIncludesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString parentFolder = path.left(path.lastIndexOf('/') + 1);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList block;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for include paths                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line != "")                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Check that include path exists                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (line.startsWith("~/"))                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (!QDir(QDir::homePath() + '/' + line.mid(2)).exists())                                                                                                                        // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addWarning(path, i, QString("Path %1 not found")                                                                                                                     // Colorize: green
+                                                                .arg(line)                                                                                                                               // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (!QDir(parentFolder + '/' + line).exists())                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addWarning(path, i, QString("Path %1 not found")                                                                                                                     // Colorize: green
+                                                                .arg(line)                                                                                                                               // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!line.startsWith("~/Qt/"))                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    block.append(line);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        !line.contains("include/")                                                                                                                                                       // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.endsWith("/src/")                                                                                                                                                          // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.endsWith("/test/")                                                                                                                                                         // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.endsWith("/build/gen/")                                                                                                                                                    // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, i, "Invalid path included");                                                                                                                            // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that include paths sorted                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList blockOriginal = block;                                                                                                                                                               // Colorize: green
+        block.sort();                                                                                                                                                                                    // Colorize: green
+        block.removeDuplicates();                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (block != blockOriginal)                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, -1, QString("Includes should be sorted:\n%1")                                                                                                                       // Colorize: green
+                                                    .arg(block.join('\n'))                                                                                                                               // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for expected include paths                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList blockTarget;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        blockTarget.append("3rd_party/libs/freetype/include/");                                                                                                                                          // Colorize: green
+        blockTarget.append("include/");                                                                                                                                                                  // Colorize: green
+        blockTarget.append("include/stdinc/");                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addSubfoldersWithQtPro(blockTarget, parentFolder, "src/apps");                                                                                                                                   // Colorize: green
+        addSubfoldersWithQtPro(blockTarget, parentFolder, "src/libs");                                                                                                                                   // Colorize: green
+        addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os");                                                                                                                                     // Colorize: green
+        addSubfoldersWithQtPro(blockTarget, parentFolder, "src/os/bootloader_tools");                                                                                                                    // Colorize: green
+        addSubfoldersWithQtPro(blockTarget, parentFolder, "tools/qt");                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        blockTarget.sort();                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (block != blockTarget)                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, -1, QString("Expecting the following list of includes:\n%1")                                                                                                        // Colorize: green
+                                                    .arg(blockTarget.join('\n'))                                                                                                                         // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void QtIncludesVerifier::addSubfoldersWithQtPro(QStringList &block, const QString &parentFolder, const QString &path)                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList subfolders = QDir(parentFolder + '/' + path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < subfolders.size(); ++i)                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString subfolder     = subfolders.at(i);                                                                                                                                                        // Colorize: green
+        QString subfolderPath = path + '/' + subfolder;                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QFile proFile(parentFolder + '/' + subfolderPath + '/' + subfolder + ".pro");                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (proFile.exists())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (QDir(parentFolder + '/' + subfolderPath + "/src").exists())                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                block.append(subfolderPath + "/src/");                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (QDir(parentFolder + '/' + subfolderPath + "/test").exists())                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                block.append(subfolderPath + "/test/");                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (proFile.open(QIODevice::ReadOnly))                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (proFile.readAll().contains("QT += core gui widgets"))                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    block.append(subfolderPath + "/build/gen/");                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                proFile.close();                                                                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (subfolder == "shared")                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QStringList sharedSubfolders = QDir(parentFolder + '/' + subfolderPath).entryList(QDir::Dirs | QDir::NoDotAndDotDot);                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (qint64 j = 0; j < sharedSubfolders.size(); ++j)                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString sharedSubfolder     = sharedSubfolders.at(j);                                                                                                                                    // Colorize: green
+                QString sharedSubfolderPath = subfolderPath + '/' + sharedSubfolder;                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/src").exists())                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    block.append(sharedSubfolderPath + "/src/");                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (QDir(parentFolder + '/' + sharedSubfolderPath + "/test").exists())                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    block.append(sharedSubfolderPath + "/test/");                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QtIncludesVerifier qtIncludesVerifierInstance;                                                                                                                                                           // Colorize: green

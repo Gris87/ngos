@@ -1,23 +1,23 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H
-
-
-
-#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>
-
-
-
-class QtProVerifier: public BaseCodeVerifier
-{
-public:
-    QtProVerifier(); // TEST: NO
-
-    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO
-    void verifyDefinitions(CodeWorkerThread *worker, const QString &path, const QString &content); // TEST: NO
-    void verifyFileBlocks(CodeWorkerThread *worker, const QString &path, const QStringList &lines); // TEST: NO
-    qint64 verifyFilesBlock(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 startPos, const QString &extension); // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H                                                                                                                          // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class QtProVerifier: public BaseCodeVerifier                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    QtProVerifier(); // TEST: NO                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO                                                                   // Colorize: green
+    void verifyDefinitions(CodeWorkerThread *worker, const QString &path, const QString &content); // TEST: NO                                                                                           // Colorize: green
+    void verifyFileBlocks(CodeWorkerThread *worker, const QString &path, const QStringList &lines); // TEST: NO                                                                                          // Colorize: green
+    qint64 verifyFilesBlock(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 startPos, const QString &extension); // TEST: NO                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PRO_QTPROVERIFIER_H                                                                                                                        // Colorize: green

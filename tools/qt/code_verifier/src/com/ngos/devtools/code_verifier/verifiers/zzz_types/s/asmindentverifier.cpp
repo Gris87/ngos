@@ -1,113 +1,111 @@
-#include "asmindentverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-// Ignore CppAlignmentVerifier [BEGIN]
-AsmIndentVerifier::AsmIndentVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::S)
-    , mConstRegExp("^ *(\\w+) *=.*$")
-    , mLabelRegExp("^(\\w+):.*$")
-    , mOperationRegExp("^    (\\.?)(\\w{2,16})  .*$")
-{
-    // Nothing
-}
-// Ignore CppAlignmentVerifier [END]
-
-void AsmIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "# AsmIndentVerifier");
-        // removeComments(line); // Can't remove comments
-
-
-
-        if (
-            !line.startsWith('#')
-            &&
-            !line.endsWith('\\')
-            &&
-            (
-             i <= 0
-             ||
-             !lines.at(i - 1).endsWith('\\')
-            )
-            &&
-            !line.startsWith(".code16")
-            &&
-            !line.startsWith(".code32")
-            &&
-            !line.startsWith(".code64")
-            &&
-            !line.startsWith(".data")
-            &&
-            !line.startsWith(".bss")
-            &&
-            !line.startsWith(".section")
-            &&
-            !line.startsWith(".balign")
-            &&
-            !line.startsWith(".align")
-            &&
-            !line.startsWith(".globl")
-            &&
-            (
-             line.indexOf('(') <= 0
-             ||
-             line.left(line.indexOf('(')).toUpper() != line.left(line.indexOf('('))
-            )
-            &&
-            !mConstRegExp.match(line).hasMatch()
-            &&
-            !mLabelRegExp.match(line).hasMatch()
-           )
-        {
-            QString trimmedLine = line.trimmed();
-
-            if (
-                !trimmedLine.startsWith('#')
-                &&
-                !trimmedLine.startsWith("rep; ")
-                &&
-                i < lines.size() - 1
-               )
-            {
-                if (
-                    trimmedLine.startsWith(".code16")
-                    ||
-                    trimmedLine.startsWith(".code32")
-                    ||
-                    trimmedLine.startsWith(".code64")
-                    ||
-                    trimmedLine.startsWith(".data")
-                    ||
-                    trimmedLine.startsWith(".bss")
-                    ||
-                    trimmedLine.startsWith(".section")
-                    ||
-                    trimmedLine.startsWith(".balign")
-                    ||
-                    trimmedLine.startsWith(".align")
-                    ||
-                    trimmedLine.startsWith(".globl")
-                    ||
-                    mConstRegExp.match(trimmedLine).hasMatch()
-                    ||
-                    mLabelRegExp.match(trimmedLine).hasMatch()
-                    ||
-                    !mOperationRegExp.match(line).hasMatch()
-                   )
-                {
-                    worker->addError(path, i, "Invalid indentation");
-                }
-            }
-        }
-    }
-}
-
-
-
-AsmIndentVerifier asmIndentVerifierInstance;
+#include "asmindentverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+// Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                                   // Colorize: green
+AsmIndentVerifier::AsmIndentVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::S)                                                                                                                                                      // Colorize: green
+    , mConstRegExp("^(\\w+) *=.*$")                                                                                                                                                                    // Colorize: green
+    , mLabelRegExp("^(\\w+):.*$")                                                                                                                                                                        // Colorize: green
+    , mOperationRegExp("^    (\\.?)(\\w{2,16})  .*$")                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+// Ignore CppAlignmentVerifier [END]                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool isAsmSpecial(const QString &line)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return line.startsWith(".code16")                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".code32")                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".code64")                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".data")                                                                                                                                                                     // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".bss")                                                                                                                                                                      // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".section")                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".balign")                                                                                                                                                                   // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".align")                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            line.startsWith(".globl");                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool isMacroCall(const QString &line)                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 index = line.indexOf('(');                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index > 0)                                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString macro = line.left(index);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return macro == macro.toUpper();                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return false;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void AsmIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "# AsmIndentVerifier");                                                                                                                                                    // Colorize: green
+        // removeComments(line); // Can't remove comments                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            i < lines.size() - 1                                                                                                                                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !line.startsWith('#')                                                                                                                                                                        // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !line.endsWith('\\')                                                                                                                                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             i <= 0                                                                                                                                                                                      // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             !lines.at(i - 1).endsWith('\\')                                                                                                                                                             // Colorize: green
+            )                                                                                                                                                       // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !isMacroCall(line)                                                                                                                                                                           // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !isAsmSpecial(line)                                                                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !mConstRegExp.match(line).hasMatch()                                                                                                                                                         // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !mLabelRegExp.match(line).hasMatch()                                                                                                                                                         // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString trimmedLine = line.trimmed();                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                !trimmedLine.startsWith('#')                                                                                                                                                             // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                !trimmedLine.startsWith("rep; ")                                                                                                                                                         // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                (                                                                                                                                                                                        // Colorize: green
+                 isAsmSpecial(trimmedLine)                                                                                                                                                               // Colorize: green
+                 ||                                                                                                                                                                                      // Colorize: green
+                 mConstRegExp.match(trimmedLine).hasMatch()                                                                                                                                              // Colorize: green
+                 ||                                                                                                                                                                                      // Colorize: green
+                 mLabelRegExp.match(trimmedLine).hasMatch()                                                                                                                                              // Colorize: green
+                 ||                                                                                                                                                                                      // Colorize: green
+                 !mOperationRegExp.match(line).hasMatch()                                                                                                                                                // Colorize: green
+                )                                                                                                                                                                                        // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "Invalid indentation");                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AsmIndentVerifier asmIndentVerifierInstance;                                                                                                                                                             // Colorize: green

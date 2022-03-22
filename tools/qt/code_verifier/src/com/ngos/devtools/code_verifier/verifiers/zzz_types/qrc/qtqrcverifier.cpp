@@ -1,92 +1,94 @@
-#include "qtqrcverifier.h"
-
-#include <QDir>
-#include <QQueue>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-QtQrcVerifier::QtQrcVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::QRC)
-{
-    // Nothing
-}
-
-void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &/*lines*/)
-{
-    QString parentFolder = path.left(path.lastIndexOf('/') + 1);
-
-
-
-    QString assetsFolder = parentFolder + "/assets";
-
-    if (!QDir(assetsFolder).exists())
-    {
-        worker->addError(path, -1, "All Qt resources should be located in assets folder");
-
-        return;
-    }
-
-
-
-    QString expectedContent;
-
-    expectedContent.append("<RCC>\n");
-    expectedContent.append("    <qresource prefix=\"/\">\n"); // Ignore CppAlignmentVerifier
-
-
-
-    QQueue<QFileInfo> files;
-    files.enqueue(QFileInfo(assetsFolder));
-
-    while (!files.isEmpty())
-    {
-        QFileInfo file = files.dequeue();
-
-        QString path = file.absoluteFilePath();
-
-
-
-        if (file.isDir())
-        {
-            QFileInfoList filesInfo = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-            for (qint64 i = 0; i < filesInfo.size(); ++i)
-            {
-                files.enqueue(filesInfo.at(i));
-            }
-        }
-        else
-        {
-            if (
-                !path.endsWith(".ts")
-                &&
-                !path.endsWith(".S")
-               )
-            {
-                expectedContent.append(QString("        <file>%1</file>\n")
-                                                .arg(path.mid(parentFolder.length()))
-                );
-            }
-        }
-    }
-
-
-
-    expectedContent.append("    </qresource>\n"); // Ignore CppAlignmentVerifier
-    expectedContent.append("</RCC>\n");
-
-
-
-    if (content != expectedContent)
-    {
-        worker->addError(path, -1, QString("Expected file content:\n%1")
-                                            .arg(expectedContent)
-        );
-    }
-}
-
-
-
-QtQrcVerifier qtQrcVerifierInstance;
+#include "qtqrcverifier.h"                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QQueue>                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QtQrcVerifier::QtQrcVerifier()                                                                                                                                                                           // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::QRC)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void QtQrcVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &/*lines*/)                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString parentFolder = path.left(path.lastIndexOf('/') + 1);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString assetsFolder = parentFolder + "/assets";                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!QDir(assetsFolder).exists())                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        worker->addError(path, -1, "All Qt resources should be located in assets folder");                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString expectedContent;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get expected content                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        expectedContent.append("<RCC>\n");                                                                                                                                                               // Colorize: green
+        expectedContent.append("    <qresource prefix=\"/\">\n"); // Ignore CppAlignmentVerifier                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Iterate over files in assets folder and put them to expectedContent                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                    // Colorize: green
+            QQueue<QFileInfo> files;                                                                                                                                                                         // Colorize: green
+            files.enqueue(QFileInfo(assetsFolder));                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            while (!files.isEmpty())                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                QFileInfo file = files.dequeue();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                QString filePath = file.absoluteFilePath();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                if (file.isDir())                                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    QFileInfoList filesInfo = QDir(filePath).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                    for (qint64 i = 0; i < filesInfo.size(); ++i)                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        files.enqueue(filesInfo.at(i));                                                                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+                else                                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    if (                                                                                                                                                                                     // Colorize: green
+                        !filePath.endsWith(".ts")                                                                                                                                                                // Colorize: green
+                        &&                                                                                                                                                                                   // Colorize: green
+                        !filePath.endsWith(".S")                                                                                                                                                                 // Colorize: green
+                       )                                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        expectedContent.append(QString("        <file>%1</file>\n")                                                                                                                          // Colorize: green
+                                                        .arg(filePath.mid(parentFolder.length()))                                                                                                                // Colorize: green
+                        );                                                                                                                                                                                   // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+        expectedContent.append("    </qresource>\n"); // Ignore CppAlignmentVerifier                                                                                                                         // Colorize: green
+        expectedContent.append("</RCC>\n");                                                                                                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (content != expectedContent)                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        worker->addError(path, -1, QString("Expected file content:\n%1")                                                                                                                                 // Colorize: green
+                                            .arg(expectedContent)                                                                                                                                        // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QtQrcVerifier qtQrcVerifierInstance;                                                                                                                                                                     // Colorize: green

@@ -1,174 +1,175 @@
-#include "cpphdefinesverifier.h"
-
-#include <QDir>
-#include <QFile>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppHDefinesVerifier::CppHDefinesVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::H)
-{
-    // Nothing
-}
-
-void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    qint64 fileHeaderOffset = 0;
-
-    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
-    {
-        ++fileHeaderOffset;
-    }
-
-
-
-    if (lines.size() < 5 + fileHeaderOffset)
-    {
-        worker->addError(path, -1, "Header file contains too few lines");
-
-        return;
-    }
-
-
-
-    QString relativePath;
-
-
-
-    qint64 index = path.indexOf("/include/");
-
-    if (index >= 0)
-    {
-        relativePath = path.mid(index + 9);
-    }
-    else
-    {
-        index = path.indexOf("/shared/");
-
-        if (index >= 0)
-        {
-            index = path.indexOf('/', index + 8);
-
-            if (index < 0)
-            {
-                worker->addError(path, -1, "Failed to get relative path");
-
-                return;
-            }
-
-
-
-            index = path.indexOf('/', index + 1);
-
-            if (index < 0)
-            {
-                worker->addError(path, -1, "Failed to get relative path");
-
-                return;
-            }
-
-
-
-            relativePath = path.mid(index + 1);
-        }
-        else
-        {
-            QString parentFolder = path;
-
-            do
-            {
-                index = parentFolder.lastIndexOf('/');
-
-                if (index < 0)
-                {
-                    worker->addError(path, -1, "Failed to get relative path");
-
-                    return;
-                }
-
-                parentFolder = parentFolder.left(index);
-
-
-
-                if (
-                    QFile::exists(parentFolder + "/../../Makefile")
-                    ||
-                    !QDir(parentFolder + "/../../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
-                   )
-                {
-                    break;
-                }
-            } while(true);
-
-
-
-            index = parentFolder.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                worker->addError(path, -1, "Failed to get relative path");
-
-                return;
-            }
-
-            relativePath = path.mid(index + 1);
-        }
-    }
-
-
-
-    QString defineName = relativePath.toUpper().replace('.', '_').replace('/', '_');
-
-    if (lines.at(fileHeaderOffset + 0) != "#ifndef " + defineName)
-    {
-        worker->addError(path, 0, QString("Expected \"#ifndef %1\"")
-                                            .arg(defineName)
-        );
-    }
-
-    if (lines.at(fileHeaderOffset + 1) != "#define " + defineName)
-    {
-        worker->addError(path, 1, QString("Expected \"#define %1\"")
-                                            .arg(defineName)
-        );
-    }
-
-    if (lines.at(lines.size() - 2) != "#endif // " + defineName)
-    {
-        worker->addError(path, lines.size() - 2, QString("Expected \"#endif // %1\"")
-                                                            .arg(defineName)
-        );
-    }
-
-    if (
-        lines.at(fileHeaderOffset + 2) != ""
-        ||
-        lines.at(fileHeaderOffset + 3) != ""
-        ||
-        lines.at(fileHeaderOffset + 4) != ""
-       )
-    {
-        worker->addError(path, 2, QString("Expected 3 blank lines after \"#define %1\"")
-                                            .arg(defineName)
-        );
-    }
-
-    if (
-        lines.at(lines.size() - 3) != ""
-        ||
-        lines.at(lines.size() - 4) != ""
-        ||
-        lines.at(lines.size() - 5) != ""
-       )
-    {
-        worker->addError(path, lines.size() - 3, QString("Expected 3 blank lines before \"#endif // %1\"")
-                                                            .arg(defineName)
-        );
-    }
-}
-
-
-
-CppHDefinesVerifier cppHDefinesVerifierInstance;
+#include "cpphdefinesverifier.h"                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppHDefinesVerifier::CppHDefinesVerifier()                                                                                                                                                               // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::H)                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppHDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 fileHeaderOffset = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip first lines that start with single line comment                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++fileHeaderOffset;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (lines.size() < 5 + fileHeaderOffset)                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        worker->addError(path, -1, "Header file contains too few lines");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString relativePath;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get relative path                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index = path.indexOf("/include/");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            relativePath = path.mid(index + 9);                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            index = path.indexOf("/shared/");                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (index >= 0)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                index = path.indexOf('/', index + 8);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index < 0)                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, -1, "Failed to get relative path");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                index = path.indexOf('/', index + 1);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index < 0)                                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, -1, "Failed to get relative path");                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return;                                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                relativePath = path.mid(index + 1);                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString parentFolder = path;                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                do                                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    index = parentFolder.lastIndexOf('/');                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index < 0)                                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, -1, "Failed to get relative path");                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    parentFolder = parentFolder.left(index);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        QFile::exists(parentFolder + "/../Makefile")                                                                                                                                  // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        !QDir(parentFolder + "/../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()                                                                                       // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                } while(true);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                relativePath = path.mid(parentFolder.length() + 1);                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString defineName = relativePath.toUpper().replace('.', '_').replace('/', '_');                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check defines at the begin and at the end of file                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (lines.at(fileHeaderOffset + 0) != "#ifndef " + defineName)                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, fileHeaderOffset + 0, QString("Expected \"#ifndef %1\"")                                                                                                              // Colorize: green
+                                                                    .arg(defineName)                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (lines.at(fileHeaderOffset + 1) != "#define " + defineName)                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, fileHeaderOffset + 1, QString("Expected \"#define %1\"")                                                                                                              // Colorize: green
+                                                                    .arg(defineName)                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (lines.at(lines.size() - 2) != "#endif // " + defineName)                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, lines.size() - 2, QString("Expected \"#endif // %1\"")                                                                                                                // Colorize: green
+                                                                .arg(defineName)                                                                                                                         // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check for blank lines                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lines.at(fileHeaderOffset + 2) != ""                                                                                                                                                         // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(fileHeaderOffset + 3) != ""                                                                                                                                                         // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(fileHeaderOffset + 4) != ""                                                                                                                                                         // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, fileHeaderOffset + 2, QString("Expected 3 blank lines after \"#define %1\"")                                                                                          // Colorize: green
+                                                                    .arg(defineName)                                                                                                                     // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lines.at(lines.size() - 3) != ""                                                                                                                                                             // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(lines.size() - 4) != ""                                                                                                                                                             // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lines.at(lines.size() - 5) != ""                                                                                                                                                             // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, lines.size() - 3, QString("Expected 3 blank lines before \"#endif // %1\"")                                                                                           // Colorize: green
+                                                                .arg(defineName)                                                                                                                         // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppHDefinesVerifier cppHDefinesVerifierInstance;                                                                                                                                                         // Colorize: green
