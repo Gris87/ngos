@@ -1,43 +1,43 @@
-#include "cppcommentverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppCommentVerifier::CppCommentVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppCommentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// CppCommentVerifier");
-        removeStrings(line);
-
-
-
-        qint64 index = line.indexOf("//");
-
-        if (index >= 0)
-        {
-            line = line.mid(index + 2);
-
-            if (
-                line != ""
-                &&
-                !line.startsWith(' ')
-               )
-            {
-                worker->addWarning(path, i, "Invalid comment definition");
-            }
-        }
-    }
-}
-
-
-
-CppCommentVerifier cppCommentVerifierInstance;
+#include "cppcommentverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppCommentVerifier::CppCommentVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppCommentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// CppCommentVerifier");                                                                                                                                                  // Colorize: green
+        removeStrings(line);                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qint64 index = line.indexOf("//");                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            line = line.mid(index + 2);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                line != ""                                                                                                                                                                               // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                !line.startsWith(' ')                                                                                                                                                                    // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addWarning(path, i, "Invalid comment definition");                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppCommentVerifier cppCommentVerifierInstance;                                                                                                                                                           // Colorize: green

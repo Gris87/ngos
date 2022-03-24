@@ -1,573 +1,651 @@
-#include "cppenumverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppEnumVerifier::CppEnumVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(?:: *(\\w+))?$")
-    , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *= *([^,]+))?,?(?: *\\/\\/.*)?$")
-    , mTypedefRegExp("^ *typedef (\\w+) (\\w+);$")
-{
-    // Nothing
-}
-
-void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppEnumVerifier");
-        removeComments(line);
-
-
-
-        QRegularExpressionMatch match = mDefinitionRegExp.match(line);
-
-        if (match.hasMatch())
-        {
-            qint64 enumLocation = i;
-
-            QString enumClass = match.captured(1);
-            QString enumName  = match.captured(2);
-            QString enumType  = match.captured(3);
-
-
-
-            if (enumClass == "")
-            {
-                worker->addError(path, i, "Expected enum class definition");
-            }
-
-
-
-            if (enumName != "")
-            {
-                if (enumType != "")
-                {
-                    QStringList values;
-                    QStringList valuesNumeric;
-                    qint64      maxValueLength                  = 0;
-                    qint64      maxValueLengthWithoutUnderscore = 0;
-
-
-
-                    i += 2;
-
-                    while (i < lines.size() && lines.at(i) != "};")
-                    {
-                        QString anotherLine = lines.at(i);
-
-                        if (
-                            anotherLine != ""
-                            &&
-                            !anotherLine.trimmed().startsWith("//")
-                           )
-                        {
-                            match = mValueRegExp.match(anotherLine);
-
-                            if (match.hasMatch())
-                            {
-                                QString value        = match.captured(1);
-                                QString valueNumeric = match.captured(2);
-
-                                values.append(value);
-                                valuesNumeric.append(valueNumeric);
-
-                                if (value.length() > maxValueLength)
-                                {
-                                    maxValueLength = value.length();
-                                }
-
-                                if (value.startsWith('_'))
-                                {
-                                    if (value.length() - 1 > maxValueLengthWithoutUnderscore)
-                                    {
-                                        maxValueLengthWithoutUnderscore = value.length() - 1;
-                                    }
-                                }
-                                else
-                                {
-                                    if (value.length() > maxValueLengthWithoutUnderscore)
-                                    {
-                                        maxValueLengthWithoutUnderscore = value.length();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                worker->addError(path, i, "Invalid enum value");
-                            }
-                        }
-
-
-
-                        ++i;
-                    }
-
-
-
-                    QString enumNameFromLowerCase = enumName.at(0).toLower() + enumName.mid(1);
-                    QString variableName          = enumNameFromLowerCase;
-
-                    for (qint64 j = enumName.length() - 2; j >= 0; --j)
-                    {
-                        if (
-                            enumName.at(j).isUpper()
-                            &&
-                            enumName.mid(j) != "Class"
-                            &&
-                            enumName.mid(j) != "Switch"
-                           )
-                        {
-                            variableName = enumName.at(j).toLower() + enumName.mid(j + 1);
-
-                            break;
-                        }
-                    }
-
-
-
-                    if (variableName == "register")
-                    {
-                        variableName = "reg";
-                    }
-
-
-
-                    bool    isFlag       = (variableName == "flag");
-                    QString typeShort    = isFlag ? "flag" : "enum";
-                    QString traceCommand = traceCommandFromPath(path);
-
-
-
-                    // Ignore CppAlignmentVerifier [BEGIN]
-                    QString toStringFunction = "\n\n\n";
-
-                    toStringFunction += "inline const char8* " + typeShort + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
-                    toStringFunction += "{\n";
-
-                    if (traceCommand != "")
-                    {
-                        toStringFunction += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";
-                        toStringFunction += "\n\n\n";
-                    }
-
-                    toStringFunction += "    switch (" + variableName + ")\n";
-                    toStringFunction += "    {\n";
-
-                    for (qint64 j = 0; j < values.size(); ++j)
-                    {
-                        const QString &value    = values.at(j);
-                        QString        spaces   = QString("%1")
-                                                            .arg("", maxValueLength - value.length(), QChar(' '));
-                        QString        comment  = value.length() > 1 ? "" : " // Ignore CppSingleCharVerifier";
-                        QString        valueStr = value.startsWith('_') ? value.mid(1) : value;
-
-                        toStringFunction += "        case " + enumName + "::" + value + ": " + spaces + "return \"" + valueStr + "\";" + comment + '\n';
-                    }
-
-                    toStringFunction += '\n';
-                    toStringFunction += "        default: return \"UNKNOWN\";\n";
-                    toStringFunction += "    }\n";
-                    toStringFunction += "}\n";
-                    toStringFunction += "\n\n\n";
-
-                    if (!content.contains(toStringFunction))
-                    {
-                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
-                                                            .arg(toStringFunction)
-                        );
-                    }
-                    // Ignore CppAlignmentVerifier [END]
-
-
-
-                    if (isFlag)
-                    {
-                        QString expectedEnumType = "";
-
-                        for (qint64 j = 0; j < enumNameFromLowerCase.length(); ++j)
-                        {
-                            QChar ch = enumNameFromLowerCase.at(j);
-
-                            if (ch.isUpper())
-                            {
-                                expectedEnumType += '_';
-                                expectedEnumType += ch.toLower();
-                            }
-                            else
-                            {
-                                expectedEnumType += ch;
-                            }
-                        }
-
-                        expectedEnumType += 's';
-
-
-
-                        if (enumType != expectedEnumType)
-                        {
-                            worker->addError(path, i, QString("Enum should use type %1 for flags")
-                                                                .arg(expectedEnumType)
-                            );
-                        }
-
-
-
-                        QString expectedFlagsDefinition = "DEFINE_FLAGS(" + enumName + "s, " + expectedEnumType + "); // TEST: NO";
-
-                        if (
-                            i >= lines.size() - 2
-                            ||
-                            lines.at(i + 2) != expectedFlagsDefinition
-                           )
-                        {
-                            worker->addError(path, i, QString("Flags definition not found: %1")
-                                                                .arg(expectedFlagsDefinition)
-                            );
-                        }
-
-
-
-                        QString enumTypeFormat       = "0x%016llX";
-                        quint8  enumTypeFormatLength = 18;
-
-                        if (enumLocation >= 2)
-                        {
-                            QRegularExpressionMatch match = mTypedefRegExp.match(lines.at(enumLocation - 2));
-
-                            if (match.hasMatch())
-                            {
-                                QString enumStandardType = match.captured(1);
-                                QString enumFlagType     = match.captured(2);
-
-                                if (enumFlagType == expectedEnumType)
-                                {
-                                    if (enumStandardType == "u8" || enumStandardType == "quint8")
-                                    {
-                                        enumTypeFormat       = "0x%02X";
-                                        enumTypeFormatLength = 4;
-                                    }
-                                    else
-                                    if (enumStandardType == "u16" || enumStandardType == "quint16")
-                                    {
-                                        enumTypeFormat       = "0x%04X";
-                                        enumTypeFormatLength = 6;
-                                    }
-                                    else
-                                    if (enumStandardType == "u32" || enumStandardType == "quint32")
-                                    {
-                                        enumTypeFormat       = "0x%08X";
-                                        enumTypeFormatLength = 10;
-                                    }
-                                    else
-                                    if (enumStandardType == "u64" || enumStandardType == "quint64")
-                                    {
-                                        enumTypeFormat       = "0x%016llX";
-                                        enumTypeFormatLength = 18;
-                                    }
-                                    else
-                                    {
-                                        worker->addError(path, i, "Enum type expecting to be one of the standard types");
-                                    }
-                                }
-                                else
-                                {
-                                    worker->addError(path, i, QString("Enum type %1 definition not found for flags")
-                                                                        .arg(expectedEnumType)
-                                    );
-                                }
-                            }
-                            else
-                            {
-                                worker->addError(path, i, QString("Enum type %1 definition not found for flags")
-                                                                    .arg(expectedEnumType)
-                                );
-                            }
-                        }
-
-
-
-                        if (values.contains("MAXIMUM"))
-                        {
-                            worker->addError(path, i, "Enum value MAXIMUM not allowed for flags");
-                        }
-                        else
-                        {
-                            if (values.contains("NONE"))
-                            {
-                                if (values.constFirst() != "NONE")
-                                {
-                                    worker->addError(path, i, "Enum value NONE should be first");
-                                }
-
-                                if (valuesNumeric.constFirst() != '0')
-                                {
-                                    worker->addError(path, i, "Numeric value of NONE should be zero");
-                                }
-                            }
-                            else
-                            {
-                                worker->addError(path, i, "Enum value NONE should be first");
-                            }
-
-                            if (valuesNumeric.contains(""))
-                            {
-                                worker->addError(path, i, "Numeric values should be provided for enum");
-                            }
-                        }
-
-
-
-                        quint64 totalStringSize = QString("UNKNOWN x 99").length() + 1; // 1 == zero terminator
-
-                        for (qint64 j = 0; j < values.size(); ++j)
-                        {
-                            const QString &value = values.at(j);
-
-                            if (value != "NONE")
-                            {
-                                if (value.startsWith('_'))
-                                {
-                                    totalStringSize += values.at(j).length() + 2; // 2 == length of " | " - 1 char for underscore
-                                }
-                                else
-                                {
-                                    totalStringSize += values.at(j).length() + 3; // 3 == length of " | "
-                                }
-                            }
-                        }
-
-
-
-                        // Ignore CppAlignmentVerifier [BEGIN]
-                        toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char8* flagToFullString(" + enumName + " flag) // TEST: NO\n";
-                        toStringFunction += "{\n";
-
-                        if (traceCommand != "")
-                        {
-                            toStringFunction += "    // " + traceCommand + "((\" | flag = %u\", flag)); // Commented to avoid bad looking logs\n";
-                            toStringFunction += "\n\n\n";
-                        }
-
-                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator
-                        toStringFunction += '\n';
-                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ")flag, flagToString(flag));\n";
-                        toStringFunction += '\n';
-                        toStringFunction += "    return res;\n";
-                        toStringFunction += "}\n";
-                        toStringFunction += "\n\n\n";
-
-                        if (!content.contains(toStringFunction))
-                        {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
-                                                                .arg(toStringFunction)
-                            );
-                        }
-                        // Ignore CppAlignmentVerifier [END]
-
-
-
-                        // Ignore CppAlignmentVerifier [BEGIN]
-                        toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char8* flagsToString(const " + enumName + "s &flags) // TEST: NO\n";
-                        toStringFunction += "{\n";
-
-                        if (traceCommand != "")
-                        {
-                            toStringFunction += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";
-                            toStringFunction += "\n\n\n";
-                        }
-
-                        toStringFunction += "    static char8 res[" + QString::number(totalStringSize) + "];\n";
-                        toStringFunction += '\n';
-                        toStringFunction += "    FLAGS_TO_STRING(res, flags.flags, " + enumName + ");\n";
-                        toStringFunction += '\n';
-                        toStringFunction += "    return res;\n";
-                        toStringFunction += "}\n";
-                        toStringFunction += "\n\n\n";
-
-                        if (!content.contains(toStringFunction))
-                        {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
-                                                                .arg(toStringFunction)
-                            );
-                        }
-                        // Ignore CppAlignmentVerifier [END]
-
-
-
-                        // Ignore CppAlignmentVerifier [BEGIN]
-                        toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char8* flagsToFullString(const " + enumName + "s &flags) // TEST: NO\n";
-                        toStringFunction += "{\n";
-
-                        if (traceCommand != "")
-                        {
-                            toStringFunction += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";
-                            toStringFunction += "\n\n\n";
-                        }
-
-                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + totalStringSize + 3) + "];\n"; // 3 == space, brackets without zero terminator
-                        toStringFunction += '\n';
-                        toStringFunction += "    FLAGS_TO_FULL_STRING(res, flags.flags, " + enumName + ", \"" + enumTypeFormat + "\");\n";
-                        toStringFunction += '\n';
-                        toStringFunction += "    return res;\n";
-                        toStringFunction += "}\n";
-                        toStringFunction += "\n\n\n";
-
-                        if (!content.contains(toStringFunction))
-                        {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
-                                                                .arg(toStringFunction)
-                            );
-                        }
-                        // Ignore CppAlignmentVerifier [END]
-                    }
-                    else
-                    {
-                        QString enumTypeFormat       = "0x%016llX";
-                        quint8  enumTypeFormatLength = 18;
-
-                        if (enumType == "u8" || enumType == "quint8")
-                        {
-                            enumTypeFormat       = "0x%02X";
-                            enumTypeFormatLength = 4;
-                        }
-                        else
-                        if (enumType == "u16" || enumType == "quint16")
-                        {
-                            enumTypeFormat       = "0x%04X";
-                            enumTypeFormatLength = 6;
-                        }
-                        else
-                        if (enumType == "u32" || enumType == "quint32")
-                        {
-                            enumTypeFormat       = "0x%08X";
-                            enumTypeFormatLength = 10;
-                        }
-                        else
-                        if (enumType == "u64" || enumType == "quint64")
-                        {
-                            enumTypeFormat       = "0x%016llX";
-                            enumTypeFormatLength = 18;
-                        }
-                        else
-                        {
-                            worker->addError(path, i, "Enum type expecting to be one of the standard types");
-                        }
-
-
-
-                        if (values.contains("MAXIMUM"))
-                        {
-                            if (values.last() != "MAXIMUM")
-                            {
-                                worker->addError(path, i, "Enum value MAXIMUM should be last");
-                            }
-
-                            if (values.contains("NONE"))
-                            {
-                                worker->addError(path, i, "Enum value NONE not allowed when value MAXIMUM present");
-                            }
-
-                            if (valuesNumeric.count("") != valuesNumeric.length())
-                            {
-                                worker->addError(path, i, "Numeric values of the enum are not allowed when value MAXIMUM present");
-                            }
-                        }
-                        else
-                        {
-                            if (values.contains("NONE"))
-                            {
-                                if (
-                                    values.constFirst() != "NONE"
-                                    &&
-                                    values.constFirst() != "NULL"
-                                   )
-                                {
-                                    worker->addError(path, i, "Enum value NONE should be first");
-                                }
-
-                                if (valuesNumeric.constFirst() != '0')
-                                {
-                                    worker->addError(path, i, "Numeric value of NONE should be zero");
-                                }
-                            }
-                            else
-                            {
-                                if (
-                                    valuesNumeric.isEmpty()
-                                    ||
-                                    (
-                                     valuesNumeric.constFirst() != '0'
-                                     &&
-                                     valuesNumeric.constFirst() != "0x00"
-                                     &&
-                                     valuesNumeric.constFirst() != "0x0000"
-                                     &&
-                                     valuesNumeric.constFirst() != "0x00000000"
-                                     &&
-                                     valuesNumeric.constFirst() != "0x0000000000000000"
-                                    )
-                                   )
-                                {
-                                    worker->addError(path, i, "Enum value NONE should be first");
-                                }
-                            }
-
-                            if (valuesNumeric.contains(""))
-                            {
-                                worker->addError(path, i, "Numeric values should be provided for enum");
-                            }
-                        }
-
-
-
-                        // Ignore CppAlignmentVerifier [BEGIN]
-                        toStringFunction =  "\n\n\n";
-                        toStringFunction += "inline const char8* enumToFullString(" + enumName + ' ' + variableName + ") // TEST: NO\n";
-                        toStringFunction += "{\n";
-
-                        if (traceCommand != "")
-                        {
-                            toStringFunction += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";
-                            toStringFunction += "\n\n\n";
-                        }
-
-                        toStringFunction += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator
-                        toStringFunction += '\n';
-                        toStringFunction += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ')' + variableName + ", enumToString(" + variableName + "));\n";
-                        toStringFunction += '\n';
-                        toStringFunction += "    return res;\n";
-                        toStringFunction += "}\n";
-                        toStringFunction += "\n\n\n";
-
-                        if (!content.contains(toStringFunction))
-                        {
-                            worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")
-                                                                .arg(toStringFunction)
-                            );
-                        }
-                        // Ignore CppAlignmentVerifier [END]
-                    }
-                }
-                else
-                {
-                    worker->addError(path, i, "Expected enum type");
-                }
-            }
-            else
-            {
-                worker->addError(path, i, "Expected enum name");
-            }
-        }
-    }
-}
-
-
-
-CppEnumVerifier cppEnumVerifierInstance;
+#include "cppenumverifier.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppEnumVerifier::CppEnumVerifier()                                                                                                                                                                       // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mDefinitionRegExp("^ *enum( +class)?(?: +(\\w+))? *(?:: *(\\w+))?$")                                                                                                                               // Colorize: green
+    , mValueRegExp("^ *([A-Z_][A-Z\\d_]*)(?: *= *([^,]+))?,?(?: *\\/\\/.*)?$")                                                                                                                           // Colorize: green
+    , mTypedefRegExp("^ *typedef (\\w+) (\\w+);$")                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString getVariableNameFromEnumName(const QString &enumName)                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString res = enumName;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = enumName.length() - 2; i >= 0; --i)                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            enumName.at(i).isUpper()                                                                                                                                                                     // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            enumName.mid(i) != "Class"                                                                                                                                                                   // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            enumName.mid(i) != "Switch"                                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            res = enumName.at(i).toLower() + enumName.mid(i + 1);                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (res == "register")                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res = "reg";                                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString getExpectedEnumTypeForFlags(const QString &enumNameFromLowerCase)                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString res;                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < enumNameFromLowerCase.length(); ++i)                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QChar ch = enumNameFromLowerCase.at(i);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (ch.isUpper())                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            res += '_';                                                                                                                                                                                  // Colorize: green
+            res += ch.toLower();                                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            res += ch;                                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res + 's';                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool getPrintfFormatAndLength(const QString &enumType, QString &enumTypeFormat, quint8 &enumTypeFormatLength)                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (enumType == "u8" || enumType == "quint8")                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        enumTypeFormat       = "0x%02X";                                                                                                                                                                 // Colorize: green
+        enumTypeFormatLength = 4;                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (enumType == "u16" || enumType == "quint16")                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        enumTypeFormat       = "0x%04X";                                                                                                                                                                 // Colorize: green
+        enumTypeFormatLength = 6;                                                                                                                                                                        // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (enumType == "u32" || enumType == "quint32")                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        enumTypeFormat       = "0x%08X";                                                                                                                                                                 // Colorize: green
+        enumTypeFormatLength = 10;                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    if (enumType == "u64" || enumType == "quint64")                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        enumTypeFormat       = "0x%016llX";                                                                                                                                                              // Colorize: green
+        enumTypeFormatLength = 18;                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        enumTypeFormat       = "0x%016llX";                                                                                                                                                              // Colorize: green
+        enumTypeFormatLength = 18;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline quint64 calculateTotalStringSize(const QStringList &values)                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    quint64 res = QString("UNKNOWN x 99").length() + 1; // 1 == zero terminator                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < values.size(); ++i)                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const QString &value = values.at(i);                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (value != "NONE")                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (value.startsWith('_'))                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                res += values.at(i).length() + 2; // 2 == length of " | " - 1 char for underscore                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                res += values.at(i).length() + 3; // 3 == length of " | "                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString generateEnumToStringFunction(const QString &enumName, const QString &variableName, const QString &traceCommand, const QStringList &values, qint64 maxValueLength)                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString typeShort = (variableName == "flag") ? "flag" : "enum";                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    QString res = "\n\n\n";                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "inline const char8* " + typeShort + "ToString(" + enumName + ' ' + variableName + ") // TEST: NO\n";                                                                                         // Colorize: green
+    res += "{\n";                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand != "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";                                                        // Colorize: green
+        res += "\n\n\n";                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "    switch (" + variableName + ")\n";                                                                                                                                                        // Colorize: green
+    res += "    {\n";                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 j = 0; j < values.size(); ++j)                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString value    = values.at(j);                                                                                                                                                                 // Colorize: green
+        QString spaces   = QString(maxValueLength - value.length(), QChar(' '));                                                                                                                         // Colorize: green
+        QString comment  = value.length() > 1 ? "" : " // Ignore CppSingleCharVerifier";                                                                                                                 // Colorize: green
+        QString valueStr = value.startsWith('_') ? value.mid(1) : value;                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        res += "        case " + enumName + "::" + value + ": " + spaces + "return \"" + valueStr + "\";" + comment + '\n';                                                                              // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "        default: return \"UNKNOWN\";\n";                                                                                                                                                     // Colorize: green
+    res += "    }\n";                                                                                                                                                                                    // Colorize: green
+    res += "}\n";                                                                                                                                                                                        // Colorize: green
+    res += "\n\n\n";                                                                                                                                                                                     // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString generateEnumToFullStringFunction(const QString &enumName, const QString &enumType, const QString &variableName, const QString &traceCommand, qint64 maxValueLengthWithoutUnderscore, const QString &enumTypeFormat, quint8 enumTypeFormatLength) // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    QString res = "\n\n\n";                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "inline const char8* enumToFullString(" + enumName + ' ' + variableName + ") // TEST: NO\n";                                                                                                  // Colorize: green
+    res += "{\n";                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand != "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res += "    // " + traceCommand + "((\" | " + variableName + " = %u\", " + variableName + ")); // Commented to avoid bad looking logs\n";                                                        // Colorize: green
+        res += "\n\n\n";                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" , 4 == space, brackets and zero terminator // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ')' + variableName + ", enumToString(" + variableName + "));\n";                                                           // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    return res;\n";                                                                                                                                                                          // Colorize: green
+    res += "}\n";                                                                                                                                                                                        // Colorize: green
+    res += "\n\n\n";                                                                                                                                                                                     // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString generateFlagToFullStringFunction(const QString &enumName, const QString &enumType, const QString &traceCommand, qint64 maxValueLengthWithoutUnderscore, const QString &enumTypeFormat, quint8 enumTypeFormatLength) // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    QString res = "\n\n\n";                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "inline const char8* flagToFullString(" + enumName + " flag) // TEST: NO\n";                                                                                                                  // Colorize: green
+    res += "{\n";                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand != "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res += "    // " + traceCommand + "((\" | flag = %u\", flag)); // Commented to avoid bad looking logs\n";                                                                                        // Colorize: green
+        res += "\n\n\n";                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "    static char8 res[" + QString::number(enumTypeFormatLength + qMax(maxValueLengthWithoutUnderscore, 7LL) + 4) + "];\n"; // 7 == length of "UNKNOWN" // 4 == space, brackets and zero terminator // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    sprintf(res, \"" + enumTypeFormat + " (%s)\", (" + enumType + ")flag, flagToString(flag));\n";                                                                                           // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    return res;\n";                                                                                                                                                                          // Colorize: green
+    res += "}\n";                                                                                                                                                                                        // Colorize: green
+    res += "\n\n\n";                                                                                                                                                                                     // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString generateFlagsToStringFunction(const QString &enumName, const QString &traceCommand, qint64 totalStringSize)                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    QString res = "\n\n\n";                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "inline const char8* flagsToString(const " + enumName + "s &flags) // TEST: NO\n";                                                                                                            // Colorize: green
+    res += "{\n";                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand != "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";                                                                                            // Colorize: green
+        res += "\n\n\n";                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "    static char8 res[" + QString::number(totalStringSize) + "];\n";                                                                                                                          // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    FLAGS_TO_STRING(res, flags.flags, " + enumName + ");\n";                                                                                                                                 // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    return res;\n";                                                                                                                                                                          // Colorize: green
+    res += "}\n";                                                                                                                                                                                        // Colorize: green
+    res += "\n\n\n";                                                                                                                                                                                     // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline QString generateFlagsToFullStringFunction(const QString &enumName, const QString &traceCommand, qint64 totalStringSize, const QString &enumTypeFormat, quint8 enumTypeFormatLength)               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    QString res = "\n\n\n";                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "inline const char8* flagsToFullString(const " + enumName + "s &flags) // TEST: NO\n";                                                                                                        // Colorize: green
+    res += "{\n";                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand != "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        res += "    // " + traceCommand + "((\" | flags = ...\")); // Commented to avoid bad looking logs\n";                                                                                            // Colorize: green
+        res += "\n\n\n";                                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    res += "    static char8 res[" + QString::number(enumTypeFormatLength + totalStringSize + 3) + "];\n"; // 3 == space, brackets without zero terminator                                               // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    FLAGS_TO_FULL_STRING(res, flags.flags, " + enumName + ", \"" + enumTypeFormat + "\");\n";                                                                                                // Colorize: green
+    res += '\n';                                                                                                                                                                                         // Colorize: green
+    res += "    return res;\n";                                                                                                                                                                          // Colorize: green
+    res += "}\n";                                                                                                                                                                                        // Colorize: green
+    res += "\n\n\n";                                                                                                                                                                                     // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return res;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppEnumVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppEnumVerifier");                                                                                                                                              // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatch match = mDefinitionRegExp.match(line);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 enumLocation = i;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString enumClass = match.captured(1);                                                                                                                                                       // Colorize: green
+            QString enumName  = match.captured(2);                                                                                                                                                       // Colorize: green
+            QString enumType  = match.captured(3);                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check for valid enum definition                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (enumClass == "")                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Expected enum class definition");                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (enumName == "")                                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Expected enum name");                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (enumType == "")                                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Expected enum type");                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QStringList values;                                                                                                                                                                          // Colorize: green
+            QStringList valuesNumeric;                                                                                                                                                                   // Colorize: green
+            qint64      maxValueLength                  = 0;                                                                                                                                             // Colorize: green
+            qint64      maxValueLengthWithoutUnderscore = 0;                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Parse enum values                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                i += 2;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                while (i < lines.size() && lines.at(i) != "};")                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString anotherLine = lines.at(i);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        anotherLine != ""                                                                                                                                                                // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !anotherLine.trimmed().startsWith("//")                                                                                                                                          // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        match = mValueRegExp.match(anotherLine);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (match.hasMatch())                                                                                                                                                            // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString value        = match.captured(1);                                                                                                                                    // Colorize: green
+                            QString valueNumeric = match.captured(2);                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            values.append(value);                                                                                                                                                        // Colorize: green
+                            valuesNumeric.append(valueNumeric);                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            // Get maximum length                                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (value.length() > maxValueLength)                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    maxValueLength = value.length();                                                                                                                                     // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (value.startsWith('_'))                                                                                                                                               // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (value.length() - 1 > maxValueLengthWithoutUnderscore)                                                                                                            // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        maxValueLengthWithoutUnderscore = value.length() - 1;                                                                                                            // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                else                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (value.length() > maxValueLengthWithoutUnderscore)                                                                                                                // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        maxValueLengthWithoutUnderscore = value.length();                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Invalid enum value");                                                                                                                             // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString enumNameFromLowerCase = enumName.at(0).toLower() + enumName.mid(1);                                                                                                                  // Colorize: green
+            QString variableName          = getVariableNameFromEnumName(enumName);                                                                                                                       // Colorize: green
+            QString traceCommand          = traceCommandFromPath(path);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check for enumToString function                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString toStringFunction = generateEnumToStringFunction(enumName, variableName, traceCommand, values, maxValueLength);                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!content.contains(toStringFunction))                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")                                                                                // Colorize: green
+                                                        .arg(toStringFunction)                                                                                                                           // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (variableName != "flag")                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString enumTypeFormat;                                                                                                                                                                  // Colorize: green
+                quint8  enumTypeFormatLength;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get printf format and it length                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!getPrintfFormatAndLength(enumType, enumTypeFormat, enumTypeFormatLength))                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Enum type expecting to be one of the standard types");                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for mandatory and forbidden values                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (values.contains("MAXIMUM"))                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (values.last() != "MAXIMUM")                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Enum value MAXIMUM should be last");                                                                                                              // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (values.contains("NONE"))                                                                                                                                                     // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Enum value NONE not allowed when value MAXIMUM present");                                                                                         // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (valuesNumeric.count("") != valuesNumeric.length())                                                                                                                           // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Numeric values of the enum are not allowed when value MAXIMUM present");                                                                          // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (values.contains("NONE"))                                                                                                                                                     // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                values.constFirst() != "NONE"                                                                                                                                            // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                values.constFirst() != "NULL"                                                                                                                                            // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Enum value NONE should be first");                                                                                                            // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (valuesNumeric.constFirst() != '0')                                                                                                                                       // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Numeric value of NONE should be zero");                                                                                                       // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                valuesNumeric.isEmpty()                                                                                                                                                  // Colorize: green
+                                ||                                                                                                                                                                       // Colorize: green
+                                (                                                                                                                                                                        // Colorize: green
+                                 valuesNumeric.constFirst() != '0'                                                                                                                                       // Colorize: green
+                                 &&                                                                                                                                                                      // Colorize: green
+                                 valuesNumeric.constFirst() != "0x00"                                                                                                                                    // Colorize: green
+                                 &&                                                                                                                                                                      // Colorize: green
+                                 valuesNumeric.constFirst() != "0x0000"                                                                                                                                  // Colorize: green
+                                 &&                                                                                                                                                                      // Colorize: green
+                                 valuesNumeric.constFirst() != "0x00000000"                                                                                                                              // Colorize: green
+                                 &&                                                                                                                                                                      // Colorize: green
+                                 valuesNumeric.constFirst() != "0x0000000000000000"                                                                                                                      // Colorize: green
+                                )                                                                                                                                                                        // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Enum value NONE should be first");                                                                                                            // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (valuesNumeric.contains(""))                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Numeric values should be provided for enum");                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for enumToFullString function                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString toStringFunction = generateEnumToFullStringFunction(enumName, enumType, variableName, traceCommand, maxValueLengthWithoutUnderscore, enumTypeFormat, enumTypeFormatLength);  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!content.contains(toStringFunction))                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")                                                                            // Colorize: green
+                                                            .arg(toStringFunction)                                                                                                                       // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString expectedEnumType = getExpectedEnumTypeForFlags(enumNameFromLowerCase);                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (enumType != expectedEnumType)                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, QString("Enum should use type %1 for flags")                                                                                                               // Colorize: green
+                                                        .arg(expectedEnumType)                                                                                                                           // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for DEFINE_FLAGS                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString expectedFlagsDefinition = "DEFINE_FLAGS(" + enumName + "s, " + expectedEnumType + "); // TEST: NO";                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        i >= lines.size() - 2                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        lines.at(i + 2) != expectedFlagsDefinition                                                                                                                                       // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Flags definition not found: %1")                                                                                                              // Colorize: green
+                                                            .arg(expectedFlagsDefinition)                                                                                                                // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString enumTypeFormat;                                                                                                                                                                  // Colorize: green
+                quint8  enumTypeFormatLength;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get printf format and it length                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString enumTypeFormat       = "0x%016llX";                                                                                                                                          // Colorize: green
+                    quint8  enumTypeFormatLength = 18;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (enumLocation >= 2)                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QRegularExpressionMatch match = mTypedefRegExp.match(lines.at(enumLocation - 2));                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (match.hasMatch())                                                                                                                                                            // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            QString enumStandardType = match.captured(1);                                                                                                                                // Colorize: green
+                            QString enumFlagType     = match.captured(2);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (enumFlagType == expectedEnumType)                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (!getPrintfFormatAndLength(enumStandardType, enumTypeFormat, enumTypeFormatLength))                                                                                   // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addError(path, i, "Enum type expecting to be one of the standard types");                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, QString("Enum type %1 definition not found for flags")                                                                                         // Colorize: green
+                                                                    .arg(expectedEnumType)                                                                                                               // Colorize: green
+                                );                                                                                                                                                                       // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, QString("Enum type %1 definition not found for flags")                                                                                             // Colorize: green
+                                                                .arg(expectedEnumType)                                                                                                                   // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for mandatory and forbidden values                                                                                                                                              // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (values.contains("MAXIMUM"))                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Enum value MAXIMUM not allowed for flags");                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (values.contains("NONE"))                                                                                                                                                     // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (values.constFirst() != "NONE")                                                                                                                                           // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Enum value NONE should be first");                                                                                                            // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (valuesNumeric.constFirst() != '0')                                                                                                                                       // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Numeric value of NONE should be zero");                                                                                                       // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Enum value NONE should be first");                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (valuesNumeric.contains(""))                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Numeric values should be provided for enum");                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                quint64 totalStringSize = calculateTotalStringSize(values);                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for flagToFullString function                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString toStringFunction = generateFlagToFullStringFunction(enumName, enumType, traceCommand, maxValueLengthWithoutUnderscore, enumTypeFormat, enumTypeFormatLength);                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!content.contains(toStringFunction))                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")                                                                            // Colorize: green
+                                                            .arg(toStringFunction)                                                                                                                       // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for flagsToString function                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString toStringFunction = generateFlagsToStringFunction(enumName, traceCommand, totalStringSize)                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!content.contains(toStringFunction))                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")                                                                            // Colorize: green
+                                                            .arg(toStringFunction)                                                                                                                       // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check for flagsToFullString function                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString toStringFunction = generateFlagsToFullStringFunction(enumName, traceCommand, totalStringSize, enumTypeFormat, enumTypeFormatLength);                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!content.contains(toStringFunction))                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Enum to string conversion function not found. Expecting for:\n%1")                                                                            // Colorize: green
+                                                            .arg(toStringFunction)                                                                                                                       // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppEnumVerifier cppEnumVerifierInstance;                                                                                                                                                                 // Colorize: green

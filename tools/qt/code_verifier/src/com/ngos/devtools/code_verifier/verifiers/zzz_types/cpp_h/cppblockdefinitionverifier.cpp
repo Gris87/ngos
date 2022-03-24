@@ -1,62 +1,62 @@
-#include "cppblockdefinitionverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppBlockDefinitionVerifier::CppBlockDefinitionVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppBlockDefinitionVerifier");
-        removeComments(line);
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-        if (
-            lineTrimmed.endsWith('{')
-            &&
-            lineTrimmed.length() > 1
-           )
-        {
-            worker->addError(path, i, "Code block should be started on the new line");
-        }
-        else
-        if (
-            lineTrimmed.startsWith('}')
-            &&
-            lineTrimmed != '}'
-            &&
-            lineTrimmed != "} \\"
-            &&
-            !lineTrimmed.startsWith("} while(")
-            &&
-            !lineTrimmed.endsWith(';')
-           )
-        {
-            worker->addError(path, i, "Code block should be closed on the new line");
-        }
-        else
-        if (
-            lineTrimmed.startsWith("while (")
-            &&
-            lineTrimmed.endsWith(");")
-           )
-        {
-            worker->addError(path, i, "While statement should be on the same line with the closing bracket");
-        }
-    }
-}
-
-
-
-CppBlockDefinitionVerifier cppBlockDefinitionVerifierInstance;
+#include "cppblockdefinitionverifier.h"                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppBlockDefinitionVerifier::CppBlockDefinitionVerifier()                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppBlockDefinitionVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppBlockDefinitionVerifier");                                                                                                                                   // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString lineTrimmed = line.trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lineTrimmed.endsWith('{')                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.length() > 1                                                                                                                                                                     // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, i, "Code block should be started on the new line");                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lineTrimmed.startsWith('}')                                                                                                                                                                  // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            lineTrimmed != '}'                                                                                                                                                                           // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            lineTrimmed != "} \\"                                                                                                                                                                        // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !lineTrimmed.startsWith("} while(")                                                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            !lineTrimmed.endsWith(';')                                                                                                                                                                   // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, i, "Code block should be closed on the new line");                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lineTrimmed.startsWith("while (")                                                                                                                                                            // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.endsWith(");")                                                                                                                                                                   // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, i, "While statement should be on the same line with the closing bracket");                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppBlockDefinitionVerifier cppBlockDefinitionVerifierInstance;                                                                                                                                           // Colorize: green

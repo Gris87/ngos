@@ -1,209 +1,226 @@
-#include "cppblockorderverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-#define BLOCK_TYPE_NONE     0
-#define BLOCK_TYPE_INCLUDES 1
-#define BLOCK_TYPE_DEFINES  2
-#define BLOCK_TYPE_CODE     3
-
-
-
-CppBlockOrderVerifier::CppBlockOrderVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    qint64 fileHeaderOffset = 0;
-
-    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
-    {
-        ++fileHeaderOffset;
-    }
-
-
-
-    QList<QStringList> blocks;
-    QList<qint64>      blockStarts;
-    QList<quint8>      blockTypes;
-    QStringList        currentBlock;
-    qint64             currentBlockStart = -1;
-    quint8             currentBlockType  = BLOCK_TYPE_NONE;
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-
-
-        quint8 blockType = currentBlockType;
-
-        if (line.startsWith("#include "))
-        {
-            blockType = BLOCK_TYPE_INCLUDES;
-        }
-        else
-        if (line.startsWith("#define "))
-        {
-            if (
-                !
-                (
-                 i == fileHeaderOffset + 1
-                 &&
-                 lines.at(i - 1).startsWith("#ifndef ")
-                 &&
-                 line == "#define " + lines.at(i - 1).mid(8)
-                )
-               )
-            {
-                blockType = BLOCK_TYPE_DEFINES;
-            }
-        }
-        else
-        if (
-            line.startsWith("/*")
-            &&
-            !line.endsWith("*/")
-           )
-        {
-            do
-            {
-                ++i;
-
-                if (i >= lines.size())
-                {
-                    break;
-                }
-
-
-
-                QString anotherLine = lines.at(i);
-
-                if (anotherLine.endsWith("*/"))
-                {
-                    break;
-                }
-            } while(true);
-        }
-        else
-        if (
-            line != ""
-            &&
-            !line.startsWith("//")
-            &&
-            !line.startsWith("/*")
-            &&
-            !line.startsWith("#if")
-            &&
-            !line.startsWith("#else")
-            &&
-            !line.startsWith("#elif")
-            &&
-            !line.startsWith("#endif")
-           )
-        {
-            if (
-                !
-                (
-                 blockType == BLOCK_TYPE_DEFINES
-                 &&
-                 i > 0
-                 &&
-                 lines.at(i - 1).endsWith(" \\")
-                )
-               )
-            {
-                blockType = BLOCK_TYPE_CODE;
-            }
-        }
-
-
-
-        if (currentBlockType != blockType)
-        {
-            if (!currentBlock.isEmpty())
-            {
-                blocks.append(currentBlock);
-                blockStarts.append(currentBlockStart);
-                blockTypes.append(currentBlockType);
-
-                currentBlock.clear();
-            }
-
-            currentBlockType  = blockType;
-            currentBlockStart = i;
-        }
-
-        if (currentBlockType != BLOCK_TYPE_NONE)
-        {
-            currentBlock.append(line);
-        }
-    }
-
-    if (!currentBlock.isEmpty())
-    {
-        blocks.append(currentBlock);
-        blockStarts.append(currentBlockStart);
-        blockTypes.append(currentBlockType);
-    }
-
-
-
-    for (qint64 i = 1; i < blocks.size(); ++i)
-    {
-        QStringList block = blocks.at(i - 1);
-
-        while (
-               !block.isEmpty()
-               &&
-               (
-                block.constLast().startsWith("//")
-                ||
-                block.constLast().startsWith("#if")
-                ||
-                block.constLast().startsWith("#else")
-                ||
-                block.constLast().startsWith("#elif")
-                ||
-                block.constLast().startsWith("#endif")
-               )
-              )
-        {
-            block.removeLast();
-        }
-
-        if (
-            block.size() < 4
-            ||
-            block.at(block.size() - 1) != ""
-            ||
-            block.at(block.size() - 2) != ""
-            ||
-            block.at(block.size() - 3) != ""
-            ||
-            block.at(block.size() - 4) == ""
-           )
-        {
-            worker->addError(path, blockStarts.at(i), "Blocks should be separated by 3 blank lines");
-        }
-    }
-
-    for (qint64 i = 1; i < blockTypes.size(); ++i)
-    {
-        if (blockTypes.at(i - 1) > blockTypes.at(i))
-        {
-            worker->addError(path, blockStarts.at(i), "Invalid order of code blocks");
-        }
-    }
-}
-
-
-
-CppBlockOrderVerifier cppBlockOrderVerifierInstance;
+#include "cppblockorderverifier.h"                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class BlockType: quint8                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE     = 0,                                                                                                                                                                                        // Colorize: green
+    INCLUDES = 1,                                                                                                                                                                                        // Colorize: green
+    DEFINES  = 2,                                                                                                                                                                                        // Colorize: green
+    CODE     = 3                                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppBlockOrderVerifier::CppBlockOrderVerifier()                                                                                                                                                           // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppBlockOrderVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 fileHeaderOffset = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip first lines that start with single line comment                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++fileHeaderOffset;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QList<QStringList> blocks;                                                                                                                                                                           // Colorize: green
+    QList<qint64>      blockStarts;                                                                                                                                                                      // Colorize: green
+    QList<BlockType>   blockTypes;                                                                                                                                                                       // Colorize: green
+    QStringList        currentBlock;                                                                                                                                                                     // Colorize: green
+    qint64             currentBlockStart = -1;                                                                                                                                                           // Colorize: green
+    BlockType          currentBlockType  = BlockType::NONE;                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get blocks                                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Skip multi-line comment                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("/*"))                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    while (i < lines.size() && !lines.at(i).endsWith("*/"))                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++i;                                                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            BlockType blockType = currentBlockType;                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Identify current block type                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("#include "))                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    blockType = BlockType::INCLUDES;                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith("#define "))                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        !                                                                                                                                                                                // Colorize: green
+                        (                                                                                                                                                                                // Colorize: green
+                         i == fileHeaderOffset + 1                                                                                                                                                       // Colorize: green
+                         &&                                                                                                                                                                              // Colorize: green
+                         lines.at(i - 1).startsWith("#ifndef ")                                                                                                                                          // Colorize: green
+                         &&                                                                                                                                                                              // Colorize: green
+                         line == "#define " + lines.at(i - 1).mid(8)                                                                                                                                     // Colorize: green
+                        )                                                                                                                                                                                // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        blockType = BlockType::DEFINES;                                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    line != ""                                                                                                                                                                           // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !line.startsWith("//")                                                                                                                                                               // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !line.startsWith("#if")                                                                                                                                                              // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !line.startsWith("#else")                                                                                                                                                            // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !line.startsWith("#elif")                                                                                                                                                            // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !line.startsWith("#endif")                                                                                                                                                           // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        !                                                                                                                                                                                // Colorize: green
+                        (                                                                                                                                                                                // Colorize: green
+                         blockType == BlockType::DEFINES                                                                                                                                                 // Colorize: green
+                         &&                                                                                                                                                                              // Colorize: green
+                         i > 0                                                                                                                                                                           // Colorize: green
+                         &&                                                                                                                                                                              // Colorize: green
+                         lines.at(i - 1).endsWith(" \\")                                                                                                                                                 // Colorize: green
+                        )                                                                                                                                                                                // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        blockType = BlockType::CODE;                                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Accumulate blocks                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (currentBlockType != blockType)                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!currentBlock.isEmpty())                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        blocks.append(currentBlock);                                                                                                                                                     // Colorize: green
+                        blockStarts.append(currentBlockStart);                                                                                                                                           // Colorize: green
+                        blockTypes.append(currentBlockType);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        currentBlock.clear();                                                                                                                                                            // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    currentBlockType  = blockType;                                                                                                                                                       // Colorize: green
+                    currentBlockStart = i;                                                                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (currentBlockType != BlockType::NONE)                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                currentBlock.append(line);                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Accumulate blocks                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!currentBlock.isEmpty())                                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                blocks.append(currentBlock);                                                                                                                                                             // Colorize: green
+                blockStarts.append(currentBlockStart);                                                                                                                                                   // Colorize: green
+                blockTypes.append(currentBlockType);                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that blocks are separated by 3 blank lines                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 1; i < blocks.size(); ++i)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QStringList block = blocks.at(i - 1);                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            while (                                                                                                                                                                                      // Colorize: green
+                   !block.isEmpty()                                                                                                                                                                      // Colorize: green
+                   &&                                                                                                                                                                                    // Colorize: green
+                   (                                                                                                                                                                                     // Colorize: green
+                    block.constLast().startsWith("//")                                                                                                                                                   // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    block.constLast().startsWith("#if")                                                                                                                                                  // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    block.constLast().startsWith("#else")                                                                                                                                                // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    block.constLast().startsWith("#elif")                                                                                                                                                // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    block.constLast().startsWith("#endif")                                                                                                                                               // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                  )                                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                block.removeLast();                                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                block.size() < 4                                                                                                                                                                         // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                block.at(block.size() - 1) != ""                                                                                                                                                         // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                block.at(block.size() - 2) != ""                                                                                                                                                         // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                block.at(block.size() - 3) != ""                                                                                                                                                         // Colorize: green
+                ||                                                                                                                                                                                       // Colorize: green
+                block.at(block.size() - 4) == ""                                                                                                                                                         // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, blockStarts.at(i), "Blocks should be separated by 3 blank lines");                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check that blocks sorted by type                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 1; i < blockTypes.size(); ++i)                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (blockTypes.at(i - 1) > blockTypes.at(i))                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, blockStarts.at(i), "Invalid order of code blocks");                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppBlockOrderVerifier cppBlockOrderVerifierInstance;                                                                                                                                                     // Colorize: green

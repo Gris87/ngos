@@ -1,169 +1,169 @@
-#include "cpparrayinitializationverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppArrayInitializationVerifier::CppArrayInitializationVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-inline bool isSpaceOrEmpty(const QChar &ch)
-{
-    return ch.isNull() || ch == ' ';
-}
-
-inline bool validateSignOpenBracketCase1(const QChar &/*chPrev1*/, const QChar &chNext1)
-{
-    // Cases:
-    //      "{{"
-    //      "{ "
-    //       ^
-
-    return chNext1 == '{'
-            ||
-            isSpaceOrEmpty(chNext1);
-}
-
-inline bool validateSignOpenBracketCase2(const QChar &chPrev1, const QChar &/*chNext1*/)
-{
-    // Cases:
-    //      "{{"
-    //        ^
-
-    return chPrev1 == '{';
-}
-
-inline bool validateSignOpenBracket(const QChar &chPrev1, const QChar &chNext1)
-{
-    return validateSignOpenBracketCase1(chPrev1, chNext1)
-            ||
-            validateSignOpenBracketCase2(chPrev1, chNext1);
-}
-
-inline bool validateSignCloseBracketCase1(const QChar &/*chPrev1*/, const QChar &chNext1)
-{
-    // Cases:
-    //      "}}"
-    //      "};"
-    //      "},"
-    //      "} "
-    //       ^
-
-    return chNext1 == '}'
-            ||
-            chNext1 == ';'
-            ||
-            chNext1 == ','
-            ||
-            isSpaceOrEmpty(chNext1);
-}
-
-inline bool validateSignCloseBracketCase2(const QChar &chPrev1, const QChar &/*chNext1*/)
-{
-    // Cases:
-    //      "}}"
-    //        ^
-
-    return chPrev1 == '%';
-}
-
-inline bool validateSignCloseBracket(const QChar &chPrev1, const QChar &chNext1)
-{
-    return validateSignCloseBracketCase1(chPrev1, chNext1)
-            ||
-            validateSignCloseBracketCase2(chPrev1, chNext1);
-}
-
-inline bool validateChar(const QChar &ch, const QChar &chPrev1, const QChar &chNext1)
-{
-    // Cases:
-    //      "'?'"
-    //        ^
-    //
-    //      "\"?"
-    //         ^
-    //
-    //      "?\""
-    //      "?\\"
-    //      "? "
-    //       ^
-    if (
-        (
-         chPrev1 == '\''
-         &&
-         chNext1 == '\''
-        )
-        ||
-        chPrev1 == '\"'
-        ||
-        chNext1 == '\"'
-        ||
-        chNext1 == '\\'
-        ||
-        isSpaceOrEmpty(chNext1)
-       )
-    {
-        return true;
-    }
-
-
-
-    switch (ch.unicode())
-    {
-        case '{': return validateSignOpenBracket(chPrev1, chNext1);
-        case '}': return validateSignCloseBracket(chPrev1, chNext1);
-
-        default: return true;
-    }
-}
-
-void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// CppArrayInitializationVerifier");
-        removeComments(line);
-        removeStrings(line);
-
-
-
-        qint64 index = line.indexOf('{');
-
-        if (index >= 0)
-        {
-            qint64 index2 = line.indexOf('}', index + 1);
-
-            if (index2 >= 0)
-            {
-                QChar chPrev1;
-                QChar ch      = index > 0 ? line.at(index - 1) : QChar(); // Ignore CppZeroConditionVerifier
-                QChar chNext1 = line.at(index);
-
-                for (qint64 j = index; j < line.length(); ++j)
-                {
-                    chPrev1 = ch;
-                    ch      = chNext1;
-                    chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();
-
-
-
-                    if (!validateChar(ch, chPrev1, chNext1))
-                    {
-                        worker->addWarning(path, i, QString("Whitespace is missing after '%1' character in position %2")
-                                                            .arg(ch)
-                                                            .arg(j + 1)
-                        );
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-CppArrayInitializationVerifier cppArrayInitializationVerifierInstance;
+#include "cpparrayinitializationverifier.h"                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppArrayInitializationVerifier::CppArrayInitializationVerifier()                                                                                                                                         // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool isSpaceOrEmpty(const QChar &ch)                                                                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return ch.isNull() || ch == ' ';                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignOpenBracketCase1(const QChar &/*chPrev1*/, const QChar &chNext1)                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      "{{"                                                                                                                                                                                         // Colorize: green
+    //      "{ "                                                                                                                                                                                         // Colorize: green
+    //       ^                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return chNext1 == '{'                                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            isSpaceOrEmpty(chNext1);                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignOpenBracketCase2(const QChar &chPrev1, const QChar &/*chNext1*/)                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      "{{"                                                                                                                                                                                         // Colorize: green
+    //        ^                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return chPrev1 == '{';                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignOpenBracket(const QChar &chPrev1, const QChar &chNext1)                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return validateSignOpenBracketCase1(chPrev1, chNext1)                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            validateSignOpenBracketCase2(chPrev1, chNext1);                                                                                                                                              // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignCloseBracketCase1(const QChar &/*chPrev1*/, const QChar &chNext1)                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      "}}"                                                                                                                                                                                         // Colorize: green
+    //      "};"                                                                                                                                                                                         // Colorize: green
+    //      "},"                                                                                                                                                                                         // Colorize: green
+    //      "} "                                                                                                                                                                                         // Colorize: green
+    //       ^                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return chNext1 == '}'                                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            chNext1 == ';'                                                                                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            chNext1 == ','                                                                                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            isSpaceOrEmpty(chNext1);                                                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignCloseBracketCase2(const QChar &chPrev1, const QChar &/*chNext1*/)                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      "}}"                                                                                                                                                                                         // Colorize: green
+    //        ^                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return chPrev1 == '}';                                                                                                                                                                               // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignCloseBracket(const QChar &chPrev1, const QChar &chNext1)                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return validateSignCloseBracketCase1(chPrev1, chNext1)                                                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            validateSignCloseBracketCase2(chPrev1, chNext1);                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateChar(const QChar &ch, const QChar &chPrev1, const QChar &chNext1)                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      "'?'"                                                                                                                                                                                        // Colorize: green
+    //        ^                                                                                                                                                                                          // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    //      "\"?"                                                                                                                                                                                        // Colorize: green
+    //         ^                                                                                                                                                                                         // Colorize: green
+    //                                                                                                                                                                                                   // Colorize: green
+    //      "?\""                                                                                                                                                                                        // Colorize: green
+    //      "?\\"                                                                                                                                                                                        // Colorize: green
+    //      "? "                                                                                                                                                                                         // Colorize: green
+    //       ^                                                                                                                                                                                           // Colorize: green
+    if (                                                                                                                                                                                                 // Colorize: green
+        (                                                                                                                                                                                                // Colorize: green
+         chPrev1 == '\''                                                                                                                                                                                 // Colorize: green
+         &&                                                                                                                                                                                              // Colorize: green
+         chNext1 == '\''                                                                                                                                                                                 // Colorize: green
+        )                                                                                                                                                                                                // Colorize: green
+        ||                                                                                                                                                                                               // Colorize: green
+        chPrev1 == '\"'                                                                                                                                                                                  // Colorize: green
+        ||                                                                                                                                                                                               // Colorize: green
+        chNext1 == '\"'                                                                                                                                                                                  // Colorize: green
+        ||                                                                                                                                                                                               // Colorize: green
+        chNext1 == '\\'                                                                                                                                                                                  // Colorize: green
+        ||                                                                                                                                                                                               // Colorize: green
+        isSpaceOrEmpty(chNext1)                                                                                                                                                                          // Colorize: green
+       )                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return true;                                                                                                                                                                                     // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    switch (ch.unicode())                                                                                                                                                                                // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        case '{': return validateSignOpenBracket(chPrev1, chNext1);                                                                                                                                      // Colorize: green
+        case '}': return validateSignCloseBracket(chPrev1, chNext1);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        default: return true;                                                                                                                                                                            // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppArrayInitializationVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// CppArrayInitializationVerifier");                                                                                                                                      // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+        removeStrings(line);                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qint64 index = line.indexOf('{');                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index2 = line.indexOf('}', index + 1);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (index2 >= 0)                                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QChar chPrev1;                                                                                                                                                                           // Colorize: green
+                QChar ch      = index > 0 ? line.at(index - 1) : QChar(); // Ignore CppZeroConditionVerifier                                                                                             // Colorize: green
+                QChar chNext1 = line.at(index);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = index; j < line.length(); ++j)                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    chPrev1 = ch;                                                                                                                                                                        // Colorize: green
+                    ch      = chNext1;                                                                                                                                                                   // Colorize: green
+                    chNext1 = j < line.length() - 1 ? line.at(j + 1) : QChar();                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!validateChar(ch, chPrev1, chNext1))                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, i, QString("Whitespace is missing after '%1' character in position %2")                                                                                 // Colorize: green
+                                                            .arg(ch)                                                                                                                                     // Colorize: green
+                                                            .arg(j + 1)                                                                                                                                  // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppArrayInitializationVerifier cppArrayInitializationVerifierInstance;                                                                                                                                   // Colorize: green

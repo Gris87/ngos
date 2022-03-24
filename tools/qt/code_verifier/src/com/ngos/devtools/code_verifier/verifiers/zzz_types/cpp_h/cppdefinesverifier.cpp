@@ -1,154 +1,152 @@
-#include "cppdefinesverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppDefinesVerifier::CppDefinesVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    if (
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")
-        ||
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")
-       )
-    {
-        return;
-    }
-
-
-
-    qint64 fileHeaderOffset = 0;
-
-    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
-    {
-        ++fileHeaderOffset;
-    }
-
-
-
-    qint64 startLine = -1;
-    qint64 endLine   = -1;
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (
-            line.startsWith("#define ")
-            &&
-            !
-            (
-             i == fileHeaderOffset + 1
-             &&
-             lines.at(i - 1).startsWith("#ifndef ")
-             &&
-             line == "#define " + lines.at(i - 1).mid(8)
-            )
-           )
-        {
-            if (startLine < 0)
-            {
-                startLine = i;
-            }
-
-            endLine = i;
-        }
-    }
-
-
-
-    if (startLine >= 0)
-    {
-        QStringList currentBlock;
-
-
-
-        for (qint64 i = startLine; i <= endLine; ++i)
-        {
-            QString line = lines.at(i);
-
-            if (line == "")
-            {
-                if (!currentBlock.isEmpty())
-                {
-                    currentBlock.clear();
-                }
-            }
-            else
-            if (line.startsWith("#define "))
-            {
-                currentBlock.append(line);
-            }
-            else
-            {
-                if (
-                    line.startsWith("/*")
-                    &&
-                    !line.endsWith("*/")
-                   )
-                {
-                    do
-                    {
-                        ++i;
-
-                        if (i >= lines.size())
-                        {
-                            break;
-                        }
-
-
-
-                        QString anotherLine = lines.at(i);
-
-                        if (anotherLine.endsWith("*/"))
-                        {
-                            break;
-                        }
-                    } while(true);
-                }
-                else
-                if (
-                    !line.startsWith("//")
-                    &&
-                    !line.startsWith("/*")
-                    &&
-                    !line.startsWith("#if")
-                    &&
-                    !line.startsWith("#else")
-                    &&
-                    !line.startsWith("#elif")
-                    &&
-                    !line.startsWith("#endif")
-                   )
-                {
-                    bool multiline = !currentBlock.isEmpty();
-
-                    for (qint64 j = 0; j < currentBlock.size(); ++j)
-                    {
-                        if (!currentBlock.at(j).endsWith(" \\"))
-                        {
-                            multiline = false;
-
-                            break;
-                        }
-                    }
-
-                    if (!multiline)
-                    {
-                        worker->addError(path, i, "Unexpected line between defines");
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-CppDefinesVerifier cppDefinesVerifierInstance;
+#include "cppdefinesverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppDefinesVerifier::CppDefinesVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppDefinesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Do not check specific files                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 fileHeaderOffset = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip first lines that start with single line comment                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++fileHeaderOffset;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startLine = -1;                                                                                                                                                                               // Colorize: green
+    qint64 endLine   = -1;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get position of defines                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                line.startsWith("#define ")                                                                                                                                                              // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                !                                                                                                                                                                                        // Colorize: green
+                (                                                                                                                                                                                        // Colorize: green
+                 i == fileHeaderOffset + 1                                                                                                                                                               // Colorize: green
+                 &&                                                                                                                                                                                      // Colorize: green
+                 lines.at(i - 1).startsWith("#ifndef ")                                                                                                                                                  // Colorize: green
+                 &&                                                                                                                                                                                      // Colorize: green
+                 line == "#define " + lines.at(i - 1).mid(8)                                                                                                                                             // Colorize: green
+                )                                                                                                                                                                                        // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (startLine < 0)                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    startLine = i;                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                endLine = i;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (startLine >= 0)                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QStringList currentBlock;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = startLine; i <= endLine; ++i)                                                                                                                                                    // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Skip multi-line comment                                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.startsWith("/*"))                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    while (i < lines.size() && !lines.at(i).endsWith("*/"))                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++i;                                                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that block of defines consist of defines only                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line == "")                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    currentBlock.clear();                                                                                                                                                                // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith("#define "))                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    currentBlock.append(line);                                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        !line.startsWith("//")                                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.startsWith("#if")                                                                                                                                                          // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.startsWith("#else")                                                                                                                                                        // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.startsWith("#elif")                                                                                                                                                        // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        !line.startsWith("#endif")                                                                                                                                                       // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        bool multiline = !currentBlock.isEmpty();                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        for (qint64 j = 0; j < currentBlock.size(); ++j)                                                                                                                                 // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (!currentBlock.at(j).endsWith(" \\"))                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                multiline = false;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                break;                                                                                                                                                                   // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (!multiline)                                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, i, "Unexpected line between defines");                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppDefinesVerifier cppDefinesVerifierInstance;                                                                                                                                                           // Colorize: green

@@ -23,19 +23,22 @@ CppIncludeVerifier::CppIncludeVerifier()
 
 void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
 {
-    if (
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/dmi/dmi.cpp")
-        ||
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")
-        ||
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")
-        ||
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp")
-        ||
-        path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/time/time.cpp")
-       )
+    // Do not check specific files
     {
-        return;
+        if (
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/dmi/dmi.cpp")
+            ||
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")
+            ||
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")
+            ||
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp")
+            ||
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/time/time.cpp")
+           )
+        {
+            return;
+        }
     }
 
 

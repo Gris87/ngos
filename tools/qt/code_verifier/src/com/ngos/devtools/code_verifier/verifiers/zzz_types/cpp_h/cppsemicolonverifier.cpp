@@ -12,9 +12,12 @@ CppSemicolonVerifier::CppSemicolonVerifier()
 
 void CppSemicolonVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
 {
-    if (path.endsWith("/cppsemicolonverifier.cpp"))
+    // Do not check specific files
     {
-        return;
+        if (path.endsWith("/cppsemicolonverifier.cpp"))
+        {
+            return;
+        }
     }
 
 
