@@ -520,12 +520,12 @@ inline bool validateSignMore(const QChar &chPrev1, const QChar &chPrev2, const Q
             ||                                                                                                                                                                                           // Colorize: green
             validateSignMoreCase5(chPrev1, chPrev2, chPrev3, chNext1, chNext2, chNext3, line, index);                                                                                                    // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
-
-inline bool validateSignEqualCase1(const QChar &chPrev1, const QChar &chPrev2, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/)
-{
-    // Cases:
-    //      " += "
-    //      " -= "
+                                                                                                                                                                                                         // Colorize: green
+inline bool validateSignEqualCase1(const QChar &chPrev1, const QChar &chPrev2, const QChar &/*chPrev3*/, const QChar &chNext1, const QChar &/*chNext2*/, const QChar &/*chNext3*/, const QString &/*line*/, const qint64 /*index*/) // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Cases:                                                                                                                                                                                            // Colorize: green
+    //      " += "                                                                                                                                                                                       // Colorize: green
+    //      " -= "                                                                                                                                                                                       // Colorize: green
     //      " *= "                                                                                                                                                                                       // Colorize: green
     //      " /= "                                                                                                                                                                                       // Colorize: green
     //      " %= "                                                                                                                                                                                       // Colorize: green

@@ -294,7 +294,7 @@ void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path,
                                         );                                                                                                                                                               // Colorize: green
                                     }                                                                                                                                                                    // Colorize: green
                                 }                                                                                                                                                                        // Colorize: green
-                            }
+                            }                                                                                                                                                                            // Colorize: green
                             else                                                                                                                                                                         // Colorize: green
                             {                                                                                                                                                                            // Colorize: green
                                 QString expectedTraceLine;                                                                                                                                               // Colorize: green
