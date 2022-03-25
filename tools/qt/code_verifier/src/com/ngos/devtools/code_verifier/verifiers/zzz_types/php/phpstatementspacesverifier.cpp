@@ -1,42 +1,44 @@
-#include "phpstatementspacesverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-PhpStatementSpacesVerifier::PhpStatementSpacesVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::PHP)
-{
-    // Nothing
-}
-
-void PhpStatementSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// PhpStatementSpacesVerifier");
-        removeComments(line);
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-        if (
-            lineTrimmed.startsWith("if(")
-            ||
-            lineTrimmed.startsWith("for(")
-            ||
-            lineTrimmed.startsWith("while(")
-            ||
-            lineTrimmed.startsWith("switch(")
-           )
-        {
-            worker->addWarning(path, i, "Need to add space before bracket (");
-        }
-    }
-}
-
-
-
-PhpStatementSpacesVerifier phpStatementSpacesVerifierInstance;
+#include "phpstatementspacesverifier.h"                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpStatementSpacesVerifier::PhpStatementSpacesVerifier()                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PhpStatementSpacesVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// PhpStatementSpacesVerifier");                                                                                                                                          // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString lineTrimmed = line.trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            lineTrimmed.startsWith("if(")                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.startsWith("for(")                                                                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.startsWith("while(")                                                                                                                                                             // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.startsWith("switch(")                                                                                                                                                            // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            lineTrimmed.startsWith("catch(")                                                                                                                                                             // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, i, "Need to add space before bracket (");                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpStatementSpacesVerifier phpStatementSpacesVerifierInstance;                                                                                                                                           // Colorize: green

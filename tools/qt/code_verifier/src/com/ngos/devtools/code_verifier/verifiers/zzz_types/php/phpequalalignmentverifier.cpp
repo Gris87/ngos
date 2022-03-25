@@ -1,188 +1,203 @@
-#include "phpequalalignmentverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-struct EqualEntry
-{
-    qint64 indent;
-    qint64 beforeSpaces;
-    qint64 equalIndex;
-    qint64 afterSpaces;
-    qint64 valueIndex;
-};
-
-
-
-PhpEqualAlignmentVerifier::PhpEqualAlignmentVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::PHP)
-    , mEqualExpressionRegExp("^( *)(\\$\\w[\\w\\->]*(?:\\[[^\\]]+\\])*)(( *)([+\\-*\\/<>=&|^!.]*=)( *)(.*))?; *$")
-{
-    // Nothing
-}
-
-void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QList<EqualEntry> ranges;
-
-        for (; i < lines.size(); ++i) // Ignore CppForVerifier
-        {
-            QString line = lines.at(i);
-            VERIFIER_IGNORE(line, "// Ignore PhpEqualAlignmentVerifier");
-            removeComments(line);
-
-
-
-            QRegularExpressionMatch match = mEqualExpressionRegExp.match(line);
-
-            if (!match.hasMatch())
-            {
-                if (!ranges.isEmpty())
-                {
-                    for (qint64 j = 1; j < ranges.size(); ++j)
-                    {
-                        const EqualEntry &first   = ranges.constFirst();
-                        const EqualEntry &current = ranges.at(j);
-
-
-
-                        if (first.indent != current.indent)
-                        {
-                            worker->addError(path, i, "Indentation is invalid");
-                        }
-
-
-
-                        if (
-                            first.beforeSpaces >= 0
-                            &&
-                            current.beforeSpaces >= 0
-                            &&
-                            (
-                             first.equalIndex != current.equalIndex
-                             ||
-                             first.valueIndex != current.valueIndex
-                            )
-                           )
-                        {
-                            worker->addWarning(path, i, "Alignment required for equal sign");
-                        }
-                    }
-
-
-
-                    bool haveExpression = false;
-                    bool spaceBeforeOk  = false;
-                    bool spaceAfterOk   = false;
-
-
-
-                    for (qint64 j = 0; j < ranges.size(); ++j)
-                    {
-                        const EqualEntry &current = ranges.at(j);
-
-
-
-                        if (current.beforeSpaces >= 0)
-                        {
-                            haveExpression = true;
-                        }
-
-                        if (current.beforeSpaces == 1)
-                        {
-                            spaceBeforeOk = true;
-                        }
-
-                        if (current.afterSpaces == 1)
-                        {
-                            spaceAfterOk = true;
-                        }
-                    }
-
-                    if (haveExpression)
-                    {
-                        if (!spaceBeforeOk)
-                        {
-                            worker->addWarning(path, i, "Single space not found before equal sign");
-                        }
-
-                        if (!spaceAfterOk)
-                        {
-                            worker->addWarning(path, i, "Single space not found after equal sign");
-                        }
-                    }
-                }
-
-
-
-                break;
-            }
-
-
-
-            QString indent       = match.captured(1);
-            QString name         = match.captured(2);
-            QString expression   = match.captured(3);
-            QString beforeSpaces = match.captured(4);
-            QString afterSpaces  = match.captured(6);
-
-
-
-            EqualEntry equalEntry;
-
-            equalEntry.indent       = indent.length();
-            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;
-            equalEntry.equalIndex   = match.capturedStart(5);
-            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;
-            equalEntry.valueIndex   = match.capturedStart(7);
-
-
-
-            if (name != "")
-            {
-                if (
-                    (name.at(1) < 'a' || name.at(1) > 'z')
-                    &&
-                    name != "$_POST"
-                   )
-                {
-                    worker->addError(path, i, "Variable name should be named in camelcase");
-                }
-            }
-            else
-            {
-                worker->addError(path, i, "Name is empty");
-            }
-
-
-
-            if (expression != "")
-            {
-                if (beforeSpaces == "")
-                {
-                    worker->addError(path, i, QString("Space not found before equal sign at position %1")
-                                                        .arg(equalEntry.equalIndex)
-                    );
-                }
-
-                if (afterSpaces == "")
-                {
-                    worker->addError(path, i, QString("Space not found after equal sign at position %1")
-                                                        .arg(equalEntry.valueIndex)
-                    );
-                }
-            }
-
-
-
-            ranges.append(equalEntry);
-        }
-    }
-}
-
-
-
-PhpEqualAlignmentVerifier phpEqualAlignmentVerifierInstance;
+#include "phpequalalignmentverifier.h"                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct EqualEntry                                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 indent;                                                                                                                                                                                       // Colorize: green
+    qint64 beforeSpaces;                                                                                                                                                                                 // Colorize: green
+    qint64 equalIndex;                                                                                                                                                                                   // Colorize: green
+    qint64 afterSpaces;                                                                                                                                                                                  // Colorize: green
+    qint64 valueIndex;                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpEqualAlignmentVerifier::PhpEqualAlignmentVerifier()                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                    // Colorize: green
+    , mEqualExpressionRegExp("^( *)(\\$\\w[\\w\\->]*(?:\\[[^\\]]+\\])*)(( *)([+\\-*\\/<>=&|^!.]*=)( *)(.*))?;.*$")                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PhpEqualAlignmentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QList<EqualEntry> ranges;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore PhpEqualAlignmentVerifier");                                                                                                                                    // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatch match = mEqualExpressionRegExp.match(line);                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // We need to check ranges if current line doesn't match                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!match.hasMatch())                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Validate ranges                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!ranges.isEmpty())                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Check alignment                                                                                                                                                               // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            const EqualEntry &first = ranges.constFirst();                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            for (qint64 j = 1; j < ranges.size(); ++j)                                                                                                                                   // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                const EqualEntry &current = ranges.at(j);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (first.indent != current.indent)                                                                                                                                      // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addError(path, i, "Indentation is invalid");                                                                                                                 // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (                                                                                                                                                                     // Colorize: green
+                                    first.beforeSpaces >= 0                                                                                                                                              // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    current.beforeSpaces >= 0                                                                                                                                            // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    (                                                                                                                                                                    // Colorize: green
+                                     first.equalIndex != current.equalIndex                                                                                                                              // Colorize: green
+                                     ||                                                                                                                                                                  // Colorize: green
+                                     first.valueIndex != current.valueIndex                                                                                                                              // Colorize: green
+                                    )                                                                                                                                                                    // Colorize: green
+                                   )                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addWarning(path, i, "Alignment required for equal sign");                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Check that we have at least one line with single space before and after equal sign                                                                                            // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            bool haveExpression = false;                                                                                                                                                 // Colorize: green
+                            bool spaceBeforeOk  = false;                                                                                                                                                 // Colorize: green
+                            bool spaceAfterOk   = false;                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            for (qint64 j = 0; j < ranges.size(); ++j)                                                                                                                                   // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                const EqualEntry &current = ranges.at(j);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (current.beforeSpaces >= 0)                                                                                                                                           // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    haveExpression = true;                                                                                                                                               // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (current.beforeSpaces == 1)                                                                                                                                           // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    spaceBeforeOk = true;                                                                                                                                                // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (current.afterSpaces == 1)                                                                                                                                            // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    spaceAfterOk = true;                                                                                                                                                 // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (haveExpression)                                                                                                                                                          // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (!spaceBeforeOk)                                                                                                                                                      // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addWarning(path, i, "Single space not found before equal sign");                                                                                             // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (!spaceAfterOk)                                                                                                                                                       // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    worker->addWarning(path, i, "Single space not found after equal sign");                                                                                              // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    ranges.clear();                                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                continue;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add parsed line to ranges                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString indent       = match.captured(1);                                                                                                                                                    // Colorize: green
+            QString name         = match.captured(2);                                                                                                                                                    // Colorize: green
+            QString expression   = match.captured(3);                                                                                                                                                    // Colorize: green
+            QString beforeSpaces = match.captured(4);                                                                                                                                                    // Colorize: green
+            QString afterSpaces  = match.captured(6);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            EqualEntry equalEntry;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            equalEntry.indent       = indent.length();                                                                                                                                                   // Colorize: green
+            equalEntry.beforeSpaces = expression != "" ? beforeSpaces.length() : -1;                                                                                                                     // Colorize: green
+            equalEntry.equalIndex   = match.capturedStart(5);                                                                                                                                            // Colorize: green
+            equalEntry.afterSpaces  = expression != "" ? afterSpaces.length() : -1;                                                                                                                      // Colorize: green
+            equalEntry.valueIndex   = match.capturedStart(7);                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check name                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (name != "")                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        (name.at(1) < 'a' || name.at(1) > 'z')                                                                                                                                           // Colorize: green
+                        &&                                                                                                                                                                               // Colorize: green
+                        name != "$_POST"                                                                                                                                                                 // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Variable name should be named in camel case");                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Name is empty");                                                                                                                                          // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that we have at least one space around equal sign                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (expression != "")                                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (beforeSpaces == "")                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Space not found before equal sign at position %1")                                                                                            // Colorize: green
+                                                            .arg(equalEntry.equalIndex)                                                                                                                  // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (afterSpaces == "")                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, QString("Space not found after equal sign at position %1")                                                                                             // Colorize: green
+                                                            .arg(equalEntry.valueIndex)                                                                                                                  // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ranges.append(equalEntry);                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpEqualAlignmentVerifier phpEqualAlignmentVerifierInstance;                                                                                                                                             // Colorize: green

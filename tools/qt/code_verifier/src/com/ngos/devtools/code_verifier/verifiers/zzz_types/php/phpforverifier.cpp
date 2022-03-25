@@ -55,25 +55,28 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
 
 
-                if (!initMatch.hasMatch())
+                // Check that syntax correct
                 {
-                    worker->addError(path, row, QString("Unexpected initialization field: %1")
-                                                        .arg(fields.at(0).trimmed())
-                    );
-                }
+                    if (!initMatch.hasMatch())
+                    {
+                        worker->addError(path, row, QString("Unexpected initialization field: %1")
+                                                            .arg(fields.at(0).trimmed())
+                        );
+                    }
 
-                if (!conditionMatch.hasMatch())
-                {
-                    worker->addError(path, row, QString("Unexpected condition field: %1")
-                                                        .arg(fields.at(1).trimmed())
-                    );
-                }
+                    if (!conditionMatch.hasMatch())
+                    {
+                        worker->addError(path, row, QString("Unexpected condition field: %1")
+                                                            .arg(fields.at(1).trimmed())
+                        );
+                    }
 
-                if (!stepMatch.hasMatch())
-                {
-                    worker->addError(path, row, QString("Unexpected step field: %1")
-                                                        .arg(fields.at(2).trimmed())
-                    );
+                    if (!stepMatch.hasMatch())
+                    {
+                        worker->addError(path, row, QString("Unexpected step field: %1")
+                                                            .arg(fields.at(2).trimmed())
+                        );
+                    }
                 }
 
 
@@ -82,20 +85,26 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
 
 
-                if (conditionMatch.captured(1) != varName)
+                // Check variable name in condition
                 {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
-                                                        .arg(varName)
-                    );
+                    if (conditionMatch.captured(1) != varName)
+                    {
+                        worker->addError(path, row, QString("Invalid variable usage. Expected %1")
+                                                            .arg(varName)
+                        );
+                    }
                 }
 
 
 
-                if (stepMatch.captured(1) != varName)
+                // Check variable name in step
                 {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
-                                                        .arg(varName)
-                    );
+                    if (stepMatch.captured(1) != varName)
+                    {
+                        worker->addError(path, row, QString("Invalid variable usage. Expected %1")
+                                                            .arg(varName)
+                        );
+                    }
                 }
 
 
@@ -113,30 +122,36 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
 
                 qint64 endRow = row + 1;
 
-                while (endRow < lines.size() && lines.at(endRow) != spaces + '}')
+                // Find end line
                 {
-                    ++endRow;
-                }
-
-
-
-                variablesStack.append(varName);
-
-                for (qint64 i = row + 1; i <= endRow; ++i)
-                {
-                    QString line = lines.at(i);
-                    VERIFIER_IGNORE(line, "// Ignore PhpForVerifier");
-                    removeComments(line);
-
-
-
-                    if (line.trimmed().startsWith("for ("))
+                    while (endRow < lines.size() && lines.at(endRow) != spaces + '}')
                     {
-                        i = verifyCycleFor(worker, path, lines, i, variablesStack);
+                        ++endRow;
                     }
                 }
 
-                variablesStack.removeOne(varName);
+
+
+                // Process for cycles recursively
+                {
+                    variablesStack.append(varName);
+
+                    for (qint64 i = row + 1; i <= endRow; ++i)
+                    {
+                        QString line = lines.at(i);
+                        VERIFIER_IGNORE(line, "// Ignore PhpForVerifier");
+                        removeComments(line);
+
+
+
+                        if (line.trimmed().startsWith("for ("))
+                        {
+                            i = verifyCycleFor(worker, path, lines, i, variablesStack);
+                        }
+                    }
+
+                    variablesStack.removeOne(varName);
+                }
 
 
 
@@ -154,10 +169,8 @@ qint64 PhpForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &p
     }
     else
     {
-        worker->addError(path, row, "Expected openning bracket (");
+        worker->addError(path, row, "Expected opening bracket (");
     }
-
-
 
     return row;
 }

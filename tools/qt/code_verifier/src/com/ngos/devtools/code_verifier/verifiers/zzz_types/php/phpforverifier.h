@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H
-#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H
-
-
-
-#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>
-
-#include <QRegularExpression>
-
-
-
-class PhpForVerifier: public BaseCodeVerifier
-{
-public:
-    PhpForVerifier(); // TEST: NO
-
-    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO
-    qint64 verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack); // TEST: NO
-
-private:
-    QRegularExpression mInitRegexp;
-    QRegularExpression mConditionRegexp;
-    QRegularExpression mStepRegexp;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H                                                                                                                         // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/verifiers/basecodeverifier.h>                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class PhpForVerifier: public BaseCodeVerifier                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    PhpForVerifier(); // TEST: NO                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    void verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines) override; // TEST: NO                                                                   // Colorize: green
+    qint64 verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack); // TEST: NO                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    QRegularExpression mInitRegexp;                                                                                                                                                                      // Colorize: green
+    QRegularExpression mConditionRegexp;                                                                                                                                                                 // Colorize: green
+    QRegularExpression mStepRegexp;                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_VERIFIER_VERIFIERS_ZZZ_TYPES_PHP_PHPFORVERIFIER_H                                                                                                                       // Colorize: green

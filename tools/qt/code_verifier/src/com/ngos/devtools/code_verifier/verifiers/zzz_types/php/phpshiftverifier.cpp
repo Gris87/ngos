@@ -1,71 +1,71 @@
-#include "phpshiftverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-PhpShiftVerifier::PhpShiftVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::PHP)
-    , mShiftRegexp("(?:\\*|\\/) *(0x[0-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)")
-{
-    // Nothing
-}
-
-void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore PhpShiftVerifier");
-        removeComments(line);
-        removeStrings(line);
-
-
-
-        QRegularExpressionMatchIterator matches = mShiftRegexp.globalMatch(line);
-
-        while (matches.hasNext())
-        {
-            QRegularExpressionMatch match = matches.next();
-
-            if (isPowerOf2(match.captured(1)))
-            {
-                worker->addWarning(path, i, QString("%1 can be replaced with shift")
-                                                    .arg(match.captured(0))
-                );
-            }
-        }
-    }
-}
-
-bool PhpShiftVerifier::isPowerOf2(const QString &number)
-{
-    bool    ok;
-    quint64 value;
-
-
-
-    if (number.startsWith("0x"))
-    {
-        value = number.mid(2).toULongLong(&ok, 16);
-    }
-    else
-    {
-        value = number.toULongLong(&ok);
-    }
-
-
-
-    if (!ok)
-    {
-        return false;
-    }
-
-
-
-    return (value & (value - 1)) == 0;
-}
-
-
-
-PhpShiftVerifier phpShiftVerifierInstance;
+#include "phpshiftverifier.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpShiftVerifier::PhpShiftVerifier()                                                                                                                                                                     // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                    // Colorize: green
+    , mShiftRegexp("(?:\\*|\\/) *(0x[0-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)")                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline bool isPowerOf2(const QString &number)                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    bool    ok;                                                                                                                                                                                          // Colorize: green
+    quint64 value;                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (number.startsWith("0x"))                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        value = number.mid(2).toULongLong(&ok, 16);                                                                                                                                                      // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        value = number.toULongLong(&ok);                                                                                                                                                                 // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!ok)                                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return (value & (value - 1)) == 0;                                                                                                                                                                   // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PhpShiftVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore PhpShiftVerifier");                                                                                                                                             // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+        removeStrings(line);                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatchIterator matches = mShiftRegexp.globalMatch(line);                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        while (matches.hasNext())                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QRegularExpressionMatch match = matches.next();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (isPowerOf2(match.captured(1)))                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addWarning(path, i, QString("%1 can be replaced with shift")                                                                                                                     // Colorize: green
+                                                    .arg(match.captured(0))                                                                                                                              // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpShiftVerifier phpShiftVerifierInstance;                                                                                                                                                               // Colorize: green

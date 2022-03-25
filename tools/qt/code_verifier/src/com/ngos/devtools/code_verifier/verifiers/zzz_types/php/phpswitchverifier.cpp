@@ -1,248 +1,274 @@
-#include "phpswitchverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-PhpSwitchVerifier::PhpSwitchVerifier()
-    : BaseCodeVerifier(CodeVerificationFileType::PHP)
-{
-    // Nothing
-}
-
-void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore PhpSwitchVerifier");
-        removeComments(line);
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-        if (lineTrimmed.startsWith("switch ("))
-        {
-            if (lineTrimmed.endsWith(')'))
-            {
-                QString spaces = line.left(line.indexOf("switch ("));
-
-                if (
-                    i + 1 < lines.size()
-                    &&
-                    lines.at(i + 1) == spaces + '{'
-                   )
-                {
-                    qint64 startLine = i + 2;
-
-
-
-                    i = startLine;
-
-                    while (i < lines.size() && lines.at(i) != spaces + '}')
-                    {
-                        ++i;
-                    }
-
-
-
-                    if (i < lines.size())
-                    {
-                        qint64 endLine = i - 1;
-
-
-
-                        bool defaultCaseFound = false;
-
-                        for (qint64 j = startLine; j <= endLine; ++j)
-                        {
-                            QString switchLine = lines.at(j);
-                            removeComments(switchLine);
-
-                            QString switchLineTrimmed = switchLine.trimmed();
-
-
-
-                            if (
-                                switchLineTrimmed.startsWith("case ")
-                                ||
-                                switchLineTrimmed.startsWith("default:")
-                               )
-                            {
-                                if (switchLineTrimmed.startsWith("default:"))
-                                {
-                                    if (defaultCaseFound)
-                                    {
-                                        worker->addError(path, j, "Two default cases");
-                                    }
-
-                                    defaultCaseFound = true;
-                                }
-                                else
-                                {
-                                    if (defaultCaseFound)
-                                    {
-                                        worker->addError(path, j, "default case should be last");
-                                    }
-                                }
-
-
-
-                                qint64 index = 0;
-
-                                do
-                                {
-                                    index = switchLineTrimmed.indexOf(':', index);
-
-                                    if (index < 0)
-                                    {
-                                        break;
-                                    }
-
-                                    if (
-                                        index + 1 < switchLineTrimmed.length()
-                                        &&
-                                        (
-                                         switchLineTrimmed.at(index + 1) == '\''
-                                         ||
-                                         switchLineTrimmed.at(index + 1) == '\"'
-                                        )
-                                       )
-                                    {
-                                        ++index;
-
-                                        continue;
-                                    }
-
-                                    break;
-                                } while(true);
-
-
-
-                                QString tail = switchLineTrimmed.mid(index + 1).trimmed();
-
-                                if (
-                                    !tail.startsWith("return ")
-                                    &&
-                                    !tail.endsWith("break;")
-                                   )
-                                {
-                                    QString switchSpaces = switchLine.left(switchLine.indexOf(switchLineTrimmed));
-
-                                    if (
-                                        j + 1 <= endLine
-                                        &&
-                                        lines.at(j + 1) == switchSpaces + '{'
-                                       )
-                                    {
-                                        if (
-                                            j > startLine
-                                            &&
-                                            (
-                                             lines.at(j - 1).contains("break;")
-                                             ||
-                                             lines.at(j - 1).contains("return ")
-                                            )
-                                           )
-                                        {
-                                            worker->addError(path, j, "Blank line missed between cases");
-                                        }
-
-
-
-                                        while (j <= endLine && lines.at(j) != switchSpaces + '}')
-                                        {
-                                            ++j;
-                                        }
-
-                                        if (j <= endLine)
-                                        {
-                                            if (
-                                                j + 1 <= endLine
-                                                &&
-                                                lines.at(j + 1) == switchSpaces + "break;"
-                                               )
-                                            {
-                                                ++j;
-
-                                                if (j + 1 <= endLine)
-                                                {
-                                                    if (lines.at(j + 1).trimmed() == "")
-                                                    {
-                                                        ++j;
-                                                    }
-                                                    else
-                                                    {
-                                                        worker->addError(path, j, "Expected new line after break statement");
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                worker->addError(path, j, "Expected break statement after closing bracket }");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            worker->addError(path, j, "Expected closing bracket }");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (
-                                            j + 1 > endLine
-                                            ||
-                                            !lines.at(j + 1).startsWith(switchSpaces + "case ")
-                                           )
-                                        {
-                                            worker->addError(path, j, "Expected opening bracket {");
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (
-                                    switchLineTrimmed != ""
-                                    ||
-                                    j <= startLine
-                                    ||
-                                    (
-                                     !lines.at(j - 1).contains("break;")
-                                     &&
-                                     !lines.at(j - 1).contains("return ")
-                                    )
-                                   )
-                                {
-                                    worker->addError(path, j, "Unexpected line in switch statement");
-                                }
-                            }
-                        }
-
-                        if (!defaultCaseFound)
-                        {
-                            worker->addError(path, endLine + 1, "default case not found");
-                        }
-                    }
-                    else
-                    {
-                        worker->addError(path, i, "Unexpected switch definition");
-                    }
-                }
-                else
-                {
-                    worker->addError(path, i, "Unexpected switch definition");
-                }
-            }
-            else
-            {
-                worker->addError(path, i, "Unexpected switch definition");
-            }
-        }
-    }
-}
-
-
-
-PhpSwitchVerifier phpSwitchVerifierInstance;
+#include "phpswitchverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpSwitchVerifier::PhpSwitchVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+inline qint64 getIndexOfColon(const QString &line)                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 index = 0;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    do                                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        index = line.indexOf(':', index);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index < 0)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            break;                                                                                                                                                                                       // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            index + 1 < line.length()                                                                                                                                                                    // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             line.at(index + 1) == '\''                                                                                                                                                                  // Colorize: green
+             ||                                                                                                                                                                                          // Colorize: green
+             line.at(index + 1) == '\"'                                                                                                                                                                  // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++index;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            continue;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        break;                                                                                                                                                                                           // Colorize: green
+    } while(true);                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return index;                                                                                                                                                                                        // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void PhpSwitchVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore PhpSwitchVerifier");                                                                                                                                            // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString lineTrimmed = line.trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (lineTrimmed.startsWith("switch ("))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (lineTrimmed.endsWith(')'))                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString spaces = line.left(line.indexOf("switch ("));                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    i + 1 < lines.size()                                                                                                                                                                 // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    lines.at(i + 1) == spaces + '{'                                                                                                                                                      // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qint64 startLine = i + 2;                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Find the end of switch                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        i = startLine;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        while (i < lines.size() && lines.at(i) != spaces + '}')                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            ++i;                                                                                                                                                                         // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (i < lines.size())                                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qint64 endLine = i - 1;                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        bool defaultCaseFound = false;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        // Search for default case and verify syntax                                                                                                                                     // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            for (qint64 j = startLine; j <= endLine; ++j)                                                                                                                                // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString switchLine = lines.at(j);                                                                                                                                        // Colorize: green
+                                removeComments(switchLine);                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                QString switchLineTrimmed = switchLine.trimmed();                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (                                                                                                                                                                     // Colorize: green
+                                    switchLineTrimmed.startsWith("case ")                                                                                                                                // Colorize: green
+                                    ||                                                                                                                                                                   // Colorize: green
+                                    switchLineTrimmed.startsWith("default:")                                                                                                                             // Colorize: green
+                                   )                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    // Check for default case position                                                                                                                                   // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        if (switchLineTrimmed.startsWith("default:"))                                                                                                                    // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            if (defaultCaseFound)                                                                                                                                        // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                worker->addError(path, j, "Two default cases");                                                                                                          // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            defaultCaseFound = true;                                                                                                                                     // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                        else                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            if (defaultCaseFound)                                                                                                                                        // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                worker->addError(path, j, "default case should be last");                                                                                                // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    // Check for syntax of single case                                                                                                                                   // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        QString tail = switchLineTrimmed.mid(getIndexOfColon(switchLineTrimmed) + 1).trimmed();                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (                                                                                                                                                             // Colorize: green
+                                            !tail.startsWith("return ")                                                                                                                                  // Colorize: green
+                                            &&                                                                                                                                                           // Colorize: green
+                                            !tail.endsWith("break;")                                                                                                                                     // Colorize: green
+                                           )                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QString switchSpaces = switchLine.left(switchLine.indexOf(switchLineTrimmed));                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            if (                                                                                                                                                         // Colorize: green
+                                                j + 1 <= endLine                                                                                                                                         // Colorize: green
+                                                &&                                                                                                                                                       // Colorize: green
+                                                lines.at(j + 1) == switchSpaces + '{'                                                                                                                    // Colorize: green
+                                               )                                                                                                                                                         // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                // Check for blank line                                                                                                                                  // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    if (                                                                                                                                                 // Colorize: green
+                                                        j > startLine                                                                                                                                    // Colorize: green
+                                                        &&                                                                                                                                               // Colorize: green
+                                                        (                                                                                                                                                // Colorize: green
+                                                         lines.at(j - 1).contains("break;")                                                                                                              // Colorize: green
+                                                         ||                                                                                                                                              // Colorize: green
+                                                         lines.at(j - 1).contains("return ")                                                                                                             // Colorize: green
+                                                        )                                                                                                                                                // Colorize: green
+                                                       )                                                                                                                                                 // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        worker->addError(path, j, "Blank line missed between cases");                                                                                    // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                // Skip to case end                                                                                                                                      // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    while (j <= endLine && lines.at(j) != switchSpaces + '}')                                                                                            // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        ++j;                                                                                                                                             // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                if (j <= endLine)                                                                                                                                        // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    // Check for break at the end and for blank line                                                                                                     // Colorize: green
+                                                    {                                                                                                                                                    // Colorize: green
+                                                        if (                                                                                                                                             // Colorize: green
+                                                            j + 1 <= endLine                                                                                                                             // Colorize: green
+                                                            &&                                                                                                                                           // Colorize: green
+                                                            lines.at(j + 1) == switchSpaces + "break;"                                                                                                   // Colorize: green
+                                                           )                                                                                                                                             // Colorize: green
+                                                        {                                                                                                                                                // Colorize: green
+                                                            ++j;                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                            if (j + 1 <= endLine)                                                                                                                        // Colorize: green
+                                                            {                                                                                                                                            // Colorize: green
+                                                                if (lines.at(j + 1).trimmed() == "")                                                                                                     // Colorize: green
+                                                                {                                                                                                                                        // Colorize: green
+                                                                    ++j;                                                                                                                                 // Colorize: green
+                                                                }                                                                                                                                        // Colorize: green
+                                                                else                                                                                                                                     // Colorize: green
+                                                                {                                                                                                                                        // Colorize: green
+                                                                    worker->addError(path, j, "Expected new line after break statement");                                                                // Colorize: green
+                                                                }                                                                                                                                        // Colorize: green
+                                                            }                                                                                                                                            // Colorize: green
+                                                        }                                                                                                                                                // Colorize: green
+                                                        else                                                                                                                                             // Colorize: green
+                                                        {                                                                                                                                                // Colorize: green
+                                                            worker->addError(path, j, "Expected break statement after closing bracket }");                                                               // Colorize: green
+                                                        }                                                                                                                                                // Colorize: green
+                                                    }                                                                                                                                                    // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                else                                                                                                                                                     // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    worker->addError(path, j, "Expected closing bracket }");                                                                                             // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                            else                                                                                                                                                         // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                if (                                                                                                                                                     // Colorize: green
+                                                    j + 1 > endLine                                                                                                                                      // Colorize: green
+                                                    ||                                                                                                                                                   // Colorize: green
+                                                    !lines.at(j + 1).startsWith(switchSpaces + "case ")                                                                                                  // Colorize: green
+                                                   )                                                                                                                                                     // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    worker->addError(path, j, "Expected opening bracket {");                                                                                             // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                else                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (                                                                                                                                                                 // Colorize: green
+                                        switchLineTrimmed != ""                                                                                                                                          // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        j <= startLine                                                                                                                                                   // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        (                                                                                                                                                                // Colorize: green
+                                         !lines.at(j - 1).contains("break;")                                                                                                                             // Colorize: green
+                                         &&                                                                                                                                                              // Colorize: green
+                                         !lines.at(j - 1).contains("return ")                                                                                                                            // Colorize: green
+                                        )                                                                                                                                                                // Colorize: green
+                                       )                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, j, "Unexpected line in switch statement");                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (!defaultCaseFound)                                                                                                                                                           // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, endLine + 1, "default case not found");                                                                                                               // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Unexpected switch definition");                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Unexpected switch definition");                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "Unexpected switch definition");                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+PhpSwitchVerifier phpSwitchVerifierInstance;                                                                                                                                                             // Colorize: green
