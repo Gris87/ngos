@@ -1,99 +1,102 @@
-#include "cppsinglecharverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define MODE_NORMAL   0
-#define MODE_IN_QUOTE 1
-
-
-
-CppSingleCharVerifier::CppSingleCharVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppSingleCharVerifier");
-        removeComments(line);
-
-
-
-        if (!line.contains("asm volatile"))
-        {
-            quint8 mode       = MODE_NORMAL;
-            qint64 startQuote = -1;
-
-            for (qint64 j = 0; j < line.length(); ++j)
-            {
-                if (line.at(j) == '\"')
-                {
-                    qint64 escapeCount = 0;
-
-                    while (j - escapeCount - 1 >= 0 && line.at(j - escapeCount - 1) == '\\')
-                    {
-                        ++escapeCount;
-                    }
-
-                    if (escapeCount % 2 == 0)
-                    {
-                        switch (mode)
-                        {
-                            case MODE_NORMAL:
-                            {
-                                mode       = MODE_IN_QUOTE;
-                                startQuote = j;
-                            }
-                            break;
-
-                            case MODE_IN_QUOTE:
-                            {
-                                mode = MODE_NORMAL;
-
-                                if (
-                                    line.trimmed() != "\"\\n\" \\"
-                                    &&
-                                    !line.contains("extern \"C\"") // Ignore CppExternDeclaredVerifier
-                                   )
-                                {
-                                    if (
-                                        j - startQuote == 2
-                                        ||
-                                        (
-                                         j - startQuote == 3
-                                         &&
-                                         line.at(startQuote + 1) == '\\'
-                                        )
-                                       )
-                                    {
-                                        worker->addWarning(path, i, "Quote can be converted to the single char");
-                                    }
-                                }
-                            }
-                            break;
-
-                            default:
-                            {
-                                Console::err(QString("Unknown mode %1")
-                                                        .arg((qint64)mode)
-                                );
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-CppSingleCharVerifier cppSingleCharVerifierInstance;
+#include "cppsinglecharverifier.h"                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class Mode: quint8                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NORMAL   = 0,                                                                                                                                                                                        // Colorize: green
+    IN_QUOTE = 1                                                                                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSingleCharVerifier::CppSingleCharVerifier()                                                                                                                                                           // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppSingleCharVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppSingleCharVerifier");                                                                                                                                        // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!line.contains("asm volatile"))                                                                                                                                                              // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Mode   mode       = Mode::NORMAL;                                                                                                                                                            // Colorize: green
+            qint64 startQuote = -1;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (qint64 j = 0; j < line.length(); ++j)                                                                                                                                                   // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (line.at(j) == '\"')                                                                                                                                                                  // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qint64 escapeCount = 0;                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    while (j - escapeCount - 1 >= 0 && line.at(j - escapeCount - 1) == '\\')                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++escapeCount;                                                                                                                                                                   // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (escapeCount % 2 == 0)                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        switch (mode)                                                                                                                                                                    // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            case Mode::NORMAL:                                                                                                                                                           // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                mode       = Mode::IN_QUOTE;                                                                                                                                             // Colorize: green
+                                startQuote = j;                                                                                                                                                          // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            case Mode::IN_QUOTE:                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                mode = Mode::NORMAL;                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (                                                                                                                                                                     // Colorize: green
+                                    line.trimmed() != "\"\\n\" \\"                                                                                                                                       // Colorize: green
+                                    &&                                                                                                                                                                   // Colorize: green
+                                    !line.contains("extern \"C\"") // Ignore CppExternDeclaredVerifier                                                                                                   // Colorize: green
+                                   )                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (                                                                                                                                                                 // Colorize: green
+                                        j == startQuote + 2                                                                                                                                              // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        (                                                                                                                                                                // Colorize: green
+                                         j == startQuote + 3                                                                                                                                             // Colorize: green
+                                         &&                                                                                                                                                              // Colorize: green
+                                         line.at(startQuote + 1) == '\\'                                                                                                                                 // Colorize: green
+                                        )                                                                                                                                                                // Colorize: green
+                                       )                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addWarning(path, i, "Quote can be converted to the single char");                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            default:                                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                Console::err(QString("Unknown mode %1")                                                                                                                                  // Colorize: green
+                                                        .arg((qint64)mode)                                                                                                                               // Colorize: green
+                                );                                                                                                                                                                       // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSingleCharVerifier cppSingleCharVerifierInstance;                                                                                                                                                     // Colorize: green

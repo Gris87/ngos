@@ -1,151 +1,162 @@
-#include "cppindentverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-#define SPACE_INDENT 4
-
-
-
-CppIndentVerifier::CppIndentVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    qint64 expectedPos = -1;
-    qint64 level       = 0;
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE_REGION(lines, i, line, "// Ignore CppIndentVerifier");
-        removeComments(line);
-
-
-
-        for (qint64 j = 0; j < line.length(); ++j)
-        {
-            QChar ch = line.at(j);
-
-            if (ch != ' ')
-            {
-                if (ch == '\t')
-                {
-                    worker->addError(path, i, "Combination of tabs and spaces in indent");
-                }
-                else
-                {
-                    QString tail = line.mid(j);
-
-                    if (expectedPos < 0)
-                    {
-                        if (j % SPACE_INDENT != 0)
-                        {
-                            worker->addError(path, i, "Invalid indentation");
-                        }
-
-                        if (tail == "if (" || tail == "while (")
-                        {
-                            expectedPos = j + tail.length();
-
-                            level = 1;
-                        }
-                        else
-                        if (
-                            tail.startsWith("/*")
-                            &&
-                            !tail.endsWith("*/")
-                           )
-                        {
-                            do
-                            {
-                                ++i;
-
-                                if (i >= lines.size())
-                                {
-                                    break;
-                                }
-
-
-
-                                QString anotherLine = lines.at(i);
-
-                                if (anotherLine.startsWith(line.left(j)))
-                                {
-                                    QString anotherTail = anotherLine.mid(j);
-
-                                    if (
-                                        !
-                                        (
-                                         anotherTail.length() > 1
-                                         &&
-                                         anotherTail.at(0) == ' '
-                                         &&
-                                         anotherTail.at(1) != ' '
-                                        )
-                                       )
-                                    {
-                                        worker->addError(path, i, "Invalid indentation");
-                                    }
-                                }
-                                else
-                                {
-                                    worker->addError(path, i, "Invalid indentation");
-                                }
-
-
-
-                                if (anotherLine.endsWith("*/"))
-                                {
-                                    break;
-                                }
-                            } while(true);
-                        }
-                    }
-                    else
-                    {
-                        if (tail == ')')
-                        {
-                            --expectedPos;
-                            --level;
-                        }
-
-
-
-                        if (
-                            j != expectedPos
-                            &&
-                            !tail.startsWith("| ")
-                           )
-                        {
-                            worker->addError(path, i, "Invalid indentation");
-                        }
-
-
-
-                        if (tail == '(')
-                        {
-                            ++expectedPos;
-                            ++level;
-                        }
-                        else
-                        if (level <= 0)
-                        {
-                            expectedPos = -1;
-                        }
-                    }
-                }
-
-                break;
-            }
-        }
-    }
-}
-
-
-
-CppIndentVerifier cppIndentVerifierInstance;
+#include "cppindentverifier.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define SPACE_INDENT 4                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppIndentVerifier::CppIndentVerifier()                                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppIndentVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    qint64 expectedPos = -1;                                                                                                                                                                             // Colorize: green
+    qint64 level       = 0;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE_REGION(lines, i, line, "// Ignore CppIndentVerifier");                                                                                                                           // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 j = 0; j < line.length(); ++j)                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QChar ch = line.at(j);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (ch != ' ')                                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (ch == '\t')                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Combination of tabs and spaces in indent");                                                                                                               // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString tail = line.mid(j);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (expectedPos < 0)                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Normal processing                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (j % SPACE_INDENT != 0)                                                                                                                                                   // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Invalid indentation");                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (tail == "if (" || tail == "while (")                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                expectedPos = j + tail.length();                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                level = 1;                                                                                                                                                               // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                tail.startsWith("/*")                                                                                                                                                    // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !tail.endsWith("*/")                                                                                                                                                     // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                // Skip multi-line comment                                                                                                                                               // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString spaces = line.left(j);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    do                                                                                                                                                                   // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        ++i;                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (i >= lines.size())                                                                                                                                           // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            break;                                                                                                                                                       // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        QString anotherLine = lines.at(i);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (anotherLine.startsWith(spaces))                                                                                                                              // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QString anotherTail = anotherLine.mid(j);                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            if (                                                                                                                                                         // Colorize: green
+                                                !                                                                                                                                                        // Colorize: green
+                                                (                                                                                                                                                        // Colorize: green
+                                                 anotherTail.length() > 1                                                                                                                                // Colorize: green
+                                                 &&                                                                                                                                                      // Colorize: green
+                                                 anotherTail.at(0) == ' '                                                                                                                                // Colorize: green
+                                                 &&                                                                                                                                                      // Colorize: green
+                                                 anotherTail.at(1) != ' '                                                                                                                                // Colorize: green
+                                                )                                                                                                                                                        // Colorize: green
+                                               )                                                                                                                                                         // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                worker->addError(path, i, "Invalid indentation");                                                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                        else                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            worker->addError(path, i, "Invalid indentation");                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (anotherLine.endsWith("*/"))                                                                                                                                  // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            break;                                                                                                                                                       // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    } while(true);                                                                                                                                                       // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Processing for multi-line conditions                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (tail == ')')                                                                                                                                                             // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                --expectedPos;                                                                                                                                                           // Colorize: green
+                                --level;                                                                                                                                                                 // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (                                                                                                                                                                         // Colorize: green
+                                j != expectedPos                                                                                                                                                         // Colorize: green
+                                &&                                                                                                                                                                       // Colorize: green
+                                !tail.startsWith("| ") // TODO: why?                                                                                                                                     // Colorize: green
+                               )                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Invalid indentation");                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (tail == '(')                                                                                                                                                             // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                ++expectedPos;                                                                                                                                                           // Colorize: green
+                                ++level;                                                                                                                                                                 // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            if (level <= 0)                                                                                                                                                              // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                expectedPos = -1;                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                break;                                                                                                                                                                                   // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppIndentVerifier cppIndentVerifierInstance;                                                                                                                                                             // Colorize: green

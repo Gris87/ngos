@@ -1,178 +1,191 @@
-#include "cppforverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppForVerifier::CppForVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .+$")
-    , mConditionRegexp("^(?:(\\w) [<>]=? .+|\\*(\\w+))$")
-    , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")
-{
-    // Nothing
-}
-
-void CppForVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppForVerifier");
-        removeComments(line);
-
-
-
-        if (line.trimmed().startsWith("for ("))
-        {
-            QStringList variablesStack;
-
-            i = verifyCycleFor(worker, path, lines, i, variablesStack);
-        }
-    }
-}
-
-qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack)
-{
-    QString line = lines.at(row);
-    removeComments(line);
-
-    qint64 index = line.indexOf('(');
-
-    if (index >= 0)
-    {
-        qint64 index2 = line.lastIndexOf(')');
-
-        if (index2 >= 0)
-        {
-            QStringList fields = line.mid(index + 1, index2 - index - 1).split(';');
-
-            if (fields.size() == 3)
-            {
-                QRegularExpressionMatch initMatch      = mInitRegexp.match(fields.at(0).trimmed());
-                QRegularExpressionMatch conditionMatch = mConditionRegexp.match(fields.at(1).trimmed());
-                QRegularExpressionMatch stepMatch      = mStepRegexp.match(fields.at(2).trimmed());
-
-
-
-                if (!initMatch.hasMatch())
-                {
-                    worker->addError(path, row, QString("Unexpected initialization field: %1")
-                                                        .arg(fields.at(0).trimmed())
-                    );
-                }
-
-                if (!conditionMatch.hasMatch())
-                {
-                    worker->addError(path, row, QString("Unexpected condition field: %1")
-                                                        .arg(fields.at(1).trimmed())
-                    );
-                }
-
-                if (!stepMatch.hasMatch())
-                {
-                    worker->addError(path, row, QString("Unexpected step field: %1")
-                                                        .arg(fields.at(2).trimmed())
-                    );
-                }
-
-
-
-                QString varName = initMatch.captured(1);
-
-                if (varName == "")
-                {
-                    varName = initMatch.captured(2);
-                }
-
-
-
-                if (conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)
-                {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
-                                                        .arg(varName)
-                    );
-                }
-
-
-
-                if (stepMatch.captured(1) != varName)
-                {
-                    worker->addError(path, row, QString("Invalid variable usage. Expected %1")
-                                                        .arg(varName)
-                    );
-                }
-
-
-
-                if (variablesStack.contains(varName))
-                {
-                    worker->addError(path, row, "Variable already specified earlier");
-                }
-
-
-
-                QString spaces = line.left(line.indexOf("for ("));
-
-
-
-                qint64 endRow = row + 1;
-
-                while (
-                       endRow < lines.size()
-                       &&
-                       lines.at(endRow) != spaces + '}'
-                       &&
-                       lines.at(endRow) != spaces + "} \\"
-                      )
-                {
-                    ++endRow;
-                }
-
-
-
-                variablesStack.append(varName);
-
-                for (qint64 i = row + 1; i <= endRow; ++i)
-                {
-                    QString line = lines.at(i);
-                    VERIFIER_IGNORE(line, "// Ignore CppForVerifier");
-                    removeComments(line);
-
-
-
-                    if (line.trimmed().startsWith("for ("))
-                    {
-                        i = verifyCycleFor(worker, path, lines, i, variablesStack);
-                    }
-                }
-
-                variablesStack.removeOne(varName);
-
-
-
-                return endRow;
-            }
-            else
-            {
-                worker->addError(path, row, "Invalid format");
-            }
-        }
-        else
-        {
-            worker->addError(path, row, "Expected closing bracket )");
-        }
-    }
-    else
-    {
-        worker->addError(path, row, "Expected openning bracket (");
-    }
-
-
-
-    return row;
-}
-
-
-
-CppForVerifier cppForVerifierInstance;
+#include "cppforverifier.h"                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppForVerifier::CppForVerifier()                                                                                                                                                                         // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mInitRegexp("^(?:(?:i64|qint64) (\\w)|(?:(?:char \\*)?(\\w+))) = .+$")                                                                                                                             // Colorize: green
+    , mConditionRegexp("^(?:(\\w) [<>]=? .+|\\*(\\w+))$")                                                                                                                                                // Colorize: green
+    , mStepRegexp("^[+-]{0,2}(\\w+)(?: [+-]= .+)?$")                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppForVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppForVerifier");                                                                                                                                               // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line.trimmed().startsWith("for ("))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QStringList variablesStack;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            i = verifyCycleFor(worker, path, lines, i, variablesStack);                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 CppForVerifier::verifyCycleFor(CodeWorkerThread *worker, const QString &path, const QStringList &lines, qint64 row, QStringList &variablesStack)                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString line = lines.at(row);                                                                                                                                                                        // Colorize: green
+    removeComments(line);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 index = line.indexOf('(');                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (index >= 0)                                                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        qint64 index2 = line.lastIndexOf(')');                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index2 >= 0)                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QStringList fields = line.mid(index + 1, index2 - index - 1).split(';');                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (fields.size() == 3)                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QRegularExpressionMatch initMatch      = mInitRegexp.match(fields.at(0).trimmed());                                                                                                      // Colorize: green
+                QRegularExpressionMatch conditionMatch = mConditionRegexp.match(fields.at(1).trimmed());                                                                                                 // Colorize: green
+                QRegularExpressionMatch stepMatch      = mStepRegexp.match(fields.at(2).trimmed());                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check that syntax correct                                                                                                                                                             // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!initMatch.hasMatch())                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, row, QString("Unexpected initialization field: %1")                                                                                                       // Colorize: green
+                                                            .arg(fields.at(0).trimmed())                                                                                                                 // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!conditionMatch.hasMatch())                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, row, QString("Unexpected condition field: %1")                                                                                                            // Colorize: green
+                                                            .arg(fields.at(1).trimmed())                                                                                                                 // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (!stepMatch.hasMatch())                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, row, QString("Unexpected step field: %1")                                                                                                                 // Colorize: green
+                                                            .arg(fields.at(2).trimmed())                                                                                                                 // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString varName = initMatch.captured(1);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (varName == "")                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    varName = initMatch.captured(2);                                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check variable name in condition                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (conditionMatch.captured(1) != varName && conditionMatch.captured(2) != varName)                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, row, QString("Invalid variable usage. Expected %1")                                                                                                       // Colorize: green
+                                                            .arg(varName)                                                                                                                                // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check variable name in step                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (stepMatch.captured(1) != varName)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, row, QString("Invalid variable usage. Expected %1")                                                                                                       // Colorize: green
+                                                            .arg(varName)                                                                                                                                // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (variablesStack.contains(varName))                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, row, "Variable already specified earlier");                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                QString spaces = line.left(line.indexOf("for ("));                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                qint64 endRow = row + 1;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Find end line                                                                                                                                                                         // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    while (                                                                                                                                                                              // Colorize: green
+                           endRow < lines.size()                                                                                                                                                         // Colorize: green
+                           &&                                                                                                                                                                            // Colorize: green
+                           lines.at(endRow) != spaces + '}'                                                                                                                                              // Colorize: green
+                           &&                                                                                                                                                                            // Colorize: green
+                           lines.at(endRow) != spaces + "} \\"                                                                                                                                           // Colorize: green
+                          )                                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++endRow;                                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Process for cycles recursively                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    variablesStack.append(varName);                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    for (qint64 i = row + 1; i <= endRow; ++i)                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString line = lines.at(i);                                                                                                                                                      // Colorize: green
+                        VERIFIER_IGNORE(line, "// Ignore CppForVerifier");                                                                                                                               // Colorize: green
+                        removeComments(line);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (line.trimmed().startsWith("for ("))                                                                                                                                          // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            i = verifyCycleFor(worker, path, lines, i, variablesStack);                                                                                                                  // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    variablesStack.removeOne(varName);                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return endRow;                                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, row, "Invalid format");                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, row, "Expected closing bracket )");                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+    else                                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        worker->addError(path, row, "Expected opening bracket (");                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return row;                                                                                                                                                                                          // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppForVerifier cppForVerifierInstance;                                                                                                                                                                   // Colorize: green

@@ -1,35 +1,35 @@
-#include "cpppowerof2verifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppPowerOf2Verifier::CppPowerOf2Verifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mPowerOf2Regexp("^(.*[^\\w])?(1|2|4|8|16|32|64|128|256|512)([lL]{1,2}[uU]?|[uU][lL]?) *<<.*$")
-{
-    // Nothing
-}
-
-void CppPowerOf2Verifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppPowerOf2Verifier");
-        removeComments(line);
-
-
-
-        QRegularExpressionMatch match = mPowerOf2Regexp.match(line);
-
-        if (match.hasMatch())
-        {
-            worker->addWarning(path, i, "You should use ULL suffix for power of 2");
-        }
-    }
-}
-
-
-
-CppPowerOf2Verifier cppPowerOf2VerifierInstance;
+#include "cpppowerof2verifier.h"                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppPowerOf2Verifier::CppPowerOf2Verifier()                                                                                                                                                               // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mPowerOf2Regexp("^(.*[^\\w])?(1|2|4|8|16|32|64|128|256|512)([lL]{1,2}[uU]?|[uU][lL]?) *<<.*$")                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppPowerOf2Verifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppPowerOf2Verifier");                                                                                                                                          // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatch match = mPowerOf2Regexp.match(line);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, i, "You should use ULL suffix for power of 2");                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppPowerOf2Verifier cppPowerOf2VerifierInstance;                                                                                                                                                         // Colorize: green

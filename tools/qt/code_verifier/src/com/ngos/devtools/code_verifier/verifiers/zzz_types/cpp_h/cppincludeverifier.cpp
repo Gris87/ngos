@@ -1,384 +1,413 @@
-#include "cppincludeverifier.h"
-
-#include <QDir>
-#include <QFile>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-#define INCLUDE_BLOCK_TYPE_NONE             0
-#define INCLUDE_BLOCK_TYPE_OWN              1
-#define INCLUDE_BLOCK_TYPE_LIBRARIES        2
-#define INCLUDE_BLOCK_TYPE_NGOS_LIBRARIES   3
-#define INCLUDE_BLOCK_TYPE_PROJECT          4
-
-
-
-CppIncludeVerifier::CppIncludeVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)
-{
-    // Do not check specific files
-    {
-        if (
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/dmi/dmi.cpp")
-            ||
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")
-            ||
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")
-            ||
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp")
-            ||
-            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/time/time.cpp")
-           )
-        {
-            return;
-        }
-    }
-
-
-
-    if (
-        path.endsWith("_linux.cpp")
-        ||
-        path.endsWith("_linux.h")
-        ||
-        path.endsWith("_win.cpp")
-        ||
-        path.endsWith("_win.h")
-       )
-    {
-        return;
-    }
-
-
-
-    qint64 fileHeaderOffset = 0;
-
-    while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))
-    {
-        ++fileHeaderOffset;
-    }
-
-
-
-    qint64 startLine = -1;
-    qint64 endLine   = -1;
-
-    for (qint64 i = fileHeaderOffset; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (line.startsWith("#include "))
-        {
-            if (startLine < 0)
-            {
-                startLine = i;
-            }
-
-            endLine = i;
-        }
-    }
-
-
-
-    if (startLine >= 0)
-    {
-        if (
-            startLine == fileHeaderOffset
-            ||
-            (
-             startLine == fileHeaderOffset + 5
-             &&
-             (
-              lines.at(fileHeaderOffset + 0).startsWith("#ifndef ")
-              &&
-              lines.at(fileHeaderOffset + 1).startsWith("#define ")
-              &&
-              lines.at(fileHeaderOffset + 2) == ""
-              &&
-              lines.at(fileHeaderOffset + 3) == ""
-              &&
-              lines.at(fileHeaderOffset + 4) == ""
-              &&
-              lines.at(lines.size() - 2).startsWith("#endif")
-             )
-            )
-           )
-        {
-            qint64 index = path.lastIndexOf('/');
-
-            if (index < 0)
-            {
-                worker->addError(path, -1, "Failed to get parent path");
-
-                return;
-            }
-
-            QString parentFolder = path.left(index);
-
-
-
-            QString projectPath;
-
-            index = path.indexOf("/include/");
-
-            if (index >= 0)
-            {
-                index = path.indexOf('/', index + 9);
-
-                if (index < 0)
-                {
-                    worker->addError(path, -1, "Failed to get project path");
-
-                    return;
-                }
-
-                projectPath = path.left(index);
-            }
-            else
-            {
-                QString tempParentFolder = parentFolder;
-
-                do
-                {
-                    if (
-                        QFile::exists(tempParentFolder + "/Makefile")
-                        ||
-                        !QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
-                       )
-                    {
-                        break;
-                    }
-
-
-
-                    index = tempParentFolder.lastIndexOf('/');
-
-                    if (index < 0)
-                    {
-                        worker->addError(path, -1, "Failed to get project path");
-
-                        return;
-                    }
-
-                    tempParentFolder = tempParentFolder.left(index);
-                } while(true);
-
-                projectPath = tempParentFolder;
-            }
-
-
-
-            QList<QStringList> blocks;
-            QList<qint64>      blockStarts;
-            QList<quint8>      blockTypes;
-            QStringList        currentBlock;
-            qint64             currentBlockStart = -1;
-            quint8             currentBlockType  = INCLUDE_BLOCK_TYPE_NONE;
-
-
-
-            for (qint64 i = startLine; i <= endLine; ++i)
-            {
-                QString line = lines.at(i);
-
-                if (line == "")
-                {
-                    if (!currentBlock.isEmpty())
-                    {
-                        blocks.append(currentBlock);
-                        blockStarts.append(currentBlockStart);
-                        blockTypes.append(currentBlockType);
-
-                        currentBlock.clear();
-
-                        currentBlockStart = -1;
-                        currentBlockType  = INCLUDE_BLOCK_TYPE_NONE;
-                    }
-                    else
-                    {
-                        worker->addError(path, i, "Extra line between includes");
-                    }
-                }
-                else
-                if (line.startsWith("#include "))
-                {
-                    if (line != "#include FT_FREETYPE_H")
-                    {
-                        currentBlock.append(line);
-
-                        if (currentBlockStart < 0)
-                        {
-                            currentBlockStart = i;
-                        }
-
-
-
-                        QString includeFile   = line.mid(9).trimmed();
-                        bool    globalInclude = includeFile.startsWith('<') && includeFile.endsWith('>');
-
-                        includeFile = includeFile.mid(1, includeFile.length() - 2);
-
-
-
-                        quint8 includeType = INCLUDE_BLOCK_TYPE_NONE;
-
-
-
-                        QString tempIncludeFile = includeFile;
-
-                        tempIncludeFile = tempIncludeFile.replace(".h", ".cpp");
-
-                        if (
-                            path.endsWith(tempIncludeFile)
-                            ||
-                            (
-                             tempIncludeFile.startsWith("ui_")
-                             &&
-                             path.endsWith(tempIncludeFile.mid(3))
-                            )
-                           )
-                        {
-                            includeType = INCLUDE_BLOCK_TYPE_OWN;
-
-                            if (includeFile.contains('/'))
-                            {
-                                worker->addError(path, i, "Should be local file in the same folder");
-                            }
-                        }
-                        else
-                        {
-                            QString objectName = includeFile.mid(includeFile.lastIndexOf('/') + 1).remove(".h");
-
-                            if (
-                                content.contains("public " + objectName, Qt::CaseInsensitive)
-                                ||
-                                content.contains("protected " + objectName, Qt::CaseInsensitive)
-                                ||
-                                content.contains("private " + objectName, Qt::CaseInsensitive)
-                               )
-                            {
-                                includeType = INCLUDE_BLOCK_TYPE_OWN;
-                            }
-                            else
-                            {
-                                if (QFile::exists(projectPath + '/' + includeFile))
-                                {
-                                    includeType = INCLUDE_BLOCK_TYPE_PROJECT;
-
-                                    if (
-                                        projectPath != parentFolder
-                                        &&
-                                        QFile::exists(parentFolder + '/' + includeFile)
-                                       )
-                                    {
-                                        worker->addError(path, i, "Don't know what file should be included");
-                                    }
-                                }
-                                else
-                                {
-                                    if (!globalInclude && QFile::exists(parentFolder + '/' + includeFile))
-                                    {
-                                        includeType = INCLUDE_BLOCK_TYPE_PROJECT;
-
-                                        worker->addError(path, i, "Should be specified relative path from project root");
-                                    }
-                                    else
-                                    {
-                                        if (
-                                            includeFile == "buildconfig.h"
-                                            ||
-                                            includeFile.startsWith("com/ngos/")
-                                           )
-                                        {
-                                            includeType = INCLUDE_BLOCK_TYPE_NGOS_LIBRARIES;
-                                        }
-                                        else
-                                        {
-                                            includeType = INCLUDE_BLOCK_TYPE_LIBRARIES;
-                                        }
-
-                                        if (!globalInclude)
-                                        {
-                                            worker->addError(path, i, "Unknown file location");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-
-
-                        if (currentBlockType == INCLUDE_BLOCK_TYPE_NONE)
-                        {
-                            currentBlockType = includeType;
-                        }
-                        else
-                        if (currentBlockType != includeType)
-                        {
-                            worker->addError(path, i, "Combination of different include types");
-                        }
-                    }
-                }
-                else
-                {
-                    worker->addError(path, i, "Unexpected line between includes");
-                }
-            }
-
-            if (!currentBlock.isEmpty())
-            {
-                blocks.append(currentBlock);
-                blockStarts.append(currentBlockStart);
-                blockTypes.append(currentBlockType);
-            }
-
-
-
-            for (qint64 i = 0; i < blocks.size(); ++i)
-            {
-                QStringList block = blocks.at(i);
-
-                QStringList blockOriginal = block;
-                block.sort();
-                block.removeDuplicates();
-
-                if (block != blockOriginal)
-                {
-                    worker->addWarning(path, blockStarts.at(i), QString("Includes should be sorted or duplicates need to remove:\n%1")
-                                                                        .arg(block.join('\n'))
-                    );
-                }
-            }
-
-
-
-            for (qint64 i = 1; i < blockTypes.size(); ++i)
-            {
-                if (blockTypes.at(i - 1) > blockTypes.at(i))
-                {
-                    worker->addWarning(path, blockStarts.at(i), "Invalid order of includes");
-                }
-                else
-                if (blockTypes.at(i - 1) == blockTypes.at(i))
-                {
-                    worker->addWarning(path, blockStarts.at(i), "Includes should be combined");
-                }
-            }
-        }
-        else
-        {
-            worker->addError(path, startLine, "Unexpected #include position");
-        }
-    }
-}
-
-
-
-CppIncludeVerifier cppIncludeVerifierInstance;
+#include "cppincludeverifier.h"                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+enum class IncludeBlockType: quint8                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    NONE           = 0,                                                                                                                                                                                  // Colorize: green
+    OWN            = 1,                                                                                                                                                                                  // Colorize: green
+    LIBRARIES      = 2,                                                                                                                                                                                  // Colorize: green
+    NGOS_LIBRARIES = 3,                                                                                                                                                                                  // Colorize: green
+    PROJECT        = 4                                                                                                                                                                                   // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppIncludeVerifier::CppIncludeVerifier()                                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppIncludeVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &content, const QStringList &lines)                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Do not check specific files                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/dmi/dmi.cpp")                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/assert.h")                                                                                                               // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/log/log.h")                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/memory/malloc.cpp")                                                                                                          // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("/src/os/shared/common/src/com/ngos/shared/common/time/time.cpp")                                                                                                              // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.endsWith("_linux.cpp")                                                                                                                                                                  // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("_linux.h")                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("_win.cpp")                                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.endsWith("_win.h")                                                                                                                                                                      // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 fileHeaderOffset = 0;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Skip first lines that start with single line comment                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        while (fileHeaderOffset < lines.size() && lines.at(fileHeaderOffset).startsWith("//"))                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            ++fileHeaderOffset;                                                                                                                                                                          // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startLine = -1;                                                                                                                                                                               // Colorize: green
+    qint64 endLine   = -1;                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get position of includes                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = fileHeaderOffset; i < lines.size(); ++i)                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString line = lines.at(i);                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.startsWith("#include "))                                                                                                                                                            // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (startLine < 0)                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    startLine = i;                                                                                                                                                                       // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                endLine = i;                                                                                                                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (startLine >= 0)                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            startLine == fileHeaderOffset                                                                                                                                                                // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             startLine == fileHeaderOffset + 5                                                                                                                                                           // Colorize: green
+             &&                                                                                                                                                                                          // Colorize: green
+             (                                                                                                                                                                                           // Colorize: green
+              lines.at(fileHeaderOffset + 0).startsWith("#ifndef ")                                                                                                                                      // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              lines.at(fileHeaderOffset + 1).startsWith("#define ")                                                                                                                                      // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              lines.at(fileHeaderOffset + 2) == ""                                                                                                                                                       // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              lines.at(fileHeaderOffset + 3) == ""                                                                                                                                                       // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              lines.at(fileHeaderOffset + 4) == ""                                                                                                                                                       // Colorize: green
+              &&                                                                                                                                                                                         // Colorize: green
+              lines.at(lines.size() - 2).startsWith("#endif")                                                                                                                                            // Colorize: green
+             )                                                                                                                                                                                           // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString parentFolder = path.left(path.lastIndexOf('/'));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString projectPath;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get project path                                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint64 index = path.indexOf("/include/");                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index >= 0)                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    index = path.indexOf('/', index + 9);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index < 0)                                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, -1, "Failed to get project path");                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return;                                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    projectPath = path.left(index);                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString tempParentFolder = parentFolder;                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            QFile::exists(tempParentFolder + "/Makefile")                                                                                                                                // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            !QDir(tempParentFolder).entryList(QStringList() << "*.pro", QDir::Files).isEmpty()                                                                                           // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        index = tempParentFolder.lastIndexOf('/');                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index < 0)                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, -1, "Failed to get project path");                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return;                                                                                                                                                                      // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        tempParentFolder = tempParentFolder.left(index);                                                                                                                                 // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    projectPath = tempParentFolder;                                                                                                                                                      // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QList<QStringList>      blocks;                                                                                                                                                              // Colorize: green
+            QList<qint64>           blockStarts;                                                                                                                                                         // Colorize: green
+            QList<IncludeBlockType> blockTypes;                                                                                                                                                          // Colorize: green
+            QStringList             currentBlock;                                                                                                                                                        // Colorize: green
+            qint64                  currentBlockStart = -1;                                                                                                                                              // Colorize: green
+            IncludeBlockType        currentBlockType  = IncludeBlockType::NONE;                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get blocks                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = startLine; i <= endLine; ++i)                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString line = lines.at(i);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Identify current block type                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (line.startsWith("#include "))                                                                                                                                                // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (line != "#include FT_FREETYPE_H")                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                currentBlock.append(line);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (currentBlockStart < 0)                                                                                                                                               // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    currentBlockStart = i;                                                                                                                                               // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                QString includeFile   = line.mid(9).trimmed();                                                                                                                           // Colorize: green
+                                bool    globalInclude = includeFile.startsWith('<') && includeFile.endsWith('>');                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                includeFile = includeFile.mid(1, includeFile.length() - 2);                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                IncludeBlockType includeType = IncludeBlockType::NONE;                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                QString tempIncludeFile = includeFile;                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                tempIncludeFile = tempIncludeFile.replace(".h", ".cpp");                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (                                                                                                                                                                     // Colorize: green
+                                    path.endsWith(tempIncludeFile)                                                                                                                                       // Colorize: green
+                                    ||                                                                                                                                                                   // Colorize: green
+                                    (                                                                                                                                                                    // Colorize: green
+                                     tempIncludeFile.startsWith("ui_")                                                                                                                                   // Colorize: green
+                                     &&                                                                                                                                                                  // Colorize: green
+                                     path.endsWith(tempIncludeFile.mid(3))                                                                                                                               // Colorize: green
+                                    )                                                                                                                                                                    // Colorize: green
+                                   )                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    includeType = IncludeBlockType::OWN;                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (includeFile.contains('/'))                                                                                                                                       // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, i, "Should be local file in the same folder");                                                                                            // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                else                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString objectName = includeFile.mid(includeFile.lastIndexOf('/') + 1).remove(".h");                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (                                                                                                                                                                 // Colorize: green
+                                        content.contains("public " + objectName, Qt::CaseInsensitive)                                                                                                    // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        content.contains("protected " + objectName, Qt::CaseInsensitive)                                                                                                 // Colorize: green
+                                        ||                                                                                                                                                               // Colorize: green
+                                        content.contains("private " + objectName, Qt::CaseInsensitive)                                                                                                   // Colorize: green
+                                       )                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        includeType = IncludeBlockType::OWN;                                                                                                                             // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        if (QFile::exists(projectPath + '/' + includeFile))                                                                                                              // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            includeType = IncludeBlockType::PROJECT;                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            if (                                                                                                                                                         // Colorize: green
+                                                projectPath != parentFolder                                                                                                                              // Colorize: green
+                                                &&                                                                                                                                                       // Colorize: green
+                                                QFile::exists(parentFolder + '/' + includeFile)                                                                                                          // Colorize: green
+                                               )                                                                                                                                                         // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                worker->addError(path, i, "Don't know what file should be included");                                                                                    // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                        else                                                                                                                                                             // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            if (!globalInclude && QFile::exists(parentFolder + '/' + includeFile))                                                                                       // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                includeType = IncludeBlockType::PROJECT;                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                worker->addError(path, i, "Should be specified relative path from project root");                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                            else                                                                                                                                                         // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                if (                                                                                                                                                     // Colorize: green
+                                                    includeFile == "buildconfig.h"                                                                                                                       // Colorize: green
+                                                    ||                                                                                                                                                   // Colorize: green
+                                                    includeFile.startsWith("com/ngos/")                                                                                                                  // Colorize: green
+                                                   )                                                                                                                                                     // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    includeType = IncludeBlockType::NGOS_LIBRARIES;                                                                                                      // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                else                                                                                                                                                     // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    includeType = IncludeBlockType::LIBRARIES;                                                                                                           // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                if (!globalInclude)                                                                                                                                      // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    worker->addError(path, i, "Unknown file location");                                                                                                  // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Check for combination of different include types                                                                                                                      // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (currentBlockType == IncludeBlockType::NONE)                                                                                                                      // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        currentBlockType = includeType;                                                                                                                                  // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    if (currentBlockType != includeType)                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, i, "Combination of different include types");                                                                                             // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            continue;                                                                                                                                                                    // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (line == "")                                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        // Accumulate blocks                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (!currentBlock.isEmpty())                                                                                                                                                 // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                blocks.append(currentBlock);                                                                                                                                             // Colorize: green
+                                blockStarts.append(currentBlockStart);                                                                                                                                   // Colorize: green
+                                blockTypes.append(currentBlockType);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                currentBlock.clear();                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                currentBlockStart = -1;                                                                                                                                                  // Colorize: green
+                                currentBlockType  = IncludeBlockType::NONE;                                                                                                                              // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                worker->addError(path, i, "Extra line between includes");                                                                                                                // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Unexpected line between includes");                                                                                                                   // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Accumulate blocks                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (!currentBlock.isEmpty())                                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        blocks.append(currentBlock);                                                                                                                                                     // Colorize: green
+                        blockStarts.append(currentBlockStart);                                                                                                                                           // Colorize: green
+                        blockTypes.append(currentBlockType);                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that all blocks are sorted                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 0; i < blocks.size(); ++i)                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QStringList block = blocks.at(i);                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QStringList blockOriginal = block;                                                                                                                                                   // Colorize: green
+                    block.sort();                                                                                                                                                                        // Colorize: green
+                    block.removeDuplicates();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (block != blockOriginal)                                                                                                                                                          // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, blockStarts.at(i), QString("Includes should be sorted or duplicates need to remove:\n%1")                                                               // Colorize: green
+                                                                            .arg(block.join('\n'))                                                                                                       // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Check that blocks sorted by type                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 i = 1; i < blockTypes.size(); ++i)                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (blockTypes.at(i - 1) > blockTypes.at(i))                                                                                                                                         // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, blockStarts.at(i), "Invalid order of includes");                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (blockTypes.at(i - 1) == blockTypes.at(i))                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addWarning(path, blockStarts.at(i), "Includes should be combined");                                                                                                      // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, startLine, "Unexpected #include position");                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppIncludeVerifier cppIncludeVerifierInstance;                                                                                                                                                           // Colorize: green

@@ -1,35 +1,35 @@
-#include "cppstaticfunctionsverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppStaticFunctionsVerifier::CppStaticFunctionsVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mStaticFunctionRegexp("^static .*$")
-{
-    // Nothing
-}
-
-void CppStaticFunctionsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// CppStaticFunctionsVerifier");
-        removeComments(line);
-
-
-
-        QRegularExpressionMatch match = mStaticFunctionRegexp.match(line);
-
-        if (match.hasMatch())
-        {
-            worker->addWarning(path, i, "static functions are prohibited");
-        }
-    }
-}
-
-
-
-CppStaticFunctionsVerifier cppStaticFunctionsVerifierInstance;
+#include "cppstaticfunctionsverifier.h"                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppStaticFunctionsVerifier::CppStaticFunctionsVerifier()                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mStaticFunctionRegexp("^static .*$")                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppStaticFunctionsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// CppStaticFunctionsVerifier");                                                                                                                                          // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatch match = mStaticFunctionRegexp.match(line);                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, i, "static functions are prohibited");                                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppStaticFunctionsVerifier cppStaticFunctionsVerifierInstance;                                                                                                                                           // Colorize: green

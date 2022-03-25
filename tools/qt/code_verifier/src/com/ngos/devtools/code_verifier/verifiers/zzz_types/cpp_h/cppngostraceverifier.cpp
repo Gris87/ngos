@@ -1,354 +1,365 @@
-#include "cppngostraceverifier.h"
-
-#include <QHash>
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppNgosTraceVerifier::CppNgosTraceVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^(struct \\w+(: public \\w+(, public \\w+)*)?|class \\w+(: (public|protected|private) \\w+(, (public|protected|private) \\w+)*)?|union \\w+|enum( class)? \\w+(: \\w+)?|namespace \\w+)(?: *\\/\\/.*)?$")
-{
-    // Nothing
-}
-
-void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    QString traceCommand = traceCommandFromPath(path);
-
-    if (traceCommand == "")
-    {
-        return;
-    }
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppNgosTraceVerifier");
-        removeComments(line);
-
-
-
-        if (line == '{')
-        {
-            qint64 n = i - 1;
-
-            while (n >= 0 && lines.at(n).startsWith(' '))
-            {
-                --n;
-            }
-
-            if (n >= 0)
-            {
-                QString funcDesc = lines.at(n);
-
-                if (
-                    !funcDesc.startsWith("TEST_CASES(")
-                    &&
-                    !funcDesc.endsWith('=')
-                    &&
-                    !mDefinitionRegExp.match(funcDesc).hasMatch()
-                   )
-                {
-                    qint64 index = funcDesc.indexOf('(');
-
-                    if (index >= 0)
-                    {
-                        qint64 index2 = funcDesc.indexOf(')', index + 1);
-
-                        if (index2 >= 0)
-                        {
-                            funcDesc = funcDesc.mid(index + 1, index2 - index - 1);
-
-
-
-                            QStringList arguments;
-
-                            if (funcDesc != "")
-                            {
-                                arguments = funcDesc.split(',');
+#include "cppngostraceverifier.h"                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QHash>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppNgosTraceVerifier::CppNgosTraceVerifier()                                                                                                                                                             // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mDefinitionRegExp("^(struct \\w+(: public \\w+(, public \\w+)*)?|class \\w+(: (public|protected|private) \\w+(, (public|protected|private) \\w+)*)?|union \\w+|enum( class)? \\w+(: \\w+)?|namespace \\w+)(?: *\\/\\/.*)?$") // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppNgosTraceVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString traceCommand = traceCommandFromPath(path);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (traceCommand == "")                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        return;                                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppNgosTraceVerifier");                                                                                                                                         // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line == '{')                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 n = i - 1;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Find position of function declaration                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                while (n >= 0 && lines.at(n).startsWith(' '))                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    --n;                                                                                                                                                                                 // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (n >= 0)                                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString funcDesc = lines.at(n);                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    !funcDesc.startsWith("TEST_CASES(")                                                                                                                                                  // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !funcDesc.endsWith('=')                                                                                                                                                              // Colorize: green
+                    &&                                                                                                                                                                                   // Colorize: green
+                    !mDefinitionRegExp.match(funcDesc).hasMatch()                                                                                                                                        // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qint64 index = funcDesc.indexOf('(');                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index >= 0)                                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qint64 index2 = funcDesc.indexOf(')', index + 1);                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index2 >= 0)                                                                                                                                                                 // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            funcDesc = funcDesc.mid(index + 1, index2 - index - 1);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            QStringList arguments;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (funcDesc != "")                                                                                                                                                          // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                arguments = funcDesc.split(',');                                                                                                                                         // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            // Get list of arguments                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                for (qint64 j = 0; j < arguments.size(); ++j)                                                                                                                            // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString argument = arguments.at(j).trimmed();                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (argument == "...")                                                                                                                                               // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        arguments.removeAt(j);                                                                                                                                           // Colorize: green
+                                        --j;                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        continue;                                                                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (argument.startsWith("const "))                                                                                                                                   // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        argument = argument.remove(0, 6);                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    index = argument.indexOf('=');                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (index >= 0)                                                                                                                                                      // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        argument = argument.left(index).trimmed();                                                                                                                       // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    index = argument.lastIndexOf(' ');                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (index >= 0)                                                                                                                                                      // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        argument = argument.mid(index + 1);                                                                                                                              // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, n, "Name of argument is missing");                                                                                                        // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    while (                                                                                                                                                              // Colorize: green
+                                           argument.startsWith(' ')                                                                                                                                      // Colorize: green
+                                           ||                                                                                                                                                            // Colorize: green
+                                           argument.startsWith('*')                                                                                                                                      // Colorize: green
+                                           ||                                                                                                                                                            // Colorize: green
+                                           argument.startsWith('&')                                                                                                                                      // Colorize: green
+                                           ||                                                                                                                                                            // Colorize: green
+                                           argument.startsWith("/*")                                                                                                                                     // Colorize: green
+                                          )                                                                                                                                                              // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        argument = argument.remove(0, 1);                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (argument.endsWith("*/"))                                                                                                                                         // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        argument.remove(argument.length() - 2, 2);                                                                                                                       // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    arguments[j] = argument;                                                                                                                                             // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            QString traceLine;                                                                                                                                                           // Colorize: green
+                            bool    found = false;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            // Search for trace line                                                                                                                                                     // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                n = i + 1;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                while (n < lines.size())                                                                                                                                                 // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    traceLine = lines.at(n).trimmed();                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (traceLine.contains(traceCommand + "((\""))                                                                                                                       // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        found = true;                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (traceLine.startsWith("//") && !traceLine.contains(")); // Commented to"))                                                                                    // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            worker->addError(path, n, "Trace command commented without description");                                                                                    // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (!traceLine.startsWith("//"))                                                                                                                                     // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        break;                                                                                                                                                           // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    ++n;                                                                                                                                                                 // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            if (found)                                                                                                                                                                   // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                if (traceLine.startsWith("//"))                                                                                                                                          // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    traceLine = traceLine.mid(2, traceLine.lastIndexOf("// Commented to") - 2).trimmed();                                                                                // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                if (!arguments.isEmpty())                                                                                                                                                // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    QString parsedTrace = traceLine.mid(traceCommand.length() + 3);                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (parsedTrace.startsWith(" | "))                                                                                                                                   // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        parsedTrace = parsedTrace.remove(0, 3);                                                                                                                          // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    index = parsedTrace.indexOf('\"');                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                    if (index >= 0)                                                                                                                                                      // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        parsedTrace.remove(index, parsedTrace.length() - index);                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        QHash<QString, QString> parsedArgumentTypes;                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        // Get argument name => argument type map (var => %d)                                                                                                            // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QStringList parsedArguments = parsedTrace.split(',');                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            for (qint64 j = 0; j < parsedArguments.size(); ++j)                                                                                                          // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                QString parsedArgument = parsedArguments.at(j);                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                index = parsedArgument.indexOf('=');                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                QString name = parsedArgument.left(index).trimmed();                                                                                                     // Colorize: green
+                                                QString type = parsedArgument.mid(index + 1).trimmed();                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                parsedArgumentTypes.insert(name, type);                                                                                                                  // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        QString expectedTraceLine = traceCommand + "((\" | ";                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        // Get expected trace line                                                                                                                                       // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            for (qint64 j = 0; j < arguments.size(); ++j)                                                                                                                // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                QString argument = arguments.at(j);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                if (j > 0)                                                                                                                                               // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    expectedTraceLine += ", ";                                                                                                                           // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                expectedTraceLine += argument;                                                                                                                           // Colorize: green
+                                                expectedTraceLine += " = ";                                                                                                                              // Colorize: green
+                                                expectedTraceLine += parsedArgumentTypes.value(argument, "%d");                                                                                          // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            expectedTraceLine += '\"';                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            for (qint64 j = 0; j < arguments.size(); ++j)                                                                                                                // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                QString argument = arguments.at(j);                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                if (parsedArgumentTypes.value(argument, "%d") != "...")                                                                                                  // Colorize: green
+                                                {                                                                                                                                                        // Colorize: green
+                                                    expectedTraceLine += ", ";                                                                                                                           // Colorize: green
+                                                    expectedTraceLine += argument;                                                                                                                       // Colorize: green
+                                                }                                                                                                                                                        // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            expectedTraceLine += "));";                                                                                                                                  // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        if (traceLine != expectedTraceLine)                                                                                                                              // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            worker->addError(path, n, QString("Trace command is invalid. Expected: \"%1\"")                                                                              // Colorize: green
+                                                                                .arg(expectedTraceLine)                                                                                                  // Colorize: green
+                                            );                                                                                                                                                           // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, n, "Unexpected behavior during NGOS Trace verification");                                                                                 // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                else                                                                                                                                                                     // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (traceLine != traceCommand + "((\"\"));")                                                                                                                         // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        worker->addError(path, n, QString("Trace command should be \"%1((\"\"));\"")                                                                                     // Colorize: green
+                                                                            .arg(traceCommand)                                                                                                           // Colorize: green
+                                        );                                                                                                                                                               // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
                             }
-
-
-
-                            for (qint64 j = 0; j < arguments.size(); ++j)
-                            {
-                                QString argument = arguments.at(j).trimmed();
-
-
-
-                                if (argument == "...")
-                                {
-                                    arguments.removeAt(j);
-                                    --j;
-
-                                    continue;
-                                }
-
-
-
-                                if (argument.startsWith("const "))
-                                {
-                                    argument = argument.remove(0, 6);
-                                }
-
-
-
-                                index = argument.indexOf('=');
-
-                                if (index >= 0)
-                                {
-                                    argument = argument.left(index).trimmed();
-                                }
-
-
-
-                                index = argument.lastIndexOf(' ');
-
-                                if (index >= 0)
-                                {
-                                    argument = argument.mid(index + 1);
-                                }
-                                else
-                                {
-                                    worker->addError(path, n, "Name of argument is missing");
-                                }
-
-
-
-                                while (
-                                       argument.startsWith(' ')
-                                       ||
-                                       argument.startsWith('*')
-                                       ||
-                                       argument.startsWith('&')
-                                       ||
-                                       argument.startsWith("/*")
-                                      )
-                                {
-                                    argument = argument.remove(0, 1);
-                                }
-
-
-
-                                if (argument.endsWith("*/"))
-                                {
-                                    argument.remove(argument.length() - 2, 2);
-                                }
-
-
-
-                                arguments[j] = argument;
-                            }
-
-
-
-                            QString traceLine;
-                            bool    found = false;
-
-
-
-                            n = i + 1;
-
-                            while (n < lines.size())
-                            {
-                                traceLine = lines.at(n).trimmed();
-
-                                if (traceLine.contains(traceCommand + "((\""))
-                                {
-                                    found = true;
-
-                                    if (traceLine.startsWith("//") && !traceLine.contains(")); // Commented to"))
-                                    {
-                                        worker->addError(path, n, "Trace command commented without description");
-                                    }
-
-                                    break;
-                                }
-
-                                if (!traceLine.startsWith("//"))
-                                {
-                                    break;
-                                }
-
-                                ++n;
-                            }
-
-
-
-                            if (found)
-                            {
-                                if (traceLine.startsWith("//"))
-                                {
-                                    traceLine = traceLine.mid(2, traceLine.lastIndexOf("// Commented to") - 2).trimmed();
-                                }
-
-
-
-                                if (!arguments.isEmpty())
-                                {
-                                    QString parsedTrace = traceLine.mid(traceCommand.length() + 3);
-
-
-
-                                    if (parsedTrace.startsWith(" | "))
-                                    {
-                                        parsedTrace = parsedTrace.remove(0, 3);
-                                    }
-
-
-
-                                    index = parsedTrace.indexOf('\"');
-
-                                    if (index >= 0)
-                                    {
-                                        parsedTrace.remove(index, parsedTrace.length() - index);
-
-
-
-                                        QStringList             parsedArguments = parsedTrace.split(',');
-                                        QHash<QString, QString> parsedArgumentTypes;
-
-                                        for (qint64 j = 0; j < parsedArguments.size(); ++j)
-                                        {
-                                            QString parsedArgument = parsedArguments.at(j);
-
-
-
-                                            index = parsedArgument.indexOf('=');
-
-                                            QString name = parsedArgument.left(index).trimmed();
-                                            QString type = parsedArgument.mid(index + 1).trimmed();
-
-
-
-                                            parsedArgumentTypes.insert(name, type);
-                                        }
-
-
-
-                                        QString trace = traceCommand + "((\" | ";
-
-                                        for (qint64 j = 0; j < arguments.size(); ++j)
-                                        {
-                                            QString argument = arguments.at(j);
-
-                                            if (j > 0)
-                                            {
-                                                trace += ", ";
-                                            }
-
-                                            trace += argument;
-                                            trace += " = ";
-                                            trace += parsedArgumentTypes.value(argument, "%d");
-                                        }
-
-                                        trace += '\"';
-
-                                        for (qint64 j = 0; j < arguments.size(); ++j)
-                                        {
-                                            QString argument = arguments.at(j);
-
-                                            if (parsedArgumentTypes.value(argument, "%d") != "...")
-                                            {
-                                                trace += ", ";
-                                                trace += argument;
-                                            }
-                                        }
-
-                                        trace += "));";
-
-
-
-                                        if (traceLine != trace)
-                                        {
-                                            worker->addError(path, n, QString("Trace command is invalid. Expected: \"%1\"")
-                                                                                .arg(trace)
-                                            );
-                                        }
-                                    }
-                                    else
-                                    {
-                                        worker->addError(path, n, "Unexpected behavior during NGOS Trace verification");
-                                    }
-                                }
-                                else
-                                {
-                                    if (traceLine != traceCommand + "((\"\"));")
-                                    {
-                                        worker->addError(path, n, QString("Trace command should be \"%1((\"\"));\"")
-                                                                            .arg(traceCommand)
-                                        );
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                QString trace;
-
-                                if (!arguments.isEmpty())
-                                {
-                                    trace = traceCommand + "((\" | ";
-
-                                    for (qint64 j = 0; j < arguments.size(); ++j)
-                                    {
-                                        QString argument = arguments.at(j);
-
-                                        if (j > 0)
-                                        {
-                                            trace += ", ";
-                                        }
-
-                                        trace += argument;
-                                        trace += " = %d";
-                                    }
-
-                                    trace += '\"';
-
-                                    for (qint64 j = 0; j < arguments.size(); ++j)
-                                    {
-                                        QString argument = arguments.at(j);
-
-                                        trace += ", ";
-                                        trace += argument;
-                                    }
-
-                                    trace += "));";
-                                }
-                                else
-                                {
-                                    trace = traceCommand + "((\"\"));";
-                                }
-
-
-
-                                worker->addError(path, i + 1, QString("Trace command not found at the beginning of the function: \"%1\"")
-                                                                        .arg(trace)
-                                );
-                            }
-                        }
-                        else
-                        {
-                            worker->addError(path, n, "Expected closing bracket )");
-                        }
-                    }
-                    else
-                    {
-                        worker->addError(path, n, "Expected opening bracket (");
-                    }
-                }
-            }
-            else
-            {
-                worker->addError(path, i, "Unexpected behavior during NGOS Trace verification");
-            }
-        }
-    }
-}
-
-
-
-CppNgosTraceVerifier cppNgosTraceVerifierInstance;
+                            else                                                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                QString expectedTraceLine;                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                // Get expected trace line                                                                                                                                               // Colorize: green
+                                {                                                                                                                                                                        // Colorize: green
+                                    if (!arguments.isEmpty())                                                                                                                                            // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        expectedTraceLine = traceCommand + "((\" | ";                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        for (qint64 j = 0; j < arguments.size(); ++j)                                                                                                                    // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QString argument = arguments.at(j);                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            if (j > 0)                                                                                                                                                   // Colorize: green
+                                            {                                                                                                                                                            // Colorize: green
+                                                expectedTraceLine += ", ";                                                                                                                               // Colorize: green
+                                            }                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            expectedTraceLine += argument;                                                                                                                               // Colorize: green
+                                            expectedTraceLine += " = %d";                                                                                                                                // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        expectedTraceLine += '\"';                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        for (qint64 j = 0; j < arguments.size(); ++j)                                                                                                                    // Colorize: green
+                                        {                                                                                                                                                                // Colorize: green
+                                            QString argument = arguments.at(j);                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                            expectedTraceLine += ", ";                                                                                                                                   // Colorize: green
+                                            expectedTraceLine += argument;                                                                                                                               // Colorize: green
+                                        }                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                        expectedTraceLine += "));";                                                                                                                                      // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                    else                                                                                                                                                                 // Colorize: green
+                                    {                                                                                                                                                                    // Colorize: green
+                                        expectedTraceLine = traceCommand + "((\"\"));";                                                                                                                  // Colorize: green
+                                    }                                                                                                                                                                    // Colorize: green
+                                }                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                worker->addError(path, i + 1, QString("Trace command not found at the beginning of the function: \"%1\"")                                                                // Colorize: green
+                                                                        .arg(expectedTraceLine)                                                                                                          // Colorize: green
+                                );                                                                                                                                                                       // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                        else                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            worker->addError(path, n, "Expected closing bracket )");                                                                                                                     // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, n, "Expected opening bracket (");                                                                                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "Unexpected behavior during NGOS Trace verification");                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppNgosTraceVerifier cppNgosTraceVerifierInstance;                                                                                                                                                       // Colorize: green

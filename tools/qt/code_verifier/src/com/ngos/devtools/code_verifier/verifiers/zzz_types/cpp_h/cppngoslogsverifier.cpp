@@ -1,74 +1,74 @@
-#include "cppngoslogsverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppNgosLogsVerifier::CppNgosLogsVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-    , mDefinitionRegExp("^(?:L(?:[FCEWID]|V{1,3})|(?:TEST_)?ASSERT(_EXECUTION)?)\\(.*$")
-{
-    // Nothing
-}
-
-void CppNgosLogsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    QString logPrefix = logPrefixFromPath(path);
-
-    bool checkUefi   = (logPrefix != "UEFI");
-    bool checkEarly  = (logPrefix != "EARLY");
-    bool checkCommon = (logPrefix != "COMMON");
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        if (checkUefi)
-        {
-            qint64 index = line.indexOf("UEFI_");
-
-            if (
-                index >= 0
-                &&
-                mDefinitionRegExp.match(line.mid(index + 5)).hasMatch()
-               )
-            {
-                worker->addError(path, i, "UEFI logging is prohibited");
-            }
-        }
-
-        if (checkEarly)
-        {
-            qint64 index = line.indexOf("EARLY_");
-
-            if (
-                index >= 0
-                &&
-                mDefinitionRegExp.match(line.mid(index + 6)).hasMatch()
-               )
-            {
-                worker->addError(path, i, "EARLY logging is prohibited");
-            }
-        }
-
-        if (checkCommon)
-        {
-            qint64 index = line.indexOf("COMMON_");
-
-            if (
-                index >= 0
-                &&
-                mDefinitionRegExp.match(line.mid(index + 7)).hasMatch()
-               )
-            {
-                worker->addError(path, i, "COMMON logging is prohibited");
-            }
-        }
-    }
-}
-
-
-
-CppNgosLogsVerifier cppNgosLogsVerifierInstance;
+#include "cppngoslogsverifier.h"                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppNgosLogsVerifier::CppNgosLogsVerifier()                                                                                                                                                               // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    , mDefinitionRegExp("^(?:L(?:[FCEWID]|V{1,3})|(?:TEST_)?ASSERT(_EXECUTION)?)\\(.*$")                                                                                                                 // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppNgosLogsVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString logPrefix = logPrefixFromPath(path);                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool checkUefi   = (logPrefix != "UEFI");                                                                                                                                                            // Colorize: green
+    bool checkEarly  = (logPrefix != "EARLY");                                                                                                                                                           // Colorize: green
+    bool checkCommon = (logPrefix != "COMMON");                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (checkUefi)                                                                                                                                                                                   // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index = line.indexOf("UEFI_");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                index >= 0                                                                                                                                                                               // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                mDefinitionRegExp.match(line.mid(index + 5)).hasMatch()                                                                                                                                  // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "UEFI logging is prohibited");                                                                                                                                 // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (checkEarly)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index = line.indexOf("EARLY_");                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                index >= 0                                                                                                                                                                               // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                mDefinitionRegExp.match(line.mid(index + 6)).hasMatch()                                                                                                                                  // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "EARLY logging is prohibited");                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (checkCommon)                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index = line.indexOf("COMMON_");                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (                                                                                                                                                                                         // Colorize: green
+                index >= 0                                                                                                                                                                               // Colorize: green
+                &&                                                                                                                                                                                       // Colorize: green
+                mDefinitionRegExp.match(line.mid(index + 7)).hasMatch()                                                                                                                                  // Colorize: green
+               )                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                worker->addError(path, i, "COMMON logging is prohibited");                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppNgosLogsVerifier cppNgosLogsVerifierInstance;                                                                                                                                                         // Colorize: green

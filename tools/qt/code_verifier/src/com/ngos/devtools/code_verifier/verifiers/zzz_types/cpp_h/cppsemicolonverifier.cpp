@@ -1,56 +1,54 @@
-#include "cppsemicolonverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppSemicolonVerifier::CppSemicolonVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppSemicolonVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    // Do not check specific files
-    {
-        if (path.endsWith("/cppsemicolonverifier.cpp"))
-        {
-            return;
-        }
-    }
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// CppSemicolonVerifier");
-        removeComments(line);
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-
-
-        if (
-            line.contains(";;")
-            ||
-            (
-             lineTrimmed.startsWith(';')
-             &&
-             i > 0
-             &&
-             lines.at(i - 1).endsWith(';')
-            )
-           )
-        {
-            worker->addWarning(path, i, "Double semicolons \";;\" found");
-        }
-    }
-}
-
-
-
-CppSemicolonVerifier cppSemicolonVerifierInstance;
+#include "cppsemicolonverifier.h"                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSemicolonVerifier::CppSemicolonVerifier()                                                                                                                                                             // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppSemicolonVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Do not check specific files                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (path.endsWith("/cppsemicolonverifier.cpp"))                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return;                                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// CppSemicolonVerifier");                                                                                                                                                // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString lineTrimmed = line.trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            line.contains(";;")                                                                                                                                                                          // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            (                                                                                                                                                                                            // Colorize: green
+             lineTrimmed.startsWith(';')                                                                                                                                                                 // Colorize: green
+             &&                                                                                                                                                                                          // Colorize: green
+             i > 0                                                                                                                                                                                       // Colorize: green
+             &&                                                                                                                                                                                          // Colorize: green
+             lines.at(i - 1).endsWith(';')                                                                                                                                                               // Colorize: green
+            )                                                                                                                                                                                            // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addWarning(path, i, "Double semicolons \";;\" found");                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSemicolonVerifier cppSemicolonVerifierInstance;                                                                                                                                                       // Colorize: green

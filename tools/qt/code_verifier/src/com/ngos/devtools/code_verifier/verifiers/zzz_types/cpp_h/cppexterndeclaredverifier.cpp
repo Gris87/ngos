@@ -1,44 +1,44 @@
-#include "cppexterndeclaredverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppExternDeclaredVerifier::CppExternDeclaredVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppExternDeclaredVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppExternDeclaredVerifier");
-        // removeComments(line); // Do not remove comments
-
-
-
-        QString comment;
-
-        qint64 index = line.indexOf("//");
-
-        if (index >= 0)
-        {
-            comment = line.mid(index + 2);
-            line    = line.left(index);
-        }
-
-
-
-        if (line.contains("extern ") && !comment.contains("declared in")) // Ignore CppExternDeclaredVerifier
-        {
-            worker->addError(path, i, "It is required to specify where variable declared");
-        }
-    }
-}
-
-
-
-CppExternDeclaredVerifier cppExternDeclaredVerifierInstance;
+#include "cppexterndeclaredverifier.h"                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppExternDeclaredVerifier::CppExternDeclaredVerifier()                                                                                                                                                   // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppExternDeclaredVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppExternDeclaredVerifier");                                                                                                                                    // Colorize: green
+        // removeComments(line); // Do not remove comments                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString comment;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qint64 index = line.indexOf("//");                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (index >= 0)                                                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            comment = line.mid(index + 2);                                                                                                                                                               // Colorize: green
+            line    = line.left(index);                                                                                                                                                                  // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (line.contains("extern ") && !comment.contains("declared in")) // Ignore CppExternDeclaredVerifier                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            worker->addError(path, i, "It is required to specify where variable declared");                                                                                                              // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppExternDeclaredVerifier cppExternDeclaredVerifierInstance;                                                                                                                                             // Colorize: green

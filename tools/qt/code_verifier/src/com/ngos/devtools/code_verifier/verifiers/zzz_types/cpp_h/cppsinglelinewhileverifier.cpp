@@ -1,112 +1,112 @@
-#include "cppsinglelinewhileverifier.h"
-
-#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>
-
-
-
-CppSingleLineWhileVerifier::CppSingleLineWhileVerifier()
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)
-{
-    // Nothing
-}
-
-void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)
-{
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-        VERIFIER_IGNORE(line, "// Ignore CppSingleLineWhileVerifier");
-        removeComments(line);
-
-
-
-        QString lineTrimmed = line.trimmed();
-
-        if (lineTrimmed.startsWith("while ("))
-        {
-            if (lineTrimmed == "while (")
-            {
-                QString spaces = line.left(line.indexOf("while ("));
-
-                do
-                {
-                    ++i;
-                } while(i < lines.size() && lines.at(i) != spaces + "      )");
-
-                if (
-                    i >= lines.size() - 1
-                    ||
-                    lines.at(i + 1) != spaces + '{'
-                   )
-                {
-                    worker->addError(path, i, "Single line while statement is prohibited");
-                }
-            }
-            else
-            if (lineTrimmed == "while ( \\")
-            {
-                QString spaces = line.left(line.indexOf("while ("));
-
-                do
-                {
-                    ++i;
-                } while(i < lines.size() && lines.at(i) != spaces + "      ) \\"  && lines.at(i) != spaces + "      )");
-
-                if (
-                    i >= lines.size() - 1
-                    ||
-                    (
-                     lines.at(i + 1) != spaces + '{'
-                     &&
-                     lines.at(i + 1) != spaces + "{ \\"
-                    )
-                   )
-                {
-                    worker->addError(path, i, "Single line while statement is prohibited");
-                }
-            }
-            else
-            {
-                if (lineTrimmed.endsWith(')'))
-                {
-                    QString spaces = line.left(line.indexOf("while ("));
-
-                    if (
-                        i >= lines.size() - 1
-                        ||
-                        lines.at(i + 1) != spaces + '{'
-                       )
-                    {
-                        worker->addError(path, i, "Single line while statement is prohibited");
-                    }
-                }
-                else
-                if (lineTrimmed.endsWith(") \\"))
-                {
-                    QString spaces = line.left(line.indexOf("while ("));
-
-                    if (
-                        i >= lines.size() - 1
-                        ||
-                        (
-                         lines.at(i + 1) != spaces + '{'
-                         &&
-                         lines.at(i + 1) != spaces + "{ \\"
-                        )
-                       )
-                    {
-                        worker->addError(path, i, "Single line while statement is prohibited");
-                    }
-                }
-                else
-                {
-                    worker->addError(path, i, "Single line while statement is prohibited");
-                }
-            }
-        }
-    }
-}
-
-
-
-CppSingleLineWhileVerifier cppSingleLineWhileVerifierInstance;
+#include "cppsinglelinewhileverifier.h"                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_verifier/other/codeverificationfiletype.h>                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSingleLineWhileVerifier::CppSingleLineWhileVerifier()                                                                                                                                                 // Colorize: green
+    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void CppSingleLineWhileVerifier::verify(CodeWorkerThread *worker, const QString &path, const QString &/*content*/, const QStringList &lines)                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+        VERIFIER_IGNORE(line, "// Ignore CppSingleLineWhileVerifier");                                                                                                                                   // Colorize: green
+        removeComments(line);                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString lineTrimmed = line.trimmed();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (lineTrimmed.startsWith("while ("))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (lineTrimmed == "while (")                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString spaces = line.left(line.indexOf("while ("));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                do                                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                } while(i < lines.size() && lines.at(i) != spaces + "      )");                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    i >= lines.size() - 1                                                                                                                                                                // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    lines.at(i + 1) != spaces + '{'                                                                                                                                                      // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Single line while statement is prohibited");                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            if (lineTrimmed == "while ( \\")                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString spaces = line.left(line.indexOf("while ("));                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                do                                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++i;                                                                                                                                                                                 // Colorize: green
+                } while(i < lines.size() && lines.at(i) != spaces + "      ) \\"  && lines.at(i) != spaces + "      )");                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (                                                                                                                                                                                     // Colorize: green
+                    i >= lines.size() - 1                                                                                                                                                                // Colorize: green
+                    ||                                                                                                                                                                                   // Colorize: green
+                    (                                                                                                                                                                                    // Colorize: green
+                     lines.at(i + 1) != spaces + '{'                                                                                                                                                     // Colorize: green
+                     &&                                                                                                                                                                                  // Colorize: green
+                     lines.at(i + 1) != spaces + "{ \\"                                                                                                                                                  // Colorize: green
+                    )                                                                                                                                                                                    // Colorize: green
+                   )                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Single line while statement is prohibited");                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (lineTrimmed.endsWith(')'))                                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString spaces = line.left(line.indexOf("while ("));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        i >= lines.size() - 1                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        lines.at(i + 1) != spaces + '{'                                                                                                                                                  // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Single line while statement is prohibited");                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (lineTrimmed.endsWith(") \\"))                                                                                                                                                        // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString spaces = line.left(line.indexOf("while ("));                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        i >= lines.size() - 1                                                                                                                                                            // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        (                                                                                                                                                                                // Colorize: green
+                         lines.at(i + 1) != spaces + '{'                                                                                                                                                 // Colorize: green
+                         &&                                                                                                                                                                              // Colorize: green
+                         lines.at(i + 1) != spaces + "{ \\"                                                                                                                                              // Colorize: green
+                        )                                                                                                                                                                                // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        worker->addError(path, i, "Single line while statement is prohibited");                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    worker->addError(path, i, "Single line while statement is prohibited");                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CppSingleLineWhileVerifier cppSingleLineWhileVerifierInstance;                                                                                                                                           // Colorize: green
