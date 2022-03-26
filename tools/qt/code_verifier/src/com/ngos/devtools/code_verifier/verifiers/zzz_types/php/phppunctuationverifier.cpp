@@ -5,7 +5,7 @@
                                                                                                                                                                                                          // Colorize: green
                                                                                                                                                                                                          // Colorize: green
 PhpPunctuationVerifier::PhpPunctuationVerifier()                                                                                                                                                         // Colorize: green
-    : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
+    : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                          // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green
