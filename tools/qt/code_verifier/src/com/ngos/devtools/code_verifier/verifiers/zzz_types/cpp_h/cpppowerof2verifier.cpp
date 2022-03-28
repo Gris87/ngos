@@ -6,7 +6,7 @@
                                                                                                                                                                                                          // Colorize: green
 CppPowerOf2Verifier::CppPowerOf2Verifier()                                                                                                                                                               // Colorize: green
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
-    , mPowerOf2Regexp("^(.*[^\\w])?(1|2|4|8|16|32|64|128|256|512)([lL]{1,2}[uU]?|[uU][lL]?) *<<.*$")                                                                                                     // Colorize: green
+    , mPowerOf2Regexp("^(.*[^\\w])?(1|2|4|8|16|32|64|128|256|512)([lL]{1,2}[uU]?|[uU][lL]?) *<<.*$") // 1LL << 1                                                                                                    // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green

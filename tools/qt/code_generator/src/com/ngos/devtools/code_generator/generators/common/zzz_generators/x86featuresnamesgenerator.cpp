@@ -76,7 +76,7 @@ bool X86FeaturesNamesGenerator::generate(const QString &path)
 
 
 
-    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$");
+    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$"); // XMM = WORD_BIT(x86FeatureWord::CPUID_00000001_EDX, 25), // "sse"
 
     QStringList wordBlock;
 

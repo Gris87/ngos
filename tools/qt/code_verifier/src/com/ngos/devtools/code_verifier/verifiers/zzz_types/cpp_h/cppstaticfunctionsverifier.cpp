@@ -6,7 +6,7 @@
                                                                                                                                                                                                          // Colorize: green
 CppStaticFunctionsVerifier::CppStaticFunctionsVerifier()                                                                                                                                                 // Colorize: green
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
-    , mStaticFunctionRegexp("^static .*$")                                                                                                                                                               // Colorize: green
+    , mStaticFunctionRegexp("^static .*$") // static                                                                                                                                                               // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green

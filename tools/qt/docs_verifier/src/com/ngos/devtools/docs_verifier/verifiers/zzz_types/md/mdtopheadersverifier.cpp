@@ -10,7 +10,7 @@
                                                                                                                                                                                                          // Colorize: green
 MdTopHeadersVerifier::MdTopHeadersVerifier()                                                                                                                                                             // Colorize: green
     : BaseDocsVerifier(DocsVerificationFileType::MD)                                                                                                                                                     // Colorize: green
-    , mSectionIdRegExp("^(\\d+\\.).*$")                                                                                                                                                                  // Colorize: green
+    , mSectionIdRegExp("^(\\d+\\.).*$") // 1.                                                                                                                                                                 // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green

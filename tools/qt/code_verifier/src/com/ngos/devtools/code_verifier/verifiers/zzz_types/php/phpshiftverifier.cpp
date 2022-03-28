@@ -6,7 +6,7 @@
                                                                                                                                                                                                          // Colorize: green
 PhpShiftVerifier::PhpShiftVerifier()                                                                                                                                                                     // Colorize: green
     : BaseCodeVerifier(CodeVerificationFileType::PHP)                                                                                                                                                    // Colorize: green
-    , mShiftRegexp("(?:\\*|\\/) *(0x[0-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)")                                                                                                                                // Colorize: green
+    , mShiftRegexp("(?:\\*|\\/) *(0x[0-9a-fA-F]+|[1-9]\\d*(?:\\.\\d+)?)") // * 4 or / 0x10                                                                                                                               // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green

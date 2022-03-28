@@ -14,8 +14,8 @@ const char8 *BitsTestGenerator::sFieldShortcuts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabc
 
 BitsTestGenerator::BitsTestGenerator()
     : CommonGenerator()
-    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$")
-    , mBitsDefinitionRegExp("^ *\\w+ +(\\w+) *: *(\\d+);.*$")
+    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$") // struct A ; class B; union C ; enum class D
+    , mBitsDefinitionRegExp("^ *\\w+ +(\\w+) *: *(\\d+);.*$")                 // i64 a: 5;
 {
     // Nothing
 }

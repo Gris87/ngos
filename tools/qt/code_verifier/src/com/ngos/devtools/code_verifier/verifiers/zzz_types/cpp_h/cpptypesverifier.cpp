@@ -6,7 +6,7 @@
                                                                                                                                                                                                          // Colorize: green
 CppTypesVerifier::CppTypesVerifier()                                                                                                                                                                     // Colorize: green
     : BaseCodeVerifier(VERIFICATION_COMMON_CPP)                                                                                                                                                          // Colorize: green
-    , mDefinitionRegExp("\\b(((un)?signed +(char|short|int|long)?)|char|short|int|long|char8_t|char16_t|char32_t|wchar_t)\\b")                                                                           // Colorize: green
+    , mDefinitionRegExp("\\b(((un)?signed +(char|short|int|long)?)|char|short|int|long|char8_t|char16_t|char32_t|wchar_t)\\b") // unsigned ; singed char; char16_t                                        // Colorize: green
 {                                                                                                                                                                                                        // Colorize: green
     // Nothing                                                                                                                                                                                           // Colorize: green
 }                                                                                                                                                                                                        // Colorize: green

@@ -29,7 +29,7 @@ BooleanParameterWidget::BooleanParameterWidget(const QString &id, const QHash<QS
     QString metaValues           = metaInformation.value("Values");
     QString metaValueDescription = metaInformation.value("Value description");
 
-    QRegularExpression valuesRegExp("^true *=(.*), *false *=(.*)$");
+    QRegularExpression valuesRegExp("^true *=(.*), *false *=(.*)$"); // true = ON, false = OFF
 
 
 

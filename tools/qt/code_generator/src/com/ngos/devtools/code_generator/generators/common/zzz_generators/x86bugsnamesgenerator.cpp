@@ -76,7 +76,7 @@ bool X86BugsNamesGenerator::generate(const QString &path)
 
 
 
-    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$");
+    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$"); // CPU_MELTDOWN = WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1)
 
     QStringList wordBlock;
 
