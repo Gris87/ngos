@@ -1,91 +1,104 @@
-#include <QCoreApplication>
-#include <QDateTime>
-#include <QFile>
-
-#include <com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h>
-#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
-#include <com/ngos/devtools/code_generator/generators/configure/configuregenerator.h>
-#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-void usage()
-{
-    // Ignore CppAlignmentVerifier [BEGIN]
-    Console::err(
-                "Usage: code_generator PATH\n"
-                "    * PATH - path to NGOS project folder"
-                );
-    // Ignore CppAlignmentVerifier [END]
-}
-
-qint32 main(qint32 argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-
-
-
-    const QStringList &arguments = app.arguments();
-
-    if (arguments.size() != 2)
-    {
-        usage();
-
-        return 1;
-    }
-
-
-
-    QString targetPath = arguments.at(1);
-
-
-
-    Console::out("Code generator started");
-    Console::out("");
-    Console::out("Parameters:");
-    Console::out(QString("PATH = %1").arg(targetPath));
-    Console::out("");
-
-    qint64 startTime = QDateTime::currentMSecsSinceEpoch();
-
-
-
-    if (!QFile::exists(targetPath + "/ngos.files"))
-    {
-        Console::err("PATH is invalid");
-
-        return 1;
-    }
-
-
-
-    if (
-        !AssetsGenerator::generateAll(targetPath)
-        ||
-        !CommonGenerator::generateAll(targetPath)
-        ||
-        !ConfigureGenerator::generateAll(targetPath)
-        ||
-        !UsbBootMakerGenerator::generateAll(targetPath)
-       )
-    {
-        return 1;
-    }
-
-
-
-    Console::out("");
-    Console::out(QString("%1 files generated")
-                            .arg(Generator::getNumberOfGeneratedFiles())
-    );
-    Console::out("");
-    Console::out(QString("Code generation completed in %1 ms")
-                            .arg(QDateTime::currentMSecsSinceEpoch() - startTime)
-    );
-    Console::out("");
-
-
-
-    return 0;
-}
+#include <QCoreApplication>                                                                                                                                                                              // Colorize: green
+#include <QDateTime>                                                                                                                                                                                     // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/assets/assetsgenerator.h>                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>                                                                                                                          // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/configure/configuregenerator.h>                                                                                                                    // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>                                                                                                            // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void usage()                                                                                                                                                                                             // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                               // Colorize: green
+    Console::err(                                                                                                                                                                                        // Colorize: green
+                "Usage: code_generator PATH\n"                                                                                                                                                           // Colorize: green
+                "    * PATH - path to NGOS project folder"                                                                                                                                               // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+    // Ignore CppAlignmentVerifier [END]                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint32 main(qint32 argc, char *argv[])                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QCoreApplication app(argc, argv);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    const QStringList &arguments = app.arguments();                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check arguments                                                                                                                                                                                   // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (arguments.size() != 2)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            usage();                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString targetPath = arguments.at(1);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Output application info                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("Code generator started");                                                                                                                                                          // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out("Parameters:");                                                                                                                                                                     // Colorize: green
+        Console::out(QString("PATH = %1").arg(targetPath));                                                                                                                                              // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    qint64 startTime = QDateTime::currentMSecsSinceEpoch();                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Check provided PATH                                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!QFile::exists(targetPath + "/ngos.files"))                                                                                                                                                  // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err("PATH is invalid");                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Generate code                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // TODO: Make it in parallel                                                                                                                                                                     // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            !AssetsGenerator::generateAll(targetPath)                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !CommonGenerator::generateAll(targetPath)                                                                                                                                                    // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !ConfigureGenerator::generateAll(targetPath)                                                                                                                                                 // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            !UsbBootMakerGenerator::generateAll(targetPath)                                                                                                                                              // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Everything is OK                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+        Console::out(QString("%1 files generated in %2 ms")                                                                                                                                              // Colorize: green
+                                .arg(Generator::getNumberOfGeneratedFiles())                                                                                                                             // Colorize: green
+                                .arg(QDateTime::currentMSecsSinceEpoch() - startTime)                                                                                                                    // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+        Console::out("");                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return 0;                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

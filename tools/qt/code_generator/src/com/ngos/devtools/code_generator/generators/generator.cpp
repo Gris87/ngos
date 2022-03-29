@@ -1,236 +1,234 @@
-#include "generator.h"
-
-#include <QDir>
-#include <QFile>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-qint64 Generator::sNumberOfGeneratedFiles;
-
-
-
-Generator::Generator()
-{
-    // Nothing
-}
-
-qint64 Generator::getNumberOfGeneratedFiles()
-{
-    return sNumberOfGeneratedFiles;
-}
-
-void Generator::addThreeBlankLines(QStringList &lines)
-{
-    lines.append("");
-    lines.append("");
-    lines.append("");
-}
-
-bool Generator::save(const QString &path, const QStringList &lines)
-{
-    QString defineName;
-
-    if (path.endsWith(".h"))
-    {
-        QString relativePath;
-
-
-
-        qint64 index = path.indexOf("/include/");
-
-        if (index >= 0)
-        {
-            relativePath = path.mid(index + 9);
-        }
-        else
-        {
-            index = path.indexOf("/shared/");
-
-            if (index >= 0)
-            {
-                index = path.indexOf('/', index + 8);
-
-                if (index < 0)
-                {
-                    Console::err(QString("Failed to get relative path for \"%1\"")
-                                            .arg(path)
-                    );
-
-                    return false;
-                }
-
-
-
-                index = path.indexOf('/', index + 1);
-
-                if (index < 0)
-                {
-                    Console::err(QString("Failed to get relative path for \"%1\"")
-                                            .arg(path)
-                    );
-
-                    return false;
-                }
-
-
-
-                relativePath = path.mid(index + 1);
-            }
-            else
-            {
-                QString parentFolder = path;
-
-                do
-                {
-                    index = parentFolder.lastIndexOf('/');
-
-                    if (index < 0)
-                    {
-                        Console::err(QString("Failed to get relative path for \"%1\"")
-                                                .arg(path)
-                        );
-
-                        return false;
-                    }
-
-                    parentFolder = parentFolder.left(index);
-
-
-
-                    if (
-                        QFile::exists(parentFolder + "/../../Makefile")
-                        ||
-                        !QDir(parentFolder + "/../../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
-                       )
-                    {
-                        break;
-                    }
-                } while(true);
-
-
-
-                index = parentFolder.lastIndexOf('/');
-
-                if (index < 0)
-                {
-                    Console::err(QString("Failed to get relative path for \"%1\"")
-                                            .arg(path)
-                    );
-
-                    return false;
-                }
-
-                relativePath = path.mid(index + 1);
-            }
-        }
-
-
-
-        defineName = relativePath.toUpper().replace('.', '_').replace('/', '_');
-    }
-
-
-
-    QStringList resultLines;
-
-    resultLines.append("// This file generated with the code_generator");
-    resultLines.append("// Please do not modify it manually");
-
-    if (defineName != "")
-    {
-        resultLines.append("#ifndef " + defineName);
-        resultLines.append("#define " + defineName);
-        resultLines.append("");
-        resultLines.append("");
-        resultLines.append("");
-    }
-
-    resultLines.append(lines);
-
-    if (defineName != "")
-    {
-        resultLines.append("");
-        resultLines.append("");
-        resultLines.append("");
-        resultLines.append("#endif // " + defineName);
-    }
-
-    resultLines.append("");
-
-
-
-    QString folder = path.left(path.lastIndexOf('/'));
-
-    if (!QDir().mkpath(folder))
-    {
-        Console::err(QString("Failed to create folder \"%1\" for file \"%2\"")
-                                .arg(folder)
-                                .arg(path)
-        );
-
-        return false;
-    }
-
-
-
-    return save(path, resultLines.join('\n').toUtf8());
-}
-
-bool Generator::save(const QString &path, const QByteArray &bytes)
-{
-    QByteArray oldBytes;
-
-
-
-    QFile file(path);
-
-    if (
-        file.exists()
-        &&
-        file.size() == bytes.size()
-       )
-    {
-        if (file.open(QIODevice::ReadOnly))
-        {
-            oldBytes = file.readAll();
-            file.close();
-        }
-    }
-
-
-
-    if (bytes != oldBytes)
-    {
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            Console::err(QString("Failed to create file \"%1\"")
-                                    .arg(path)
-            );
-
-            return false;
-        }
-
-        file.write(bytes);
-        file.close();
-
-
-
-        Console::out(QString("Generated file: %1")
-                                .arg(path)
-        );
-
-        ++sNumberOfGeneratedFiles;
-    }
-    else
-    {
-        Console::out(QString("Generated file: %1 [up-to-date]")
-                                .arg(path, -120, QChar(' '))
-        );
-    }
-
-
-
-    return true;
-}
+#include "generator.h"                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 Generator::sNumberOfGeneratedFiles;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+Generator::Generator()                                                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 Generator::getNumberOfGeneratedFiles()                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return sNumberOfGeneratedFiles;                                                                                                                                                                      // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+void Generator::addThreeBlankLines(QStringList &lines)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    lines.append("");                                                                                                                                                                                    // Colorize: green
+    lines.append("");                                                                                                                                                                                    // Colorize: green
+    lines.append("");                                                                                                                                                                                    // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool Generator::save(const QString &path, const QStringList &lines)                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString defineName;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (path.endsWith(".h"))                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString relativePath;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Get relative path                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint64 index = path.indexOf("/include/");                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (index >= 0)                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                relativePath = path.mid(index + 9);                                                                                                                                                      // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                index = path.indexOf("/shared/");                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (index >= 0)                                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    index = path.indexOf('/', index + 8);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index < 0)                                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        Console::err(QString("Failed to get relative path for \"%1\"")                                                                                                                   // Colorize: green
+                                                .arg(path)                                                                                                                                               // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return false;                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    index = path.indexOf('/', index + 1);                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (index < 0)                                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        Console::err(QString("Failed to get relative path for \"%1\"")                                                                                                                   // Colorize: green
+                                                .arg(path)                                                                                                                                               // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return false;                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    relativePath = path.mid(index + 1);                                                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString parentFolder = path;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        index = parentFolder.lastIndexOf('/');                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index < 0)                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            Console::err(QString("Failed to get relative path for \"%1\"")                                                                                                               // Colorize: green
+                                                    .arg(path)                                                                                                                                           // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return false;                                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        parentFolder = parentFolder.left(index);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            QFile::exists(parentFolder + "/../Makefile")                                                                                                                              // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            !QDir(parentFolder + "/../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()                                                                                   // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    relativePath = path.mid(parentFolder.length() + 1);                                                                                                                                                  // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        defineName = relativePath.toUpper().replace('.', '_').replace('/', '_');                                                                                                                         // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList resultLines;                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Prepare result lines                                                                                                                                                                              // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        resultLines.append("// This file generated with the code_generator");                                                                                                                            // Colorize: green
+        resultLines.append("// Please do not modify it manually");                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (defineName != "")                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            resultLines.append("#ifndef " + defineName);                                                                                                                                                 // Colorize: green
+            resultLines.append("#define " + defineName);                                                                                                                                                 // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        resultLines.append(lines);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (defineName != "")                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+            resultLines.append("");                                                                                                                                                                      // Colorize: green
+            resultLines.append("#endif // " + defineName);                                                                                                                                               // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        resultLines.append("");                                                                                                                                                                          // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create folders to save file                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString folder = path.left(path.lastIndexOf('/'));                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!QDir().mkpath(folder))                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to create folder \"%1\" for file \"%2\"")                                                                                                                       // Colorize: green
+                                    .arg(folder)                                                                                                                                                         // Colorize: green
+                                    .arg(path)                                                                                                                                                           // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path, resultLines.join('\n').toUtf8());                                                                                                                                                  // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool Generator::save(const QString &path, const QByteArray &bytes)                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QFile file(path);                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray oldBytes;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Load old bytes if file exists                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            file.exists()                                                                                                                                                                                // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            file.size() == bytes.size()                                                                                                                                                                  // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (file.open(QIODevice::ReadOnly))                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                oldBytes = file.readAll();                                                                                                                                                               // Colorize: green
+                file.close();                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Save file if it changed                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (bytes != oldBytes)                                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!file.open(QIODevice::WriteOnly))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err(QString("Failed to create file \"%1\"")                                                                                                                                     // Colorize: green
+                                        .arg(path)                                                                                                                                                       // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return false;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file.write(bytes);                                                                                                                                                                           // Colorize: green
+            file.close();                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::out(QString("Generated file: %1")                                                                                                                                                   // Colorize: green
+                                    .arg(path)                                                                                                                                                           // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            ++sNumberOfGeneratedFiles;                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::out(QString("Generated file: %1 [up-to-date]")                                                                                                                                      // Colorize: green
+                                    .arg(path, -120, QChar(' '))                                                                                                                                         // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

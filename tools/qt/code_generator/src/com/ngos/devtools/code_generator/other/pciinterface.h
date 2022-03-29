@@ -1,17 +1,17 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
-
-
-
-#include <QString>
-
-
-
-struct PciInterface
-{
-    QString description;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct PciInterface                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString description;                                                                                                                                                                                 // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIINTERFACE_H                                                                                                                                          // Colorize: green

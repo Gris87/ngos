@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H
-
-
-
-#include <QMap>
-#include <QString>
-
-#include <com/ngos/devtools/code_generator/other/pcisubclass.h>
-
-
-
-struct PciBaseClass
-{
-    QString                   description;
-    QMap<quint8, PciSubClass> subClasses;   // PCI Sub Class ID => PCI Sub Class
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H                                                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMap>                                                                                                                                                                                          // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/other/pcisubclass.h>                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct PciBaseClass                                                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString                   description;                                                                                                                                                               // Colorize: green
+    QMap<quint8, PciSubClass> subClasses;   // PCI Sub Class ID => PCI Sub Class                                                                                                                         // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIBASECLASS_H                                                                                                                                          // Colorize: green

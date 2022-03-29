@@ -1,6 +1,6 @@
-<RCC>
-    <qresource prefix="/">
-        <file>assets/fonts/console.ttf</file>
-        <file>assets/fonts/gui.ttf</file>
-    </qresource>
-</RCC>
+<RCC>                                                                                                                                                                                                    <!-- Colorize: green -->
+    <qresource prefix="/">                                                                                                                                                                               <!-- Colorize: green -->
+        <file>assets/fonts/console.ttf</file>                                                                                                                                                            <!-- Colorize: green -->
+        <file>assets/fonts/gui.ttf</file>                                                                                                                                                                <!-- Colorize: green -->
+    </qresource>                                                                                                                                                                                         <!-- Colorize: green -->
+</RCC>                                                                                                                                                                                                   <!-- Colorize: green -->

@@ -1,21 +1,21 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H
-
-
-
-#include <QMap>
-#include <QString>
-
-#include <com/ngos/devtools/code_generator/other/pcidevice.h>
-
-
-
-struct PciVendor
-{
-    QString                  description;
-    QMap<quint16, PciDevice> devices;       // PCI Device ID => PCI Device
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QMap>                                                                                                                                                                                          // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/other/pcidevice.h>                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct PciVendor                                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString                  description;                                                                                                                                                                // Colorize: green
+    QMap<quint16, PciDevice> devices;       // PCI Device ID => PCI Device                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_PCIVENDOR_H                                                                                                                                             // Colorize: green

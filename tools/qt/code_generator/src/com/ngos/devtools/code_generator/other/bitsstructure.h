@@ -1,23 +1,23 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H
-
-
-
-#include <QList>
-#include <QString>
-
-#include <com/ngos/devtools/code_generator/other/bitsfield.h>
-
-
-
-struct BitsStructure
-{
-    QString          includePath;
-    QString          name;
-    qint8            width;
-    QList<BitsField> fields;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H                                                                                                                                           // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/other/bitsfield.h>                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct BitsStructure                                                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString          includePath;                                                                                                                                                                        // Colorize: green
+    QString          name;                                                                                                                                                                               // Colorize: green
+    qint8            width;                                                                                                                                                                              // Colorize: green
+    QList<BitsField> fields;                                                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSSTRUCTURE_H                                                                                                                                         // Colorize: green

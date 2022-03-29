@@ -1,18 +1,18 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H
-
-
-
-#include <QString>
-
-
-
-struct BitsField
-{
-    QString name;
-    qint8   length;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H                                                                                                                                               // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QString>                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+struct BitsField                                                                                                                                                                                         // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString name;                                                                                                                                                                                        // Colorize: green
+    qint8   length;                                                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_OTHER_BITSFIELD_H                                                                                                                                             // Colorize: green

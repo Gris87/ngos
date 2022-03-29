@@ -1,30 +1,30 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H
-
-
-
-#include <QByteArray>
-#include <QStringList>
-
-
-
-class Generator
-{
-public:
-    Generator(); // TEST: NO
-
-    static qint64 getNumberOfGeneratedFiles(); // TEST: NO
-
-protected:
-    void addThreeBlankLines(QStringList &lines); // TEST: NO
-
-    bool save(const QString &path, const QStringList &lines); // TEST: NO
-    bool save(const QString &path, const QByteArray &bytes); // TEST: NO
-
-private:
-    static qint64 sNumberOfGeneratedFiles;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H                                                                                                                                          // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QByteArray>                                                                                                                                                                                    // Colorize: green
+#include <QStringList>                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class Generator                                                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    Generator(); // TEST: NO                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static qint64 getNumberOfGeneratedFiles(); // TEST: NO                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    void addThreeBlankLines(QStringList &lines); // TEST: NO                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool save(const QString &path, const QStringList &lines); // TEST: NO                                                                                                                                // Colorize: green
+    bool save(const QString &path, const QByteArray &bytes); // TEST: NO                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static qint64 sNumberOfGeneratedFiles;                                                                                                                                                               // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_GENERATOR_H                                                                                                                                        // Colorize: green
