@@ -1,28 +1,28 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/generator.h>
-
-#include <QList>
-
-
-
-class ConfigureGenerator: public Generator
-{
-public:
-    ConfigureGenerator(); // TEST: NO
-
-    static bool generateAll(const QString &path); // TEST: NO
-
-protected:
-    virtual bool generate(const QString &path); // TEST: NO
-
-private:
-    static QList<ConfigureGenerator *> sGenerators;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H                                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/generator.h>                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QList>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ConfigureGenerator: public Generator                                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    ConfigureGenerator(); // TEST: NO                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    static bool generateAll(const QString &path); // TEST: NO                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+protected:                                                                                                                                                                                               // Colorize: green
+    virtual bool generate(const QString &path) = 0; // TEST: NO                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    static QList<ConfigureGenerator *> sGenerators;                                                                                                                                                      // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_CONFIGUREGENERATOR_H                                                                                                                     // Colorize: green

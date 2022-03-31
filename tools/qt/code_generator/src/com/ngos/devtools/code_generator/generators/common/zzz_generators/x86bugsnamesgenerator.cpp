@@ -1,225 +1,264 @@
-#include "x86bugsnamesgenerator.h"
-
-#include <QFile>
-#include <QRegularExpression>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/x86bug.h"
-#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/generated/x86bugsnames.cpp"
-
-
-
-X86BugsNamesGenerator::X86BugsNamesGenerator()
-    : CommonGenerator()
-{
-    // Nothing
-}
-
-bool X86BugsNamesGenerator::generate(const QString &path)
-{
-    QFile file(path + ORIGINAL_FILE_PATH);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        Console::err(QString("Failed to open file: %1")
-                                .arg(path + ORIGINAL_FILE_PATH)
-        );
-
-        return false;
-    }
-
-    QStringList originalLines = QString::fromUtf8(file.readAll()).split('\n');
-    file.close();
-
-
-
-    QStringList bugs;
-
-    for (qint64 i = 0; i < originalLines.size(); ++i)
-    {
-        QString originalLine = originalLines.at(i).trimmed();
-
-        if (originalLine.contains("WORD_BIT("))
-        {
-            bugs.append(originalLine);
-        }
-    }
-
-
-
-    QStringList lines;
-
-    lines.append("#include \"x86bugsnames.h\"");
-    lines.append("");
-    lines.append("#include <com/ngos/shared/common/log/assert.h>");
-    lines.append("#include <com/ngos/shared/common/log/log.h>");
-    lines.append("#include <com/ngos/shared/common/ngos/utils.h>");
-
-    addThreeBlankLines(lines);
-
-
-
-    lines.append("const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32];");
-    addThreeBlankLines(lines);
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    lines.append("NgosStatus initX86BugsNames()");
-    lines.append("{"); // Ignore CppSingleCharVerifier
-    lines.append("    COMMON_LT((\"\"));");
-    addThreeBlankLines(lines);
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$"); // CPU_MELTDOWN = WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1)
-
-    QStringList wordBlock;
-
-
-
-    qint64  currentWord  = 0;
-    qint64  lastBugIndex = 0;
-    QString lastBugWord  = "";
-
-    while (lastBugIndex < bugs.size())
-    {
-        QString bug = bugs.at(lastBugIndex);
-
-
-
-        QRegularExpressionMatch match = regexp.match(bug);
-
-        if (!match.hasMatch())
-        {
-            Console::err(QString("Bug declaration is invalid: %1")
-                                    .arg(bug)
-            );
-
-            return false;
-        }
-
-
-
-        QString bugName    = match.captured(1).toLower();
-        QString bugWord    = match.captured(2);
-        QString bugBit     = match.captured(3);
-        QString bugAltName = match.captured(4);
-
-        if (!bugAltName.isNull())
-        {
-            bugName = bugAltName;
-        }
-        else
-        {
-            if (bugName.startsWith('_'))
-            {
-                bugName.remove(0, 1);
-            }
-        }
-
-
-
-        bool ok;
-
-        qint64 bit = bugBit.toLongLong(&ok);
-
-        if (!ok)
-        {
-            Console::err(QString("Bug declaration is invalid: %1")
-                                    .arg(bug)
-            );
-
-            return false;
-        }
-
-        if (bit < 0 || bit >= 32)
-        {
-            Console::err(QString("bit is invalid for bug: %1")
-                                    .arg(bug)
-            );
-
-            return false;
-        }
-
-
-
-        if (bugWord != lastBugWord)
-        {
-            if (lastBugWord != "")
-            {
-                if (currentWord > 0)
-                {
-                    lines.append("");
-                }
-
-                lines.append(QString("    // word %1")
-                                        .arg(currentWord)
-                );
-                lines.append("");
-
-                lines.append(wordBlock);
-                ++currentWord;
-            }
-
-            lastBugWord = bugWord;
-
-
-
-            wordBlock.clear();
-
-            for (qint64 i = 0; i < 32; ++i)
-            {
-                wordBlock.append(QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"\";")
-                                            .arg(bugWord)
-                                            .arg(i)
-                                            .arg('=', i > 9 ? 1 : 2, QChar(' '))
-                );
-            }
-        }
-
-
-
-        wordBlock[bit] = QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"%4\";")
-                                    .arg(bugWord)
-                                    .arg(bit)
-                                    .arg('=', bit > 9 ? 1 : 2, QChar(' '))
-                                    .arg(bugName);
-
-
-
-        ++lastBugIndex;
-    }
-
-
-
-    // Ignore CppAlignmentVerifier [BEGIN]
-    if (currentWord > 0)
-    {
-        lines.append("");
-    }
-
-    lines.append(QString("    // word %1")
-                            .arg(currentWord)
-    );
-    lines.append("");
-
-    lines.append(wordBlock);
-
-    addThreeBlankLines(lines);
-    lines.append("    return NgosStatus::OK;");
-    lines.append(QString('}'));
-    // Ignore CppAlignmentVerifier [END]
-
-
-
-    return save(path + FILE_PATH, lines);
-}
-
-
-
-X86BugsNamesGenerator x86BugsNamesGeneratorInstance;
+#include "x86bugsnamesgenerator.h"                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ORIGINAL_FILE_PATH "/src/os/shared/common/src/com/ngos/shared/common/cpu/x86bug.h"                                                                                                           // Colorize: green
+#define FILE_PATH          "/src/os/shared/common/src/com/ngos/shared/common/cpu/generated/x86bugsnames.cpp"                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+X86BugsNamesGenerator::X86BugsNamesGenerator()                                                                                                                                                   // Colorize: green
+    : CommonGenerator()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool X86BugsNamesGenerator::generate(const QString &path)                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QStringList originalLines;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read lines from original file                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path + ORIGINAL_FILE_PATH);                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to open file: %1")                                                                                                                                              // Colorize: green
+                                    .arg(path + ORIGINAL_FILE_PATH)                                                                                                                                      // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        originalLines = QString::fromUtf8(file.readAll()).split('\n');                                                                                                                                   // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList bugs;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Parse bugs from original file                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = 0; i < originalLines.size(); ++i)                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString originalLine = originalLines.at(i).trimmed();                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (originalLine.contains("WORD_BIT("))                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                bugs.append(originalLine);                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add include lines                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include \"x86bugsnames.h\"");                                                                                                                                                 // Colorize: green
+        lines.append("");                                                                                                                                                                                // Colorize: green
+        lines.append("#include <com/ngos/shared/common/log/assert.h>");                                                                                                                                  // Colorize: green
+        lines.append("#include <com/ngos/shared/common/log/log.h>");                                                                                                                                     // Colorize: green
+        lines.append("#include <com/ngos/shared/common/ngos/utils.h>");                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    lines.append("const char8* x86BugsNames[(u64)x86BugWord::MAXIMUM * 32];"); // TODO: Generate constants here                                                                                  // Colorize: green
+    addThreeBlankLines(lines);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Generate initX86BugsNames function                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        // Add function start lines                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            lines.append("NgosStatus initX86BugsNames()");                                                                                                                                           // Colorize: green
+            lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                           // Colorize: green
+            lines.append("    COMMON_LT((\"\"));");                                                                                                                                                      // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            addThreeBlankLines(lines);                                                                                                                                                                   // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QRegularExpression regexp("^ *(\\w+) *= *WORD_BIT\\(([\\w:]+), *(\\d+)\\),?(?: *\\/\\/[^\"]*\"([^\"]*)\")?.*$"); // CPU_MELTDOWN = WORD_BIT(x86BugWord::NGOS_COMMON_FLAGS, 1), // "meltdown"                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QStringList wordBlock;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        qint64  currentWord     = 0;                                                                                                                                                                     // Colorize: green
+        QString lastBugWord = "";                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < bugs.size(); ++i)                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString bug = bugs.at(i);                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QRegularExpressionMatch match = regexp.match(bug);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!match.hasMatch())                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err(QString("Bug declaration is invalid: %1")                                                                                                                               // Colorize: green
+                                        .arg(bug)                                                                                                                                                    // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return false;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString bugName    = match.captured(1).toLower();                                                                                                                                        // Colorize: green
+            QString bugWord    = match.captured(2);                                                                                                                                                  // Colorize: green
+            QString bugBit     = match.captured(3);                                                                                                                                                  // Colorize: green
+            QString bugAltName = match.captured(4);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get bug name                                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!bugAltName.isNull())                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    bugName = bugAltName;                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (bugName.startsWith('_'))                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        bugName.remove(0, 1);                                                                                                                                                        // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qint64 bit;                                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get bug bit                                                                                                                                                                           // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                bool ok;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                bit = bugBit.toLongLong(&ok);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!ok)                                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(QString("Bug declaration is invalid: %1")                                                                                                                           // Colorize: green
+                                            .arg(bug)                                                                                                                                                // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (bit < 0 || bit >= 32)                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(QString("bit is invalid for bug: %1")                                                                                                                               // Colorize: green
+                                            .arg(bug)                                                                                                                                                // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (bugWord != lastBugWord)                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (lastBugWord != "")                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Add word block to lines                                                                                                                                                           // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (currentWord > 0)                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            lines.append("");                                                                                                                                                            // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        lines.append(QString("    // word %1")                                                                                                                                           // Colorize: green
+                                                .arg(currentWord)                                                                                                                                        // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                        lines.append("");                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        lines.append(wordBlock);                                                                                                                                                         // Colorize: green
+                        ++currentWord;                                                                                                                                                                   // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lastBugWord = bugWord;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Fill word block with empty strings                                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    wordBlock.clear();                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    for (qint64 i = 0; i < 32; ++i)                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        wordBlock.append(QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"\";")                                                                                                      // Colorize: green
+                                                    .arg(bugWord)                                                                                                                                    // Colorize: green
+                                                    .arg(i)                                                                                                                                              // Colorize: green
+                                                    .arg('=', i > 9 ? 1 : 2, QChar(' '))                                                                                                                 // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Replace line in word block for specified bit                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                wordBlock[bit] = QString("    x86BugsNames[WORD_BIT(%1, %2)] %3 \"%4\";")                                                                                                            // Colorize: green
+                                            .arg(bugWord)                                                                                                                                            // Colorize: green
+                                            .arg(bit)                                                                                                                                                    // Colorize: green
+                                            .arg('=', bit > 9 ? 1 : 2, QChar(' '))                                                                                                                       // Colorize: green
+                                            .arg(bugName);                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add word block to lines                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (currentWord > 0)                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append("");                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(QString("    // word %1")                                                                                                                                                       // Colorize: green
+                                    .arg(currentWord)                                                                                                                                                    // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+            lines.append("");                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append(wordBlock);                                                                                                                                                                     // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add function end lines                                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                       // Colorize: green
+            addThreeBlankLines(lines);                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            lines.append("    return NgosStatus::OK;");                                                                                                                                                  // Colorize: green
+            lines.append(QString('}'));                                                                                                                                                                  // Colorize: green
+            // Ignore CppAlignmentVerifier [END]                                                                                                                                                         // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path + FILE_PATH, lines);                                                                                                                                                                // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+X86BugsNamesGenerator x86BugsNamesGeneratorInstance;                                                                                                                                             // Colorize: green

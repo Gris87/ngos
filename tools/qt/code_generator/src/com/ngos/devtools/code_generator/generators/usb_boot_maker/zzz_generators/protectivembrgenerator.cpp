@@ -1,95 +1,112 @@
-#include "protectivembrgenerator.h"
-
-#include <QFile>
-#include <QProcess>
-#include <QTemporaryFile>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define ASM_PATH  "/assets/binaries/protective_mbr.S"
-#define FILE_PATH "/assets/binaries/protective_mbr.bin"
-
-
-
-ProtectiveMbrGenerator::ProtectiveMbrGenerator()
-    : UsbBootMakerGenerator()
-{
-    // Nothing
-}
-
-bool ProtectiveMbrGenerator::generate(const QString &path)
-{
-    QTemporaryFile tempFile1;
-    QTemporaryFile tempFile2;
-
-
-
-    tempFile1.open();
-    tempFile2.open();
-
-    QString tempFile1Path = tempFile1.fileName();
-    QString tempFile2Path = tempFile2.fileName();
-
-    tempFile1.close();
-    tempFile2.close();
-
-
-
-    QString asmPath = path + ASM_PATH;
-
-    if (!QFile(asmPath).exists())
-    {
-        Console::err(QString("File %1 not found")
-                                .arg(asmPath)
-        );
-
-        return false;
-    }
-
-
-
-    QProcess process;
-    process.start("gcc", QStringList() << "-c" << asmPath << "-o" << tempFile1Path);
-    process.waitForFinished(-1);
-
-    if (process.exitCode() != 0)
-    {
-        Console::err(QString("Failed to compile %1:\n%2")
-                                .arg(asmPath)
-                                .arg(QString::fromUtf8(process.readAllStandardError()))
-        );
-
-        return false;
-    }
-
-
-
-    process.start("ld", QStringList() << "--oformat" << "binary" << "-T" << path + "/../../../src/os/boot/linker.ld" << tempFile1Path << "-o" << tempFile2Path);
-    process.waitForFinished(-1);
-
-    if (process.exitCode() != 0)
-    {
-        Console::err(QString("Failed to compile %1:\n%2")
-                                .arg(asmPath)
-                                .arg(QString::fromUtf8(process.readAllStandardError()))
-        );
-
-        return false;
-    }
-
-
-
-    tempFile2.open();
-    QByteArray data = tempFile2.readAll();
-    tempFile2.close();
-
-
-
-    return save(path + FILE_PATH, data);
-}
-
-
-
-ProtectiveMbrGenerator protectiveMbrGeneratorInstance;
+#include "protectivembrgenerator.h"                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QProcess>                                                                                                                                                                                      // Colorize: green
+#include <QTemporaryFile>                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define ASM_PATH  "/assets/binaries/protective_mbr.S"                                                                                                                                                    // Colorize: green
+#define FILE_PATH "/assets/binaries/protective_mbr.bin"                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ProtectiveMbrGenerator::ProtectiveMbrGenerator()                                                                                                                                                         // Colorize: green
+    : UsbBootMakerGenerator()                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ProtectiveMbrGenerator::generate(const QString &path)                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QTemporaryFile tempFile1;                                                                                                                                                                            // Colorize: green
+    QTemporaryFile tempFile2;                                                                                                                                                                            // Colorize: green
+    QString        tempFile1Path;                                                                                                                                                                        // Colorize: green
+    QString        tempFile2Path;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get path to temp files                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile1.open();                                                                                                                                                                                // Colorize: green
+        tempFile2.open();                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        tempFile1Path = tempFile1.fileName();                                                                                                                                                            // Colorize: green
+        tempFile2Path = tempFile2.fileName();                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        tempFile1.close();                                                                                                                                                                               // Colorize: green
+        tempFile2.close();                                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString asmPath = path + ASM_PATH;                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!QFile(asmPath).exists())                                                                                                                                                                        // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::err(QString("File %1 not found")                                                                                                                                                        // Colorize: green
+                                .arg(asmPath)                                                                                                                                                            // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Compile assembler code to object file                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QProcess process;                                                                                                                                                                                // Colorize: green
+        process.start("gcc", QStringList() << "-c" << asmPath << "-o" << tempFile1Path);                                                                                                                 // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (process.exitCode() != 0)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to compile %1:\n%2")                                                                                                                                            // Colorize: green
+                                    .arg(asmPath)                                                                                                                                                        // Colorize: green
+                                    .arg(QString::fromUtf8(process.readAllStandardError()))                                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Create binary file from object file                                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QProcess process;                                                                                                                                                                                // Colorize: green
+        process.start("ld", QStringList() << "--oformat" << "binary" << "-T" << path + "/../../../src/os/boot/linker.ld" << tempFile1Path << "-o" << tempFile2Path);                                     // Colorize: green
+        process.waitForFinished(-1);                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (process.exitCode() != 0)                                                                                                                                                                     // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to compile %1:\n%2")                                                                                                                                            // Colorize: green
+                                    .arg(asmPath)                                                                                                                                                        // Colorize: green
+                                    .arg(QString::fromUtf8(process.readAllStandardError()))                                                                                                              // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray data;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Load binary file                                                                                                                                                                                  // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        tempFile2.open();                                                                                                                                                                                // Colorize: green
+        data = tempFile2.readAll();                                                                                                                                                                      // Colorize: green
+        tempFile2.close();                                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path + FILE_PATH, data);                                                                                                                                                                 // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ProtectiveMbrGenerator protectiveMbrGeneratorInstance;                                                                                                                                                   // Colorize: green

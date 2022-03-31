@@ -1,207 +1,234 @@
-#include "consoleglyphgenerator.h"
-
-#include <QDataStream>
-#include <QFile>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-#define FILE_PATH "assets/glyphs/console.bin"
-
-#define FONT_SIZE   18
-#define START_INDEX 0x20
-#define END_INDEX   0x7F
-
-
-
-ConsoleGlyphGenerator::ConsoleGlyphGenerator()
-    : AssetsGenerator()
-{
-    // Nothing
-}
-
-bool ConsoleGlyphGenerator::generate(const QString &path)
-{
-    QFile fontFile(":/assets/fonts/console.ttf"); // Ignore CppPunctuationVerifier
-
-    if (!fontFile.open(QIODevice::ReadOnly))
-    {
-        Console::err("Failed to open file assets/fonts/console.ttf");
-
-        return false;
-    }
-
-    QByteArray fontBytes = fontFile.readAll();
-    fontFile.close();
-
-
-
-    FT_Library library;
-    FT_Face    face;
-
-
-
-    FT_Error error = FT_Init_FreeType(&library);
-
-    if (error)
-    {
-        Console::err(QString("Failed to initialize FreeType library. Error: %1")
-                                .arg(error)
-        );
-
-        return false;
-    }
-
-
-
-    error = FT_New_Memory_Face(library, (FT_Byte *)fontBytes.data(), fontBytes.size(), 0, &face);
-
-    if (error)
-    {
-        Console::err(QString("Failed to load face from memory. Error: %1")
-                                .arg(error)
-        );
-
-        return false;
-    }
-
-
-
-    error = FT_Set_Char_Size(face, 0, FONT_SIZE * 64, 0, 0);
-
-    if (error)
-    {
-        Console::err(QString("Failed to change font size. Error: %1")
-                                .arg(error)
-        );
-
-        return false;
-    }
-
-
-
-    QByteArray offsets((END_INDEX - START_INDEX) * 2, 0);
-
-
-
-    QByteArray  glyphData;
-    QDataStream glyphDataStream(&glyphData, QIODevice::WriteOnly);
-
-    glyphDataStream.setByteOrder(QDataStream::LittleEndian);
-
-
-
-    FT_GlyphSlot slot = face->glyph;
-
-    for (qint64 i = START_INDEX; i < END_INDEX; ++i)
-    {
-        quint64 offset = offsets.size() + glyphData.size();
-
-        if (offset > 65535)
-        {
-            Console::err(QString("quint16 is not enough for offsets"));
-
-            return false;
-        }
-
-        *(quint16 *)((quint64)offsets.data() + ((i - START_INDEX) * 2)) = offset;
-
-
-
-        FT_UInt glyphIndex = FT_Get_Char_Index(face, i);
-
-
-
-        error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT);
-
-        if (error)
-        {
-            Console::err(QString("Failed to load glyph for char 0x%1. Error: %2")
-                                    .arg(i, 2, 16, QChar('0'))
-                                    .arg(error)
-            );
-
-            continue;
-        }
-
-
-
-        error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
-
-        if (error)
-        {
-            Console::err(QString("Failed to render glyph for char 0x%1. Error: %2")
-                                    .arg(i, 2, 16, QChar('0'))
-                                    .arg(error)
-            );
-
-            continue;
-        }
-
-
-
-        glyphDataStream << (quint8)(slot->advance.x / 64);
-        glyphDataStream << (qint8)slot->bitmap_left;
-        glyphDataStream << (qint8)slot->bitmap_top;
-        glyphDataStream << (quint8)slot->bitmap.width;
-        glyphDataStream << (quint8)slot->bitmap.rows;
-        glyphDataStream.writeRawData((char *)slot->bitmap.buffer, slot->bitmap.rows * slot->bitmap.pitch);
-    }
-
-
-
-    error = FT_Done_Face(face);
-
-    if (error)
-    {
-        Console::err(QString("Failed to free face. Error: %1")
-                                .arg(error)
-        );
-
-        return false;
-    }
-
-
-
-    error = FT_Done_FreeType(library);
-
-    if (error)
-    {
-        Console::err(QString("Failed to free FreeType library. Error: %1")
-                                .arg(error)
-        );
-
-        return false;
-    }
-
-
-
-    QByteArray data = offsets + glyphData;
-
-    return save(path  + "/bootloader/"                       + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/cputest/"         + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/devicemanager/"   + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/hddtest/"         + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/memorytest/"      + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/networktest/"     + FILE_PATH, data)
-            &&
-            save(path + "/bootloader_tools/partitionwizard/" + FILE_PATH, data)
-            &&
-            save(path + "/configure/"                        + FILE_PATH, data)
-            &&
-            save(path + "/installer/"                        + FILE_PATH, data)
-            &&
-            save(path + "/kernel/"                           + FILE_PATH, data);
-}
-
-
-
-ConsoleGlyphGenerator consoleGlyphGeneratorInstance;
+#include "consoleglyphgenerator.h"                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDataStream>                                                                                                                                                                                   // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <ft2build.h>                                                                                                                                                                                    // Colorize: green
+#include FT_FREETYPE_H                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define FILE_PATH "assets/glyphs/console.bin"                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define FONT_SIZE   18                                                                                                                                                                                   // Colorize: green
+#define START_INDEX 0x20                                                                                                                                                                                 // Colorize: green
+#define END_INDEX   0x7F                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ConsoleGlyphGenerator::ConsoleGlyphGenerator()                                                                                                                                                           // Colorize: green
+    : AssetsGenerator()                                                                                                                                                                                  // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool ConsoleGlyphGenerator::generate(const QString &path)                                                                                                                                                // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QByteArray fontBytes;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read bytes from font file                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile fontFile(":/assets/fonts/console.ttf"); // Ignore CppPunctuationVerifier                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!fontFile.open(QIODevice::ReadOnly))                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err("Failed to open file assets/fonts/console.ttf");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QByteArray fontBytes = fontFile.readAll();                                                                                                                                                       // Colorize: green
+        fontFile.close();                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    FT_Library library;                                                                                                                                                                                  // Colorize: green
+    FT_Face    face;                                                                                                                                                                                     // Colorize: green
+    FT_Error   error;                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Initialize FreeType library                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        error = FT_Init_FreeType(&library);                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (error)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to initialize FreeType library. Error: %1")                                                                                                                     // Colorize: green
+                                    .arg(error)                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Load face from memory                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        error = FT_New_Memory_Face(library, (FT_Byte *)fontBytes.data(), fontBytes.size(), 0, &face);                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (error)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to load face from memory. Error: %1")                                                                                                                           // Colorize: green
+                                    .arg(error)                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Set font size                                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        error = FT_Set_Char_Size(face, 0, FONT_SIZE * 64, 0, 0);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (error)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to change font size. Error: %1")                                                                                                                                // Colorize: green
+                                    .arg(error)                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray  offsetsData((END_INDEX - START_INDEX + 1) * sizeof(quint16), 0);                                                                                                                         // Colorize: green
+    quint16    *offsets = reinterpret_cast<quint16 *>(offsetsData.data());                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray  glyphData;                                                                                                                                                                               // Colorize: green
+    QDataStream glyphDataStream(&glyphData, QIODevice::WriteOnly);                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    glyphDataStream.setByteOrder(QDataStream::LittleEndian);                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Draw glyphs and store data to offsets and glyphData                                                                                                                                               // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        for (qint64 i = START_INDEX; i <= END_INDEX; ++i)                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            // Put offset to buffer                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint64 offset = offsetsData.size() + glyphData.size();                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (offset > 65535)                                                                                                                                                                      // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(QString("quint16 is not enough for offsets"));                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                offsets[i - START_INDEX] = offset;                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Load glyph                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                error = FT_Load_Glyph(face, FT_Get_Char_Index(face, i), FT_LOAD_DEFAULT);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (error)                                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(QString("Failed to load glyph for char 0x%1. Error: %2")                                                                                                                // Colorize: green
+                                            .arg(i, 2, 16, QChar('0'))                                                                                                                                   // Colorize: green
+                                            .arg(error)                                                                                                                                                  // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Render glyph                                                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (error)                                                                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err(QString("Failed to render glyph for char 0x%1. Error: %2")                                                                                                              // Colorize: green
+                                            .arg(i, 2, 16, QChar('0'))                                                                                                                                   // Colorize: green
+                                            .arg(error)                                                                                                                                                  // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    continue;                                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Store glyph data                                                                                                                                                                          // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                glyphDataStream << (quint8)(face->glyph->advance.x / 64);                                                                                                                                // Colorize: green
+                glyphDataStream << (qint8)face->glyph->bitmap_left;                                                                                                                                      // Colorize: green
+                glyphDataStream << (qint8)face->glyph->bitmap_top;                                                                                                                                       // Colorize: green
+                glyphDataStream << (quint8)face->glyph->bitmap.width;                                                                                                                                    // Colorize: green
+                glyphDataStream << (quint8)face->glyph->bitmap.rows;                                                                                                                                     // Colorize: green
+                glyphDataStream.writeRawData((char *)face->glyph->bitmap.buffer, face->glyph->bitmap.rows * face->glyph->bitmap.pitch);                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Free face                                                                                                                                                                                         // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        error = FT_Done_Face(face);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (error)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to free face. Error: %1")                                                                                                                                       // Colorize: green
+                                    .arg(error)                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Free FreeType library                                                                                                                                                                             // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        error = FT_Done_FreeType(library);                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (error)                                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to free FreeType library. Error: %1")                                                                                                                           // Colorize: green
+                                    .arg(error)                                                                                                                                                          // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QByteArray data = offsetsData + glyphData;                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(path  + "/bootloader/"                       + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/cputest/"         + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/devicemanager/"   + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/hddtest/"         + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/memorytest/"      + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/networktest/"     + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/bootloader_tools/partitionwizard/" + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/configure/"                        + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/installer/"                        + FILE_PATH, data)                                                                                                                          // Colorize: green
+            &&                                                                                                                                                                                           // Colorize: green
+            save(path + "/kernel/"                           + FILE_PATH, data);                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+ConsoleGlyphGenerator consoleGlyphGeneratorInstance;                                                                                                                                                     // Colorize: green

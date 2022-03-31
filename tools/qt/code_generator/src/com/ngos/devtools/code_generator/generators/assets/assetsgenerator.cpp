@@ -1,50 +1,45 @@
-#include "assetsgenerator.h"
-
-#include <QDir>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-QList<AssetsGenerator *> AssetsGenerator::sGenerators;
-
-
-
-AssetsGenerator::AssetsGenerator()
-    : Generator()
-{
-    sGenerators.append(this);
-}
-
-bool AssetsGenerator::generateAll(const QString &path)
-{
-    QString osPath = path + "/src/os";
-
-    if (!QDir(osPath).exists())
-    {
-        Console::err(QString("%1 not found")
-                                .arg(osPath)
-        );
-
-        return false;
-    }
-
-
-
-    for (qint64 i = 0; i < sGenerators.size(); ++i)
-    {
-        if (!sGenerators.at(i)->generate(osPath))
-        {
-            return false;
-        }
-    }
-
-
-
-    return true;
-}
-
-bool AssetsGenerator::generate(const QString &/*path*/)
-{
-    return false;
-}
+#include "assetsgenerator.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<AssetsGenerator *> AssetsGenerator::sGenerators;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+AssetsGenerator::AssetsGenerator()                                                                                                                                                                       // Colorize: green
+    : Generator()                                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sGenerators.append(this);                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool AssetsGenerator::generateAll(const QString &path)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString osPath = path + "/src/os";                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    if (!QDir(osPath).exists())                                                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::err(QString("%1 not found")                                                                                                                                                             // Colorize: green
+                                .arg(osPath)                                                                                                                                                             // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < sGenerators.size(); ++i)                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!sGenerators.at(i)->generate(osPath))                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

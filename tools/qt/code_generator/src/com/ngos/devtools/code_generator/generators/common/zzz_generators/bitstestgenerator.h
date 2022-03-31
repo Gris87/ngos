@@ -1,35 +1,34 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
-
-#include <QRegularExpression>
-
-#include <com/ngos/devtools/code_generator/other/bitsstructure.h>
-#include <com/ngos/shared/common/ngos/types.h>
-
-
-
-class BitsTestGenerator: public CommonGenerator
-{
-public:
-    BitsTestGenerator(); // TEST: NO
-
-    bool generate(const QString &path) override; // TEST: NO
-
-private:
-    bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO
-    bool addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue = false, qint64 value = 0); // TEST: NO
-    bool obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits); // TEST: NO
-    bool obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits); // TEST: NO
-
-    static const char8 *sFieldShortcuts;
-    QRegularExpression  mDefinitionRegExp;
-    QRegularExpression  mBitsDefinitionRegExp;
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H                                                                                                            // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QRegularExpression>                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/other/bitsstructure.h>                                                                                                                                        // Colorize: green
+#include <com/ngos/shared/common/ngos/types.h>                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class BitsTestGenerator: public CommonGenerator                                                                                                                                                          // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    BitsTestGenerator(); // TEST: NO                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool generate(const QString &path) override; // TEST: NO                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+private:                                                                                                                                                                                                 // Colorize: green
+    bool generateTests(const QString &path, const QString &destinationFilePath); // TEST: NO                                                                                                             // Colorize: green
+    bool addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue = false, qint64 value = 0); // TEST: NO                                                                 // Colorize: green
+    bool obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits); // TEST: NO                                                                                                              // Colorize: green
+    bool obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits); // TEST: NO                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QRegularExpression mDefinitionRegExp;                                                                                                                                                               // Colorize: green
+    QRegularExpression mBitsDefinitionRegExp;                                                                                                                                                           // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_BITSTESTGENERATOR_H                                                                                                          // Colorize: green

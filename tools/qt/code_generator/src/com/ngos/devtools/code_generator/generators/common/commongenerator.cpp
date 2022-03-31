@@ -1,48 +1,43 @@
-#include "commongenerator.h"
-
-#include <QDir>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-QList<CommonGenerator *> CommonGenerator::sGenerators;
-
-
-
-CommonGenerator::CommonGenerator()
-    : Generator()
-{
-    sGenerators.append(this);
-}
-
-bool CommonGenerator::generateAll(const QString &path)
-{
-    if (!QDir(path).exists())
-    {
-        Console::err(QString("%1 not found")
-                                .arg(path)
-        );
-
-        return false;
-    }
-
-
-
-    for (qint64 i = 0; i < sGenerators.size(); ++i)
-    {
-        if (!sGenerators.at(i)->generate(path))
-        {
-            return false;
-        }
-    }
-
-
-
-    return true;
-}
-
-bool CommonGenerator::generate(const QString &/*path*/)
-{
-    return false;
-}
+#include "commongenerator.h"                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+QList<CommonGenerator *> CommonGenerator::sGenerators;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+CommonGenerator::CommonGenerator()                                                                                                                                                                       // Colorize: green
+    : Generator()                                                                                                                                                                                        // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    sGenerators.append(this);                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool CommonGenerator::generateAll(const QString &path)                                                                                                                                                   // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    if (!QDir(path).exists())                                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        Console::err(QString("%1 not found")                                                                                                                                                             // Colorize: green
+                                .arg(path)                                                                                                                                                               // Colorize: green
+        );                                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        return false;                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < sGenerators.size(); ++i)                                                                                                                                                      // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!sGenerators.at(i)->generate(path))                                                                                                                                                          // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green

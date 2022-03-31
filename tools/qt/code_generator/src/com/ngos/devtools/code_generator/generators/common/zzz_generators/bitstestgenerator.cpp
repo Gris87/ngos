@@ -1,598 +1,674 @@
-#include "bitstestgenerator.h"
-
-#include <QCryptographicHash>
-#include <QDir>
-#include <QFile>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-const char8 *BitsTestGenerator::sFieldShortcuts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&*+-()[]";
-
-
-
-BitsTestGenerator::BitsTestGenerator()
-    : CommonGenerator()
-    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$") // struct A ; class B; union C ; enum class D
-    , mBitsDefinitionRegExp("^ *\\w+ +(\\w+) *: *(\\d+);.*$")                 // i64 a: 5;
-{
-    // Nothing
-}
-
-bool BitsTestGenerator::generate(const QString &path)
-{
-    return generateTests(path + "/src/os/shared", path + "/src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/generated/com/ngos/shared/common/types.h");
-}
-
-bool BitsTestGenerator::generateTests(const QString &path, const QString &destinationFilePath)
-{
-    QList<BitsStructure> bits;
-
-    if (!obtainBitsFromFolder(path, bits))
-    {
-        Console::err("Failed to get structures with bits");
-
-        return false;
-    }
-
-
-
-    QStringList lines;
-
-    lines.append("#include <buildconfig.h>");
-    lines.append("#include <com/ngos/shared/uefibase/testengine.h>");
-
-    for (qint64 i = 0; i < bits.size(); ++i)
-    {
-        lines.append(QString("#include <%1>")
-                                .arg(bits.at(i).includePath)
-        );
-    }
-
-    lines.sort();
-
-    addThreeBlankLines(lines);
-
-
-
-    lines.append("#if NGOS_BUILD_TEST_MODE == OPTION_YES");
-
-    addThreeBlankLines(lines);
-
-
-
-    lines.append("TEST_CASES(section0, generated_com_ngos_shared_common_types);");
-    lines.append("{"); // Ignore CppSingleCharVerifier
-
-    for (qint64 i = 0; i < bits.size(); ++i)
-    {
-        const BitsStructure &structure = bits.at(i);
-
-
-
-        // Ignore CppAlignmentVerifier [BEGIN]
-        lines.append(QString("    TEST_CASE(\"%1\");")
-                                .arg(structure.name)
-        );
-        lines.append("    {");
-        // Ignore CppAlignmentVerifier [END]
-
-
-
-        lines.append(QString("        %1 temp;")
-                                .arg(structure.name)
-        );
-
-        addThreeBlankLines(lines);
-
-        lines.append(QString("        // %1:")
-                                .arg(structure.name)
-        );
-
-
-
-        lines.append("        //");
-
-        if (!addBitsStructureLines(lines, structure))
-        {
-            Console::err("Failed to add bits structure");
-
-            return false;
-        }
-
-        lines.append("        //");
-
-
-
-        qint64 maximumFieldLength = 0;
-
-        for (qint64 j = 0; j < structure.fields.size(); ++j)
-        {
-            qint64 fieldLength = structure.fields.at(j).name.length();
-
-            if (fieldLength > maximumFieldLength)
-            {
-                maximumFieldLength = fieldLength;
-            }
-        }
-
-
-
-        for (qint64 j = 0; j < structure.fields.size(); ++j)
-        {
-            const BitsField &field = structure.fields.at(j);
-
-            lines.append(QString("        // %1 : %2 '%3'")
-                                    .arg(field.name, -maximumFieldLength)
-                                    .arg(field.length, -2)
-                                    .arg(sFieldShortcuts[j])
-            );
-        }
-
-        addThreeBlankLines(lines);
-
-
-
-        QCryptographicHash hash(QCryptographicHash::Md5);
-        hash.addData(structure.name.toUtf8());
-
-        qint64 value = *((qint64 *)hash.result().data());
-
-
-
-        if (structure.width < 64)
-        {
-            value = value & ((1ULL << structure.width) - 1);
-        }
-
-
-
-        if (!addBitsStructureLines(lines, structure, true, value))
-        {
-            Console::err("Failed to add bits structure");
-
-            return false;
-        }
-
-        lines.append(QString("        temp.value%1 = 0x%2;")
-                                .arg(structure.width)
-                                .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
-        );
-        lines.append("");
-
-
-
-        qint8 offset = 0;
-
-        for (qint64 j = 0; j < structure.fields.size(); ++j)
-        {
-            const BitsField &field = structure.fields.at(j);
-
-
-
-            lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);")
-                                    .arg(field.name)
-                                    .arg("", maximumFieldLength - field.name.length())
-                                    .arg((value >> offset) & ((1ULL << field.length) - 1))
-            );
-
-            offset += field.length;
-        }
-
-
-
-        addThreeBlankLines(lines);
-
-
-
-        offset = 0;
-
-        for (qint64 j = 0; j < structure.fields.size(); ++j)
-        {
-            const BitsField &field = structure.fields.at(j);
-
-
-
-            value           ^= ((1ULL << field.length) - 1) << offset;
-            qint64 newValue =  (value >> offset) & ((1ULL << field.length) - 1);
-
-            offset += field.length;
-
-
-
-            if (!addBitsStructureLines(lines, structure, true, value))
-            {
-                Console::err("Failed to add bits structure");
-
-                return false;
-            }
-
-
-
-            lines.append(QString("        temp.%1 = %2;")
-                                    .arg(field.name)
-                                    .arg(newValue)
-            );
-            lines.append("");
-            lines.append(QString("        TEST_ASSERT_EQUALS(temp.value%1, 0x%2);")
-                                    .arg(structure.width)
-                                    .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))
-            );
-
-
-
-            if (j < structure.fields.size() - 1)
-            {
-                addThreeBlankLines(lines);
-            }
-        }
-
-
-
-        lines.append("    }");
-        lines.append("    TEST_CASE_END();");
-
-
-
-        if (i < bits.size() - 1)
-        {
-            addThreeBlankLines(lines);
-        }
-    }
-
-    lines.append("}"); // Ignore CppSingleCharVerifier
-    lines.append("TEST_CASES_END();");
-
-
-
-    addThreeBlankLines(lines);
-
-    lines.append("#endif");
-
-
-
-    return save(destinationFilePath, lines);
-}
-
-bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue, qint64 value)
-{
-    QString     contentLine     = "|"; // Ignore CppSingleCharVerifier
-    qint8       remainingLength = 8;
-    qint8       offset          = structure.width;
-
-    for (qint64 i = structure.fields.size() - 1; i >= 0; --i)
-    {
-        const BitsField &field = structure.fields.at(i);
-
-
-
-        QString fieldContent;
-
-        if (useValue)
-        {
-            offset -= field.length;
-
-            fieldContent = QString("%1")
-                                    .arg((value >> offset) & ((1ULL << field.length) - 1), field.length, 2, QChar('0'));
-        }
-        else
-        {
-            fieldContent = QString(field.length, QChar(sFieldShortcuts[i]));
-        }
-
-
-
-        while (fieldContent.length() > remainingLength)
-        {
-            if (remainingLength > 0)
-            {
-                qint8 freeSpaceLength = remainingLength * 3 - 1;
-
-                QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
-                QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
-
-                contentLine.append(spaces);
-                contentLine.append(fieldContent.left(remainingLength));
-                contentLine.append(spaces2);
-                contentLine.append("|"); // Ignore CppSingleCharVerifier
-
-                fieldContent = fieldContent.mid(remainingLength);
-            }
-
-            lines.append(QString("        // %1")
-                                    .arg(contentLine)
-            );
-
-            contentLine     = "|"; // Ignore CppSingleCharVerifier
-            remainingLength = 8;
-        }
-
-
-
-        qint8 freeSpaceLength = fieldContent.length() * 3 - 1;
-
-        QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');
-        QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');
-
-        contentLine.append(spaces);
-        contentLine.append(fieldContent.left(remainingLength));
-        contentLine.append(spaces2);
-        contentLine.append("|"); // Ignore CppSingleCharVerifier
-
-        remainingLength -= fieldContent.length();
-    }
-
-    lines.append(QString("        // %1")
-                            .arg(contentLine)
-    );
-
-
-
-    return true;
-}
-
-bool BitsTestGenerator::obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits)
-{
-    QFileInfoList files = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-
-    for (qint64 i = 0; i < files.size(); ++i)
-    {
-        QFileInfo file = files.at(i);
-
-        QString fileName = file.fileName();
-
-        if (file.isDir())
-        {
-            if (!obtainBitsFromFolder(path + '/' + fileName, bits))
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if (fileName.endsWith(".h"))
-            {
-                if (!obtainBitsFromFile(path + '/' + fileName, bits))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return true;
-}
-
-bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits)
-{
-    if (
-        path.contains("/src/os/shared/common/src/com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelementtype.h")
-        ||
-        path.contains("/src/os/shared/common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h")
-       )
-    {
-        return true;
-    }
-
-
-
-    QFile file(path);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return false;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        lines[i] = lines.at(i).trimmed();
-    }
-
-
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString line = lines.at(i);
-
-        QRegularExpressionMatch match = mDefinitionRegExp.match(line);
-
-        if (match.hasMatch())
-        {
-            BitsStructure structure;
-
-            qint8 totalLength = 0;
-
-
-
-            qint64 level = 0;
-            qint64 j     = i;
-
-            do
-            {
-                ++j;
-
-                if (j >= lines.size())
-                {
-                    break;
-                }
-
-                QString anotherLine = lines.at(j);
-
-                if (anotherLine == '{')
-                {
-                    ++level;
-                }
-                else
-                if (
-                    anotherLine == '}'
-                    ||
-                    anotherLine == "};"
-                    ||
-                    anotherLine == "} __attribute__((packed));"
-                   )
-                {
-                    --level;
-
-                    if (level <= 0)
-                    {
-                        break;
-                    }
-                }
-
-
-
-                QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(anotherLine);
-
-                if (match2.hasMatch())
-                {
-                    bool ok;
-
-
-
-                    BitsField field;
-
-                    field.name   = match2.captured(1);
-                    field.length = match2.captured(2).toShort(&ok);
-
-                    if (
-                        !ok
-                        ||
-                        field.length <= 0
-                        ||
-                        field.length >= 64
-                       )
-                    {
-                        Console::err(QString("Failed to parse bits length in line: %1")
-                                                .arg(anotherLine)
-                        );
-
-                        return false;
-                    }
-
-                    totalLength += field.length;
-
-
-
-                    structure.fields.append(field);
-                }
-            } while(true);
-
-
-
-            if (!structure.fields.isEmpty())
-            {
-                qint64 index;
-
-
-
-                QString parentFolder = path;
-
-                do
-                {
-                    index = parentFolder.lastIndexOf('/');
-
-                    if (index < 0)
-                    {
-                        Console::err(QString("Failed to get relative path for \"%1\"")
-                                                .arg(path)
-                        );
-
-                        return false;
-                    }
-
-                    parentFolder = parentFolder.left(index);
-
-
-
-                    if (
-                        QFile::exists(parentFolder + "/../../../Makefile")
-                        ||
-                        !QDir(parentFolder + "/../../../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()
-                       )
-                    {
-                        break;
-                    }
-                } while(true);
-
-
-
-                structure.name        = match.captured(1);
-                structure.includePath = path.mid(index + 1);
-
-
-
-                structure.width = 0;
-
-                for (qint64 k = j - 1; k > i; --k)
-                {
-                    QString anotherLine = lines.at(k);
-
-                    if (anotherLine.contains("value"))
-                    {
-                        if (anotherLine.contains("value8;"))
-                        {
-                            structure.width = 8;
-                        }
-                        else
-                        if (anotherLine.contains("value16;"))
-                        {
-                            structure.width = 16;
-                        }
-                        else
-                        if (anotherLine.contains("value32;"))
-                        {
-                            structure.width = 32;
-                        }
-                        else
-                        if (anotherLine.contains("value64;"))
-                        {
-                            structure.width = 64;
-                        }
-
-                        break;
-                    }
-                }
-
-                if (structure.width <= 0)
-                {
-                    Console::err(QString("Failed to get value attribute for structure %1")
-                                            .arg(structure.name)
-                    );
-
-                    return false;
-                }
-
-
-
-                if (structure.width != totalLength)
-                {
-                    Console::err(QString("Total length of bits doesn't match to bits width for structure %1")
-                                            .arg(structure.name)
-                    );
-
-                    return false;
-                }
-
-
-
-                bits.append(structure);
-            }
-        }
-    }
-
-
-
-    return true;
-}
-
-
-
-BitsTestGenerator bitsTestGeneratorInstance;
+#include "bitstestgenerator.h"                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QCryptographicHash>                                                                                                                                                                            // Colorize: green
+#include <QDir>                                                                                                                                                                                          // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#define FILE_PATH "/src/os/shared/uefibase/test/com/ngos/shared/uefibase/sections/section0/generated/com/ngos/shared/common/types.h"                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+const char8 *FIELD_SHORTCUTS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&*+-()[]";                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BitsTestGenerator::BitsTestGenerator()                                                                                                                                                                   // Colorize: green
+    : CommonGenerator()                                                                                                                                                                                  // Colorize: green
+    , mDefinitionRegExp("^(?:struct|class|union|enum(?: class)?) +(\\w+).*$") // struct A ; class B; union C ; enum class D                                                                              // Colorize: green
+    , mBitsDefinitionRegExp("^ *\\w+ +(\\w+) *: *(\\d+);.*$")                 // i64 a: 5;                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BitsTestGenerator::generate(const QString &path)                                                                                                                                                    // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    return generateTests(path + "/src/os/shared", path + FILE_PATH);                                                                                                                                     // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BitsTestGenerator::generateTests(const QString &path, const QString &destinationFilePath)                                                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QList<BitsStructure> bits;                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Obtain list of structures with bits for specified folder                                                                                                                                          // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (!obtainBitsFromFolder(path, bits))                                                                                                                                                           // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err("Failed to get structures with bits");                                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add include lines                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("#include <buildconfig.h>");                                                                                                                                                        // Colorize: green
+        lines.append("#include <com/ngos/shared/uefibase/testengine.h>");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < bits.size(); ++i)                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines.append(QString("#include <%1>")                                                                                                                                                        // Colorize: green
+                                    .arg(bits.at(i).includePath)                                                                                                                                         // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.sort();                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        addThreeBlankLines(lines);                                                                                                                                                                       // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    lines.append("#if NGOS_BUILD_TEST_MODE == OPTION_YES");                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    addThreeBlankLines(lines);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Add test cases                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines.append("TEST_CASES(section0, generated_com_ngos_shared_common_types);");                                                                                                                   // Colorize: green
+        lines.append("{"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < bits.size(); ++i)                                                                                                                                                         // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            const BitsStructure &structure = bits.at(i);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qint64 maximumFieldLength = 0;                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Get maximum field length                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                for (qint64 j = 0; j < structure.fields.size(); ++j)                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    qint64 fieldLength = structure.fields.at(j).name.length();                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (fieldLength > maximumFieldLength)                                                                                                                                                // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        maximumFieldLength = fieldLength;                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add test case start                                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                // Ignore CppAlignmentVerifier [BEGIN]                                                                                                                                                   // Colorize: green
+                lines.append(QString("    TEST_CASE(\"%1\");")                                                                                                                                           // Colorize: green
+                                        .arg(structure.name)                                                                                                                                             // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                lines.append("    {");                                                                                                                                                                   // Colorize: green
+                // Ignore CppAlignmentVerifier [END]                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        %1 temp;")                                                                                                                                                 // Colorize: green
+                                        .arg(structure.name)                                                                                                                                             // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addThreeBlankLines(lines);                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add comment with structure description                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        // %1:")                                                                                                                                                   // Colorize: green
+                                        .arg(structure.name)                                                                                                                                             // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append("        //");                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (!addBitsStructureLines(lines, structure))                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to add bits structure");                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append("        //");                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = 0; j < structure.fields.size(); ++j)                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    const BitsField &field = structure.fields.at(j);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    lines.append(QString("        // %1 : %2 '%3'")                                                                                                                                      // Colorize: green
+                                            .arg(field.name, -maximumFieldLength)                                                                                                                        // Colorize: green
+                                            .arg(field.length, -2)                                                                                                                                       // Colorize: green
+                                            .arg(FIELD_SHORTCUTS[j])                                                                                                                                     // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addThreeBlankLines(lines);                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qint64 value;                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Generate value for testing                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QCryptographicHash hash(QCryptographicHash::Md5);                                                                                                                                        // Colorize: green
+                hash.addData(structure.name.toUtf8());                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                value = *((qint64 *)hash.result().data());                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (structure.width < 64)                                                                                                                                                                // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    value = value & ((1ULL << structure.width) - 1);                                                                                                                                     // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add comment with bit values                                                                                                                                                               // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!addBitsStructureLines(lines, structure, true, value))                                                                                                                               // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    Console::err("Failed to add bits structure");                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Initial value assignment                                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append(QString("        temp.value%1 = 0x%2;")                                                                                                                                     // Colorize: green
+                                        .arg(structure.width)                                                                                                                                            // Colorize: green
+                                        .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))                                                                                      // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                lines.append("");                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add asserts for checking bit values                                                                                                                                                       // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint8 offset = 0;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = 0; j < structure.fields.size(); ++j)                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    const BitsField &field = structure.fields.at(j);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    lines.append(QString("        TEST_ASSERT_EQUALS(temp.%1, %2%3);")                                                                                                                   // Colorize: green
+                                            .arg(field.name)                                                                                                                                             // Colorize: green
+                                            .arg("", maximumFieldLength - field.name.length())                                                                                                           // Colorize: green
+                                            .arg((value >> offset) & ((1ULL << field.length) - 1))                                                                                                       // Colorize: green
+                    );                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    offset += field.length;                                                                                                                                                              // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                addThreeBlankLines(lines);                                                                                                                                                               // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add lines for checking each bit field                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                qint8 offset = 0;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                for (qint64 j = 0; j < structure.fields.size(); ++j)                                                                                                                                     // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    const BitsField &field = structure.fields.at(j);                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    qint64 newBitValue;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Update value                                                                                                                                                                      // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        value       ^= ((1ULL << field.length) - 1) << offset;                                                                                                                              // Colorize: green
+                        newBitValue =  (value >> offset) & ((1ULL << field.length) - 1);                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        offset += field.length;                                                                                                                                                          // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Add comment with bit values                                                                                                                                                       // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        if (!addBitsStructureLines(lines, structure, true, value))                                                                                                                       // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            Console::err("Failed to add bits structure");                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return false;                                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    // Change bit value and check for total value                                                                                                                                        // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        lines.append(QString("        temp.%1 = %2;")                                                                                                                                    // Colorize: green
+                                                .arg(field.name)                                                                                                                                         // Colorize: green
+                                                .arg(newBitValue)                                                                                                                                        // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                        lines.append("");                                                                                                                                                                // Colorize: green
+                        lines.append(QString("        TEST_ASSERT_EQUALS(temp.value%1, 0x%2);")                                                                                                          // Colorize: green
+                                                .arg(structure.width)                                                                                                                                    // Colorize: green
+                                                .arg(QString::number(value, 16).toUpper(), structure.width / 4, QChar('0'))                                                                              // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (j < structure.fields.size() - 1)                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        addThreeBlankLines(lines);                                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Add test case end                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                lines.append("    }");                                                                                                                                                                   // Colorize: green
+                lines.append("    TEST_CASE_END();");                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (i < bits.size() - 1)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    addThreeBlankLines(lines);                                                                                                                                                           // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        lines.append("}"); // Ignore CppSingleCharVerifier                                                                                                                                               // Colorize: green
+        lines.append("TEST_CASES_END();");                                                                                                                                                               // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    addThreeBlankLines(lines);                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    lines.append("#endif");                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return save(destinationFilePath, lines);                                                                                                                                                             // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BitsTestGenerator::addBitsStructureLines(QStringList &lines, const BitsStructure &structure, bool useValue, qint64 value)                                                                           // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString     contentLine     = "|"; // Ignore CppSingleCharVerifier                                                                                                                                   // Colorize: green
+    qint8       remainingLength = 8;                                                                                                                                                                     // Colorize: green
+    qint8       offset          = structure.width;                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = structure.fields.size() - 1; i >= 0; --i)                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        const BitsField &field = structure.fields.at(i);                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString fieldContent;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Get field content                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (useValue)                                                                                                                                                                                // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                offset -= field.length;                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                fieldContent = QString("%1")                                                                                                                                                             // Colorize: green
+                                        .arg((value >> offset) & ((1ULL << field.length) - 1), field.length, 2, QChar('0'));                                                                             // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+            else                                                                                                                                                                                         // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                fieldContent = QString(field.length, QChar(FIELD_SHORTCUTS[i]));                                                                                                                         // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Iterate lines for bits on the edge                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            while (fieldContent.length() > remainingLength)                                                                                                                                              // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (remainingLength > 0)                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    // Add bits to content line                                                                                                                                                          // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qint8 freeSpaceLength = remainingLength * 3 - 1;                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');                                                                                                       // Colorize: green
+                        QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        contentLine.append(spaces);                                                                                                                                                      // Colorize: green
+                        contentLine.append(fieldContent.left(remainingLength));                                                                                                                          // Colorize: green
+                        contentLine.append(spaces2);                                                                                                                                                     // Colorize: green
+                        contentLine.append("|"); // Ignore CppSingleCharVerifier                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        fieldContent = fieldContent.mid(remainingLength);                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                lines.append(QString("        // %1")                                                                                                                                                    // Colorize: green
+                                        .arg(contentLine)                                                                                                                                                // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                contentLine     = "|"; // Ignore CppSingleCharVerifier                                                                                                                                   // Colorize: green
+                remainingLength = 8;                                                                                                                                                                     // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        // Add bits to content line                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            qint8 freeSpaceLength = fieldContent.length() * 3 - 1;                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            QString spaces(structure.width  > 8 ? freeSpaceLength       / 2 : 1, ' ');                                                                                                                   // Colorize: green
+            QString spaces2(structure.width > 8 ? (freeSpaceLength + 1) / 2 : 1, ' ');                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            contentLine.append(spaces);                                                                                                                                                                  // Colorize: green
+            contentLine.append(fieldContent.left(remainingLength));                                                                                                                                      // Colorize: green
+            contentLine.append(spaces2);                                                                                                                                                                 // Colorize: green
+            contentLine.append("|"); // Ignore CppSingleCharVerifier                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            remainingLength -= fieldContent.length();                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    lines.append(QString("        // %1")                                                                                                                                                                // Colorize: green
+                            .arg(contentLine)                                                                                                                                                            // Colorize: green
+    );                                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BitsTestGenerator::obtainBitsFromFolder(const QString &path, QList<BitsStructure> &bits)                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QFileInfoList files = QDir(path).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);                                                                                                             // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < files.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFileInfo file = files.at(i);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QString fileName = file.fileName();                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (file.isDir())                                                                                                                                                                                // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (!obtainBitsFromFolder(path + '/' + fileName, bits))                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                return false;                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            if (fileName.endsWith(".h"))                                                                                                                                                                 // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                if (!obtainBitsFromFile(path + '/' + fileName, bits))                                                                                                                                    // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    return false;                                                                                                                                                                        // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+bool BitsTestGenerator::obtainBitsFromFile(const QString &path, QList<BitsStructure> &bits)                                                                                                              // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Do not check specific files                                                                                                                                                                       // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (                                                                                                                                                                                             // Colorize: green
+            path.contains("/src/os/shared/common/src/com/ngos/shared/common/dmi/entry/lib/dmichassiscontainedelementtype.h")                                                                             // Colorize: green
+            ||                                                                                                                                                                                           // Colorize: green
+            path.contains("/src/os/shared/common/src/com/ngos/shared/common/dmi/entry/lib/dmiprocessorvoltage.h")                                                                                        // Colorize: green
+           )                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return true;                                                                                                                                                                                 // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(path);                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            return false;                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get file lines                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            lines[i] = lines.at(i).trimmed();                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                            // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString line = lines.at(i);                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        QRegularExpressionMatch match = mDefinitionRegExp.match(line);                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (match.hasMatch())                                                                                                                                                                            // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            BitsStructure structure;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            qint8  totalLength = 0;                                                                                                                                                                      // Colorize: green
+            qint64 level       = 0;                                                                                                                                                                      // Colorize: green
+            qint64 j           = i;                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            // Parse structure and find bits definition                                                                                                                                                  // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                do                                                                                                                                                                                       // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    ++j;                                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (j >= lines.size())                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        break;                                                                                                                                                                           // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QString anotherLine = lines.at(j);                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (anotherLine == '{')                                                                                                                                                              // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        ++level;                                                                                                                                                                         // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                    else                                                                                                                                                                                 // Colorize: green
+                    if (                                                                                                                                                                                 // Colorize: green
+                        anotherLine == '}'                                                                                                                                                               // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        anotherLine == "};"                                                                                                                                                              // Colorize: green
+                        ||                                                                                                                                                                               // Colorize: green
+                        anotherLine == "} __attribute__((packed));"                                                                                                                                      // Colorize: green
+                       )                                                                                                                                                                                 // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        --level;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (level <= 0)                                                                                                                                                                  // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    QRegularExpressionMatch match2 = mBitsDefinitionRegExp.match(anotherLine);                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (match2.hasMatch())                                                                                                                                                               // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        bool ok;                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        BitsField field;                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        field.name   = match2.captured(1);                                                                                                                                               // Colorize: green
+                        field.length = match2.captured(2).toShort(&ok);                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            !ok                                                                                                                                                                          // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            field.length <= 0                                                                                                                                                            // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            field.length >= 64                                                                                                                                                           // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            Console::err(QString("Failed to parse bits length in line: %1")                                                                                                              // Colorize: green
+                                                    .arg(anotherLine)                                                                                                                                    // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return false;                                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        totalLength += field.length;                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        structure.fields.append(field);                                                                                                                                                  // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                } while(true);                                                                                                                                                                           // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!structure.fields.isEmpty())                                                                                                                                                             // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                structure.name = match.captured(1);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get structure include path                                                                                                                                                            // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    QString parentFolder = path;                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    do                                                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        qint64 index = parentFolder.lastIndexOf('/');                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (index < 0)                                                                                                                                                                   // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            Console::err(QString("Failed to get relative path for \"%1\"")                                                                                                               // Colorize: green
+                                                    .arg(path)                                                                                                                                           // Colorize: green
+                            );                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            return false;                                                                                                                                                                // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        parentFolder = parentFolder.left(index);                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (                                                                                                                                                                             // Colorize: green
+                            QFile::exists(parentFolder + "/../../../Makefile")                                                                                                                           // Colorize: green
+                            ||                                                                                                                                                                           // Colorize: green
+                            !QDir(parentFolder + "/../../../").entryList(QStringList() << "*.pro", QDir::Files).isEmpty()                                                                                // Colorize: green
+                           )                                                                                                                                                                             // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    } while(true);                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    structure.includePath = path.mid(parentFolder.length() + 1);                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                structure.width = 0;                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Get structure width                                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    for (qint64 k = j - 1; k > i; --k)                                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        QString anotherLine = lines.at(k);                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        if (anotherLine.contains("value"))                                                                                                                                               // Colorize: green
+                        {                                                                                                                                                                                // Colorize: green
+                            if (anotherLine.contains("value8;"))                                                                                                                                         // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                structure.width = 8;                                                                                                                                                     // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            if (anotherLine.contains("value16;"))                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                structure.width = 16;                                                                                                                                                    // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            if (anotherLine.contains("value32;"))                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                structure.width = 32;                                                                                                                                                    // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                            else                                                                                                                                                                         // Colorize: green
+                            if (anotherLine.contains("value64;"))                                                                                                                                        // Colorize: green
+                            {                                                                                                                                                                            // Colorize: green
+                                structure.width = 64;                                                                                                                                                    // Colorize: green
+                            }                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                            break;                                                                                                                                                                       // Colorize: green
+                        }                                                                                                                                                                                // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                // Check structure width                                                                                                                                                                 // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    if (structure.width <= 0)                                                                                                                                                            // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        Console::err(QString("Failed to get value attribute for structure %1")                                                                                                           // Colorize: green
+                                                .arg(structure.name)                                                                                                                                     // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return false;                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                    if (structure.width != totalLength)                                                                                                                                                  // Colorize: green
+                    {                                                                                                                                                                                    // Colorize: green
+                        Console::err(QString("Total length of bits doesn't match to bits width for structure %1")                                                                                        // Colorize: green
+                                                .arg(structure.name)                                                                                                                                     // Colorize: green
+                        );                                                                                                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                        return false;                                                                                                                                                                    // Colorize: green
+                    }                                                                                                                                                                                    // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                bits.append(structure);                                                                                                                                                                  // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return true;                                                                                                                                                                                         // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BitsTestGenerator bitsTestGeneratorInstance;                                                                                                                                                             // Colorize: green

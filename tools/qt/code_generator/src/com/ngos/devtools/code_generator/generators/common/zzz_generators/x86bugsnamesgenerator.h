@@ -1,20 +1,20 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>
-
-
-
-class X86BugsNamesGenerator: public CommonGenerator
-{
-public:
-    X86BugsNamesGenerator(); // TEST: NO
-
-    bool generate(const QString &path) override; // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H                                                                                                        // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/common/commongenerator.h>                                                                                                                          // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class X86BugsNamesGenerator: public CommonGenerator                                                                                                                                                      // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    X86BugsNamesGenerator(); // TEST: NO                                                                                                                                                                 // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool generate(const QString &path) override; // TEST: NO                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_COMMON_ZZZ_GENERATORS_X86BUGSNAMESGENERATOR_H                                                                                                      // Colorize: green

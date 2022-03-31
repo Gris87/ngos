@@ -1,20 +1,20 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/configure/configuregenerator.h>
-
-
-
-class AsmOffsetsGenerator: public ConfigureGenerator
-{
-public:
-    AsmOffsetsGenerator(); // TEST: NO
-
-    bool generate(const QString &path) override; // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H                                                                                                       // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/configure/configuregenerator.h>                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class AsmOffsetsGenerator: public ConfigureGenerator                                                                                                                                                     // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    AsmOffsetsGenerator(); // TEST: NO                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool generate(const QString &path) override; // TEST: NO                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_CONFIGURE_ZZZ_GENERATORS_ASMOFFSETSGENERATOR_H                                                                                                     // Colorize: green

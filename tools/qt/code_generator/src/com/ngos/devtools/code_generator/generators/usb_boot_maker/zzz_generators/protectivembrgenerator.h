@@ -1,20 +1,20 @@
-#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H
-#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H
-
-
-
-#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>
-
-
-
-class ProtectiveMbrGenerator: public UsbBootMakerGenerator
-{
-public:
-    ProtectiveMbrGenerator(); // TEST: NO
-
-    bool generate(const QString &path) override; // TEST: NO
-};
-
-
-
-#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H
+#ifndef COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H                                                                                               // Colorize: green
+#define COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H                                                                                               // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/code_generator/generators/usb_boot_maker/usbbootmakergenerator.h>                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+class ProtectiveMbrGenerator: public UsbBootMakerGenerator                                                                                                                                               // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+public:                                                                                                                                                                                                  // Colorize: green
+    ProtectiveMbrGenerator(); // TEST: NO                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    bool generate(const QString &path) override; // TEST: NO                                                                                                                                             // Colorize: green
+};                                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#endif // COM_NGOS_DEVTOOLS_CODE_GENERATOR_GENERATORS_USB_BOOT_MAKER_ZZZ_GENERATORS_PROTECTIVEMBRGENERATOR_H                                                                                             // Colorize: green
