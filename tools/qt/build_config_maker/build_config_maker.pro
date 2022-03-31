@@ -1,60 +1,60 @@
-QT -= gui
-
-CONFIG += c++20 console
-CONFIG -= app_bundle
-
-TARGET   = build_config_maker
-TEMPLATE = app
-
-
-
-DEFINES += \
-    DEVTOOLS_APPLICATION \
-    _WIN32_WINNT=0x0A00
-
-
-
-# Warnings as errors - BEGIN
-win32-msvc* {
-    QMAKE_CXXFLAGS += /WX
-} else {
-    QMAKE_CXXFLAGS += -Wall -Wextra -Werror
-}
-# Warnings as errors - END
-
-# Release optimization - BEGIN
-QMAKE_CFLAGS_RELEASE -= -O1
-QMAKE_CFLAGS_RELEASE -= -O2
-QMAKE_CFLAGS_RELEASE += -O3
-
-QMAKE_CXXFLAGS_RELEASE -= -O1
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3
-# Release optimization - END
-
-# Target dirs - BEGIN
-DESTDIR     = build/
-OBJECTS_DIR = build/gen/$$TARGET/objs
-MOC_DIR     = build/gen/$$TARGET/moc
-RCC_DIR     = build/gen/$$TARGET/rcc
-UI_DIR      = build/gen/$$TARGET/ui
-# Target dirs - END
-
-
-
-INCLUDEPATH += \
-    src \       # tools/qt/build_config_maker/src
-    build/gen   # tools/qt/build_config_maker/build/gen
-
-
-
-include(../shared/console/console.pri)
-
-
-
-SOURCES += \
-    src/com/ngos/devtools/build_config_maker/main.cpp \
-    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.cpp
-
-HEADERS += \
-    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h
+QT -= gui                                                                                                                                                                                                # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+CONFIG += c++20 console                                                                                                                                                                                  # Colorize: green
+CONFIG -= app_bundle                                                                                                                                                                                     # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+TARGET   = build_config_maker                                                                                                                                                                            # Colorize: green
+TEMPLATE = app                                                                                                                                                                                           # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+DEFINES += \                                                                                                                                                                                             # Colorize: green
+    DEVTOOLS_APPLICATION \                                                                                                                                                                               # Colorize: green
+    _WIN32_WINNT=0x0A00                                                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Warnings as errors - BEGIN                                                                                                                                                                             # Colorize: green
+win32-msvc* {                                                                                                                                                                                            # Colorize: green
+    QMAKE_CXXFLAGS += /WX                                                                                                                                                                                # Colorize: green
+} else {                                                                                                                                                                                                 # Colorize: green
+    QMAKE_CXXFLAGS += -Wall -Wextra -Werror                                                                                                                                                              # Colorize: green
+}                                                                                                                                                                                                        # Colorize: green
+# Warnings as errors - END                                                                                                                                                                               # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Release optimization - BEGIN                                                                                                                                                                           # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O1                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE -= -O2                                                                                                                                                                              # Colorize: green
+QMAKE_CFLAGS_RELEASE += -O3                                                                                                                                                                              # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O1                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE -= -O2                                                                                                                                                                            # Colorize: green
+QMAKE_CXXFLAGS_RELEASE += -O3                                                                                                                                                                            # Colorize: green
+# Release optimization - END                                                                                                                                                                             # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+# Target dirs - BEGIN                                                                                                                                                                                    # Colorize: green
+DESTDIR     = build/                                                                                                                                                                                     # Colorize: green
+OBJECTS_DIR = build/gen/$$TARGET/objs                                                                                                                                                                    # Colorize: green
+MOC_DIR     = build/gen/$$TARGET/moc                                                                                                                                                                     # Colorize: green
+RCC_DIR     = build/gen/$$TARGET/rcc                                                                                                                                                                     # Colorize: green
+UI_DIR      = build/gen/$$TARGET/ui                                                                                                                                                                      # Colorize: green
+# Target dirs - END                                                                                                                                                                                      # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+INCLUDEPATH += \                                                                                                                                                                                         # Colorize: green
+    src \       # tools/qt/build_config_maker/src                                                                                                                                                        # Colorize: green
+    build/gen   # tools/qt/build_config_maker/build/gen                                                                                                                                                  # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+include(../shared/console/console.pri)                                                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+SOURCES += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/build_config_maker/main.cpp \                                                                                                                                                  # Colorize: green
+    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.cpp                                                                                                                                   # Colorize: green
+                                                                                                                                                                                                         # Colorize: green
+HEADERS += \                                                                                                                                                                                             # Colorize: green
+    src/com/ngos/devtools/build_config_maker/main/buildconfigmaker.h                                                                                                                                     # Colorize: green

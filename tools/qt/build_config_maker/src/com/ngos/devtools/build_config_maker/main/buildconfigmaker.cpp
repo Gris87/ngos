@@ -1,171 +1,192 @@
-#include "buildconfigmaker.h"
-
-#include <QFile>
-#include <QIODevice>
-
-#include <com/ngos/devtools/shared/console/console.h>
-
-
-
-BuildConfigMaker::BuildConfigMaker(const QString &buildConfigPath, bool reset, QMap<QString, QString> parameters)
-    : mBuildConfigPath(buildConfigPath)
-    , mReset(reset)
-    , mParameters(parameters)
-{
-    // Nothing
-}
-
-qint64 BuildConfigMaker::process()
-{
-    QFile file(mBuildConfigPath);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        Console::err(QString("Failed to read file \"%1\"")
-                                .arg(mBuildConfigPath)
-        );
-
-        return 1;
-    }
-
-    QString content = QString::fromUtf8(file.readAll());
-    file.close();
-
-
-
-    QStringList lines = content.split('\n');
-
-    for (qint64 i = 0; i < lines.size(); ++i)
-    {
-        QString &line = lines[i];
-
-        if (line.endsWith('\r'))
-        {
-            line.remove(line.length() - 1, 1);
-        }
-    }
-
-
-
-    if (mReset)
-    {
-        QString defaultValue;
-
-        for (qint64 i = 0; i < lines.size(); ++i)
-        {
-            QString &line = lines[i];
-
-            if (line.startsWith(" *** Default: "))
-            {
-                defaultValue = line.mid(14);
-            }
-            else
-            if (line.startsWith("#define ") && defaultValue != "")
-            {
-                line         = line.left(line.lastIndexOf(' ') + 1) + defaultValue;
-                defaultValue = "";
-            }
-        }
-    }
-
-
-
-    QMapIterator<QString, QString> it(mParameters);
-
-    while (it.hasNext())
-    {
-        it.next();
-
-        QString parameter = it.key();
-        QString value     = it.value();
-
-        QString parameterType = "";
-
-
-
-        bool found = false;
-
-        for (qint64 i = 0; i < lines.size(); ++i)
-        {
-            QString &line = lines[i];
-
-            if (line.startsWith(" *** Type: "))
-            {
-                parameterType = line.mid(11);
-            }
-            else
-            if (line.startsWith("#define " + parameter + ' '))
-            {
-                found = true;
-
-
-
-                qint64 index = parameter.length() + 9;
-
-                while (index < line.length() && line.at(index) == ' ')
-                {
-                    ++index;
-                }
-
-
-
-                if (parameterType == "Text")
-                {
-                    line = line.left(index) + '\"' + value + '\"';
-                }
-                else
-                {
-                    line = line.left(index) + value;
-                }
-
-
-
-                break;
-            }
-        }
-
-        if (!found)
-        {
-            Console::err(QString("Parameter \"%1\" not found")
-                                    .arg(parameter)
-            );
-
-            return 1;
-        }
-    }
-
-
-
-    QString newContent = lines.join('\n');
-
-    if (newContent != content)
-    {
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            Console::err(QString("Failed to write file \"%1\"")
-                                    .arg(mBuildConfigPath)
-            );
-
-            return 1;
-        }
-
-        file.write(newContent.toUtf8());
-        file.close();
-
-
-
-        Console::out(QString("%1 file updated")
-                                .arg(mBuildConfigPath)
-        );
-    }
-    else
-    {
-        Console::out(QString("%1 file is up to date")
-                                .arg(mBuildConfigPath)
-        );
-    }
-
-
-
-    return 0;
-}
+#include "buildconfigmaker.h"                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <QFile>                                                                                                                                                                                         // Colorize: green
+#include <QIODevice>                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+#include <com/ngos/devtools/shared/console/console.h>                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+BuildConfigMaker::BuildConfigMaker(const QString &buildConfigPath, bool reset, QMap<QString, QString> parameters)                                                                                        // Colorize: green
+    : mBuildConfigPath(buildConfigPath)                                                                                                                                                                  // Colorize: green
+    , mReset(reset)                                                                                                                                                                                      // Colorize: green
+    , mParameters(parameters)                                                                                                                                                                            // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    // Nothing                                                                                                                                                                                           // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+qint64 BuildConfigMaker::process()                                                                                                                                                                       // Colorize: green
+{                                                                                                                                                                                                        // Colorize: green
+    QString content;                                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Read file content                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QFile file(mBuildConfigPath);                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (!file.open(QIODevice::ReadOnly))                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::err(QString("Failed to read file \"%1\"")                                                                                                                                           // Colorize: green
+                                    .arg(mBuildConfigPath)                                                                                                                                               // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            return 1;                                                                                                                                                                                    // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        content = QString::fromUtf8(file.readAll());                                                                                                                                                     // Colorize: green
+        file.close();                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    QStringList lines;                                                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Get file lines                                                                                                                                                                                    // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        lines = content.split('\n');                                                                                                                                                                     // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (line.endsWith('\r'))                                                                                                                                                                     // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                line.remove(line.length() - 1, 1);                                                                                                                                                       // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Reset values to default                                                                                                                                                                           // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        if (mReset)                                                                                                                                                                                      // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QString defaultValue;                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                    // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                QString &line = lines[i];                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                if (line.startsWith(" *** Default: "))                                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    defaultValue = line.mid(14);                                                                                                                                                         // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+                else                                                                                                                                                                                     // Colorize: green
+                if (line.startsWith("#define ") && defaultValue != "")                                                                                                                                   // Colorize: green
+                {                                                                                                                                                                                        // Colorize: green
+                    line         = line.left(line.lastIndexOf(' ') + 1) + defaultValue;                                                                                                                  // Colorize: green
+                    defaultValue = "";                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                        // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Update parameters                                                                                                                                                                                 // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QMapIterator<QString, QString> it(mParameters);                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+        while (it.hasNext())                                                                                                                                                                                 // Colorize: green
+        {                                                                                                                                                                                                    // Colorize: green
+            it.next();                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            QString parameter = it.key();                                                                                                                                                                    // Colorize: green
+            QString value     = it.value();                                                                                                                                                                  // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            QString parameterType = "";                                                                                                                                                                      // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            bool found = false;                                                                                                                                                                              // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            for (qint64 i = 0; i < lines.size(); ++i)                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                QString &line = lines[i];                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                if (line.startsWith(" *** Type: "))                                                                                                                                                          // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    parameterType = line.mid(11);                                                                                                                                                            // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+                else                                                                                                                                                                                         // Colorize: green
+                if (line.startsWith("#define " + parameter + ' '))                                                                                                                                           // Colorize: green
+                {                                                                                                                                                                                            // Colorize: green
+                    found = true;                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                    qint64 index = parameter.length() + 9;                                                                                                                                                   // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                    while (index < line.length() && line.at(index) == ' ')                                                                                                                                   // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        ++index;                                                                                                                                                                             // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                    if (parameterType == "Text")                                                                                                                                                             // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        line = line.left(index) + '\"' + value + '\"';                                                                                                                                       // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                    else                                                                                                                                                                                     // Colorize: green
+                    {                                                                                                                                                                                        // Colorize: green
+                        line = line.left(index) + value;                                                                                                                                                     // Colorize: green
+                    }                                                                                                                                                                                        // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                    break;                                                                                                                                                                                   // Colorize: green
+                }                                                                                                                                                                                            // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+            if (!found)                                                                                                                                                                                      // Colorize: green
+            {                                                                                                                                                                                                // Colorize: green
+                Console::err(QString("Parameter \"%1\" not found")                                                                                                                                           // Colorize: green
+                                        .arg(parameter)                                                                                                                                                      // Colorize: green
+                );                                                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                             // Colorize: green
+                return 1;                                                                                                                                                                                    // Colorize: green
+            }                                                                                                                                                                                                // Colorize: green
+        }                                                                                                                                                                                                    // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    // Rewrite file with new content                                                                                                                                                                     // Colorize: green
+    {                                                                                                                                                                                                    // Colorize: green
+        QString newContent = lines.join('\n');                                                                                                                                                           // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+        if (newContent != content)                                                                                                                                                                       // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            QFile file(mBuildConfigPath);                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            if (!file.open(QIODevice::WriteOnly))                                                                                                                                                        // Colorize: green
+            {                                                                                                                                                                                            // Colorize: green
+                Console::err(QString("Failed to write file \"%1\"")                                                                                                                                      // Colorize: green
+                                        .arg(mBuildConfigPath)                                                                                                                                           // Colorize: green
+                );                                                                                                                                                                                       // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                return 1;                                                                                                                                                                                // Colorize: green
+            }                                                                                                                                                                                            // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            file.write(newContent.toUtf8());                                                                                                                                                             // Colorize: green
+            file.close();                                                                                                                                                                                // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+            Console::out(QString("%1 file updated")                                                                                                                                                      // Colorize: green
+                                    .arg(mBuildConfigPath)                                                                                                                                               // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+        else                                                                                                                                                                                             // Colorize: green
+        {                                                                                                                                                                                                // Colorize: green
+            Console::out(QString("%1 file is up to date")                                                                                                                                                // Colorize: green
+                                    .arg(mBuildConfigPath)                                                                                                                                               // Colorize: green
+            );                                                                                                                                                                                           // Colorize: green
+        }                                                                                                                                                                                                // Colorize: green
+    }                                                                                                                                                                                                    // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+                                                                                                                                                                                                         // Colorize: green
+    return 0;                                                                                                                                                                                            // Colorize: green
+}                                                                                                                                                                                                        // Colorize: green
